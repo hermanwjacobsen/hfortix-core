@@ -26,6 +26,11 @@ class Antivirus:
         ExemptList = exempt_list_module.ExemptList
         self.exempt_list = ExemptList(client)
         
-        # Import profile normally
+        # Import profile, quarantine, and settings normally
         from .profile import Profile
+        from .quarantine import Quarantine
+        from .settings import Settings
+        
         self.profile = Profile(client)
+        self.quarantine = Quarantine(client)
+        self.settings = Settings(client)
