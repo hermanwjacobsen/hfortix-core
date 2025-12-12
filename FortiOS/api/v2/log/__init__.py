@@ -23,10 +23,12 @@ class Log:
         from .disk.disk import Disk
         from .fortianalyzer.fortianalyzer import FortiAnalyzer
         from .memory.memory import Memory
+        from .forticloud.forticloud import FortiCloud
         
         self.disk = Disk(client)
         self.fortianalyzer = FortiAnalyzer(client)
         self.memory = Memory(client)
+        self.forticloud = FortiCloud(client)
     
     def get(self, endpoint, params=None):
         """
