@@ -1,0 +1,31 @@
+"""
+FortiOS Antivirus API
+Antivirus configuration endpoints
+"""
+
+
+class Antivirus:
+    """
+    Antivirus API helper class
+    Provides access to antivirus configuration endpoints
+    """
+    
+    def __init__(self, client):
+        """
+        Initialize Antivirus helper
+        
+        Args:
+            client: FortiOS client instance
+        """
+        self._client = client
+        
+        # Initialize endpoint classes
+        # Note: exempt-list.py has a dash, so we import it differently
+        import importlib
+        exempt_list_module = importlib.import_module('.exempt-list', package='FortiOS.api.v2.cmdb.antivirus')
+        ExemptList = exempt_list_module.ExemptList
+        self.exempt_list = ExemptList(client)
+        
+        # Import profile normally
+        from .profile import Profile
+        self.profile = Profile(client)
