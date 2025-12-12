@@ -23,10 +23,12 @@ class CMDB:
         from .alertemail import AlertEmail
         from .antivirus import Antivirus
         from .application import Application
+        from .authentication import Authentication
         
         self.alertemail = AlertEmail(client)
         self.antivirus = Antivirus(client)
         self.application = Application(client)
+        self.authentication = Authentication(client)
     
     def get(self, path, params=None, vdom=None):
         """
