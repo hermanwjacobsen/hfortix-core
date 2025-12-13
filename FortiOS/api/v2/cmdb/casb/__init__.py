@@ -4,6 +4,7 @@ Configure CASB security policies and rules
 """
 
 from .attribute_match import AttributeMatch
+from .profile import Profile
 from .saas_application import SaasApplication
 from .user_activity import UserActivity
 
@@ -22,5 +23,6 @@ class Casb:
         
         # Initialize endpoints
         self.attribute_match = AttributeMatch(client)
+        self.profile = Profile(client)
         self.saas_application = SaasApplication(client)
         self.user_activity = UserActivity(client)
