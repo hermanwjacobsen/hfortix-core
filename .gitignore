@@ -45,16 +45,17 @@ ENV/
 htmlcov/
 .tox/
 *.log
+Tests/
 
 # Documentation
 docs/_build/
+docs/
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Local test files (optional - uncomment if you don't want to track them)
+# Local test files
 X/
-docs/
 
 # Credentials and secrets
 *token*
