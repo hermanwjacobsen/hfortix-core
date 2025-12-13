@@ -8,17 +8,8 @@ include API_COVERAGE.md
 include DEVELOPMENT.md
 include requirements.txt
 
-# Include all package data
-recursive-include fortinet *.py
-
-# Exclude test and development files
-exclude .gitignore
-recursive-exclude X *
-recursive-exclude Tests *
-recursive-exclude __pycache__ *
-recursive-exclude *.pyc
-recursive-exclude *.pyo
-recursive-exclude *.pyd
-recursive-exclude .pytest_cache *
-recursive-exclude .vscode *
-recursive-exclude .idea *
+# Exclude development and test files
+global-exclude __pycache__/*
+global-exclude *.py[cod]
+prune X
+prune Tests

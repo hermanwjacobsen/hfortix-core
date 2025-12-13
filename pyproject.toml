@@ -53,11 +53,12 @@ Repository = "https://github.com/hermanwjacobsen/fortinet-sdk"
 "Bug Tracker" = "https://github.com/hermanwjacobsen/fortinet-sdk/issues"
 Changelog = "https://github.com/hermanwjacobsen/fortinet-sdk/blob/main/CHANGELOG.md"
 
-[tool.setuptools]
-packages = ["fortinet", "fortinet.FortiOS", "fortinet.FortiManager", "fortinet.FortiAnalyzer"]
+# Package discovery is handled by setup.py find_packages()
+# This provides better compatibility and flexibility
 
-[tool.setuptools.package-data]
-fortinet = ["py.typed"]
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
 
 [tool.black]
 line-length = 100
