@@ -7,12 +7,16 @@ API Endpoints:
     GET    /automation/setting       - Get automation settings
     PUT    /automation/setting       - Update automation settings
 """
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Setting:
     """Automation setting endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Automation Setting endpoint
         
@@ -21,7 +25,15 @@ class Setting:
         """
         self._client = client
     
-    def get(self, datasource=None, with_meta=None, skip=None, action=None, vdom=None, **kwargs):
+    def get(
+        self,
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get automation settings
         
@@ -61,8 +73,14 @@ class Setting:
         
         return self._client.get('cmdb', 'automation/setting', params=params, vdom=vdom)
     
-    def update(self, max_concurrent_stitches=None, fabric_sync=None, secure_mode=None, 
-               vdom=None, **kwargs):
+    def update(
+        self,
+        max_concurrent_stitches: Optional[int] = None,
+        fabric_sync: Optional[str] = None,
+        secure_mode: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Update automation settings
         

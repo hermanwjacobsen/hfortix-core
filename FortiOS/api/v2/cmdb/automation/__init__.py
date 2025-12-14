@@ -3,6 +3,10 @@ FortiOS CMDB - Automation API
 
 This module provides access to FortiOS automation configuration endpoints.
 """
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 from .setting import Setting
 
@@ -10,7 +14,7 @@ from .setting import Setting
 class Automation:
     """Automation configuration endpoints"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Automation API
         
