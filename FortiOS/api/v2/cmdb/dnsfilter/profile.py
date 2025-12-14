@@ -3,6 +3,7 @@
 This module provides methods for managing DNS filter profiles.
 """
 
+from __future__ import annotations
 from typing import Any, Optional
 
 
