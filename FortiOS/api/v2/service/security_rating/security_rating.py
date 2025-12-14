@@ -7,14 +7,28 @@ API Endpoints:
     GET /security-rating/report/           - Get full Security Rating report
     GET /security-rating/recommendations/  - Get recommendations for specific checks
 """
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
+
 
 class SecurityRating:
     """Security Rating service endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
-    def report(self, type, scope=None, standalone=None, checks=None, show_hidden=None, vdom=None, **kwargs):
+    def report(
+        self,
+        type: str,
+        scope: Optional[str] = None,
+        standalone: Optional[str] = None,
+        checks: Optional[str] = None,
+        show_hidden: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Retrieve full report of all Security Rating tests
         
@@ -96,7 +110,13 @@ class SecurityRating:
         return self._client.get('service', 'security-rating/report/', 
                                params=params, vdom=vdom)
     
-    def recommendations(self, checks, scope=None, vdom=None, **kwargs):
+    def recommendations(
+        self,
+        checks: str,
+        scope: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Retrieve recommendations for Security Rating tests
         
