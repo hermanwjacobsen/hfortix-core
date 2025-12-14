@@ -14,12 +14,16 @@ API Endpoints:
     GET /disk/traffic/{subtype}                  - Get traffic logs by subtype
     GET /disk/event/{subtype}                    - Get event logs by subtype
 """
+from typing import Optional, Dict, Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Disk:
     """Disk log endpoint"""
 
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Disk log endpoint.
         
@@ -28,7 +32,7 @@ class Disk:
         """
         self._client = client
 
-    def virus_archive(self, mkey=None, **kwargs):
+    def virus_archive(self, mkey: Optional[int] = None, **kwargs: Any) -> Dict[str, Any]:
         """
         Get quarantined virus file metadata.
         
@@ -67,7 +71,7 @@ class Disk:
         
         return self._client.get('log', endpoint, params=params if params else None)
 
-    def archive(self, log_type, mkey=None, **kwargs):
+    def archive(self, log_type: str, mkey: Optional[int] = None, **kwargs: Any) -> Dict[str, Any]:
         """
         Get archived items (packet captures from IPS or Application Control).
         
@@ -107,7 +111,7 @@ class Disk:
         
         return self._client.get('log', endpoint, params=params if params else None)
 
-    def archive_download(self, log_type, mkey=None, **kwargs):
+    def archive_download(self, log_type: str, mkey: Optional[int] = None, **kwargs: Any) -> Dict[str, Any]:
         """
         Download an archived file (binary data).
         
@@ -141,8 +145,17 @@ class Disk:
         # This returns binary data, similar to sniffer download
         return self._client.get_binary('log', endpoint, params=params if params else None)
 
-    def raw(self, log_type, rows=None, session_id=None, serial_no=None, 
-            is_ha_member=None, filter=None, keep_session_alive=None, **kwargs):
+    def raw(
+        self,
+        log_type: str,
+        rows: Optional[int] = None,
+        session_id: Optional[int] = None,
+        serial_no: Optional[str] = None,
+        is_ha_member: Optional[bool] = None,
+        filter: Optional[str] = None,
+        keep_session_alive: Optional[bool] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get raw log data for the specified log type.
         
@@ -205,8 +218,17 @@ class Disk:
         
         return self._client.get('log', endpoint, params=params if params else None)
 
-    def traffic_raw(self, subtype, rows=None, session_id=None, serial_no=None,
-                    is_ha_member=None, filter=None, keep_session_alive=None, **kwargs):
+    def traffic_raw(
+        self,
+        subtype: str,
+        rows: Optional[int] = None,
+        session_id: Optional[int] = None,
+        serial_no: Optional[str] = None,
+        is_ha_member: Optional[bool] = None,
+        filter: Optional[str] = None,
+        keep_session_alive: Optional[bool] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get raw traffic logs by subtype.
         
@@ -257,8 +279,17 @@ class Disk:
         
         return self._client.get('log', endpoint, params=params if params else None)
 
-    def event_raw(self, subtype, rows=None, session_id=None, serial_no=None,
-                  is_ha_member=None, filter=None, keep_session_alive=None, **kwargs):
+    def event_raw(
+        self,
+        subtype: str,
+        rows: Optional[int] = None,
+        session_id: Optional[int] = None,
+        serial_no: Optional[str] = None,
+        is_ha_member: Optional[bool] = None,
+        filter: Optional[str] = None,
+        keep_session_alive: Optional[bool] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get raw event logs by subtype.
         
@@ -310,7 +341,15 @@ class Disk:
         
         return self._client.get('log', endpoint, params=params if params else None)
 
-    def get(self, log_type, rows=None, start=None, end=None, filter=None, **kwargs):
+    def get(
+        self,
+        log_type: str,
+        rows: Optional[int] = None,
+        start: Optional[int] = None,
+        end: Optional[int] = None,
+        filter: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get log data for the specified type (formatted, not raw).
         
@@ -361,7 +400,15 @@ class Disk:
         
         return self._client.get('log', endpoint, params=params if params else None)
 
-    def traffic(self, subtype, rows=None, start=None, end=None, filter=None, **kwargs):
+    def traffic(
+        self,
+        subtype: str,
+        rows: Optional[int] = None,
+        start: Optional[int] = None,
+        end: Optional[int] = None,
+        filter: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get traffic logs by subtype (formatted, not raw).
         
@@ -409,7 +456,15 @@ class Disk:
         
         return self._client.get('log', endpoint, params=params if params else None)
 
-    def event(self, subtype, rows=None, start=None, end=None, filter=None, **kwargs):
+    def event(
+        self,
+        subtype: str,
+        rows: Optional[int] = None,
+        start: Optional[int] = None,
+        end: Optional[int] = None,
+        filter: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get event logs by subtype (formatted, not raw).
         
