@@ -1,0 +1,9 @@
+{
+  "MD041": false,
+  "MD034": false,
+  "MD051": false,
+  "default": true,
+  "line-length": false,
+  "no-inline-html": false,
+  "no-bare-urls": false
+}
