@@ -4,18 +4,21 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-- **CMDB API**: 74 endpoints across 15 categories (49% coverage) ✅
-  - **NEW:** Firewall category with 23 endpoints (6 flat + 17 nested)
+- **CMDB API**: 79 endpoints across 15 categories (52% coverage) ✅
+  - **NEW:** Firewall category with 28 endpoints (11 flat + 17 nested)
 - **Service API**: 21 methods across 3 modules ✅
 - **Log API**: 42 methods across 5 modules (100% complete) ✅
 - **Monitor API**: Not yet implemented ⏸️
 
 **Latest Addition (v0.3.0):**
-- ✅ **Flat Firewall Endpoints (NEW):**
+- ✅ **Flat Firewall Endpoints (NEW - 11 endpoints):**
   - firewall/DoS-policy, DoS-policy6 (DoS protection)
   - firewall/access-proxy, access-proxy6 (Reverse proxy/WAF)
   - firewall/access-proxy-ssh-client-cert (SSH certificates)
   - firewall/access-proxy-virtual-host (Virtual hosts)
+  - firewall/address, address6 (IPv4/IPv6 addresses)
+  - firewall/addrgrp, addrgrp6 (IPv4/IPv6 address groups)
+  - firewall/address6-template (IPv6 address templates)
 - ✅ **Firewall Sub-categories:**
   - firewall.ipmacbinding (setting, table)
   - firewall.schedule (group, onetime, recurring)
@@ -243,6 +246,65 @@ result = fgt.cmdb.firewall.access_proxy_virtual_host.create(
 
 # API automatically converts:
 # ssl_certificate='cert' → [{'name': 'cert'}]
+```
+
+### FortiOS - Address & Address Group Management (NEW!)
+```python
+# Create IPv4 address (subnet)
+result = fgt.cmdb.firewall.address.create(
+    name='internal-net',
+    type='ipmask',
+    subnet='192.168.1.0/24',
+    comment='Internal network'
+)
+
+# Create IPv4 address (IP range)
+result = fgt.cmdb.firewall.address.create(
+    name='dhcp-range',
+    type='iprange',
+    start_ip='192.168.1.100',
+    end_ip='192.168.1.200'
+)
+
+# Create IPv4 address (FQDN)
+result = fgt.cmdb.firewall.address.create(
+    name='google-dns',
+    type='fqdn',
+    fqdn='dns.google.com'
+)
+
+# Create IPv6 address
+result = fgt.cmdb.firewall.address6.create(
+    name='ipv6-internal',
+    type='ipprefix',
+    ip6='2001:db8::/32',
+    comment='IPv6 internal network'
+)
+
+# Create address group with simplified API
+result = fgt.cmdb.firewall.addrgrp.create(
+    name='internal-networks',
+    member=['subnet1', 'subnet2', 'subnet3'],  # Simple string list!
+    comment='All internal networks'
+)
+
+# API automatically converts:
+# member=['addr1', 'addr2'] → [{'name': 'addr1'}, {'name': 'addr2'}]
+
+# Create IPv6 address group
+result = fgt.cmdb.firewall.addrgrp6.create(
+    name='ipv6-internal-networks',
+    member=['ipv6-subnet1', 'ipv6-subnet2'],
+    comment='All internal IPv6 networks'
+)
+
+# Create IPv6 address template
+result = fgt.cmdb.firewall.address6_template.create(
+    name='ipv6-subnet-template',
+    ip6='2001:db8::/32',
+    subnet_segment_count=2,
+    comment='IPv6 subnet template'
+)
 ```
 
 ### FortiOS - Schedule Management
