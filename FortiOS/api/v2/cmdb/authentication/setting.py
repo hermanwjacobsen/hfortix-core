@@ -7,16 +7,20 @@ API Endpoints:
     GET    /api/v2/cmdb/authentication/setting       - Get authentication settings
     PUT    /api/v2/cmdb/authentication/setting       - Update authentication settings
 """
+from typing import Optional, Dict, Any, Union, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Setting:
     """Authentication setting endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
     @staticmethod
-    def _format_name_list(items):
+    def _format_name_list(items: Optional[List[Union[str, Dict[str, Any]]]]) -> Optional[List[Dict[str, Any]]]:
         """
         Convert simple list of strings to FortiOS format [{'name': 'item'}]
         
@@ -40,8 +44,15 @@ class Setting:
         
         return formatted
     
-    def get(self, datasource=False, with_meta=False, skip=False, 
-            action=None, vdom=None, **kwargs):
+    def get(
+        self,
+        datasource: Optional[bool] = False,
+        with_meta: Optional[bool] = False,
+        skip: Optional[bool] = False,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get authentication settings
         
@@ -82,14 +93,32 @@ class Setting:
         return self._client.get('cmdb', 'authentication/setting', 
                                params=params if params else None, vdom=vdom)
     
-    def update(self, active_auth_scheme=None, sso_auth_scheme=None, update_time=None,
-               persistent_cookie=None, ip_auth_cookie=None, cookie_max_age=None,
-               cookie_refresh_div=None, captive_portal_type=None, captive_portal_ip=None,
-               captive_portal_ip6=None, captive_portal=None, captive_portal6=None,
-               cert_auth=None, cert_captive_portal=None, cert_captive_portal_ip=None,
-               cert_captive_portal_port=None, captive_portal_port=None, auth_https=None,
-               captive_portal_ssl_port=None, user_cert_ca=None, dev_range=None,
-               vdom=None, **kwargs):
+    def update(
+        self,
+        active_auth_scheme: Optional[str] = None,
+        sso_auth_scheme: Optional[str] = None,
+        update_time: Optional[str] = None,
+        persistent_cookie: Optional[str] = None,
+        ip_auth_cookie: Optional[str] = None,
+        cookie_max_age: Optional[int] = None,
+        cookie_refresh_div: Optional[int] = None,
+        captive_portal_type: Optional[str] = None,
+        captive_portal_ip: Optional[str] = None,
+        captive_portal_ip6: Optional[str] = None,
+        captive_portal: Optional[str] = None,
+        captive_portal6: Optional[str] = None,
+        cert_auth: Optional[str] = None,
+        cert_captive_portal: Optional[str] = None,
+        cert_captive_portal_ip: Optional[str] = None,
+        cert_captive_portal_port: Optional[int] = None,
+        captive_portal_port: Optional[int] = None,
+        auth_https: Optional[str] = None,
+        captive_portal_ssl_port: Optional[int] = None,
+        user_cert_ca: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        dev_range: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Update authentication settings
         

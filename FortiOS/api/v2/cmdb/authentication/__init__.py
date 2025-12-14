@@ -2,6 +2,10 @@
 FortiOS Authentication API
 Authentication configuration endpoints
 """
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Authentication:
@@ -10,7 +14,7 @@ class Authentication:
     Provides access to authentication configuration endpoints
     """
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Authentication helper
         

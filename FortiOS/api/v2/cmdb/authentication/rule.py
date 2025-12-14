@@ -10,16 +10,20 @@ API Endpoints:
     PUT    /api/v2/cmdb/authentication/rule/{name} - Update authentication rule
     DELETE /api/v2/cmdb/authentication/rule/{name} - Delete authentication rule
 """
+from typing import Optional, Dict, Any, Union, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Rule:
     """Authentication rule endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
     @staticmethod
-    def _format_name_list(items):
+    def _format_name_list(items: Optional[List[Union[str, Dict[str, Any]]]]) -> Optional[List[Dict[str, Any]]]:
         """
         Convert simple list of strings to FortiOS format [{'name': 'item'}]
         
@@ -43,9 +47,23 @@ class Rule:
         
         return formatted
     
-    def get(self, name=None, attr=None, datasource=False, with_meta=False,
-            skip=False, count=None, skip_to_datasource=None, acs=None,
-            search=None, scope=None, format=None, action=None, vdom=None, **kwargs):
+    def get(
+        self,
+        name: Optional[str] = None,
+        attr: Optional[str] = None,
+        datasource: Optional[bool] = False,
+        with_meta: Optional[bool] = False,
+        skip: Optional[bool] = False,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[str] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get authentication rule(s)
         
@@ -111,7 +129,7 @@ class Rule:
         
         return self._client.get('cmdb', path, params=params if params else None, vdom=vdom)
     
-    def list(self, **kwargs):
+    def list(self, **kwargs: Any) -> Dict[str, Any]:
         """
         Get all authentication rules (convenience method)
         
@@ -127,11 +145,29 @@ class Rule:
         """
         return self.get(**kwargs)
     
-    def create(self, name, status=None, protocol=None, srcintf=None, srcaddr=None,
-               srcaddr6=None, dstaddr=None, dstaddr6=None, ip_based=None,
-               active_auth_method=None, sso_auth_method=None, web_auth_cookie=None,
-               web_portal=None, cert_auth_cookie=None, transaction_based=None,
-               cors_stateful=None, cors_depth=None, comments=None, vdom=None, **kwargs):
+    def create(
+        self,
+        name: str,
+        status: Optional[str] = None,
+        protocol: Optional[str] = None,
+        srcintf: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        srcaddr: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        srcaddr6: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        dstaddr: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        dstaddr6: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        ip_based: Optional[str] = None,
+        active_auth_method: Optional[str] = None,
+        sso_auth_method: Optional[str] = None,
+        web_auth_cookie: Optional[str] = None,
+        web_portal: Optional[str] = None,
+        cert_auth_cookie: Optional[str] = None,
+        transaction_based: Optional[str] = None,
+        cors_stateful: Optional[str] = None,
+        cors_depth: Optional[int] = None,
+        comments: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Create authentication rule
         
@@ -241,11 +277,29 @@ class Rule:
         
         return self._client.post('cmdb', 'authentication/rule', data, vdom=vdom)
     
-    def update(self, name, status=None, protocol=None, srcintf=None, srcaddr=None,
-               srcaddr6=None, dstaddr=None, dstaddr6=None, ip_based=None,
-               active_auth_method=None, sso_auth_method=None, web_auth_cookie=None,
-               web_portal=None, cert_auth_cookie=None, transaction_based=None,
-               cors_stateful=None, cors_depth=None, comments=None, vdom=None, **kwargs):
+    def update(
+        self,
+        name: str,
+        status: Optional[str] = None,
+        protocol: Optional[str] = None,
+        srcintf: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        srcaddr: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        srcaddr6: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        dstaddr: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        dstaddr6: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        ip_based: Optional[str] = None,
+        active_auth_method: Optional[str] = None,
+        sso_auth_method: Optional[str] = None,
+        web_auth_cookie: Optional[str] = None,
+        web_portal: Optional[str] = None,
+        cert_auth_cookie: Optional[str] = None,
+        transaction_based: Optional[str] = None,
+        cors_stateful: Optional[str] = None,
+        cors_depth: Optional[int] = None,
+        comments: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Update authentication rule
         
@@ -346,7 +400,11 @@ class Rule:
         
         return self._client.put('cmdb', f'authentication/rule/{name}', data, vdom=vdom)
     
-    def delete(self, name, vdom=None):
+    def delete(
+        self,
+        name: str,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         Delete authentication rule
         

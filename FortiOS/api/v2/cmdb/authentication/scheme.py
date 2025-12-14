@@ -10,16 +10,20 @@ API Endpoints:
     PUT    /api/v2/cmdb/authentication/scheme/{name} - Update authentication scheme
     DELETE /api/v2/cmdb/authentication/scheme/{name} - Delete authentication scheme
 """
+from typing import Optional, Dict, Any, Union, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Scheme:
     """Authentication scheme endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
     @staticmethod
-    def _format_name_list(items):
+    def _format_name_list(items: Optional[List[Union[str, Dict[str, Any]]]]) -> Optional[List[Dict[str, Any]]]:
         """
         Convert simple list of strings to FortiOS format [{'name': 'item'}]
         
@@ -43,9 +47,23 @@ class Scheme:
         
         return formatted
     
-    def get(self, name=None, attr=None, datasource=False, with_meta=False,
-            skip=False, count=None, skip_to_datasource=None, acs=None,
-            search=None, scope=None, format=None, action=None, vdom=None, **kwargs):
+    def get(
+        self,
+        name: Optional[str] = None,
+        attr: Optional[str] = None,
+        datasource: Optional[bool] = False,
+        with_meta: Optional[bool] = False,
+        skip: Optional[bool] = False,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[str] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get authentication scheme(s)
         
@@ -111,7 +129,7 @@ class Scheme:
         
         return self._client.get('cmdb', path, params=params if params else None, vdom=vdom)
     
-    def list(self, **kwargs):
+    def list(self, **kwargs: Any) -> Dict[str, Any]:
         """
         Get all authentication schemes (convenience method)
         
@@ -127,12 +145,29 @@ class Scheme:
         """
         return self.get(**kwargs)
     
-    def create(self, name, method=None, negotiate_ntlm=None, kerberos_keytab=None,
-               domain_controller=None, saml_server=None, saml_timeout=None,
-               fsso_agent_for_ntlm=None, require_tfa=None, fsso_guest=None,
-               user_cert=None, cert_http_header=None, user_database=None,
-               ssh_ca=None, external_idp=None, group_attr_type=None,
-               digest_algo=None, digest_rfc2069=None, vdom=None, **kwargs):
+    def create(
+        self,
+        name: str,
+        method: Optional[str] = None,
+        negotiate_ntlm: Optional[str] = None,
+        kerberos_keytab: Optional[str] = None,
+        domain_controller: Optional[str] = None,
+        saml_server: Optional[str] = None,
+        saml_timeout: Optional[int] = None,
+        fsso_agent_for_ntlm: Optional[str] = None,
+        require_tfa: Optional[str] = None,
+        fsso_guest: Optional[str] = None,
+        user_cert: Optional[str] = None,
+        cert_http_header: Optional[str] = None,
+        user_database: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        ssh_ca: Optional[str] = None,
+        external_idp: Optional[str] = None,
+        group_attr_type: Optional[str] = None,
+        digest_algo: Optional[str] = None,
+        digest_rfc2069: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Create authentication scheme
         
@@ -248,12 +283,29 @@ class Scheme:
         
         return self._client.post('cmdb', 'authentication/scheme', data, vdom=vdom)
     
-    def update(self, name, method=None, negotiate_ntlm=None, kerberos_keytab=None,
-               domain_controller=None, saml_server=None, saml_timeout=None,
-               fsso_agent_for_ntlm=None, require_tfa=None, fsso_guest=None,
-               user_cert=None, cert_http_header=None, user_database=None,
-               ssh_ca=None, external_idp=None, group_attr_type=None,
-               digest_algo=None, digest_rfc2069=None, vdom=None, **kwargs):
+    def update(
+        self,
+        name: str,
+        method: Optional[str] = None,
+        negotiate_ntlm: Optional[str] = None,
+        kerberos_keytab: Optional[str] = None,
+        domain_controller: Optional[str] = None,
+        saml_server: Optional[str] = None,
+        saml_timeout: Optional[int] = None,
+        fsso_agent_for_ntlm: Optional[str] = None,
+        require_tfa: Optional[str] = None,
+        fsso_guest: Optional[str] = None,
+        user_cert: Optional[str] = None,
+        cert_http_header: Optional[str] = None,
+        user_database: Optional[List[Union[str, Dict[str, Any]]]] = None,
+        ssh_ca: Optional[str] = None,
+        external_idp: Optional[str] = None,
+        group_attr_type: Optional[str] = None,
+        digest_algo: Optional[str] = None,
+        digest_rfc2069: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Update authentication scheme
         
@@ -356,7 +408,11 @@ class Scheme:
         
         return self._client.put('cmdb', f'authentication/scheme/{name}', data, vdom=vdom)
     
-    def delete(self, name, vdom=None):
+    def delete(
+        self,
+        name: str,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         Delete authentication scheme
         
