@@ -10,12 +10,16 @@ API Endpoints:
     PUT    /api/v2/cmdb/application/group/{name} - Update an application group
     DELETE /api/v2/cmdb/application/group/{name} - Delete an application group
 """
+from typing import Optional, Dict, Any, Union, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Group:
     """Application groups endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Group endpoint.
         
@@ -24,22 +28,24 @@ class Group:
         """
         self._client = client
     
-    def get(self,
-            name=None,
-            # Query parameters
-            attr=None,
-            count=None,
-            skip_to_datasource=None,
-            acs=None,
-            search=None,
-            scope=None,
-            datasource=None,
-            with_meta=None,
-            skip=None,
-            format=None,
-            action=None,
-            vdom=None,
-            **kwargs):
+    def get(
+        self,
+        name: Optional[str] = None,
+        # Query parameters
+        attr: Optional[str] = None,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[int] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get application group(s).
         
@@ -110,20 +116,22 @@ class Group:
         
         return self._client.get('cmdb', path, params=params if params else None, vdom=vdom)
     
-    def list(self,
-             attr=None,
-             count=None,
-             skip_to_datasource=None,
-             acs=None,
-             search=None,
-             scope=None,
-             datasource=None,
-             with_meta=None,
-             skip=None,
-             format=None,
-             action=None,
-             vdom=None,
-             **kwargs):
+    def list(
+        self,
+        attr: Optional[str] = None,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[int] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         List all application groups.
         
@@ -172,21 +180,23 @@ class Group:
             **kwargs
         )
     
-    def create(self,
-               name,
-               # Group parameters
-               comment=None,
-               type=None,
-               application=None,
-               category=None,
-               risk=None,
-               protocols=None,
-               vendor=None,
-               technology=None,
-               behavior=None,
-               popularity=None,
-               vdom=None,
-               **kwargs):
+    def create(
+        self,
+        name: str,
+        # Group parameters
+        comment: Optional[str] = None,
+        type: Optional[str] = None,
+        application: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        category: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        risk: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        protocols: Optional[str] = None,
+        vendor: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        technology: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        behavior: Optional[str] = None,
+        popularity: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Create a new application group.
         
@@ -262,26 +272,28 @@ class Group:
         
         return self._client.post('cmdb', 'application/group', data, vdom=vdom)
     
-    def update(self,
-               name,
-               # Group parameters
-               comment=None,
-               type=None,
-               application=None,
-               category=None,
-               risk=None,
-               protocols=None,
-               vendor=None,
-               technology=None,
-               behavior=None,
-               popularity=None,
-               # Action parameters
-               action=None,
-               before=None,
-               after=None,
-               scope=None,
-               vdom=None,
-               **kwargs):
+    def update(
+        self,
+        name: str,
+        # Group parameters
+        comment: Optional[str] = None,
+        type: Optional[str] = None,
+        application: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        category: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        risk: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        protocols: Optional[str] = None,
+        vendor: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        technology: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        behavior: Optional[str] = None,
+        popularity: Optional[List[Union[int, Dict[str, Any]]]] = None,
+        # Action parameters
+        action: Optional[str] = None,
+        before: Optional[str] = None,
+        after: Optional[str] = None,
+        scope: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Update an existing application group.
         
@@ -377,7 +389,12 @@ class Group:
             vdom=vdom
         )
     
-    def delete(self, name, scope=None, vdom=None):
+    def delete(
+        self,
+        name: str,
+        scope: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         Delete an application group.
         

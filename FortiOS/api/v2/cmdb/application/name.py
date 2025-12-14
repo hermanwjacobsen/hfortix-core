@@ -13,17 +13,35 @@ API Endpoints:
 
 Note: POST, PUT, and DELETE operations are not supported on this endpoint.
 """
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Name:
     """Application signature endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
-    def get(self, name=None, attr=None, datasource=False, with_meta=False,
-            skip=False, count=None, skip_to_datasource=None, acs=None,
-            search=None, scope=None, format=None, action=None, vdom=None, **kwargs):
+    def get(
+        self,
+        name: Optional[str] = None,
+        attr: Optional[str] = None,
+        datasource: Optional[bool] = False,
+        with_meta: Optional[bool] = False,
+        skip: Optional[bool] = False,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[str] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get application signature(s)
         
@@ -89,7 +107,7 @@ class Name:
         
         return self._client.get('cmdb', path, params=params if params else None, vdom=vdom)
     
-    def list(self, **kwargs):
+    def list(self, **kwargs: Any) -> Dict[str, Any]:
         """
         Get all application signatures (convenience method)
         

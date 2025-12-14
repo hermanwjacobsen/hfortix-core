@@ -10,17 +10,35 @@ API Endpoints:
     PUT    /api/v2/cmdb/application/list/{name} - Update application control list
     DELETE /api/v2/cmdb/application/list/{name} - Delete application control list
 """
+from typing import Optional, Dict, Any, Union, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class List:
     """Application control list endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
-    def get(self, name=None, attr=None, datasource=False, with_meta=False, 
-            skip=False, count=None, skip_to_datasource=None, acs=None, 
-            search=None, scope=None, format=None, action=None, vdom=None, **kwargs):
+    def get(
+        self,
+        name: Optional[str] = None,
+        attr: Optional[str] = None,
+        datasource: Optional[bool] = False,
+        with_meta: Optional[bool] = False,
+        skip: Optional[bool] = False,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[str] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get application control list(s)
         
@@ -87,7 +105,7 @@ class List:
         
         return self._client.get('cmdb', path, params=params if params else None, vdom=vdom)
     
-    def list(self, **kwargs):
+    def list(self, **kwargs: Any) -> Dict[str, Any]:
         """
         Get all application control lists (convenience method)
         
@@ -103,15 +121,29 @@ class List:
         """
         return self.get(**kwargs)
     
-    def create(self, name, comment=None, app_replacemsg=None, 
-               control_default_network_services=None, deep_app_inspection=None,
-               default_network_services=None, enforce_default_app_port=None,
-               extended_log=None, force_inclusion_ssl_di_sigs=None, 
-               options=None, other_application_action=None, 
-               other_application_log=None, p2p_black_list=None,
-               p2p_block_list=None, replacemsg_group=None,
-               unknown_application_action=None, unknown_application_log=None,
-               entries=None, vdom=None, **kwargs):
+    def create(
+        self,
+        name: str,
+        comment: Optional[str] = None,
+        app_replacemsg: Optional[str] = None,
+        control_default_network_services: Optional[str] = None,
+        deep_app_inspection: Optional[str] = None,
+        default_network_services: Optional[List[Dict[str, Any]]] = None,
+        enforce_default_app_port: Optional[str] = None,
+        extended_log: Optional[str] = None,
+        force_inclusion_ssl_di_sigs: Optional[str] = None,
+        options: Optional[List[str]] = None,
+        other_application_action: Optional[str] = None,
+        other_application_log: Optional[str] = None,
+        p2p_black_list: Optional[List[str]] = None,
+        p2p_block_list: Optional[List[str]] = None,
+        replacemsg_group: Optional[str] = None,
+        unknown_application_action: Optional[str] = None,
+        unknown_application_log: Optional[str] = None,
+        entries: Optional[List[Dict[str, Any]]] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Create application control list
         
@@ -221,15 +253,29 @@ class List:
         
         return self._client.post('cmdb', 'application/list', data, vdom=vdom)
     
-    def update(self, name, comment=None, app_replacemsg=None,
-               control_default_network_services=None, deep_app_inspection=None,
-               default_network_services=None, enforce_default_app_port=None,
-               extended_log=None, force_inclusion_ssl_di_sigs=None,
-               options=None, other_application_action=None,
-               other_application_log=None, p2p_black_list=None,
-               p2p_block_list=None, replacemsg_group=None,
-               unknown_application_action=None, unknown_application_log=None,
-               entries=None, vdom=None, **kwargs):
+    def update(
+        self,
+        name: str,
+        comment: Optional[str] = None,
+        app_replacemsg: Optional[str] = None,
+        control_default_network_services: Optional[str] = None,
+        deep_app_inspection: Optional[str] = None,
+        default_network_services: Optional[List[Dict[str, Any]]] = None,
+        enforce_default_app_port: Optional[str] = None,
+        extended_log: Optional[str] = None,
+        force_inclusion_ssl_di_sigs: Optional[str] = None,
+        options: Optional[List[str]] = None,
+        other_application_action: Optional[str] = None,
+        other_application_log: Optional[str] = None,
+        p2p_black_list: Optional[List[str]] = None,
+        p2p_block_list: Optional[List[str]] = None,
+        replacemsg_group: Optional[str] = None,
+        unknown_application_action: Optional[str] = None,
+        unknown_application_log: Optional[str] = None,
+        entries: Optional[List[Dict[str, Any]]] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Update application control list
         
@@ -324,7 +370,11 @@ class List:
         
         return self._client.put('cmdb', f'application/list/{name}', data, vdom=vdom)
     
-    def delete(self, name, vdom=None):
+    def delete(
+        self,
+        name: str,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         Delete application control list
         

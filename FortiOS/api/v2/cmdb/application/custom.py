@@ -10,12 +10,16 @@ API Endpoints:
     PUT    /api/v2/cmdb/application/custom/{tag} - Update a custom application signature
     DELETE /api/v2/cmdb/application/custom/{tag} - Delete a custom application signature
 """
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Custom:
     """Application custom signatures endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Custom endpoint.
         
@@ -24,22 +28,24 @@ class Custom:
         """
         self._client = client
     
-    def get(self,
-            tag=None,
-            # Query parameters
-            attr=None,
-            count=None,
-            skip_to_datasource=None,
-            acs=None,
-            search=None,
-            scope=None,
-            datasource=None,
-            with_meta=None,
-            skip=None,
-            format=None,
-            action=None,
-            vdom=None,
-            **kwargs):
+    def get(
+        self,
+        tag: Optional[str] = None,
+        # Query parameters
+        attr: Optional[str] = None,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[int] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Get custom application signature(s).
         
@@ -110,20 +116,22 @@ class Custom:
         
         return self._client.get('cmdb', path, params=params if params else None, vdom=vdom)
     
-    def list(self,
-             attr=None,
-             count=None,
-             skip_to_datasource=None,
-             acs=None,
-             search=None,
-             scope=None,
-             datasource=None,
-             with_meta=None,
-             skip=None,
-             format=None,
-             action=None,
-             vdom=None,
-             **kwargs):
+    def list(
+        self,
+        attr: Optional[str] = None,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[int] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         List all custom application signatures.
         
@@ -172,19 +180,21 @@ class Custom:
             **kwargs
         )
     
-    def create(self,
-               tag,
-               # Signature parameters
-               id=None,
-               comment=None,
-               signature=None,
-               category=None,
-               protocol=None,
-               technology=None,
-               behavior=None,
-               vendor=None,
-               vdom=None,
-               **kwargs):
+    def create(
+        self,
+        tag: str,
+        # Signature parameters
+        id: Optional[int] = None,
+        comment: Optional[str] = None,
+        signature: Optional[str] = None,
+        category: Optional[int] = None,
+        protocol: Optional[str] = None,
+        technology: Optional[str] = None,
+        behavior: Optional[str] = None,
+        vendor: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Create a new custom application signature.
         
@@ -248,24 +258,26 @@ class Custom:
         
         return self._client.post('cmdb', 'application/custom', data, vdom=vdom)
     
-    def update(self,
-               tag,
-               # Signature parameters
-               id=None,
-               comment=None,
-               signature=None,
-               category=None,
-               protocol=None,
-               technology=None,
-               behavior=None,
-               vendor=None,
-               # Action parameters
-               action=None,
-               before=None,
-               after=None,
-               scope=None,
-               vdom=None,
-               **kwargs):
+    def update(
+        self,
+        tag: str,
+        # Signature parameters
+        id: Optional[int] = None,
+        comment: Optional[str] = None,
+        signature: Optional[str] = None,
+        category: Optional[int] = None,
+        protocol: Optional[str] = None,
+        technology: Optional[str] = None,
+        behavior: Optional[str] = None,
+        vendor: Optional[str] = None,
+        # Action parameters
+        action: Optional[str] = None,
+        before: Optional[str] = None,
+        after: Optional[str] = None,
+        scope: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Update an existing custom application signature.
         
@@ -352,7 +364,12 @@ class Custom:
             vdom=vdom
         )
     
-    def delete(self, tag, scope=None, vdom=None):
+    def delete(
+        self,
+        tag: str,
+        scope: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         Delete a custom application signature.
         

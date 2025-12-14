@@ -2,6 +2,10 @@
 FortiOS Application API
 Application control configuration endpoints
 """
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Application:
@@ -10,7 +14,7 @@ class Application:
     Provides access to application control configuration endpoints
     """
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Application helper
         
