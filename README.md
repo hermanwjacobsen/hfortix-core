@@ -22,15 +22,15 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ### Option 1: Complete Package (All Modules)
 ```bash
-git clone https://github.com/your-org/fortinet-sdk.git
-cd fortinet-sdk
+git clone https://github.com/hermanwjacobsen/hfortix.git
+cd hfortix
 pip install -e .
 ```
 
 ### Option 2: FortiOS Only (Standalone)
 ```bash
-git clone https://github.com/your-org/fortinet-sdk.git
-cd fortinet-sdk/FortiOS
+git clone https://github.com/hermanwjacobsen/hfortix.git
+cd hfortix/FortiOS
 # Use FortiOS as standalone module
 ```
 

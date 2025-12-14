@@ -7,8 +7,8 @@ This guide covers how to set up your development environment and contribute to t
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/hermanwjacobsen/fortinet-sdk.git
-cd fortinet-sdk
+git clone https://github.com/hermanwjacobsen/hfortix.git
+cd hfortix
 ```
 
 ### 2. Set Up Python Environment
@@ -363,18 +363,18 @@ pip install build twine
 python3 -m build
 
 # Outputs to dist/:
-# - fortinet-sdk-0.1.0.tar.gz
-# - fortinet_sdk-0.1.0-py3-none-any.whl
+# - hfortix-0.1.0.tar.gz
+# - hfortix-0.1.0-py3-none-any.whl
 ```
 
 ### Test Installation
 
 ```bash
 # Install from local build
-pip install dist/fortinet_sdk-0.1.0-py3-none-any.whl
+pip install dist/hfortix-0.1.0-py3-none-any.whl
 
 # Test import
-python3 -c "from fortinet import FortiOS; print('Success!')"
+python3 -c "from FortiOS import FortiOS; print('Success!')"
 ```
 
 ### Upload to PyPI (when ready)
@@ -451,8 +451,8 @@ refactor: extract common CRUD methods to base class
 
 ## 🆘 Getting Help
 
-- **Issues:** [GitHub Issues](https://github.com/hermanwjacobsen/fortinet-sdk/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/hermanwjacobsen/fortinet-sdk/discussions)
+- **Issues:** [GitHub Issues](https://github.com/hermanwjacobsen/hfortix/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/hermanwjacobsen/hfortix/discussions)
 - **Email:** herman@wjacobsen.fo
 
 ---
