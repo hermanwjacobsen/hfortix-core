@@ -1,8 +1,16 @@
+from typing import Optional, Dict, Any, Union
 import requests
 
 
 class FortiOS:
-    def __init__(self, host=None, token=None, verify=True, vdom=None, port=None):
+    def __init__(
+        self,
+        host: Optional[str] = None,
+        token: Optional[str] = None,
+        verify: bool = True,
+        vdom: Optional[str] = None,
+        port: Optional[int] = None
+    ) -> None:
         """
         Initialize FortiOS API client
         
@@ -66,7 +74,7 @@ class FortiOS:
         self.log = Log(self)
         self.monitor = Monitor(self)
     
-    def _handle_response_errors(self, response):
+    def _handle_response_errors(self, response: requests.Response) -> None:
         """
         Handle HTTP response errors consistently
         
@@ -88,7 +96,15 @@ class FortiOS:
                 # If response is not JSON, raise standard HTTP error
                 response.raise_for_status()
     
-    def request(self, method, api_type, path, data=None, params=None, vdom=None):
+    def request(
+        self,
+        method: str,
+        api_type: str,
+        path: str,
+        data: Optional[Dict[str, Any]] = None,
+        params: Optional[Dict[str, Any]] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         Generic request method for all API calls
         
@@ -129,7 +145,13 @@ class FortiOS:
         
         return res.json()
     
-    def get(self, api_type, path, params=None, vdom=None):
+    def get(
+        self,
+        api_type: str,
+        path: str,
+        params: Optional[Dict[str, Any]] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         GET request
         
@@ -157,7 +179,13 @@ class FortiOS:
         """
         return self.request('GET', api_type, path, params=params, vdom=vdom)
     
-    def get_binary(self, api_type, path, params=None, vdom=None):
+    def get_binary(
+        self,
+        api_type: str,
+        path: str,
+        params: Optional[Dict[str, Any]] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> bytes:
         """
         GET request returning binary data (for file downloads)
         
@@ -196,7 +224,14 @@ class FortiOS:
         # Return raw binary content
         return res.content
     
-    def post(self, api_type, path, data, params=None, vdom=None):
+    def post(
+        self,
+        api_type: str,
+        path: str,
+        data: Dict[str, Any],
+        params: Optional[Dict[str, Any]] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         POST request - Create new object
         
@@ -216,7 +251,14 @@ class FortiOS:
         """
         return self.request('POST', api_type, path, data=data, params=params, vdom=vdom)
     
-    def put(self, api_type, path, data, params=None, vdom=None):
+    def put(
+        self,
+        api_type: str,
+        path: str,
+        data: Dict[str, Any],
+        params: Optional[Dict[str, Any]] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         PUT request - Update existing object
         
@@ -236,7 +278,13 @@ class FortiOS:
         """
         return self.request('PUT', api_type, path, data=data, params=params, vdom=vdom)
     
-    def delete(self, api_type, path, params=None, vdom=None):
+    def delete(
+        self,
+        api_type: str,
+        path: str,
+        params: Optional[Dict[str, Any]] = None,
+        vdom: Optional[Union[str, bool]] = None
+    ) -> Dict[str, Any]:
         """
         DELETE request - Delete object
         
@@ -252,7 +300,7 @@ class FortiOS:
         """
         return self.request('DELETE', api_type, path, params=params, vdom=vdom)
     
-    def close(self):
+    def close(self) -> None:
         """
         Close the HTTP session and release resources
         
@@ -262,11 +310,11 @@ class FortiOS:
         if self.session:
             self.session.close()
     
-    def __enter__(self):
+    def __enter__(self) -> 'FortiOS':
         """Context manager entry"""
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> bool:
         """Context manager exit - automatically closes session"""
         self.close()
         return False
