@@ -10,6 +10,8 @@ API Endpoints:
     PUT    /casb/saas-application/{name} - Update SaaS application
     DELETE /casb/saas-application/{name} - Delete SaaS application
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

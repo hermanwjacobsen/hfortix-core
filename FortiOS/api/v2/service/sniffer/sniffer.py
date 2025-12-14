@@ -11,6 +11,8 @@ API Endpoints:
     POST   /api/v2/service/sniffer/delete/   - Delete a packet capture
     GET    /api/v2/service/sniffer/meta/     - Get system limitations and meta info
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

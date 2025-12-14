@@ -2,6 +2,8 @@
 FortiOS Service API
 Service endpoints for operations and diagnostics
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:

@@ -2,6 +2,8 @@
 FortiOS Log API
 Log retrieval endpoints for various log sources
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:

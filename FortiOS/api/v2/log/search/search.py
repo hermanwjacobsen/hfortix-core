@@ -3,6 +3,8 @@ FortiOS Log Search API
 
 This module provides methods to manage log search sessions.
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:

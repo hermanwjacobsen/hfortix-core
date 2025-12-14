@@ -3,6 +3,8 @@ FortiOS FortiCloud Log API
 
 This module provides methods to retrieve logs from FortiCloud storage.
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

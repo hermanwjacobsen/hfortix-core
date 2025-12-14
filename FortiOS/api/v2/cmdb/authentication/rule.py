@@ -10,6 +10,8 @@ API Endpoints:
     PUT    /api/v2/cmdb/authentication/rule/{name} - Update authentication rule
     DELETE /api/v2/cmdb/authentication/rule/{name} - Delete authentication rule
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

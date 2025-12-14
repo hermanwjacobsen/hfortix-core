@@ -13,6 +13,8 @@ Note: This is a READ-ONLY endpoint. Local certificates are typically:
     - ACME/Let's Encrypt certificates
     - SCEP certificates
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 from FortiOS.exceptions import APIError, ResourceNotFoundError

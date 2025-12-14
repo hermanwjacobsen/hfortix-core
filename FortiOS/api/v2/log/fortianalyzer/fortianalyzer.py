@@ -14,6 +14,8 @@ API Endpoints:
     GET /fortianalyzer/traffic/{subtype}                 - Get formatted traffic logs (JSON)
     GET /fortianalyzer/event/{subtype}                   - Get formatted event logs (JSON)
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

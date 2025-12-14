@@ -6,6 +6,8 @@ API Endpoints:
     GET  /alertemail/setting - Get alert email settings
     PUT  /alertemail/setting - Update alert email settings
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

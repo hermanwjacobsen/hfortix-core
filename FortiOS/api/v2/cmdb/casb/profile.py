@@ -17,6 +17,8 @@ API Endpoints:
     PUT    /casb/profile/{name} - Update CASB profile
     DELETE /casb/profile/{name} - Delete CASB profile
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

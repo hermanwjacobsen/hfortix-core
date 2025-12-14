@@ -9,6 +9,8 @@ API Endpoints:
     PUT    /antivirus/profile/{name} - Update antivirus profile
     DELETE /antivirus/profile/{name} - Delete antivirus profile
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

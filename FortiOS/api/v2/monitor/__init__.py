@@ -5,6 +5,8 @@ Real-time monitoring and status endpoints
 Note: Monitor API endpoints are not yet implemented.
 This is a placeholder for future development.
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:

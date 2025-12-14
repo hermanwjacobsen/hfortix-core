@@ -7,6 +7,8 @@ API Endpoints:
     GET    /automation/setting       - Get automation settings
     PUT    /automation/setting       - Update automation settings
 """
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:
