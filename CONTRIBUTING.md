@@ -267,4 +267,9 @@ Your contributions help make this project better for everyone. Thank you for tak
 
 ---
 
-**Questions?** Feel free to open an issue for discussion.
+## 📬 Contact
+
+**Questions?** Feel free to reach out:
+- **Issues:** [GitHub Issues](https://github.com/hermanwjacobsen/hfortix/issues)
+- **Email:** herman@wjacobsen.fo
+- **LinkedIn:** [Herman W. Jacobsen](https://www.linkedin.com/in/hermanwjacobsen/)

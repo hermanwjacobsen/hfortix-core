@@ -275,4 +275,13 @@ fgt = FortiOS(
 
 ---
 
+## 👤 Author
+
+**Herman W. Jacobsen**
+- Email: herman@wjacobsen.fo
+- LinkedIn: [linkedin.com/in/hermanwjacobsen](https://www.linkedin.com/in/hermanwjacobsen/)
+- GitHub: [@hermanwjacobsen](https://github.com/hermanwjacobsen)
+
+---
+
 **Built with ❤️ for the Fortinet community**

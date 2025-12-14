@@ -3,8 +3,8 @@
 __version__ = "0.1.0"
 __author__ = "Herman W. Jacobsen"
 __license__ = "MIT"
-__email__ = ""
-__url__ = "https://github.com/yourusername/hfortix"
+__email__ = "herman@wjacobsen.fo"
+__url__ = "https://github.com/hermanwjacobsen/hfortix"
 
 # Version info tuple for programmatic access
 VERSION = tuple(map(int, __version__.split('.')))

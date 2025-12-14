@@ -454,6 +454,7 @@ refactor: extract common CRUD methods to base class
 - **Issues:** [GitHub Issues](https://github.com/hermanwjacobsen/hfortix/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/hermanwjacobsen/hfortix/discussions)
 - **Email:** herman@wjacobsen.fo
+- **LinkedIn:** [Herman W. Jacobsen](https://www.linkedin.com/in/hermanwjacobsen/)
 
 ---
 
