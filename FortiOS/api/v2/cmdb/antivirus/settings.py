@@ -6,22 +6,28 @@ API Endpoints:
     GET  /antivirus/settings - Get antivirus settings
     PUT  /antivirus/settings - Update antivirus settings
 """
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Settings:
     """Antivirus Settings endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
-    def get(self, 
-            vdom=None,
-            # Query parameters
-            datasource=None,
-            with_meta=None,
-            skip=None,
-            action=None,
-            **kwargs):
+    def get(
+        self,
+        vdom: Optional[Union[str, bool]] = None,
+        # Query parameters
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        action: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         GET /antivirus/settings
         Get antivirus settings
@@ -67,16 +73,18 @@ class Settings:
         
         return self._client.get('cmdb', 'antivirus/settings', params=params if params else None, vdom=vdom)
     
-    def update(self,
-               default_db=None,
-               grayware=None,
-               override_timeout=None,
-               cache_infected_result=None,
-               cache_clean_result=None,
-               machine_learning_detection=None,
-               use_extreme_db=None,
-               vdom=None,
-               **kwargs):
+    def update(
+        self,
+        default_db: Optional[str] = None,
+        grayware: Optional[str] = None,
+        override_timeout: Optional[int] = None,
+        cache_infected_result: Optional[str] = None,
+        cache_clean_result: Optional[str] = None,
+        machine_learning_detection: Optional[str] = None,
+        use_extreme_db: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         PUT /antivirus/settings
         Update antivirus settings

@@ -256,37 +256,39 @@ class Profile:
         
         return self._client.post('cmdb', 'antivirus/profile', data, vdom=vdom)
     
-    def update(self,
-               name,
-               comment=None,
-               replacemsg_group=None,
-               scan_mode=None,
-               mobile_malware_db=None,
-               analytics_max_upload=None,
-               analytics_ignore_filetype=None,
-               analytics_accept_filetype=None,
-               analytics_wl_filetype=None,
-               analytics_bl_filetype=None,
-               analytics_db=None,
-               feature_set=None,
-               fortindr_error_action=None,
-               fortindr_timeout_action=None,
-               fortisandbox_mode=None,
-               fortisandbox_max_upload=None,
-               fortisandbox_error_action=None,
-               fortisandbox_timeout_action=None,
-               outbreak_prevention_mode=None,
-               outbreak_prevention_archive_scan=None,
-               external_blocklist_enable_all=None,
-               external_blocklist_archive_scan=None,
-               ems_threat_feed=None,
-               vdom=None,
-               # Query parameters for actions
-               action=None,
-               before=None,
-               after=None,
-               scope=None,
-               **kwargs):
+    def update(
+        self,
+        name: str,
+        comment: Optional[str] = None,
+        replacemsg_group: Optional[str] = None,
+        scan_mode: Optional[str] = None,
+        mobile_malware_db: Optional[str] = None,
+        analytics_max_upload: Optional[int] = None,
+        analytics_ignore_filetype: Optional[int] = None,
+        analytics_accept_filetype: Optional[int] = None,
+        analytics_wl_filetype: Optional[int] = None,
+        analytics_bl_filetype: Optional[int] = None,
+        analytics_db: Optional[str] = None,
+        feature_set: Optional[str] = None,
+        fortindr_error_action: Optional[str] = None,
+        fortindr_timeout_action: Optional[str] = None,
+        fortisandbox_mode: Optional[str] = None,
+        fortisandbox_max_upload: Optional[int] = None,
+        fortisandbox_error_action: Optional[str] = None,
+        fortisandbox_timeout_action: Optional[str] = None,
+        outbreak_prevention_mode: Optional[str] = None,
+        outbreak_prevention_archive_scan: Optional[str] = None,
+        external_blocklist_enable_all: Optional[str] = None,
+        external_blocklist_archive_scan: Optional[str] = None,
+        ems_threat_feed: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        # Query parameters for actions
+        action: Optional[str] = None,
+        before: Optional[str] = None,
+        after: Optional[str] = None,
+        scope: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         PUT /antivirus/profile/{name}
         Update antivirus profile
@@ -433,13 +435,15 @@ class Profile:
         
         return self._client.put('cmdb', f'antivirus/profile/{name}', data, params=params if params else None, vdom=vdom)
     
-    def delete(self,
-               name,
-               vdom=None,
-               # Action parameters
-               mkey=None,
-               scope=None,
-               **kwargs):
+    def delete(
+        self,
+        name: str,
+        vdom: Optional[Union[str, bool]] = None,
+        # Action parameters
+        mkey: Optional[str] = None,
+        scope: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         DELETE /antivirus/profile/{name}
         Delete antivirus profile
@@ -485,7 +489,11 @@ class Profile:
         
         return self._client.delete('cmdb', f'antivirus/profile/{name}', params=params if params else None, vdom=vdom)
     
-    def list(self, vdom=None, **params):
+    def list(
+        self,
+        vdom: Optional[Union[str, bool]] = None,
+        **params: Any
+    ) -> Dict[str, Any]:
         """
         Alias for get() without name parameter - more intuitive for getting all profiles
         

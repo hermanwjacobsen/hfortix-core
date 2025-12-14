@@ -2,6 +2,10 @@
 FortiOS Antivirus API
 Antivirus configuration endpoints
 """
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Antivirus:
@@ -10,7 +14,7 @@ class Antivirus:
     Provides access to antivirus configuration endpoints
     """
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         """
         Initialize Antivirus helper
         

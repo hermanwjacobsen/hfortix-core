@@ -9,30 +9,36 @@ API Endpoints:
     PUT    /antivirus/exempt-list/{name} - Update exempt list entry
     DELETE /antivirus/exempt-list/{name} - Delete exempt list entry
 """
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class ExemptList:
     """Antivirus Exempt List endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
-    def get(self, 
-            name=None, 
-            vdom=None,
-            # Query parameters
-            attr=None,
-            count=None,
-            skip_to_datasource=None,
-            acs=None,
-            search=None,
-            scope=None,
-            datasource=None,
-            with_meta=None,
-            skip=None,
-            format=None,
-            action=None,
-            **kwargs):
+    def get(
+        self,
+        name: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        # Query parameters
+        attr: Optional[str] = None,
+        count: Optional[int] = None,
+        skip_to_datasource: Optional[int] = None,
+        acs: Optional[bool] = None,
+        search: Optional[str] = None,
+        scope: Optional[str] = None,
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        format: Optional[str] = None,
+        action: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         GET /antivirus/exempt-list or /antivirus/exempt-list/{name}
         Get exempt list entries
@@ -110,14 +116,16 @@ class ExemptList:
         path = f'antivirus/exempt-list/{name}' if name else 'antivirus/exempt-list'
         return self._client.get('cmdb', path, params=params if params else None, vdom=vdom)
     
-    def create(self, 
-               name,
-               comment=None,
-               hash_type=None,
-               hash=None,
-               status=None,
-               vdom=None,
-               **kwargs):
+    def create(
+        self,
+        name: str,
+        comment: Optional[str] = None,
+        hash_type: Optional[str] = None,
+        hash: Optional[str] = None,
+        status: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         POST /antivirus/exempt-list
         Create new exempt list entry
@@ -181,19 +189,21 @@ class ExemptList:
         
         return self._client.post('cmdb', 'antivirus/exempt-list', data, vdom=vdom)
     
-    def update(self,
-               name,
-               comment=None,
-               hash_type=None,
-               hash=None,
-               status=None,
-               vdom=None,
-               # Query parameters for actions
-               action=None,
-               before=None,
-               after=None,
-               scope=None,
-               **kwargs):
+    def update(
+        self,
+        name: str,
+        comment: Optional[str] = None,
+        hash_type: Optional[str] = None,
+        hash: Optional[str] = None,
+        status: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        # Query parameters for actions
+        action: Optional[str] = None,
+        before: Optional[str] = None,
+        after: Optional[str] = None,
+        scope: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         PUT /antivirus/exempt-list/{name}
         Update exempt list entry
@@ -285,13 +295,15 @@ class ExemptList:
         
         return self._client.put('cmdb', f'antivirus/exempt-list/{name}', data, params=params if params else None, vdom=vdom)
     
-    def delete(self,
-               name,
-               vdom=None,
-               # Action parameters
-               mkey=None,
-               scope=None,
-               **kwargs):
+    def delete(
+        self,
+        name: str,
+        vdom: Optional[Union[str, bool]] = None,
+        # Action parameters
+        mkey: Optional[str] = None,
+        scope: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         DELETE /antivirus/exempt-list/{name}
         Delete exempt list entry
@@ -344,7 +356,11 @@ class ExemptList:
         
         return self._client.delete('cmdb', f'antivirus/exempt-list/{name}', params=params if params else None, vdom=vdom)
     
-    def list(self, vdom=None, **params):
+    def list(
+        self,
+        vdom: Optional[Union[str, bool]] = None,
+        **params: Any
+    ) -> Dict[str, Any]:
         """
         Alias for get() without name parameter - more intuitive for getting all entries
         

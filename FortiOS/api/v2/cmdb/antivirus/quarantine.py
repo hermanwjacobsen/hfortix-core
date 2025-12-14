@@ -6,22 +6,28 @@ API Endpoints:
     GET  /antivirus/quarantine - Get quarantine settings
     PUT  /antivirus/quarantine - Update quarantine settings
 """
+from typing import Optional, Dict, Any, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ....client import FortiOS
 
 
 class Quarantine:
     """Antivirus Quarantine endpoint"""
     
-    def __init__(self, client):
+    def __init__(self, client: 'FortiOS') -> None:
         self._client = client
     
-    def get(self, 
-            vdom=None,
-            # Query parameters
-            datasource=None,
-            with_meta=None,
-            skip=None,
-            action=None,
-            **kwargs):
+    def get(
+        self,
+        vdom: Optional[Union[str, bool]] = None,
+        # Query parameters
+        datasource: Optional[bool] = None,
+        with_meta: Optional[bool] = None,
+        skip: Optional[bool] = None,
+        action: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         GET /antivirus/quarantine
         Get quarantine settings
@@ -67,22 +73,24 @@ class Quarantine:
         
         return self._client.get('cmdb', 'antivirus/quarantine', params=params if params else None, vdom=vdom)
     
-    def update(self,
-               agelimit=None,
-               maxfilesize=None,
-               quarantine_quota=None,
-               drop_infected=None,
-               store_infected=None,
-               drop_blocked=None,
-               store_blocked=None,
-               drop_heuristic=None,
-               store_heuristic=None,
-               drop_machine_learning=None,
-               store_machine_learning=None,
-               lowspace=None,
-               destination=None,
-               vdom=None,
-               **kwargs):
+    def update(
+        self,
+        agelimit: Optional[int] = None,
+        maxfilesize: Optional[int] = None,
+        quarantine_quota: Optional[int] = None,
+        drop_infected: Optional[str] = None,
+        store_infected: Optional[str] = None,
+        drop_blocked: Optional[str] = None,
+        store_blocked: Optional[str] = None,
+        drop_heuristic: Optional[str] = None,
+        store_heuristic: Optional[str] = None,
+        drop_machine_learning: Optional[str] = None,
+        store_machine_learning: Optional[str] = None,
+        lowspace: Optional[str] = None,
+        destination: Optional[str] = None,
+        vdom: Optional[Union[str, bool]] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         PUT /antivirus/quarantine
         Update quarantine settings
