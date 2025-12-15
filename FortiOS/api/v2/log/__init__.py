@@ -40,6 +40,10 @@ class Log:
         self.forticloud = FortiCloud(client)
         self.search = Search(client)
 
+    def __dir__(self):
+        """Control autocomplete to show only public attributes"""
+        return ['disk', 'fortianalyzer', 'memory', 'forticloud', 'search']
+
     def _get(
         self,
         endpoint: str,

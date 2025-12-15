@@ -80,6 +80,15 @@ class CMDB:
         self.file_filter: FileFilter = FileFilter(client)
         self.firewall: Firewall = Firewall(client)
 
+    def __dir__(self):
+        """Control autocomplete to show only public attributes"""
+        return [
+            'alertemail', 'antivirus', 'application', 'authentication',
+            'automation', 'casb', 'certificate', 'diameter_filter',
+            'dlp', 'dnsfilter', 'emailfilter', 'endpoint_control',
+            'ethernet_oam', 'extension_controller', 'file_filter', 'firewall'
+        ]
+
     def _get(
         self,
         path: str,

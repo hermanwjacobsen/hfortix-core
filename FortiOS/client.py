@@ -136,6 +136,10 @@ class FortiOS:
         self.log: Log = Log(self)
         self.monitor: Monitor = Monitor(self)
 
+    def __dir__(self):
+        """Control autocomplete to show only public attributes"""
+        return ['host', 'port', 'vdom', 'cmdb', 'service', 'log', 'monitor', 'close']
+
     def _handle_response_errors(self, response: requests.Response) -> None:
         """
         Handle HTTP response errors consistently

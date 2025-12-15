@@ -54,6 +54,10 @@ class Monitor:
         """
         self._client = client
 
+    def __dir__(self):
+        """Control autocomplete to show only public attributes"""
+        return []  # No public attributes yet, monitor endpoints not implemented
+
     def _get(
         self,
         path: str,

@@ -36,6 +36,10 @@ class Service:
         self.security_rating = SecurityRating(client)
         self.system = System(client)
 
+    def __dir__(self):
+        """Control autocomplete to show only public attributes"""
+        return ['sniffer', 'security_rating', 'system']
+
     def _get(
         self,
         endpoint: str,
