@@ -19,6 +19,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Async support
 - CLI tool
 
+## [0.3.6] - 2025-12-15
+
+### Improved - IDE Autocomplete Experience 🎯
+
+**Note:** This is an alpha release with internal refactoring for better developer experience.
+
+#### Hidden Internal Methods for Cleaner Autocomplete
+- **Generic CRUD methods renamed** - Methods moved to underscore prefix:
+  - `cmdb.get()` → `cmdb._get()` (escape hatch for unmapped endpoints)
+  - `cmdb.post()` → `cmdb._post()`
+  - `cmdb.put()` → `cmdb._put()`
+  - `cmdb.delete()` → `cmdb._delete()`
+  - Similar changes for log, monitor, service modules
+- **Benefit:** IDE now shows only endpoint-specific methods (create, update, list, etc.)
+- **Migration:** If you use generic methods directly, add underscore prefix
+
+#### Hidden Internal Client Attributes
+- **Client internals renamed** - FortiOS client implementation details:
+  - `fgt.session` → `fgt._session`
+  - `fgt.url` → `fgt._url`
+  - `fgt.verify` → `fgt._verify`
+- **Public attributes unchanged:** `host`, `port`, `vdom`, `cmdb`, `monitor`, `log`, `service`
+- **Benefit:** Cleaner autocomplete showing only user-facing API
+
+#### Hidden Lazy-Loaded Property Cache
+- **Firewall lazy loading internals** - Changed cache naming to double underscore
+- **Affects:** 11 firewall endpoints (dos_policy, address, addrgrp, access_proxy, etc.)
+- **Benefit:** IDE no longer shows internal cached attributes
+
+### Added
+- **`__all__` exports** - Explicit control over public API in all modules
+- Better documentation and import suggestions
+
+### Technical Details
+- 79+ endpoint files updated to use underscore methods internally
+- Follows Python naming conventions (single _ = internal, double __ = private)
+- All endpoint-specific methods work as before (no breaking changes)
+- All tests passing (8/8 for address, access_proxy)
+
 ## [0.3.5] - 2025-12-15
 
 ### Improved - IDE Autocomplete & Type Hints ✨
