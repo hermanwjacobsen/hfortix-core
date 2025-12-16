@@ -3,7 +3,7 @@
 This document tracks the implementation status of FortiOS API endpoints in the Fortinet Python SDK.
 
 **Last Updated:** 2025-12-16  
-**SDK Version:** 0.3.8  
+**SDK Version:** 0.3.9  
 **FortiOS Version:** 7.6.x
 
 ## 🎯 Key Features

@@ -15,7 +15,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Service API**: 3 of 3 categories (100% coverage) - 21 methods 🔷 Beta
 - **Monitor API**: Not yet implemented (0 of 28 categories) ⏸️
 
-**Latest Features (Unreleased):**
+**Latest Features (v0.3.9):**
 - ✨ **raw_json Parameter**: All 45+ API methods now support `raw_json=True` for full response access
   - Default: Returns just the results data
   - With `raw_json=True`: Returns complete response with status codes, metadata

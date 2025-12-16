@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+- Complete CMDB endpoint coverage (15 of 40 categories implemented)
+- Monitor endpoints implementation (0 of 28 categories)
+- FortiManager module
+- FortiAnalyzer module
+- Async support
+- CLI tool
+
+## [0.3.9] - 2025-12-16
+
 ### Added
 - **raw_json Parameter** (100% Coverage) - All API methods now support raw_json parameter:
   - Default behavior: Returns just the results data
@@ -42,14 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed 159 test files to properly check API responses
   - Updated payload structures in multiple test files
   - Fixed syntax errors in certificate and firewall tests
-
-### Planned
-- Complete CMDB endpoint coverage (15 of 40 categories implemented)
-- Monitor endpoints implementation (0 of 28 categories)
-- FortiManager module
-- FortiAnalyzer module
-- Async support
-- CLI tool
 
 ## [0.3.8] - 2025-12-16
 

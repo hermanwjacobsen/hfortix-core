@@ -4,7 +4,7 @@ This guide covers how to set up your development environment and contribute to t
 
 ## 📊 Project Status (December 16, 2025)
 
-- **Version**: 0.3.8+
+- **Version**: 0.3.9
 - **Status**: Beta (unit tests in progress)
 - **CMDB Endpoints**: 15 of 40 categories (38% coverage) - 74+ endpoints
 - **Log API**: 5 of 5 categories (100% coverage) - 42 methods
