@@ -4,7 +4,7 @@ This guide covers how to set up your development environment and contribute to t
 
 ## 📊 Project Status (December 16, 2025)
 
-- **Version**: 0.3.7
+- **Version**: 0.3.8
 - **CMDB Endpoints**: 51 endpoints across 14 categories
 - **Dual-Pattern Support**: 43 methods (100% of create/update operations)
 - **Test Coverage**: Comprehensive tests for all endpoints

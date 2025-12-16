@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+- Complete CMDB endpoint coverage (74/150+ endpoints complete)
+- Monitor endpoints implementation
+- FortiManager module
+- FortiAnalyzer module
+- Async support
+- CLI tool
+
+## [0.3.8] - 2025-12-16
+
 ### Added
 - **Dual-Pattern Interface** (100% Complete) - All 43 create/update methods now support:
   - Dictionary pattern: `create(data_dict={'name': 'x', 'param': 'y'})`
@@ -21,17 +31,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Module creation prompts (.github/prompts/)
   - Project documentation (X/docs/project/)
 
-### In Progress
-- Firewall category expansion (83 remaining endpoints)
-- Monitor API implementation
-
-### Planned
-- Complete CMDB endpoint coverage (74/150+ endpoints complete)
-- Monitor endpoints implementation
-- FortiManager module
-- FortiAnalyzer module
-- Async support
-- CLI tool
+### Fixed
+- `extension_controller`: Fixed fortigate_profile registration
+- `firewall.ssl_setting`: Added missing typing imports
+- `firewall.vendor_mac_summary`: Added get() method for singleton endpoint
+- Test fixes for alertemail and proxy_addrgrp
 
 ## [0.3.7] - 2025-12-16
 

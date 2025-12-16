@@ -20,7 +20,7 @@ Exceptions:
 """
 
 # Version information
-__version__ = "0.3.7"
+__version__ = "0.3.8"
 __author__ = "Herman W. Jacobsen"
 __license__ = "MIT"
 __email__ = "herman@wjacobsen.fo"

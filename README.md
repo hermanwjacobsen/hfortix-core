@@ -383,7 +383,7 @@ Each module includes comprehensive tests:
 
 ## 📝 Version
 
-Current version: **0.3.7**
+Current version: **0.3.8**
 
 ```python
 from hfortix import get_version
