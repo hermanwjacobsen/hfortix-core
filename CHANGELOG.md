@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+- Complete CMDB endpoint coverage (15 of 40 categories implemented)
+- Monitor endpoints implementation (0 of 28 categories)
+- FortiManager module
+- FortiAnalyzer module
+- Async support
+- CLI tool
+
+## [0.3.10] - 2025-12-16
+
 ### Added
 - **Configurable Timeouts** - HTTP timeout values are now customizable:
   - `connect_timeout`: Time to wait for connection establishment (default: 10.0 seconds)
@@ -27,14 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Applies to all API operations: get, create, update, delete
   - Implemented as reusable helper function to avoid code duplication
   - Covers all path variables: `name`, `mkey`, `policyid`, `seq_num`, `member`
-
-### Planned
-- Complete CMDB endpoint coverage (15 of 40 categories implemented)
-- Monitor endpoints implementation (0 of 28 categories)
-- FortiManager module
-- FortiAnalyzer module
-- Async support
-- CLI tool
 
 ## [0.3.9] - 2025-12-16
 
