@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Async support
 - CLI tool
 
+## [0.3.7] - 2025-12-16
+
+### Improved
+- Packaging/layout cleanup to align with the canonical `hfortix/` package structure.
+- Reduced tooling friction by keeping script-style content under `X/` out of pytest discovery.
+
+### Added
+- Additional FortiOS v2 endpoint modules (log/service/cmdb expansions).
+
 ## [0.3.6] - 2025-12-15
 
 ### Improved - IDE Autocomplete Experience 🎯

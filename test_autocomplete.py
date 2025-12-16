@@ -9,7 +9,12 @@ Open this file in VS Code and test:
 4. Type 'fgt.api.cmdb.firewall.' - should see 'address', 'policy', etc.
 """
 
-from FortiOS import FortiOS
+# This is a developer demo script, not a pytest test.
+# Pytest collects files named test_*.py by default, which would execute this
+# module at import time during collection.
+__test__ = False
+
+from hfortix import FortiOS
 
 # Initialize client
 fgt = FortiOS("192.0.2.10", token="test_token", verify=False)
@@ -30,7 +35,9 @@ result3 = fgt.api.cmdb.firewall  # <- cursor after 'cmdb.' should show modules
 result4 = fgt.api.cmdb.firewall.address  # <- cursor after 'firewall.' should show endpoints
 
 # 5. Methods - should show list, get, create, update, delete
-addresses = fgt.api.cmdb.firewall.address.list()  # <- cursor after 'address.' should show methods
+# Important: don't call .list() here, otherwise importing this file triggers a
+# real network request during pytest collection.
+addresses = fgt.api.cmdb.firewall.address  # <- cursor after 'address.' should show methods
 
 print("✅ If autocomplete worked for all lines above, everything is configured correctly!")
 print("❌ If not, try:")

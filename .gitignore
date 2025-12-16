@@ -24,7 +24,7 @@ wheels/
 venv/
 env/
 ENV/
-.venv
+.venv/
 
 # IDEs
 .vscode/
@@ -62,3 +62,5 @@ X/
 *secret*
 *password*
 credentials.json
+
+# NOTE: Do NOT ignore .github/ (workflows, templates, etc.)

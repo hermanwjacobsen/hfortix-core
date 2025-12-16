@@ -18,7 +18,7 @@ with open('requirements.txt') as f:
 
 setup(
     name="hfortix",
-    version="0.3.6",
+    version="0.3.7",
     author="Herman W. Jacobsen",
     author_email="herman@wjacobsen.fo",
     description="HFortix - Python SDK for Fortinet products (FortiOS, FortiManager, FortiAnalyzer)",
@@ -26,9 +26,10 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/hermanwjacobsen/hfortix",
     packages=find_packages(exclude=['X', 'X.*', 'Tests', 'Tests.*']),
-    py_modules=['hfortix', 'exceptions', 'exceptions_forti'],  # Include root-level modules
+    # The project is packaged as the canonical `hfortix` namespace package.
+    # No legacy top-level modules are shipped.
     package_data={
-        'FortiOS': ['py.typed'],  # Include type marker for PEP 561
+        'hfortix': ['py.typed'],
     },
     classifiers=[
         "Development Status :: 3 - Alpha",

@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional, Union
 
-from FortiOS.exceptions import APIError, ResourceNotFoundError
+from .....exceptions import APIError, ResourceNotFoundError
 
 if TYPE_CHECKING:
     from ....http_client import HTTPClient

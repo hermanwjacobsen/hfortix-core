@@ -71,7 +71,7 @@ class APIError(FortinetError):
         if self.error_code:
             # Try to get FortiOS error description if available
             try:
-                from exceptions_forti import FORTIOS_ERROR_CODES
+                from .exceptions_forti import FORTIOS_ERROR_CODES
                 error_desc = FORTIOS_ERROR_CODES.get(self.error_code, "Unknown error")
                 parts.append(f"Error {self.error_code}: {error_desc}")
             except ImportError:

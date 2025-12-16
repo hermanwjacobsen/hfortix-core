@@ -28,7 +28,7 @@ class Antivirus:
         # Initialize endpoint classes
         # Note: exempt-list.py has a dash, so we import it differently
         import importlib
-        exempt_list_module = importlib.import_module('.exempt-list', package='FortiOS.api.v2.cmdb.antivirus')
+        exempt_list_module = importlib.import_module('.exempt-list', package=__package__)
         ExemptList = exempt_list_module.ExemptList
         self.exempt_list = ExemptList(client)
 

@@ -29,7 +29,7 @@ class FortiOS:
         api (API): API namespace containing cmdb, monitor, log, service
     
     Example:
-        >>> from fortinet import FortiOS
+    >>> from hfortix import FortiOS
         >>> fgt = FortiOS("fortigate.example.com", token="your_token_here")
         >>> 
         >>> # List firewall addresses

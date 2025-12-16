@@ -3,7 +3,7 @@ FortiOS-Specific Exceptions
 FortiOS error codes and product-specific exception handling
 """
 
-from exceptions import (
+from .exceptions import (
     APIError, 
     ResourceNotFoundError, 
     BadRequestError,

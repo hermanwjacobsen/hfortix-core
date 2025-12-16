@@ -1,34 +1,34 @@
 """
-FortiOS CMDB - Certificate CRL (Certificate Revocation List)
+FortiOS CMDB - Certificate CA
 
-View CRL (Certificate Revocation List) certificates.
+View CA (Certificate Authority) certificates.
 
 API Endpoints:
-    GET    /certificate/crl       - List all CRL certificates
-    GET    /certificate/crl/{name} - Get specific CRL certificate
+    GET    /certificate/ca       - List all CA certificates
+    GET    /certificate/ca/{name} - Get specific CA certificate
 
-Note: This is a READ-ONLY endpoint. CRL certificates are typically:
-    - Factory CRLs (pre-installed)
-    - User-uploaded CRLs via GUI/CLI
-    - Auto-updated CRLs from LDAP/HTTP/SCEP sources
+Note: This is a READ-ONLY endpoint. CA certificates are typically:
+    - Bundle certificates (pre-installed by Fortinet)
+    - User-uploaded certificates via GUI/CLI
+    - Factory certificates
 """
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional, Union
 
-from FortiOS.exceptions import APIError, ResourceNotFoundError
+from .....exceptions import APIError, ResourceNotFoundError
 
 if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
-class Crl:
-    """Certificate CRL endpoint (read-only)"""
+class Ca:
+    """Certificate CA endpoint (read-only)"""
 
     def __init__(self, client: 'HTTPClient') -> None:
         """
-        Initialize Crl endpoint
+        Initialize Ca endpoint
 
         Args:
             client: HTTPClient instance
@@ -37,24 +37,24 @@ class Crl:
 
     def list(self, vdom: Optional[Union[str, bool]] = None, **kwargs: Any) -> dict[str, Any]:
         """
-        List all CRL certificates
+        List all CA certificates
 
         Args:
             vdom (str/bool, optional): Virtual domain, False to skip
             **kwargs: Additional query parameters (filter, format, count, search, etc.)
 
         Returns:
-            dict: API response with list of CRL certificates
+            dict: API response with list of CA certificates
 
         Examples:
-            >>> # List all CRL certificates
-            >>> result = fgt.cmdb.certificate.crl.list()
+            >>> # List all CA certificates
+            >>> result = fgt.cmdb.certificate.ca.list()
 
-            >>> # List only factory CRLs
-            >>> result = fgt.cmdb.certificate.crl.list(filter='source==factory')
+            >>> # List only user-uploaded certificates
+            >>> result = fgt.cmdb.certificate.ca.list(filter='source==user')
 
-            >>> # List user-uploaded CRLs
-            >>> result = fgt.cmdb.certificate.crl.list(filter='source==user')
+            >>> # List trusted certificates
+            >>> result = fgt.cmdb.certificate.ca.list(filter='ssl-inspection-trusted==enable')
         """
         return self.get(vdom=vdom, **kwargs)
 
@@ -76,11 +76,11 @@ class Crl:
         **kwargs: Any
     ) -> dict[str, Any]:
         """
-        Get CRL certificate(s)
+        Get CA certificate(s)
 
         Args:
-            name (str, optional): CRL certificate name (for specific certificate)
-            filter (str): Filter results (e.g., 'source==factory')
+            name (str, optional): CA certificate name (for specific certificate)
+            filter (str): Filter results (e.g., 'source==bundle')
             format (str): Response format (name|brief|full)
             count (int): Limit number of results
             with_meta (bool): Include meta information
@@ -92,17 +92,17 @@ class Crl:
             dict: API response
 
         Examples:
-            >>> # Get specific CRL certificate
-            >>> result = fgt.cmdb.certificate.crl.get('my-crl')
+            >>> # Get specific CA certificate
+            >>> result = fgt.cmdb.certificate.ca.get('Fortinet_CA_SSL')
 
-            >>> # Get all CRL certificates
-            >>> result = fgt.cmdb.certificate.crl.get()
+            >>> # Get all CA certificates
+            >>> result = fgt.cmdb.certificate.ca.get()
 
             >>> # Get with details
-            >>> result = fgt.cmdb.certificate.crl.get('my-crl', with_meta=True)
+            >>> result = fgt.cmdb.certificate.ca.get('Fortinet_CA_SSL', with_meta=True)
         """
         # Build path
-        path = f'certificate/crl/{name}' if name else 'certificate/crl'
+        path = f'certificate/ca/{name}' if name else 'certificate/ca'
 
         # Build query parameters
         params = {}
@@ -131,18 +131,18 @@ class Crl:
 
     def exists(self, name: str, vdom: Optional[Union[str, bool]] = None) -> bool:
         """
-        Check if CRL certificate exists
+        Check if CA certificate exists
 
         Args:
-            name (str): CRL certificate name
+            name (str): CA certificate name
             vdom (str/bool, optional): Virtual domain, False to skip
 
         Returns:
             bool: True if exists, False otherwise
 
         Example:
-            >>> if fgt.cmdb.certificate.crl.exists('my-crl'):
-            ...     print('CRL certificate exists')
+            >>> if fgt.cmdb.certificate.ca.exists('Fortinet_CA_SSL'):
+            ...     print('CA certificate exists')
         """
         try:
             self.get(name, vdom=vdom)
@@ -150,25 +150,25 @@ class Crl:
         except (APIError, ResourceNotFoundError):
             return False
 
-    def get_factory_certificates(self, vdom: Optional[Union[str, bool]] = None) -> dict[str, Any]:
+    def get_bundle_certificates(self, vdom: Optional[Union[str, bool]] = None) -> dict[str, Any]:
         """
-        Get all factory (pre-installed) CRL certificates
+        Get all bundle (pre-installed) CA certificates
 
         Args:
             vdom (str/bool, optional): Virtual domain, False to skip
 
         Returns:
-            dict: API response with factory certificates
+            dict: API response with bundle certificates
 
         Example:
-            >>> result = fgt.cmdb.certificate.crl.get_factory_certificates()
-            >>> print(f"Factory CRLs: {len(result['results'])}")
+            >>> result = fgt.cmdb.certificate.ca.get_bundle_certificates()
+            >>> print(f"Bundle CAs: {len(result['results'])}")
         """
-        return self.get(filter='source==factory', vdom=vdom)
+        return self.get(filter='source==bundle', vdom=vdom)
 
     def get_user_certificates(self, vdom: Optional[Union[str, bool]] = None) -> dict[str, Any]:
         """
-        Get all user-uploaded CRL certificates
+        Get all user-uploaded CA certificates
 
         Args:
             vdom (str/bool, optional): Virtual domain, False to skip
@@ -177,39 +177,23 @@ class Crl:
             dict: API response with user certificates
 
         Example:
-            >>> result = fgt.cmdb.certificate.crl.get_user_certificates()
-            >>> print(f"User CRLs: {len(result['results'])}")
+            >>> result = fgt.cmdb.certificate.ca.get_user_certificates()
+            >>> print(f"User CAs: {len(result['results'])}")
         """
         return self.get(filter='source==user', vdom=vdom)
 
-    def get_ldap_certificates(self, vdom: Optional[Union[str, bool]] = None) -> dict[str, Any]:
+    def get_trusted_certificates(self, vdom: Optional[Union[str, bool]] = None) -> dict[str, Any]:
         """
-        Get all LDAP-sourced CRL certificates
+        Get all trusted CA certificates (for SSL inspection)
 
         Args:
             vdom (str/bool, optional): Virtual domain, False to skip
 
         Returns:
-            dict: API response with LDAP certificates
+            dict: API response with trusted certificates
 
         Example:
-            >>> result = fgt.cmdb.certificate.crl.get_ldap_certificates()
-            >>> print(f"LDAP CRLs: {len(result['results'])}")
+            >>> result = fgt.cmdb.certificate.ca.get_trusted_certificates()
+            >>> print(f"Trusted CAs: {len(result['results'])}")
         """
-        return self.get(filter='ldap-server!=', vdom=vdom)
-
-    def get_http_certificates(self, vdom: Optional[Union[str, bool]] = None) -> dict[str, Any]:
-        """
-        Get all HTTP-sourced CRL certificates
-
-        Args:
-            vdom (str/bool, optional): Virtual domain, False to skip
-
-        Returns:
-            dict: API response with HTTP certificates
-
-        Example:
-            >>> result = fgt.cmdb.certificate.crl.get_http_certificates()
-            >>> print(f"HTTP CRLs: {len(result['results'])}")
-        """
-        return self.get(filter='http-url!=', vdom=vdom)
+        return self.get(filter='ssl-inspection-trusted==enable', vdom=vdom)

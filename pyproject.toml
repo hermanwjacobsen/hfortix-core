@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix"
-version = "0.3.6"
+version = "0.3.7"
 description = "HFortix - Python SDK for Fortinet products (FortiOS, FortiManager, FortiAnalyzer)"
 readme = "README.md"
 authors = [
@@ -120,6 +120,15 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+norecursedirs = [
+    ".*",
+    "build",
+    "dist",
+    "X",
+    "Tests",
+    ".venv",
+    "venv",
+]
 addopts = [
     "--verbose",
     "--strict-markers",
@@ -131,7 +140,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["fortinet"]
+source = ["hfortix"]
 omit = [
     "*/tests/*",
     "*/X/*",
