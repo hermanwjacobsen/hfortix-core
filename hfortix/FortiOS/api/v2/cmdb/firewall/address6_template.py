@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Address6Template:
     """Firewall IPv6 address template endpoint"""
 
@@ -128,7 +130,7 @@ class Address6Template:
 
         path = "firewall/address6-template"
         if name:
-            path = f"{path}/{name}"
+            path = f"{path}/{encode_path_component(name)}"
 
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json
@@ -315,7 +317,7 @@ class Address6Template:
             if value is not None:
                 payload_dict[key] = value
 
-        path = f"firewall/address6-template/{name}"
+        path = f"firewall/address6-template/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload_dict, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -338,7 +340,7 @@ class Address6Template:
             >>> # Delete address template
             >>> result = fgt.cmdb.firewall.address6_template.delete('test-template')
         """
-        path = f"firewall/address6-template/{name}"
+        path = f"firewall/address6-template/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: Optional[Union[str, bool]] = None) -> bool:

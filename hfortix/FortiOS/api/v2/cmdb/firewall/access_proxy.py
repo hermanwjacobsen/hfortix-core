@@ -11,6 +11,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class AccessProxy:
     """
     Manage IPv4 access proxy configuration
@@ -74,7 +76,7 @@ class AccessProxy:
             >>> proxies = fgt.cmdb.firewall.access_proxy.get()
         """
         if name is not None:
-            path = f"{self._path}/{name}"
+            path = f"{self._path}/{encode_path_component(name)}"
         else:
             path = self._path
         return self._client.get("cmdb", path, params=params, vdom=vdom, raw_json=raw_json)
@@ -290,7 +292,7 @@ class AccessProxy:
             if api_gateway6 is not None:
                 payload["api-gateway6"] = api_gateway6
 
-        path = f"{self._path}/{name}"
+        path = f"{self._path}/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -312,7 +314,7 @@ class AccessProxy:
         Example:
             >>> result = fgt.cmdb.firewall.access_proxy.delete('proxy1')
         """
-        path = f"{self._path}/{name}"
+        path = f"{self._path}/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: str | None = None) -> bool:

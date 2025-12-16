@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Configurable Timeouts** - HTTP timeout values are now customizable:
+  - `connect_timeout`: Time to wait for connection establishment (default: 10.0 seconds)
+  - `read_timeout`: Time to wait for response data (default: 300.0 seconds)
+  - Configurable via `FortiOS()` constructor parameters
+  - Useful for slow networks, international connections, or large operations
+  - `max_retries`: Parameter added for future retry mechanism (default: 3)
+- **URL Encoding Helper** - Centralized URL encoding for special characters:
+  - New `encode_path_component()` function in `http_client.py`
+  - Automatically encodes special characters in object names: `/`, `@`, `:`, spaces, etc.
+  - Applied to all 145 CMDB endpoint files (84 path variables encoded)
+  - Prevents URL parsing errors when object names contain special characters
+
+### Fixed
+- **URL Encoding for Special Characters** - Object names with special characters now work correctly:
+  - Fixed issue where objects with `/` in names (e.g., `Test_NET_192.0.2.0/24`) caused 404 errors
+  - Special characters are now properly encoded: `/` → `%2F`, `@` → `%40`, `:` → `%3A`, space → `%20`
+  - Applies to all API operations: get, create, update, delete
+  - Implemented as reusable helper function to avoid code duplication
+  - Covers all path variables: `name`, `mkey`, `policyid`, `seq_num`, `member`
+
 ### Planned
 - Complete CMDB endpoint coverage (15 of 40 categories implemented)
 - Monitor endpoints implementation (0 of 28 categories)

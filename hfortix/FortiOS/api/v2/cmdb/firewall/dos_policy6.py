@@ -11,6 +11,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class DosPolicy6:
     """
     Manage IPv6 DoS (Denial of Service) policies
@@ -75,7 +77,7 @@ class DosPolicy6:
             >>> policies = fgt.cmdb.firewall.dos_policy6.get()
         """
         if policyid is not None:
-            path = f"{self._path}/{policyid}"
+            path = f"{self._path}/{encode_path_component(policyid)}"
         else:
             path = self._path
         return self._client.get("cmdb", path, vdom=vdom, params=params, raw_json=raw_json)
@@ -294,7 +296,7 @@ class DosPolicy6:
             if anomaly is not None:
                 payload["anomaly"] = anomaly
 
-        path = f"{self._path}/{policyid}"
+        path = f"{self._path}/{encode_path_component(policyid)}"
         return self._client.put("cmdb", path, data=payload, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -316,7 +318,7 @@ class DosPolicy6:
         Example:
             >>> result = fgt.cmdb.firewall.dos_policy6.delete(policyid=1)
         """
-        path = f"{self._path}/{policyid}"
+        path = f"{self._path}/{encode_path_component(policyid)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, policyid: int, vdom: str | None = None) -> bool:

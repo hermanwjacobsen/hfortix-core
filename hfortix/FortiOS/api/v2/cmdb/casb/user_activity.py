@@ -21,6 +21,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class UserActivity:
     """CASB user activity endpoint"""
 
@@ -98,7 +100,7 @@ class UserActivity:
             >>> result = fgt.cmdb.casb.user_activity.get()
         """
         # Build path
-        path = f"casb/user-activity/{name}" if name else "casb/user-activity"
+        path = f"casb/user-activity/{encode_path_component(name)}" if name else "casb/user-activity"
 
         # Build query parameters
         params = {}

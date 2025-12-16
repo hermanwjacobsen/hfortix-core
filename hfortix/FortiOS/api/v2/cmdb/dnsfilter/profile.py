@@ -11,6 +11,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Profile:
     """Manage DNS filter profile objects.
 
@@ -59,7 +61,7 @@ class Profile:
             >>> profile = client.cmdb.dnsfilter.profile.get(name='default')
         """
         if name is not None:
-            path = f"dnsfilter/profile/{name}"
+            path = f"dnsfilter/profile/{encode_path_component(name)}"
         else:
             path = "dnsfilter/profile"
 

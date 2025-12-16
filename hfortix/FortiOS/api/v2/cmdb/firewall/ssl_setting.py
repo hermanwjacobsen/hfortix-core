@@ -7,6 +7,8 @@ SSL proxy settings (singleton).
 from typing import Any, Dict, Optional
 
 from .....http_client import HTTPResponse
+from hfortix.FortiOS.http_client import encode_path_component
+
 
 
 class Setting:

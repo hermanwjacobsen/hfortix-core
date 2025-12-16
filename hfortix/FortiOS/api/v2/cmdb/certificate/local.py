@@ -24,6 +24,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Local:
     """Certificate Local endpoint (read-only)"""
 
@@ -104,7 +106,7 @@ class Local:
             >>> result = fgt.cmdb.certificate.local.get('Fortinet_CA_SSL', with_meta=True)
         """
         # Build path
-        path = f"certificate/local/{name}" if name else "certificate/local"
+        path = f"certificate/local/{encode_path_component(name)}" if name else "certificate/local"
 
         # Build query parameters
         params = {}

@@ -18,6 +18,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Profile:
     """Antivirus Profile endpoint"""
 
@@ -111,7 +113,7 @@ class Profile:
         # Add any extra kwargs
         params.update(kwargs)
 
-        path = f"antivirus/profile/{name}" if name else "antivirus/profile"
+        path = f"antivirus/profile/{encode_path_component(name)}" if name else "antivirus/profile"
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json
         )

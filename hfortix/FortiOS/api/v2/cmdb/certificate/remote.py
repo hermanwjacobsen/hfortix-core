@@ -23,6 +23,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Remote:
     """Certificate Remote endpoint (read-only)"""
 
@@ -100,7 +102,7 @@ class Remote:
             >>> result = fgt.cmdb.certificate.remote.get('RemoteCert1', with_meta=True)
         """
         # Build path
-        path = f"certificate/remote/{name}" if name else "certificate/remote"
+        path = f"certificate/remote/{encode_path_component(name)}" if name else "certificate/remote"
 
         # Build query parameters
         params = {}

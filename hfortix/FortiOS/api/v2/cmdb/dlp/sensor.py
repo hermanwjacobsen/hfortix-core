@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Sensor:
     """DLP sensor endpoint"""
 
@@ -78,7 +80,7 @@ class Sensor:
         # Build path
         path = "dlp/sensor"
         if name:
-            path = f"dlp/sensor/{name}"
+            path = f"dlp/sensor/{encode_path_component(name)}"
 
         # Build query parameters
         params = {}

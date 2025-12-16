@@ -11,6 +11,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class AccessProxyVirtualHost:
     """
     Manage Access Proxy virtual hosts
@@ -75,7 +77,7 @@ class AccessProxyVirtualHost:
             >>> vhosts = fgt.cmdb.firewall.access_proxy_virtual_host.get()
         """
         if name is not None:
-            path = f"{self._path}/{name}"
+            path = f"{self._path}/{encode_path_component(name)}"
         else:
             path = self._path
         return self._client.get("cmdb", path, vdom=vdom, params=params, raw_json=raw_json)
@@ -201,7 +203,7 @@ class AccessProxyVirtualHost:
             if replacemsg_group is not None:
                 payload["replacemsg-group"] = replacemsg_group
 
-        path = f"{self._path}/{name}"
+        path = f"{self._path}/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -223,7 +225,7 @@ class AccessProxyVirtualHost:
         Example:
             >>> result = fgt.cmdb.firewall.access_proxy_virtual_host.delete('vhost1')
         """
-        path = f"{self._path}/{name}"
+        path = f"{self._path}/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: str | None = None) -> bool:

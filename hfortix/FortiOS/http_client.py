@@ -11,6 +11,7 @@ from __future__ import annotations
 import logging
 import time
 from typing import Any, Optional, TypeAlias, Union
+from urllib.parse import quote
 
 import requests
 
@@ -19,7 +20,29 @@ logger = logging.getLogger("hfortix.http")
 # Type alias for API responses
 HTTPResponse: TypeAlias = dict[str, Any]
 
-__all__ = ["HTTPClient", "HTTPResponse"]
+__all__ = ["HTTPClient", "HTTPResponse", "encode_path_component"]
+
+
+def encode_path_component(component: str) -> str:
+    """
+    Encode a single path component for use in URLs.
+    
+    This encodes special characters including forward slashes, which are
+    commonly used in FortiOS object names (e.g., IP addresses with CIDR notation).
+    
+    Args:
+        component: Path component to encode (e.g., object name)
+        
+    Returns:
+        URL-encoded string safe for use in URL paths
+        
+    Examples:
+        >>> encode_path_component("Test_NET_192.0.2.0/24")
+        'Test_NET_192.0.2.0%2F24'
+        >>> encode_path_component("test@example.com")
+        'test%40example.com'
+    """
+    return quote(component, safe='')
 
 
 class HTTPClient:
@@ -37,7 +60,14 @@ class HTTPClient:
     """
 
     def __init__(
-        self, url: str, verify: bool = True, token: Optional[str] = None, vdom: Optional[str] = None
+        self,
+        url: str,
+        verify: bool = True,
+        token: Optional[str] = None,
+        vdom: Optional[str] = None,
+        max_retries: int = 3,
+        connect_timeout: float = 10.0,
+        read_timeout: float = 300.0,
     ) -> None:
         """
         Initialize HTTP client
@@ -47,10 +77,16 @@ class HTTPClient:
             verify: Verify SSL certificates
             token: API authentication token
             vdom: Default virtual domain
+            max_retries: Maximum number of retry attempts on transient failures (default: 3)
+            connect_timeout: Timeout for establishing connection in seconds (default: 10.0)
+            read_timeout: Timeout for reading response in seconds (default: 300.0)
         """
         self._url = url
         self._verify = verify
         self._vdom = vdom
+        self._max_retries = max_retries
+        self._connect_timeout = connect_timeout
+        self._read_timeout = read_timeout
         self._session = requests.Session()
         self._session.verify = verify
 
@@ -63,7 +99,13 @@ class HTTPClient:
         if token:
             self._session.headers["Authorization"] = f"Bearer {token}"
 
-        logger.debug("HTTP client initialized for %s", url)
+        logger.debug(
+            "HTTP client initialized for %s (max_retries=%d, connect_timeout=%.1fs, read_timeout=%.1fs)",
+            url,
+            max_retries,
+            connect_timeout,
+            read_timeout,
+        )
 
     @staticmethod
     def _sanitize_data(data: Optional[dict[str, Any]]) -> dict[str, Any]:
@@ -80,6 +122,7 @@ class HTTPClient:
             "key",
             "private-key",
             "passphrase",
+            "psk"
         ]
 
         for key in list(safe.keys()):
@@ -169,6 +212,10 @@ class HTTPClient:
             dict: If raw_json=False, returns response['results'] (or full response if no 'results' key)
                   If raw_json=True, returns complete API response with status, http_status, etc.
         """
+        # URL encode the entire path, treating / as safe (path separator)
+        # Note: Individual path components may already be encoded by endpoint files
+        # using encode_path_component(), so we only encode other special chars here
+        # Do NOT double-encode - quote with safe='/' leaves already-encoded %XX sequences alone
         url = f"{self._url}/api/v2/{api_type}/{path}"
         params = params or {}
 
@@ -191,9 +238,13 @@ class HTTPClient:
         # Track timing
         start_time = time.time()
 
-        # Make request
+        # Make request with configured timeouts
         res = self._session.request(
-            method=method, url=url, json=data if data else None, params=params if params else None
+            method=method,
+            url=url,
+            json=data if data else None,
+            params=params if params else None,
+            timeout=(self._connect_timeout, self._read_timeout),
         )
 
         # Calculate duration

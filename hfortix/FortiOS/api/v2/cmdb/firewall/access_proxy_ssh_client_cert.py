@@ -11,6 +11,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class AccessProxySshClientCert:
     """
     Manage Access Proxy SSH client certificates
@@ -75,7 +77,7 @@ class AccessProxySshClientCert:
             >>> certs = fgt.cmdb.firewall.access_proxy_ssh_client_cert.get()
         """
         if name is not None:
-            path = f"{self._path}/{name}"
+            path = f"{self._path}/{encode_path_component(name)}"
         else:
             path = self._path
         return self._client.get("cmdb", path, params=params, vdom=vdom, raw_json=raw_json)
@@ -216,7 +218,7 @@ class AccessProxySshClientCert:
             if source_address is not None:
                 payload["source-address"] = source_address
 
-        path = f"{self._path}/{name}"
+        path = f"{self._path}/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -238,7 +240,7 @@ class AccessProxySshClientCert:
         Example:
             >>> result = fgt.cmdb.firewall.access_proxy_ssh_client_cert.delete('ssh-cert1')
         """
-        path = f"{self._path}/{name}"
+        path = f"{self._path}/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: str | None = None) -> bool:

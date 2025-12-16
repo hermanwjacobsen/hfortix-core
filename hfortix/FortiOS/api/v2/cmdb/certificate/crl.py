@@ -23,6 +23,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Crl:
     """Certificate CRL endpoint (read-only)"""
 
@@ -103,7 +105,7 @@ class Crl:
             >>> result = fgt.cmdb.certificate.crl.get('my-crl', with_meta=True)
         """
         # Build path
-        path = f"certificate/crl/{name}" if name else "certificate/crl"
+        path = f"certificate/crl/{encode_path_component(name)}" if name else "certificate/crl"
 
         # Build query parameters
         params = {}

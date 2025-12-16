@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class ScheduleRecurring:
     """Firewall recurring schedule endpoint"""
 
@@ -128,7 +130,7 @@ class ScheduleRecurring:
 
         params.update(kwargs)
 
-        path = f"firewall.schedule/recurring/{name}"
+        path = f"firewall.schedule/recurring/{encode_path_component(name)}"
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json
         )
@@ -318,7 +320,7 @@ class ScheduleRecurring:
             if value is not None:
                 payload_dict[key] = value
 
-        path = f"firewall.schedule/recurring/{name}"
+        path = f"firewall.schedule/recurring/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload_dict, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -341,7 +343,7 @@ class ScheduleRecurring:
             >>> # Delete schedule
             >>> result = fgt.cmdb.firewall.schedule.recurring.delete('old-schedule')
         """
-        path = f"firewall.schedule/recurring/{name}"
+        path = f"firewall.schedule/recurring/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: Optional[Union[str, bool]] = None) -> bool:

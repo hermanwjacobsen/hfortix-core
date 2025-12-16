@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Label:
     """DLP label endpoint"""
 
@@ -78,7 +80,7 @@ class Label:
         # Build path
         path = "dlp/label"
         if name:
-            path = f"dlp/label/{name}"
+            path = f"dlp/label/{encode_path_component(name)}"
 
         # Build query parameters
         params = {}

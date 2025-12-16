@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class DataType:
     """DLP data-type endpoint"""
 
@@ -81,7 +83,7 @@ class DataType:
         # Build path
         path = "dlp/data-type"
         if name:
-            path = f"dlp/data-type/{name}"
+            path = f"dlp/data-type/{encode_path_component(name)}"
 
         # Build query parameters
         params = {}

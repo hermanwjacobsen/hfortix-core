@@ -15,8 +15,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 if TYPE_CHECKING:
-    from ....http_client import HTTPClient
+    from hfortix.FortiOS.http_client import HTTPClient
 
 
 class Address:
@@ -129,7 +131,7 @@ class Address:
 
         path = "firewall/address"
         if name:
-            path = f"{path}/{name}"
+            path = f"{path}/{encode_path_component(name)}"
 
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json
@@ -408,7 +410,7 @@ class Address:
             if value is not None:
                 payload_dict[key] = value
 
-        path = f"firewall/address/{name}"
+        path = f"firewall/address/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload_dict, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -428,7 +430,7 @@ class Address:
             >>> # Delete address
             >>> result = fgt.cmdb.firewall.address.delete('test-address')
         """
-        path = f"firewall/address/{name}"
+        path = f"firewall/address/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: Optional[Union[str, bool]] = None) -> bool:

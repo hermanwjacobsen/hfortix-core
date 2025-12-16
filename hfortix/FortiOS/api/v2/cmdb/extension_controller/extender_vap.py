@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class ExtenderVap:
     """FortiExtender WiFi VAP endpoint"""
 
@@ -36,7 +38,7 @@ class ExtenderVap:
         params = {k: v for k, v in kwargs.items() if v is not None}
         path = "extension-controller/extender-vap"
         if name:
-            path = f"{path}/{name}"
+            path = f"{path}/{encode_path_component(name)}"
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json
         )

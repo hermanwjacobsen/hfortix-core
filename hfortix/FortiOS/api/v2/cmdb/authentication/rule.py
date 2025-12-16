@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Rule:
     """Authentication rule endpoint"""
 
@@ -131,7 +133,7 @@ class Rule:
         # Build path
         path = "authentication/rule"
         if name is not None:
-            path = f"{path}/{name}"
+            path = f"{path}/{encode_path_component(name)}"
 
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json

@@ -13,6 +13,8 @@ API Endpoints:
 from typing import Any, Dict, List, Optional, Union
 
 from .....http_client import HTTPResponse
+from hfortix.FortiOS.http_client import encode_path_component
+
 
 
 class LocalCa:
@@ -90,7 +92,7 @@ class LocalCa:
         """
         path = "firewall.ssh/local-ca"
         if name:
-            path = f"{path}/{name}"
+            path = f"{path}/{encode_path_component(name)}"
 
         params = {}
         param_map = {

@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class ScheduleOnetime:
     """Firewall onetime schedule endpoint"""
 
@@ -128,7 +130,7 @@ class ScheduleOnetime:
 
         params.update(kwargs)
 
-        path = f"firewall.schedule/onetime/{name}"
+        path = f"firewall.schedule/onetime/{encode_path_component(name)}"
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json
         )
@@ -303,7 +305,7 @@ class ScheduleOnetime:
             if value is not None:
                 payload_dict[key] = value
 
-        path = f"firewall.schedule/onetime/{name}"
+        path = f"firewall.schedule/onetime/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload_dict, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -326,7 +328,7 @@ class ScheduleOnetime:
             >>> # Delete schedule
             >>> result = fgt.cmdb.firewall.schedule.onetime.delete('old-maintenance')
         """
-        path = f"firewall.schedule/onetime/{name}"
+        path = f"firewall.schedule/onetime/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: Optional[Union[str, bool]] = None) -> bool:

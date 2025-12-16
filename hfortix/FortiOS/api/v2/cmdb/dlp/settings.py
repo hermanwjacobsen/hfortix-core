@@ -14,6 +14,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient, HTTPResponse
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Settings:
     """Manage global DLP settings.
 

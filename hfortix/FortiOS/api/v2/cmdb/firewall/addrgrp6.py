@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Addrgrp6:
     """Firewall IPv6 address group endpoint"""
 
@@ -128,7 +130,7 @@ class Addrgrp6:
 
         path = "firewall/addrgrp6"
         if name:
-            path = f"{path}/{name}"
+            path = f"{path}/{encode_path_component(name)}"
 
         return self._client.get(
             "cmdb", path, params=params if params else None, vdom=vdom, raw_json=raw_json
@@ -370,7 +372,7 @@ class Addrgrp6:
             if value is not None:
                 payload_dict[key] = value
 
-        path = f"firewall/addrgrp6/{name}"
+        path = f"firewall/addrgrp6/{encode_path_component(name)}"
         return self._client.put("cmdb", path, data=payload_dict, vdom=vdom, raw_json=raw_json)
 
     def delete(
@@ -393,7 +395,7 @@ class Addrgrp6:
             >>> # Delete IPv6 address group
             >>> result = fgt.cmdb.firewall.addrgrp6.delete('test-group6')
         """
-        path = f"firewall/addrgrp6/{name}"
+        path = f"firewall/addrgrp6/{encode_path_component(name)}"
         return self._client.delete("cmdb", path, vdom=vdom, raw_json=raw_json)
 
     def exists(self, name: str, vdom: Optional[Union[str, bool]] = None) -> bool:

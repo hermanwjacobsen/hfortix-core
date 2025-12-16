@@ -68,6 +68,9 @@ class FortiOS:
         vdom: Optional[str] = None,
         port: Optional[int] = None,
         debug: Optional[str] = None,
+        max_retries: int = 3,
+        connect_timeout: float = 10.0,
+        read_timeout: float = 300.0,
     ) -> None:
         """
         Initialize FortiOS API client
@@ -83,6 +86,9 @@ class FortiOS:
             port: HTTPS port (default: None = use 443, or specify custom port like 8443)
             debug: Logging level for this instance ('debug', 'info', 'warning', 'error', 'off')
                    If not specified, uses the global log level set via hfortix.set_log_level()
+            max_retries: Maximum number of retry attempts on transient failures (default: 3)
+            connect_timeout: Timeout for establishing connection in seconds (default: 10.0)
+            read_timeout: Timeout for reading response in seconds (default: 300.0)
 
         Examples:
             # Production - with valid SSL certificate
@@ -99,6 +105,9 @@ class FortiOS:
 
             # Enable debug logging for this instance only
             fgt = FortiOS("192.0.2.10", token="your_token_here", verify=False, debug='info')
+
+            # Custom timeouts (e.g., slower network)
+            fgt = FortiOS("192.0.2.10", token="your_token_here", connect_timeout=30.0, read_timeout=600.0)
         """
         self._host = host
         self._vdom = vdom
@@ -123,7 +132,15 @@ class FortiOS:
             url = None
 
         # Initialize HTTP client
-        self._client = HTTPClient(url=url, verify=verify, token=token, vdom=vdom)
+        self._client = HTTPClient(
+            url=url,
+            verify=verify,
+            token=token,
+            vdom=vdom,
+            max_retries=max_retries,
+            connect_timeout=connect_timeout,
+            read_timeout=read_timeout,
+        )
 
         # Initialize API namespace.
         # Store it privately and expose a property so IDEs treat it as a concrete

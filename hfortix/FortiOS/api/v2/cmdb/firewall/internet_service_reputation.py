@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class InternetServiceReputation:
     """Firewall `internet-service-reputation` table endpoint."""
 

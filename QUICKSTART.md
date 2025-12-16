@@ -58,6 +58,22 @@ fgt_dev = FortiOS(
     verify=False  # Only for dev/test with self-signed certs
 )
 
+# Custom timeouts for slow/unreliable networks
+fgt_slow = FortiOS(
+    host='remote-site.company.com',
+    token='your-api-token',
+    connect_timeout=30.0,  # 30 seconds to establish connection
+    read_timeout=600.0     # 10 minutes to read response
+)
+
+# Custom timeouts for fast local networks
+fgt_fast = FortiOS(
+    host='192.168.1.99',
+    token='your-api-token',
+    connect_timeout=5.0,   # 5 seconds to connect
+    read_timeout=60.0      # 1 minute to read
+)
+
 # Basic operations
 try:
     # List
@@ -160,7 +176,39 @@ load_dotenv()
 fgt = FortiOS(
     host=os.getenv('FGT_HOST'),
     token=os.getenv('FGT_TOKEN'),
-    verify=os.getenv('FGT_VERIFY_SSL', 'false') == 'true'
+    verify=os.getenv('FGT_VERIFY_SSL', 'false') == 'true',
+    connect_timeout=float(os.getenv('FGT_CONNECT_TIMEOUT', '10.0')),
+    read_timeout=float(os.getenv('FGT_READ_TIMEOUT', '300.0'))
+)
+```
+
+### Timeout Configuration
+```python
+# Default timeouts (suitable for most scenarios)
+# - connect_timeout: 10 seconds (connection establishment)
+# - read_timeout: 300 seconds (response read)
+
+# High latency networks (international, satellite, etc.)
+fgt = FortiOS(
+    host='remote.company.com',
+    token='your-api-token',
+    connect_timeout=30.0,   # Allow more time to establish connection
+    read_timeout=600.0      # Allow more time for large responses
+)
+
+# Fast local network (LAN)
+fgt = FortiOS(
+    host='192.168.1.99',
+    token='your-api-token',
+    connect_timeout=5.0,    # Fail fast on connection issues
+    read_timeout=60.0       # Most operations should be quick
+)
+
+# Large operations (backups, log queries, reports)
+fgt = FortiOS(
+    host='fortigate.company.com',
+    token='your-api-token',
+    read_timeout=900.0      # 15 minutes for large operations
 )
 ```
 
@@ -183,6 +231,28 @@ result = fgt.api.cmdb.firewall.address.get(name='web-server')
 addresses = fgt.api.cmdb.firewall.address.list(
     filter='name==web-*'
 )
+```
+
+### Working with Special Characters
+```python
+# Objects with special characters in names are automatically handled
+# (underscores, slashes in IP addresses, spaces, etc.)
+
+# Create address with CIDR notation
+fgt.api.cmdb.firewall.address.create(
+    name='Test_NET_192.0.2.0/24',  # Slash and underscores are fine
+    subnet='192.0.2.0/24'
+)
+
+# Get/update/delete - special characters handled automatically
+address = fgt.api.cmdb.firewall.address.get(name='Test_NET_192.0.2.0/24')
+fgt.api.cmdb.firewall.address.update(
+    name='Test_NET_192.0.2.0/24',
+    comment='Updated address'
+)
+fgt.api.cmdb.firewall.address.delete(name='Test_NET_192.0.2.0/24')
+
+# Works with all special characters: / _ - . @ : ( ) [ ] spaces
 ```
 
 ## API Structure

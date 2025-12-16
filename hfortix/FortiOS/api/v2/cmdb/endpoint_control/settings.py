@@ -16,6 +16,8 @@ if TYPE_CHECKING:
     from ....http_client import HTTPClient
 
 
+from hfortix.FortiOS.http_client import encode_path_component
+
 class Settings:
     """Endpoint Control Settings endpoint (singleton)"""
 
