@@ -35,6 +35,11 @@ class CMDB:
         extension_controller: Extension controller
         file_filter: File filtering profiles
         firewall: Firewall policies and objects
+        icap: ICAP profiles and servers
+        ips: Intrusion Prevention System
+        log: Logging configuration
+        monitoring: Monitoring configuration
+        report: Report configuration and layouts
     """
 
     def __init__(self, client: "HTTPClient") -> None:
@@ -63,6 +68,11 @@ class CMDB:
         from .extension_controller import ExtensionController
         from .file_filter import FileFilter
         from .firewall import Firewall
+        from .icap import Icap
+        from .ips import Ips
+        from .log import Log
+        from .monitoring import Monitoring
+        from .report import Report
 
         self.alertemail: AlertEmail = AlertEmail(client)
         self.antivirus: Antivirus = Antivirus(client)
@@ -80,6 +90,11 @@ class CMDB:
         self.extension_controller: ExtensionController = ExtensionController(client)
         self.file_filter: FileFilter = FileFilter(client)
         self.firewall: Firewall = Firewall(client)
+        self.icap: Icap = Icap(client)
+        self.ips: Ips = Ips(client)
+        self.log: Log = Log(client)
+        self.monitoring: Monitoring = Monitoring(client)
+        self.report: Report = Report(client)
 
     def __dir__(self):
         """Control autocomplete to show only public attributes"""
@@ -100,4 +115,9 @@ class CMDB:
             "extension_controller",
             "file_filter",
             "firewall",
+            "icap",
+            "ips",
+            "log",
+            "monitoring",
+            "report",
         ]
