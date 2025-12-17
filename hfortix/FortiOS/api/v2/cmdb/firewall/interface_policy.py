@@ -67,7 +67,7 @@ class InterfacePolicy:
     # -----------------------------
     def get(
         self,
-        policyid: Optional[Union[int, str] = None,
+        policyid: Optional[Union[int, str]] = None,
         datasource: Optional[bool] = None,
         with_meta: Optional[bool] = None,
         skip: Optional[bool] = None,

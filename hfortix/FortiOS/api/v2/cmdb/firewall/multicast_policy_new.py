@@ -68,14 +68,6 @@ class MulticastPolicy:
         Returns:
             API response dictionary with policy details
         """
-        # Validate mkey
-        if mkey is None:
-            raise ValueError("mkey cannot be None")
-
-        mkey_str = str(mkey)
-        if not mkey_str:
-            raise ValueError("mkey cannot be empty")
-
         params = {}
 
         # Build params dict from provided arguments
@@ -104,6 +96,14 @@ class MulticastPolicy:
 
         # Add any additional kwargs
         params.update(kwargs)
+
+        
+        # Conditional path: list all if mkey is None, get specific otherwise
+        if mkey is not None:
+            mkey_str = self._client.validate_mkey(mkey, "mkey")
+            path = f"{{self.path}}/{{{param_name}_str}}"
+        else:
+            path = self.path
 
         return self._client.get(
             "cmdb", f"{self.path}/{encode_path_component(mkey)}" if mkey is not None else self.path, params=params, vdom=vdom, raw_json=raw_json
@@ -180,14 +180,6 @@ class MulticastPolicy:
         Returns:
             API response dictionary
         """
-        # Validate mkey
-        if mkey is None:
-            raise ValueError("mkey cannot be None")
-
-        mkey_str = str(mkey)
-        if not mkey_str:
-            raise ValueError("mkey cannot be empty")
-
         params = {}
 
         # Build params dict from provided arguments
@@ -233,14 +225,6 @@ class MulticastPolicy:
         Returns:
             API response dictionary
         """
-        # Validate mkey
-        if mkey is None:
-            raise ValueError("mkey cannot be None")
-
-        mkey_str = str(mkey)
-        if not mkey_str:
-            raise ValueError("mkey cannot be empty")
-
         params = {}
 
         # Build params dict from provided arguments

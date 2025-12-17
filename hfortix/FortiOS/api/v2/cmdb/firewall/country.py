@@ -70,7 +70,7 @@ class Country:
     # -----------------------------
     def get(
         self,
-        id: Optional[Union[int, str] = None,
+        id: Optional[Union[int, str]] = None,
         datasource: Optional[bool] = None,
         with_meta: Optional[bool] = None,
         skip: Optional[bool] = None,

@@ -66,14 +66,6 @@ class Vipgrp:
         Returns:
             API response dictionary with entry details
         """
-        # Validate mkey
-        if mkey is None:
-            raise ValueError("mkey cannot be None")
-
-        mkey_str = str(mkey)
-        if not mkey_str:
-            raise ValueError("mkey cannot be empty")
-
         params = {}
 
         if attr is not None:
@@ -106,6 +98,14 @@ class Vipgrp:
 
         # Extract vdom if present
         vdom = params.pop("vdom", None)
+
+        
+        # Conditional path: list all if mkey is None, get specific otherwise
+        if mkey is not None:
+            mkey_str = self._client.validate_mkey(mkey, "mkey")
+            path = f"{{self.path}}/{{{param_name}_str}}"
+        else:
+            path = self.path
 
         return self._client.get(
             "cmdb", f"{self.path}/{encode_path_component(mkey)}" if mkey is not None else self.path, params=params, vdom=vdom, raw_json=raw_json
@@ -250,14 +250,6 @@ class Vipgrp:
         Returns:
             API response dictionary
         """
-        # Validate mkey
-        if mkey is None:
-            raise ValueError("mkey cannot be None")
-
-        mkey_str = str(mkey)
-        if not mkey_str:
-            raise ValueError("mkey cannot be empty")
-
         # Build data from kwargs if not provided
         if payload_dict is None:
             payload_dict = {}
@@ -322,14 +314,6 @@ class Vipgrp:
         Returns:
             API response dictionary
         """
-        # Validate mkey
-        if mkey is None:
-            raise ValueError("mkey cannot be None")
-
-        mkey_str = str(mkey)
-        if not mkey_str:
-            raise ValueError("mkey cannot be empty")
-
         params = {}
 
         if vdom is not None:

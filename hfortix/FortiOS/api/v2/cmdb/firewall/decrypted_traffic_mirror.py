@@ -68,7 +68,7 @@ class DecryptedTrafficMirror:
     # -----------------------------
     def get(
         self,
-        name: Optional[Union[str, int] = None,
+        name: Optional[Union[str, int]] = None,
         datasource: Optional[bool] = None,
         with_meta: Optional[bool] = None,
         skip: Optional[bool] = None,
