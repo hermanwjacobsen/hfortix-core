@@ -44,6 +44,7 @@ class CMDB:
         router: Router configuration (BGP, OSPF, static routes, etc.)
         rule: Rule signatures (FMWP, IOT, OT detection)
         sctp_filter: SCTP filter profiles
+        system: System configuration (interface, admin, DNS, NTP, HA, SNMP, etc.)
     """
 
     def __init__(self, client: "HTTPClient") -> None:
@@ -81,6 +82,7 @@ class CMDB:
         from .router import Router
         from .rule import Rule
         from .sctp_filter import SctpFilter
+        from .system import System
 
         self.alertemail: AlertEmail = AlertEmail(client)
         self.antivirus: Antivirus = Antivirus(client)
@@ -107,6 +109,7 @@ class CMDB:
         self.router: Router = Router(client)
         self.rule: Rule = Rule(client)
         self.sctp_filter: SctpFilter = SctpFilter(client)
+        self.system: System = System(client)
 
     def __dir__(self):
         """Control autocomplete to show only public attributes"""
@@ -136,4 +139,5 @@ class CMDB:
             "router",
             "rule",
             "sctp_filter",
+            "system",
         ]
