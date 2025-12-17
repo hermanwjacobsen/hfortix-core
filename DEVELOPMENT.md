@@ -146,11 +146,15 @@ fortinet/
 │       ├── exceptions.py      # FortiOS re-exports
 │       └── api/
 │           └── v2/
-│               ├── cmdb/
-│               ├── log/
-│               ├── service/
-│               └── monitor/   # (placeholder / in progress)
-└── X/                         # Internal notes + script-style integration harness
+│               ├── cmdb/      # Configuration endpoints
+│               ├── log/       # Log reading endpoints
+│               ├── service/   # Service operations
+│               └── monitor/   # Monitoring endpoints
+├── setup.py                   # Package configuration
+├── pyproject.toml             # Build system config
+├── README.md                  # Project documentation
+├── API_COVERAGE.md            # Implementation status
+└── CHANGELOG.md               # Version history
 ```
 
 ---

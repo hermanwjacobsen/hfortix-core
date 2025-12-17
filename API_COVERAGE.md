@@ -3,8 +3,8 @@
 This document tracks the implementation status of FortiOS API endpoints in the Fortinet Python SDK.
 
 **Last Updated:** 2025-12-17  
-**SDK Version:** 0.3.10  
-**FortiOS Version:** 7.6.x
+**SDK Version:** 0.3.10-beta  
+**FortiOS Version:** 7.6.5
 
 ## 🎯 Key Features
 
@@ -26,24 +26,28 @@ This document tracks the implementation status of FortiOS API endpoints in the F
 
 ## 📊 Overall Progress
 
+**⚠️ BETA STATUS**: All current implementations are in beta. APIs are functional but may have incomplete parameter coverage or undiscovered edge cases.
+
 **FortiOS Version:** 7.6.5
 
-| Category | Status | Endpoints | Coverage |
-|----------|--------|-----------|----------|
-| **CMDB** | 🔷 Beta | 15 of 40 categories | ~38% |
-| **Monitor** | ⏸️ Not Started | 0 of 28 categories | 0% |
-| **Log** | 🔷 Beta | 5 of 5 categories | 100% |
-| **Service** | 🔷 Beta | 3 of 3 categories | 100% |
+| API Category | Status | Implemented | Total Available | Coverage |
+|--------------|--------|-------------|-----------------|----------|
+| **Configuration (CMDB)** | 🔷 Beta | 18 categories | 40 categories | 45% |
+| **Monitoring** | 🔷 Beta | 1 category | 33 categories | 3% |
+| **Logging** | 🔷 Beta | 5 categories | 5 categories | 100% |
+| **Service** | 🔷 Beta | 3 categories | 3 categories | 100% |
+| **Overall** | 🔷 Beta | **27 categories** | **77 categories** | **35%** |
 
 **CMDB Detailed Progress:**
-- **Total Categories Available:** 40 (FortiOS 7.6.5)
-- **Categories Implemented:** 15 (alertemail, antivirus, application, authentication, automation, casb, certificate, diameter-filter, dlp, dnsfilter, emailfilter, extension-controller, file-filter, firewall)
-- **Total Endpoints Implemented:** 74+ endpoints
-- **Coverage:** ~38% of all CMDB categories
+- **Total Categories Available:** 40 (FortiOS 7.6.5 Configuration API)
+- **Categories Implemented:** 18
+- **Total Endpoints Implemented:** 150+ endpoints
+- **Coverage:** 45% of all CMDB categories
+
+**Note:** All implementations are in beta status and will remain so until version 1.0.0 with comprehensive unit test coverage.
 
 **Legend:**
-- ✅ **Complete** - Full CRUD support, unit tests complete, documented
-- 🔷 **Beta** - Implemented, functional, unit tests in progress
+- 🔷 **Beta** - Implemented and functional (all endpoints remain in beta until v1.0.0)
 - 🚧 **In Progress** - Partially implemented
 - ⏸️ **Not Started** - Not yet implemented
 - 🚫 **Not Applicable** - Read-only or special endpoint
@@ -53,7 +57,7 @@ This document tracks the implementation status of FortiOS API endpoints in the F
 
 ## 🔧 CMDB (Configuration Management Database)
 
-### Implemented Categories (15 categories, 68 endpoints)
+### Implemented Categories (18 categories, 150+ endpoints)
 
 #### 1. Alert Email (alertemail/)
 | Endpoint | Status | Methods | Notes |
@@ -110,132 +114,89 @@ This document tracks the implementation status of FortiOS API endpoints in the F
 |----------|--------|---------|-------|
 | `/cmdb/diameter-filter/profile` | 🔷 Beta | GET, POST, PUT, DELETE | Diameter filter profiles |
 
-#### 9. DLP (dlp/) - ✅ Complete (8 endpoints)
+#### 9. DLP (dlp/) - 🔷 Beta (8 endpoints)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| `/cmdb/dlp/data-type` | ✅ Complete | GET, POST, PUT, DELETE | Predefined data type patterns |
-| `/cmdb/dlp/dictionary` | ✅ Complete | GET, POST, PUT, DELETE | Custom DLP dictionaries |
-| `/cmdb/dlp/exact-data-match` | ✅ Complete | GET, POST, PUT, DELETE | Fingerprinting for exact data matching |
-| `/cmdb/dlp/filepattern` | ✅ Complete | GET, POST, PUT, DELETE | File type and pattern matching |
-| `/cmdb/dlp/label` | ✅ Complete | GET, POST, PUT, DELETE | Classification labels |
-| `/cmdb/dlp/profile` | ✅ Complete | GET, POST, PUT, DELETE | DLP policy profiles |
-| `/cmdb/dlp/sensor` | ✅ Complete | GET, POST, PUT, DELETE | DLP sensor configuration |
-| `/cmdb/dlp/settings` | ✅ Complete | GET, PUT | Global DLP settings |
+| `/cmdb/dlp/data-type` | 🔷 Beta | GET, POST, PUT, DELETE | Predefined data type patterns |
+| `/cmdb/dlp/dictionary` | 🔷 Beta | GET, POST, PUT, DELETE | Custom DLP dictionaries |
+| `/cmdb/dlp/exact-data-match` | 🔷 Beta | GET, POST, PUT, DELETE | Fingerprinting for exact data matching |
+| `/cmdb/dlp/filepattern` | 🔷 Beta | GET, POST, PUT, DELETE | File type and pattern matching |
+| `/cmdb/dlp/label` | 🔷 Beta | GET, POST, PUT, DELETE | Classification labels |
+| `/cmdb/dlp/profile` | 🔷 Beta | GET, POST, PUT, DELETE | DLP policy profiles |
+| `/cmdb/dlp/sensor` | 🔷 Beta | GET, POST, PUT, DELETE | DLP sensor configuration |
+| `/cmdb/dlp/settings` | 🔷 Beta | GET, PUT | Global DLP settings |
 
-#### 10. DNS Filter (dnsfilter/) - ✅ Complete (2 endpoints)
+#### 10. DNS Filter (dnsfilter/) - 🔷 Beta (2 endpoints)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| `/cmdb/dnsfilter/domain-filter` | ✅ Complete | GET, POST, PUT, DELETE | Custom domain filtering lists |
-| `/cmdb/dnsfilter/profile` | ✅ Complete | GET, POST, PUT, DELETE | DNS filtering profiles |
+| `/cmdb/dnsfilter/domain-filter` | 🔷 Beta | GET, POST, PUT, DELETE | Custom domain filtering lists |
+| `/cmdb/dnsfilter/profile` | 🔷 Beta | GET, POST, PUT, DELETE | DNS filtering profiles |
 
-#### 11. Email Filter (emailfilter/) - ✅ Complete (8 endpoints)
+#### 11. Email Filter (emailfilter/) - 🔷 Beta (8 endpoints)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| `/cmdb/emailfilter/block-allow-list` | ✅ Complete | GET, POST, PUT, DELETE | Email sender block/allow lists |
-| `/cmdb/emailfilter/bword` | ✅ Complete | GET, POST, PUT, DELETE | Banned word filtering |
-| `/cmdb/emailfilter/dnsbl` | ✅ Complete | GET, POST, PUT, DELETE | DNS-based blacklist checking |
-| `/cmdb/emailfilter/fortishield` | ✅ Complete | GET, POST, PUT, DELETE | FortiShield spam filtering |
-| `/cmdb/emailfilter/iptrust` | ✅ Complete | GET, POST, PUT, DELETE | Trusted IP addresses |
-| `/cmdb/emailfilter/mheader` | ✅ Complete | GET, POST, PUT, DELETE | Email header filtering rules |
-| `/cmdb/emailfilter/options` | ✅ Complete | GET, PUT | Global email filter options |
-| `/cmdb/emailfilter/profile` | ✅ Complete | GET, POST, PUT, DELETE | Email filtering profiles |
+| `/cmdb/emailfilter/block-allow-list` | 🔷 Beta | GET, POST, PUT, DELETE | Email sender block/allow lists |
+| `/cmdb/emailfilter/bword` | 🔷 Beta | GET, POST, PUT, DELETE | Banned word filtering |
+| `/cmdb/emailfilter/dnsbl` | 🔷 Beta | GET, POST, PUT, DELETE | DNS-based blacklist checking |
+| `/cmdb/emailfilter/fortishield` | 🔷 Beta | GET, POST, PUT, DELETE | FortiShield spam filtering |
+| `/cmdb/emailfilter/iptrust` | 🔷 Beta | GET, POST, PUT, DELETE | Trusted IP addresses |
+| `/cmdb/emailfilter/mheader` | 🔷 Beta | GET, POST, PUT, DELETE | Email header filtering rules |
+| `/cmdb/emailfilter/options` | 🔷 Beta | GET, PUT | Global email filter options |
+| `/cmdb/emailfilter/profile` | 🔷 Beta | GET, POST, PUT, DELETE | Email filtering profiles |
 
-#### 12. Endpoint Control (endpoint-control/) - ✅ Complete (3 endpoints)
+#### 12. Endpoint Control (endpoint-control/) - 🔷 Beta (3 endpoints)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| `/cmdb/endpoint-control/fctems` | ✅ Complete | GET, PUT | FortiClient EMS integration (pre-allocated slots) |
-| `/cmdb/endpoint-control/fctems-override` | ✅ Complete | GET, PUT | EMS override configurations |
-| `/cmdb/endpoint-control/settings` | ✅ Complete | GET, PUT | Endpoint control settings |
+| `/cmdb/endpoint-control/fctems` | 🔷 Beta | GET, PUT | FortiClient EMS integration (pre-allocated slots) |
+| `/cmdb/endpoint-control/fctems-override` | 🔷 Beta | GET, PUT | EMS override configurations |
+| `/cmdb/endpoint-control/settings` | 🔷 Beta | GET, PUT | Endpoint control settings |
 
 #### 13. Ethernet OAM (ethernet-oam/) - 🔧 Hardware Required (1 endpoint)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
 | `/cmdb/ethernet-oam/cfm` | 🔧 Hardware | GET, POST, PUT, DELETE | Connectivity Fault Management (requires physical FortiGate) |
 
-#### 14. Extension Controller (extension-controller/) - ✅ Complete (6 endpoints)
+#### 14. Extension Controller (extension-controller/) - 🔷 Beta (6 endpoints)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| `/cmdb/extension-controller/dataplan` | ✅ Complete | GET, POST, PUT, DELETE | FortiExtender data plan configuration |
-| `/cmdb/extension-controller/extender` | ✅ Complete | GET, POST, PUT, DELETE | FortiExtender controller settings |
-| `/cmdb/extension-controller/extender-profile` | ✅ Complete | GET, POST, PUT, DELETE | FortiExtender profiles |
-| `/cmdb/extension-controller/extender-vap` | ✅ Complete | GET, POST, PUT, DELETE | FortiExtender WiFi VAP |
-| `/cmdb/extension-controller/fortigate` | ✅ Complete | GET, POST, PUT, DELETE | FortiGate controller configuration |
-| `/cmdb/extension-controller/fortigate-profile` | ✅ Complete | GET, POST, PUT, DELETE | FortiGate connector profiles |
+| `/cmdb/extension-controller/dataplan` | 🔷 Beta | GET, POST, PUT, DELETE | FortiExtender data plan configuration |
+| `/cmdb/extension-controller/extender` | 🔷 Beta | GET, POST, PUT, DELETE | FortiExtender controller settings |
+| `/cmdb/extension-controller/extender-profile` | 🔷 Beta | GET, POST, PUT, DELETE | FortiExtender profiles |
+| `/cmdb/extension-controller/extender-vap` | 🔷 Beta | GET, POST, PUT, DELETE | FortiExtender WiFi VAP |
+| `/cmdb/extension-controller/fortigate` | 🔷 Beta | GET, POST, PUT, DELETE | FortiGate controller configuration |
+| `/cmdb/extension-controller/fortigate-profile` | 🔷 Beta | GET, POST, PUT, DELETE | FortiGate connector profiles |
 
-#### 15. File Filter (file-filter/) - ✅ Complete (1 endpoint)
+#### 15. File Filter (file-filter/) - 🔷 Beta (1 endpoint)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| `/cmdb/file-filter/profile` | ✅ Complete | GET, POST, PUT, DELETE | File content filtering profiles |
+| `/cmdb/file-filter/profile` | 🔷 Beta | GET, POST, PUT, DELETE | File content filtering profiles |
 
----
-
-### Not Yet Implemented (25 Categories Remaining)
-
-**FortiOS 7.6.5 CMDB Categories Not Yet Implemented:**
-
-<details>
-<summary><strong>Click to expand full list of remaining CMDB categories</strong></summary>
-
-1. **endpoint-control** - Endpoint security and compliance
-2. **ethernet-oam** - Ethernet Operations, Administration, and Maintenance
-3. **ftp-proxy** - FTP proxy configuration
-4. **icap** - Internet Content Adaptation Protocol
-5. **ips** - Intrusion Prevention System sensors and custom signatures
-6. **log** - Logging configuration (disk, syslog, FortiAnalyzer settings)
-7. **monitoring** - SNMP and monitoring configuration
-8. **report** - Report settings and configuration
-9. **router** - 🔥 **HIGH PRIORITY** - Routing configuration (static, BGP, OSPF, policy routing)
-10. **rule** - Traffic shaping and QoS rules
-11. **sctp-filter** - Stream Control Transmission Protocol filtering
-12. **ssh-filter** - SSH protocol filtering
-13. **switch-controller** - FortiSwitch management and configuration
-14. **system** - 🔥 **HIGH PRIORITY** - System-wide settings (admin, interface, zone, HA, etc.)
-15. **telemetry-controller** - Telemetry and monitoring integration
-16. **user** - 🔥 **HIGH PRIORITY** - User authentication and LDAP/RADIUS servers
-17. **videofilter** - Video streaming filtering
-18. **virtual-patch** - Virtual patching for vulnerabilities
-19. **voip** - VoIP inspection and SIP configuration
-20. **vpn** - 🔥 **HIGH PRIORITY** - VPN configuration (IPsec, SSL-VPN, tunnels)
-21. **waf** - Web Application Firewall profiles
-22. **wanopt** - WAN optimization configuration
-23. **web-proxy** - Explicit web proxy configuration
-24. **webfilter** - 🔥 **HIGH PRIORITY** - Web filtering and URL categories
-25. **wireless-controller** - FortiAP wireless management
-26. **ztna** - Zero Trust Network Access configuration
-
-**Priority Categories for Next Release:**
-- router (routing protocols)
-- system (core system settings)
-- user (authentication servers)
-- vpn (VPN tunnels and SSL-VPN)
-- webfilter (URL filtering)
-
-</details>
+#### 16. Firewall (firewall/) - 🔷 Beta (29 endpoints)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| **DoS-policy** | ✅ Complete | GET, POST, PUT, DELETE | IPv4 DoS protection policies |
-| **DoS-policy6** | ✅ Complete | GET, POST, PUT, DELETE | IPv6 DoS protection policies |
-| **access-proxy** | ✅ Complete | GET, POST, PUT, DELETE | IPv4 reverse proxy/WAF |
-| **access-proxy6** | ✅ Complete | GET, POST, PUT, DELETE | IPv6 reverse proxy/WAF |
-| **access-proxy-ssh-client-cert** | ✅ Complete | GET, POST, PUT, DELETE | SSH client certificates |
-| **access-proxy-virtual-host** | ✅ Complete | GET, POST, PUT, DELETE | Virtual host configuration |
-| **ipmacbinding/setting** | ✅ Complete | GET, PUT | IP/MAC binding settings |
-| **ipmacbinding/table** | ✅ Complete | GET, POST, PUT, DELETE | IP/MAC binding table |
-| **schedule/group** | ✅ Complete | GET, POST, PUT, DELETE | Schedule groups |
-| **schedule/onetime** | ✅ Complete | GET, POST, PUT, DELETE | One-time schedules |
-| **schedule/recurring** | ✅ Complete | GET, POST, PUT, DELETE | Recurring schedules |
-| **service/category** | ✅ Complete | GET, POST, PUT, DELETE | Service categories |
-| **service/custom** | ✅ Complete | GET, POST, PUT, DELETE | Custom services |
-| **service/group** | ✅ Complete | GET, POST, PUT, DELETE | Service groups |
-| **shaper/per-ip-shaper** | ✅ Complete | GET, POST, PUT, DELETE | Per-IP traffic shaper |
-| **shaper/traffic-shaper** | ✅ Complete | GET, POST, PUT, DELETE | Shared traffic shaper |
-| **ssh/host-key** | ✅ Complete | GET, POST, PUT, DELETE | SSH proxy host keys |
-| **ssh/local-ca** | ✅ Complete | GET, POST, PUT, DELETE | SSH proxy local CA |
-| **ssh/local-key** | ✅ Complete | GET, POST, PUT, DELETE | SSH proxy local keys |
-| **ssh/setting** | ✅ Complete | GET, PUT | SSH proxy settings |
-| **ssl/setting** | ✅ Complete | GET, PUT | SSL proxy settings |
-| **wildcard-fqdn/custom** | ✅ Complete | GET, POST, PUT, DELETE | Wildcard FQDN addresses |
-| **wildcard-fqdn/group** | ✅ Complete | GET, POST, PUT, DELETE | Wildcard FQDN groups |
+| **DoS-policy** | 🔷 Beta | GET, POST, PUT, DELETE | IPv4 DoS protection policies |
+| **DoS-policy6** | 🔷 Beta | GET, POST, PUT, DELETE | IPv6 DoS protection policies |
+| **access-proxy** | 🔷 Beta | GET, POST, PUT, DELETE | IPv4 reverse proxy/WAF |
+| **access-proxy6** | 🔷 Beta | GET, POST, PUT, DELETE | IPv6 reverse proxy/WAF |
+| **access-proxy-ssh-client-cert** | 🔷 Beta | GET, POST, PUT, DELETE | SSH client certificates |
+| **access-proxy-virtual-host** | 🔷 Beta | GET, POST, PUT, DELETE | Virtual host configuration |
+| **ipmacbinding/setting** | 🔷 Beta | GET, PUT | IP/MAC binding settings |
+| **ipmacbinding/table** | 🔷 Beta | GET, POST, PUT, DELETE | IP/MAC binding table |
+| **schedule/group** | 🔷 Beta | GET, POST, PUT, DELETE | Schedule groups |
+| **schedule/onetime** | 🔷 Beta | GET, POST, PUT, DELETE | One-time schedules |
+| **schedule/recurring** | 🔷 Beta | GET, POST, PUT, DELETE | Recurring schedules |
+| **service/category** | 🔷 Beta | GET, POST, PUT, DELETE | Service categories |
+| **service/custom** | 🔷 Beta | GET, POST, PUT, DELETE | Custom services |
+| **service/group** | 🔷 Beta | GET, POST, PUT, DELETE | Service groups |
+| **shaper/per-ip-shaper** | 🔷 Beta | GET, POST, PUT, DELETE | Per-IP traffic shaper |
+| **shaper/traffic-shaper** | 🔷 Beta | GET, POST, PUT, DELETE | Shared traffic shaper |
+| **ssh/host-key** | 🔷 Beta | GET, POST, PUT, DELETE | SSH proxy host keys |
+| **ssh/local-ca** | 🔷 Beta | GET, POST, PUT, DELETE | SSH proxy local CA |
+| **ssh/local-key** | 🔷 Beta | GET, POST, PUT, DELETE | SSH proxy local keys |
+| **ssh/setting** | 🔷 Beta | GET, PUT | SSH proxy settings |
+| **ssl/setting** | 🔷 Beta | GET, PUT | SSL proxy settings |
+| **wildcard-fqdn/custom** | 🔷 Beta | GET, POST, PUT, DELETE | Wildcard FQDN addresses |
+| **wildcard-fqdn/group** | 🔷 Beta | GET, POST, PUT, DELETE | Wildcard FQDN groups |
 
 **Sub-categories Implemented:** 7 (ipmacbinding, schedule, service, shaper, ssh, ssl, wildcard-fqdn)  
 **Flat Endpoints Implemented:** 6 (DoS-policy, DoS-policy6, access-proxy, access-proxy6, access-proxy-ssh-client-cert, access-proxy-virtual-host)  
@@ -262,114 +223,278 @@ This document tracks the implementation status of FortiOS API endpoints in the F
 - ssl-server, ssl-ssh-profile - SSL/SSH profiles
 - And 60+ more endpoints...
 
-</details>
-
----
-
-#### 24. Virtual Patch (virtual-patch/) - ⏸️ Not Started
-Virtual patching for vulnerability protection
-
-#### 25. VoIP (voip/) - ⏸️ Not Started
-Voice over IP profiles and configuration
-
-#### 26. VPN (vpn/) - ⏸️ Not Started
-**HIGH PRIORITY** - IPsec and SSL VPN configuration
-
-#### 27. WAF (waf/) - ⏸️ Not Started
-Web Application Firewall profiles
-
-#### 28. WAN Optimization (wanopt/) - ⏸️ Not Started
-WAN optimization and caching
-
-#### 29. Web Proxy (web-proxy/) - ⏸️ Not Started
-Explicit web proxy configuration
-
-#### 30. Web Filter (webfilter/) - ⏸️ Not Started
-Web filtering profiles and URL filters
-
-#### 31. Wireless Controller (wireless-controller/) - ⏸️ Not Started
-FortiAP management and wireless configuration
-
-#### 32. ZTNA (ztna/) - ⏸️ Not Started
-Zero Trust Network Access configuration
-
-</details>
-
----
-
-## 📝 Log Endpoints
-
+#### 17. ICAP (icap/) - 🔷 Beta (3 endpoints)
 | Endpoint | Status | Methods | Notes |
 |----------|--------|---------|-------|
-| `/log/disk/*` | 🔷 Beta | GET | Traffic, event, virus logs from disk |
-| `/log/fortianalyzer/*` | 🔷 Beta | GET | Logs from FortiAnalyzer |
-| `/log/forticloud/*` | 🔷 Beta | GET | Logs from FortiCloud |
-| `/log/memory/*` | 🔷 Beta | GET | Logs from memory |
-| `/log/search` | 🔷 Beta | GET, POST, DELETE | Log search sessions |
+| `/cmdb/icap/profile` | 🔷 Beta | GET, POST, PUT, DELETE | ICAP profiles with 30+ parameters |
+| `/cmdb/icap/server` | 🔷 Beta | GET, POST, PUT, DELETE | ICAP server configuration |
+| `/cmdb/icap/server-group` | 🔷 Beta | GET, POST, PUT, DELETE | ICAP server groups |
 
-**Supported Log Types:**
-- Traffic logs (forward, local, sniffer, fortiview)
-- Event logs (system, router, VPN, user, etc.)
-- Security logs (virus, webfilter, IPS, etc.)
-- Raw log format support
+**Features:**
+- Complete parameter coverage from FortiOS 7.6.5 API
+- Request/response modification support
+- SSL/TLS ICAP connections
+- Preview, streaming, and bypass options
+
+#### 18. IPS (ips/) - 🔷 Beta (8 endpoints)
+| Endpoint | Status | Methods | Notes |
+|----------|--------|---------|-------|
+| `/cmdb/ips/custom` | 🔷 Beta | GET, POST, PUT, DELETE | Custom IPS signatures |
+| `/cmdb/ips/decoder` | 🔷 Beta | GET, POST, PUT, DELETE | Protocol decoders |
+| `/cmdb/ips/global` | 🔷 Beta | GET, PUT | Global IPS settings (singleton) |
+| `/cmdb/ips/rule` | 🔷 Beta | GET, POST, PUT, DELETE | IPS rules |
+| `/cmdb/ips/rule-settings` | 🔷 Beta | GET, POST, PUT, DELETE | IPS rule settings |
+| `/cmdb/ips/sensor` | 🔷 Beta | GET, POST, PUT, DELETE | IPS sensors (main profiles) |
+| `/cmdb/ips/settings` | 🔷 Beta | GET, PUT | VDOM IPS settings (singleton) |
+| `/cmdb/ips/view-map` | 🔷 Beta | GET, POST, PUT, DELETE | IPS view-map configuration |
+
+**Features:**
+- Custom signature creation
+- Protocol decoder configuration
+- Sensor-based IPS profiles
+- Rate-based and anomaly-based detection
+
+#### 19. Log (log/) - 🔷 Beta (56 endpoints)
+| Endpoint | Status | Methods | Notes |
+|----------|--------|---------|-------|
+| **disk/filter** | 🔷 Beta | GET, PUT | Disk log filtering (12 params) |
+| **disk/setting** | 🔷 Beta | GET, PUT | Disk log settings (28 params) |
+| **memory/filter** | 🔷 Beta | GET, PUT | Memory log filtering (12 params) |
+| **memory/global-setting** | 🔷 Beta | GET, PUT | Memory log global settings (4 params) |
+| **memory/setting** | 🔷 Beta | GET, PUT | Memory log settings (1 param) |
+| **fortianalyzer-cloud/filter** | 🔷 Beta | GET, PUT | FortiAnalyzer Cloud log filter |
+| **fortianalyzer-cloud/override-filter** | 🔷 Beta | GET, PUT | FAC override filter |
+| **fortianalyzer-cloud/override-setting** | 🔷 Beta | GET, PUT | FAC override settings |
+| **fortianalyzer-cloud/setting** | 🔷 Beta | GET, PUT | FAC log settings |
+| **fortianalyzer/filter** | 🔷 Beta | GET, PUT | FortiAnalyzer log filter |
+| **fortianalyzer/override-filter** | 🔷 Beta | GET, PUT | FA override filter |
+| **fortianalyzer/override-setting** | 🔷 Beta | GET, PUT | FA override settings |
+| **fortianalyzer/setting** | 🔷 Beta | GET, PUT | FA log settings |
+| **fortianalyzer2/** | 🔷 Beta | GET, PUT | FortiAnalyzer 2 (4 endpoints) |
+| **fortianalyzer3/** | 🔷 Beta | GET, PUT | FortiAnalyzer 3 (4 endpoints) |
+| **fortiguard/filter** | 🔷 Beta | GET, PUT | FortiGuard log filter |
+| **fortiguard/override-filter** | 🔷 Beta | GET, PUT | FG override filter |
+| **fortiguard/override-setting** | 🔷 Beta | GET, PUT | FG override settings |
+| **fortiguard/setting** | 🔷 Beta | GET, PUT | FG log settings |
+| **null-device/filter** | 🔷 Beta | GET, PUT | Null device log filter (12 params) |
+| **null-device/setting** | 🔷 Beta | GET, PUT | Null device settings (1 param) |
+| **syslogd/filter** | 🔷 Beta | GET, PUT | Syslog filter (12 params) |
+| **syslogd/override-filter** | 🔷 Beta | GET, PUT | Syslog override filter (12 params) |
+| **syslogd/override-setting** | 🔷 Beta | GET, PUT | Syslog override settings (18 params) |
+| **syslogd/setting** | 🔷 Beta | GET, PUT | Syslog settings (17 params) |
+| **syslogd2/** | 🔷 Beta | GET, PUT | Syslog server 2 (4 endpoints) |
+| **syslogd3/** | 🔷 Beta | GET, PUT | Syslog server 3 (4 endpoints) |
+| **syslogd4/** | 🔷 Beta | GET, PUT | Syslog server 4 (4 endpoints) |
+| **tacacs+accounting/filter** | 🔷 Beta | GET, PUT | TACACS+ accounting filter (3 params) |
+| **tacacs+accounting/setting** | 🔷 Beta | GET, PUT | TACACS+ accounting settings (7 params) |
+| **tacacs+accounting2/** | 🔷 Beta | GET, PUT | TACACS+ server 2 (2 endpoints) |
+| **tacacs+accounting3/** | 🔷 Beta | GET, PUT | TACACS+ server 3 (2 endpoints) |
+| **webtrends/filter** | 🔷 Beta | GET, PUT | WebTrends log filter (12 params) |
+| **webtrends/setting** | 🔷 Beta | GET, PUT | WebTrends settings (2 params) |
+| **custom-field** | 🔷 Beta | GET, POST, PUT, DELETE | Custom log fields (CRUD) |
+| **eventfilter** | 🔷 Beta | GET, PUT | Event filter configuration (17 params) |
+| **gui-display** | 🔷 Beta | GET, PUT | GUI display settings (3 params) |
+| **setting** | 🔷 Beta | GET, PUT | General log settings (29 params) |
+| **threat-weight** | 🔷 Beta | GET, PUT | Threat weight settings (11 params) |
+
+**Architecture:**
+- **Nested object pattern** for sub-categories: `fgt.api.cmdb.log.disk.filter.get()`
+- **51 nested endpoints** across 9 intermediate classes
+- **5 singleton endpoints** at root level
+- Test Coverage: 12 test files, 47 test cases (100% pass rate)
+
+**Key Features:**
+- Multiple FortiAnalyzer server support (1/2/3)
+- Multiple syslog server support (1/2/3/4)
+- Multiple TACACS+ accounting server support (1/2/3)
+- Custom field management for log enrichment
+- Comprehensive filtering and override capabilities
+
+#### 20. Monitoring (monitoring/) - 🔷 Beta (1 endpoint)
+| Endpoint | Status | Methods | Notes |
+|----------|--------|---------|-------|
+| `/cmdb/monitoring/npu-hpe` | 🔷 Beta | GET, PUT | NPU-HPE monitoring configuration (3 params) |
+
+**Features:**
+- NPU-HPE performance monitoring settings
+- Interval, multipliers, and status configuration
+- Requires hardware NPU support
+
+#### 21. Report (report/) - 🔷 Beta (2 endpoints)
+| Endpoint | Status | Methods | Notes |
+|----------|--------|---------|-------|
+| `/cmdb/report/layout` | 🔷 Beta | GET, POST, PUT, DELETE | Report layouts with CRUD (17 params) |
+| `/cmdb/report/setting` | 🔷 Beta | GET, PUT | Report settings (5 params) |
+
+**Features:**
+- Custom report layout creation
+- Email scheduling support
+- PDF report generation
+- FortiView and web browsing report settings
 
 ---
 
-## 🔍 Monitor Endpoints
+### Not Yet Implemented (22 Categories Remaining)
 
-⏸️ **Status:** Not yet implemented (0 of 29 categories)
+**FortiOS 7.6.5 CMDB Categories Not Yet Implemented:**
 
 <details>
-<summary><strong>Click to expand full list of Monitor API categories</strong></summary>
+<summary><strong>Click to expand full list of remaining CMDB categories</strong></summary>
 
-### All Monitor Categories (29 total)
+1. **ftp-proxy** - FTP proxy configuration
+2. **router** - 🔥 **HIGH PRIORITY** - Routing configuration (static, BGP, OSPF, policy routing)
+3. **rule** - Traffic shaping and QoS rules
+4. **sctp-filter** - Stream Control Transmission Protocol filtering
+5. **ssh-filter** - SSH protocol filtering
+6. **switch-controller** - FortiSwitch management and configuration
+7. **system** - 🔥 **HIGH PRIORITY** - System-wide settings (admin, interface, zone, HA, etc.)
+8. **telemetry-controller** - Telemetry and monitoring integration
+9. **user** - 🔥 **HIGH PRIORITY** - User authentication and LDAP/RADIUS servers
+10. **videofilter** - Video streaming filtering
+11. **virtual-patch** - Virtual patching for vulnerabilities
+12. **voip** - VoIP inspection and SIP configuration
+13. **vpn** - 🔥 **HIGH PRIORITY** - VPN configuration (IPsec, SSL-VPN, tunnels)
+14. **waf** - Web Application Firewall profiles
+15. **wanopt** - WAN optimization configuration
+16. **web-proxy** - Explicit web proxy configuration
+17. **webfilter** - 🔥 **HIGH PRIORITY** - Web filtering and URL categories
+18. **wireless-controller** - FortiAP wireless management
+19. **ztna** - Zero Trust Network Access configuration
 
-1. **azure** - Azure SD-WAN monitoring
-2. **casb** - CASB monitoring and statistics
-3. **endpoint-control** - Endpoint status and compliance monitoring
-4. **extender-controller** - FortiExtender status
-5. **extension-controller** - Extension controller monitoring
-6. **firewall** - Firewall statistics (sessions, policies, addresses)
-7. **firmware** - Firmware version and update status
-8. **fortiguard** - FortiGuard services status
-9. **fortiview** - FortiView statistics and data
-10. **geoip** - GeoIP database information
-11. **ips** - IPS statistics and events
-12. **license** - License information and status
-13. **log** - Log statistics and disk usage
-14. **network** - Network statistics and ARP tables
-15. **registration** - Device registration status
-16. **router** - Routing table and BGP/OSPF status
-17. **sdwan** - SD-WAN health and performance metrics
-18. **service** - Service availability and status
-19. **switch-controller** - FortiSwitch monitoring
-20. **system** - **HIGH PRIORITY** - System resources (CPU, memory, disk, interfaces)
-21. **user** - Active users and authentication sessions
-22. **utm** - UTM statistics (AV, web filter, etc.)
-23. **videofilter** - Video filtering statistics
-24. **virtual-wan** - Virtual WAN monitoring
-25. **vpn** - **HIGH PRIORITY** - VPN tunnel status and statistics
-26. **vpn-certificate** - VPN certificate status
-27. **wanopt** - WAN optimization statistics
-28. **web-ui** - Web UI session information
-29. **webcache** - Web cache statistics
-30. **webfilter** - Web filter statistics
-31. **webproxy** - Web proxy statistics
-32. **wifi** - WiFi controller statistics
+**Priority Categories for Next Release:**
+- router (routing protocols)
+- system (core system settings)
+- user (authentication servers)
+- vpn (VPN tunnels and SSL-VPN)
+- webfilter (URL filtering)
 
 </details>
 
 ---
 
-## ⚙️ Service Endpoints
+## 📝 Configuration API (CMDB) - Complete List
 
-✅ **Status:** All 3 categories implemented (100% coverage)
+**FortiOS 7.6.5 Configuration API - All 40 Categories:**
 
-| Endpoint | Status | Methods | Notes |
-|----------|--------|---------|-------|
-| `/service/sniffer` | 🔷 Beta | GET, POST, DELETE | Packet capture |
-| `/service/security-rating` | 🔷 Beta | GET | Security Fabric rating |
-| `/service/system` | 🔷 Beta | Various | System operations (reboot, backup, etc.) |
+| # | Category | Status | Notes |
+|---|----------|--------|-------|
+| 1 | alertemail | ✅ Implemented | Email alerts |
+| 2 | antivirus | ✅ Implemented | Antivirus profiles |
+| 3 | application | ✅ Implemented | Application control |
+| 4 | authentication | ✅ Implemented | Authentication schemes |
+| 5 | automation | ✅ Implemented | Automation stitch |
+| 6 | casb | ✅ Implemented | CASB profiles |
+| 7 | certificate | ✅ Implemented | Certificate management |
+| 8 | diameter-filter | ✅ Implemented | Diameter filtering |
+| 9 | dlp | ✅ Implemented | Data loss prevention |
+| 10 | dnsfilter | ✅ Implemented | DNS filtering |
+| 11 | emailfilter | ✅ Implemented | Email filtering |
+| 12 | endpoint-control | ✅ Implemented | Endpoint control |
+| 13 | ethernet-oam | ✅ Implemented | Ethernet OAM |
+| 14 | extension-controller | ✅ Implemented | FortiExtender |
+| 15 | file-filter | ✅ Implemented | File filtering |
+| 16 | firewall | ✅ Implemented | Firewall objects & policies |
+| 17 | ftp-proxy | ⏸️ Not Started | FTP proxy |
+| 18 | icap | ✅ Implemented | ICAP integration |
+| 19 | ips | ✅ Implemented | IPS sensors |
+| 20 | log | ✅ Implemented | Log configuration |
+| 21 | monitoring | ✅ Implemented | Monitoring config |
+| 22 | report | ✅ Implemented | Report configuration |
+| 23 | router | ⏸️ Not Started | Routing protocols |
+| 24 | rule | ⏸️ Not Started | Traffic rules |
+| 25 | sctp-filter | ⏸️ Not Started | SCTP filtering |
+| 26 | ssh-filter | ⏸️ Not Started | SSH filtering |
+| 27 | switch-controller | ⏸️ Not Started | FortiSwitch |
+| 28 | system | ⏸️ Not Started | System settings |
+| 29 | telemetry-controller | ⏸️ Not Started | Telemetry |
+| 30 | user | ⏸️ Not Started | User management |
+| 31 | videofilter | ⏸️ Not Started | Video filtering |
+| 32 | virtual-patch | ⏸️ Not Started | Virtual patching |
+| 33 | voip | ⏸️ Not Started | VoIP profiles |
+| 34 | vpn | ⏸️ Not Started | VPN configuration |
+| 35 | waf | ⏸️ Not Started | WAF profiles |
+| 36 | wanopt | ⏸️ Not Started | WAN optimization |
+| 37 | web-proxy | ⏸️ Not Started | Web proxy |
+| 38 | webfilter | ⏸️ Not Started | Web filtering |
+| 39 | wireless-controller | ⏸️ Not Started | FortiAP |
+| 40 | ztna | ⏸️ Not Started | ZTNA |
+
+**Implementation Status:**
+- ✅ **Implemented:** 18 categories (45%)
+- ⏸️ **Not Started:** 22 categories (55%)
+
+---
+
+## 📊 Log API - FortiOS 7.6.5
+
+**Status:** 🔷 Beta - 5 of 5 categories implemented (100%)
+
+| # | Category | Status | Notes |
+|---|----------|--------|-------|
+| 1 | disk | 🔷 Beta | Read logs from disk |
+| 2 | fortianalyzer | 🔷 Beta | Read logs from FortiAnalyzer |
+| 3 | memory | 🔷 Beta | Read logs from memory |
+| 4 | forticloud | 🔷 Beta | Read logs from FortiCloud |
+| 5 | search | 🔷 Beta | Log search sessions |
+
+**Note:** The `/log/*` API endpoints are for **reading logs**, not configuring logging. For logging configuration, use `/cmdb/log/*` endpoints (already implemented - see category #19 above). All endpoints remain in beta until v1.0.0.
+
+---
+
+## 🔍 Monitor API - FortiOS 7.6.5
+
+**Status:** 🔷 Beta - 1 of 33 categories implemented (3%)
+
+| # | Category | Status | Notes |
+|---|----------|--------|-------|
+| 1 | azure | ⏸️ Not Started | Azure SD-WAN monitoring |
+| 2 | casb | ⏸️ Not Started | CASB statistics |
+| 3 | endpoint-control | ⏸️ Not Started | Endpoint monitoring |
+| 4 | extender-controller | ⏸️ Not Started | FortiExtender status |
+| 5 | extension-controller | ⏸️ Not Started | Extension controller |
+| 6 | firewall | ⏸️ Not Started | Firewall statistics |
+| 7 | firmware | ⏸️ Not Started | Firmware status |
+| 8 | fortiguard | ⏸️ Not Started | FortiGuard services |
+| 9 | fortiview | ⏸️ Not Started | FortiView data |
+| 10 | geoip | ⏸️ Not Started | GeoIP database |
+| 11 | ips | ⏸️ Not Started | IPS statistics |
+| 12 | license | ⏸️ Not Started | License information |
+| 13 | log | ⏸️ Not Started | Log statistics |
+| 14 | network | ⏸️ Not Started | Network statistics |
+| 15 | registration | ⏸️ Not Started | Device registration |
+| 16 | router | ⏸️ Not Started | Routing tables |
+| 17 | sdwan | ⏸️ Not Started | SD-WAN metrics |
+| 18 | service | ⏸️ Not Started | Service status |
+| 19 | switch-controller | ⏸️ Not Started | FortiSwitch monitoring |
+| 20 | system | 🔷 Beta | System resources |
+| 21 | user | ⏸️ Not Started | Active users |
+| 22 | utm | ⏸️ Not Started | UTM statistics |
+| 23 | videofilter | ⏸️ Not Started | Video filter stats |
+| 24 | virtual-wan | ⏸️ Not Started | Virtual WAN |
+| 25 | vpn | ⏸️ Not Started | VPN status |
+| 26 | vpn-certificate | ⏸️ Not Started | VPN certificates |
+| 27 | wanopt | ⏸️ Not Started | WAN optimization |
+| 28 | web-ui | ⏸️ Not Started | Web UI sessions |
+| 29 | webcache | ⏸️ Not Started | Web cache stats |
+| 30 | webfilter | ⏸️ Not Started | Web filter stats |
+| 31 | webproxy | ⏸️ Not Started | Web proxy stats |
+| 32 | wifi | ⏸️ Not Started | WiFi statistics |
+
+**Note:** Monitor API category #20 (system) partially implemented via monitoring/npu-hpe configuration endpoint.
+
+---
+
+## ⚙️ Service API - FortiOS 7.6.5
+
+**Status:** 🔷 Beta - 3 of 3 categories implemented (100%)
+
+| # | Category | Status | Methods | Notes |
+|---|----------|--------|---------|-------|
+| 1 | sniffer | 🔷 Beta | GET, POST, DELETE | Packet capture |
+| 2 | security-rating | 🔷 Beta | GET | Security Fabric rating |
+| 3 | system | 🔷 Beta | Various | System operations (reboot, backup) |
+
+**Note:** All service endpoints remain in beta until v1.0.0 with comprehensive unit test coverage.
 
 ---
 
@@ -379,20 +504,26 @@ Zero Trust Network Access configuration
 
 | API Type | Implemented | Total Available | Coverage |
 |----------|-------------|-----------------|----------|
-| **Configuration (CMDB)** | 15 categories | 40 categories | 38% |
-| **Monitoring** | 0 categories | 28 categories | 0% |
+| **Configuration (CMDB)** | 18 categories | 40 categories | 45% |
+| **Monitoring** | 1 category (partial) | 33 categories | 3% |
 | **Logging** | 5 categories | 5 categories | 100% |
 | **Services** | 3 categories | 3 categories | 100% |
-| **Overall** | **23 categories** | **76 categories** | **30%** |
+| **Overall** | **27 categories** | **77 categories** | **35%** |
 
 **Endpoint Level Detail:**
-- **CMDB Endpoints:** 74+ endpoints implemented across 15 categories
-- **Log Endpoints:** 42 methods (100% complete)
-- **Service Endpoints:** 21 methods (100% complete)
-- **Total Methods:** 135+ API methods available
+- **CMDB Endpoints:** 150+ endpoints implemented across 18 categories
+- **Log Endpoints:** 42 methods (configuration only)
+- **Service Endpoints:** 21 methods  
+- **Total Methods:** 200+ API methods available
 
-**Recent Additions (v0.3.8):**
-- ✅ raw_json parameter added to all 45+ API methods
+**Recent Additions (v0.3.10-beta):**
+- ✅ **Log category:** 56 endpoints with nested object pattern (disk, memory, fortianalyzer, syslogd, tacacs+, webtrends)
+- ✅ **Monitoring category:** NPU-HPE configuration
+- ✅ **Report category:** Layout management and settings
+- ✅ **ICAP category:** Complete with 30+ parameters per endpoint
+- ✅ **IPS category:** All 8 endpoints (custom signatures, sensors, decoders, rules)
+- ✅ **Firewall category:** 29 endpoints with nested object pattern
+- ✅ raw_json parameter added to all 200+ API methods
 - ✅ Code quality: 100% PEP 8 compliance (black + isort + flake8)
 - ✅ Comprehensive error handling with 387 error codes
 - ✅ Full type hints and docstrings

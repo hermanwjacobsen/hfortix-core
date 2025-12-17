@@ -7,13 +7,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - December 17, 2025
+- **Log Configuration Category** - Complete logging configuration (56 endpoints):
+  - Nested object pattern: `fgt.api.cmdb.log.disk.filter.get()`
+  - **disk/** - Disk logging (filter, setting)
+  - **memory/** - Memory logging (filter, global-setting, setting)
+  - **fortianalyzer-cloud/** - FortiAnalyzer Cloud (4 endpoints)
+  - **fortianalyzer/** - FortiAnalyzer 1/2/3 servers (12 endpoints total)
+  - **fortiguard/** - FortiGuard logging (4 endpoints)
+  - **null-device/** - Null device logging (filter, setting)
+  - **syslogd/** - Syslog servers 1/2/3/4 (16 endpoints total)
+  - **tacacs+accounting/** - TACACS+ accounting 1/2/3 (6 endpoints total)
+  - **webtrends/** - WebTrends logging (filter, setting)
+  - **Singleton endpoints** - custom-field (CRUD), eventfilter, gui-display, setting, threat-weight
+  - Test coverage: 12 test files, 47 test cases (100% pass rate)
+
+- **ICAP Category** - Internet Content Adaptation Protocol (3 endpoints):
+  - **profile** - ICAP profiles (30+ parameters)
+  - **server** - ICAP server configuration with SSL/TLS support
+  - **server-group** - ICAP server groups for load balancing
+
+- **IPS Category** - Intrusion Prevention System (8 endpoints):
+  - **custom** - Custom IPS signatures (CRUD)
+  - **decoder** - Protocol decoders (CRUD)
+  - **global** - Global IPS settings (singleton)
+  - **rule** - IPS rules (CRUD)
+  - **rule-settings** - IPS rule settings (CRUD)
+  - **sensor** - IPS sensors/profiles (CRUD)
+  - **settings** - VDOM IPS settings (singleton)
+  - **view-map** - IPS view-map configuration (CRUD)
+
+- **Monitoring Category** - System monitoring configuration (1 endpoint):
+  - **npu-hpe** - NPU-HPE performance monitoring (3 parameters)
+
+- **Report Category** - Report configuration (2 endpoints):
+  - **layout** - Report layouts with CRUD (17 parameters)
+  - **setting** - Report settings (5 parameters)
+
+### Changed
+- **Module Creation Prompt** - Added nested object pattern documentation
+  - Complete examples of intermediate classes
+  - Property decorators with lazy loading
+  - Usage patterns for nested vs flat endpoints
+
+### Improved
+- **API Coverage** - Now at 33% overall (27 of 82 categories):
+  - CMDB: 18 of 40 categories (45%)
+  - Monitor: 1 of 33 categories (3%)
+  - Log: 5 of 5 categories (100% - all beta until v1.0.0)
+  - Service: 3 of 3 categories (100% - all beta until v1.0.0)
+  - Total: 150+ endpoints, 200+ API methods
+
 ### Planned
-- Complete CMDB endpoint coverage (15 of 40 categories implemented)
-- Monitor endpoints implementation (0 of 28 categories)
+- Complete CMDB endpoint coverage (18 of 40 categories implemented)
+- Monitor endpoints implementation (1 of 33 categories)
 - FortiManager module
 - FortiAnalyzer module
 - Async support
 - CLI tool
+- Version 1.0.0: Comprehensive unit tests and production-ready status
 
 ## [0.3.10] - 2025-12-16
 

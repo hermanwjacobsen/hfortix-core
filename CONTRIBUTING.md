@@ -282,43 +282,50 @@ def create(self, data, vdom='root', **params):
 
 ## 🧪 Testing
 
-### Integration Tests
+### Current Status
 
-- Tests require actual FortiGate access
+**Beta Phase (v0.3.x):**
+- All endpoints tested against live FortiGate devices during development
+- Integration testing performed for all implemented features
+- Unit test framework planned for v1.0.0 release
+
+### Testing Requirements
+
+- Access to FortiGate device (physical or VM)
+- Valid API token with appropriate permissions
 - Use `.env` file for credentials (never commit credentials!)
-- Follow existing test file patterns
+- Test on non-production environment first
 
-### Test File Structure
+### Testing Best Practices
 
-```python
-import sys
-from pathlib import Path
+1. **Verify Endpoint Behavior**
+   - Test all CRUD operations (create, read, update, delete)
+   - Verify parameter validation
+   - Check error handling
 
-# Add project root to path
-sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+2. **Test Data Patterns**
+   - Test with dictionary pattern: `create(data_dict={...})`
+   - Test with keyword pattern: `create(name='...', param='...')`
+   - Test with mixed pattern: `create(data_dict=base, override=value)`
 
-from init_client import fgt
+3. **Check Edge Cases**
+   - Test with special characters in names
+   - Test with maximum field lengths
+   - Test with invalid values (expect appropriate errors)
+   - Test raw_json parameter where applicable
 
-def test_endpoint():
-    """Test description"""
-    print("=" * 60)
-    print("Testing: {endpoint_name}")
-    print("=" * 60)
-    
-    # Test operations
-    # ...
-    
-if __name__ == '__main__':
-    test_endpoint()
-```
+4. **Verify Response Handling**
+   - Check successful responses
+   - Check error responses and exception types
+   - Verify data structure matches expectations
 
 ## 🐛 Debugging Tips
 
-- Use `print()` for quick debugging in test files
+- Enable debug logging: `FortiOS(host='...', token='...', debug='DEBUG')`
 - Check FortiOS logs for API errors
 - Verify VDOM settings if commands fail
 - Test on non-production FortiGate first
-- Check API version compatibility
+- Check API version compatibility (SDK targets FortiOS 7.6.5)
 
 ## 📚 Resources
 

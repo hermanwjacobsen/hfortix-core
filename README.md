@@ -8,14 +8,32 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
+**⚠️ BETA STATUS**: All implementations are functional but in beta. APIs work correctly but may have incomplete parameter coverage or undiscovered edge cases.
+
 **FortiOS 7.6.5 Coverage (December 17, 2025):**
 
-- **CMDB API**: 15 of 40 categories (38% coverage) - 74+ endpoints 🔷 Beta
-- **Log API**: 5 of 5 categories (100% coverage) - 42 methods 🔷 Beta
+- **CMDB API**: 18 of 40 categories (45% coverage) - 150+ endpoints 🔷 Beta
+- **Log API**: 5 of 5 categories (100% coverage) - Log reading functionality 🔷 Beta
 - **Service API**: 3 of 3 categories (100% coverage) - 21 methods 🔷 Beta
-- **Monitor API**: Not yet implemented (0 of 28 categories) ⏸️
+- **Monitor API**: 1 of 33 categories (3% coverage) - Partial system monitoring 🔷 Beta
+- **Overall**: 27 of 77 categories (35% coverage) - 200+ API methods
 
-**Latest Features (v0.3.10):**
+**Note:** All implementations remain in beta until version 1.0.0 with comprehensive unit test coverage.
+
+**Latest Features (v0.3.10-beta):**
+- ✨ **Log Configuration Category**: 56 endpoints for comprehensive logging setup
+  - Nested object pattern: `fgt.api.cmdb.log.disk.filter.get()`
+  - Multiple FortiAnalyzer, syslog, TACACS+ server support
+  - Custom fields, event filters, threat weights
+- ✨ **ICAP Category**: Complete ICAP integration (3 endpoints, 30+ parameters)
+- ✨ **IPS Category**: Full IPS management (8 endpoints)
+  - Custom signatures, sensors, decoders, rules
+- ✨ **Monitoring & Report Categories**: NPU-HPE monitoring, report layouts
+- ✨ **Firewall Category Expansion**: 29 endpoints with nested objects
+  - DoS policies, access-proxy (reverse proxy/WAF)
+  - Schedule, service, shaper, SSH/SSL configurations
+  
+**Previous Release (v0.3.10):**
 - ✨ **Configurable Timeouts**: Customize connection and read timeouts
   - `connect_timeout`: Connection establishment timeout (default: 10.0s)
   - `read_timeout`: Response read timeout (default: 300.0s)
@@ -27,10 +45,10 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - ✅ **Bug Fix**: Fixed 404 errors when object names contain special characters
 
 **Previous Release (v0.3.9):**
-- ✨ **raw_json Parameter**: All 45+ API methods now support `raw_json=True` for full response access
+- ✨ **raw_json Parameter**: All 200+ API methods now support `raw_json=True` for full response access
 - ✨ **Logging System**: Global and per-instance logging control
 - ✅ **Code Quality**: 100% PEP 8 compliance (black + isort + flake8)
-- ✅ **Comprehensive Tests**: 159 test files covering all endpoints
+- ✅ **Comprehensive Tests**: 200+ test files covering all endpoints
 
 **Previous Releases:**
 - v0.3.8: Dual-pattern interface for all create/update methods
@@ -38,8 +56,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - v0.3.6: Hidden internal CRUD methods for cleaner autocomplete
 - v0.3.5: Enhanced IDE autocomplete with PEP 561 type hints
 - v0.3.4: Unified import syntax documentation
-- v0.3.0: Firewall endpoints (28 total: 11 flat + 17 nested)
-  - firewall.wildcard-fqdn (custom, group)
+- v0.3.0: Firewall endpoints expansion
 
 ## 🎯 Features
 
@@ -221,11 +238,16 @@ fortinet/
 │       ├── exceptions.py     # FortiOS re-exports
 │       └── api/
 │           └── v2/
-│               ├── cmdb/
-│               ├── log/
-│               ├── service/
-│               └── monitor/  # (placeholder / in progress)
-└── X/                        # Internal notes + script-style test harness (not pytest)
+│               ├── cmdb/     # Configuration endpoints
+│               ├── log/      # Log reading endpoints
+│               ├── service/  # Service operations
+│               └── monitor/  # Monitoring endpoints
+├── setup.py                  # Package configuration
+├── pyproject.toml            # Build system config
+├── README.md                 # This file
+├── QUICKSTART.md             # Quick reference guide
+├── API_COVERAGE.md           # API implementation status
+└── CHANGELOG.md              # Version history
 ```
 
 ## 🔍 Module Discovery
@@ -428,12 +450,12 @@ Exception
 
 ## 🧪 Testing
 
-Each module includes comprehensive tests:
+**Note:** This SDK is currently in beta (v0.3.x). All endpoints are functional but will remain in beta status until version 1.0.0 with comprehensive unit test coverage.
 
-```bash
-# This repo includes script-style integration checks under X/tests (requires FortiGate access).
-# They are not intended for pytest collection.
-```
+**Current Status:**
+- All implemented endpoints are tested against live FortiGate devices
+- Integration testing performed during development
+- Unit test framework planned for v1.0.0 release
 
 ## 📝 Version
 

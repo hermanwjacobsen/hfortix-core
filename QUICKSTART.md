@@ -135,9 +135,7 @@ fgt.service.sniffer.start(data_dict={'mkey': 'capture1'})
 fgt.service.sniffer.start(mkey='capture1')  # Same result
 ```
 
-**Available on:** 43 methods across 13 categories (100% coverage)
-
-See [Full Documentation](X/docs/migration/DUAL_PATTERN_MIGRATION.md) for complete details.
+**Available on:** All create/update methods across all implemented categories
 
 ## Exception Quick Reference
 
