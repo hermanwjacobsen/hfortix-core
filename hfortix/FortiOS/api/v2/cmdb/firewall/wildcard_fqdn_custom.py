@@ -6,8 +6,6 @@ Config global/VDOM Wildcard FQDN address.
 
 from typing import Any, Dict, Optional
 
-from hfortix.FortiOS.http_client import encode_path_component
-
 from .....http_client import HTTPResponse
 
 
@@ -91,17 +89,16 @@ class Custom:
         self,
         payload_dict: Optional[Dict[str, Any]] = None,
         name: Optional[str] = None,
-        wildcard_fqdn: str = None,
-        color: int = None,
-        comment: str = None,
-        visibility: str = None,
-        uuid: str = None,
+        wildcard_fqdn: Optional[str] = None,
+        color: Optional[int] = None,
+        comment: Optional[str] = None,
+        visibility: Optional[str] = None,
+        uuid: Optional[str] = None,
         vdom=None,
         raw_json: bool = False,
     ) -> HTTPResponse:
         """
         Create wildcard FQDN custom address.
-
 
         Supports two usage patterns:
         1. Pass data dict: create(payload_dict={'key': 'value'}, vdom='root')
@@ -175,17 +172,16 @@ class Custom:
         self,
         name: str,
         payload_dict: Optional[Dict[str, Any]] = None,
-        wildcard_fqdn: str = None,
-        color: int = None,
-        comment: str = None,
-        visibility: str = None,
-        uuid: str = None,
+        wildcard_fqdn: Optional[str] = None,
+        color: Optional[int] = None,
+        comment: Optional[str] = None,
+        visibility: Optional[str] = None,
+        uuid: Optional[str] = None,
         vdom=None,
         raw_json: bool = False,
     ) -> HTTPResponse:
         """
         Update wildcard FQDN custom address.
-
 
         Supports two usage patterns:
         1. Pass data dict: update(payload_dict={'key': 'value'}, vdom='root')
@@ -271,7 +267,7 @@ class Custom:
             "cmdb", f"firewall.wildcard-fqdn/custom/{name}", vdom=vdom, raw_json=raw_json
         )
 
-    def exists(self, name: str, vdom=None) -> HTTPResponse:
+    def exists(self, name: str, vdom=None) -> bool:
         """
         Check if a wildcard FQDN custom address exists.
 

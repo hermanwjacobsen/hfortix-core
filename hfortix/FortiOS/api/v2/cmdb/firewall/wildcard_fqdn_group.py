@@ -4,7 +4,7 @@ FortiOS API endpoint: firewall.wildcard-fqdn/group
 Config global Wildcard FQDN address groups.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from hfortix.FortiOS.http_client import encode_path_component
 
@@ -90,11 +90,11 @@ class Group:
         self,
         payload_dict: Optional[Dict[str, Any]] = None,
         name: Optional[str] = None,
-        member: list = None,
-        color: int = None,
-        comment: str = None,
-        visibility: str = None,
-        uuid: str = None,
+        member: Optional[List] = None,
+        color: Optional[int] = None,
+        comment: Optional[str] = None,
+        visibility: Optional[str] = None,
+        uuid: Optional[str] = None,
         vdom=None,
         raw_json: bool = False,
     ) -> HTTPResponse:
@@ -173,11 +173,11 @@ class Group:
         self,
         name: str,
         payload_dict: Optional[Dict[str, Any]] = None,
-        member: list = None,
-        color: int = None,
-        comment: str = None,
-        visibility: str = None,
-        uuid: str = None,
+        member: Optional[List] = None,
+        color: Optional[int] = None,
+        comment: Optional[str] = None,
+        visibility: Optional[str] = None,
+        uuid: Optional[str] = None,
         vdom=None,
         raw_json: bool = False,
     ) -> HTTPResponse:
@@ -277,7 +277,7 @@ class Group:
             "cmdb", f"firewall.wildcard-fqdn/group/{name}", vdom=vdom, raw_json=raw_json
         )
 
-    def exists(self, name: str, vdom=None) -> HTTPResponse:
+    def exists(self, name: str, vdom=None) -> bool:
         """
         Check if a wildcard FQDN group exists.
 
