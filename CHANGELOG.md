@@ -5,16 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.14] - 2025-12-17
-
-### Fixed
-
-- **Integer ID Path Encoding** - Fixed URL encoding for numeric IDs
-  - `dos_policy.get()`, `dos_policy.update()`, `dos_policy.delete()` - Convert policyid to string before encoding
-  - `dos_policy6.get()`, `dos_policy6.update()`, `dos_policy6.delete()` - Convert policyid to string before encoding
-  - `ipmacbinding.table.get()`, `ipmacbinding.table.update()`, `ipmacbinding.table.delete()` - Convert seq_num to string before encoding
-  - Resolves `TypeError: quote_from_bytes() expected bytes` when using numeric IDs
-  - All numeric identifiers are now properly converted to strings for URL path encoding
+## [Unreleased]
 
 ## [0.3.13] - 2025-12-17
 
