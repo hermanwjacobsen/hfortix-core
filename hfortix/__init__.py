@@ -24,12 +24,29 @@ from __future__ import annotations
 import logging
 
 from .FortiOS import FortiOS, __author__, __version__
-from .FortiOS.exceptions import (HTTP_STATUS_CODES, APIError,
-                                 AuthenticationError, AuthorizationError,
-                                 BadRequestError, FortinetError,
-                                 MethodNotAllowedError, RateLimitError,
-                                 ResourceNotFoundError, ServerError,
-                                 get_http_status_description)
+from .FortiOS.exceptions import (
+    FORTIOS_ERROR_CODES,
+    HTTP_STATUS_CODES,
+    APIError,
+    AuthenticationError,
+    AuthorizationError,
+    BadRequestError,
+    CircuitBreakerOpenError,
+    DuplicateEntryError,
+    EntryInUseError,
+    FortinetError,
+    InvalidValueError,
+    MethodNotAllowedError,
+    PermissionDeniedError,
+    RateLimitError,
+    ResourceNotFoundError,
+    ServerError,
+    ServiceUnavailableError,
+    TimeoutError,
+    get_error_description,
+    get_http_status_description,
+    raise_for_status,
+)
 
 # Canonical public API for the hfortix package.
 #
@@ -46,13 +63,28 @@ __all__ = [
     "AuthenticationError",
     "AuthorizationError",
     "APIError",
+    # HTTP status exceptions
     "ResourceNotFoundError",
     "BadRequestError",
     "MethodNotAllowedError",
     "RateLimitError",
     "ServerError",
+    "ServiceUnavailableError",
+    # Connection and reliability exceptions
+    "CircuitBreakerOpenError",
+    "TimeoutError",
+    # FortiOS-specific exceptions
+    "DuplicateEntryError",
+    "EntryInUseError",
+    "InvalidValueError",
+    "PermissionDeniedError",
+    # Helper functions
+    "get_error_description",
     "get_http_status_description",
+    "raise_for_status",
+    # Data
     "HTTP_STATUS_CODES",
+    "FORTIOS_ERROR_CODES",
     # Utility functions
     "get_available_modules",
     "get_version",

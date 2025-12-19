@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix"
-version = "0.3.13"
+version = "0.3.14"
 description = "HFortix - Python SDK for Fortinet products (FortiOS, FortiManager, FortiAnalyzer)"
 readme = "README.md"
 authors = [
@@ -16,7 +16,7 @@ maintainers = [
 license = {text = "MIT"}
 keywords = ["hfortix", "fortinet", "fortigate", "fortios", "fortimanager", "fortianalyzer", "api", "sdk", "firewall", "security"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: System Administrators",
     "Topic :: System :: Networking :: Firewalls",

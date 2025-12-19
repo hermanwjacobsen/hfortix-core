@@ -759,7 +759,7 @@ fgt = FortiOS(
 - [x] PyPI package publication (hfortix on PyPI)
 - [ ] FortiManager module (Not Started)
 - [ ] FortiAnalyzer module (Not Started)
-- [ ] Helper methods for singleton routing endpoints (Planned - see Todo.md)
+- [ ] Helper methods for singleton routing endpoints (Planned)
 - [ ] Async support (Planned)
 - [ ] CLI tool (Planned)
 

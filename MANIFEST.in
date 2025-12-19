@@ -2,10 +2,10 @@
 include README.md
 include LICENSE
 include QUICKSTART.md
-include CONTRIBUTING.md
+# include CONTRIBUTING.md  # Moved to X/ development workspace
 include CHANGELOG.md
 include API_COVERAGE.md
-include DEVELOPMENT.md
+# include DEVELOPMENT.md  # Moved to X/ development workspace
 include requirements.txt
 
 # Exclude development and test files

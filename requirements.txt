@@ -1,6 +1,5 @@
 # Core Dependencies
-requests>=2.31.0
-urllib3>=2.0.0
+httpx[http2]>=0.27.0
 
 # Optional Dependencies (for development/testing)
 python-dotenv>=1.0.0  # For loading .env files with credentials

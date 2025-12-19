@@ -220,7 +220,7 @@ class HTTPClient:
         Remove sensitive fields from data before logging (recursive)
 
         Recursively sanitizes nested dictionaries and lists to prevent
-        logging sensitive information like passwords, tokens, keys, etc.
+        logging sensitive information like passwords, tokens, keys, VDOMs, etc.
 
         Args:
             data: Data to sanitize (can be dict, list, or any value)
@@ -233,6 +233,8 @@ class HTTPClient:
             {'password': '***REDACTED***', 'name': 'test'}
             >>> client._sanitize_data({'users': [{'name': 'admin', 'key': 'abc'}]})
             {'users': [{'name': 'admin', 'key': '***REDACTED***'}]}
+            >>> client._sanitize_data({'vdom': 'customer-vdom'})
+            {'vdom': '***REDACTED***'}
         """
         if not data:
             return {}
@@ -251,6 +253,7 @@ class HTTPClient:
             "apikey",
             "auth",
             "authorization",
+            "vdom",  # Virtual domain names can reveal customer/tenant info
         ]
 
         def sanitize_recursive(obj: Any) -> Any:

@@ -221,6 +221,43 @@ class FortiOS:
         """Active virtual domain"""
         return self._vdom
 
+    def get_connection_stats(self) -> dict[str, Any]:
+        """
+        Get HTTP connection pool statistics and metrics
+
+        Provides insights into connection health, retry behavior, and circuit breaker state.
+        Useful for monitoring, debugging, and capacity planning.
+
+        Returns:
+            Dictionary containing connection statistics:
+                - total_requests: Total number of API requests made
+                - successful_requests: Number of successful requests
+                - failed_requests: Number of failed requests
+                - total_retries: Total number of retry attempts
+                - success_rate: Percentage of successful requests
+                - retry_by_reason: Breakdown of retries by failure reason
+                - retry_by_endpoint: Breakdown of retries by endpoint
+                - circuit_breaker_state: Current circuit breaker state (closed/open/half_open)
+                - circuit_breaker_failures: Consecutive failure count
+                - last_retry_time: Timestamp of last retry (if any)
+
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...")
+            >>> stats = fgt.get_connection_stats()
+            >>> print(f"Success rate: {stats['success_rate']:.1f}%")
+            >>> print(f"Total retries: {stats['total_retries']}")
+            >>> print(f"Circuit breaker: {stats['circuit_breaker_state']}")
+            >>> if stats['retry_by_reason']:
+            ...     print("Retry reasons:")
+            ...     for reason, count in stats['retry_by_reason'].items():
+            ...         print(f"  {reason}: {count}")
+
+        Note:
+            Statistics are collected from the time the FortiOS instance was created.
+            Use this method to monitor connection health and identify issues.
+        """
+        return self._client.get_connection_stats()
+
     def close(self) -> None:
         """
         Close the HTTP session and release resources

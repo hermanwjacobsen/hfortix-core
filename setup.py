@@ -18,7 +18,7 @@ with open('requirements.txt') as f:
 
 setup(
     name="hfortix",
-    version="0.3.13",
+    version="0.3.14",
     author="Herman W. Jacobsen",
     author_email="herman@wjacobsen.fo",
     description="HFortix - Python SDK for Fortinet products (FortiOS, FortiManager, FortiAnalyzer)",
@@ -32,7 +32,7 @@ setup(
         'hfortix': ['py.typed'],
     },
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",
         "Topic :: System :: Networking :: Firewalls",
