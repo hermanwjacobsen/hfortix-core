@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Helper Methods**: Added `.exists()` helper method to 288 CMDB endpoints
+  - Provides safe existence checking without raising exceptions
+  - Returns `True` if object exists, `False` if not found
+  - Available on all endpoints that support full CRUD operations
+  - Example: `if fgt.api.cmdb.firewall.address.exists("test-host"): ...`
+  - See `HELPER_METHODS.md` for complete documentation and usage examples
+
+### Documentation
+
+- **API Reference**: Created comprehensive `ENDPOINT_METHODS.md` documentation
+  - Complete listing of all 857 FortiOS API endpoints
+  - Shows available methods (`.get()`, `.post()`, `.put()`, `.delete()`, `.exists()`) for each endpoint
+  - Organized by API category (CMDB, LOG, MONITOR, SERVICE)
+  - Quick navigation with anchor links to all subcategories
+  - Coverage: 561 CMDB endpoints, 19 LOG endpoints, 274 MONITOR endpoints, 3 SERVICE endpoints
+- **Helper Methods Guide**: Created detailed `HELPER_METHODS.md` documentation
+  - In-depth guide to the `.exists()` helper method
+  - Practical usage examples for common scenarios
+  - Reference table of identifier types for all 288 endpoints with `.exists()`
+  - Organized by category with example code snippets
+
 ## [0.3.14] - 2025-12-19
 
 ### Fixed

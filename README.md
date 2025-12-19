@@ -632,6 +632,47 @@ fgt.api.cmdb.router.bgp.list_neighbors()
 See the test files in the development workspace for complete working examples.
 ```
 
+### Helper Methods - Safe Existence Checking ✨
+
+The `.exists()` helper method provides safe existence checking on 288 CMDB endpoints without raising exceptions:
+
+```python
+from hfortix import FortiOS
+
+fgt = FortiOS(host='192.168.1.99', token='your-token', verify=False)
+
+# Check if object exists before operations
+if fgt.api.cmdb.firewall.address.exists('web-server'):
+    print("Address already exists")
+    fgt.api.cmdb.firewall.address.update('web-server', comment='Updated')
+else:
+    print("Creating new address")
+    fgt.api.cmdb.firewall.address.create(
+        name='web-server',
+        subnet='10.0.1.100/32'
+    )
+
+# Safe deletion pattern
+if fgt.api.cmdb.user.local.exists('testuser'):
+    fgt.api.cmdb.user.local.delete('testuser')
+
+# Conditional processing
+users = ['alice', 'bob', 'charlie']
+for user in users:
+    if not fgt.api.cmdb.user.local.exists(user):
+        fgt.api.cmdb.user.local.create(
+            name=user,
+            type='password',
+            passwd='SecureP@ss123'
+        )
+```
+
+**Available on:** 288 endpoints with full CRUD operations (firewall addresses, policies, users, VPN configs, etc.)
+
+**📚 Complete Documentation:**
+- See [HELPER_METHODS.md](HELPER_METHODS.md) for detailed guide with examples
+- See [ENDPOINT_METHODS.md](ENDPOINT_METHODS.md) for complete API method reference
+
 ### Exception Hierarchy
 ```
 Exception
