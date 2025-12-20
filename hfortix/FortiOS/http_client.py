@@ -106,6 +106,7 @@ class HTTPClient(BaseHTTPClient):
         session_idle_timeout: Union[int, float, None] = 300,
         read_only: bool = False,
         track_operations: bool = False,
+        adaptive_retry: bool = False,
     ) -> None:
         """
         Initialize HTTP client
@@ -134,6 +135,10 @@ class HTTPClient(BaseHTTPClient):
                        Note: API token authentication is stateless and doesn't use sessions.
             read_only: Enable read-only mode - simulate write operations without executing (default: False)
             track_operations: Enable operation tracking - maintain audit log of all API calls (default: False)
+            adaptive_retry: Enable adaptive retry with backpressure detection (default: False).
+                          When enabled, monitors response times and adjusts retry delays based on
+                          FortiGate health signals (slow responses, 503 errors). Increases retry
+                          delays when FortiGate is overloaded to prevent cascading failures.
 
         Raises:
             ValueError: If parameters are invalid or both token and username/password provided
@@ -160,6 +165,7 @@ class HTTPClient(BaseHTTPClient):
             circuit_breaker_timeout=circuit_breaker_timeout,
             max_connections=max_connections,
             max_keepalive_connections=max_keepalive_connections,
+            adaptive_retry=adaptive_retry,
         )
 
         # Set default User-Agent if not provided
@@ -685,6 +691,9 @@ class HTTPClient(BaseHTTPClient):
 
                 # Calculate duration
                 duration = time.time() - start_time
+                
+                # Record response time for adaptive backpressure (if enabled)
+                self._record_response_time(endpoint_key, duration)
 
                 # Handle errors (will raise exception if error response)
                 self._handle_response_errors(res)
@@ -801,13 +810,13 @@ class HTTPClient(BaseHTTPClient):
 
                 # Check if we should retry
                 if self._should_retry(e, attempt, endpoint_key):
-                    # Calculate delay
+                    # Calculate delay with adaptive backpressure
                     response_obj = (
                         getattr(e, "response", None)
                         if isinstance(e, httpx.HTTPStatusError)
                         else None
                     )
-                    delay = self._get_retry_delay(attempt, response_obj)
+                    delay = self._get_retry_delay(attempt, response_obj, endpoint_key)
 
                     # Structured log for retry
                     logger.info(
@@ -820,6 +829,7 @@ class HTTPClient(BaseHTTPClient):
                             "attempt": attempt + 1,
                             "max_attempts": self._max_retries + 1,
                             "delay_seconds": delay,
+                            "adaptive_retry": self._adaptive_retry,
                         },
                     )
 

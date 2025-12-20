@@ -154,6 +154,7 @@ class FortiOS:
         session_idle_timeout: Union[int, float, None] = 300,
         read_only: bool = False,
         track_operations: bool = False,
+        adaptive_retry: bool = False,
     ) -> None:
         """
         Initialize FortiOS API client (sync or async mode)
@@ -208,6 +209,11 @@ class FortiOS:
                             (default: False). When enabled, all requests (GET/POST/PUT/DELETE) are
                             recorded with timestamp, method, URL, and data. Access via get_operations()
                             or get_write_operations(). Useful for debugging, auditing, and documentation.
+            adaptive_retry: Enable adaptive retry with backpressure detection (default: False).
+                          When enabled, monitors response times and adjusts retry delays based on
+                          FortiGate health signals (slow responses, 503 errors). Increases retry
+                          delays when FortiGate is overloaded to prevent cascading failures.
+                          Access health metrics via get_health_metrics().
 
         Important:
             Username/password authentication still works in FortiOS 7.4.x but is removed in
@@ -330,6 +336,7 @@ class FortiOS:
                     session_idle_timeout=session_idle_timeout,
                     read_only=read_only,
                     track_operations=track_operations,
+                    adaptive_retry=adaptive_retry,
                 )
             else:
                 self._client = HTTPClient(
@@ -350,6 +357,7 @@ class FortiOS:
                     session_idle_timeout=session_idle_timeout,
                     read_only=read_only,
                     track_operations=track_operations,
+                    adaptive_retry=adaptive_retry,
                 )
 
         # Initialize API namespace.
@@ -560,6 +568,54 @@ class FortiOS:
                 "Initialize FortiOS with track_operations=True to use this feature."
             )
         return self._client.get_write_operations()  # type: ignore[attr-defined]
+    
+    def get_health_metrics(self) -> dict[str, Any]:
+        """
+        Get comprehensive health metrics for HTTP client
+        
+        Returns health metrics including:
+        - Circuit breaker state and failures
+        - Retry statistics by endpoint and reason
+        - Response time metrics (if adaptive_retry=True)
+        - Endpoint health status (slow vs normal)
+        
+        Returns:
+            Dictionary containing:
+            - circuit_breaker: Circuit breaker state, consecutive failures, threshold
+            - retry_stats: Total retries, requests, success/failure counts
+            - adaptive_retry_enabled: Whether adaptive retry is active
+            - response_times: Per-endpoint metrics (avg, min, max, p50, p95) if adaptive_retry=True
+        
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...", adaptive_retry=True)
+            >>> # Make some requests
+            >>> fgt.api.cmdb.firewall.address.list()
+            >>> 
+            >>> # Check health
+            >>> metrics = fgt.get_health_metrics()
+            >>> print(f"Circuit state: {metrics['circuit_breaker']['state']}")
+            >>> print(f"Total retries: {metrics['retry_stats']['total_retries']}")
+            >>> 
+            >>> # Check response times (if adaptive_retry=True)
+            >>> if metrics['response_times']:
+            ...     for endpoint, stats in metrics['response_times'].items():
+            ...         print(f"{endpoint}: avg={stats['avg_ms']}ms, slow={stats['is_slow']}")
+            Circuit state: closed
+            Total retries: 2
+            cmdb/firewall/address: avg=245.5ms, slow=False
+        
+        Note:
+            Response time metrics only available when adaptive_retry=True
+        """
+        if not hasattr(self._client, "get_health_metrics"):
+            # Fallback for custom clients without health metrics
+            return {
+                'error': 'Health metrics not available for this client',
+                'circuit_breaker': {},
+                'retry_stats': {},
+                'adaptive_retry_enabled': False,
+            }
+        return self._client.get_health_metrics()  # type: ignore[attr-defined]
 
     def close(self) -> None:
         """

@@ -73,6 +73,7 @@ class AsyncHTTPClient(BaseHTTPClient):
         session_idle_timeout: Optional[float] = 300.0,
         read_only: bool = False,
         track_operations: bool = False,
+        adaptive_retry: bool = False,
     ) -> None:
         """
         Initialize async HTTP client
@@ -98,6 +99,9 @@ class AsyncHTTPClient(BaseHTTPClient):
                        re-auth; this parameter is accepted for API compatibility.
             read_only: Enable read-only mode - simulate write operations without executing (default: False)
             track_operations: Enable operation tracking - maintain audit log of all API calls (default: False)
+            adaptive_retry: Enable adaptive retry with backpressure detection (default: False).
+                          When enabled, monitors response times and adjusts retry delays based on
+                          FortiGate health signals (slow responses, 503 errors).
 
         Raises:
             ValueError: If parameters are invalid or both token and username/password provided
@@ -124,6 +128,7 @@ class AsyncHTTPClient(BaseHTTPClient):
             circuit_breaker_timeout=circuit_breaker_timeout,
             max_connections=max_connections,
             max_keepalive_connections=max_keepalive_connections,
+            adaptive_retry=adaptive_retry,
         )
 
         # Set default User-Agent if not provided
@@ -436,6 +441,9 @@ class AsyncHTTPClient(BaseHTTPClient):
 
                 # Calculate duration
                 duration = time.time() - start_time
+                
+                # Record response time for adaptive backpressure (if enabled)
+                self._record_response_time(endpoint_key, duration)
 
                 # Handle errors
                 self._handle_response_errors(res)
@@ -479,7 +487,7 @@ class AsyncHTTPClient(BaseHTTPClient):
                         if isinstance(e, httpx.HTTPStatusError)
                         else None
                     )
-                    delay = self._get_retry_delay(attempt, response_obj)
+                    delay = self._get_retry_delay(attempt, response_obj, endpoint_key)
 
                     logger.info(
                         "Retrying async request after delay",
@@ -491,6 +499,7 @@ class AsyncHTTPClient(BaseHTTPClient):
                             "attempt": attempt + 1,
                             "max_attempts": self._max_retries + 1,
                             "delay_seconds": delay,
+                            "adaptive_retry": self._adaptive_retry,
                         },
                     )
 
