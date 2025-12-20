@@ -416,34 +416,70 @@ result = fgt._client.request(
 )
 
 # 2. Monitor connection pool health
-stats = fgt._client.get_connection_stats()
-print(f"Circuit breaker: {stats['circuit_breaker_state']}")
-print(f"HTTP/2 enabled: {stats['http2_enabled']}")
+stats = fgt.get_connection_stats()
+print(f"Circuit breaker: {stats['circuit_breaker_state']}")  # closed/open/half_open
+print(f"HTTP/2 enabled: {stats['http2_enabled']}")           # True
+print(f"Total requests: {stats['total_requests']}")
+print(f"Success rate: {stats['success_rate']:.1f}%")
+print(f"Total retries: {stats['total_retries']}")
+
+# View retry breakdown
+for reason, count in stats['retry_by_reason'].items():
+    print(f"  {reason}: {count} retries")
 
 # 3. Circuit breaker pattern (automatic fail-fast)
-# Opens after 5 consecutive failures, auto-recovers after 60s
+# Prevents cascading failures - opens after 5 consecutive failures
+# Auto-recovers to half-open after 60s, then closed if successful
 try:
     result = fgt.api.monitor.system.status.get()
 except RuntimeError as e:
     if "Circuit breaker is OPEN" in str(e):
-        print("Service is down - failing fast")
-        fgt._client.reset_circuit_breaker()  # Manual reset
+        print("⚠️  Service is down - failing fast to prevent cascade")
+        print("Circuit will auto-recover in 60s or use manual reset:")
+        fgt._client.reset_circuit_breaker()  # Manual reset if needed
 
-# 4. Per-endpoint timeouts (custom timeouts for slow endpoints)
-fgt._client.configure_endpoint_timeout('monitor/*', read=10.0)
-fgt._client.configure_endpoint_timeout('cmdb/firewall/policy', read=600.0)
+# 4. Per-endpoint custom timeouts (wildcard pattern matching)
+# Useful for slow operations like log queries or config exports
+fgt._client.configure_endpoint_timeout(
+    endpoint_pattern='monitor/log/*',      # Longer timeout for log queries
+    connect_timeout=10.0,
+    read_timeout=600.0                     # 10 minutes for large logs
+)
+
+fgt._client.configure_endpoint_timeout(
+    endpoint_pattern='cmdb/system/config/backup',  # Config backup
+    read_timeout=300.0                             # 5 minutes
+)
+
+# Default timeouts still apply to other endpoints
+# Fast operations remain fast (10s connect, 300s read)
 
 # 5. Structured logging (machine-readable logs with extra fields)
 # All logs include: request_id, endpoint, method, status_code, duration
 # Compatible with Elasticsearch, Splunk, CloudWatch
+import hfortix
+
+hfortix.set_log_level('INFO')  # See request/response timing
+# Logs include: timestamp, level, module, request_id, endpoint, duration, status
 ```
 
 **Benefits:**
-- **Request Tracking**: Trace requests across distributed systems
-- **Circuit Breaker**: Prevent cascading failures during outages
-- **Metrics**: Monitor connection pool health and performance
-- **Fine-tuned Timeouts**: Different timeouts for fast/slow endpoints
-- **Structured Logs**: Machine-readable for log aggregation tools
+- **Request Tracking**: Trace requests across distributed systems with correlation IDs
+- **Circuit Breaker**: Automatic fail-fast prevents wasting time on dead connections
+- **Connection Metrics**: Monitor health, detect issues before they cause problems
+- **Per-Endpoint Timeouts**: Different timeouts for fast/slow operations (no more one-size-fits-all)
+- **Structured Logs**: Machine-readable JSON logs for aggregation tools
+
+**Circuit Breaker States:**
+- `closed` (normal): All requests pass through
+- `open` (failing): Requests fail immediately without attempting connection
+- `half_open` (testing): One request allowed to test if service recovered
+
+**When Circuit Opens:**
+- After 5 consecutive failures (configurable via `circuit_breaker_threshold`)
+- Automatically transitions to `half_open` after 60s (configurable via `circuit_breaker_timeout`)
+- If test request succeeds → back to `closed`
+- If test request fails → back to `open` for another 60s
 
 ### Dual-Pattern Interface ✨
 
