@@ -9,6 +9,97 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Read-Only Mode**: Protect production environments by blocking write operations
+  - Add `read_only=True` flag to FortiOS constructor to prevent accidental changes
+  - Blocks all POST, PUT, and DELETE requests with `ReadOnlyModeError` exception
+  - GET requests execute normally for queries and monitoring
+  - Perfect for testing automation scripts, CI/CD pipelines, dry-run previews, and training environments
+  - Works with both sync and async modes
+  - Examples:
+    ```python
+    # Enable read-only mode for safe testing
+    fgt = FortiOS("192.0.2.10", token="...", read_only=True)
+    
+    # GET requests work normally
+    addresses = fgt.api.cmdb.firewall.address.get()  # ✓ Works
+    
+    # Write operations are blocked
+    try:
+        fgt.api.cmdb.firewall.address.post(data={"name": "test"})
+    except ReadOnlyModeError as e:
+        print(f"Blocked: {e}")  # ✗ Raises ReadOnlyModeError
+    
+    # Combine with operation tracking for audit trail
+    fgt = FortiOS("fw", token="...", read_only=True, track_operations=True)
+    # ... make API calls ...
+    for op in fgt.get_operations():
+        if op.get('blocked_by_read_only'):
+            print(f"BLOCKED: {op['method']} {op['path']}")
+    ```
+
+- **Operation Tracking**: Complete audit log of all API operations
+  - Add `track_operations=True` flag to enable operation logging
+  - Records timestamp, method, URL, request data, response status, and VDOM for every API call
+  - Access via `get_operations()` (all operations) or `get_write_operations()` (POST/PUT/DELETE only)
+  - Tracks both successful operations and those blocked by read-only mode
+  - Perfect for debugging, auditing, generating change logs, and documentation
+  - Works with both sync and async modes
+  - Examples:
+    ```python
+    # Enable operation tracking
+    fgt = FortiOS("192.0.2.10", token="...", track_operations=True)
+    
+    # Make various API calls
+    fgt.api.monitor.system.status.get()
+    fgt.api.cmdb.firewall.address.post(data={"name": "test", "subnet": "10.0.0.1/32"})
+    fgt.api.cmdb.firewall.policy.put("10", data={"action": "deny"})
+    
+    # Get all operations
+    all_ops = fgt.get_operations()
+    for op in all_ops:
+        print(f"{op['timestamp']} {op['method']} {op['path']}")
+    # Output:
+    # 2024-12-20T10:30:15Z GET /system/status
+    # 2024-12-20T10:30:16Z POST /firewall/address
+    # 2024-12-20T10:30:17Z PUT /firewall/policy/10
+    
+    # Get only write operations (POST/PUT/DELETE)
+    write_ops = fgt.get_write_operations()
+    for op in write_ops:
+        print(f"{op['method']} {op['path']}")
+        if op['data']:
+            print(f"  Data: {op['data']}")
+    # Output:
+    # POST /firewall/address
+    #   Data: {'data': {'name': 'test', 'subnet': '10.0.0.1/32'}}
+    # PUT /firewall/policy/10
+    #   Data: {'name': '10', 'data': {'action': 'deny'}}
+    ```
+
+- **Extended Filter Documentation**: Comprehensive guide to FortiOS filter operators
+  - New `docs/filtering_guide.md` with complete documentation of all FortiOS native filter operators
+  - Covers all 8 operators: `==`, `!=`, `=@`, `!@`, `<`, `<=`, `>`, `>=`
+  - 50+ practical examples for firewall addresses, policies, interfaces, and routes
+  - Advanced patterns: range queries, exclusions, combined filters, pagination
+  - Tips and best practices for efficient filtering
+  - Examples:
+    ```python
+    # Equality
+    fgt.api.cmdb.firewall.address.get(filter="name==test-host")
+    
+    # Contains (substring match)
+    fgt.api.cmdb.firewall.address.get(filter="subnet=@10.0")
+    
+    # Range query
+    fgt.api.cmdb.firewall.policy.get(filter="policyid>=100&policyid<=200")
+    
+    # Multiple conditions (AND logic)
+    fgt.api.cmdb.firewall.policy.get(filter="status==enable&action==accept")
+    
+    # Not contains (exclusion)
+    fgt.api.cmdb.firewall.address.get(filter="subnet!@192.168")
+    ```
+
 - **Username/Password Authentication**: Alternative authentication method for FortiOS devices
   - Session-based authentication using username and password (alternative to API tokens)
   - Automatic login on initialization, automatic logout on context manager exit

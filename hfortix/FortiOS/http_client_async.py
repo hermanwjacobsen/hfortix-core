@@ -71,6 +71,8 @@ class AsyncHTTPClient(BaseHTTPClient):
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
         session_idle_timeout: Optional[float] = 300.0,
+        read_only: bool = False,
+        track_operations: bool = False,
     ) -> None:
         """
         Initialize async HTTP client
@@ -94,6 +96,8 @@ class AsyncHTTPClient(BaseHTTPClient):
                        proactively re-authenticating (default: 300 = 5 minutes). Set to None or
                        False to disable. Note: Async client does not yet implement proactive
                        re-auth; this parameter is accepted for API compatibility.
+            read_only: Enable read-only mode - simulate write operations without executing (default: False)
+            track_operations: Enable operation tracking - maintain audit log of all API calls (default: False)
 
         Raises:
             ValueError: If parameters are invalid or both token and username/password provided
@@ -147,6 +151,11 @@ class AsyncHTTPClient(BaseHTTPClient):
         self._session_token: Optional[str] = None  # For username/password auth
         self._using_token_auth = token is not None
         self._login_task: Optional[asyncio.Task] = None  # Track login task
+
+        # Read-only mode and operation tracking
+        self._read_only = read_only
+        self._track_operations = track_operations
+        self._operations: list[dict[str, Any]] = [] if track_operations else []
 
         # Set token if provided
         if token:
@@ -630,6 +639,29 @@ class AsyncHTTPClient(BaseHTTPClient):
         if self._client:
             await self._client.aclose()
             logger.debug("Async HTTP client session closed")
+
+    def get_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of all tracked API operations
+
+        Returns all tracked operations (GET/POST/PUT/DELETE) in chronological order.
+        Only available when track_operations=True was passed to constructor.
+
+        Returns:
+            List of operation dictionaries (same format as HTTPClient.get_operations())
+        """
+        return self._operations.copy()
+
+    def get_write_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of write operations only (POST/PUT/DELETE)
+
+        Filters tracked operations to return only write operations, excluding GET requests.
+
+        Returns:
+            List of write operation dictionaries (same format as HTTPClient.get_write_operations())
+        """
+        return [op for op in self._operations if op['method'] in ('POST', 'PUT', 'DELETE')]
 
     @staticmethod
     def make_exists_method(get_method: Callable[..., Any]) -> Callable[..., bool]:

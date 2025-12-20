@@ -84,7 +84,9 @@ class FortiOS:
         circuit_breaker_timeout: float = 60.0,
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
-        session_idle_timeout: Optional[float] = 300.0,
+        session_idle_timeout: Union[int, float, None] = 300,
+        read_only: bool = False,
+        track_operations: bool = False,
     ) -> None:
         """Synchronous FortiOS client (default)"""
         ...
@@ -111,7 +113,9 @@ class FortiOS:
         circuit_breaker_timeout: float = 60.0,
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
-        session_idle_timeout: Optional[float] = 300.0,
+        session_idle_timeout: Union[int, float, None] = 300,
+        read_only: bool = False,
+        track_operations: bool = False,
     ) -> None:
         """Asynchronous FortiOS client"""
         ...
@@ -137,7 +141,9 @@ class FortiOS:
         circuit_breaker_timeout: float = 60.0,
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
-        session_idle_timeout: Optional[float] = 300.0,
+        session_idle_timeout: Union[int, float, None] = 300,
+        read_only: bool = False,
+        track_operations: bool = False,
     ) -> None:
         """
         Initialize FortiOS API client (sync or async mode)
@@ -183,6 +189,15 @@ class FortiOS:
                        Note: The idle timer resets on each API request. Proactive re-auth triggers
                        when time since *last request* exceeds threshold (not time since login).
                        API token authentication is stateless and doesn't use sessions.
+                       **Important**: Proactive re-auth only works when using context manager (with statement).
+            read_only: Enable read-only mode - simulate all write operations without executing them
+                      (default: False). When enabled, POST/PUT/DELETE requests are logged but not
+                      sent to FortiGate. Useful for testing, dry-run, CI/CD pipelines, and training.
+                      GET requests are executed normally.
+            track_operations: Enable operation tracking - maintain audit log of all API calls
+                            (default: False). When enabled, all requests (GET/POST/PUT/DELETE) are
+                            recorded with timestamp, method, URL, and data. Access via get_operations()
+                            or get_write_operations(). Useful for debugging, auditing, and documentation.
                        
         Important:
             Username/password authentication still works in FortiOS 7.4.x but is removed in
@@ -240,6 +255,16 @@ class FortiOS:
 
             # Custom User-Agent for multi-team environments
             fgt = FortiOS("192.0.2.10", token="your_token_here", user_agent="BackupScript/2.1.0")
+
+            # Read-only mode for testing (simulates writes without executing)
+            fgt = FortiOS("192.0.2.10", token="your_token_here", read_only=True)
+            fgt.api.cmdb.firewall.address.create(name="test")  # Logged but not executed
+
+            # Operation tracking for debugging/auditing
+            fgt = FortiOS("192.0.2.10", token="your_token_here", track_operations=True)
+            fgt.api.cmdb.firewall.address.create(name="test", subnet="10.0.0.1/32")
+            operations = fgt.get_operations()  # Get all operations
+            write_ops = fgt.get_write_operations()  # Only POST/PUT/DELETE
         """
         self._host = host
         self._vdom = vdom
@@ -291,6 +316,8 @@ class FortiOS:
                     max_connections=max_connections,
                     max_keepalive_connections=max_keepalive_connections,
                     session_idle_timeout=session_idle_timeout,
+                    read_only=read_only,
+                    track_operations=track_operations,
                 )
             else:
                 self._client = HTTPClient(
@@ -309,6 +336,8 @@ class FortiOS:
                     max_connections=max_connections,
                     max_keepalive_connections=max_keepalive_connections,
                     session_idle_timeout=session_idle_timeout,
+                    read_only=read_only,
+                    track_operations=track_operations,
                 )
 
         # Initialize API namespace.
@@ -410,6 +439,84 @@ class FortiOS:
             Use this method to monitor connection health and identify issues.
         """
         return self._client.get_connection_stats()
+
+    def get_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of all API operations (requires track_operations=True)
+
+        Returns list of all operations (GET/POST/PUT/DELETE) with details about each request.
+        Only available when track_operations=True was passed to FortiOS constructor.
+
+        Returns:
+            List of operation dictionaries containing:
+                - timestamp: ISO 8601 timestamp when operation was executed
+                - method: HTTP method (GET/POST/PUT/DELETE)
+                - api_type: API type (cmdb/monitor/log/service)
+                - path: API endpoint path
+                - data: Request payload (for POST/PUT), None for GET/DELETE
+                - status_code: HTTP response status code
+                - vdom: Virtual domain (if specified)
+
+        Raises:
+            RuntimeError: If track_operations was not enabled
+
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...", track_operations=True)
+            >>> fgt.api.cmdb.firewall.address.create(name="test", subnet="10.0.0.1/32")
+            >>> fgt.api.cmdb.firewall.policy.update("10", action="deny")
+            >>> 
+            >>> operations = fgt.get_operations()
+            >>> for op in operations:
+            ...     print(f"{op['timestamp']} {op['method']} {op['path']}")
+            2024-12-20T10:30:15Z POST /api/v2/cmdb/firewall/address
+            2024-12-20T10:30:16Z PUT /api/v2/cmdb/firewall/policy/10
+
+        Note:
+            Use get_write_operations() to filter only write operations (POST/PUT/DELETE).
+        """
+        if not hasattr(self._client, 'get_operations'):
+            raise RuntimeError(
+                "Operation tracking is not enabled. "
+                "Initialize FortiOS with track_operations=True to use this feature."
+            )
+        return self._client.get_operations()  # type: ignore[attr-defined]
+
+    def get_write_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of write operations only (requires track_operations=True)
+
+        Returns list of only write operations (POST/PUT/DELETE), excluding GET requests.
+        Only available when track_operations=True was passed to FortiOS constructor.
+
+        Returns:
+            List of write operation dictionaries (same format as get_operations())
+
+        Raises:
+            RuntimeError: If track_operations was not enabled
+
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...", track_operations=True)
+            >>> fgt.api.cmdb.firewall.address.get("test")  # GET - not included
+            >>> fgt.api.cmdb.firewall.address.create(name="test2", subnet="10.0.0.2/32")  # POST
+            >>> fgt.api.cmdb.firewall.address.delete("test")  # DELETE
+            >>> 
+            >>> write_ops = fgt.get_write_operations()
+            >>> # Only POST and DELETE are returned, GET is excluded
+            >>> for op in write_ops:
+            ...     print(f"{op['method']} {op['path']} - {op['data']}")
+            POST /api/v2/cmdb/firewall/address - {'name': 'test2', 'subnet': '10.0.0.2/32'}
+            DELETE /api/v2/cmdb/firewall/address/test - None
+
+        Note:
+            Useful for generating change logs, rollback scripts, and audit reports.
+        """
+        if not hasattr(self._client, 'get_write_operations'):
+            raise RuntimeError(
+                "Operation tracking is not enabled. "
+                "Initialize FortiOS with track_operations=True to use this feature."
+            )
+        return self._client.get_write_operations()  # type: ignore[attr-defined]
+
 
     def close(self) -> None:
         """

@@ -103,7 +103,9 @@ class HTTPClient(BaseHTTPClient):
         circuit_breaker_timeout: float = 60.0,
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
-        session_idle_timeout: Optional[float] = 300.0,
+        session_idle_timeout: Union[int, float, None] = 300,
+        read_only: bool = False,
+        track_operations: bool = False,
     ) -> None:
         """
         Initialize HTTP client
@@ -128,8 +130,10 @@ class HTTPClient(BaseHTTPClient):
             session_idle_timeout: For username/password auth only. Idle timeout in seconds before
                        proactively re-authenticating (default: 300 = 5 minutes). This should match
                        your FortiGate's 'config system global' -> 'remoteauthtimeout' setting.
-                       Set to None or False to disable proactive re-authentication.
+                       Set to None to disable proactive re-authentication.
                        Note: API token authentication is stateless and doesn't use sessions.
+            read_only: Enable read-only mode - simulate write operations without executing (default: False)
+            track_operations: Enable operation tracking - maintain audit log of all API calls (default: False)
 
         Raises:
             ValueError: If parameters are invalid or both token and username/password provided
@@ -197,6 +201,11 @@ class HTTPClient(BaseHTTPClient):
             self._session_idle_timeout = None
             self._session_proactive_refresh = None
 
+        # Read-only mode and operation tracking
+        self._read_only = read_only
+        self._track_operations = track_operations
+        self._operations: list[dict[str, Any]] = [] if track_operations else []
+
         # Set token if provided
         if token:
             self._client.headers["Authorization"] = f"Bearer {token}"
@@ -207,7 +216,8 @@ class HTTPClient(BaseHTTPClient):
 
         logger.debug(
             "HTTP client initialized for %s (max_retries=%d, connect_timeout=%.1fs, read_timeout=%.1fs, "
-            "http2=enabled, user_agent='%s', circuit_breaker_threshold=%d, max_connections=%d)",
+            "http2=enabled, user_agent='%s', circuit_breaker_threshold=%d, max_connections=%d, "
+            "read_only=%s, track_operations=%s)",
             self._url,
             max_retries,
             connect_timeout,
@@ -215,6 +225,8 @@ class HTTPClient(BaseHTTPClient):
             user_agent,
             circuit_breaker_threshold,
             max_connections,
+            read_only,
+            track_operations,
         )
 
     def login(self) -> None:
@@ -543,6 +555,42 @@ class HTTPClient(BaseHTTPClient):
         # Track total requests
         self._retry_stats["total_requests"] += 1
 
+        # ========================================================================
+        # Read-Only Mode Check
+        # ========================================================================
+        # If in read-only mode, block write operations
+        if self._read_only and method in ('POST', 'PUT', 'DELETE'):
+            logger.error(
+                "READ-ONLY MODE: %s request blocked",
+                method,
+                extra={
+                    "request_id": request_id,
+                    "method": method.upper(),
+                    "endpoint": full_path,
+                    "data": self._sanitize_data(data) if data else None,
+                },
+            )
+            
+            # Track blocked operation
+            if self._track_operations:
+                from datetime import datetime, timezone
+                self._operations.append({
+                    'timestamp': datetime.now(timezone.utc).isoformat(),
+                    'method': method.upper(),
+                    'api_type': api_type,
+                    'path': f"/{path}",
+                    'data': data,
+                    'status_code': 403,  # Forbidden
+                    'vdom': params.get('vdom') if params else None,
+                    'blocked_by_read_only': True,
+                })
+            
+            # Raise error - operation blocked
+            from .exceptions_forti import ReadOnlyModeError
+            raise ReadOnlyModeError(
+                f"{method} operation blocked by read-only mode: {full_path}"
+            )
+
         # Proactively check if session needs refresh (username/password auth only)
         if self._should_refresh_session():
             logger.info(
@@ -591,6 +639,20 @@ class HTTPClient(BaseHTTPClient):
 
                 # Record successful request
                 self._retry_stats["successful_requests"] += 1
+
+                # Track operation if enabled
+                if self._track_operations:
+                    from datetime import datetime, timezone
+                    self._operations.append({
+                        'timestamp': datetime.now(timezone.utc).isoformat(),
+                        'method': method.upper(),
+                        'api_type': api_type,
+                        'path': f"/{path}",
+                        'data': data if method in ('POST', 'PUT') else None,
+                        'status_code': res.status_code,
+                        'vdom': params.get('vdom') if params else None,
+                        'read_only': False,  # Indicates read-only mode was NOT active (operation executed)
+                    })
 
                 # Structured log for successful response
                 logger.info(
@@ -964,6 +1026,62 @@ class HTTPClient(BaseHTTPClient):
         if self._client:
             self._client.close()
             logger.debug("HTTP client session closed")
+
+    def get_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of all tracked API operations
+
+        Returns all tracked operations (GET/POST/PUT/DELETE) in chronological order.
+        Only available when track_operations=True was passed to constructor.
+
+        Returns:
+            List of operation dictionaries with keys:
+                - timestamp: ISO 8601 timestamp
+                - method: HTTP method (GET/POST/PUT/DELETE)
+                - api_type: API type (cmdb/monitor/log/service)
+                - path: API endpoint path
+                - data: Request payload (for POST/PUT), None otherwise
+                - status_code: HTTP response status code
+                - vdom: Virtual domain (if specified)
+                - read_only_simulated: True if operation was simulated in read-only mode
+
+        Example:
+            >>> client = HTTPClient(url="https://192.0.2.10", token="...", track_operations=True)
+            >>> client.post("cmdb", "/firewall/address", {"name": "test"})
+            >>> ops = client.get_operations()
+            >>> print(ops[0])
+            {
+                'timestamp': '2024-12-20T10:30:15Z',
+                'method': 'POST',
+                'api_type': 'cmdb',
+                'path': '/firewall/address',
+                'data': {'name': 'test'},
+                'status_code': 200,
+                'vdom': 'root',
+                'read_only_simulated': False
+            }
+        """
+        return self._operations.copy()
+
+    def get_write_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of write operations only (POST/PUT/DELETE)
+
+        Filters tracked operations to return only write operations, excluding GET requests.
+
+        Returns:
+            List of write operation dictionaries (same format as get_operations())
+
+        Example:
+            >>> client = HTTPClient(url="https://192.0.2.10", token="...", track_operations=True)
+            >>> client.get("cmdb", "/firewall/address/test")  # GET - excluded
+            >>> client.post("cmdb", "/firewall/address", {"name": "test2"})  # POST - included
+            >>> client.delete("cmdb", "/firewall/address/test")  # DELETE - included
+            >>> write_ops = client.get_write_operations()
+            >>> len(write_ops)  # Returns 2 (POST and DELETE only)
+            2
+        """
+        return [op for op in self._operations if op['method'] in ('POST', 'PUT', 'DELETE')]
 
     @staticmethod
     def make_exists_method(get_method: Callable[..., Any]) -> Callable[..., bool]:

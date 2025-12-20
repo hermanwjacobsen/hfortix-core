@@ -53,6 +53,17 @@ class AuthorizationError(FortinetError):
     pass
 
 
+class ReadOnlyModeError(FortinetError):
+    """
+    Operation blocked by read-only mode
+    
+    Raised when attempting POST/PUT/DELETE operations with read_only=True.
+    This is a client-side block to prevent accidental writes in safe mode.
+    """
+    
+    pass
+
+
 class ResourceNotFoundError(APIError):
     """HTTP 404 - Resource not found"""
 
