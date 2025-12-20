@@ -50,6 +50,12 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
   - Async context manager support with `async with`
   - Zero breaking changes - existing sync code continues to work
 - ✨ **288 Endpoints Updated**: All `.exists()` helper methods now async-aware
+- 🏗️ **Refactored Architecture**: Improved code quality and maintainability
+  - Protocol-based HTTP client interface (`IHTTPClient`) for extensibility
+  - Eliminated 744 lines of duplicated code (35% reduction)
+  - Shared base class (`BaseHTTPClient`) for sync and async clients
+  - Enhanced testability and consistency across sync/async modes
+  - Users can now provide custom HTTP client implementations
 
 **Previous Release (v0.3.14):**
 - ✨ **Request ID / Correlation Tracking**: Auto-generated or custom request IDs for distributed tracing

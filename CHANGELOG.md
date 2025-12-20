@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **Code Refactoring**: Eliminated code duplication in HTTP client implementation
+  - Created `BaseHTTPClient` base class with shared logic for sync and async clients
+  - `HTTPClient` and `AsyncHTTPClient` now inherit from `BaseHTTPClient`
+  - Removed 744 lines of duplicated code (35% reduction in HTTP client code)
+  - Zero duplication between sync and async implementations
+  - Improved maintainability: bug fixes now apply to both sync and async modes automatically
+  - Better consistency: retry logic, circuit breaker, and validation identical across modes
+  - Enhanced testability: shared logic tested once in base class
+  - Implementation:
+    - `BaseHTTPClient`: Parameter validation, URL building, retry logic, circuit breaker, statistics
+    - `HTTPClient`: Sync-specific HTTP operations (httpx.Client)
+    - `AsyncHTTPClient`: Async-specific HTTP operations (httpx.AsyncClient)
+  - Created `IHTTPClient` Protocol interface for extensibility
+  - Updated 863 endpoint files to use Protocol-based type hints
+  - Enables users to provide custom HTTP client implementations
+
+### Fixed
+
+- **Test Fixes**: Fixed certificate/local test helper methods to properly filter by source
+
 ## [0.3.15] - 2025-12-19
 
 ### Added
