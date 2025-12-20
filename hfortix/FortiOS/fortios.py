@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union, overload
+import os
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union, cast, overload
 
 from .api import API
 from .http_client import HTTPClient
@@ -273,6 +274,17 @@ class FortiOS:
             # Development/Testing - with self-signed certificate (example IP from RFC 5737)
             fgt = FortiOS("192.0.2.10", token="your_token_here", verify=False)
 
+            # Environment variables (credentials from environment)
+            # Set: export FORTIOS_HOST="192.0.2.10"
+            #      export FORTIOS_TOKEN="your_token_here"
+            fgt = FortiOS()  # Reads from FORTIOS_HOST, FORTIOS_TOKEN
+
+            # Environment variables with username/password
+            # Set: export FORTIOS_HOST="192.0.2.10"
+            #      export FORTIOS_USERNAME="admin"
+            #      export FORTIOS_PASSWORD="your_password"
+            fgt = FortiOS()  # Reads from FORTIOS_HOST, FORTIOS_USERNAME, FORTIOS_PASSWORD
+
             # Custom port
             fgt = FortiOS("192.0.2.10", token="your_token_here", verify=False, port=8443)
 
@@ -298,10 +310,21 @@ class FortiOS:
             operations = fgt.get_operations()  # Get all operations
             write_ops = fgt.get_write_operations()  # Only POST/PUT/DELETE
         """
+        # Support environment variables for credentials (convenience for end users)
+        # Priority: explicit parameters > environment variables
+        host = host or os.getenv('FORTIOS_HOST')
+        token = token or os.getenv('FORTIOS_TOKEN')
+        username = username or os.getenv('FORTIOS_USERNAME')
+        password = password or os.getenv('FORTIOS_PASSWORD')
+        
         self._host = host
         self._vdom = vdom
         self._port = port
         self._mode = mode
+
+        # Validate credentials if not using custom client
+        if client is None:
+            self._validate_credentials(token, username, password)
 
         # Set up instance-specific logging if requested
         if debug:
@@ -379,7 +402,7 @@ class FortiOS:
         # Initialize API namespace.
         # Store it privately and expose a property so IDEs treat it as a concrete
         # instance attribute (often improves autocomplete ranking vs dunder attrs).
-        self._api = API(self._client)  # type: ignore[arg-type]
+        self._api = API(self._client)
 
         # Log initialization
         logger = logging.getLogger("hfortix.client")
@@ -414,6 +437,78 @@ class FortiOS:
             logging.basicConfig(
                 format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
                 datefmt="%Y-%m-%d %H:%M:%S",
+            )
+
+    @staticmethod
+    def _validate_credentials(
+        token: Optional[str],
+        username: Optional[str],
+        password: Optional[str]
+    ) -> None:
+        """
+        Validate authentication credentials.
+        
+        Args:
+            token: API token
+            username: Username for password auth
+            password: Password for username auth
+            
+        Raises:
+            ValueError: If credentials are invalid or missing
+        """
+        # Check if any authentication method is provided
+        has_token = token is not None and token.strip() != ""
+        has_userpass = (username is not None and username.strip() != "" and 
+                       password is not None and password.strip() != "")
+        
+        if not has_token and not has_userpass:
+            raise ValueError(
+                "Authentication required: provide either 'token' or both 'username' and 'password'. "
+                "Example: FortiOS(host='...', token='your-api-token') or "
+                "FortiOS(host='...', username='admin', password='password')"
+            )
+        
+        # Check for invalid token format (common mistakes)
+        if has_token:
+            # Token should not contain spaces (common copy-paste error)
+            if " " in token:  # type: ignore[arg-type]
+                raise ValueError(
+                    "Invalid token format: API tokens should not contain spaces. "
+                    "Check for copy-paste errors or extra whitespace."
+                )
+            
+            # Token should meet minimum length (FortiOS tokens are typically 31+ characters)
+            # Note: Token length varies by FortiOS version (31-32 chars in older versions, 40+ in newer)
+            # We use 25 as a reasonable minimum to catch obviously invalid tokens
+            if len(token) < 25:  # type: ignore[arg-type]
+                raise ValueError(
+                    f"Invalid token format: token is too short ({len(token)} characters). "  # type: ignore[arg-type]
+                    "FortiOS API tokens are typically 31+ characters (older versions) "
+                    "or 40+ characters (newer versions). "
+                    "Ensure you're using a valid API token, not a password or placeholder."
+                )
+            
+            # Token should only contain alphanumeric characters (FortiOS tokens are alphanumeric)
+            if not token.replace("-", "").replace("_", "").isalnum():  # type: ignore[union-attr]
+                raise ValueError(
+                    "Invalid token format: API tokens should contain only letters, numbers, "
+                    "hyphens, and underscores. Check for copy-paste errors."
+                )
+            
+            # Warn about common placeholder strings
+            if token.lower() in ["token", "api_token", "your_token_here", "your-api-token",  # type: ignore[union-attr]
+                               "xxx", "xxxx", "xxxxx", "paste_token_here"]:
+                raise ValueError(
+                    f"Invalid token: '{token}' appears to be a placeholder. "
+                    "Please provide a valid API token from your FortiGate device. "
+                    "Generate one via: System > Administrators > Create New > REST API Admin"
+                )
+        
+        # Check for username without password or vice versa
+        if (username and not password) or (password and not username):
+            raise ValueError(
+                "Username/password authentication requires both 'username' AND 'password'. "
+                "Provide both parameters or use token authentication instead."
             )
 
     @property
@@ -547,7 +642,7 @@ class FortiOS:
                 "Operation tracking is not enabled. "
                 "Initialize FortiOS with track_operations=True to use this feature."
             )
-        return self._client.get_operations()  # type: ignore[attr-defined]
+        return self._client.get_operations()
 
     def get_write_operations(self) -> list[dict[str, Any]]:
         """
@@ -583,7 +678,7 @@ class FortiOS:
                 "Operation tracking is not enabled. "
                 "Initialize FortiOS with track_operations=True to use this feature."
             )
-        return self._client.get_write_operations()  # type: ignore[attr-defined]
+        return self._client.get_write_operations()
     
     def get_health_metrics(self) -> dict[str, Any]:
         """
@@ -631,7 +726,7 @@ class FortiOS:
                 'retry_stats': {},
                 'adaptive_retry_enabled': False,
             }
-        return self._client.get_health_metrics()  # type: ignore[attr-defined]
+        return self._client.get_health_metrics()
 
     def close(self) -> None:
         """
@@ -669,6 +764,9 @@ class FortiOS:
         """
         if self._mode != "async":
             raise RuntimeError("aclose() is only available in async mode")
+        # Type ignore justified: IHTTPClient.close() returns Union[None, Coroutine[Any, Any, None]]
+        # to support both sync and async modes. In async mode, we know it's awaitable but mypy
+        # cannot narrow the Union type. Runtime check (_mode == "async") ensures correctness.
         await self._client.close()  # type: ignore[misc]
 
     def __enter__(self) -> "FortiOS":

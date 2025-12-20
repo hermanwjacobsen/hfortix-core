@@ -189,21 +189,21 @@ class IHTTPClient(Protocol):
     # These are not required for basic HTTP client implementation
     # but are provided by the built-in HTTPClient and AsyncHTTPClient
 
-    def close(self) -> None:
+    def close(self) -> Union[None, Coroutine[Any, Any, None]]:
         """
-        Close the HTTP client and release resources (sync clients).
+        Close the HTTP client and release resources.
+
+        Returns:
+            None (sync clients) or Coroutine[None] (async clients)
 
         Optional method - not required for basic protocol compliance.
         Custom clients may implement this for resource cleanup.
-        """
-        ...
 
-    async def aclose(self) -> None:
-        """
-        Close the async HTTP client and release resources (async clients).
+        Example (Sync):
+            client.close()
 
-        Optional method - not required for basic protocol compliance.
-        Async custom clients may implement this for resource cleanup.
+        Example (Async):
+            await client.close()
         """
         ...
 
@@ -213,5 +213,44 @@ class IHTTPClient(Protocol):
 
         Optional method - not required for basic protocol compliance.
         Returns statistics about HTTP connections if supported.
+        
+        Returns:
+            Dictionary with connection pool metrics (if available)
+        """
+        ...
+
+    def get_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of all API operations.
+
+        Optional method - not required for basic protocol compliance.
+        Only available when operation tracking is enabled.
+        
+        Returns:
+            List of all API operations with timestamps and details
+        """
+        ...
+
+    def get_write_operations(self) -> list[dict[str, Any]]:
+        """
+        Get audit log of write operations (POST/PUT/DELETE).
+
+        Optional method - not required for basic protocol compliance.
+        Only available when operation tracking is enabled.
+        
+        Returns:
+            List of write operations with timestamps and details
+        """
+        ...
+
+    def get_health_metrics(self) -> dict[str, Any]:
+        """
+        Get health metrics and performance indicators.
+
+        Optional method - not required for basic protocol compliance.
+        Only available when adaptive retry is enabled.
+        
+        Returns:
+            Dictionary with health metrics (response times, backpressure, etc.)
         """
         ...

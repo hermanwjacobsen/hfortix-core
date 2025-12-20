@@ -28,6 +28,11 @@ class Utils:
     - Connection pool validation
     - Device profiling and recommendations
     
+    Note:
+        Utils requires the concrete HTTPClient class (not IHTTPClient protocol)
+        because it needs access to internal attributes (_url, _verify, _vdom)
+        for performance testing and diagnostics.
+    
     Example:
         >>> fgt = FortiOS(host="192.168.1.99", token="token")
         >>> results = fgt.api.utils.performance_test()
@@ -35,7 +40,7 @@ class Utils:
     """
     
     def __init__(self, client: "HTTPClient"):
-        """Initialize utilities with HTTP client reference"""
+        """Initialize utilities with HTTPClient instance (requires concrete class for internals access)"""
         self._client = client
     
     def performance_test(

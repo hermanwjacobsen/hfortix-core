@@ -14,18 +14,18 @@ This module provides access to firewall monitoring endpoints including:
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
 if TYPE_CHECKING:
-    from hfortix.FortiOS.http_client import HTTPClient
+    from .....http_client_interface import IHTTPClient
 
 
 class Firewall:
     """Firewall Monitor API endpoints."""
 
-    def __init__(self, client: "HTTPClient"):
+    def __init__(self, client: "IHTTPClient"):
         """
         Initialize Firewall Monitor API.
 
         Args:
-            client: HTTPClient instance for API communication
+            client: HTTP client implementing IHTTPClient protocol for API communication
         """
         self._client = client
 

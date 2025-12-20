@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
-    from ...http_client import HTTPClient
+    from .....http_client_interface import IHTTPClient
 
 __all__ = ["EndpointControl"]
 
@@ -22,12 +22,12 @@ class EndpointControl:
     and installer management.
     """
 
-    def __init__(self, client: "HTTPClient"):
+    def __init__(self, client: "IHTTPClient"):
         """
         Initialize EndpointControl monitor.
 
         Args:
-            client: HTTPClient instance
+            client: HTTP client implementing IHTTPClient protocol
         """
         self._client = client
         self._installer = None

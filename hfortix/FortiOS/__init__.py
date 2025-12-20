@@ -22,7 +22,7 @@ Exceptions:
 # Version information
 __version__ = "0.3.17"
 __author__ = "Herman W. Jacobsen"
-__license__ = "MIT"
+__license__ = "Proprietary"
 __email__ = "herman@wjacobsen.fo"
 __url__ = "https://github.com/hermanwjacobsen/hfortix"
 

@@ -7,7 +7,7 @@ This module provides access to FortiGate LAN Extension monitoring endpoints.
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
 if TYPE_CHECKING:
-    from hfortix.FortiOS.http_client import HTTPClient
+    from .....http_client_interface import IHTTPClient
 
 
 class ExtensionController:
@@ -24,12 +24,12 @@ class ExtensionController:
         status = fgt.api.monitor.extension_controller.lan_extension_vdom.status()
     """
 
-    def __init__(self, client: "HTTPClient") -> None:
+    def __init__(self, client: "IHTTPClient") -> None:
         """
         Initialize ExtensionController monitor.
 
         Args:
-            client: HTTPClient instance for API communication
+            client: HTTP client implementing IHTTPClient protocol for API communication
         """
         self._client = client
         self._fortigate = None

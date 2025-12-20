@@ -264,6 +264,47 @@ else:
 
 **Available on:** All 45+ API methods (100% coverage)
 
+### Environment Variables ✨ NEW in v0.3.18
+
+Load credentials from environment variables for better security and CI/CD integration:
+
+```python
+from hfortix import FortiOS
+
+# Set environment variables in your shell
+# export FORTIOS_HOST="192.168.1.99"
+# export FORTIOS_TOKEN="your-api-token"
+
+# Create client without hardcoding credentials
+fgt = FortiOS()  # Automatically loads from environment
+
+# Also supports username/password
+# export FORTIOS_HOST="192.168.1.99"
+# export FORTIOS_USERNAME="admin"
+# export FORTIOS_PASSWORD="your-password"
+
+fgt = FortiOS()  # Loads credentials from environment
+
+# Explicit parameters override environment variables
+fgt = FortiOS(host='override.com', token='override-token')
+
+# Mix both: host from parameter, token from environment
+fgt = FortiOS(host='192.168.1.99')  # Token from FORTIOS_TOKEN env var
+```
+
+**Supported Environment Variables:**
+- `FORTIOS_HOST` - FortiGate hostname or IP
+- `FORTIOS_TOKEN` - API token
+- `FORTIOS_USERNAME` - Username for password authentication
+- `FORTIOS_PASSWORD` - Password for username authentication
+
+**Use Cases:**
+- **CI/CD Pipelines**: Store credentials as secrets, not in code
+- **Docker Containers**: Pass credentials via environment
+- **Security**: No credentials committed to version control
+- **Multiple Environments**: Easy dev/staging/prod configuration
+- **12-Factor Apps**: Configuration via environment (industry best practice)
+
 ### Logging Control ✨
 
 Control logging output globally or per-instance:
@@ -389,7 +430,43 @@ addresses = fgt.api.cmdb.firewall.address.get(
 # Supports 8 filtering operators
 ```
 
-### Username/Password Authentication ✨ NEW in v0.3.17
+### Authentication Methods ✨ Enhanced in v0.3.17
+
+#### API Token Authentication (Recommended)
+
+FortiOS API tokens are the recommended authentication method:
+
+```python
+from hfortix import FortiOS
+
+# API token authentication
+fgt = FortiOS(
+    host='192.168.1.99',
+    token='your-api-token',  # 25+ alphanumeric characters
+    verify=False
+)
+
+# Token validation catches common errors:
+# ❌ Token too short (< 25 chars)
+# ❌ Token with spaces (copy-paste errors)
+# ❌ Invalid characters (only letters, numbers, hyphens, underscores allowed)
+# ❌ Common placeholders ("your_token_here", "xxx", "api_token", etc.)
+```
+
+**Token Requirements:**
+- **Length**: Minimum 25 characters (FortiOS tokens are typically 31+ chars)
+  - Older FortiOS versions: ~31-32 characters
+  - Newer FortiOS versions: 40+ characters
+  - Length varies by version - no fixed standard
+- **Format**: Alphanumeric characters (letters, numbers, hyphens, underscores)
+- **Generate**: System > Administrators > Create New > REST API Admin
+
+**Why 25-character minimum?**
+- Catches obviously invalid tokens (passwords, test strings, placeholders)
+- Flexible enough for all FortiOS versions (31-32 char old, 40+ char new)
+- Prevents common user errors without being too restrictive
+
+#### Username/Password Authentication
 
 Session-based authentication with automatic session management:
 
@@ -419,6 +496,10 @@ with FortiOS('192.168.1.99', username='admin', password='password',
 # Disable proactive re-auth
 fgt = FortiOS('192.168.1.99', username='admin', password='password',
               session_idle_timeout=None)
+
+# Credential validation enforces:
+# ✅ Both username AND password must be provided together
+# ❌ Cannot provide username without password (or vice versa)
 ```
 
 **Important Notes:**

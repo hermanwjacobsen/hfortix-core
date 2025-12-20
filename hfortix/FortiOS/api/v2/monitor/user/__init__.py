@@ -6,7 +6,7 @@ User authentication and monitoring
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ....http_client import HTTPClient
+    from .....http_client_interface import IHTTPClient
 
 __all__ = ["User"]
 
@@ -31,12 +31,12 @@ from .tacacs_plus import TacacsPlus
 class User:
     """User Monitor category class"""
 
-    def __init__(self, client: "HTTPClient") -> None:
+    def __init__(self, client: "IHTTPClient") -> None:
         """
         Initialize User Monitor category
 
         Args:
-            client: HTTPClient instance
+            client: HTTP client implementing IHTTPClient protocol
         """
         self._client = client
 

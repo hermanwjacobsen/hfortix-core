@@ -39,7 +39,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Optional, Union
 
 if TYPE_CHECKING:
-    from ...http_client import HTTPClient
+    from ....http_client_interface import IHTTPClient
 
 __all__ = ["CMDB"]
 
@@ -130,12 +130,12 @@ class CMDB:
         >>> fgt.api.cmdb.firewall.address.delete(name="Server01")
     """
 
-    def __init__(self, client: "HTTPClient") -> None:
+    def __init__(self, client: "IHTTPClient") -> None:
         """
         Initialize CMDB helper
 
         Args:
-            client: HTTPClient instance
+            client: HTTP client implementing IHTTPClient protocol
         """
         self._client = client
 

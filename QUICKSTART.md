@@ -47,7 +47,7 @@ from hfortix import FortiOS, APIError
 # Production environment - with valid SSL certificate
 fgt = FortiOS(
     host='fortigate.company.com',
-    token='your-api-token',
+    token='your-api-token',  # 25+ alphanumeric characters
     verify=True  # Recommended: Verify SSL certificates
 )
 # Uses conservative defaults: max_connections=10, max_keepalive=5
@@ -56,8 +56,22 @@ fgt = FortiOS(
 # Development/Testing - with self-signed certificate
 fgt_dev = FortiOS(
     host='192.168.1.99',
-    token='your-api-token',
+    token='your-api-token',  # Minimum 25 characters
     verify=False  # Only for dev/test with self-signed certs
+)
+
+# Token validation catches common errors:
+# ❌ Token too short (< 25 chars)
+# ❌ Token with spaces (copy-paste errors)  
+# ❌ Invalid characters (only letters, numbers, hyphens, underscores)
+# ❌ Placeholders ("your_token_here", "xxx", etc.)
+
+# Alternative: Username/Password (FortiOS ≤7.4.x only, removed in 7.6.x+)
+fgt_userpass = FortiOS(
+    host='192.168.1.99',
+    username='admin',      # Both required together
+    password='password',   # Both required together
+    verify=False
 )
 
 # Custom timeouts for slow/unreliable networks

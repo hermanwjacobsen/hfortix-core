@@ -5,11 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.17] - 2025-12-20
+## [Unreleased] - 0.3.18
 
 ### Added
 
-- **Performance Testing API**: Built-in performance testing and optimization
+- **Environment Variables Support**: Load credentials from environment variables
+  - Support for `FORTIOS_HOST`, `FORTIOS_TOKEN`, `FORTIOS_USERNAME`, `FORTIOS_PASSWORD`
+  - Explicit parameters take priority over environment variables
+  - Enables clean separation of credentials from code
+  - Perfect for CI/CD pipelines, Docker containers, and security best practices
+  - Example: `export FORTIOS_TOKEN="..." && python script.py`
+  - No hardcoded credentials needed in scripts
+
+- **Credential Validation**: Comprehensive validation for authentication credentials
+  - Validates token format (25+ characters minimum, alphanumeric with hyphens/underscores)
+  - Catches common copy-paste errors: spaces in tokens, invalid special characters
+  - Detects placeholder tokens: "your_token_here", "xxx", "api_token", "your-api-token", etc.
+  - Version-agnostic: works with all FortiOS versions (31-32 chars in older, 40+ chars in newer)
+  - Enforces username+password pairing (both must be provided together)
+  - Provides actionable error messages with clear examples
+  - Prevents authentication failures before making API calls
+  - Added comprehensive inline documentation
+
+- **Protocol Method Stubs**: Enhanced IHTTPClient protocol interface
+  - Added `get_operations()` method stub for operation tracking
+  - Added `get_write_operations()` method stub for write operation filtering
+  - Added `get_health_metrics()` method stub for connection health monitoring
+  - All methods marked as optional with comprehensive docstrings
+  - Enables type-safe access to optional features without suppressions
+
+### Improved
+
+- **Type Safety**: Significant reduction in type ignore suppressions
+  - Eliminated 3 of 4 type ignores from `fortios.py` (75% reduction in core module)
+  - Removed `type: ignore[attr-defined]` from `get_operations()` method
+  - Removed `type: ignore[attr-defined]` from `get_write_operations()` method
+  - Removed `type: ignore[attr-defined]` from `get_health_metrics()` method
+  - Only 1 architectural type ignore remains (async close - necessary)
+  - Core modules now have 8 type ignores (down from 11+)
+  - Generated endpoints maintain 306 type ignores (future improvement target)
+  - Better IDE support and autocomplete accuracy
+
+- **Documentation**: Updated authentication documentation
+  - Added detailed token requirements section in README.md
+  - Documented 25-character minimum and version variability
+  - Updated QUICKSTART.md with credential validation examples
+  - Added error handling examples for common mistakes
+  - Documented username/password validation requirements
+  - Added best practices for token format
+
+### Changed
+
+- **Token Validation Logic**: Improved from length-based to format-based validation
+  - Removed strict 20-character minimum (too restrictive)
+  - Changed to flexible 25-character minimum (catches invalid tokens, allows all FortiOS versions)
+  - Treats tokens as opaque strings per Fortinet best practices
+  - No maximum length restriction (supports all current and future FortiOS versions)
+  - Enhanced alphanumeric validation with hyphen/underscore support
+  - Expanded placeholder detection list for better error catching
+
+## [0.3.17] - 2025-12-20
+
+### Added
   - New `fgt.api.utils.performance_test()` method for integrated testing
   - Validates connection pool settings automatically
   - Tests real-world API endpoints (status, policies, addresses, interfaces, resources)
@@ -48,7 +105,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Useful when API tokens are not available or for temporary access
   - Example: `FortiOS(host='...', username='admin', password='...')`
 
-- **Firewall Policy Convenience Wrapper**: Intuitive interface for policy management
+### Improved
+
+- **Type Safety**: Reduced type ignores from 4 to 1 in core fortios.py
+  - Added protocol method stubs to IHTTPClient interface
+  - Eliminated type: ignore[attr-defined] suppressions
+  - Only architectural async type ignore remains
+  - Better IDE support and type inference- **Firewall Policy Convenience Wrapper**: Intuitive interface for policy management
   - Access via `fgt.firewall.policy` namespace
   - Methods: `create()`, `update()`, `get()`, `delete()`, `exists()`, `enable()`, `disable()`, `move()`, `clone()`
   - 150+ explicit parameters matching FortiOS terminology

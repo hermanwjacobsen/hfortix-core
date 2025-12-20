@@ -638,19 +638,67 @@ def get_error_description(error_code):
     return FORTIOS_ERROR_CODES.get(error_code, "Unknown error")
 
 
-def raise_for_status(response):
+def _get_suggestion_for_error(error_code, http_status, endpoint=None):
+    """
+    Get helpful suggestion based on error type
+    
+    Args:
+        error_code: FortiOS error code
+        http_status: HTTP status code
+        endpoint: API endpoint path (optional)
+    
+    Returns:
+        str: Helpful suggestion for the user, or empty string
+    """
+    suggestions = {
+        -3: "💡 Tip: Use .exists() to check if the object exists before accessing it.",
+        -5: "💡 Tip: Use .exists() to check for duplicates before creating, or .update() to modify existing objects.",
+        -15: "💡 Tip: Use unique names for all objects. Use .exists() to verify uniqueness.",
+        -23: "💡 Tip: Remove references from firewall policies and other configs before deleting.",
+        -94: "💡 Tip: Remove user group from all firewall policies before deleting.",
+        -95: "💡 Tip: Remove user group from PPTP configuration before deleting.",
+        -14: "💡 Tip: Check VDOM access permissions and API token admin privileges.",
+        -37: "💡 Tip: Ensure your API token or user has sufficient read/write permissions.",
+        -651: "💡 Tip: Verify parameter format and allowed values in API documentation.",
+        -1: "💡 Tip: Check string length limits and field format requirements.",
+        -50: "💡 Tip: Validate input format matches expected pattern (IP, MAC, etc.).",
+    }
+    
+    http_suggestions = {
+        404: "💡 Tip: Verify the object name and endpoint path. Use .exists() to check availability.",
+        400: "💡 Tip: Check required parameters and their format. Review API documentation.",
+        401: "💡 Tip: Verify API token is valid and not expired. Re-authenticate if needed.",
+        403: "💡 Tip: Check VDOM access and ensure API user has required permissions.",
+        429: "💡 Tip: Implement rate limiting in your code or increase delay between requests.",
+        500: "💡 Tip: This is a FortiGate server error. Check device logs and system status.",
+        503: "💡 Tip: FortiGate may be busy or restarting. Wait and retry with exponential backoff.",
+    }
+    
+    # Check error code first (more specific)
+    if error_code in suggestions:
+        return f"\n{suggestions[error_code]}"
+    
+    # Fall back to HTTP status
+    if http_status in http_suggestions:
+        return f"\n{http_suggestions[http_status]}"
+    
+    return ""
+
+
+def raise_for_status(response, endpoint=None):
     """
     Raise appropriate exception based on FortiOS API response
 
     Args:
         response (dict): API response dictionary
+        endpoint (str): Optional API endpoint for better error context
 
     Raises:
         APIError: If response indicates an error
 
     Examples:
         >>> response = {'status': 'error', 'http_status': 404, 'error': -3}
-        >>> raise_for_status(response)  # Raises ResourceNotFoundError
+        >>> raise_for_status(response)  # Raises ResourceNotFoundError with helpful tip
     """
     if not isinstance(response, dict):
         return
@@ -662,6 +710,11 @@ def raise_for_status(response):
     http_status = response.get("http_status")
     error_code = response.get("error")
     message = response.get("error_description", "API request failed")
+    
+    # Add helpful suggestion to message
+    suggestion = _get_suggestion_for_error(error_code, http_status, endpoint)
+    if suggestion:
+        message = f"{message}{suggestion}"
 
     # Priority 1: Check error codes first (more specific than HTTP status)
     if error_code == -5 or error_code == -15 or error_code == -100:

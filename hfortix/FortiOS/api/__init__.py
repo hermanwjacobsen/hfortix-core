@@ -36,7 +36,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..http_client import HTTPClient
+    from typing import Optional
+    from ..http_client_interface import IHTTPClient
     from .utils import Utils
     from .v2.cmdb import CMDB
     from .v2.log import Log
@@ -108,10 +109,16 @@ class API:
     log: "Log"
     monitor: "Monitor"
     service: "Service"
-    utils: "Utils"
+    utils: "Optional[Utils]"  # None when using custom IHTTPClient implementations
 
-    def __init__(self, client: "HTTPClient") -> None:
-        """Initialize API namespace"""
+    def __init__(self, client: "IHTTPClient") -> None:
+        """
+        Initialize API namespace with HTTP client implementing IHTTPClient protocol.
+        
+        Note:
+            Utils requires concrete HTTPClient for internal access. When a protocol-only
+            client is provided, Utils will be unavailable (set to None).
+        """
         # Keep a reference to the internal HTTP client for advanced usage and
         # for the repository's script-style harnesses under X/tests.
         self._client = client
@@ -126,7 +133,15 @@ class API:
         self.log = Log(client)
         self.monitor = Monitor(client)
         self.service = Service(client)
-        self.utils = Utils(client)
+        
+        # Utils requires concrete HTTPClient for access to internal attributes
+        # Check if client is the concrete HTTPClient type
+        from ..http_client import HTTPClient
+        if isinstance(client, HTTPClient):
+            self.utils = Utils(client)
+        else:
+            # Custom protocol implementations won't have utils
+            self.utils = None
 
     def __dir__(self):
         """Control autocomplete to show only public attributes"""

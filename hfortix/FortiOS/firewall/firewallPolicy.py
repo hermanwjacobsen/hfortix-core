@@ -39,7 +39,11 @@ def _normalize_to_name_list(
         # If first item is a dict, assume whole list is dicts
         if isinstance(value[0], dict):
             # Filter out empty dicts that sometimes appear in API responses
-            return [item for item in value if isinstance(item, dict) and item and "name" in item]  # type: ignore
+            filtered: list[dict[str, Any]] = [
+                item for item in value 
+                if isinstance(item, dict) and item and "name" in item
+            ]
+            return filtered
         # List of strings
         return [{"name": str(item)} for item in value]
 
