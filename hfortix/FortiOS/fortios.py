@@ -387,13 +387,46 @@ class FortiOS:
         """Primary entry point to FortiOS endpoints (cmdb/monitor/log/service)."""
         return self._api
 
+    @property
+    def firewall(self) -> "FirewallNamespace":
+        """
+        Convenience wrappers for firewall operations.
+        
+        Provides simplified syntax for common firewall tasks.
+        
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...")
+            >>> # Create a policy using the convenience wrapper
+            >>> fgt.firewall.policy.create(
+            ...     name='Allow-Web',
+            ...     srcintf='port1',
+            ...     dstintf='port2',
+            ...     srcaddr='all',
+            ...     dstaddr='all',
+            ...     service=['HTTP', 'HTTPS'],
+            ...     action='accept'
+            ... )
+        """
+        if not hasattr(self, "_firewall"):
+            from .firewall import FirewallPolicy
+            
+            # Create a namespace object to hold firewall conveniences
+            class FirewallNamespace:
+                def __init__(self, fortios_instance: "FortiOS"):
+                    self.policy = FirewallPolicy(fortios_instance)
+            
+            self._firewall = FirewallNamespace(self)
+        return self._firewall
+
     def __dir__(self) -> list[str]:
-        """Prefer showing `api` early in interactive completion."""
-        # Start with the default dir() list, then move "api" to the front.
+        """Prefer showing `api` and `firewall` early in interactive completion."""
+        # Start with the default dir() list, then move important attrs to the front.
         names = sorted(set(super().__dir__()))
-        if "api" in names:
-            names.remove("api")
-            names.insert(0, "api")
+        priority_attrs = ["api", "firewall"]
+        for attr in reversed(priority_attrs):
+            if attr in names:
+                names.remove(attr)
+                names.insert(0, attr)
         return names
 
     @property

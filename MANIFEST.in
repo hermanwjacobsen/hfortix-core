@@ -1,6 +1,6 @@
-# Include documentation and license files
+# Include documentation files
 include README.md
-include LICENSE
+# include LICENSE  # Exclude LICENSE to avoid metadata issues
 include QUICKSTART.md
 # include CONTRIBUTING.md  # Moved to X/ development workspace
 include CHANGELOG.md
