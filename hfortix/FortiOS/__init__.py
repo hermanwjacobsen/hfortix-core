@@ -30,6 +30,7 @@ __url__ = "https://github.com/hermanwjacobsen/hfortix"
 VERSION = tuple(map(int, __version__.split(".")))
 
 from .exceptions import APIError, AuthenticationError, FortinetError
+
 # Public API
 from .fortios import FortiOS
 from .performance_test import quick_test, run_performance_test

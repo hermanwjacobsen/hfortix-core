@@ -27,8 +27,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional, Union
 
-from .base import (ArchiveDownloadResource, ArchiveResource, LogResource,
-                   RawResource)
+from .base import (
+    ArchiveDownloadResource,
+    ArchiveResource,
+    LogResource,
+    RawResource,
+)
 
 if TYPE_CHECKING:
     from ....http_client_interface import IHTTPClient

@@ -301,8 +301,10 @@ class AsyncHTTPClient(BaseHTTPClient):
         """Handle HTTP response errors using FortiOS error handling"""
         if not response.is_success:
             try:
-                from .exceptions_forti import (get_error_description,
-                                               raise_for_status)
+                from .exceptions_forti import (
+                    get_error_description,
+                    raise_for_status,
+                )
 
                 json_response = response.json()
 
@@ -441,7 +443,7 @@ class AsyncHTTPClient(BaseHTTPClient):
 
                 # Calculate duration
                 duration = time.time() - start_time
-                
+
                 # Record response time for adaptive backpressure (if enabled)
                 self._record_response_time(endpoint_key, duration)
 
@@ -487,7 +489,9 @@ class AsyncHTTPClient(BaseHTTPClient):
                         if isinstance(e, httpx.HTTPStatusError)
                         else None
                     )
-                    delay = self._get_retry_delay(attempt, response_obj, endpoint_key)
+                    delay = self._get_retry_delay(
+                        attempt, response_obj, endpoint_key
+                    )
 
                     logger.info(
                         "Retrying async request after delay",

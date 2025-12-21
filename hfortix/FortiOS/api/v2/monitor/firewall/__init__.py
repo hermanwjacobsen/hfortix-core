@@ -34,21 +34,51 @@ class Firewall:
         # Proxy sessions sub-endpoint
         # Special operations endpoints
         # .list() and .get() endpoints
-        from . import (acl, acl6, address6_dynamic, address_dynamic,
-                       address_fqdns, address_fqdns6, central_snat_map,
-                       check_addrgrp_exclude_mac_member, clearpass_address,
-                       dnat, gtp, gtp_runtime_statistics, gtp_statistics,
-                       health, internet_service, internet_service_basic,
-                       internet_service_fqdn, internet_service_fqdn_icon_ids,
-                       ippool, load_balance, local_in, local_in6,
-                       multicast_policy, multicast_policy6,
-                       network_service_dynamic, per_ip_shaper, policy,
-                       policy_lookup, proxy, proxy_policy, saas_application,
-                       sdn_connector_filters, security_policy)
+        from . import (
+            acl,
+            acl6,
+            address6_dynamic,
+            address_dynamic,
+            address_fqdns,
+            address_fqdns6,
+            central_snat_map,
+            check_addrgrp_exclude_mac_member,
+            clearpass_address,
+            dnat,
+            gtp,
+            gtp_runtime_statistics,
+            gtp_statistics,
+            health,
+            internet_service,
+            internet_service_basic,
+            internet_service_fqdn,
+            internet_service_fqdn_icon_ids,
+            ippool,
+            load_balance,
+            local_in,
+            local_in6,
+            multicast_policy,
+            multicast_policy6,
+            network_service_dynamic,
+            per_ip_shaper,
+            policy,
+            policy_lookup,
+            proxy,
+            proxy_policy,
+            saas_application,
+            sdn_connector_filters,
+            security_policy,
+        )
         from . import sessions as sessions_module
-        from . import shaper, shaper_multi_class_shaper
+        from . import (
+            shaper,
+            shaper_multi_class_shaper,
+        )
         from . import uuid as uuid_module
-        from . import vip_overlap, ztna_firewall_policy
+        from . import (
+            vip_overlap,
+            ztna_firewall_policy,
+        )
 
         # Initialize all sub-endpoints
         self._health = health.Health(client)

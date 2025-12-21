@@ -446,8 +446,10 @@ class HTTPClient(BaseHTTPClient):
         """
         if not response.is_success:
             try:
-                from .exceptions_forti import (get_error_description,
-                                               raise_for_status)
+                from .exceptions_forti import (
+                    get_error_description,
+                    raise_for_status,
+                )
 
                 # Try to parse JSON response (most FortiOS errors are JSON)
                 json_response = response.json()
@@ -691,7 +693,7 @@ class HTTPClient(BaseHTTPClient):
 
                 # Calculate duration
                 duration = time.time() - start_time
-                
+
                 # Record response time for adaptive backpressure (if enabled)
                 self._record_response_time(endpoint_key, duration)
 
@@ -816,7 +818,9 @@ class HTTPClient(BaseHTTPClient):
                         if isinstance(e, httpx.HTTPStatusError)
                         else None
                     )
-                    delay = self._get_retry_delay(attempt, response_obj, endpoint_key)
+                    delay = self._get_retry_delay(
+                        attempt, response_obj, endpoint_key
+                    )
 
                     # Structured log for retry
                     logger.info(

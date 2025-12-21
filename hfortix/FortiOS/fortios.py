@@ -16,11 +16,11 @@ __all__ = ["FortiOS"]
 
 class FirewallNamespace:
     """Namespace for firewall convenience wrappers."""
-    
+
     def __init__(self, fortios_instance: "FortiOS"):
         """Initialize with reference to FortiOS instance."""
         from .firewall import FirewallPolicy
-        
+
         self.policy = FirewallPolicy(fortios_instance)
 
 
@@ -312,11 +312,11 @@ class FortiOS:
         """
         # Support environment variables for credentials (convenience for end users)
         # Priority: explicit parameters > environment variables
-        host = host or os.getenv('FORTIOS_HOST')
-        token = token or os.getenv('FORTIOS_TOKEN')
-        username = username or os.getenv('FORTIOS_USERNAME')
-        password = password or os.getenv('FORTIOS_PASSWORD')
-        
+        host = host or os.getenv("FORTIOS_HOST")
+        token = token or os.getenv("FORTIOS_TOKEN")
+        username = username or os.getenv("FORTIOS_USERNAME")
+        password = password or os.getenv("FORTIOS_PASSWORD")
+
         self._host = host
         self._vdom = vdom
         self._port = port
@@ -441,33 +441,35 @@ class FortiOS:
 
     @staticmethod
     def _validate_credentials(
-        token: Optional[str],
-        username: Optional[str],
-        password: Optional[str]
+        token: Optional[str], username: Optional[str], password: Optional[str]
     ) -> None:
         """
         Validate authentication credentials.
-        
+
         Args:
             token: API token
             username: Username for password auth
             password: Password for username auth
-            
+
         Raises:
             ValueError: If credentials are invalid or missing
         """
         # Check if any authentication method is provided
         has_token = token is not None and token.strip() != ""
-        has_userpass = (username is not None and username.strip() != "" and 
-                       password is not None and password.strip() != "")
-        
+        has_userpass = (
+            username is not None
+            and username.strip() != ""
+            and password is not None
+            and password.strip() != ""
+        )
+
         if not has_token and not has_userpass:
             raise ValueError(
                 "Authentication required: provide either 'token' or both 'username' and 'password'. "
                 "Example: FortiOS(host='...', token='your-api-token') or "
                 "FortiOS(host='...', username='admin', password='password')"
             )
-        
+
         # Check for invalid token format (common mistakes)
         if has_token:
             # Token should not contain spaces (common copy-paste error)
@@ -476,7 +478,7 @@ class FortiOS:
                     "Invalid token format: API tokens should not contain spaces. "
                     "Check for copy-paste errors or extra whitespace."
                 )
-            
+
             # Token should meet minimum length (FortiOS tokens are typically 31+ characters)
             # Note: Token length varies by FortiOS version (31-32 chars in older versions, 40+ in newer)
             # We use 25 as a reasonable minimum to catch obviously invalid tokens
@@ -487,23 +489,31 @@ class FortiOS:
                     "or 40+ characters (newer versions). "
                     "Ensure you're using a valid API token, not a password or placeholder."
                 )
-            
+
             # Token should only contain alphanumeric characters (FortiOS tokens are alphanumeric)
             if not token.replace("-", "").replace("_", "").isalnum():  # type: ignore[union-attr]
                 raise ValueError(
                     "Invalid token format: API tokens should contain only letters, numbers, "
                     "hyphens, and underscores. Check for copy-paste errors."
                 )
-            
+
             # Warn about common placeholder strings
-            if token.lower() in ["token", "api_token", "your_token_here", "your-api-token",  # type: ignore[union-attr]
-                               "xxx", "xxxx", "xxxxx", "paste_token_here"]:
+            if token.lower() in [
+                "token",
+                "api_token",
+                "your_token_here",
+                "your-api-token",  # type: ignore[union-attr]
+                "xxx",
+                "xxxx",
+                "xxxxx",
+                "paste_token_here",
+            ]:
                 raise ValueError(
                     f"Invalid token: '{token}' appears to be a placeholder. "
                     "Please provide a valid API token from your FortiGate device. "
                     "Generate one via: System > Administrators > Create New > REST API Admin"
                 )
-        
+
         # Check for username without password or vice versa
         if (username and not password) or (password and not username):
             raise ValueError(
@@ -520,9 +530,9 @@ class FortiOS:
     def firewall(self) -> FirewallNamespace:
         """
         Convenience wrappers for firewall operations.
-        
+
         Provides simplified syntax for common firewall tasks.
-        
+
         Example:
             >>> fgt = FortiOS("192.0.2.10", token="...")
             >>> # Create a policy using the convenience wrapper
@@ -679,34 +689,34 @@ class FortiOS:
                 "Initialize FortiOS with track_operations=True to use this feature."
             )
         return self._client.get_write_operations()
-    
+
     def get_health_metrics(self) -> dict[str, Any]:
         """
         Get comprehensive health metrics for HTTP client
-        
+
         Returns health metrics including:
         - Circuit breaker state and failures
         - Retry statistics by endpoint and reason
         - Response time metrics (if adaptive_retry=True)
         - Endpoint health status (slow vs normal)
-        
+
         Returns:
             Dictionary containing:
             - circuit_breaker: Circuit breaker state, consecutive failures, threshold
             - retry_stats: Total retries, requests, success/failure counts
             - adaptive_retry_enabled: Whether adaptive retry is active
             - response_times: Per-endpoint metrics (avg, min, max, p50, p95) if adaptive_retry=True
-        
+
         Example:
             >>> fgt = FortiOS("192.0.2.10", token="...", adaptive_retry=True)
             >>> # Make some requests
             >>> fgt.api.cmdb.firewall.address.list()
-            >>> 
+            >>>
             >>> # Check health
             >>> metrics = fgt.get_health_metrics()
             >>> print(f"Circuit state: {metrics['circuit_breaker']['state']}")
             >>> print(f"Total retries: {metrics['retry_stats']['total_retries']}")
-            >>> 
+            >>>
             >>> # Check response times (if adaptive_retry=True)
             >>> if metrics['response_times']:
             ...     for endpoint, stats in metrics['response_times'].items():
@@ -714,17 +724,17 @@ class FortiOS:
             Circuit state: closed
             Total retries: 2
             cmdb/firewall/address: avg=245.5ms, slow=False
-        
+
         Note:
             Response time metrics only available when adaptive_retry=True
         """
         if not hasattr(self._client, "get_health_metrics"):
             # Fallback for custom clients without health metrics
             return {
-                'error': 'Health metrics not available for this client',
-                'circuit_breaker': {},
-                'retry_stats': {},
-                'adaptive_retry_enabled': False,
+                "error": "Health metrics not available for this client",
+                "circuit_breaker": {},
+                "retry_stats": {},
+                "adaptive_retry_enabled": False,
             }
         return self._client.get_health_metrics()
 

@@ -47,16 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improved
 
-- **Type Safety**: Significant reduction in type ignore suppressions
-  - Eliminated 3 of 4 type ignores from `fortios.py` (75% reduction in core module)
-  - Removed `type: ignore[attr-defined]` from `get_operations()` method
-  - Removed `type: ignore[attr-defined]` from `get_write_operations()` method
-  - Removed `type: ignore[attr-defined]` from `get_health_metrics()` method
-  - Only 1 architectural type ignore remains (async close - necessary)
-  - Core modules now have 8 type ignores (down from 11+)
-  - Generated endpoints maintain 306 type ignores (future improvement target)
-  - Better IDE support and autocomplete accuracy
-
 - **Documentation**: Updated authentication documentation
   - Added detailed token requirements section in README.md
   - Documented 25-character minimum and version variability
@@ -64,6 +54,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added error handling examples for common mistakes
   - Documented username/password validation requirements
   - Added best practices for token format
+
+- **Documentation Links**: Fixed PyPI compatibility for all documentation
+  - Updated all doc links to use full GitHub URLs (works on PyPI)
+  - Removed broken HELPER_METHODS.md references (file doesn't exist)
+  - Consolidated helper method docs in ENDPOINT_METHODS.md
+  - Renamed DOCS_INDEX.md → INDEX.md for clarity
+  - All cross-references verified and working
+
+- **Code Quality**: Fixed type checking errors
+  - Added PerformanceTestResults to TYPE_CHECKING imports in utils.py
+  - Fixed "not defined" error on line 55
+  - Updated .gitignore to include .mypy_cache/
 
 ### Changed
 

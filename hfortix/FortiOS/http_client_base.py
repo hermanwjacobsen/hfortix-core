@@ -53,7 +53,7 @@ class BaseHTTPClient:
         adaptive_retry: bool = False,
     ) -> None:
         """Initialize base HTTP client with shared configuration
-        
+
         Args:
             adaptive_retry: Enable adaptive retry with backpressure detection (default: False)
                           When enabled, monitors response times and adjusts retry delays
@@ -78,7 +78,7 @@ class BaseHTTPClient:
             raise ValueError("max_connections must be > 0")
         if max_keepalive_connections < 0:
             raise ValueError("max_keepalive_connections must be >= 0")
-        
+
         # Auto-adjust keepalive connections if needed (don't error)
         # httpx and other libraries allow these to be independent, but we'll adjust
         # to be safe while not blocking legitimate configurations
@@ -120,10 +120,12 @@ class BaseHTTPClient:
 
         # Initialize per-endpoint timeout configuration
         self._endpoint_timeouts: dict[str, httpx.Timeout] = {}
-        
+
         # Adaptive retry configuration
         self._adaptive_retry = adaptive_retry
-        self._response_times: dict[str, deque] = {}  # endpoint -> deque of response times
+        self._response_times: dict[str, deque] = (
+            {}
+        )  # endpoint -> deque of response times
         self._baseline_response_time = 0.5  # 500ms baseline
         self._slowdown_multiplier = 3.0  # Endpoint is slow if 3x baseline
 
@@ -380,16 +382,19 @@ class BaseHTTPClient:
         return False
 
     def _get_retry_delay(
-        self, attempt: int, response: Optional[httpx.Response] = None, endpoint: Optional[str] = None
+        self,
+        attempt: int,
+        response: Optional[httpx.Response] = None,
+        endpoint: Optional[str] = None,
     ) -> float:
         """
         Calculate retry delay with optional adaptive backpressure
-        
+
         Args:
             attempt: Current retry attempt number (0-indexed)
             response: HTTP response object (if available)
             endpoint: Endpoint being retried (for adaptive logic)
-        
+
         Returns:
             Delay in seconds before next retry
         """
@@ -402,36 +407,41 @@ class BaseHTTPClient:
 
         # Start with exponential backoff: 1s, 2s, 4s, 8s, max 30s
         delay = min(2**attempt, 30)
-        
+
         # Apply adaptive backpressure if enabled
         if self._adaptive_retry and endpoint:
-            delay = self._apply_adaptive_backpressure(delay, response, endpoint)
-        
+            delay = self._apply_adaptive_backpressure(
+                delay, response, endpoint
+            )
+
         return delay
-    
+
     def _apply_adaptive_backpressure(
-        self, base_delay: float, response: Optional[httpx.Response], endpoint: str
+        self,
+        base_delay: float,
+        response: Optional[httpx.Response],
+        endpoint: str,
     ) -> float:
         """
         Apply adaptive backpressure based on FortiGate health signals
-        
+
         Args:
             base_delay: Base exponential backoff delay
             response: HTTP response (if available)
             endpoint: Endpoint being retried
-        
+
         Returns:
             Adjusted delay with backpressure multiplier applied
         """
         multiplier = 1.0
-        
+
         # Signal 1: Explicit 503 Service Unavailable (FortiGate overloaded)
         if response and response.status_code == 503:
             multiplier = 3.0
             logger.warning(
                 "FortiGate returned 503 (overloaded), applying 3x backpressure multiplier"
             )
-        
+
         # Signal 2: Endpoint showing slow response times (early warning)
         elif self._is_endpoint_slow(endpoint):
             multiplier = 2.0
@@ -442,36 +452,36 @@ class BaseHTTPClient:
                 avg_time,
                 self._baseline_response_time,
             )
-        
+
         adjusted_delay = base_delay * multiplier
-        
+
         # Cap maximum delay at 2 minutes
         return min(adjusted_delay, 120.0)
-    
+
     def _record_response_time(self, endpoint: str, duration: float) -> None:
         """
         Record response time for adaptive backpressure detection
-        
+
         Args:
             endpoint: API endpoint (e.g., 'cmdb/firewall/address')
             duration: Response time in seconds
         """
         if not self._adaptive_retry:
             return  # Zero overhead when disabled
-        
+
         if endpoint not in self._response_times:
             # Keep last 100 response times per endpoint
             self._response_times[endpoint] = deque(maxlen=100)
-        
+
         self._response_times[endpoint].append(duration)
-    
+
     def _get_avg_response_time(self, endpoint: str) -> float:
         """
         Get average response time for endpoint
-        
+
         Args:
             endpoint: API endpoint
-        
+
         Returns:
             Average response time in seconds, or 0.0 if no data
         """
@@ -479,61 +489,67 @@ class BaseHTTPClient:
         if not times:
             return 0.0
         return sum(times) / len(times)
-    
+
     def _is_endpoint_slow(self, endpoint: str) -> bool:
         """
         Detect if endpoint is responding slowly (backpressure signal)
-        
+
         Args:
             endpoint: API endpoint to check
-        
+
         Returns:
             True if endpoint average response time exceeds baseline threshold
         """
         avg_time = self._get_avg_response_time(endpoint)
-        
+
         # No data yet, assume healthy
         if avg_time == 0.0:
             return False
-        
+
         # Slow if average > baseline * multiplier
         threshold = self._baseline_response_time * self._slowdown_multiplier
         return avg_time > threshold
-    
+
     def get_health_metrics(self) -> dict[str, Any]:
         """
         Get comprehensive health metrics including adaptive retry stats
-        
+
         Returns:
             Dictionary with health score, response times, circuit state, etc.
         """
         metrics = {
-            'circuit_breaker': {
-                'state': self._circuit_breaker['state'],
-                'consecutive_failures': self._circuit_breaker['consecutive_failures'],
-                'threshold': self._circuit_breaker['failure_threshold'],
+            "circuit_breaker": {
+                "state": self._circuit_breaker["state"],
+                "consecutive_failures": self._circuit_breaker[
+                    "consecutive_failures"
+                ],
+                "threshold": self._circuit_breaker["failure_threshold"],
             },
-            'retry_stats': self._retry_stats.copy(),
-            'adaptive_retry_enabled': self._adaptive_retry,
+            "retry_stats": self._retry_stats.copy(),
+            "adaptive_retry_enabled": self._adaptive_retry,
         }
-        
+
         # Add response time metrics if adaptive retry is enabled
         if self._adaptive_retry and self._response_times:
-            metrics['response_times'] = {}
+            metrics["response_times"] = {}
             for endpoint, times in self._response_times.items():
                 if times:
                     sorted_times = sorted(times)
                     count = len(sorted_times)
-                    metrics['response_times'][endpoint] = {
-                        'count': count,
-                        'avg_ms': round(sum(sorted_times) / count * 1000, 2),
-                        'min_ms': round(min(sorted_times) * 1000, 2),
-                        'max_ms': round(max(sorted_times) * 1000, 2),
-                        'p50_ms': round(sorted_times[count // 2] * 1000, 2),
-                        'p95_ms': round(sorted_times[int(count * 0.95)] * 1000, 2) if count > 20 else None,
-                        'is_slow': self._is_endpoint_slow(endpoint),
+                    metrics["response_times"][endpoint] = {
+                        "count": count,
+                        "avg_ms": round(sum(sorted_times) / count * 1000, 2),
+                        "min_ms": round(min(sorted_times) * 1000, 2),
+                        "max_ms": round(max(sorted_times) * 1000, 2),
+                        "p50_ms": round(sorted_times[count // 2] * 1000, 2),
+                        "p95_ms": (
+                            round(sorted_times[int(count * 0.95)] * 1000, 2)
+                            if count > 20
+                            else None
+                        ),
+                        "is_slow": self._is_endpoint_slow(endpoint),
                     }
-        
+
         return metrics
 
     # ========================================================================

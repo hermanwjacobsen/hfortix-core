@@ -13,10 +13,12 @@ from .fortianalyzer3_override_filter import Fortianalyzer3OverrideFilter
 from .fortianalyzer3_override_setting import Fortianalyzer3OverrideSetting
 from .fortianalyzer3_setting import Fortianalyzer3Setting
 from .fortianalyzer_cloud_filter import FortianalyzerCloudFilter
-from .fortianalyzer_cloud_override_filter import \
-    FortianalyzerCloudOverrideFilter
-from .fortianalyzer_cloud_override_setting import \
-    FortianalyzerCloudOverrideSetting
+from .fortianalyzer_cloud_override_filter import (
+    FortianalyzerCloudOverrideFilter,
+)
+from .fortianalyzer_cloud_override_setting import (
+    FortianalyzerCloudOverrideSetting,
+)
 from .fortianalyzer_cloud_setting import FortianalyzerCloudSetting
 from .fortianalyzer_filter import FortianalyzerFilter
 from .fortianalyzer_override_filter import FortianalyzerOverrideFilter

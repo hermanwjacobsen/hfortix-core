@@ -641,12 +641,12 @@ def get_error_description(error_code):
 def _get_suggestion_for_error(error_code, http_status, endpoint=None):
     """
     Get helpful suggestion based on error type
-    
+
     Args:
         error_code: FortiOS error code
         http_status: HTTP status code
         endpoint: API endpoint path (optional)
-    
+
     Returns:
         str: Helpful suggestion for the user, or empty string
     """
@@ -663,7 +663,7 @@ def _get_suggestion_for_error(error_code, http_status, endpoint=None):
         -1: "💡 Tip: Check string length limits and field format requirements.",
         -50: "💡 Tip: Validate input format matches expected pattern (IP, MAC, etc.).",
     }
-    
+
     http_suggestions = {
         404: "💡 Tip: Verify the object name and endpoint path. Use .exists() to check availability.",
         400: "💡 Tip: Check required parameters and their format. Review API documentation.",
@@ -673,15 +673,15 @@ def _get_suggestion_for_error(error_code, http_status, endpoint=None):
         500: "💡 Tip: This is a FortiGate server error. Check device logs and system status.",
         503: "💡 Tip: FortiGate may be busy or restarting. Wait and retry with exponential backoff.",
     }
-    
+
     # Check error code first (more specific)
     if error_code in suggestions:
         return f"\n{suggestions[error_code]}"
-    
+
     # Fall back to HTTP status
     if http_status in http_suggestions:
         return f"\n{http_suggestions[http_status]}"
-    
+
     return ""
 
 
@@ -710,7 +710,7 @@ def raise_for_status(response, endpoint=None):
     http_status = response.get("http_status")
     error_code = response.get("error")
     message = response.get("error_description", "API request failed")
-    
+
     # Add helpful suggestion to message
     suggestion = _get_suggestion_for_error(error_code, http_status, endpoint)
     if suggestion:

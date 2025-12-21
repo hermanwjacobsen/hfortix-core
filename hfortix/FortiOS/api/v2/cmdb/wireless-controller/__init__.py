@@ -19,8 +19,9 @@ from .hotspot20_h2qp_conn_capability import Hotspot20H2qpConnCapability
 from .hotspot20_h2qp_operator_name import Hotspot20H2qpOperatorName
 from .hotspot20_h2qp_osu_provider import Hotspot20H2qpOsuProvider
 from .hotspot20_h2qp_osu_provider_nai import Hotspot20H2qpOsuProviderNai
-from .hotspot20_h2qp_terms_and_conditions import \
-    Hotspot20H2qpTermsAndConditions
+from .hotspot20_h2qp_terms_and_conditions import (
+    Hotspot20H2qpTermsAndConditions,
+)
 from .hotspot20_h2qp_wan_metric import Hotspot20H2qpWanMetric
 from .hotspot20_hs_profile import Hotspot20HsProfile
 from .hotspot20_icon import Hotspot20Icon

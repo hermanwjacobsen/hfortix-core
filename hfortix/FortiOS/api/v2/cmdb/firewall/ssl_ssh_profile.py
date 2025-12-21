@@ -42,7 +42,7 @@ Important:
     - Use **DELETE** to remove objects (404 error if doesn't exist)
 """
 
-from typing import cast, Coroutine, TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Coroutine, cast
 
 if TYPE_CHECKING:
     from ....http_client_interface import IHTTPClient
@@ -375,7 +375,6 @@ class SslSshProfile:
                     return False
 
             # Type ignore justified: mypy can't verify Union return type narrowing
-
 
             return _async()  # type: ignore[return-value]
 

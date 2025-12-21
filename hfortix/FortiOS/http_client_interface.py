@@ -30,8 +30,14 @@ Example:
 
 from __future__ import annotations
 
-from typing import (TYPE_CHECKING, Any, Optional, Protocol, Union,
-                    runtime_checkable)
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Optional,
+    Protocol,
+    Union,
+    runtime_checkable,
+)
 
 if TYPE_CHECKING:
     from typing import Coroutine
@@ -213,7 +219,7 @@ class IHTTPClient(Protocol):
 
         Optional method - not required for basic protocol compliance.
         Returns statistics about HTTP connections if supported.
-        
+
         Returns:
             Dictionary with connection pool metrics (if available)
         """
@@ -225,7 +231,7 @@ class IHTTPClient(Protocol):
 
         Optional method - not required for basic protocol compliance.
         Only available when operation tracking is enabled.
-        
+
         Returns:
             List of all API operations with timestamps and details
         """
@@ -237,7 +243,7 @@ class IHTTPClient(Protocol):
 
         Optional method - not required for basic protocol compliance.
         Only available when operation tracking is enabled.
-        
+
         Returns:
             List of write operations with timestamps and details
         """
@@ -249,7 +255,7 @@ class IHTTPClient(Protocol):
 
         Optional method - not required for basic protocol compliance.
         Only available when adaptive retry is enabled.
-        
+
         Returns:
             Dictionary with health metrics (response times, backpressure, etc.)
         """

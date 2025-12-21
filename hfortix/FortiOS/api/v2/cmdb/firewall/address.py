@@ -421,7 +421,7 @@ class Address:
             ...     print("Address exists")
         """
         import inspect
-        from typing import cast, Coroutine, Any
+        from typing import Any, Coroutine, cast
 
         from hfortix.FortiOS.exceptions_forti import ResourceNotFoundError
 
@@ -440,7 +440,6 @@ class Address:
                     return False
 
             # Type ignore justified: mypy can't verify Union return type narrowing
-
 
             return _async()  # type: ignore[return-value]
 
