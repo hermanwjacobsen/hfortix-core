@@ -870,11 +870,19 @@ class FirewallPolicy:
             >>> # Get policies with filter
             >>> policies = fgt.firewall.policy.get(filter='name==Allow-HTTP')
         """
+        api_params = {}
+        if policy_id is not None:
+            api_params["policyid"] = str(policy_id)
+        if vdom:
+            api_params["vdom"] = vdom
+        if filter:
+            api_params["filter"] = filter
         if raw_json is not None:
-            kwargs['raw_json'] = raw_json
-        return self._api.get(
-            policyid=policy_id, vdom=vdom, filter=filter, **kwargs
-        )
+            api_params["raw_json"] = raw_json
+        # Merge any additional kwargs
+        api_params.update(kwargs)
+        
+        return self._api.get(**api_params)
 
     def update(
         self,
@@ -1471,10 +1479,6 @@ class FirewallPolicy:
         """
         # Build move-specific parameters
         move_kwargs: Dict[str, Any] = {"action": "move"}
-        if vdom:
-            move_kwargs["vdom"] = vdom
-        if raw_json is not None:
-            move_kwargs["raw_json"] = raw_json
 
         # Add the position parameter
         if position in ("before", "after"):
@@ -1533,23 +1537,19 @@ class FirewallPolicy:
         # We need to use the HTTP client directly because move uses query params,
         # not data payload
         endpoint = f"firewall/policy/{policy_id}"
+        
+        # Build the call parameters
+        call_params = {
+            "data": {},
+            "params": move_kwargs,
+        }
         if vdom:
-            return self._fgt._client.put(
-                "cmdb",
-                endpoint,
-                data={},
-                params=move_kwargs,
-                vdom=vdom,
-                raw_json=raw_json if raw_json is not None else False,
-            )
-        else:
-            return self._fgt._client.put(
-                "cmdb",
-                endpoint,
-                data={},
-                params=move_kwargs,
-                raw_json=raw_json if raw_json is not None else False,
-            )
+            call_params["vdom"] = vdom
+        if raw_json is not None:
+            call_params["raw_json"] = raw_json
+        
+        # Type ignore: client can be sync or async, runtime returns Dict[str, Any]
+        return self._fgt._client.put("cmdb", endpoint, **call_params)  # type: ignore
 
     def clone(
         self,

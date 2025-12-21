@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Excludes the policy being moved from consideration
     - Uses query parameters instead of data payload for move action
     - Bypasses generated API layer to call HTTP client directly with `params`
+    - Simplified implementation using consistent parameter passing
+  - Fixed `get()` method parameter handling
+    - Properly constructs API parameters dictionary
+    - Fixed kwargs merging for additional parameters
+    - All parameters now passed correctly to underlying API
   - Fixed `get_by_name()` return type - now returns single dict or None (not a list)
   - Fixed `get(policy_id=X)` response handling - properly extracts policy from list response
   - Fixed parameter names in all methods: `mkey` → `policyid` for consistency
@@ -33,7 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - ✅ `move()` - Reorder policies (before/after/top/bottom)
   - ✅ `clone()` - Duplicate policies with modifications
   - ✅ `enable()` / `disable()` - Toggle policy status
-  - Test file: `X/tests/FortiOS/firewall/test_policy.py`
 
 ### Documentation
 
