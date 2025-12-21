@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - 0.3.18
+## [0.3.18] - 2025-12-21
+
+### Fixed
+
+- **Test File Naming**: Fixed critical circular import issues caused by test files shadowing Python stdlib modules
+  - Renamed all 354 test files to use `test_` prefix (e.g., `statistics.py` → `test_statistics.py`)
+  - Prevents shadowing of Python stdlib modules: `statistics`, `ssl`, `os`, `time`, `profile`, `resource`, `test`
+  - Fixes "cannot import name 'fgt' from partially initialized module" errors
+  - All monitor, vpn, wifi, router, and system tests now execute correctly
+  - Follows Python testing best practices and PEP 8 conventions
+  - Created automated `rename_tests.py` script for systematic renaming
 
 ### Added
 
