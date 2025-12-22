@@ -9,14 +9,13 @@ Use: fgt.firewall.policy.create(name='MyPolicy', srcintf=['port1'], ...)
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 # Import shared helpers from the API layer
-from ..api.v2.cmdb.firewall._helpers import (
-    build_policy_payload_normalized,
+from ..api._helpers import (
+    build_cmdb_payload_normalized,
     normalize_to_name_list,
 )
 
 if TYPE_CHECKING:
     from ..fortios import FortiOS
-
 
 class FirewallPolicy:
     """Convenience wrapper for firewall policy operations."""
@@ -545,7 +544,7 @@ class FirewallPolicy:
             ... )
         """
         # Use the shared builder function to construct the policy payload
-        policy_data = build_policy_payload_normalized(
+        policy_data = build_cmdb_payload_normalized(
             name=name,
             srcintf=srcintf,
             dstintf=dstintf,
@@ -1040,7 +1039,7 @@ class FirewallPolicy:
             ... )
         """
         # Use the shared builder function to construct the policy payload
-        policy_data = build_policy_payload_normalized(
+        policy_data = build_cmdb_payload_normalized(
             name=name,
             srcintf=srcintf,
             dstintf=dstintf,

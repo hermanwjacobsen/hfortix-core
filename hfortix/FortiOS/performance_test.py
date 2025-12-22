@@ -53,6 +53,40 @@ class PerformanceTestResults:
         self.recommended_settings: dict[str, Any] = {}
         self.errors: list[str] = []
 
+    def __str__(self) -> str:
+        """Return string representation of results"""
+        lines = []
+        lines.append("FortiGate Performance Test Results")
+        lines.append("=" * 50)
+        
+        # Validation
+        status = "PASSED" if self.validation_passed else "FAILED"
+        lines.append(f"Validation: {status}")
+        
+        # Throughput
+        if self.sequential_throughput:
+            lines.append(f"Sequential Throughput: {self.sequential_throughput:.2f} req/s")
+        if self.concurrent_throughput:
+            lines.append(f"Concurrent Throughput: {self.concurrent_throughput:.2f} req/s")
+        
+        # Device profile
+        if self.device_profile:
+            lines.append(f"Device Profile: {self.device_profile}")
+        
+        # Endpoints tested
+        if self.endpoint_results:
+            lines.append(f"Endpoints Tested: {len(self.endpoint_results)}")
+        
+        # Errors
+        if self.errors:
+            lines.append(f"Errors: {len(self.errors)}")
+        
+        return "\n".join(lines)
+    
+    def __repr__(self) -> str:
+        """Return detailed representation"""
+        return f"PerformanceTestResults(profile={self.device_profile}, throughput={self.sequential_throughput:.2f} req/s)" if self.sequential_throughput else "PerformanceTestResults(no data)"
+
     def print_summary(self):
         """Print formatted test results"""
         print("\n" + "=" * 70)

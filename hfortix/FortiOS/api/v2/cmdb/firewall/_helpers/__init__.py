@@ -7,18 +7,23 @@ across different firewall resource types (policy, address, addrgrp, etc.).
 Includes functions for:
 - Payload building
 - List normalization
-- Validation (future)
-- Data cleaning (future)
+- Validation
+- Data cleaning
+
+Note: This module imports from the central API helpers and adds
+firewall-specific functionality on top.
 """
 
-from .policy_helpers import (
-    build_policy_payload,
-    build_policy_payload_normalized,
+# Import from central API helpers
+from ...._helpers import (
+    build_cmdb_payload,
     normalize_to_name_list,
+    normalize_member_list,
 )
 
 __all__ = [
-    "build_policy_payload",
-    "build_policy_payload_normalized",
+    # Central API helpers (re-exported for convenience)
+    "build_cmdb_payload",
     "normalize_to_name_list",
+    "normalize_member_list",
 ]

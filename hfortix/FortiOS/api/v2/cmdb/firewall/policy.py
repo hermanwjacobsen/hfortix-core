@@ -47,8 +47,8 @@ from typing import TYPE_CHECKING, Any, Coroutine, cast
 if TYPE_CHECKING:
     from ....http_client_interface import IHTTPClient
 
-# Import from helpers module
-from ._helpers import build_policy_payload
+# Import from central API helpers
+from ...._helpers import build_cmdb_payload
 
 
 class Policy:
@@ -530,7 +530,7 @@ class Policy:
         endpoint = f"/firewall/policy/{policyid}"
         
         # Build payload from all parameters using helper function
-        policy_params = build_policy_payload(
+        policy_params = build_cmdb_payload(
             before=before,
             after=after,
             policyid=policyid,
@@ -1191,7 +1191,7 @@ class Policy:
         endpoint = "/firewall/policy"
         
         # Build payload from all parameters using helper function  
-        policy_params = build_policy_payload(
+        policy_params = build_cmdb_payload(
             nkey=nkey,
             policyid=policyid,
             status=status,

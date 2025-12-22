@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **CMDB Validators - Complete Coverage**: Generated validation helpers for all 37 CMDB categories
+  - Generated 548 validation helper modules across all CMDB categories
+  - Consistent `VALID_BODY_*` and `VALID_QUERY_*` naming convention for parameter constants
+  - Body parameter validation: Payload field validation with `VALID_BODY_ACTION`, `VALID_BODY_STATUS`, etc.
+  - Query parameter validation: URL parameter validation with `VALID_QUERY_ACTION`, etc.
+  - Handles parameter name collisions (e.g., `action` in both body and query contexts)
+  - Validation coverage: enum values, maxLength, numeric ranges, required fields
+  - All validators auto-generated from FortiOS 7.6.5 OpenAPI specifications
+  - Categories: alertemail, antivirus, application, authentication, automation, casb, certificate,
+    diameter-filter, dlp, dnsfilter, emailfilter, endpoint-control, ethernet-oam, extension-controller,
+    file-filter, firewall, ftp-proxy, icap, ips, log, monitoring, report, router, rule, sctp-filter,
+    switch-controller, system, user, videofilter, virtual-patch, voip, vpn, waf, web-proxy, webfilter,
+    wireless-controller, ztna
+
 - **Builder Pattern Refactoring (Phase 1)**: Eliminated code duplication in firewall policy endpoints
   - Created `hfortix/FortiOS/api/v2/cmdb/firewall/_helpers/policy_helpers.py` (123 lines)
   - Implemented `build_policy_payload()` - API layer function (no normalization)
@@ -37,6 +51,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed `move()` method to use consistent parameter passing pattern
   - Simplified implementation to match other wrapper methods
   - All parameters now passed correctly to underlying API layer
+
+- **Validator Generator**: Fixed parameter type handling and naming consistency
+  - Fixed undefined constant bug where query parameters referenced non-existent body constants
+  - Separated validation logic: body parameters (payload) vs query parameters (URL)
+  - Implemented consistent naming: `VALID_BODY_*` for payload, `VALID_QUERY_*` for URL params
+  - Prevents parameter name collision issues (e.g., `action` can exist in both contexts)
+  - Examples: `firewall/policy.py` (VALID_BODY_ACTION), `log/syslogd_setting.py` (both types)
 
 ## [0.3.20] - 2025-12-21
 
