@@ -1,6 +1,7 @@
+---
 name: Label PRs
 
-on:
+'on':
   pull_request:
     types: [opened, edited, synchronize]
 
@@ -8,13 +9,13 @@ jobs:
   label:
     name: Auto-label PR
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: read
       pull-requests: write
-      
+
     steps:
-    - name: Label PR based on files changed
-      uses: actions/labeler@v5
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Label PR based on files changed
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
