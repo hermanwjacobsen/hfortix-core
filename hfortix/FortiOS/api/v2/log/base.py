@@ -40,7 +40,7 @@ class ArchiveResource:
     Provides read-only access for FortiOS archiveresource data.
 
     Methods:
-        get(): Retrieve monitoring/log data (read-only)
+        get(, Coroutine): Retrieve monitoring/log data (read-only)
 
     Note:
         This is a read-only endpoint. Configuration changes are not supported.
@@ -114,7 +114,7 @@ class ArchiveDownloadResource:
         mkey: Optional[int] = None,
         payload_dict: Optional[dict[str, Any]] = None,
         **kwargs: Any,
-    ) -> bytes:
+    ) -> Union[bytes, Coroutine[Any, Any, bytes]]:
         """
         Download archived packet capture file.
 
@@ -165,7 +165,7 @@ class RawResource:
         payload_dict: Optional[dict[str, Any]] = None,
         raw_json: bool = False,
         **kwargs: Any,
-    ) -> Union[str, Any]:
+    ) -> Union[str, Any, Coroutine[Any, Any, Union[str, Any]]]:
         """
         Get raw log data (returns plain text).
 
@@ -227,16 +227,36 @@ class RawResource:
             "log", endpoint, params=params if params else None
         )
 
+        # Check if async mode
+        import inspect
+        if inspect.iscoroutine(binary_data):
+            async def _async():
+                from typing import cast
+                data = await cast(Coroutine[Any, Any, bytes], binary_data)
+                if raw_json:
+                    return {
+                        "text": data.decode("utf-8"),
+                        "content": data,
+                    }
+                else:
+                    return data.decode("utf-8")
+            return _async()
+
+        # Sync mode - binary_data is bytes
         if raw_json:
             # If raw_json is requested, we need to return the response object
             # This is a limitation - we already got binary data
             # For now, return the text in a dict that mimics a response
+            from typing import cast
+            data = cast(bytes, binary_data)
             return {
-                "text": binary_data.decode("utf-8"),
-                "content": binary_data,
+                "text": data.decode("utf-8"),
+                "content": data,
             }
         else:
-            return binary_data.decode("utf-8")
+            from typing import cast
+            data = cast(bytes, binary_data)
+            return data.decode("utf-8")
 
 
 class LogResource:

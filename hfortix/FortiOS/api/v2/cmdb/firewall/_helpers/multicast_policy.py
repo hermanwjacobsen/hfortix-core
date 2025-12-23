@@ -109,13 +109,13 @@ def validate_multicast_policy_post(
     if "srcint" in payload:
         value = payload.get("srcint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"srcintf cannot exceed 35 characters")
+            return (False, "srcintf cannot exceed 35 characters")
 
     # Validate dstintf if present
     if "dstint" in payload:
         value = payload.get("dstint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"dstintf cannot exceed 35 characters")
+            return (False, "dstintf cannot exceed 35 characters")
 
     # Validate snat if present
     if "snat" in payload:
@@ -272,13 +272,13 @@ def validate_multicast_policy_put(
     if "srcint" in payload:
         value = payload.get("srcint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"srcintf cannot exceed 35 characters")
+            return (False, "srcintf cannot exceed 35 characters")
 
     # Validate dstintf if present
     if "dstint" in payload:
         value = payload.get("dstint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"dstintf cannot exceed 35 characters")
+            return (False, "dstintf cannot exceed 35 characters")
 
     # Validate snat if present
     if "snat" in payload:

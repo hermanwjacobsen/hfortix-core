@@ -278,7 +278,7 @@ class ReverseConnector:
         self,
         name: str,
         vdom: str | bool | None = None,
-    ) -> bool:
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if an object exists.
 

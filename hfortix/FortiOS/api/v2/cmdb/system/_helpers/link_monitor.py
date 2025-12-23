@@ -103,7 +103,7 @@ def validate_link_monitor_post(
     if "srcint" in payload:
         value = payload.get("srcint")
         if value and isinstance(value, str) and len(value) > 15:
-            return (False, f"srcintf cannot exceed 15 characters")
+            return (False, "srcintf cannot exceed 15 characters")
 
     # Validate server-config if present
     if "server-config" in payload:
@@ -368,7 +368,7 @@ def validate_link_monitor_put(
     if "srcint" in payload:
         value = payload.get("srcint")
         if value and isinstance(value, str) and len(value) > 15:
-            return (False, f"srcintf cannot exceed 15 characters")
+            return (False, "srcintf cannot exceed 15 characters")
 
     # Validate server-config if present
     if "server-config" in payload:

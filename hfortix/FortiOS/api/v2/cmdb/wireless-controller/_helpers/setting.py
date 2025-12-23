@@ -355,7 +355,7 @@ def validate_setting_put(
             try:
                 int_val = int(value)
                 if int_val < 0 or int_val > 60:
-                    return (False, f"device-holdoff must be between 0 and 60")
+                    return (False, "device-holdoff must be between 0 and 60")
             except (ValueError, TypeError):
                 return (False, f"device-holdoff must be numeric, got: {value}")
 

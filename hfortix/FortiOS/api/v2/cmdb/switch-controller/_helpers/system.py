@@ -157,7 +157,7 @@ def validate_system_put(
             try:
                 int_val = int(value)
                 if int_val < 0 or int_val > 10080:
-                    return (False, f"iot-holdoff must be between 0 and 10080")
+                    return (False, "iot-holdoff must be between 0 and 10080")
             except (ValueError, TypeError):
                 return (False, f"iot-holdoff must be numeric, got: {value}")
 

@@ -233,9 +233,9 @@ class System:
 
     def __init__(self, client: "IHTTPClient") -> None:
         self._client = client
-        self._fabricAdminLockoutExistsOnFirmwareUpdate = None
-        self._fabricTimeInSync = None
-        self._psirtVulnerabilities = None
+        self._fabricAdminLockoutExistsOnFirmwareUpdate: FabricAdminLockoutExistsOnFirmwareUpdate | None = None
+        self._fabricTimeInSync: FabricTimeInSync | None = None
+        self._psirtVulnerabilities: PsirtVulnerabilities | None = None
 
     @property
     def fabricAdminLockoutExistsOnFirmwareUpdate(

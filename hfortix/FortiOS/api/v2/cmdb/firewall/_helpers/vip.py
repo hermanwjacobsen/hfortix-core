@@ -288,7 +288,7 @@ def validate_vip_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     if "extint" in payload:
         value = payload.get("extint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"extintf cannot exceed 35 characters")
+            return (False, "extintf cannot exceed 35 characters")
 
     # Validate arp-reply if present
     if "arp-reply" in payload:
@@ -1119,7 +1119,7 @@ def validate_vip_put(
     if "extint" in payload:
         value = payload.get("extint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"extintf cannot exceed 35 characters")
+            return (False, "extintf cannot exceed 35 characters")
 
     # Validate arp-reply if present
     if "arp-reply" in payload:

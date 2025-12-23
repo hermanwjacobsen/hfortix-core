@@ -410,12 +410,12 @@ class Sniffer:
 
     def __init__(self, client: "IHTTPClient") -> None:
         self._client = client
-        self._delete = None
-        self._download = None
-        self._list = None
-        self._meta = None
-        self._start = None
-        self._stop = None
+        self._delete: Delete | None = None
+        self._download: Download | None = None
+        self._list: "List | None" = None
+        self._meta: Meta | None = None
+        self._start: Start | None = None
+        self._stop: Stop | None = None
 
     @property
     def delete(self) -> Delete:

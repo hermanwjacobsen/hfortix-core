@@ -40,7 +40,7 @@ Important:
     - Use **DELETE** to remove objects (404 error if doesn't exist)
 """
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Coroutine, Union
 
 if TYPE_CHECKING:
     from hfortix.FortiOS.http_client_interface import IHTTPClient
@@ -53,7 +53,7 @@ class SpeedTestSetting:
     Provides CRUD operations for FortiOS speedtestsetting configuration.
 
     Methods:
-        get(): Retrieve configuration objects
+        get(, Union, Coroutine): Retrieve configuration objects
         put(): Update existing configuration objects
 
     Important:
@@ -80,7 +80,7 @@ class SpeedTestSetting:
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Select all entries in a CLI table.
 
@@ -128,7 +128,7 @@ class SpeedTestSetting:
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update this specific resource.
 

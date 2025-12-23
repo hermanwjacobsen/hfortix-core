@@ -102,7 +102,7 @@ def validate_ttl_policy_post(
     if "srcint" in payload:
         value = payload.get("srcint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"srcintf cannot exceed 35 characters")
+            return (False, "srcintf cannot exceed 35 characters")
 
     # Validate schedule if present
     if "schedule" in payload:
@@ -172,7 +172,7 @@ def validate_ttl_policy_put(
     if "srcint" in payload:
         value = payload.get("srcint")
         if value and isinstance(value, str) and len(value) > 35:
-            return (False, f"srcintf cannot exceed 35 characters")
+            return (False, "srcintf cannot exceed 35 characters")
 
     # Validate schedule if present
     if "schedule" in payload:

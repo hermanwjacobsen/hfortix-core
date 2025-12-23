@@ -23,7 +23,7 @@ Note:
     This is a read-only endpoint. Only GET operations are supported.
 """
 
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Coroutine, Dict, Optional, Union
 
 if TYPE_CHECKING:
     from hfortix.FortiOS.http_client_interface import IHTTPClient
@@ -36,7 +36,7 @@ class InternetService:
     Provides read-only access for FortiOS internetservice data.
 
     Methods:
-        get(): Retrieve monitoring/log data (read-only)
+        get(, Union, Coroutine): Retrieve monitoring/log data (read-only)
 
     Note:
         This is a read-only endpoint. Configuration changes are not supported.
@@ -58,7 +58,7 @@ class InternetService:
         ipv6: Optional[bool] = None,
         country: Optional[str] = None,
         **kwargs,
-    ) -> Dict[str, Any]:
+    ) -> Union[Dict[str, Any], Coroutine[Any, Any, Dict[str, Any]]]:
         """
         List internet services that exist at a given IP or Subnet.
 
@@ -98,7 +98,7 @@ class InternetService:
         city: Optional[int] = None,
         country: Optional[int] = None,
         **kwargs,
-    ) -> Dict[str, Any]:
+    ) -> Union[Dict[str, Any], Coroutine[Any, Any, Dict[str, Any]]]:
         """
         List all details for a given Internet Service ID.
 
@@ -136,7 +136,7 @@ class InternetService:
         data_dict: Optional[Dict[str, Any]] = None,
         ip: Optional[str] = None,
         **kwargs,
-    ) -> Dict[str, Any]:
+    ) -> Union[Dict[str, Any], Coroutine[Any, Any, Dict[str, Any]]]:
         """
         List internet services with reputation information that exist at a
         given IP.

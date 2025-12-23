@@ -858,7 +858,7 @@ class FortiOS:
             raise RuntimeError(
                 "Cannot use .close() in async mode. Use 'await fgt.aclose()' or 'async with' instead."  # noqa: E501
             )
-        self._client.close()  # type: ignore[func-returns-value]
+        self._client.close()
 
     async def aclose(self) -> None:
         """

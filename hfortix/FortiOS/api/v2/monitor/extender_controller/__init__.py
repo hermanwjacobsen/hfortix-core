@@ -9,6 +9,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from hfortix.FortiOS.http_client_interface import IHTTPClient
 
+    from .extender import Extender
+
 
 class ExtenderController:
     """FortiExtender Controller monitoring."""

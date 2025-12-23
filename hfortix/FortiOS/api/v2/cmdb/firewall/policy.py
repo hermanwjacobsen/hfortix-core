@@ -902,7 +902,7 @@ class Policy:
         self,
         policyid: str,
         vdom: str | bool | None = None,
-    ) -> bool:
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if an object exists.
 
@@ -937,7 +937,7 @@ class Policy:
 
             # Type ignore justified: mypy can't verify Union return type narrowing
 
-            return _async()  # type: ignore[misc]
+            return _async()
         # Sync mode - get() already executed, no exception means it exists
         return True
 

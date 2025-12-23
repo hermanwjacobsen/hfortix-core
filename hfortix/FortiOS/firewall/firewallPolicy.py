@@ -1327,7 +1327,7 @@ class FirewallPolicy:
         self,
         policy_id: Union[str, int],
         vdom: Optional[str] = None,
-    ) -> bool:
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if a firewall policy exists.
 

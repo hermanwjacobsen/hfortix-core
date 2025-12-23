@@ -206,7 +206,7 @@ def validate_ippool_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     if "arp-int" in payload:
         value = payload.get("arp-int")
         if value and isinstance(value, str) and len(value) > 15:
-            return (False, f"arp-intf cannot exceed 15 characters")
+            return (False, "arp-intf cannot exceed 15 characters")
 
     # Validate associated-interface if present
     if "associated-interface" in payload:
@@ -482,7 +482,7 @@ def validate_ippool_put(
     if "arp-int" in payload:
         value = payload.get("arp-int")
         if value and isinstance(value, str) and len(value) > 15:
-            return (False, f"arp-intf cannot exceed 15 characters")
+            return (False, "arp-intf cannot exceed 15 characters")
 
     # Validate associated-interface if present
     if "associated-interface" in payload:
