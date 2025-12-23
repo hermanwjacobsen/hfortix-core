@@ -19,7 +19,7 @@ from typing import Any
 def validate_check_port_availability_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
-    **params: Any
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
     Validate GET request parameters.
@@ -44,7 +44,9 @@ def validate_check_port_availability_get(
 # ============================================================================
 
 
-def validate_check_port_availability_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
+def validate_check_port_availability_post(
+    payload: dict[str, Any],
+) -> tuple[bool, str | None]:
     """
     Validate POST request payload for creating check_port_availability.
 

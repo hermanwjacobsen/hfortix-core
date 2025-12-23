@@ -20,7 +20,7 @@ def validate_check_addrgrp_exclude_mac_member_get(
     mkey: str | None = None,
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
-    **params: Any
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
     Validate GET request parameters.
@@ -59,7 +59,7 @@ def validate_check_addrgrp_exclude_mac_member_get(
 
 
 def validate_check_addrgrp_exclude_mac_member_post(
-    payload: dict[str, Any]
+    payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
     Validate POST request payload for creating
