@@ -22,7 +22,7 @@ from typing import TYPE_CHECKING
 #
 # This is intentionally lightweight: importing these modules shouldn't have
 # side-effects beyond class definitions.
-from . import (  # noqa: F401  # type: ignore[attr-defined]
+from . import (  # noqa: F401; type: ignore[attr-defined]
     check_addrgrp_exclude_mac_member,
 )
 
