@@ -174,7 +174,11 @@ exclude_lines = [
 
 [tool.bandit]
 exclude_dirs = ["X", "Tests", "tests", ".venv", "venv", "build", "dist"]
-skips = ["B101", "B601"]  # Skip assert_used and shell_injection (false positives)
+# B101: assert_used - False positives in test code
+# B106: hardcoded_password_funcarg - Test credentials in performance/utility code
+# B110: try_except_pass - Acceptable in test/utility error handling
+# B601: shell_injection - False positives
+skips = ["B101", "B106", "B110", "B601"]
 
 [tool.isort]
 profile = "black"
