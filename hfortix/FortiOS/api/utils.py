@@ -47,7 +47,7 @@ class Utils:
         concurrent_count: int = 50,
         concurrent_level: int = 20,
         endpoints: Optional[list[str]] = None,
-    ) -> "PerformanceTestResults":
+    ) -> "PerformanceTestResults": # type: ignore[name-defined]
         """
         Run performance tests on this FortiGate device
 
