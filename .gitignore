@@ -75,7 +75,7 @@ add_raw_json*.py
 fix_*.py
 refactor_*.py
 debug_*.py
-check_*.py
+/check_*.py
 rename_*.py
 test_raw_json*.py
 test_autocomplete.py
