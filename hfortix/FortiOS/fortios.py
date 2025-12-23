@@ -563,10 +563,9 @@ class FortiOS:
             # older versions, 40+ in newer)
             # We use 25 as a reasonable minimum to catch obviously invalid
             # tokens
-            if len(token) < 25:  # type: ignore[arg-type]
+            if len(token) < 25:
                 raise ValueError(
-                    f"Invalid token format: token is too short ({
-                        len(token)} characters). "  # type: ignore[arg-type]
+                    f"Invalid token format: token is too short ({len(token)} characters). "
                     "FortiOS API tokens are typically 31+ characters (older versions) "  # noqa: E501
                     "or 40+ characters (newer versions). "
                     "Ensure you're using a valid API token, not a password or placeholder."  # noqa: E501
@@ -575,13 +574,7 @@ class FortiOS:
             # Token should only contain alphanumeric characters (FortiOS tokens
             # are alphanumeric)
             if (
-                not token.replace("-", "")
-                .replace(
-                    "_",
-                    # type: ignore[union-attr]
-                    "",
-                )
-                .isalnum()
+                not token.replace("-", "").replace("_", "").isalnum()
             ):
                 raise ValueError(
                     "Invalid token format: API tokens should contain only letters, numbers, "  # noqa: E501
@@ -589,7 +582,7 @@ class FortiOS:
                 )
 
             # Warn about common placeholder strings
-            if token.lower() in [  # type: ignore[union-attr]
+            if token.lower() in [
                 "token",
                 "api_token",
                 "your_token_here",
@@ -896,7 +889,7 @@ class FortiOS:
         """
         if self._mode != "async":
             raise RuntimeError("aclose() is only available in async mode")
-        await self._client.close()  # type: ignore[misc]
+        await self._client.close()
 
     def __enter__(self) -> "FortiOS":
         """Context manager entry (sync mode only)"""

@@ -341,7 +341,7 @@ def test_endpoint_performance(
                     start = time.time()
                     try:
                         if hasattr(api_obj, "get"):
-                            api_obj.get()  # type: ignore[attr-defined]
+                            api_obj.get()
                         elapsed = (time.time() - start) * 1000  # ms
                         times.append(elapsed)
                         successes += 1
@@ -380,7 +380,7 @@ def test_endpoint_performance(
         if username:
             try:
                 if hasattr(fgt, "close"):
-                    fgt.close()  # type: ignore[attr-defined]
+                    fgt.close()
             except BaseException:
                 pass
 

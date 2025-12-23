@@ -1289,10 +1289,7 @@ class FirewallPolicy:
             api_params["raw_json"] = raw_json
 
         return self._api.put(
-            policyid=str(
-                # type: ignore[return-value]
-                policy_id
-            ),
+            policyid=str(policy_id),
             payload_dict=policy_data,
             **api_params,
         )
