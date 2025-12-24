@@ -49,6 +49,9 @@ ENV/
 # But DO include the example file
 !.env.example
 
+# Examples directory (demonstrations only, not for distribution)
+examples/
+
 # Testing
 .pytest_cache/
 .coverage

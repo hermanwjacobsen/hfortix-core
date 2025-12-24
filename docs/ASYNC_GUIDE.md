@@ -77,13 +77,24 @@ FortiOS(
     password: str | None = None,
     verify: bool = True,
     vdom: str | None = None,
-    mode: Literal["sync", "async"] = "sync"  # 👈 New parameter
+    mode: Literal["sync", "async"] = "sync",  # 👈 Async mode
+    error_mode: Literal["raise", "return", "print"] = "raise",  # 👈 Error handling (v0.3.24+)
+    error_format: Literal["detailed", "simple", "code_only"] = "detailed"  # 👈 Error format (v0.3.24+)
 )
 ```
 
-**Values:**
+**Mode Values:**
 - `"sync"` (default): Synchronous mode - methods return results directly
 - `"async"`: Asynchronous mode - methods return coroutines that must be awaited
+
+**Error Handling (v0.3.24+):**
+
+Error handling works identically in both sync and async modes:
+
+- `error_mode`: Controls whether errors stop execution (`"raise"`), return error dicts (`"return"`), or print to stderr (`"print"`)
+- `error_format`: Controls error detail level (`"detailed"`, `"simple"`, or `"code_only"`)
+
+See [ERROR_HANDLING_CONFIG.md](ERROR_HANDLING_CONFIG.md) for details.
 
 ### Async Context Manager
 

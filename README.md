@@ -19,7 +19,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Service API**: 3 of 3 categories (100% coverage) - 21 methods 🔷 Beta
 - **Overall**: 77 of 77 categories (100% coverage) - 750+ API methods 🎉
 
-**Validation Coverage (v0.3.22):**
+**Validation Coverage (v0.3.21):**
 
 - 832 validation helper modules auto-generated for all API types (CMDB, Monitor, Log, Service)
 - Enum, length, range, pattern, and type validation implemented
@@ -47,7 +47,24 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Quick Start Guide**: [QUICKSTART.md](https://github.com/hermanwjacobsen/hfortix/blob/main/QUICKSTART.md) - Getting started guide
 - **Full Changelog**: [CHANGELOG.md](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) - Complete version history
 
-**Latest Features (v0.3.22 - December 23, 2025):**
+**Latest Features (v0.3.24 - In Development):**
+
+- ⚙️ **Error Handling Configuration**: Configurable error handling for convenience wrappers
+  - Three error modes: `"raise"` (default), `"return"`, `"print"`
+  - Three error formats: `"detailed"` (default), `"simple"`, `"code_only"`
+  - Set defaults at FortiOS instance level or override per method call
+  - Currently for convenience wrappers only (e.g., `fgt.firewall.policy.create()`)
+  - See [docs/ERROR_HANDLING_CONFIG.md](docs/ERROR_HANDLING_CONFIG.md)
+
+**Features from v0.3.23 (December 23, 2025):**
+
+- 🐛 **Bug Fixes**: Missing API endpoints and code quality improvements
+  - Added `check_addrgrp_exclude_mac_member` monitor endpoint
+  - Added `check_port_availability` system endpoint
+  - Fixed .gitignore pattern blocking legitimate API files
+  - All pre-commit hooks now pass consistently
+
+**Features from v0.3.22 (December 23, 2025):**
 
 - 🎯 **CI/CD Pipeline**: Complete GitHub Actions automation
   - Automated code quality checks (lint, format, type-check, security)
@@ -58,12 +75,6 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
   - Reformatted 796 files with Black (79-char line limit)
   - Fixed 1000+ flake8 lint errors
   - Proper handling of long lines, imports, and f-strings
-- ⚙️ **Error Handling Configuration**: Configurable error handling for convenience wrappers
-  - Three error modes: `"raise"` (default), `"return"`, `"log"`
-  - Three error formats: `"detailed"` (default), `"simple"`, `"code_only"`
-  - Set defaults at FortiOS instance level or override per method call
-  - Currently for convenience wrappers only (e.g., `fgt.firewall.policy.create()`)
-  - See [docs/ERROR_HANDLING_CONFIG.md](docs/ERROR_HANDLING_CONFIG.md)
 
 **Features from v0.3.19:**
 

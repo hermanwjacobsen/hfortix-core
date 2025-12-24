@@ -14,10 +14,11 @@ Complete reference documentation for the HFortix FortiOS Python SDK.
 - **[ASYNC_GUIDE.md](ASYNC_GUIDE.md)** - Async/await support for concurrent operations
 - **[PERFORMANCE_TESTING.md](PERFORMANCE_TESTING.md)** - Test your FortiGate and optimize connection settings
 
-### Feature Guides (v0.3.21+)
-- **[VALIDATION_GUIDE.md](VALIDATION_GUIDE.md)** - Using the validation framework (832 validators) (NEW!)
-- **[BUILDER_PATTERN_GUIDE.md](BUILDER_PATTERN_GUIDE.md)** - Builder pattern implementation details (NEW!)
-- **[FIREWALL_POLICY_WRAPPER.md](FIREWALL_POLICY_WRAPPER.md)** - Intuitive interface for firewall policy management
+### Feature Guides (v0.3.17+)
+- **[VALIDATION_GUIDE.md](VALIDATION_GUIDE.md)** - Using the validation framework (832 validators) (v0.3.21)
+- **[BUILDER_PATTERN_GUIDE.md](BUILDER_PATTERN_GUIDE.md)** - Builder pattern implementation details (v0.3.21)
+- **[FIREWALL_POLICY_WRAPPER.md](FIREWALL_POLICY_WRAPPER.md)** - Intuitive interface for firewall policy management (v0.3.17)
+- **[ERROR_HANDLING_CONFIG.md](ERROR_HANDLING_CONFIG.md)** - Configurable error handling for convenience wrappers (v0.3.24)
 
 ## API Reference
 
@@ -30,6 +31,13 @@ Complete reference documentation for the HFortix FortiOS Python SDK.
 - **[Changelog](../CHANGELOG.md)** - Complete version history
 - **[Examples](../examples/)** - Working code samples
 
+## What's New in v0.3.24
+
+- **Error Handling Configuration**: Configurable error handling for convenience wrappers
+  - Three error modes: "raise" (default), "return", "print"
+  - Three error formats: "detailed" (default), "simple", "code_only"
+  - Configure at instance level or override per method call
+
 ## What's New in v0.3.21
 
 - **Validation Framework**: 832 auto-generated validators for all API types
@@ -39,4 +47,4 @@ Complete reference documentation for the HFortix FortiOS Python SDK.
 
 ---
 
-**Documentation Status:** ✅ Complete and up-to-date (December 22, 2025)
+**Documentation Status:** ✅ Complete and up-to-date (December 24, 2025)

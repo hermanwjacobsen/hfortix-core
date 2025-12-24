@@ -103,7 +103,7 @@ class FortiOS:
         session_idle_timeout: Union[int, float, None] = 300,
         read_only: bool = False,
         track_operations: bool = False,
-        error_mode: Literal["raise", "return", "log"] = "raise",
+        error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
     ) -> None:
         """Synchronous FortiOS client (default)"""
@@ -134,7 +134,7 @@ class FortiOS:
         session_idle_timeout: Union[int, float, None] = 300,
         read_only: bool = False,
         track_operations: bool = False,
-        error_mode: Literal["raise", "return", "log"] = "raise",
+        error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
     ) -> None:
         """Asynchronous FortiOS client"""
@@ -165,7 +165,7 @@ class FortiOS:
         read_only: bool = False,
         track_operations: bool = False,
         adaptive_retry: bool = False,
-        error_mode: Literal["raise", "return", "log"] = "raise",
+        error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
     ) -> None:
         """
@@ -697,9 +697,9 @@ class FortiOS:
         return self._vdom
 
     @property
-    def error_mode(self) -> Literal["raise", "return", "log"]:
+    def error_mode(self) -> Literal["raise", "return", "print"]:
         """Default error handling mode for convenience wrappers"""
-        return cast(Literal["raise", "return", "log"], self._error_mode)
+        return cast(Literal["raise", "return", "print"], self._error_mode)
 
     @property
     def error_format(self) -> Literal["detailed", "simple", "code_only"]:

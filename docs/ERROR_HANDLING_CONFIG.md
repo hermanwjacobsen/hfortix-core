@@ -15,7 +15,7 @@ The convenience wrappers (e.g., `fgt.firewall.policy.create()`) now support conf
 fgt = FortiOS(
     host="192.0.2.10",
     token="your-token-here",
-    error_mode="raise",      # "raise" | "return" | "log"
+    error_mode="raise",      # "raise" | "return" | "print"
     error_format="detailed"  # "detailed" | "simple" | "code_only"
 )
 ```
@@ -91,22 +91,22 @@ for i in range(100):
 print(f"Created {len(successes)}, Failed {len(failures)}")
 ```
 
-### Mode: "log"
+### Mode: "print"
 
-**Behavior**: Logs error and returns None
+**Behavior**: Prints error to stderr and returns None
 
 **Program flow**: NEVER stops (always continues)
 
-**Use when**: Fire-and-forget operations or centralized logging
+**Use when**: Simple scripts, notebooks, or when you want visible error output
 
 ```python
-fgt = FortiOS(host="...", token="...", error_mode="log")
+fgt = FortiOS(host="...", token="...", error_mode="print")
 
-# Logs error automatically, returns None
+# Prints error to stderr, returns None
 result = fgt.firewall.policy.create(name="DuplicatePolicy", ...)
 
 if result is None:
-    print("Failed - check logs")
+    print("Failed - see error above")
 else:
     print("Success!")
 ```

@@ -393,7 +393,7 @@ from hfortix import FortiOS
 fgt = FortiOS(
     host='192.168.1.1',
     token='your-api-token',
-    error_mode="return",      # "raise" | "return" | "log"
+    error_mode="return",      # "raise" | "return" | "print"
     error_format="simple"     # "detailed" | "simple" | "code_only"
 )
 
@@ -413,11 +413,19 @@ result = fgt.firewall.policy.create(
 ```
 
 **Error Modes:**
-- `"raise"` (default): Raises exception - program stops unless caught
-- `"return"`: Returns error dict - program always continues  
-- `"log"`: Logs error and returns None - program always continues
 
-See [docs/ERROR_HANDLING_CONFIG.md](docs/ERROR_HANDLING_CONFIG.md) for details.
+| Mode | Stops Program? | Returns Data? | Need try/except? |
+|------|---------------|---------------|------------------|
+| `"raise"` | ❌ YES (without try/except) | ❌ No (raises exception) | ✅ Yes (if you want to continue) |
+| `"return"` | ✅ NEVER | ✅ Yes (error dict) | ❌ No |
+| `"print"` | ✅ NEVER | ⚠️ Prints to stderr, returns None | ❌ No |
+
+**Details:**
+- **`"raise"`** (default): Raises exception - program stops unless caught with try/except. Best for critical operations.
+- **`"return"`**: Returns error dict - program always continues. Best for batch operations.
+- **`"print"`**: Prints error to stderr and returns None - program always continues. Best for simple scripts and notebooks.
+
+See [docs/ERROR_HANDLING_CONFIG.md](docs/ERROR_HANDLING_CONFIG.md) for comprehensive guide.
 
 ### Firewall Policy Convenience Wrappers (NEW in v0.3.21!)
 

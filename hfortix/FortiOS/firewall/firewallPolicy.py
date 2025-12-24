@@ -7,6 +7,7 @@ Use: fgt.firewall.policy.create(name='MyPolicy', srcintf=['port1'], ...)
 """
 
 import logging
+import sys
 from typing import (  # noqa: F401
     TYPE_CHECKING,
     Any,
@@ -43,7 +44,7 @@ class FirewallPolicy:
     def _handle_error(
         self,
         operation: Any,
-        error_mode: Optional[Literal["raise", "return", "log"]] = None,
+        error_mode: Optional[Literal["raise", "return", "print"]] = None,
         error_format: Optional[Literal["detailed", "simple", "code_only"]] = None,  # noqa: E501
     ) -> Any:
         """
@@ -51,7 +52,7 @@ class FirewallPolicy:
 
         Args:
             operation: Callable that performs the API operation
-            error_mode: Override default error mode ("raise", "return", "log")
+            error_mode: Override default error mode ("raise", "return", "print")
             error_format: Override default error format ("detailed", "simple", "code_only")  # noqa: E501
 
         Returns:
@@ -101,14 +102,17 @@ class FirewallPolicy:
                         error_dict["error_code"] = -1  # Unknown error
 
                 return error_dict
-            elif mode == "log":
-                # Log and return None
-                self._logger.error(
-                    "%s: %s",
-                    type(e).__name__,
-                    str(e),
-                    exc_info=fmt == "detailed",
-                )
+            elif mode == "print":
+                # Print error and return None
+                if fmt == "detailed":
+                    print(f"ERROR: {type(e).__name__}: {str(e)}", file=sys.stderr)
+                elif fmt == "simple":
+                    print(f"ERROR: {str(e)}", file=sys.stderr)
+                elif fmt == "code_only":
+                    if hasattr(e, "error_code"):
+                        print(f"ERROR CODE: {e.error_code}", file=sys.stderr)  # type: ignore  # noqa: E501
+                    else:
+                        print("ERROR CODE: -1", file=sys.stderr)
                 return None
             else:
                 # Shouldn't happen, but raise if invalid mode
@@ -341,7 +345,7 @@ class FirewallPolicy:
         # Catch-all for any additional fields
         data: Optional[Dict[str, Any]] = None,
         # Error handling configuration
-        error_mode: Optional[Literal["raise", "return", "log"]] = None,
+        error_mode: Optional[Literal["raise", "return", "print"]] = None,
         error_format: Optional[Literal["detailed", "simple", "code_only"]] = None,  # noqa: E501
     ) -> Union[Dict[str, Any], "Coroutine[Any, Any, Dict[str, Any]]"]:
         """

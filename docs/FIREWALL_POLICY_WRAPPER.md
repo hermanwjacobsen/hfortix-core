@@ -327,3 +327,77 @@ result = fgt.firewall.policy.create(
 ```
 
 The `data` parameter is merged with explicit parameters, allowing you to use both approaches simultaneously.
+
+## Error Handling Configuration (v0.3.24+)
+
+The convenience wrapper supports configurable error handling. You can control whether errors stop your program or allow it to continue.
+
+### Configure at FortiOS Instance Level
+
+Set default error handling for all wrapper operations:
+
+```python
+from hfortix import FortiOS
+
+# Batch mode - collect errors instead of stopping
+fgt = FortiOS(
+    host='192.168.1.1',
+    token='your-api-token',
+    error_mode="return",      # "raise" | "return" | "print"
+    error_format="simple"     # "detailed" | "simple" | "code_only"
+)
+
+# Process many policies - program continues on errors
+for policy in policies_to_create:
+    result = fgt.firewall.policy.create(**policy)
+    if result.get("status") == "error":
+        print(f"Failed: {policy['name']} - {result['error_code']}")
+```
+
+### Override Per Method Call
+
+Override the instance defaults for specific operations:
+
+```python
+# Instance defaults to "raise"
+fgt = FortiOS(host='...', token='...', error_mode="raise")
+
+# Critical operation - use default "raise"
+try:
+    fgt.firewall.policy.create(name='CriticalPolicy', ...)
+except Exception as e:
+    alert_admin(e)
+    sys.exit(1)
+
+# Optional operation - override to "return"
+result = fgt.firewall.policy.create(
+    name='OptionalPolicy',
+    ...,
+    error_mode="return",     # Override just for this call
+    error_format="simple"    # Override just for this call
+)
+
+if result.get("status") == "error":
+    print("Optional policy failed, continuing...")
+```
+
+### Error Modes
+
+| Mode | Stops Program? | Returns Data? |
+|------|---------------|---------------|
+| `"raise"` (default) | ❌ YES (without try/except) | ❌ No |
+| `"return"` | ✅ NEVER | ✅ Yes (error dict) |
+| `"print"` | ✅ NEVER | ⚠️ Prints to stderr, returns None |
+
+**Details:**
+- **`"raise"`**: Raises exception - program stops unless you use try/except. Best for critical operations.
+- **`"return"`**: Returns error dict with full details - program always continues. Best for batch operations.
+- **`"print"`**: Prints error to stderr and returns None - program always continues. Best for simple scripts and notebooks where you want visible output.
+
+### Error Formats
+
+- `"detailed"` (default) - Full context with endpoint, parameters, HTTP status, hints
+- `"simple"` - Just error message, exception type, and error code
+- `"code_only"` - Just the error code number
+
+See [ERROR_HANDLING_CONFIG.md](ERROR_HANDLING_CONFIG.md) for comprehensive guide.
