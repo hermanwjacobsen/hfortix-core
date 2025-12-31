@@ -11,7 +11,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 > **⚠️ BETA STATUS - Version 0.4.0**
 >
-> - **Current Version**: 0.4.0 (Published to PyPI)
+> - **Current Version**: 0.4.0 (Published to PyPI - December 31, 2025)
 > - **Major Release**: Modular package architecture (breaking changes from 0.3.x)
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
@@ -57,7 +57,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 **Latest Features (v0.4.0 - December 31, 2025):**
 
-> **⚠️ BETA STATUS - Production-ready but pending v1.0 comprehensive testing**
+> **✅ PUBLISHED TO PYPI - December 31, 2025**
 >
 > Version 0.4.0 introduces modular package architecture. This is a MAJOR release with breaking changes.
 > If upgrading from 0.3.x, see migration guide below.
@@ -74,7 +74,12 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
     - `pip install hfortix[fortios]` - Core + FortiOS
     - `pip install hfortix[all]` - Everything
     - `pip install hfortix-fortios` - Just FortiOS (includes core)
-  - Development version - will be published as 0.4.0 when ready
+
+- 🔧 **Code Quality Improvements**:
+  - Fixed all E501 line length errors
+  - Fixed mypy type errors with namespace package imports
+  - Enhanced pre-commit configuration for auto-generated code
+  - All linters, type checkers, and pre-commit hooks passing
 
 **Features from v0.3.39 (December 29, 2025):**
 

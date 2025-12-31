@@ -41,6 +41,19 @@ This is a MAJOR release with breaking changes. The monolithic package has been s
   - Created `docs/archive/` for historical documentation
   - Updated `docs/README.md` with comprehensive navigation index
 
+### Fixed
+
+- **Code Quality Improvements**
+  - Fixed E501 line length errors in `api/_helpers/helpers.py` and `client.py`
+  - Fixed mypy type errors with namespace package imports by configuring `mypy_path`
+  - Added proper type ignores for Pyright/Pylance compatibility
+  - Disabled `warn_unused_ignores` in mypy to support dual type checker usage
+
+- **Pre-commit Configuration**
+  - Updated `.flake8` to ignore E501 for auto-generated `api/v2/` code
+  - Updated `.pre-commit-config.yaml` to exclude `api/v2/` from private key detection
+  - All pre-commit hooks now pass successfully
+
 ### Changed
 
 - **Installation Options**: Users can now install only what they need

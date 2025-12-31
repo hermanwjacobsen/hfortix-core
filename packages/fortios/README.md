@@ -5,12 +5,12 @@ Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
 [![PyPI version](https://badge.fury.io/py/hfortix-fortios.svg)](https://pypi.org/project/hfortix-fortios/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.4.0**
+> **⚠️ BETA STATUS - Version 0.4.0 (Published December 31, 2025)**
 >
 > Production-ready FortiOS client, but in beta until v1.0 with comprehensive unit tests.
 > **Major release** with modular architecture. See migration guide if upgrading from 0.3.x.
 
-**Version:** 0.4.0
+**Version:** 0.4.0  
 **Status:** Beta (Functional, production-ready, pending comprehensive unit tests for v1.0)
 
 ## Overview

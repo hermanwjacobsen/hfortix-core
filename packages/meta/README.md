@@ -5,12 +5,12 @@ Complete Python SDK for Fortinet Products - Modular, type-safe, production-ready
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.4.0 MAJOR RELEASE**
+> **⚠️ BETA STATUS - Version 0.4.0 MAJOR RELEASE (Published December 31, 2025)**
 >
-> **Breaking Changes**: Modular architecture introduced. Existing users upgrade with `pip install hfortix[fortios]`
+> **Breaking Changes**: Modular architecture introduced. Existing users upgrade with `pip install hfortix[fortios]`  
 > **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
 
-**Version:** 0.4.0
+**Version:** 0.4.0  
 **Status:** Beta (Functional, production-ready, pending comprehensive unit tests for v1.0)
 
 ## Overview
