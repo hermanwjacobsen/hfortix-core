@@ -14,33 +14,8 @@ import logging
 import sys
 from typing import Literal
 
-from .client import FortiOS
-
-# Import convenience wrappers for easier access
-from .firewall import (
-    FirewallPolicy,
-    IPMACBindingSetting,
-    IPMACBindingTable,
-    ScheduleGroup,
-    ScheduleOnetime,
-    ScheduleRecurring,
-    ServiceCategory,
-    ServiceCustom,
-    ServiceGroup,
-    ShaperPerIp,
-    TrafficShaper,
-)
-
-# Import debug utilities from core for convenience
-from hfortix_core import (
-    DebugSession,
-    debug_timer,
-    format_connection_stats,
-    format_request_info,
-    print_debug_info,
-)
-
 # Import commonly used exceptions
+# Import debug utilities from core for convenience
 from hfortix_core import (
     APIError,
     AuthenticationError,
@@ -48,6 +23,7 @@ from hfortix_core import (
     BadRequestError,
     CircuitBreakerOpenError,
     ConfigurationError,
+    DebugSession,
     DuplicateEntryError,
     EntryInUseError,
     FortinetError,
@@ -64,6 +40,27 @@ from hfortix_core import (
     ServiceUnavailableError,
     TimeoutError,
     VDOMError,
+    debug_timer,
+    format_connection_stats,
+    format_request_info,
+    print_debug_info,
+)
+
+from .client import FortiOS
+
+# Import convenience wrappers for easier access
+from .firewall import (
+    FirewallPolicy,
+    IPMACBindingSetting,
+    IPMACBindingTable,
+    ScheduleGroup,
+    ScheduleOnetime,
+    ScheduleRecurring,
+    ServiceCategory,
+    ServiceCustom,
+    ServiceGroup,
+    ShaperPerIp,
+    TrafficShaper,
 )
 
 __version__ = "0.4.0"
@@ -126,47 +123,47 @@ def configure_logging(
 ) -> None:
     """
     Configure logging for HFortix library
-    
+
     Provides a convenient way to set up structured logging for all
     HFortix loggers. Useful for enterprise observability with log
     aggregation systems (ELK, Splunk, CloudWatch).
-    
+
     Args:
-        level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) or numeric value
-        format: Output format - "json" for structured logs or "text" for human-readable
-        handler: Custom logging handler (optional, default: StreamHandler to stdout)
+        level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) or numeric value  # noqa: E501
+        format: Output format - "json" for structured logs or "text" for human-readable  # noqa: E501
+        handler: Custom logging handler (optional, default: StreamHandler to stdout)  # noqa: E501
         use_color: Use ANSI color codes in text format (default: False)
         include_trace: Include request/trace IDs in all logs (default: False)
-        output_file: Path to log file (logs to both file and console if provided)
+        output_file: Path to log file (logs to both file and console if provided)  # noqa: E501
         structured: Force structured logging with extra fields (default: False)
-    
+
     Examples:
         Basic text logging:
-        
+
         >>> from hfortix_fortios import configure_logging, FortiOS
         >>> configure_logging(level="INFO", format="text")
         >>> fgt = FortiOS("192.168.1.99", token="token")
-        
+
         Structured JSON logging for ELK/Splunk:
-        
+
         >>> configure_logging(level="INFO", format="json")
         >>> # All logs now output as JSON
-        
+
         Debug logging with colors:
-        
+
         >>> configure_logging(level="DEBUG", format="text", use_color=True)
         >>> # Debug logs with ANSI colors
-        
+
         Log to file:
-        
-        >>> configure_logging(level="INFO", format="json", output_file="/var/log/hfortix.log")
+
+        >>> configure_logging(level="INFO", format="json", output_file="/var/log/hfortix.log")  # noqa: E501
         >>> # Logs to both console and file
-        
+
         With request tracing:
-        
+
         >>> configure_logging(level="INFO", format="json", include_trace=True)
         >>> # All logs include request_id for correlation
-    
+
     Note:
         This configures all loggers under the "hfortix" namespace:
         - hfortix.http (HTTP client operations)
@@ -175,25 +172,25 @@ def configure_logging(
     """
     # Import formatters from logging package
     from hfortix_core.logging import StructuredFormatter, TextFormatter
-    
+
     # Get root hfortix logger
     logger = logging.getLogger("hfortix")
-    
+
     # Convert level string to logging constant
     if isinstance(level, str):
         level = getattr(logging, level.upper(), logging.INFO)
-    
+
     logger.setLevel(level)
-    
+
     # Remove existing handlers to avoid duplicates
     logger.handlers.clear()
-    
+
     # Choose formatter based on format type or structured flag
     if format == "json" or structured:
         formatter = StructuredFormatter()
     else:
         formatter = TextFormatter(use_color=use_color)
-    
+
     # Create console handler if not provided
     if handler is None:
         handler = logging.StreamHandler(sys.stdout)
@@ -202,25 +199,25 @@ def configure_logging(
     else:
         handler.setFormatter(formatter)
         logger.addHandler(handler)
-    
+
     # Add file handler if output_file is specified
     if output_file:
         file_handler = logging.FileHandler(output_file)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
         logger.info(f"Logging to file: {output_file}")
-    
+
     # Prevent propagation to root logger to avoid duplicate logs
     logger.propagate = False
-    
+
     # Log configuration
     extra = {"format": format, "level": logging.getLevelName(level)}
     if include_trace:
         extra["trace_enabled"] = True
     if output_file:
         extra["output_file"] = output_file
-        
+
     logger.debug(
-        f"Logging configured: level={logging.getLevelName(level)}, format={format}",
+        f"Logging configured: level={logging.getLevelName(level)}, format={format}",  # noqa: E501
         extra=extra,
     )

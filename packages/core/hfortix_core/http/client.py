@@ -249,7 +249,7 @@ class HTTPClient(BaseHTTPClient):
         self._circuit_breaker_auto_retry = circuit_breaker_auto_retry
         self._circuit_breaker_max_retries = circuit_breaker_max_retries
         self._circuit_breaker_retry_delay = circuit_breaker_retry_delay
-        
+
         # Store connection pool settings for monitoring
         self._max_connections = max_connections
         self._max_keepalive_connections = max_keepalive_connections
@@ -323,7 +323,7 @@ class HTTPClient(BaseHTTPClient):
         self._total_requests = 0
         self._pool_exhaustion_count = 0
         self._pool_exhaustion_timestamps: list[float] = []
-        
+
         # Request inspection for debugging
         self._last_request: Optional[dict[str, Any]] = None
         self._last_response: Optional[dict[str, Any]] = None
@@ -782,8 +782,11 @@ class HTTPClient(BaseHTTPClient):
                 "status_code": status_code,
                 "success": success,
                 "duration_ms": duration_ms,
-                "host": self._url.replace("https://", "").replace("http://", ""),
-                "read_only_mode": self._read_only and method in ("POST", "PUT", "DELETE"),
+                "host": self._url.replace("https://", "").replace(
+                    "http://", ""
+                ),
+                "read_only_mode": self._read_only
+                and method in ("POST", "PUT", "DELETE"),
             }
 
             # Add error if present
@@ -834,7 +837,7 @@ class HTTPClient(BaseHTTPClient):
     def _infer_action(method: str, path: str) -> str:
         """Infer high-level action from method and path"""
         method = method.upper()
-        
+
         if method == "GET":
             # Heuristic: if path ends with a specific name, it's a read,
             # otherwise it's a list
@@ -864,7 +867,7 @@ class HTTPClient(BaseHTTPClient):
         """
         # Clean path
         path = path.strip("/")
-        
+
         # Object type is the full path with dots instead of slashes
         # e.g., "firewall/address" -> "firewall.address"
         object_type = path.replace("/", ".")
@@ -1093,7 +1096,7 @@ class HTTPClient(BaseHTTPClient):
                 # Track active requests and total requests
                 self._active_requests += 1
                 self._total_requests += 1
-                
+
                 # Store request details for debugging
                 self._last_request = {
                     "method": method.upper(),
@@ -1102,7 +1105,7 @@ class HTTPClient(BaseHTTPClient):
                     "data": data,
                     "timestamp": time.time(),
                 }
-                
+
                 try:
                     # Make request with httpx client
                     res = self._client.request(
@@ -1111,14 +1114,14 @@ class HTTPClient(BaseHTTPClient):
                         json=data if data else None,
                         params=params if params else None,
                     )
-                    
+
                     # Store response details for debugging
                     self._last_response = {
                         "status_code": res.status_code,
                         "headers": dict(res.headers),
                     }
-                    
-                except httpx.PoolTimeout as e:
+
+                except httpx.PoolTimeout:
                     # Track pool exhaustion
                     self._pool_exhaustion_count += 1
                     self._pool_exhaustion_timestamps.append(time.time())
@@ -1340,13 +1343,13 @@ class HTTPClient(BaseHTTPClient):
             duration = time.time() - start_time
             error_message = str(last_error)
             status_code = 0
-            
+
             # Try to extract status code from error
             if hasattr(last_error, "response"):
                 response_obj = getattr(last_error, "response", None)
                 if response_obj and hasattr(response_obj, "status_code"):
                     status_code = response_obj.status_code
-            
+
             self._log_audit(
                 method=method,
                 endpoint=full_path,

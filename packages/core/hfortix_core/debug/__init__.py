@@ -6,7 +6,11 @@ API requests, responses, and performance metrics.
 """
 
 from .base import DebugFormatter, DebugInfo, RequestInfo, SessionSummary
-from .formatters import format_connection_stats, format_request_info, print_debug_info
+from .formatters import (
+    format_connection_stats,
+    format_request_info,
+    print_debug_info,
+)
 from .handlers import DebugSession, debug_timer
 
 __all__ = [

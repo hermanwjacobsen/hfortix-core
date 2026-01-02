@@ -12,7 +12,7 @@ def encode_path_component(component: str | int) -> str:
 
 class HTTPClient:
     """Internal HTTP client for FortiOS API requests (Sync Implementation)."""
-    
+
     # Connection tracking attributes
     _active_requests: int
     _total_requests: int
@@ -20,12 +20,12 @@ class HTTPClient:
     _pool_exhaustion_timestamps: list[float]
     _max_connections: int
     _max_keepalive_connections: int
-    
+
     # Debug tracking attributes
     _last_request: dict[str, Any] | None
     _last_response: dict[str, Any] | None
     _last_response_time: float | None
-    
+
     def __init__(
         self,
         url: str,
@@ -55,7 +55,6 @@ class HTTPClient:
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
     ) -> None: ...
-    
     def request(
         self,
         method: Literal["GET", "POST", "PUT", "DELETE"],
@@ -68,7 +67,7 @@ class HTTPClient:
     ) -> HTTPResponse:
         """Make HTTP request to FortiOS API."""
         ...
-    
+
     def get(
         self,
         endpoint: str,
@@ -79,7 +78,7 @@ class HTTPClient:
     ) -> HTTPResponse:
         """Make GET request."""
         ...
-    
+
     def post(
         self,
         endpoint: str,
@@ -91,7 +90,7 @@ class HTTPClient:
     ) -> HTTPResponse:
         """Make POST request."""
         ...
-    
+
     def put(
         self,
         endpoint: str,
@@ -103,7 +102,7 @@ class HTTPClient:
     ) -> HTTPResponse:
         """Make PUT request."""
         ...
-    
+
     def delete(
         self,
         endpoint: str,
@@ -114,10 +113,10 @@ class HTTPClient:
     ) -> HTTPResponse:
         """Make DELETE request."""
         ...
-    
+
     def get_connection_stats(self) -> dict[str, Any]:
         """Get real-time connection pool statistics.
-        
+
         Returns:
             Dictionary with connection metrics including:
             - max_connections: Maximum allowed connections
@@ -128,10 +127,10 @@ class HTTPClient:
             - pool_exhaustion_timestamps: Timestamps of exhaustion events
         """
         ...
-    
+
     def inspect_last_request(self) -> dict[str, Any] | None:
         """Get detailed information about the last API request.
-        
+
         Returns:
             Dictionary with request details including:
             - method: HTTP method (GET, POST, etc.)
@@ -142,10 +141,10 @@ class HTTPClient:
             Returns None if no requests have been made yet.
         """
         ...
-    
+
     def close(self) -> None:
         """Close HTTP client and release resources."""
         ...
-    
+
     def __enter__(self) -> HTTPClient: ...
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None: ...

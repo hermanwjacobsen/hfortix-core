@@ -53,7 +53,7 @@ class SyslogHandler:
         Initialize Syslog handler
 
         Args:
-            server: Syslog server in format "host:port" or "host" (default port 514)
+            server: Syslog server in format "host:port" or "host" (default port 514)  # noqa: E501
             formatter: Custom formatter (default: SyslogFormatter)
             timeout: Socket timeout in seconds
         """
@@ -93,11 +93,11 @@ class SyslogHandler:
             # Format message
             message = self.formatter.format(operation)
 
-            # Send via UDP (max 64KB for IPv4, but practical limit ~8KB for syslog)
+            # Send via UDP (max 64KB for IPv4, but practical limit ~8KB for syslog)  # noqa: E501
             message_bytes = message.encode("utf-8")
             if len(message_bytes) > 8192:
                 logger.warning(
-                    f"Syslog message truncated (size: {len(message_bytes)} bytes)",
+                    f"Syslog message truncated (size: {len(message_bytes)} bytes)",  # noqa: E501
                     extra={"message_size": len(message_bytes)},
                 )
                 message_bytes = message_bytes[:8192]
@@ -133,7 +133,7 @@ class FileHandler:
     """
     Write audit logs to a file
 
-    Writes audit logs to a file in JSON Lines format (one JSON object per line).
+    Writes audit logs to a file in JSON Lines format (one JSON object per line).  # noqa: E501
     Supports automatic log rotation based on file size.
 
     Example:
@@ -188,7 +188,10 @@ class FileHandler:
 
         logger.debug(
             f"FileHandler initialized: {self.filepath}",
-            extra={"filepath": str(self.filepath), "max_bytes": self.max_bytes},
+            extra={
+                "filepath": str(self.filepath),
+                "max_bytes": self.max_bytes,
+            },
         )
 
     def log_operation(self, operation: dict[str, Any]) -> None:
@@ -204,7 +207,7 @@ class FileHandler:
 
             # Open file if not already open
             if self._file is None or self._file.closed:
-                self._file = open(self.filepath, self.mode, encoding="utf-8")  # type: ignore[assignment]
+                self._file = open(self.filepath, self.mode, encoding="utf-8")  # type: ignore[assignment]  # noqa: E501
 
             # Format and write
             message = self.formatter.format(operation)
@@ -345,7 +348,7 @@ class CompositeHandler:
     Useful for compliance (send to SIEM) + debugging (send to file) scenarios.
 
     Example:
-        >>> from hfortix_core.audit import CompositeHandler, SyslogHandler, FileHandler
+        >>> from hfortix_core.audit import CompositeHandler, SyslogHandler, FileHandler  # noqa: E501
         >>>
         >>> # Send to both SIEM and local file
         >>> handler = CompositeHandler([

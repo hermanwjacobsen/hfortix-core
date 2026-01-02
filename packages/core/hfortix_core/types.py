@@ -21,10 +21,11 @@ __all__ = [
 class APIResponse(TypedDict, total=False):
     """
     Base API response structure from FortiOS
-    
+
     Not all fields are present in every response. Use total=False to make
     all fields optional.
     """
+
     http_status: int
     results: Any  # Can be list, dict, or string depending on endpoint
     revision: str
@@ -42,6 +43,7 @@ class APIResponse(TypedDict, total=False):
 
 class ListResponse(TypedDict):
     """Response from list/get operations that return multiple items"""
+
     http_status: int
     results: list[dict[str, Any]]
     vdom: str
@@ -55,6 +57,7 @@ class ListResponse(TypedDict):
 
 class ObjectResponse(TypedDict):
     """Response from get operations that return a single item"""
+
     http_status: int
     results: dict[str, Any]  # Single object, not a list
     vdom: str
@@ -68,6 +71,7 @@ class ObjectResponse(TypedDict):
 
 class ErrorResponse(TypedDict):
     """Error response structure from FortiOS API"""
+
     http_status: int
     error: int
     errorcode: int
@@ -76,15 +80,16 @@ class ErrorResponse(TypedDict):
 
 
 CircuitBreakerState = Literal["closed", "open", "half-open"]
-"""Circuit breaker state: closed (normal), open (failing), half-open (testing)"""
+"""Circuit breaker state: closed (normal), open (failing), half-open (testing)"""  # noqa: E501
 
 
 class ConnectionStats(TypedDict):
     """
     Connection pool statistics
-    
+
     Returned by HTTPClient.get_connection_stats()
     """
+
     http2_enabled: bool
     max_connections: int
     max_keepalive_connections: int
@@ -99,9 +104,10 @@ class ConnectionStats(TypedDict):
 class RequestInfo(TypedDict, total=False):
     """
     Information about a request (for debugging)
-    
+
     Returned by HTTPClient.inspect_last_request()
     """
+
     method: str
     endpoint: str
     params: dict[str, Any] | None

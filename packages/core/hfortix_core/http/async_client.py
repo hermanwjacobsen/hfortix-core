@@ -253,7 +253,7 @@ class AsyncHTTPClient(BaseHTTPClient):
         self._total_requests = 0
         self._pool_exhaustion_count = 0
         self._pool_exhaustion_timestamps: list[float] = []
-        
+
         # Request inspection for debugging
         self._last_request: Optional[dict[str, Any]] = None
         self._last_response: Optional[dict[str, Any]] = None
@@ -644,8 +644,11 @@ class AsyncHTTPClient(BaseHTTPClient):
                 "status_code": status_code,
                 "success": success,
                 "duration_ms": duration_ms,
-                "host": self._url.replace("https://", "").replace("http://", ""),
-                "read_only_mode": self._read_only and method in ("POST", "PUT", "DELETE"),
+                "host": self._url.replace("https://", "").replace(
+                    "http://", ""
+                ),
+                "read_only_mode": self._read_only
+                and method in ("POST", "PUT", "DELETE"),
             }
 
             # Add error if present
@@ -696,7 +699,7 @@ class AsyncHTTPClient(BaseHTTPClient):
     def _infer_action(method: str, path: str) -> str:
         """Infer high-level action from method and path"""
         method = method.upper()
-        
+
         if method == "GET":
             parts = path.strip("/").split("/")
             if len(parts) > 0 and parts[-1] and not parts[-1].startswith("?"):
@@ -832,7 +835,7 @@ class AsyncHTTPClient(BaseHTTPClient):
                 # Track active requests and total requests
                 self._active_requests += 1
                 self._total_requests += 1
-                
+
                 # Store request details for debugging
                 self._last_request = {
                     "method": method.upper(),
@@ -841,7 +844,7 @@ class AsyncHTTPClient(BaseHTTPClient):
                     "data": data,
                     "timestamp": time.time(),
                 }
-                
+
                 try:
                     # Make async request
                     res = await self._client.request(
@@ -851,14 +854,14 @@ class AsyncHTTPClient(BaseHTTPClient):
                         params=params if params else None,
                         timeout=endpoint_timeout if endpoint_timeout else None,
                     )
-                    
+
                     # Store response details for debugging
                     self._last_response = {
                         "status_code": res.status_code,
                         "headers": dict(res.headers),
                     }
-                    
-                except httpx.PoolTimeout as e:
+
+                except httpx.PoolTimeout:
                     # Track pool exhaustion
                     self._pool_exhaustion_count += 1
                     self._pool_exhaustion_timestamps.append(time.time())
@@ -986,13 +989,13 @@ class AsyncHTTPClient(BaseHTTPClient):
             duration = time.time() - start_time
             error_message = str(last_error)
             status_code = 0
-            
+
             # Try to extract status code from error
             if hasattr(last_error, "response"):
                 response_obj = getattr(last_error, "response", None)
                 if response_obj and hasattr(response_obj, "status_code"):
                     status_code = response_obj.status_code
-            
+
             self._log_audit(
                 method=method,
                 endpoint=full_path,

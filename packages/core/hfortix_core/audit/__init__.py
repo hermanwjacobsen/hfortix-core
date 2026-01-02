@@ -28,7 +28,7 @@ Basic Usage:
     >>> fgt.api.cmdb.firewall.policy.create(data={...})
 
 Advanced Usage:
-    >>> from hfortix_core.audit import CompositeHandler, FileHandler, StreamHandler
+    >>> from hfortix_core.audit import CompositeHandler, FileHandler, StreamHandler  # noqa: E501
     >>>
     >>> # Send to multiple destinations
     >>> handler = CompositeHandler([
@@ -44,7 +44,7 @@ Custom Handler:
     ...     # Send to Kafka, database, cloud logging, etc.
     ...     send_to_kafka(operation)
     ...
-    >>> fgt = FortiOS("192.168.1.99", token="token", audit_callback=custom_audit)
+    >>> fgt = FortiOS("192.168.1.99", token="token", audit_callback=custom_audit)  # noqa: E501
 """
 
 from .base import AuditHandler, AuditOperation

@@ -14,7 +14,7 @@ __all__ = ["LogRecord", "LogFormatter"]
 class LogRecord(TypedDict, total=False):
     """
     Type definition for structured log record data
-    
+
     Attributes:
         timestamp: ISO 8601 UTC timestamp
         level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
@@ -34,7 +34,7 @@ class LogRecord(TypedDict, total=False):
         max_attempts: Maximum retry attempts
         source: Source location (file, line, function)
     """
-    
+
     timestamp: str
     level: str
     logger: str
@@ -58,18 +58,18 @@ class LogRecord(TypedDict, total=False):
 class LogFormatter(Protocol):
     """
     Protocol for log formatters
-    
+
     Any class implementing this protocol can be used as a formatter
     for HFortix logging.
     """
-    
+
     def format(self, record: Any) -> str:
         """
         Format a log record
-        
+
         Args:
             record: logging.LogRecord instance
-            
+
         Returns:
             Formatted string
         """

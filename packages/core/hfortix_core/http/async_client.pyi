@@ -8,7 +8,7 @@ HTTPResponse: TypeAlias = dict[str, Any]
 
 class AsyncHTTPClient:
     """Internal async HTTP client for FortiOS API requests."""
-    
+
     # Connection tracking attributes
     _active_requests: int
     _total_requests: int
@@ -16,12 +16,12 @@ class AsyncHTTPClient:
     _pool_exhaustion_timestamps: list[float]
     _max_connections: int
     _max_keepalive_connections: int
-    
+
     # Debug tracking attributes
     _last_request: dict[str, Any] | None
     _last_response: dict[str, Any] | None
     _last_response_time: float | None
-    
+
     def __init__(
         self,
         url: str,
@@ -51,7 +51,6 @@ class AsyncHTTPClient:
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
     ) -> None: ...
-    
     async def request(
         self,
         method: Literal["GET", "POST", "PUT", "DELETE"],
@@ -64,7 +63,7 @@ class AsyncHTTPClient:
     ) -> HTTPResponse:
         """Make async HTTP request to FortiOS API."""
         ...
-    
+
     async def get(
         self,
         endpoint: str,
@@ -75,7 +74,7 @@ class AsyncHTTPClient:
     ) -> HTTPResponse:
         """Make async GET request."""
         ...
-    
+
     async def post(
         self,
         endpoint: str,
@@ -87,7 +86,7 @@ class AsyncHTTPClient:
     ) -> HTTPResponse:
         """Make async POST request."""
         ...
-    
+
     async def put(
         self,
         endpoint: str,
@@ -99,7 +98,7 @@ class AsyncHTTPClient:
     ) -> HTTPResponse:
         """Make async PUT request."""
         ...
-    
+
     async def delete(
         self,
         endpoint: str,
@@ -110,10 +109,10 @@ class AsyncHTTPClient:
     ) -> HTTPResponse:
         """Make async DELETE request."""
         ...
-    
+
     def get_connection_stats(self) -> dict[str, Any]:
         """Get real-time connection pool statistics.
-        
+
         Returns:
             Dictionary with connection metrics including:
             - max_connections: Maximum allowed connections
@@ -124,10 +123,10 @@ class AsyncHTTPClient:
             - pool_exhaustion_timestamps: Timestamps of exhaustion events
         """
         ...
-    
+
     def inspect_last_request(self) -> dict[str, Any] | None:
         """Get detailed information about the last API request.
-        
+
         Returns:
             Dictionary with request details including:
             - method: HTTP method (GET, POST, etc.)
@@ -138,10 +137,12 @@ class AsyncHTTPClient:
             Returns None if no requests have been made yet.
         """
         ...
-    
+
     async def close(self) -> None:
         """Close async HTTP client and release resources."""
         ...
-    
+
     async def __aenter__(self) -> AsyncHTTPClient: ...
-    async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None: ...
+    async def __aexit__(
+        self, exc_type: Any, exc_val: Any, exc_tb: Any
+    ) -> None: ...

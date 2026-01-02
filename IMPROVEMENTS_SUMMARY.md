@@ -195,7 +195,7 @@ from hfortix_fortios import (
     # Main client
     FortiOS,
     configure_logging,
-    
+
     # Convenience wrappers
     FirewallPolicy,
     ScheduleRecurring,
@@ -203,14 +203,14 @@ from hfortix_fortios import (
     ServiceCustom,
     TrafficShaper,
     # ... and more
-    
+
     # Debug utilities
     DebugSession,
     debug_timer,
     format_connection_stats,
     format_request_info,
     print_debug_info,
-    
+
     # Common exceptions
     APIError,
     AuthenticationError,

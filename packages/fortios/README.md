@@ -235,7 +235,7 @@ with DebugSession(fgt) as session:
     # Make API calls
     fgt.api.cmdb.firewall.address.list()
     fgt.api.cmdb.firewall.policy.list()
-    
+
     # Auto-prints summary on exit:
     # - Duration, total requests, success/failure counts
     # - Avg/min/max response times

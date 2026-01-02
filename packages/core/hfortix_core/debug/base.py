@@ -6,7 +6,7 @@ Defines core types and protocols for debugging utilities.
 
 from __future__ import annotations
 
-from typing import Any, Literal, Protocol, TypedDict, runtime_checkable
+from typing import Any, Protocol, TypedDict, runtime_checkable
 
 __all__ = [
     "DebugInfo",
@@ -19,7 +19,7 @@ __all__ = [
 class RequestInfo(TypedDict, total=False):
     """
     Type definition for request debugging information
-    
+
     Attributes:
         timestamp: Unix timestamp when request was made
         method: HTTP method (GET, POST, PUT, DELETE)
@@ -30,7 +30,7 @@ class RequestInfo(TypedDict, total=False):
         error: Error message if request failed
         response_data: Full response body (if captured)
     """
-    
+
     timestamp: float
     method: str
     endpoint: str
@@ -44,14 +44,14 @@ class RequestInfo(TypedDict, total=False):
 class DebugInfo(TypedDict, total=False):
     """
     Type definition for comprehensive debug information
-    
+
     Attributes:
         last_request: Information about the last API request
         connection_stats: Connection pool statistics
         session_active: Whether a debug session is active
         capture_enabled: Whether response capture is enabled
     """
-    
+
     last_request: RequestInfo | None
     connection_stats: dict[str, Any]
     session_active: bool
@@ -61,7 +61,7 @@ class DebugInfo(TypedDict, total=False):
 class SessionSummary(TypedDict, total=False):
     """
     Type definition for debug session summary
-    
+
     Attributes:
         duration_seconds: Total session duration in seconds
         total_requests: Total number of requests made
@@ -74,7 +74,7 @@ class SessionSummary(TypedDict, total=False):
         initial_stats: Connection stats at session start
         final_stats: Connection stats at session end
     """
-    
+
     duration_seconds: float | None
     total_requests: int
     successful_requests: int
@@ -91,30 +91,32 @@ class SessionSummary(TypedDict, total=False):
 class DebugFormatter(Protocol):
     """
     Protocol for debug information formatters
-    
+
     Any class implementing this protocol can be used to format
     debug information for display.
     """
-    
-    def format_request(self, request_info: RequestInfo | dict[str, Any] | None) -> str:
+
+    def format_request(
+        self, request_info: RequestInfo | dict[str, Any] | None
+    ) -> str:
         """
         Format request information as string
-        
+
         Args:
             request_info: Request information dictionary
-            
+
         Returns:
             Formatted string
         """
         ...
-    
+
     def format_stats(self, stats: dict[str, Any] | None) -> str:
         """
         Format connection statistics as string
-        
+
         Args:
             stats: Connection statistics dictionary
-            
+
         Returns:
             Formatted string
         """

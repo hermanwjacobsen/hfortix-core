@@ -88,10 +88,10 @@ class AuditHandler(Protocol):
         Log an API operation
 
         Args:
-            operation: Dictionary containing operation details (see AuditOperation)
+            operation: Dictionary containing operation details (see AuditOperation)  # noqa: E501
 
         Note:
-            This method should handle errors internally and not raise exceptions,
+            This method should handle errors internally and not raise exceptions,  # noqa: E501
             as audit logging failures should not break API operations.
         """
         ...

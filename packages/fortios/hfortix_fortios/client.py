@@ -633,7 +633,7 @@ class FortiOS:
             elif isinstance(debug, str):
                 # String debug - use as log level
                 self._setup_logging(debug.upper())
-                self._debug_enabled = (debug.upper() == "DEBUG")
+                self._debug_enabled = debug.upper() == "DEBUG"
 
         # If trace_id is provided, automatically include in user_context
         if trace_id:
@@ -1208,7 +1208,7 @@ class FortiOS:
             >>>
             >>> stats = fgt.get_retry_stats()
             >>> print(f"Total retries: {stats['total_retries']}")
-            >>> print(f"Success rate: {stats['successful_requests'] / stats['total_requests'] * 100:.1f}%")
+            >>> print(f"Success rate: {stats['successful_requests'] / stats['total_requests'] * 100:.1f}%")  # noqa: E501
             >>> for reason, count in stats['retry_by_reason'].items():
             ...     print(f"  {reason}: {count} retries")
             Total retries: 23
@@ -1218,7 +1218,7 @@ class FortiOS:
               server_error: 5 retries
 
         Note:
-            Stats are cumulative for the lifetime of the FortiOS client instance.
+            Stats are cumulative for the lifetime of the FortiOS client instance.  # noqa: E501
         """
         if not hasattr(self._client, "get_retry_stats"):
             return {
@@ -1258,7 +1258,7 @@ class FortiOS:
             ... except CircuitBreakerOpenError:
             ...     state = fgt.get_circuit_breaker_state()
             ...     print(f"Circuit is {state['state']}")
-            ...     print(f"Failures: {state['consecutive_failures']}/{state['failure_threshold']}")
+            ...     print(f"Failures: {state['consecutive_failures']}/{state['failure_threshold']}")  # noqa: E501
             Circuit is open
             Failures: 10/10
 
@@ -1389,10 +1389,10 @@ class FortiOS:
     def connection_stats(self) -> dict[str, Any]:
         """
         Get connection pool and health statistics
-        
+
         Convenience property that returns real-time connection pool metrics,
         circuit breaker state, and request statistics.
-        
+
         Returns:
             Dictionary with connection metrics:
                 - http2_enabled: Whether HTTP/2 is enabled
@@ -1404,11 +1404,11 @@ class FortiOS:
                 - circuit_breaker_state: Current state (closed/open/half-open)
                 - consecutive_failures: Consecutive failure count
                 - last_failure_time: Timestamp of last failure
-        
+
         Example:
             >>> fgt = FortiOS("192.168.1.99", token="...")
             >>> stats = fgt.connection_stats
-            >>> print(f"Active: {stats['active_requests']}/{stats['max_connections']}")
+            >>> print(f"Active: {stats['active_requests']}/{stats['max_connections']}")  # noqa: E501
             >>> print(f"Pool exhaustions: {stats['pool_exhaustion_count']}")
             >>> print(f"Circuit breaker: {stats['circuit_breaker_state']}")
         """
@@ -1418,11 +1418,11 @@ class FortiOS:
     def last_request(self) -> dict[str, Any]:
         """
         Get details of last API request (for debugging)
-        
+
         Returns information about the most recent API call including method,
         endpoint, response time, and status code. Useful for troubleshooting
         and performance analysis.
-        
+
         Returns:
             Dictionary with request details:
                 - method: HTTP method (GET, POST, PUT, DELETE)
@@ -1431,7 +1431,7 @@ class FortiOS:
                 - response_time_ms: Response time in milliseconds
                 - status_code: HTTP status code
                 - error: Error message if no requests made yet
-        
+
         Example:
             >>> fgt = FortiOS("192.168.1.99", token="...")
             >>> fgt.api.cmdb.firewall.address.list()

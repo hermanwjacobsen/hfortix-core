@@ -7,6 +7,13 @@ Provides:
 - Shared utilities and type definitions
 """
 
+from .debug import (
+    DebugSession,
+    debug_timer,
+    format_connection_stats,
+    format_request_info,
+    print_debug_info,
+)
 from .exceptions import (
     APIError,
     AuthenticationError,
@@ -31,6 +38,12 @@ from .exceptions import (
     TimeoutError,
     VDOMError,
 )
+from .logging import (
+    RequestLogger,
+    StructuredFormatter,
+    TextFormatter,
+    log_operation,
+)
 from .types import (
     APIResponse,
     CircuitBreakerState,
@@ -39,19 +52,6 @@ from .types import (
     ListResponse,
     ObjectResponse,
     RequestInfo,
-)
-from .logging import (
-    RequestLogger,
-    log_operation,
-    StructuredFormatter,
-    TextFormatter,
-)
-from .debug import (
-    DebugSession,
-    debug_timer,
-    format_connection_stats,
-    format_request_info,
-    print_debug_info,
 )
 
 __version__ = "0.4.0"

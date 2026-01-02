@@ -11,7 +11,12 @@ import json
 from datetime import datetime
 from typing import Any, Protocol, runtime_checkable
 
-__all__ = ["AuditFormatter", "JSONFormatter", "SyslogFormatter", "CEFFormatter"]
+__all__ = [
+    "AuditFormatter",
+    "JSONFormatter",
+    "SyslogFormatter",
+    "CEFFormatter",
+]
 
 
 @runtime_checkable
@@ -68,10 +73,10 @@ class SyslogFormatter:
     and structured data.
 
     Format:
-        <PRI>VERSION TIMESTAMP HOSTNAME APP-NAME PROCID MSGID STRUCTURED-DATA MSG
+        <PRI>VERSION TIMESTAMP HOSTNAME APP-NAME PROCID MSGID STRUCTURED-DATA MSG  # noqa: E501
 
     Example output:
-        <134>1 2026-01-02T14:23:45Z 192.168.1.99 hfortix - - - {"method":"POST",...}
+        <134>1 2026-01-02T14:23:45Z 192.168.1.99 hfortix - - - {"method":"POST",...}  # noqa: E501
     """
 
     # Syslog facilities
@@ -126,8 +131,12 @@ class SyslogFormatter:
             app_name: Application name for syslog
             hostname: Hostname to use (None = use from operation data)
         """
-        self.facility = self.FACILITIES.get(facility.upper(), 16)  # Default LOCAL0
-        self.severity = self.SEVERITIES.get(severity.upper(), 6)  # Default INFO
+        self.facility = self.FACILITIES.get(
+            facility.upper(), 16
+        )  # Default LOCAL0
+        self.severity = self.SEVERITIES.get(
+            severity.upper(), 6
+        )  # Default INFO
         self.app_name = app_name
         self.hostname = hostname
 
@@ -144,14 +153,18 @@ class SyslogFormatter:
         hostname = self.hostname or operation.get("host", "-")
 
         # Get timestamp (use operation timestamp or current time)
-        timestamp = operation.get("timestamp", datetime.utcnow().isoformat() + "Z")
+        timestamp = operation.get(
+            "timestamp", datetime.utcnow().isoformat() + "Z"
+        )
 
         # Message is the full operation as JSON
         message = json.dumps(operation, separators=(",", ":"))
 
         # RFC 5424 format
-        # <PRI>VERSION TIMESTAMP HOSTNAME APP-NAME PROCID MSGID STRUCTURED-DATA MSG
-        return f"<{pri}>1 {timestamp} {hostname} {self.app_name} - - - {message}"
+        # <PRI>VERSION TIMESTAMP HOSTNAME APP-NAME PROCID MSGID STRUCTURED-DATA MSG  # noqa: E501
+        return (
+            f"<{pri}>1 {timestamp} {hostname} {self.app_name} - - - {message}"
+        )
 
 
 class CEFFormatter:
@@ -161,7 +174,7 @@ class CEFFormatter:
     CEF is widely used by SIEM systems like ArcSight, Splunk, QRadar.
 
     Format:
-        CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension
+        CEF:Version|Device Vendor|Device Product|Device Version|Signature ID|Name|Severity|Extension  # noqa: E501
 
     Example output:
         CEF:0|Fortinet|FortiGate|7.0|API_OPERATION|FortiGate API Operation|5|
@@ -197,8 +210,9 @@ class CEFFormatter:
     def format(self, operation: dict[str, Any]) -> str:
         """Format as CEF string"""
         method = operation.get("method", "UNKNOWN")
-        endpoint = operation.get("endpoint", "")
-        success = operation.get("success", False)
+        # endpoint and success available for future use
+        # endpoint = operation.get("endpoint", "")
+        # success = operation.get("success", False)
 
         # CEF header
         severity = self.SEVERITY_MAP.get(method, 5)
@@ -228,10 +242,14 @@ class CEFFormatter:
             extensions.append(f"outcome={outcome}")
 
         if "status_code" in operation:
-            extensions.append(f"requestClientApplication={operation['status_code']}")
+            extensions.append(
+                f"requestClientApplication={operation['status_code']}"
+            )
 
         if "request_id" in operation:
-            extensions.append(f"requestContext={self._escape(operation['request_id'])}")
+            extensions.append(
+                f"requestContext={self._escape(operation['request_id'])}"
+            )
 
         if "vdom" in operation and operation["vdom"]:
             extensions.append(f"dvchost={self._escape(operation['vdom'])}")
