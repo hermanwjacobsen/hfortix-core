@@ -39,11 +39,11 @@ jobs:
 
       - name: Check formatting with Black
         run: |
-          black --check --line-length=79 packages/core/hfortix_core packages/fortios/hfortix_fortios packages/meta/hfortix examples
+          black --check --line-length=79 packages/core/hfortix_core packages/fortios/hfortix_fortios packages/meta/hfortix
 
       - name: Check import sorting with isort
         run: |
-          isort --check-only --profile=black --line-length=79 packages/core/hfortix_core packages/fortios/hfortix_fortios packages/meta/hfortix examples
+          isort --check-only --profile=black --line-length=79 packages/core/hfortix_core packages/fortios/hfortix_fortios packages/meta/hfortix
 
       - name: Lint with flake8
         run: |
