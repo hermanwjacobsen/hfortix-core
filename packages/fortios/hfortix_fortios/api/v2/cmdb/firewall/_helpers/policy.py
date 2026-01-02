@@ -10,6 +10,140 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "dstintf",  # Outgoing (egress) interface.
+    "name",  # Policy name.
+    "schedule",  # Schedule name.
+    "service",  # Service and service group names.
+    "srcintf",  # Incoming (ingress) interface.
+]
+
+# Mutually exclusive groups (at least ONE from each group required)
+MUTUALLY_EXCLUSIVE_GROUPS = {
+    "dest_address": ["dstaddr", "dstaddr6"],
+    "source_address": ["srcaddr", "srcaddr6"],
+}
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "action": "deny",
+    "anti-replay": "enable",
+    "app-monitor": "disable",
+    "auth-path": "disable",
+    "auto-asic-offload": "enable",
+    "block-notification": "disable",
+    "captive-portal-exempt": "disable",
+    "capture-packet": "disable",
+    "delay-tcp-npu-session": "disable",
+    "diffserv-copy": "disable",
+    "diffserv-forward": "disable",
+    "diffserv-reverse": "disable",
+    "disclaimer": "disable",
+    "dsri": "disable",
+    "dstaddr-negate": "disable",
+    "dstaddr6-negate": "disable",
+    "dynamic-shaping": "disable",
+    "email-collect": "disable",
+    "fec": "disable",
+    "firewall-session-dirty": "check-all",
+    "fixedport": "disable",
+    "geoip-anycast": "disable",
+    "geoip-match": "physical-location",
+    "http-policy-redirect": "disable",
+    "inbound": "disable",
+    "inspection-mode": "flow",
+    "internet-service": "disable",
+    "internet-service-negate": "disable",
+    "internet-service-src": "disable",
+    "internet-service-src-negate": "disable",
+    "internet-service6": "disable",
+    "internet-service6-negate": "disable",
+    "internet-service6-src": "disable",
+    "internet-service6-src-negate": "disable",
+    "ippool": "disable",
+    "log-http-transaction": "disable",
+    "logtraffic": "utm",
+    "logtraffic-start": "disable",
+    "match-vip": "enable",
+    "match-vip-only": "disable",
+    "nat": "disable",
+    "nat46": "disable",
+    "nat64": "disable",
+    "natinbound": "disable",
+    "natip": "0.0.0.0 0.0.0.0",
+    "natoutbound": "disable",
+    "ntlm": "disable",
+    "ntlm-guest": "disable",
+    "outbound": "enable",
+    "passive-wan-health-measurement": "disable",
+    "pcp-inbound": "disable",
+    "pcp-outbound": "disable",
+    "permit-any-host": "disable",
+    "permit-stun-host": "disable",
+    "policy-expiry": "disable",
+    "policy-expiry-date": "0000-00-00 00:00:00",
+    "port-preserve": "enable",
+    "port-random": "disable",
+    "profile-protocol-options": "default",
+    "profile-type": "single",
+    "radius-ip-auth-bypass": "disable",
+    "radius-mac-auth-bypass": "disable",
+    "reputation-direction": "destination",
+    "reputation-direction6": "destination",
+    "rtp-nat": "disable",
+    "schedule": "always",
+    "schedule-timeout": "disable",
+    "scim": "disable",
+    "send-deny-packet": "disable",
+    "service-negate": "disable",
+    "sgt-check": "disable",
+    "srcaddr-negate": "disable",
+    "srcaddr6-negate": "disable",
+    "ssh-policy-redirect": "disable",
+    "ssl-ssh-profile": "no-inspection",
+    "status": "enable",
+    "tcp-session-without-syn": "disable",
+    "timeout-send-rst": "disable",
+    "tos-negate": "disable",
+    "utm-status": "disable",
+    "uuid": "00000000-0000-0000-0000-000000000000",
+    "vlan-cos-fwd": 255,
+    "vlan-cos-rev": 255,
+    "wanopt": "disable",
+    "wanopt-detection": "active",
+    "wanopt-passive-opt": "default",
+    "wccp": "disable",
+    "webcache": "disable",
+    "webcache-https": "disable",
+    "ztna-device-ownership": "disable",
+    "ztna-ems-tag-negate": "disable",
+    "ztna-policy-redirect": "disable",
+    "ztna-status": "disable",
+    "ztna-tags-match-logic": "or",
+}
+
+# Fields wrongly marked as required in schema (schema bugs)
+# These are specialized features and should be OPTIONAL
+SCHEMA_FALSE_POSITIVES = [
+    "rtp-addr",  # Address names if this is an RTP NAT policy.
+    "vpntunnel",  # Policy-based IPsec VPN: name of the IPsec VPN Phas
+    "wanopt-peer",  # WAN optimization peer.
+    "wanopt-profile",  # WAN optimization profile.
+]
+
+
 # Valid enum values from API documentation
 VALID_BODY_STATUS = ["enable", "disable"]
 VALID_BODY_ACTION = ["accept", "deny", "ipsec"]
@@ -136,9 +270,70 @@ def validate_policy_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for firewall_policy.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "dstintf": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    # Check mutually exclusive groups
+    if not ("dstaddr" in payload or "dstaddr6" in payload):
+        return (False, "Must provide at least one of: dstaddr, dstaddr6")
+    if not ("srcaddr" in payload or "srcaddr6" in payload):
+        return (False, "Must provide at least one of: srcaddr, srcaddr6")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_policy_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating policy.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - dstintf: Outgoing (egress) interface.
+      - name: Policy name.
+      - schedule: Schedule name.
+      - service: Service and service group names.
+      - srcintf: Incoming (ingress) interface.
+
+    Mutually exclusive (at least ONE required):
+      - dstaddr OR dstaddr6
+      - srcaddr OR srcaddr6
 
     Args:
         payload: The payload to validate
@@ -146,6 +341,28 @@ def validate_policy_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate policyid if present
     if "policyid" in payload:
         value = payload.get("policyid")

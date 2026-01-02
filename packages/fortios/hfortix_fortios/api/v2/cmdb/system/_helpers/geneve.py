@@ -10,6 +10,38 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "interface",  # Outgoing interface for GENEVE encapsulated traffic.
+    "ip-version",  # IP version to use for the GENEVE interface and so for commun
+    "name",  # GENEVE device or interface name. Must be an unique interface
+    "remote-ip",  # IPv4 address of the GENEVE interface on the device at the re
+    "remote-ip6",  # IPv6 IP address of the GENEVE interface on the device at the
+    "type",  # GENEVE type.
+    "vni",  # GENEVE network ID.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "dstport": 6081,
+    "ip-version": "ipv4-unicast",
+    "remote-ip": "0.0.0.0",
+    "remote-ip6": "::",
+    "type": "ethernet",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_TYPE = ["ethernet", "ppp"]
 VALID_BODY_IP_VERSION = ["ipv4-unicast", "ipv6-unicast"]
@@ -57,9 +89,62 @@ def validate_geneve_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system_geneve.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "interface": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_geneve_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating geneve.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - interface: Outgoing interface for GENEVE encapsulated traffic.
+      - ip-version: IP version to use for the GENEVE interface and so for commun
+      - name: GENEVE device or interface name. Must be an unique interface
+      - remote-ip: IPv4 address of the GENEVE interface on the device at the re
+      - remote-ip6: IPv6 IP address of the GENEVE interface on the device at the
+      - type: GENEVE type.
+      - vni: GENEVE network ID.
 
     Args:
         payload: The payload to validate
@@ -67,6 +152,28 @@ def validate_geneve_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

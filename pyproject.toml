@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix"
-version = "0.4.2"
+version = "0.4.3"
 description = "Meta-package for HFortix - Python SDK for Fortinet Products (FortiOS, FortiManager, FortiAnalyzer)"
 readme = "README.md"
 authors = [
@@ -176,11 +176,17 @@ exclude_lines = [
 
 [tool.bandit]
 exclude_dirs = ["X", "Tests", "tests", ".venv", "venv", "build", "dist"]
+# Exclude files with SSH key format strings (not actual keys)
+exclude = [
+    "*/system/cloud_service.py",
+    "*/firewall/ssh*.py",
+]
 # B101: assert_used - False positives in test code
+# B104: hardcoded_bind_all_interfaces - False positives (default config values, not actual bindings)
 # B106: hardcoded_password_funcarg - Test credentials in performance/utility code
 # B110: try_except_pass - Acceptable in test/utility error handling
 # B601: shell_injection - False positives
-skips = ["B101", "B106", "B110", "B601"]
+skips = ["B101", "B104", "B106", "B110", "B601"]
 
 [tool.isort]
 profile = "black"

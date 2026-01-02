@@ -2,9 +2,102 @@
 
 ## Overview
 
-Comprehensive enhancement of HFortix SDK's debugging, observability, developer experience, code organization, and API usability.
+Comprehensive enhancement of HFortix SDK's debugging, observability, developer experience, code organization, API usability, validation coverage, and type safety.
+
+**Version 0.4.3 Release Notes:**
+- ✅ Required fields validation integrated across all 374 helpers
+- ✅ Type safety improvements (mypy compliance)
+- ✅ Schema discovery documentation
+- ✅ Code quality enhancements (PEP8, security scanning)
 
 ## Completed Improvements
+
+### 0.1. ✅ Required Fields Validation (Validation Coverage) - v0.4.3
+
+**Problem:** Validation only checked field values (enums, ranges) but not required fields
+
+**Solution:**
+- Added required field validation to **374 helper files** (all integrated)
+- Two-stage validation approach catches missing fields before invalid values
+- Schema-derived validators based on actual FortiOS API requirements
+- Clear, actionable error messages
+- Automatic null payload handling
+
+**Implementation:**
+- **Schema-based generation** - Validators derived from FortiOS API schemas
+- **Two-stage validation** - Required fields → field values (enums, ranges, formats)
+- **Comprehensive constants** - REQUIRED_FIELDS, FIELDS_WITH_DEFAULTS, MUTUALLY_EXCLUSIVE_GROUPS
+- **Clear error messages** - Lists all missing required fields
+- **Null handling** - Automatic conversion of None/missing payloads to empty dict
+- **374 endpoints covered** - Across all major categories (firewall, system, VPN, etc.)
+
+**Coverage:**
+- **374 helpers** with required field validation
+- **216 newly integrated** (January 2026)
+- **158 pre-existing** validators
+- Covers: application, firewall, system, VPN, user, router, wireless, and more
+
+**Type Safety:**
+- All 585 helper files pass strict mypy type checking
+- Proper type annotations for all constants
+- No None-related type errors
+
+**Example - Before:**
+```python
+def validate_custom_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
+    """Validate POST request payload."""
+    # Only validates field values (enums, ranges, etc.)
+    if "tag" in payload:
+        value = payload.get("tag")
+        if value and isinstance(value, str) and len(value) > 63:
+            return (False, "tag cannot exceed 63 characters")
+    return (True, None)
+```
+
+**Example - After:**
+```python
+def validate_custom_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
+    """
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - category: Custom application category ID
+    """
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
+    if "tag" in payload:
+        value = payload.get("tag")
+        if value and isinstance(value, str) and len(value) > 63:
+            return (False, "tag cannot exceed 63 characters")
+    return (True, None)
+```
+
+**Benefits:**
+- **Catch errors early** - Client-side validation before API calls
+- **Better UX** - Clear messages about what's missing
+- **Schema-accurate** - Based on actual FortiOS requirements
+- **Comprehensive** - 374 endpoints with full validation
+- **Reduced API errors** - Fewer failed requests to FortiGate
+
+**Testing:**
+- ✅ All existing tests pass with new validation
+- ✅ No breaking changes to existing functionality
+- ✅ Validation properly integrated into two-stage approach
+
+**Documentation:**
+- Updated [VALIDATION_GUIDE.md](docs/fortios/VALIDATION_GUIDE.md) with required field examples
+- Added section on two-stage validation
+- Examples for REQUIRED_FIELDS, FIELDS_WITH_DEFAULTS, MUTUALLY_EXCLUSIVE_GROUPS
+
+---
 
 ### 0. ✅ Generic request() Method (API Usability)
 

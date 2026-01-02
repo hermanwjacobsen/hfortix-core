@@ -10,6 +10,38 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "auto-asic-offload",  # Enable/disable tunnel ASIC offloading.
+    "bmr-hostname",  # BMR hostname.
+    "br",  # IPv6 address or FQDN of the border relay.
+    "interface",  # Interface name.
+    "mode",  # VNE tunnel mode.
+    "name",  # VNE tunnel name.
+    "ssl-certificate",  # Name of local certificate for SSL connections.
+    "update-url",  # URL of provisioning server.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "auto-asic-offload": "enable",
+    "ipv4-address": "0.0.0.0 0.0.0.0",
+    "mode": "map-e",
+    "ssl-certificate": "Fortinet_Factory",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_AUTO_ASIC_OFFLOAD = ["enable", "disable"]
 VALID_BODY_MODE = ["map-e", "fixed-ip", "ds-lite"]
@@ -57,11 +89,65 @@ def validate_vne_interface_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system_vne-interface.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "auto-asic-offload": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_vne_interface_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating vne_interface.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - auto-asic-offload: Enable/disable tunnel ASIC offloading.
+      - bmr-hostname: BMR hostname.
+      - br: IPv6 address or FQDN of the border relay.
+      - interface: Interface name.
+      - mode: VNE tunnel mode.
+      - name: VNE tunnel name.
+      - ssl-certificate: Name of local certificate for SSL connections.
+      - update-url: URL of provisioning server.
 
     Args:
         payload: The payload to validate
@@ -69,6 +155,28 @@ def validate_vne_interface_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

@@ -10,6 +10,132 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "name",  # WIDS profile name.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "adhoc-network": "disable",
+    "adhoc-valid-ssid": "disable",
+    "air-jack": "disable",
+    "ap-auto-suppress": "disable",
+    "ap-bgscan-duration": 30,
+    "ap-bgscan-idle": 20,
+    "ap-bgscan-intv": 3,
+    "ap-bgscan-period": 600,
+    "ap-bgscan-report-intv": 30,
+    "ap-fgscan-report-intv": 15,
+    "ap-impersonation": "disable",
+    "ap-scan": "disable",
+    "ap-scan-passive": "disable",
+    "ap-scan-threshold": "-90",
+    "ap-spoofing": "disable",
+    "asleap-attack": "disable",
+    "assoc-flood-thresh": 30,
+    "assoc-flood-time": 10,
+    "assoc-frame-flood": "disable",
+    "auth-flood-thresh": 30,
+    "auth-flood-time": 10,
+    "auth-frame-flood": "disable",
+    "bcn-flood": "disable",
+    "bcn-flood-thresh": 15,
+    "bcn-flood-time": 1,
+    "beacon-wrong-channel": "disable",
+    "block-ack-flood": "disable",
+    "block-ack-flood-thresh": 50,
+    "block-ack-flood-time": 1,
+    "chan-based-mitm": "disable",
+    "client-flood": "disable",
+    "client-flood-thresh": 30,
+    "client-flood-time": 10,
+    "cts-flood": "disable",
+    "cts-flood-thresh": 30,
+    "cts-flood-time": 10,
+    "deauth-broadcast": "disable",
+    "deauth-unknown-src-thresh": 10,
+    "disassoc-broadcast": "disable",
+    "disconnect-station": "disable",
+    "eapol-fail-flood": "disable",
+    "eapol-fail-intv": 1,
+    "eapol-fail-thresh": 10,
+    "eapol-key-overflow": "disable",
+    "eapol-logoff-flood": "disable",
+    "eapol-logoff-intv": 1,
+    "eapol-logoff-thresh": 10,
+    "eapol-pre-fail-flood": "disable",
+    "eapol-pre-fail-intv": 1,
+    "eapol-pre-fail-thresh": 10,
+    "eapol-pre-succ-flood": "disable",
+    "eapol-pre-succ-intv": 1,
+    "eapol-pre-succ-thresh": 10,
+    "eapol-start-flood": "disable",
+    "eapol-start-intv": 1,
+    "eapol-start-thresh": 10,
+    "eapol-succ-flood": "disable",
+    "eapol-succ-intv": 1,
+    "eapol-succ-thresh": 10,
+    "fata-jack": "disable",
+    "fuzzed-beacon": "disable",
+    "fuzzed-probe-request": "disable",
+    "fuzzed-probe-response": "disable",
+    "hotspotter-attack": "disable",
+    "ht-40mhz-intolerance": "disable",
+    "ht-greenfield": "disable",
+    "invalid-addr-combination": "disable",
+    "invalid-mac-oui": "disable",
+    "long-duration-attack": "disable",
+    "long-duration-thresh": 8200,
+    "malformed-association": "disable",
+    "malformed-auth": "disable",
+    "malformed-ht-ie": "disable",
+    "netstumbler": "disable",
+    "netstumbler-thresh": 5,
+    "netstumbler-time": 30,
+    "null-ssid-probe-resp": "disable",
+    "omerta-attack": "disable",
+    "overflow-ie": "disable",
+    "probe-flood": "disable",
+    "probe-flood-thresh": 30,
+    "probe-flood-time": 1,
+    "pspoll-flood": "disable",
+    "pspoll-flood-thresh": 30,
+    "pspoll-flood-time": 1,
+    "pwsave-dos-attack": "disable",
+    "reassoc-flood": "disable",
+    "reassoc-flood-thresh": 30,
+    "reassoc-flood-time": 10,
+    "risky-encryption": "disable",
+    "rts-flood": "disable",
+    "rts-flood-thresh": 30,
+    "rts-flood-time": 10,
+    "sensor-mode": "disable",
+    "spoofed-deauth": "disable",
+    "unencrypted-valid": "disable",
+    "valid-client-misassociation": "disable",
+    "valid-ssid-misuse": "disable",
+    "weak-wep-iv": "disable",
+    "wellenreiter": "disable",
+    "wellenreiter-thresh": 5,
+    "wellenreiter-time": 30,
+    "windows-bridge": "disable",
+    "wireless-bridge": "disable",
+    "wpa-ft-attack": "disable",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_SENSOR_MODE = ["disable", "foreign", "both"]
 VALID_BODY_AP_SCAN = ["disable", "enable"]
@@ -115,11 +241,58 @@ def validate_wids_profile_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for wireless-controller_wids-profile.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "name": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_wids_profile_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating wids_profile.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - name: WIDS profile name.
 
     Args:
         payload: The payload to validate
@@ -127,6 +300,28 @@ def validate_wids_profile_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

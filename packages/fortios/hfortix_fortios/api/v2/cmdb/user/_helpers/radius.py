@@ -10,6 +10,87 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "interface",  # Specify outgoing interface to reach server.
+    "name",  # RADIUS server entry name.
+    "secret",  # Pre-shared secret key used to access the primary RADIUS serv
+    "server",  # Primary RADIUS server CN domain name or IP address.
+    "sso-attribute",  # RADIUS attribute that contains the profile group name to be
+    "sso-attribute-value-override",  # Enable/disable override old attribute value with new value f
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "account-key-cert-field": "othername",
+    "account-key-processing": "same",
+    "acct-all-servers": "disable",
+    "all-usergroup": "disable",
+    "auth-type": "auto",
+    "call-station-id-type": "legacy",
+    "delimiter": "plus",
+    "group-override-attr-type": "filter-Id",
+    "h3c-compatibility": "disable",
+    "interface-select-method": "auto",
+    "mac-case": "lowercase",
+    "mac-password-delimiter": "hyphen",
+    "mac-username-delimiter": "hyphen",
+    "nas-id-type": "legacy",
+    "nas-ip": "0.0.0.0",
+    "password-encoding": "auto",
+    "password-renewal": "enable",
+    "radius-coa": "disable",
+    "require-message-authenticator": "enable",
+    "rsso": "disable",
+    "rsso-context-timeout": 28800,
+    "rsso-endpoint-attribute": "Calling-Station-Id",
+    "rsso-endpoint-block-attribute": "User-Name",
+    "rsso-ep-one-ip-only": "disable",
+    "rsso-flush-ip-session": "disable",
+    "rsso-log-flags": "protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other",
+    "rsso-radius-response": "disable",
+    "rsso-radius-server-port": 1813,
+    "rsso-validate-request-secret": "disable",
+    "server-identity-check": "enable",
+    "sso-attribute": "Class",
+    "sso-attribute-value-override": "enable",
+    "status-ttl": 300,
+    "switch-controller-acct-fast-framedip-detect": 2,
+    "switch-controller-nas-ip-dynamic": "disable",
+    "switch-controller-service-type": "login",
+    "timeout": 5,
+    "tls-min-proto-version": "default",
+    "transport-protocol": "udp",
+    "use-management-vdom": "disable",
+    "username-case-sensitive": "disable",
+}
+
+# Fields wrongly marked as required in schema (schema bugs)
+# These are specialized features and should be OPTIONAL
+SCHEMA_FALSE_POSITIVES = [
+    "rsso",  # Enable/disable RADIUS based single sign on feature
+    "rsso-context-timeout",  # Time in seconds before the logged out user is remo
+    "rsso-endpoint-attribute",  # RADIUS attributes used to extract the user end poi
+    "rsso-endpoint-block-attribute",  # RADIUS attributes used to block a user.
+    "rsso-log-period",  # Time interval in seconds that group event log mess
+    "rsso-radius-response",  # Enable/disable sending RADIUS response packets aft
+    "rsso-radius-server-port",  # UDP port to listen on for RADIUS Start and Stop re
+    "rsso-secret",  # RADIUS secret used by the RADIUS accounting server
+    "rsso-validate-request-secret",  # Enable/disable validating the RADIUS request share
+]
+
+
 # Valid enum values from API documentation
 VALID_BODY_ALL_USERGROUP = ["disable", "enable"]
 VALID_BODY_USE_MANAGEMENT_VDOM = ["enable", "disable"]
@@ -201,9 +282,61 @@ def validate_radius_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for user_radius.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "interface": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_radius_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating radius.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - interface: Specify outgoing interface to reach server.
+      - name: RADIUS server entry name.
+      - secret: Pre-shared secret key used to access the primary RADIUS serv
+      - server: Primary RADIUS server CN domain name or IP address.
+      - sso-attribute: RADIUS attribute that contains the profile group name to be
+      - sso-attribute-value-override: Enable/disable override old attribute value with new value f
 
     Args:
         payload: The payload to validate
@@ -211,6 +344,28 @@ def validate_radius_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

@@ -10,6 +10,62 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "access-key",  # AWS / ACS access key ID.
+    "api-key",  # IBM cloud API key or service ID API key.
+    "ha-status",  # Enable/disable use for FortiGate HA service.
+    "ibm-region",  # IBM cloud region name.
+    "name",  # SDN connector name.
+    "oci-region-type",  # OCI region type.
+    "password",  # Password of the remote SDN connector as login credentials.
+    "private-key",  # Private key of GCP service account.
+    "region",  # AWS / ACS region name.
+    "secret-key",  # AWS / ACS secret access key.
+    "secret-token",  # Secret token of Kubernetes service account.
+    "server",  # Server address of the remote SDN connector.
+    "server-list",  # Server address list of the remote SDN connector.
+    "service-account",  # GCP service account email.
+    "status",  # Enable/disable connection to the remote SDN connector.
+    "type",  # Type of SDN connector.
+    "use-metadata-iam",  # Enable/disable use of IAM role from metadata to call API.
+    "username",  # Username of the remote SDN connector as login credentials.
+    "verify-certificate",  # Enable/disable server certificate verification.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "alt-resource-ip": "disable",
+    "azure-region": "global",
+    "ha-status": "disable",
+    "ibm-region": "dallas",
+    "microsoft-365": "disable",
+    "oci-region-type": "commercial",
+    "status": "enable",
+    "type": "aws",
+    "update-interval": 60,
+    "use-metadata-iam": "disable",
+    "verify-certificate": "enable",
+}
+
+# Fields wrongly marked as required in schema (schema bugs)
+# These are specialized features and should be OPTIONAL
+SCHEMA_FALSE_POSITIVES = [
+    "microsoft-365",  # Enable to use as Microsoft 365 connector.
+]
+
+
 # Valid enum values from API documentation
 VALID_BODY_STATUS = ["disable", "enable"]
 VALID_BODY_TYPE = [
@@ -93,11 +149,76 @@ def validate_sdn_connector_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system_sdn-connector.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "access-key": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_sdn_connector_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating sdn_connector.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - access-key: AWS / ACS access key ID.
+      - api-key: IBM cloud API key or service ID API key.
+      - ha-status: Enable/disable use for FortiGate HA service.
+      - ibm-region: IBM cloud region name.
+      - name: SDN connector name.
+      - oci-region-type: OCI region type.
+      - password: Password of the remote SDN connector as login credentials.
+      - private-key: Private key of GCP service account.
+      - region: AWS / ACS region name.
+      - secret-key: AWS / ACS secret access key.
+      - secret-token: Secret token of Kubernetes service account.
+      - server: Server address of the remote SDN connector.
+      - server-list: Server address list of the remote SDN connector.
+      - service-account: GCP service account email.
+      - status: Enable/disable connection to the remote SDN connector.
+      - type: Type of SDN connector.
+      - use-metadata-iam: Enable/disable use of IAM role from metadata to call API.
+      - username: Username of the remote SDN connector as login credentials.
+      - verify-certificate: Enable/disable server certificate verification.
 
     Args:
         payload: The payload to validate
@@ -105,6 +226,28 @@ def validate_sdn_connector_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

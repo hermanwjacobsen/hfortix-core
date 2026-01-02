@@ -9,10 +9,10 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.4.2**
+> **⚠️ BETA STATUS - Version 0.4.3**
 >
-> - **Current Version**: 0.4.2 (Published to PyPI - January 2, 2026)
-> - **Major Release**: Generic request() method for rapid API testing
+> - **Current Version**: 0.4.3 (Published to PyPI - January 2, 2026)
+> - **Major Release**: Required fields validation across 374 helpers + type safety improvements
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
 > All implementations are functional but in **BETA**. APIs work correctly but may have incomplete
@@ -27,11 +27,15 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Service API**: 3 of 3 categories (100% coverage) - 21 methods 🔷 Beta
 - **Overall**: 77 of 77 categories (100% coverage) - 750+ API methods 🎉
 
-**Validation Coverage (v0.3.21):**
+**Validation Coverage (v0.4.3):**
 
 - 832 validation helper modules auto-generated for all API types (CMDB, Monitor, Log, Service)
 - Enum, length, range, pattern, and type validation implemented
-- **Required field validation is NOT yet implemented**
+- **374 helpers with required field validation** (all integrated January 2026)
+- Two-stage validation: required fields → field values (enums, ranges, formats)
+- Schema-based validators derived from FortiOS API schemas
+- Automatic null payload handling across all validators
+- See [VALIDATION_GUIDE.md](docs/fortios/VALIDATION_GUIDE.md) for complete guide
 
 **Test Coverage:** 226 test files (145 CMDB, 81 Monitor) with 75%+ pass rate (~50% of generated endpoints tested)
 **Note:** All implementations remain in beta until version 1.0.0 with comprehensive unit test coverage.
@@ -54,13 +58,34 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Quick Start Guide**: [QUICKSTART.md](https://github.com/hermanwjacobsen/hfortix/blob/main/QUICKSTART.md) - Getting started guide
 - **Full Changelog**: [CHANGELOG.md](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) - Complete version history
 
-**Latest Features (v0.4.2 - January 2, 2026):**
+**Latest Features (v0.4.3 - January 2, 2026):**
 
 > **✅ PUBLISHED TO PYPI - January 2, 2026**
 >
-> Version 0.4.2 introduces the generic request() method for rapid API testing and prototyping.
+> Version 0.4.3 completes the required field validation integration across all 374 helpers
+> and adds comprehensive type safety improvements.
 >
 > **All packages remain in BETA** until v1.0 with comprehensive unit test coverage.
+
+- ✅ **Required Fields Validation** (v0.4.3):
+  - **374 helpers with required field validation** (216 newly integrated)
+  - Two-stage validation: required fields → field values (enums, ranges, formats)
+  - Schema-based validators automatically derived from FortiOS API schemas
+  - Clear error messages identifying missing required fields
+  - Automatic null payload handling for all validators
+  - See [VALIDATION_GUIDE.md](docs/fortios/VALIDATION_GUIDE.md) for examples
+
+- 🔒 **Type Safety Improvements** (v0.4.3):
+  - Fixed all mypy type errors in validator functions
+  - Proper type annotations for all `FIELDS_WITH_DEFAULTS` dictionaries
+  - All 585 helper files now pass strict type checking
+  - Enhanced code quality with PEP8 compliance
+
+- 📚 **Schema Discovery Documentation** (v0.4.3):
+  - New [SCHEMA_DISCOVERY.md](docs/fortios/SCHEMA_DISCOVERY.md) guide
+  - Documents current capabilities and future runtime schema fetching
+  - Complete roadmap for implementing dynamic schema discovery
+  - Tested runtime schema fetching with rich field metadata
 
 - 🎯 **Generic request() Method** (v0.4.2):
   - **Zero-Translation API Workflow**: Copy JSON directly from FortiGate GUI API preview
@@ -79,7 +104,6 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
     result = fgt.request(config)
     ```
   - See [REQUEST_METHOD_GUIDE.md](REQUEST_METHOD_GUIDE.md) for complete guide
-  - Test suite: 14 comprehensive pytest tests validating all functionality
 
 - 📦 **Modular Package Structure**: Major architectural improvement with split packages (v0.4.0)
   - **hfortix-core**: Core exceptions and HTTP client framework (sync/async)

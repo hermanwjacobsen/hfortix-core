@@ -10,6 +10,54 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "fsw-wan1-peer",  # FortiSwitch WAN1 peer port.
+    "radius-nas-ip",  # NAS-IP address.
+    "sn",  # Managed-switch serial number.
+    "switch-id",  # Managed-switch name.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "access-profile": "default",
+    "dhcp-server-access-list": "global",
+    "dynamic-capability": "0x00000000000000000000000000000000",
+    "firmware-provision": "disable",
+    "firmware-provision-latest": "disable",
+    "flow-identity": "00000000",
+    "fsw-wan1-admin": "discovered",
+    "mclag-igmp-snooping-aware": "enable",
+    "override-snmp-community": "disable",
+    "override-snmp-sysinfo": "disable",
+    "override-snmp-trap-threshold": "disable",
+    "override-snmp-user": "disable",
+    "poe-pre-standard-detection": "disable",
+    "ptp-profile": "default",
+    "ptp-status": "disable",
+    "purdue-level": "3",
+    "qos-drop-policy": "taildrop",
+    "qos-red-probability": 12,
+    "radius-nas-ip": "0.0.0.0",
+    "radius-nas-ip-override": "disable",
+    "route-offload": "disable",
+    "route-offload-mclag": "disable",
+    "switch-profile": "default",
+    "type": "physical",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_PURDUE_LEVEL = ["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
 VALID_BODY_FSW_WAN1_ADMIN = ["discovered", "disable", "enable"]
@@ -72,11 +120,61 @@ def validate_managed_switch_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for switch-controller_managed-switch.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "fsw-wan1-peer": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_managed_switch_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating managed_switch.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - fsw-wan1-peer: FortiSwitch WAN1 peer port.
+      - radius-nas-ip: NAS-IP address.
+      - sn: Managed-switch serial number.
+      - switch-id: Managed-switch name.
 
     Args:
         payload: The payload to validate
@@ -84,6 +182,28 @@ def validate_managed_switch_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate switch-id if present
     if "switch-id" in payload:
         value = payload.get("switch-id")

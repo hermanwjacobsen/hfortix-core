@@ -10,6 +10,36 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Mutually exclusive groups (at least ONE from each group required)
+MUTUALLY_EXCLUSIVE_GROUPS = {
+    "dest_address": ["dstaddr"],
+    "source_address": ["srcaddr"],
+}
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "action": "permit",
+    "dst-negate": "disable",
+    "end-port": 65535,
+    "end-source-port": 65535,
+    "gateway": "0.0.0.0",
+    "input-device-negate": "disable",
+    "src-negate": "disable",
+    "status": "enable",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_INPUT_DEVICE_NEGATE = ["enable", "disable"]
 VALID_BODY_SRC_NEGATE = ["enable", "disable"]
@@ -60,9 +90,51 @@ def validate_policy_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for router_policy.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ... })
+    """
+    # Check mutually exclusive groups
+    if not ("dstaddr" in payload):
+        return (False, "Must provide at least one of: dstaddr")
+    if not ("srcaddr" in payload):
+        return (False, "Must provide at least one of: srcaddr")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_policy_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating policy.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Note: All fields are optional (have defaults).
+
+    Mutually exclusive (at least ONE required):
+      - dstaddr
+      - srcaddr
 
     Args:
         payload: The payload to validate
@@ -70,6 +142,28 @@ def validate_policy_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate seq-num if present
     if "seq-num" in payload:
         value = payload.get("seq-num")

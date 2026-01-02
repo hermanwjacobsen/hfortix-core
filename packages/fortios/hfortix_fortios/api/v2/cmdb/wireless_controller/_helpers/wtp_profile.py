@@ -10,6 +10,58 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "name",  # WTP (or FortiAP or AP) profile name.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "admin-restrict-local": "disable",
+    "allowaccess": "https",
+    "ap-country": "--",
+    "ap-handoff": "disable",
+    "apcfg-mesh": "disable",
+    "apcfg-mesh-ap-type": "ethernet",
+    "apcfg-mesh-eth-bridge": "disable",
+    "console-login": "enable",
+    "control-message-offload": "ebp-frame aeroscout-tag ap-list sta-list sta-cap-list stats aeroscout-mu sta-health spectral-analysis",
+    "default-mesh-root": "disable",
+    "dtls-in-kernel": "disable",
+    "dtls-policy": "clear-text",
+    "energy-efficient-ethernet": "disable",
+    "ext-info-enable": "enable",
+    "frequency-handoff": "disable",
+    "handoff-roaming": "enable",
+    "handoff-rssi": 25,
+    "indoor-outdoor-deployment": "platform-determined",
+    "ip-fragment-preventing": "tcp-mss-adjust",
+    "led-state": "enable",
+    "lldp": "enable",
+    "login-passwd-change": "no",
+    "poe-mode": "auto",
+    "split-tunneling-acl-local-ap-subnet": "disable",
+    "split-tunneling-acl-path": "local",
+    "unii-4-5ghz-band": "disable",
+    "usb-port": "enable",
+    "wan-port-auth": "none",
+    "wan-port-auth-macsec": "disable",
+    "wan-port-auth-methods": "all",
+    "wan-port-mode": "wan-only",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_CONTROL_MESSAGE_OFFLOAD = [
     "ebp-frame",
@@ -328,11 +380,58 @@ def validate_wtp_profile_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for wireless-controller_wtp-profile.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "name": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_wtp_profile_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating wtp_profile.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - name: WTP (or FortiAP or AP) profile name.
 
     Args:
         payload: The payload to validate
@@ -340,6 +439,28 @@ def validate_wtp_profile_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

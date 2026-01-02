@@ -4,9 +4,9 @@
 
 hfortix includes a comprehensive validation framework with **832 auto-generated validators** covering all FortiOS 7.6.5 API endpoints across all API types (CMDB, Monitor, Log, Service).
 
-**Version:** 0.3.21  
-**Last Updated:** December 22, 2025  
-**Coverage:** 77 categories, 832 validation modules
+**Version:** 0.4.2+  
+**Last Updated:** January 2, 2026  
+**Coverage:** 77 categories, 832 validation modules, 374 with required field validation
 
 ---
 
@@ -21,7 +21,16 @@ The validation framework provides constants for validating API parameters before
 ✅ **Range Validation** - min/max for numeric values  
 ✅ **Pattern Validation** - regex patterns for format checking  
 ✅ **Type Validation** - implicit via type coercion with error handling  
-⚠️ **Required Field Validation** - NOT YET IMPLEMENTED (planned for next release)
+✅ **Required Field Validation** - Schema-based required field checking (374 endpoints)
+
+### Two-Stage Validation (NEW in v0.4.2)
+
+For endpoints with required field validation, validation occurs in two stages:
+
+1. **Required Fields Stage** - Checks for missing required fields
+2. **Field Values Stage** - Validates enums, ranges, lengths, patterns
+
+This approach catches missing fields early before validating individual field values.
 
 ---
 
@@ -247,6 +256,85 @@ print("Available validators:", constants)
 # ['VALID_BODY_ACTION', 'VALID_BODY_STATUS', 'VALID_BODY_LOGTRAFFIC',
 #  'VALID_BODY_NAT', 'VALID_QUERY_ACTION', 'VALID_QUERY_FORMAT', ...]
 ```
+
+---
+
+---
+
+## Required Field Validation (NEW in v0.4.2)
+
+374 endpoints now include required field validation derived from FortiOS schemas.
+
+### Two-Stage Validation
+
+Endpoints with required field validation use a two-stage approach:
+
+**Stage 1: Required Fields**
+- Checks for missing required fields
+- Returns clear error messages listing missing fields
+- Prevents API calls that would fail due to missing data
+
+**Stage 2: Field Values**
+- Validates enums, ranges, lengths, patterns
+- Checks data type correctness
+- Ensures values meet FortiOS constraints
+
+### Example: Application Custom Endpoint
+
+```python
+from hfortix import FortiOS
+from hfortix.FortiOS.api.v2.cmdb.application._helpers import custom
+
+fgt = FortiOS("192.168.1.99", token="your_token")
+
+# This will fail validation - missing required field 'category'
+result = custom.validate_custom_post({
+    "name": "MyApp",
+    "protocol": "TCP/UDP/SCTP"
+})
+# Returns: (False, "Missing required fields: category")
+
+# This will pass required field validation
+result = custom.validate_custom_post({
+    "name": "MyApp", 
+    "category": 2,  # Required field
+    "protocol": "TCP/UDP/SCTP"
+})
+# Stage 1 passes, Stage 2 validates field values
+# Returns: (True, None)
+```
+
+### Validator Constants
+
+Helpers with required field validation include these constants:
+
+**REQUIRED_FIELDS**
+- List of always-required field names
+- Example: `REQUIRED_FIELDS = ["name", "category"]`
+
+**FIELDS_WITH_DEFAULTS**
+- Dictionary of optional fields with their default values
+- Fields present here don't need to be provided
+- Example: `FIELDS_WITH_DEFAULTS = {"protocol": "TCP/UDP/SCTP", "behavior": "all"}`
+
+**MUTUALLY_EXCLUSIVE_GROUPS** (when applicable)
+- Dictionary defining groups where at least ONE field is required
+- Example: `MUTUALLY_EXCLUSIVE_GROUPS = {"address": ["subnet", "fqdn", "iprange"]}`
+
+### Coverage
+
+**374 helpers with required field validation:**
+- Application endpoints: custom, group, list, name, etc.
+- Firewall endpoints: address, policy, service, etc.
+- System endpoints: interface, admin, zone, etc.
+- VPN endpoints: IPsec, SSL-VPN, etc.
+- And many more across all categories
+
+**Helpers without required field validation:**
+- Settings/config endpoints (GET/PUT only, no POST)
+- Read-only monitoring endpoints
+- __init__ package files
+- Some specialized endpoints
 
 ---
 

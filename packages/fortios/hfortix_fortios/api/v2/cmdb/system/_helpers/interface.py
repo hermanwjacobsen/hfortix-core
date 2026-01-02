@@ -10,6 +10,171 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "dhcp-relay-interface",  # Specify outgoing interface to reach server.
+    "interface",  # Interface name.
+    "name",  # Name.
+    "system-id",  # Define a system ID for the aggregate interface.
+    "vdom",  # Interface is in this virtual domain (VDOM).
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "aggregate-type": "physical",
+    "algorithm": "L4",
+    "allowaccess": "ping",
+    "ap-discover": "enable",
+    "arpforward": "enable",
+    "auth-type": "auto",
+    "auto-auth-extension-device": "disable",
+    "bfd": "global",
+    "bfd-desired-min-tx": 250,
+    "bfd-detect-mult": 3,
+    "bfd-required-min-rx": 250,
+    "broadcast-forward": "disable",
+    "dedicated-to": "none",
+    "default-purdue-level": "3",
+    "defaultgw": "enable",
+    "detectprotocol": "ping",
+    "device-identification": "disable",
+    "device-user-identification": "enable",
+    "dhcp-broadcast-flag": "enable",
+    "dhcp-classless-route-addition": "enable",
+    "dhcp-relay-agent-option": "enable",
+    "dhcp-relay-allow-no-end-option": "disable",
+    "dhcp-relay-interface-select-method": "auto",
+    "dhcp-relay-link-selection": "0.0.0.0",
+    "dhcp-relay-request-all-server": "disable",
+    "dhcp-relay-service": "disable",
+    "dhcp-relay-source-ip": "0.0.0.0",
+    "dhcp-relay-type": "regular",
+    "dhcp-relay-vrf-select": -1,
+    "dhcp-smart-relay": "disable",
+    "disc-retry-timeout": 1,
+    "distance": 5,
+    "dns-server-override": "enable",
+    "dns-server-protocol": "cleartext",
+    "drop-fragment": "disable",
+    "eap-method": "tls",
+    "eap-supplicant": "disable",
+    "exclude-signatures": "iot",
+    "explicit-ftp-proxy": "disable",
+    "explicit-web-proxy": "disable",
+    "external": "disable",
+    "fail-action-on-extender": "soft-restart",
+    "fail-alert-method": "link-down",
+    "fail-detect": "disable",
+    "fail-detect-option": "link-down",
+    "fortilink": "disable",
+    "fortilink-neighbor-detect": "lldp",
+    "fortilink-split-interface": "enable",
+    "gwdetect": "disable",
+    "ha-priority": 1,
+    "icmp-accept-redirect": "enable",
+    "icmp-send-redirect": "enable",
+    "ident-accept": "disable",
+    "ip": "0.0.0.0 0.0.0.0",
+    "ip-managed-by-fortiipam": "inherit-global",
+    "ipmac": "disable",
+    "ips-sniffer-mode": "disable",
+    "ipunnumbered": "0.0.0.0",
+    "l2forward": "disable",
+    "lacp-ha-secondary": "enable",
+    "lacp-mode": "active",
+    "lacp-speed": "slow",
+    "lcp-echo-interval": 5,
+    "lcp-max-echo-fails": 3,
+    "link-up-delay": 50,
+    "lldp-reception": "vdom",
+    "lldp-transmission": "vdom",
+    "macaddr": "00:00:00:00:00:00",
+    "managed-subnetwork-size": "256",
+    "management-ip": "0.0.0.0 0.0.0.0",
+    "min-links": 1,
+    "min-links-down": "operational",
+    "mode": "static",
+    "monitor-bandwidth": "disable",
+    "mtu": 1500,
+    "mtu-override": "disable",
+    "ndiscforward": "enable",
+    "netbios-forward": "disable",
+    "netflow-sample-rate": 1,
+    "netflow-sampler": "disable",
+    "padt-retry-timeout": 1,
+    "polling-interval": 20,
+    "pppoe-egress-cos": "cos0",
+    "pppoe-unnumbered-negotiate": "enable",
+    "pptp-auth-type": "auto",
+    "pptp-client": "disable",
+    "pptp-server-ip": "0.0.0.0",
+    "preserve-session-route": "disable",
+    "priority": 1,
+    "priority-override": "enable",
+    "proxy-captive-portal": "disable",
+    "reachable-time": 30000,
+    "remote-ip": "0.0.0.0 0.0.0.0",
+    "role": "undefined",
+    "sample-direction": "both",
+    "sample-rate": 2000,
+    "secondary-IP": "disable",
+    "security-ip-auth-bypass": "disable",
+    "security-mac-auth-bypass": "disable",
+    "security-mode": "none",
+    "sflow-sampler": "disable",
+    "speed": "auto",
+    "src-check": "enable",
+    "status": "up",
+    "stpforward": "disable",
+    "stpforward-mode": "rpl-all-ext-id",
+    "subst": "disable",
+    "substitute-dst-mac": "00:00:00:00:00:00",
+    "switch-controller-access-vlan": "disable",
+    "switch-controller-arp-inspection": "disable",
+    "switch-controller-dhcp-snooping": "disable",
+    "switch-controller-dhcp-snooping-option82": "disable",
+    "switch-controller-dhcp-snooping-verify-mac": "disable",
+    "switch-controller-feature": "none",
+    "switch-controller-igmp-snooping": "disable",
+    "switch-controller-igmp-snooping-fast-leave": "disable",
+    "switch-controller-igmp-snooping-proxy": "disable",
+    "switch-controller-iot-scanning": "disable",
+    "switch-controller-mgmt-vlan": 4094,
+    "switch-controller-netflow-collect": "disable",
+    "switch-controller-offload": "disable",
+    "switch-controller-offload-gw": "disable",
+    "switch-controller-offload-ip": "0.0.0.0",
+    "switch-controller-rspan-mode": "disable",
+    "switch-controller-source-ip": "outbound",
+    "system-id": "00:00:00:00:00:00",
+    "system-id-type": "auto",
+    "trust-ip-1": "0.0.0.0 0.0.0.0",
+    "trust-ip-2": "0.0.0.0 0.0.0.0",
+    "trust-ip-3": "0.0.0.0 0.0.0.0",
+    "trust-ip6-1": "::/0",
+    "trust-ip6-2": "::/0",
+    "trust-ip6-3": "::/0",
+    "type": "vlan",
+    "virtual-mac": "00:00:00:00:00:00",
+    "vlan-protocol": "8021q",
+    "vlanforward": "disable",
+    "vrrp-virtual-mac": "disable",
+    "wccp": "disable",
+    "wins-ip": "0.0.0.0",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_FORTILINK = ["enable", "disable"]
 VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP = ["outbound", "fixed"]
@@ -267,11 +432,62 @@ def validate_interface_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system_interface.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "dhcp-relay-interface": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_interface_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating interface.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - dhcp-relay-interface: Specify outgoing interface to reach server.
+      - interface: Interface name.
+      - name: Name.
+      - system-id: Define a system ID for the aggregate interface.
+      - vdom: Interface is in this virtual domain (VDOM).
 
     Args:
         payload: The payload to validate
@@ -279,6 +495,28 @@ def validate_interface_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

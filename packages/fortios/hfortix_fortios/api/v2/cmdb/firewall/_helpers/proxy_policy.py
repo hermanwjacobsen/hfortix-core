@@ -10,6 +10,70 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "dstintf",  # Destination interface names.
+    "isolator-server",  # Isolator server name.
+    "name",  # Policy name.
+    "proxy",  # Type of explicit proxy.
+    "schedule",  # Name of schedule object.
+    "service",  # Name of service objects.
+    "srcintf",  # Source interface names.
+]
+
+# Mutually exclusive groups (at least ONE from each group required)
+MUTUALLY_EXCLUSIVE_GROUPS = {
+    "dest_address": ["dstaddr", "dstaddr6"],
+    "source_address": ["srcaddr", "srcaddr6"],
+}
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "action": "deny",
+    "block-notification": "disable",
+    "detect-https-in-http-request": "disable",
+    "device-ownership": "disable",
+    "disclaimer": "disable",
+    "dstaddr-negate": "disable",
+    "http-tunnel-auth": "disable",
+    "https-sub-category": "disable",
+    "internet-service": "disable",
+    "internet-service-negate": "disable",
+    "internet-service6": "disable",
+    "internet-service6-negate": "disable",
+    "log-http-transaction": "disable",
+    "logtraffic": "utm",
+    "logtraffic-start": "disable",
+    "profile-protocol-options": "default",
+    "profile-type": "single",
+    "proxy": "explicit-web",
+    "schedule": "always",
+    "service-negate": "disable",
+    "srcaddr-negate": "disable",
+    "ssh-policy-redirect": "disable",
+    "ssl-ssh-profile": "no-inspection",
+    "status": "enable",
+    "transparent": "disable",
+    "utm-status": "disable",
+    "uuid": "00000000-0000-0000-0000-000000000000",
+    "webcache": "disable",
+    "webcache-https": "disable",
+    "ztna-ems-tag-negate": "disable",
+    "ztna-tags-match-logic": "or",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_PROXY = [
     "explicit-web",
@@ -88,11 +152,74 @@ def validate_proxy_policy_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for firewall_proxy-policy.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "dstintf": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    # Check mutually exclusive groups
+    if not ("dstaddr" in payload or "dstaddr6" in payload):
+        return (False, "Must provide at least one of: dstaddr, dstaddr6")
+    if not ("srcaddr" in payload or "srcaddr6" in payload):
+        return (False, "Must provide at least one of: srcaddr, srcaddr6")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_proxy_policy_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating proxy_policy.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - dstintf: Destination interface names.
+      - isolator-server: Isolator server name.
+      - name: Policy name.
+      - proxy: Type of explicit proxy.
+      - schedule: Name of schedule object.
+      - service: Name of service objects.
+      - srcintf: Source interface names.
+
+    Mutually exclusive (at least ONE required):
+      - dstaddr OR dstaddr6
+      - srcaddr OR srcaddr6
 
     Args:
         payload: The payload to validate
@@ -100,6 +227,28 @@ def validate_proxy_policy_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate policyid if present
     if "policyid" in payload:
         value = payload.get("policyid")

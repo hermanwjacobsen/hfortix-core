@@ -20,11 +20,11 @@ author = 'Herman W. Jacobsen'
 # Auto-detect version from package
 try:
     from hfortix_fortios import __version__
-    release = __version__  # Full version (e.g., 0.4.0)
+    release = __version__  # Full version (e.g., 0.4.3)
     version = '.'.join(__version__.split('.')[:2])  # Short version (e.g., 0.4)
 except ImportError:
     # Fallback if package not installed
-    release = '0.4.0'
+    release = '0.4.3'
     version = '0.4'
 
 # -- General configuration ---------------------------------------------------

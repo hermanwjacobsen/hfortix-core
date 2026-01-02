@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-01-02
+
+### Added
+
+- **Required Fields Validation** (374 validators):
+  - 374 helper files now include required field validation (216 newly integrated)
+  - Two-stage validation: required fields → field values (enums, ranges, formats)
+  - Schema-based validators automatically derived from FortiOS API schemas
+  - Clear error messages identifying missing required fields
+  - Constants for REQUIRED_FIELDS, FIELDS_WITH_DEFAULTS, MUTUALLY_EXCLUSIVE_GROUPS
+  - Automatic payload null handling for all validators
+  - See [VALIDATION_GUIDE.md](docs/fortios/VALIDATION_GUIDE.md) for usage examples
+
+- **Schema Discovery Documentation**:
+  - New `docs/fortios/SCHEMA_DISCOVERY.md` documenting current schema discovery capabilities
+  - Comprehensive analysis of what we have (832 validators with enums) vs. what's possible (runtime schema fetching)
+  - Complete roadmap for implementing full schema discovery in 4 phases
+  - Documents validation framework foundation and missing runtime features
+  - Referenced in `docs/fortios/README.md`
+  - Tested runtime schema fetching via `action=schema` with rich field metadata
+
+### Fixed
+
+- **Type Safety Improvements**:
+  - Fixed mypy type errors in all validator functions (payload null handling)
+  - Added proper type annotations for empty `FIELDS_WITH_DEFAULTS` dictionaries
+  - All 585 helper files now pass strict type checking
+
+- **Code Quality**:
+  - Removed trailing whitespace from blank lines (PEP8 W293)
+  - Fixed bandit security false positives for configuration default values
+  - Excluded SSH key format strings from security scanning (not actual keys)
+  - Fixed YAML line length in pre-commit configuration
+
+### Changed
+
+- **Validator Integration**:
+  - Enhanced integration script with fuzzy matching for hyphen/underscore variations
+  - Improved error handling for multi-line function signatures and docstrings
+  - Better handling of validators with only default fields (no required fields)
+
 ## [0.4.2] - 2026-01-02
 
 ### Added

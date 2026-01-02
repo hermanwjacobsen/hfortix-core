@@ -10,6 +10,42 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "ip",  # IPv4 address of the SSL server.
+    "mapped-port",  # Mapped server service port (1 - 65535, default = 80).
+    "name",  # Server name.
+    "port",  # Server service port (1 - 65535, default = 443).
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "add-header-x-forwarded-proto": "enable",
+    "ip": "0.0.0.0",
+    "mapped-port": 80,
+    "port": 443,
+    "ssl-algorithm": "high",
+    "ssl-client-renegotiation": "allow",
+    "ssl-dh-bits": "2048",
+    "ssl-max-version": "tls-1.3",
+    "ssl-min-version": "tls-1.1",
+    "ssl-mode": "full",
+    "ssl-send-empty-frags": "enable",
+    "url-rewrite": "disable",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_SSL_MODE = ["hal", "full"]
 VALID_BODY_ADD_HEADER_X_FORWARDED_PROTO = ["enable", "disable"]
@@ -64,11 +100,61 @@ def validate_ssl_server_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for firewall_ssl-server.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "ip": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_ssl_server_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating ssl_server.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - ip: IPv4 address of the SSL server.
+      - mapped-port: Mapped server service port (1 - 65535, default = 80).
+      - name: Server name.
+      - port: Server service port (1 - 65535, default = 443).
 
     Args:
         payload: The payload to validate
@@ -76,6 +162,28 @@ def validate_ssl_server_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

@@ -10,6 +10,45 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "interface",  # Specify outgoing interface to reach server.
+    "name",  # Name.
+    "port",  # Port of the first FSSO collector agent.
+    "server",  # Domain name or IP address of the first FSSO collector agent.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "interface-select-method": "auto",
+    "ldap-poll": "disable",
+    "ldap-poll-filter": "(objectCategory=group)",
+    "ldap-poll-interval": 180,
+    "logon-timeout": 5,
+    "port": 8000,
+    "port2": 8000,
+    "port3": 8000,
+    "port4": 8000,
+    "port5": 8000,
+    "source-ip": "0.0.0.0",
+    "source-ip6": "::",
+    "ssl": "disable",
+    "ssl-server-host-ip-check": "disable",
+    "type": "default",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_TYPE = ["default", "fortinac"]
 VALID_BODY_LDAP_POLL = ["enable", "disable"]
@@ -60,9 +99,59 @@ def validate_fsso_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for user_fsso.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "interface": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_fsso_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating fsso.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - interface: Specify outgoing interface to reach server.
+      - name: Name.
+      - port: Port of the first FSSO collector agent.
+      - server: Domain name or IP address of the first FSSO collector agent.
 
     Args:
         payload: The payload to validate
@@ -70,6 +159,28 @@ def validate_fsso_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

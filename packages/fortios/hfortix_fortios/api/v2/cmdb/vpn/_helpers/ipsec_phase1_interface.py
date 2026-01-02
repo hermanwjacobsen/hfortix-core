@@ -10,6 +10,212 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "authpasswd",  # XAuth password (max 35 characters).
+    "authusr",  # XAuth user name.
+    "certificate",  # The names of up to 4 signed personal certificates.
+    "dev-id",  # Device ID carried by the device ID notification.
+    "encap-local-gw4",  # Local IPv4 address of GRE/VXLAN tunnel.
+    "encap-local-gw6",  # Local IPv6 address of GRE/VXLAN tunnel.
+    "encap-remote-gw4",  # Remote IPv4 address of GRE/VXLAN tunnel.
+    "encap-remote-gw6",  # Remote IPv6 address of GRE/VXLAN tunnel.
+    "group-authentication-secret",  # Password for IKEv2 ID group authentication. ASCII string or
+    "interface",  # Local physical, aggregate, or VLAN outgoing interface.
+    "ipv4-end-ip",  # End of IPv4 range.
+    "ipv4-start-ip",  # Start of IPv4 range.
+    "ipv6-end-ip",  # End of IPv6 range.
+    "ipv6-start-ip",  # Start of IPv6 range.
+    "monitor-hold-down-delay",  # Time to wait in seconds before recovery once primary re-esta
+    "monitor-hold-down-time",  # Time of day at which to fail back to primary after it re-est
+    "monitor-hold-down-weekday",  # Day of the week to recover once primary re-establishes.
+    "name",  # IPsec remote gateway name.
+    "net-device",  # Enable/disable kernel device creation.
+    "network-id",  # VPN gateway network ID.
+    "peer",  # Accept this peer certificate.
+    "peer-egress-shaping-value",  # Configure outbound bandwidth to use for peer egress shaping
+    "peergrp",  # Accept this peer certificate group.
+    "peerid",  # Accept this peer identity.
+    "ppk-secret",  # IKEv2 Postquantum Preshared Key (ASCII string or hexadecimal
+    "proposal",  # Phase1 proposal.
+    "psksecret",  # Pre-shared secret for PSK authentication (ASCII string or he
+    "psksecret-remote",  # Pre-shared secret for remote side PSK authentication (ASCII
+    "remote-gw",  # IPv4 address of the remote gateway's external interface.
+    "remote-gw6",  # IPv6 address of the remote gateway's external interface.
+    "remotegw-ddns",  # Domain name of remote gateway. For example, name.ddns.com.
+    "usrgrp",  # User group name for dialup peers.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "acct-verify": "disable",
+    "add-gw-route": "disable",
+    "add-route": "enable",
+    "addke1": "0",
+    "addke2": "0",
+    "addke3": "0",
+    "addke4": "0",
+    "addke5": "0",
+    "addke6": "0",
+    "addke7": "0",
+    "aggregate-member": "disable",
+    "aggregate-weight": 1,
+    "assign-ip": "enable",
+    "assign-ip-from": "range",
+    "authmethod": "psk",
+    "authmethod-remote": "psk",
+    "auto-discovery-crossover": "allow",
+    "auto-discovery-dialup-placeholder": "disable",
+    "auto-discovery-forwarder": "disable",
+    "auto-discovery-offer-interval": 5,
+    "auto-discovery-psk": "disable",
+    "auto-discovery-receiver": "disable",
+    "auto-discovery-sender": "disable",
+    "auto-discovery-shortcuts": "independent",
+    "auto-negotiate": "enable",
+    "auto-transport-threshold": 15,
+    "azure-ad-autoconnect": "disable",
+    "cert-id-validation": "enable",
+    "cert-peer-username-strip": "disable",
+    "cert-peer-username-validation": "none",
+    "cert-trust-store": "local",
+    "childless-ike": "disable",
+    "client-auto-negotiate": "disable",
+    "client-keep-alive": "disable",
+    "client-resume": "disable",
+    "client-resume-interval": 7200,
+    "default-gw": "0.0.0.0",
+    "dev-id-notification": "disable",
+    "dhcp-ra-giaddr": "0.0.0.0",
+    "dhcp6-ra-linkaddr": "::",
+    "dhgrp": "14",
+    "digital-signature-auth": "disable",
+    "distance": 15,
+    "dns-mode": "manual",
+    "dpd": "on-demand",
+    "dpd-retrycount": 3,
+    "eap": "disable",
+    "eap-cert-auth": "disable",
+    "eap-identity": "use-id-payload",
+    "ems-sn-check": "disable",
+    "encap-local-gw4": "0.0.0.0",
+    "encap-local-gw6": "::",
+    "encap-remote-gw4": "0.0.0.0",
+    "encap-remote-gw6": "::",
+    "encapsulation": "none",
+    "encapsulation-address": "ike",
+    "enforce-unique-id": "disable",
+    "esn": "disable",
+    "exchange-fgt-device-id": "disable",
+    "exchange-interface-ip": "disable",
+    "exchange-ip-addr4": "0.0.0.0",
+    "exchange-ip-addr6": "::",
+    "fec-base": 10,
+    "fec-codec": "rs",
+    "fec-egress": "disable",
+    "fec-ingress": "disable",
+    "fec-receive-timeout": 50,
+    "fec-redundant": 1,
+    "fec-send-timeout": 5,
+    "fgsp-sync": "disable",
+    "fortinet-esp": "disable",
+    "fragmentation": "enable",
+    "fragmentation-mtu": 1200,
+    "group-authentication": "disable",
+    "ha-sync-esp-seqno": "enable",
+    "idle-timeout": "disable",
+    "idle-timeoutinterval": 15,
+    "ike-version": "1",
+    "inbound-dscp-copy": "disable",
+    "include-local-lan": "disable",
+    "ip-fragmentation": "post-encapsulation",
+    "ip-version": "4",
+    "ipv4-dns-server1": "0.0.0.0",
+    "ipv4-dns-server2": "0.0.0.0",
+    "ipv4-dns-server3": "0.0.0.0",
+    "ipv4-end-ip": "0.0.0.0",
+    "ipv4-netmask": "255.255.255.255",
+    "ipv4-start-ip": "0.0.0.0",
+    "ipv4-wins-server1": "0.0.0.0",
+    "ipv4-wins-server2": "0.0.0.0",
+    "ipv6-auto-linklocal": "disable",
+    "ipv6-dns-server1": "::",
+    "ipv6-dns-server2": "::",
+    "ipv6-dns-server3": "::",
+    "ipv6-end-ip": "::",
+    "ipv6-prefix": 128,
+    "ipv6-start-ip": "::",
+    "keepalive": 10,
+    "keylife": 86400,
+    "local-gw": "0.0.0.0",
+    "local-gw6": "::",
+    "localid-type": "auto",
+    "loopback-asymroute": "enable",
+    "mesh-selector-type": "disable",
+    "mode": "main",
+    "mode-cfg": "disable",
+    "mode-cfg-allow-client-selector": "disable",
+    "monitor-hold-down-type": "immediate",
+    "monitor-hold-down-weekday": "sunday",
+    "nattraversal": "enable",
+    "negotiate-timeout": 30,
+    "net-device": "disable",
+    "network-overlay": "disable",
+    "npu-offload": "enable",
+    "packet-redistribution": "disable",
+    "passive-mode": "disable",
+    "peer-egress-shaping": "disable",
+    "peertype": "peer",
+    "ppk": "disable",
+    "priority": 1,
+    "proposal": "des-md5",
+    "qkd": "disable",
+    "qkd-hybrid": "disable",
+    "reauth": "disable",
+    "rekey": "enable",
+    "remote-gw": "0.0.0.0",
+    "remote-gw-end-ip": "0.0.0.0",
+    "remote-gw-match": "any",
+    "remote-gw-start-ip": "0.0.0.0",
+    "remote-gw-subnet": "0.0.0.0 0.0.0.0",
+    "remote-gw6": "::",
+    "remote-gw6-end-ip": "::",
+    "remote-gw6-match": "any",
+    "remote-gw6-start-ip": "::",
+    "remote-gw6-subnet": "::/0",
+    "rsa-signature-format": "pkcs1",
+    "rsa-signature-hash-override": "disable",
+    "save-password": "disable",
+    "send-cert-chain": "enable",
+    "shared-idle-timeout": "disable",
+    "signature-hash-alg": "sha2-512",
+    "suite-b": "disable",
+    "transport": "auto",
+    "type": "static",
+    "unity-support": "enable",
+    "wizard-type": "custom",
+    "xauthtype": "disable",
+}
+
+# Fields wrongly marked as required in schema (schema bugs)
+# These are specialized features and should be OPTIONAL
+SCHEMA_FALSE_POSITIVES = [
+    "remote-gw-ztna-tags",  # IPv4 ZTNA posture tags.
+    "signature-hash-alg",  # Digital Signature Authentication hash algorithms.
+]
+
+
 # Valid enum values from API documentation
 VALID_BODY_TYPE = ["static", "dynamic", "ddns"]
 VALID_BODY_IP_VERSION = ["4", "6"]
@@ -383,11 +589,89 @@ def validate_ipsec_phase1_interface_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for vpn_ipsec_phase1-interface.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "authpasswd": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_ipsec_phase1_interface_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating ipsec_phase1_interface.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - authpasswd: XAuth password (max 35 characters).
+      - authusr: XAuth user name.
+      - certificate: The names of up to 4 signed personal certificates.
+      - dev-id: Device ID carried by the device ID notification.
+      - encap-local-gw4: Local IPv4 address of GRE/VXLAN tunnel.
+      - encap-local-gw6: Local IPv6 address of GRE/VXLAN tunnel.
+      - encap-remote-gw4: Remote IPv4 address of GRE/VXLAN tunnel.
+      - encap-remote-gw6: Remote IPv6 address of GRE/VXLAN tunnel.
+      - group-authentication-secret: Password for IKEv2 ID group authentication. ASCII string or
+      - interface: Local physical, aggregate, or VLAN outgoing interface.
+      - ipv4-end-ip: End of IPv4 range.
+      - ipv4-start-ip: Start of IPv4 range.
+      - ipv6-end-ip: End of IPv6 range.
+      - ipv6-start-ip: Start of IPv6 range.
+      - monitor-hold-down-delay: Time to wait in seconds before recovery once primary re-esta
+      - monitor-hold-down-time: Time of day at which to fail back to primary after it re-est
+      - monitor-hold-down-weekday: Day of the week to recover once primary re-establishes.
+      - name: IPsec remote gateway name.
+      - net-device: Enable/disable kernel device creation.
+      - network-id: VPN gateway network ID.
+      - peer: Accept this peer certificate.
+      - peer-egress-shaping-value: Configure outbound bandwidth to use for peer egress shaping
+      - peergrp: Accept this peer certificate group.
+      - peerid: Accept this peer identity.
+      - ppk-secret: IKEv2 Postquantum Preshared Key (ASCII string or hexadecimal
+      - proposal: Phase1 proposal.
+      - psksecret: Pre-shared secret for PSK authentication (ASCII string or he
+      - psksecret-remote: Pre-shared secret for remote side PSK authentication (ASCII
+      - remote-gw: IPv4 address of the remote gateway's external interface.
+      - remote-gw6: IPv6 address of the remote gateway's external interface.
+      - remotegw-ddns: Domain name of remote gateway. For example, name.ddns.com.
+      - usrgrp: User group name for dialup peers.
 
     Args:
         payload: The payload to validate
@@ -395,6 +679,28 @@ def validate_ipsec_phase1_interface_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

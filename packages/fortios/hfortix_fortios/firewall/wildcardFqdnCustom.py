@@ -17,15 +17,7 @@ Example:
 """
 
 import logging
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Coroutine,
-    Dict,
-    List,
-    Optional,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Coroutine, Dict, List, Optional, Union
 
 from hfortix_fortios._helpers import validate_string_length
 

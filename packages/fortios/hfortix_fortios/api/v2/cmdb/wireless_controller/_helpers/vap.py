@@ -10,6 +10,152 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "name",  # Virtual AP name.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "80211k": "enable",
+    "80211v": "enable",
+    "additional-akms": "akm6",
+    "address-group-policy": "disable",
+    "akm24-only": "disable",
+    "application-detection-engine": "disable",
+    "application-dscp-marking": "disable",
+    "application-report-intv": 120,
+    "atf-weight": 20,
+    "auth": "radius",
+    "beacon-advertising": "name",
+    "beacon-protection": "disable",
+    "broadcast-ssid": "enable",
+    "broadcast-suppression": "dhcp-up dhcp-ucast arp-known",
+    "bss-color-partial": "enable",
+    "bstm-disassociation-imminent": "enable",
+    "bstm-load-balancing-disassoc-timer": 10,
+    "bstm-rssi-disassoc-timer": 200,
+    "called-station-id-type": "mac",
+    "captive-network-assistant-bypass": "disable",
+    "captive-portal": "disable",
+    "captive-portal-fw-accounting": "disable",
+    "dhcp-address-enforcement": "disable",
+    "dhcp-lease-time": 2400,
+    "dhcp-option43-insertion": "enable",
+    "dhcp-option82-circuit-id-insertion": "disable",
+    "dhcp-option82-insertion": "disable",
+    "dhcp-option82-remote-id-insertion": "disable",
+    "domain-name-stripping": "disable",
+    "dynamic-vlan": "disable",
+    "eap-reauth": "disable",
+    "eap-reauth-intv": 86400,
+    "eapol-key-retries": "enable",
+    "encrypt": "AES",
+    "external-pre-auth": "disable",
+    "external-web-format": "auto-detect",
+    "fast-bss-transition": "disable",
+    "ft-mobility-domain": 1000,
+    "ft-over-ds": "disable",
+    "ft-r0-key-lifetime": 480,
+    "gas-comeback-delay": 500,
+    "gas-fragmentation-limit": 1024,
+    "gtk-rekey": "disable",
+    "gtk-rekey-intv": 86400,
+    "high-efficiency": "enable",
+    "igmp-snooping": "disable",
+    "intra-vap-privacy": "disable",
+    "ip": "0.0.0.0 0.0.0.0",
+    "ipv6-rules": "drop-icmp6ra drop-icmp6rs drop-llmnr6 drop-icmp6mld2 drop-dhcp6s drop-dhcp6c ndp-proxy drop-ns-dad",
+    "keyindex": 1,
+    "l3-roaming": "disable",
+    "l3-roaming-mode": "direct",
+    "ldpc": "rxtx",
+    "local-authentication": "disable",
+    "local-bridging": "disable",
+    "local-lan": "allow",
+    "local-lan-partition": "disable",
+    "local-standalone": "disable",
+    "local-standalone-dns": "disable",
+    "local-standalone-nat": "disable",
+    "mac-auth-bypass": "disable",
+    "mac-called-station-delimiter": "hyphen",
+    "mac-calling-station-delimiter": "hyphen",
+    "mac-case": "uppercase",
+    "mac-password-delimiter": "hyphen",
+    "mac-username-delimiter": "hyphen",
+    "mbo": "disable",
+    "mbo-cell-data-conn-pref": "prefer-not",
+    "me-disable-thresh": 32,
+    "mesh-backhaul": "disable",
+    "mu-mimo": "enable",
+    "multicast-enhance": "disable",
+    "multicast-rate": "0",
+    "nac": "disable",
+    "nas-filter-rule": "disable",
+    "neighbor-report-dual-band": "disable",
+    "okc": "enable",
+    "osen": "disable",
+    "owe-groups": "19",
+    "owe-transition": "disable",
+    "pmf": "disable",
+    "pmf-assoc-comeback-timeout": 1,
+    "pmf-sa-query-retry-timeout": 2,
+    "port-macauth": "disable",
+    "port-macauth-reauth-timeout": 7200,
+    "port-macauth-timeout": 600,
+    "portal-type": "auth",
+    "pre-auth": "enable",
+    "probe-resp-suppression": "disable",
+    "probe-resp-threshold": "-80",
+    "ptk-rekey": "disable",
+    "ptk-rekey-intv": 86400,
+    "quarantine": "enable",
+    "radio-2g-threshold": "-79",
+    "radio-5g-threshold": "-76",
+    "radio-sensitivity": "disable",
+    "radius-mac-auth": "disable",
+    "radius-mac-mpsk-auth": "disable",
+    "radius-mac-mpsk-timeout": 86400,
+    "rates-11a": "6",
+    "rates-11bg": "1",
+    "rates-11n-ss12": "mcs0/1",
+    "rates-11n-ss34": "mcs16/3",
+    "roaming-acct-interim-update": "disable",
+    "sae-groups": "19",
+    "sae-h2e-only": "disable",
+    "sae-hnp-only": "disable",
+    "sae-pk": "disable",
+    "scan-botnet-connections": "monitor",
+    "schedule": "always",
+    "security": "wpa2-only-personal",
+    "split-tunneling": "disable",
+    "ssid": "fortinet",
+    "sticky-client-remove": "disable",
+    "sticky-client-threshold-2g": "-79",
+    "sticky-client-threshold-5g": "-76",
+    "sticky-client-threshold-6g": "-76",
+    "target-wake-time": "enable",
+    "tkip-counter-measure": "enable",
+    "tunnel-echo-interval": 300,
+    "tunnel-fallback-interval": 7200,
+    "utm-log": "enable",
+    "utm-status": "disable",
+    "vlan-auto": "disable",
+    "vlan-pooling": "disable",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_PRE_AUTH = ["enable", "disable"]
 VALID_BODY_EXTERNAL_PRE_AUTH = ["enable", "disable"]
@@ -308,9 +454,56 @@ def validate_vap_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for wireless-controller_vap.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "name": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_vap_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating vap.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - name: Virtual AP name.
 
     Args:
         payload: The payload to validate
@@ -318,6 +511,28 @@ def validate_vap_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

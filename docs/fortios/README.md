@@ -74,6 +74,7 @@ High-level interfaces that simplify common operations:
 - **[ENDPOINT_METHODS.md](ENDPOINT_METHODS.md)** - Complete method reference for all 750+ endpoints
 - **[API_COVERAGE.md](API_COVERAGE.md)** - Detailed API implementation status
 - **[VALIDATION_GUIDE.md](VALIDATION_GUIDE.md)** - Using the validation framework (832 validators)
+- **[SCHEMA_DISCOVERY.md](SCHEMA_DISCOVERY.md)** - **NEW:** Schema discovery state & roadmap (what we have vs. what's possible)
 
 ## 🎯 API Coverage
 

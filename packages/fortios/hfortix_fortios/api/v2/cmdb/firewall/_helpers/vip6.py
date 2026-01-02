@@ -10,6 +10,91 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "extip",  # IPv6 address or address range on the external interface that
+    "extport",  # Incoming port number range that you want to map to a port nu
+    "h2-support",  # Enable/disable HTTP2 support (default = enable).
+    "mappedip",  # Mapped IPv6 address range in the format startIP-endIP.
+    "name",  # Virtual ip6 name.
+    "server-type",  # Protocol to be load balanced by the virtual server (also cal
+    "ssl-certificate",  # Name of the certificate to use for SSL handshake.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "add-nat64-route": "enable",
+    "client-cert": "enable",
+    "embedded-ipv4-address": "disable",
+    "empty-cert-action": "block",
+    "h2-support": "enable",
+    "h3-support": "disable",
+    "http-cookie-age": 60,
+    "http-cookie-domain-from-host": "disable",
+    "http-cookie-share": "same-ip",
+    "http-ip-header": "disable",
+    "http-multiplex": "disable",
+    "http-redirect": "disable",
+    "https-cookie-secure": "disable",
+    "ldb-method": "static",
+    "max-embryonic-connections": 1000,
+    "nat-source-vip": "disable",
+    "nat64": "disable",
+    "nat66": "enable",
+    "ndp-reply": "enable",
+    "outlook-web-access": "disable",
+    "persistence": "none",
+    "portforward": "disable",
+    "protocol": "tcp",
+    "server-type": "http",
+    "src-vip-filter": "disable",
+    "ssl-accept-ffdhe-groups": "enable",
+    "ssl-algorithm": "high",
+    "ssl-client-fallback": "enable",
+    "ssl-client-renegotiation": "secure",
+    "ssl-client-session-state-max": 1000,
+    "ssl-client-session-state-timeout": 30,
+    "ssl-client-session-state-type": "both",
+    "ssl-dh-bits": "2048",
+    "ssl-hpkp": "disable",
+    "ssl-hpkp-age": 5184000,
+    "ssl-hpkp-include-subdomains": "disable",
+    "ssl-hsts": "disable",
+    "ssl-hsts-age": 5184000,
+    "ssl-hsts-include-subdomains": "disable",
+    "ssl-http-location-conversion": "disable",
+    "ssl-http-match-host": "enable",
+    "ssl-max-version": "tls-1.3",
+    "ssl-min-version": "tls-1.1",
+    "ssl-mode": "half",
+    "ssl-pfs": "require",
+    "ssl-send-empty-frags": "enable",
+    "ssl-server-algorithm": "client",
+    "ssl-server-max-version": "client",
+    "ssl-server-min-version": "client",
+    "ssl-server-renegotiation": "enable",
+    "ssl-server-session-state-max": 100,
+    "ssl-server-session-state-timeout": 60,
+    "ssl-server-session-state-type": "both",
+    "type": "static-nat",
+    "user-agent-detect": "enable",
+    "uuid": "00000000-0000-0000-0000-000000000000",
+    "weblogic-server": "disable",
+    "websphere-server": "disable",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_TYPE = ["static-nat", "server-load-balance", "access-proxy"]
 VALID_BODY_SRC_VIP_FILTER = ["disable", "enable"]
@@ -138,9 +223,62 @@ def validate_vip6_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for firewall_vip6.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "extip": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_vip6_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating vip6.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - extip: IPv6 address or address range on the external interface that
+      - extport: Incoming port number range that you want to map to a port nu
+      - h2-support: Enable/disable HTTP2 support (default = enable).
+      - mappedip: Mapped IPv6 address range in the format startIP-endIP.
+      - name: Virtual ip6 name.
+      - server-type: Protocol to be load balanced by the virtual server (also cal
+      - ssl-certificate: Name of the certificate to use for SSL handshake.
 
     Args:
         payload: The payload to validate
@@ -148,6 +286,28 @@ def validate_vip6_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

@@ -30,8 +30,9 @@ repos:
         exclude: ^(docs/|X/|\.venv/|venv/|build/|dist/)
       - id: detect-private-key
         # Generated API stubs and SSH wrapper files contain key-like
-        # strings but are not actual private keys. Exclude them.
-        exclude: ^(hfortix/FortiOS/api/v2/|packages/fortios/hfortix_fortios/api/v2/|packages/fortios/hfortix_fortios/firewall/ssh.*\.py|docs/|X/)
+        # strings (e.g., "private-key" parameter names) but are not
+        # actual private keys. Exclude them along with this config file.
+        exclude: ^(\.pre-commit-config\.yaml|hfortix/FortiOS/api/v2/|packages/fortios/hfortix_fortios/api/v2/|packages/fortios/hfortix_fortios/firewall/ssh.*\.py|docs/|X/)
 
   # Python code formatting with Black
   - repo: https://github.com/psf/black

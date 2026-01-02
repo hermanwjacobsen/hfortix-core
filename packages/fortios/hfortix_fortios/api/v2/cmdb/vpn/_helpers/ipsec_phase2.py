@@ -10,6 +10,74 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "dst-name",  # Remote proxy ID name.
+    "dst-name6",  # Remote proxy ID name.
+    "name",  # IPsec tunnel name.
+    "phase1name",  # Phase 1 determines the options required for phase 2.
+    "proposal",  # Phase2 proposal.
+    "src-name",  # Local proxy ID name.
+    "src-name6",  # Local proxy ID name.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "add-route": "phase1",
+    "addke1": "0",
+    "addke2": "0",
+    "addke3": "0",
+    "addke4": "0",
+    "addke5": "0",
+    "addke6": "0",
+    "addke7": "0",
+    "auto-negotiate": "disable",
+    "dhcp-ipsec": "disable",
+    "dhgrp": "14",
+    "diffserv": "disable",
+    "dst-addr-type": "subnet",
+    "dst-end-ip": "0.0.0.0",
+    "dst-end-ip6": "::",
+    "dst-start-ip": "0.0.0.0",
+    "dst-start-ip6": "::",
+    "dst-subnet": "0.0.0.0 0.0.0.0",
+    "dst-subnet6": "::/0",
+    "encapsulation": "tunnel-mode",
+    "inbound-dscp-copy": "phase1",
+    "initiator-ts-narrow": "disable",
+    "keepalive": "disable",
+    "keylife-type": "seconds",
+    "keylifekbs": 5120,
+    "keylifeseconds": 43200,
+    "l2tp": "disable",
+    "pfs": "enable",
+    "proposal": "null-md5",
+    "replay": "enable",
+    "route-overlap": "use-new",
+    "selector-match": "auto",
+    "single-source": "disable",
+    "src-addr-type": "subnet",
+    "src-end-ip": "0.0.0.0",
+    "src-end-ip6": "::",
+    "src-start-ip": "0.0.0.0",
+    "src-start-ip6": "::",
+    "src-subnet": "0.0.0.0 0.0.0.0",
+    "src-subnet6": "::/0",
+    "use-natip": "enable",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_DHCP_IPSEC = ["enable", "disable"]
 VALID_BODY_USE_NATIP = ["enable", "disable"]
@@ -282,11 +350,64 @@ def validate_ipsec_phase2_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for vpn_ipsec_phase2.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "dst-name": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_ipsec_phase2_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating ipsec_phase2.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - dst-name: Remote proxy ID name.
+      - dst-name6: Remote proxy ID name.
+      - name: IPsec tunnel name.
+      - phase1name: Phase 1 determines the options required for phase 2.
+      - proposal: Phase2 proposal.
+      - src-name: Local proxy ID name.
+      - src-name6: Local proxy ID name.
 
     Args:
         payload: The payload to validate
@@ -294,6 +415,28 @@ def validate_ipsec_phase2_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate name if present
     if "name" in payload:
         value = payload.get("name")

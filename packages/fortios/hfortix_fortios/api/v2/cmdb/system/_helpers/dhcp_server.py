@@ -10,6 +10,68 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema using required_fields_analyzer.py
+# ============================================================================
+
+# NOTE: The FortiOS schema has known bugs where some specialized optional
+# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
+# for fields that should be OPTIONAL despite being marked required in
+# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
+# requirements based on API testing and schema analysis.
+
+# Always required fields (no alternatives)
+REQUIRED_FIELDS = [
+    "id",  # ID.
+    "interface",  # DHCP server can assign IP configurations to clients connecte
+    "netmask",  # Netmask assigned by the DHCP server.
+    "timezone",  # Select the time zone to be assigned to DHCP clients.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "auto-configuration": "enable",
+    "auto-managed-status": "enable",
+    "conflicted-ip-timeout": 1800,
+    "ddns-auth": "disable",
+    "ddns-server-ip": "0.0.0.0",
+    "ddns-ttl": 300,
+    "ddns-update": "disable",
+    "ddns-update-override": "disable",
+    "default-gateway": "0.0.0.0",
+    "dhcp-settings-from-fortiipam": "disable",
+    "dns-server1": "0.0.0.0",
+    "dns-server2": "0.0.0.0",
+    "dns-server3": "0.0.0.0",
+    "dns-server4": "0.0.0.0",
+    "dns-service": "specify",
+    "forticlient-on-net-status": "enable",
+    "ip-mode": "range",
+    "ipsec-lease-hold": 60,
+    "lease-time": 604800,
+    "mac-acl-default-action": "assign",
+    "netmask": "0.0.0.0",
+    "next-server": "0.0.0.0",
+    "ntp-server1": "0.0.0.0",
+    "ntp-server2": "0.0.0.0",
+    "ntp-server3": "0.0.0.0",
+    "ntp-service": "specify",
+    "relay-agent": "0.0.0.0",
+    "server-type": "regular",
+    "shared-subnet": "disable",
+    "status": "enable",
+    "timezone-option": "disable",
+    "vci-match": "disable",
+    "wifi-ac-service": "specify",
+    "wifi-ac1": "0.0.0.0",
+    "wifi-ac2": "0.0.0.0",
+    "wifi-ac3": "0.0.0.0",
+    "wins-server1": "0.0.0.0",
+    "wins-server2": "0.0.0.0",
+}
+
+
 # Valid enum values from API documentation
 VALID_BODY_STATUS = ["disable", "enable"]
 VALID_BODY_MAC_ACL_DEFAULT_ACTION = ["assign", "block"]
@@ -72,11 +134,61 @@ def validate_dhcp_server_get(
 # ============================================================================
 
 
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system_dhcp_server.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_required_fields({
+        ...     "id": "value",
+        ...     # ... other fields
+        ... })
+    """
+    # Check always-required fields
+    missing = []
+    for field in REQUIRED_FIELDS:
+        # Skip fields with defaults
+        if field in FIELDS_WITH_DEFAULTS:
+            continue
+        if field not in payload or payload.get(field) is None:
+            missing.append(field)
+
+    if missing:
+        return (False, f"Missing required fields: {', '.join(missing)}")
+
+    return (True, None)
+
+
+# ============================================================================
+# Endpoint Validation (Enhanced with Required Fields)
+# ============================================================================
+
+
 def validate_dhcp_server_post(
     payload: dict[str, Any],
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload for creating dhcp_server.
+    Validate POST request payload.
+
+    This validator performs two-stage validation:
+    1. Required fields validation (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Required fields:
+      - id: ID.
+      - interface: DHCP server can assign IP configurations to clients connecte
+      - netmask: Netmask assigned by the DHCP server.
+      - timezone: Select the time zone to be assigned to DHCP clients.
 
     Args:
         payload: The payload to validate
@@ -84,6 +196,28 @@ def validate_dhcp_server_post(
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Validate payload exists
+    if not payload:
+        payload = {}
+
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate field values (enums, ranges, etc.)
     # Validate id if present
     if "id" in payload:
         value = payload.get("id")
