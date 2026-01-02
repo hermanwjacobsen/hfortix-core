@@ -57,6 +57,40 @@ from hfortix import FortiOS
 
 ## Quick Start
 
+## Generic request() Method (NEW in v0.4.1)
+
+The fastest way to test FortiGate API calls - copy JSON directly from the GUI:
+
+```python
+from hfortix import FortiOS
+
+fgt = FortiOS(host="192.168.1.99", token="your-api-token", verify=False)
+
+# 1. In FortiGate GUI, click "API Preview" on any object
+# 2. Copy the JSON shown
+# 3. Paste it into your code:
+
+config = {
+    "method": "POST",
+    "url": "/api/v2/cmdb/firewall/address",
+    "params": {"vdom": "root"},
+    "data": {
+        "name": "web-server",
+        "subnet": "10.0.1.100/32",
+        "comment": "Production web server"
+    }
+}
+
+result = fgt.request(config)
+```
+
+**Benefits:**
+- **Zero translation** - Use exact JSON from GUI
+- **Quick testing** - Test in GUI, paste to code
+- **All CRUD operations** - GET, POST, PUT, DELETE
+
+**See:** [REQUEST_METHOD_GUIDE.md](REQUEST_METHOD_GUIDE.md) for complete guide
+
 ## Basic Connection
 
 ```python
@@ -499,8 +533,8 @@ fgt.firewall.policy.delete(policyid="1")
 All schedule types now have consistent convenience methods:
 
 ```python
-from hfortix import FortiOS
-from hfortix.FortiOS.api._helpers import get_mkey, is_success
+from hfortix_fortios import FortiOS
+from hfortix_fortios._helpers import get_mkey, is_success
 
 fgt = FortiOS(host='192.168.1.1', token='your-api-token')
 

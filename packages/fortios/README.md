@@ -131,7 +131,10 @@ fgt.firewall.ipmacbinding_table.create(
 - **Schedules**: `schedule_onetime`, `schedule_recurring`, `schedule_group`
 - **Traffic Shaping**: `traffic_shaper`, `shaper_per_ip`
 - **IP/MAC Binding**: `ipmacbinding_table`, `ipmacbinding_setting`
+- **SSH/SSL Proxy**: `ssh_host_key`, `ssh_local_ca`, `ssh_local_key`, `ssh_setting`, `ssl_setting` (⚠️ with API limitations)
 - **Firewall Policies**: `policy` with 150+ parameters
+
+**Note:** Some wrappers have FortiOS API limitations (e.g., SSH CA deletion requires CLI/GUI). See documentation for details.
 
 ### ⚡ Advanced Features
 

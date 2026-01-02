@@ -21,7 +21,14 @@ if TYPE_CHECKING:
         ServiceCustom,
         ServiceGroup,
         ShaperPerIp,
+        SSHHostKey,
+        SSHLocalCA,
+        SSHLocalKey,
+        SSHSetting,
+        SSLSetting,
         TrafficShaper,
+        WildcardFqdnCustom,
+        WildcardFqdnGroup,
     )
 
 __all__ = ["FortiOS"]
@@ -40,7 +47,14 @@ class FirewallNamespace:
     service_custom: "ServiceCustom"
     service_group: "ServiceGroup"
     shaper_per_ip: "ShaperPerIp"
+    ssh_host_key: "SSHHostKey"
+    ssh_local_ca: "SSHLocalCA"
+    ssh_local_key: "SSHLocalKey"
+    ssh_setting: "SSHSetting"
+    ssl_setting: "SSLSetting"
     traffic_shaper: "TrafficShaper"
+    wildcard_fqdn_custom: "WildcardFqdnCustom"
+    wildcard_fqdn_group: "WildcardFqdnGroup"
 
     def __init__(self, fortios_instance: "FortiOS"):
         """Initialize with reference to FortiOS instance."""
@@ -56,7 +70,14 @@ class FirewallNamespace:
             ServiceCustom,
             ServiceGroup,
             ShaperPerIp,
+            SSHHostKey,
+            SSHLocalCA,
+            SSHLocalKey,
+            SSHSetting,
+            SSLSetting,
             TrafficShaper,
+            WildcardFqdnCustom,
+            WildcardFqdnGroup,
         )
 
         # fmt: off
@@ -80,7 +101,21 @@ class FirewallNamespace:
             fortios_instance)  # type: ignore
         self.shaper_per_ip = ShaperPerIp(
             fortios_instance)  # type: ignore
+        self.ssh_host_key = SSHHostKey(
+            fortios_instance)  # type: ignore
+        self.ssh_local_ca = SSHLocalCA(
+            fortios_instance)  # type: ignore
+        self.ssh_local_key = SSHLocalKey(
+            fortios_instance)  # type: ignore
+        self.ssh_setting = SSHSetting(
+            fortios_instance)  # type: ignore
+        self.ssl_setting = SSLSetting(
+            fortios_instance)  # type: ignore
         self.traffic_shaper = TrafficShaper(
+            fortios_instance)  # type: ignore
+        self.wildcard_fqdn_custom = WildcardFqdnCustom(
+            fortios_instance)  # type: ignore
+        self.wildcard_fqdn_group = WildcardFqdnGroup(
             fortios_instance)  # type: ignore
         # fmt: on
 
@@ -924,6 +959,181 @@ class FortiOS:
     def error_format(self) -> Literal["detailed", "simple", "code_only"]:
         """Default error message format for convenience wrappers"""
         return self._error_format
+
+    def request(
+        self,
+        config: dict[str, Any],
+        raw_json: bool = False,
+    ) -> Union[dict[str, Any], Any]:
+        """
+        Execute a generic API request from FortiGate GUI API preview JSON
+
+        This method accepts the JSON configuration directly from the FortiGate
+        GUI's API preview feature, making it easy to test and execute API calls
+        without manually constructing requests.
+
+        Args:
+            config: Dictionary containing the API request configuration
+                with:
+                - method: HTTP method (GET, POST, PUT, DELETE)
+                - url: Full API URL path
+                    (e.g., "/api/v2/cmdb/firewall/address")
+                - params: Optional query parameters dict
+                - data: Optional request body for POST/PUT
+            raw_json: If True, return full API response; if False,
+                return only results
+
+        Returns:
+            API response dictionary (format depends on raw_json parameter)
+
+        Raises:
+            ValueError: If config is missing required fields or has
+                invalid format
+            APIError: For API errors (404, 500, etc.)
+
+        Example:
+            >>> fgt = FortiOS("192.168.1.99", token="...")
+            >>>
+            >>> # Copy this directly from FortiGate GUI API preview
+            >>> config = {
+            ...     "method": "POST",
+            ...     "url": "/api/v2/cmdb/firewall/address",
+            ...     "params": {
+            ...         "datasource": 1,
+            ...         "vdom": "test"
+            ...     },
+            ...     "data": {
+            ...         "name": "test999999",
+            ...         "subnet": "192.168.1.0/24",
+            ...         "color": "0"
+            ...     }
+            ... }
+            >>> result = fgt.request(config)
+            >>>
+            >>> # Example: GET request
+            >>> get_config = {
+            ...     "method": "GET",
+            ...     "url": "/api/v2/cmdb/firewall/address",
+            ...     "params": {"vdom": "root"}
+            ... }
+            >>> addresses = fgt.request(get_config)
+            >>>
+            >>> # Example: PUT request
+            >>> update_config = {
+            ...     "method": "PUT",
+            ...     "url": "/api/v2/cmdb/firewall/address/test999999",
+            ...     "params": {"vdom": "test"},
+            ...     "data": {"comment": "Updated via API"}
+            ... }
+            >>> result = fgt.request(update_config)
+            >>>
+            >>> # Example: DELETE request
+            >>> delete_config = {
+            ...     "method": "DELETE",
+            ...     "url": "/api/v2/cmdb/firewall/address/test999999",
+            ...     "params": {"vdom": "test"}
+            ... }
+            >>> result = fgt.request(delete_config)
+
+        Note:
+            - The URL should include /api/v2/ prefix (as shown in GUI)
+            - The vdom parameter can be in params dict or will use default
+            - This method is perfect for testing API calls from the GUI before
+              implementing in code
+        """
+        # Validate config structure
+        if not isinstance(config, dict):
+            raise ValueError("config must be a dictionary")
+
+        method = config.get("method")
+        url = config.get("url")
+        params = config.get("params", {})
+        data = config.get("data")
+
+        # Validate required fields
+        if not method:
+            raise ValueError(
+                "config must include 'method' field (GET, POST, PUT, DELETE)"
+            )
+        if not url:
+            raise ValueError("config must include 'url' field")
+
+        # Normalize method to uppercase
+        method = method.upper()
+        if method not in ["GET", "POST", "PUT", "DELETE"]:
+            raise ValueError(
+                f"Invalid method '{method}'. Must be GET, POST, PUT, or DELETE"
+            )
+
+        # Parse URL to extract api_type and path
+        # URL format: /api/v2/{api_type}/{path}
+        # Example: /api/v2/cmdb/firewall/address
+        if not url.startswith("/api/v2/"):
+            raise ValueError(
+                f"Invalid URL format: '{url}'. "
+                "URL must start with '/api/v2/' "
+                "(e.g., '/api/v2/cmdb/firewall/address')"
+            )
+
+        # Remove /api/v2/ prefix
+        url_parts = url.replace("/api/v2/", "").split("/", 1)
+        if len(url_parts) < 2:
+            raise ValueError(
+                f"Invalid URL format: '{url}'. "
+                "Expected format: /api/v2/{{api_type}}/{{path}} "
+                "(e.g., '/api/v2/cmdb/firewall/address')"
+            )
+
+        api_type = url_parts[0]
+        path = url_parts[1]
+
+        # Extract vdom from params if present
+        vdom: Optional[Union[str, bool]] = params.pop("vdom", None)
+
+        # Make the request using the underlying client
+        if method == "GET":
+            return self._client.get(
+                api_type=api_type,
+                path=path,
+                params=params if params else None,
+                vdom=vdom,
+                raw_json=raw_json,
+            )
+        elif method == "POST":
+            if not data:
+                raise ValueError(
+                    "POST requests require 'data' field in config"
+                )
+            return self._client.post(
+                api_type=api_type,
+                path=path,
+                data=data,
+                params=params if params else None,
+                vdom=vdom,
+                raw_json=raw_json,
+            )
+        elif method == "PUT":
+            if not data:
+                raise ValueError("PUT requests require 'data' field in config")
+            return self._client.put(
+                api_type=api_type,
+                path=path,
+                data=data,
+                params=params if params else None,
+                vdom=vdom,
+                raw_json=raw_json,
+            )
+        elif method == "DELETE":
+            return self._client.delete(
+                api_type=api_type,
+                path=path,
+                params=params if params else None,
+                vdom=vdom,
+                raw_json=raw_json,
+            )
+        else:
+            # Should never reach here due to earlier validation
+            raise ValueError(f"Unsupported method: {method}")
 
     def get_connection_stats(self) -> dict[str, Any]:
         """

@@ -268,6 +268,90 @@ Example
        status='enable'
    )
 
+Wildcard FQDN Wrappers
+----------------------
+
+.. warning::
+   **API Limitations**: Wildcard FQDN wrappers have limited write support due to FortiOS REST API restrictions.
+   Create, update, and delete operations are **not supported via API** and will raise ``NotImplementedError``.
+   Read operations (get, exists, get_by_name) work normally.
+   
+   Use CLI commands for write operations. See `.dev/API_LIMITATIONS.md` for details.
+
+Wildcard FQDN Custom
+^^^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: hfortix_fortios.firewall.WildcardFqdnCustom
+   :members: get, exists, get_by_name
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__
+
+Example
+~~~~~~~
+
+.. code-block:: python
+
+   # Read operations work normally
+   all_wildcards = fgt.firewall.wildcard_fqdn_custom.get()
+   
+   # Check if wildcard FQDN exists
+   exists = fgt.firewall.wildcard_fqdn_custom.exists(name='cdn-services')
+   
+   # Get specific wildcard FQDN
+   wildcard = fgt.firewall.wildcard_fqdn_custom.get_by_name('cdn-services')
+   
+   # Write operations NOT supported via API (use CLI)
+   # CLI workaround:
+   # config firewall wildcard-fqdn custom
+   #   edit "cdn-services"
+   #     set wildcard-fqdn "*.cdn.example.com"
+   #     set comment "CDN endpoints"
+   #   next
+   # end
+
+Wildcard FQDN Group
+^^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: hfortix_fortios.firewall.WildcardFqdnGroup
+   :members: get, exists, get_by_name
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__
+
+Example
+~~~~~~~
+
+.. code-block:: python
+
+   # Read operations work normally
+   all_groups = fgt.firewall.wildcard_fqdn_group.get()
+   
+   # Check if group exists
+   exists = fgt.firewall.wildcard_fqdn_group.exists(name='social-media')
+   
+   # Get specific group
+   group = fgt.firewall.wildcard_fqdn_group.get_by_name('social-media')
+
+API Limitations
+---------------
+
+Some FortiOS features have REST API restrictions that prevent certain operations:
+
+**Wildcard FQDN (Custom & Group)**
+   - ❌ Create, Update, Delete - **Not supported** (raises ``NotImplementedError``)
+   - ✅ Get, Exists, Get By Name - **Fully supported**
+   - **Workaround**: Use CLI commands for write operations
+   - **Details**: See `.dev/API_LIMITATIONS.md` for complete documentation
+
+**SSH/SSL Proxy**
+   - Various restrictions on SSH host keys, local keys, and local CAs
+   - **Details**: See `docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md`
+
+**Reference Documentation**
+   - `.dev/API_LIMITATIONS.md` - Complete list of disabled functions
+   - Test coverage: 38 wildcard FQDN tests (12 passing read tests)
+
 Common Patterns
 ---------------
 

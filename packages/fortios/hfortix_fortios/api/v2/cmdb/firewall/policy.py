@@ -51,8 +51,8 @@ if TYPE_CHECKING:
 
     from hfortix_core.http.interface import IHTTPClient
 
-# Import from central API helpers
-from hfortix_fortios.api._helpers import build_cmdb_payload
+# Import from central helpers
+from hfortix_fortios._helpers import build_cmdb_payload
 
 
 class Policy:

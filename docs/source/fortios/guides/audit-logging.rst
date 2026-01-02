@@ -199,6 +199,12 @@ Sends audit logs to multiple handlers.
        handler3,
    ])
 
+.. note::
+   **✨ NEW in v0.4.1**: CompositeHandler now supports priority-based routing, conditional filtering,
+   error aggregation, and dynamic handler management.
+   
+   See :doc:`handler-protocol-system` for advanced CompositeHandler features and custom handler examples.
+
 **Features**:
 
 - Parallel logging
@@ -474,6 +480,8 @@ Run the included demo to see all features:
 See Also
 --------
 
+- :doc:`handler-protocol-system` - Custom audit handlers and plugin architecture *(New in v0.4.1)*
+- :doc:`observability` - Structured logging and distributed tracing
 - :doc:`/fortios/examples/basic-usage` - Basic FortiOS usage examples
 - :doc:`/fortios/guides/validation` - Input validation guide
 - :doc:`/fortios/guides/performance` - Performance optimization guide

@@ -7,9 +7,184 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-01-02
+
 ### Added
 
-- TBD
+- **Generic request() Method**:
+  - New `request()` method accepts JSON directly from FortiGate GUI API preview
+  - Supports all CRUD operations: GET, POST, PUT, DELETE
+  - Zero-translation workflow: copy JSON from GUI → paste to code
+  - Perfect for rapid API testing and prototyping
+  - Comprehensive validation: method, URL format, required fields
+  - Example usage:
+    ```python
+    config = {
+        "method": "POST",
+        "url": "/api/v2/cmdb/firewall/address",
+        "params": {"vdom": "test"},
+        "data": {"name": "host1", "subnet": "10.0.0.1/32"}
+    }
+    result = fgt.request(config)
+    ```
+  - See [REQUEST_METHOD_GUIDE.md](REQUEST_METHOD_GUIDE.md) for complete guide
+  - Test suite: `.dev/pytests/other/request-module.py` (14 tests passing)
+
+### Fixed
+
+- **PEP8 Compliance**: Fixed all line length violations (E501) in client.py
+- **Pytest Warnings**: Added filterwarnings configuration to suppress harmless PytestAssertRewriteWarning
+
+## [0.4.1] - 2026-01-02
+
+### Added
+
+- **Core HTTP Client Scope Parameter Support**:
+  - Added `scope` parameter to `post()`, `put()`, and `delete()` methods in `hfortix_core.http.client`
+  - Enables proper handling of FortiOS global scope objects via API
+  - Scope parameter automatically added to query string when provided
+  - Required for modifying objects in global scope (e.g., `scope='global'`)
+  - Supports both `'global'` and `'vdom'` scope values per FortiOS API specification
+
+- **Wildcard FQDN Test Suite** (2026-01-14):
+  - Comprehensive pytest test coverage for wildcard FQDN convenience wrappers
+  - Test file: `.dev/pytests/firewall/wildcard_fqdn.py`
+  - Read-only tests: 12 passing (get, exists, get_by_name operations)
+  - Write operation tests: 26 skipped (due to API limitations)
+  - Validation tests: 7 passing (parameter validation)
+  - Automatic API support detection with graceful fallback
+  - Full documentation of API limitations vs CLI support
+
+### Changed
+
+- **Wildcard FQDN Wrapper API Limitation Documentation** (2026-01-14):
+  - **BREAKING CHANGE**: Disabled `create()`, `update()`, and `delete()` methods in wildcard FQDN wrappers
+  - Methods now raise `NotImplementedError` with CLI workaround instructions
+  - Affected wrappers:
+    - `WildcardFqdnCustom.create/update/delete` - Custom wildcard FQDN addresses
+    - `WildcardFqdnGroup.create/update/delete` - Wildcard FQDN groups
+  - **Reason**: FortiOS REST API returns HTTP 500 error -3 "Entry not found" on POST/PUT/DELETE operations
+  - **Note**: Objects can still be created via CLI and read via API (get/exists operations work)
+  - **Workaround**: Use CLI commands for write operations:
+    ```
+    config firewall wildcard-fqdn custom
+      edit "name"
+        set wildcard-fqdn "*.example.com"
+      next
+    end
+    ```
+  - Read operations (`get()`, `exists()`, `get_by_name()`) continue to work normally via API
+  - Added comprehensive inline documentation explaining limitation and CLI alternatives
+
+- **Helper Module Reorganization** (2026-01-02):
+  - **BREAKING CHANGE**: Centralized all helper functions to `hfortix_fortios._helpers`
+  - **New Structure**: Organized helpers into logical modules
+    - `_helpers/builders.py` - Payload building functions
+    - `_helpers/normalizers.py` - List normalization utilities
+    - `_helpers/validators.py` - All validation functions (generic + domain-specific)
+    - `_helpers/converters.py` - Type conversion and data cleaning
+    - `_helpers/response.py` - Response parsing helpers
+  - **Migration Required**: Update imports from old locations
+    - OLD: `from hfortix_fortios.api._helpers import ...`
+    - OLD: `from hfortix_fortios.firewall._helpers import ...`
+    - NEW: `from hfortix_fortios._helpers import ...`
+  - **Benefits**:
+    - Single source of truth for all helpers
+    - Consistent imports across entire codebase
+    - Better organization and scalability
+    - Eliminates code duplication
+  - **Removed**: Deprecated `api._helpers/` and `firewall._helpers/` directories
+
+### Added
+
+- **SSH/SSL Proxy Convenience Wrappers** (2026-01-02):
+  - **SSH Proxy Wrappers**: Complete SSH inspection and proxy configuration
+    - `SSHHostKey` - Manage SSH host keys for traffic inspection (Read-only via API)
+    - `SSHLocalCA` - Configure SSH local certificate authorities (Create/Read only - cannot update/delete)
+    - `SSHLocalKey` - Manage SSH local keys for proxying (Read-only via API)
+    - `SSHSetting` - Global SSH proxy settings and configuration (Full CRUD support)
+  - **SSL Proxy Wrappers**: SSL/TLS traffic inspection configuration
+    - `SSLSetting` - SSL proxy settings and cipher configuration (Full CRUD support)
+  - **Benefits**:
+    - Pythonic interface with automatic input normalization
+    - Consistent methods across all wrappers (create, get, update, delete, etc.)
+    - Built-in validation using centralized validators
+    - Type hints for better IDE support
+    - Simplified error handling
+  - **Documentation**: New comprehensive guide at `docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md`
+    - Complete API limitation documentation
+    - Workarounds for FortiOS restrictions
+    - Real-world configuration examples
+  - **Test Coverage**:
+    - SSH Proxy: 39 tests (15 passed, 24 skipped for unsupported API operations)
+    - SSL Proxy: 28 tests (28 passed, 0 failed)
+    - Test files: `.dev/pytests/firewall/ssh_proxy.py`, `.dev/pytests/firewall/ssl_proxy.py`
+  - **Known API Limitations** (FortiOS security restrictions):
+    - SSH Host-Keys: Read-only (auto-discovered during inspection)
+    - SSH Local-Keys: Read-only (CLI-only creation)
+    - SSH Local-CAs: Cannot delete or update via API (requires CLI/GUI)
+    - SSL Settings: Some performance fields may not return in GET responses
+    - See `docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md` for details
+
+- **Handler Protocol System** (2026-01-02):
+  - **Comprehensive Documentation**: New `docs/fortios/HANDLER_PROTOCOL_SYSTEM.md` (800+ lines)
+    - Complete guide on writing custom audit handlers
+    - Protocol-based architecture (no inheritance required)
+    - 6 working examples with best practices
+    - Testing guidelines and troubleshooting
+    - Migration guide from fortiosapi
+  - **Custom Handler Capabilities**: Production-ready handler implementations
+    - `KafkaHandler` - Stream audit events to Kafka for distributed systems
+      - Asynchronous publishing with callbacks
+      - Partition key routing for ordered processing
+      - Compression support (gzip, snappy, lz4)
+      - Context manager support
+    - `DatabaseHandler` - Store audit logs in SQL databases
+      - Supports SQLite, PostgreSQL, MySQL
+      - Automatic table creation with indexes
+      - Flexible querying capabilities
+      - Long-term compliance retention
+    - `WebhookHandler` - Send notifications to webhooks
+      - Multiple formatters (Slack, Teams, Discord, generic)
+      - Automatic retry with backoff
+      - Pre-configured convenience classes (SlackNotifier, TeamsNotifier, DiscordNotifier)
+      - Rich message formatting with attachments
+  - **Enhanced CompositeHandler**: Advanced routing and error handling
+    - **Priority-Based Ordering**: Execute handlers by priority (highest first)
+      - Syntax: `(handler, priority)` or `(handler, priority, filter_fn)`
+      - Ensures critical audit trails are written first
+    - **Conditional Routing**: Filter functions control which operations go to which handlers
+      - Filter by action, object type, success status, or custom criteria
+      - Example: Route only failures to alert handler
+    - **Error Aggregation**: Track handler failures over time
+      - `error_summary` property for reliability monitoring
+      - Sample error storage for debugging
+      - `reset_errors()` method to clear tracking
+    - **Dynamic Management**: Add/remove handlers at runtime
+      - `add_handler(handler, priority, filter_fn)` - Add handlers dynamically
+      - `remove_handler(handler)` - Remove specific handler
+      - `get_handlers()` - Query current configuration
+    - **Backward Compatible**: Simple list syntax still works
+  - **Request Hook Infrastructure**: Foundation for intercepting requests/responses
+    - `BeforeRequestHook` protocol - Validate/transform before sending
+    - `AfterRequestHook` protocol - Process responses after receiving
+    - `RequestContext` TypedDict - Type-safe request context
+    - Location: `packages/core/hfortix_core/hooks/__init__.py`
+
+
+### Changed
+
+- **CompositeHandler Enhancement**: Maintains backward compatibility while adding advanced features
+  - Old syntax `CompositeHandler([handler1, handler2])` still works
+  - New syntax `CompositeHandler([(handler1, priority1, filter1), ...])` for advanced features
+  - Internal structure changed from `self.handlers` list to `self._handlers` tuple list
+
+### Documentation
+
+- Added `docs/fortios/HANDLER_PROTOCOL_SYSTEM.md` - Comprehensive plugin system guide
+- Added `.dev/PLUGIN_SYSTEM_PROGRESS.md` - Implementation progress and roadmap
+- Created example handler implementations in `examples/custom_handlers/`
+- Added CompositeHandler demo in `examples/composite_handler_demo.py`
 
 ## [0.4.1] - 2026-01-02
 
@@ -430,7 +605,7 @@ pip install hfortix[fortios]  # Core + FortiOS
     - `get_by_name(name, vdom=None)`: Returns schedule data directly (not full API response)
     - `rename(name, new_name, vdom=None)`: Rename a schedule in one call
     - `clone(name, new_name, **overrides, vdom=None)`: Clone schedule with optional modifications
-  - **Response Helpers** (added to `hfortix.FortiOS.api._helpers`):
+  - **Response Helpers** (available from `hfortix_fortios._helpers`):
     - `get_mkey(response)`: Extract created object's name from response
     - `is_success(response)`: Check if operation succeeded
     - `get_results(response)`: Extract results from response

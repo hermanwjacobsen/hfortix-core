@@ -10,7 +10,14 @@ from .serviceCategory import ServiceCategory
 from .serviceCustom import ServiceCustom
 from .serviceGroup import ServiceGroup
 from .shaperPerIp import ShaperPerIp
+from .sshHostKey import SSHHostKey
+from .sshLocalCa import SSHLocalCA
+from .sshLocalKey import SSHLocalKey
+from .sshSetting import SSHSetting
+from .sslSetting import SSLSetting
 from .trafficShaper import TrafficShaper
+from .wildcardFqdnCustom import WildcardFqdnCustom
+from .wildcardFqdnGroup import WildcardFqdnGroup
 
 __all__ = [
     "FirewallPolicy",
@@ -23,5 +30,12 @@ __all__ = [
     "ServiceCustom",
     "ServiceGroup",
     "ShaperPerIp",
+    "SSHHostKey",
+    "SSHLocalCA",
+    "SSHLocalKey",
+    "SSHSetting",
+    "SSLSetting",
     "TrafficShaper",
+    "WildcardFqdnCustom",
+    "WildcardFqdnGroup",
 ]

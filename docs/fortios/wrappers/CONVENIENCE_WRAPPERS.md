@@ -35,18 +35,25 @@ Convenience wrappers provide a clean, Pythonic interface to FortiOS features, el
 
 All accessible via `fgt.firewall.*`:
 
-| Wrapper | Access Path | Description | Version |
-|---------|-------------|-------------|---------|
-| **Policy** | `fgt.firewall.policy` | Firewall policies with 150+ parameters | v0.3.17+ |
-| **Address** | `fgt.firewall.address` | Address objects and groups | v0.3.34+ |
-| **Service** | `fgt.firewall.service_custom` | Custom services | v0.3.37+ |
-| **Service Category** | `fgt.firewall.service_category` | Service categories | v0.3.37+ |
-| **Service Group** | `fgt.firewall.service_group` | Service groups | v0.3.37+ |
-| **Traffic Shaper** | `fgt.firewall.traffic_shaper` | Shared traffic shapers | v0.3.38+ |
-| **Per-IP Shaper** | `fgt.firewall.shaper_per_ip` | Per-IP bandwidth limits | v0.3.38+ |
-| **Schedule Onetime** | `fgt.firewall.schedule_onetime` | One-time schedules | v0.3.34+ |
-| **Schedule Recurring** | `fgt.firewall.schedule_recurring` | Recurring schedules | v0.3.34+ |
-| **Schedule Group** | `fgt.firewall.schedule_group` | Schedule groups | v0.3.34+ |
+| Wrapper | Access Path | Description | Version | API Support |
+|---------|-------------|-------------|---------|-------------|
+| **Policy** | `fgt.firewall.policy` | Firewall policies with 150+ parameters | v0.3.17+ | ✅ Full |
+| **Address** | `fgt.firewall.address` | Address objects and groups | v0.3.34+ | ✅ Full |
+| **Service** | `fgt.firewall.service_custom` | Custom services | v0.3.37+ | ✅ Full |
+| **Service Category** | `fgt.firewall.service_category` | Service categories | v0.3.37+ | ✅ Full |
+| **Service Group** | `fgt.firewall.service_group` | Service groups | v0.3.37+ | ✅ Full |
+| **Traffic Shaper** | `fgt.firewall.traffic_shaper` | Shared traffic shapers | v0.3.38+ | ✅ Full |
+| **Per-IP Shaper** | `fgt.firewall.shaper_per_ip` | Per-IP bandwidth limits | v0.3.38+ | ✅ Full |
+| **Schedule Onetime** | `fgt.firewall.schedule_onetime` | One-time schedules | v0.3.34+ | ✅ Full |
+| **Schedule Recurring** | `fgt.firewall.schedule_recurring` | Recurring schedules | v0.3.34+ | ✅ Full |
+| **Schedule Group** | `fgt.firewall.schedule_group` | Schedule groups | v0.3.34+ | ✅ Full |
+| **SSH Host Key** | `fgt.firewall.ssh_host_key` | SSH host keys (auto-discovered) | v0.4.2+ | ⚠️ Read-only |
+| **SSH Local CA** | `fgt.firewall.ssh_local_ca` | SSH certificate authorities | v0.4.2+ | ⚠️ Create/Read only |
+| **SSH Local Key** | `fgt.firewall.ssh_local_key` | SSH local keys | v0.4.2+ | ⚠️ Read-only |
+| **SSH Settings** | `fgt.firewall.ssh_setting` | Global SSH proxy settings | v0.4.2+ | ✅ Full |
+| **SSL Settings** | `fgt.firewall.ssl_setting` | Global SSL/TLS proxy settings | v0.4.2+ | ✅ Full |
+
+**Note:** ⚠️ indicates FortiOS API limitations. See [SSH/SSL Proxy Wrappers Guide](SSH_SSL_PROXY_WRAPPERS.md) for details.
 
 ---
 
@@ -674,3 +681,64 @@ fgt.firewall.policy.create(
 ```
 
 **Result:** Clean, readable, maintainable code with full validation and error handling! 🎉
+
+---
+
+## FortiOS API Limitations
+
+### Overview
+
+While most convenience wrappers provide full CRUD (Create, Read, Update, Delete) support, some FortiOS API endpoints have limitations due to security restrictions or operational constraints.
+
+### SSH/SSL Proxy Limitations
+
+**SSH Proxy Wrappers** have specific API restrictions:
+
+| Component | Create | Read | Update | Delete | Reason |
+|-----------|--------|------|--------|--------|--------|
+| SSH Host Key | ❌ | ✅ | ❌ | ❌ | Auto-discovered only |
+| SSH Local CA | ✅ | ✅ | ❌ | ❌ | FortiOS security restriction |
+| SSH Local Key | ❌ | ✅ | ❌ | ❌ | CLI/built-in only |
+| SSH Settings | N/A | ✅ | ✅ | N/A | Full support |
+| SSL Settings | N/A | ✅ | ✅ | N/A | Full support |
+
+**Key Points:**
+
+1. **SSH Host Keys** are automatically discovered during SSH traffic inspection and cannot be manually created via API.
+
+2. **SSH Local CAs** can be created but **cannot be deleted or updated via API**, even with super_admin privileges. This is a FortiOS security restriction to prevent accidental deletion of CAs that could impact:
+   - Active SSH proxy policies
+   - Certificate-based SSH authentication
+   - Production SSH inspection
+
+   **Workaround:** Use FortiGate CLI or Web GUI to delete CAs:
+   ```bash
+   # CLI method
+   config firewall ssh local-ca
+       delete ca-name
+   end
+   ```
+
+3. **SSH Local Keys** require specific cryptographic formats and are typically pre-configured or generated via CLI.
+
+4. **SSL Settings** are fully supported, though some performance tuning fields (`ssl-queue-threshold`, `kxp-queue-threshold`) may not appear in GET responses on all FortiOS versions.
+
+**Documentation:** See [SSH/SSL Proxy Wrappers Guide](SSH_SSL_PROXY_WRAPPERS.md) for:
+- Detailed API limitation explanations
+- Workarounds and best practices
+- Complete usage examples
+- Test coverage information
+
+### Testing Implications
+
+When working with limited API support:
+- Test suites skip unsupported operations
+- Focus on supported read/update operations
+- Document orphaned test data (e.g., SSH CAs that cannot be deleted)
+- Plan for manual cleanup when needed
+
+**Test Results:**
+- SSH Proxy: 15 passed, 24 skipped (API limitations)
+- SSL Proxy: 28 passed, 0 failed (full support)
+
+---

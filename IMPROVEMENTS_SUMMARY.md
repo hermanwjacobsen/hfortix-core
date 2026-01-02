@@ -2,9 +2,182 @@
 
 ## Overview
 
-Comprehensive enhancement of HFortix SDK's debugging, observability, and developer experience capabilities.
+Comprehensive enhancement of HFortix SDK's debugging, observability, developer experience, code organization, and API usability.
 
 ## Completed Improvements
+
+### 0. ✅ Generic request() Method (API Usability)
+
+**Problem:** Testing FortiGate API calls required manual construction of requests
+
+**Solution:**
+- New `fgt.request(config)` method accepts exact JSON from FortiGate GUI API preview
+- Zero-translation workflow: copy JSON from GUI → paste to code → execute
+- Supports all CRUD operations: GET, POST, PUT, DELETE
+- Perfect for rapid prototyping and testing API calls
+
+**Implementation:**
+- Added `request()` method to `FortiOS` client class
+- Comprehensive validation: method, URL format, required fields
+- Parses FortiGate API URL format: `/api/v2/{api_type}/{path}`
+- Routes to appropriate underlying HTTP methods (get, post, put, delete)
+- Extracts vdom from params and passes to HTTP client
+
+**Files Modified:**
+- `packages/fortios/hfortix_fortios/client.py` - Added request() method
+
+**Documentation Created:**
+- `REQUEST_METHOD_GUIDE.md` - Complete usage guide with examples
+- Updated `CHANGELOG.md` - Added feature announcement
+- Updated `README.md` - Listed in latest features
+- Updated `QUICKSTART.md` - Added quick start example
+- Updated `docs/fortios/README.md` - Added to Getting Started section
+
+**Test Coverage:**
+- `.dev/pytests/other/request-module.py` - 14 comprehensive pytest tests
+- Tests cover: CREATE, READ, UPDATE, DELETE operations
+- Edge cases: subnet addresses, raw_json parameter
+- Validation: missing fields, invalid methods, invalid URL formats
+- Complete CRUD workflow test
+
+**Usage Example:**
+```python
+# Copy JSON directly from FortiGate GUI API preview
+config = {
+    "method": "POST",
+    "url": "/api/v2/cmdb/firewall/address",
+    "params": {"vdom": "root"},
+    "data": {
+        "name": "web-server",
+        "subnet": "10.0.1.100/32",
+        "comment": "Production web server"
+    }
+}
+result = fgt.request(config)
+```
+
+**Benefits:**
+- **Faster development** - No manual request construction
+- **Lower learning curve** - Use GUI to explore API
+- **Quick testing** - Test in GUI, paste to code
+- **Fewer errors** - Copy exact JSON, no translation mistakes
+
+---
+
+### 1. ✅ Helper Module Centralization (Code Organization)
+
+**Problem:** Helpers scattered across `api._helpers/` and `firewall._helpers/` with duplication
+
+**Solution:**
+- Created centralized `hfortix_fortios._helpers/` package
+- Organized helpers into logical modules:
+  - `builders.py` - Payload building functions
+  - `normalizers.py` - List normalization utilities
+  - `validators.py` - All validation functions (generic + domain-specific)
+  - `converters.py` - Type conversion and data cleaning
+  - `response.py` - Response parsing helpers
+- Updated ALL imports across codebase to use central location
+- Removed deprecated `api._helpers/` and `firewall._helpers/` directories
+
+**Files Modified:**
+- Created: `packages/fortios/hfortix_fortios/_helpers/` (6 files)
+- Updated: 20+ files across firewall wrappers and API endpoints
+- Removed: `api/_helpers/helpers.py`, `firewall/_helpers.py`
+
+**Benefits:**
+- Single source of truth for all helpers
+- Consistent imports: `from hfortix_fortios._helpers import ...`
+- Better organization and maintainability
+- Zero code duplication
+- Scalable for future modules (system, user, router, etc.)
+
+**Migration:**
+```python
+# OLD (no longer works):
+from hfortix_fortios.api._helpers import validate_color
+from hfortix_fortios.firewall._helpers import validate_policy_id
+
+# NEW (centralized):
+from hfortix_fortios._helpers import validate_color, validate_policy_id
+```
+
+---
+
+### 0.5. ✅ Firewall Convenience Wrappers Expansion
+
+**Enhancement:** Added comprehensive convenience wrappers for advanced firewall features
+
+**New Wrappers:**
+- **SSH Proxy Wrappers** (4 classes):
+  - `SSHHostKey` - SSH host key management for traffic inspection
+  - `SSHLocalCA` - SSH certificate authority configuration
+  - `SSHLocalKey` - SSH local key management
+  - `SSHSetting` - Global SSH proxy settings
+- **SSL Proxy Wrappers** (1 class):
+  - `SSLSetting` - SSL/TLS proxy configuration and cipher settings
+- **Traffic Shaping Wrappers** (2 classes):
+  - `TrafficShaper` - Traffic shaping policy management
+  - `ShaperPerIp` - Per-IP traffic shaping rules
+- **Service Wrappers** (3 classes):
+  - `ServiceCustom` - Custom service definitions (ports/protocols)
+  - `ServiceGroup` - Service group management
+  - `ServiceCategory` - Service category configuration
+- **IP/MAC Binding Wrappers** (2 classes):
+  - `IPMACBindingTable` - IP/MAC binding entries
+  - `IPMACBindingSetting` - Global IP/MAC binding settings
+
+**Files Created:**
+- `packages/fortios/hfortix_fortios/firewall/sshHostKey.py`
+- `packages/fortios/hfortix_fortios/firewall/sshLocalCa.py`
+- `packages/fortios/hfortix_fortios/firewall/sshLocalKey.py`
+- `packages/fortios/hfortix_fortios/firewall/sshSetting.py`
+- `packages/fortios/hfortix_fortios/firewall/sslSetting.py`
+- `packages/fortios/hfortix_fortios/firewall/trafficShaper.py`
+- `packages/fortios/hfortix_fortios/firewall/shaperPerIp.py`
+- `packages/fortios/hfortix_fortios/firewall/serviceCustom.py`
+- `packages/fortios/hfortix_fortios/firewall/serviceGroup.py`
+- `packages/fortios/hfortix_fortios/firewall/serviceCategory.py`
+- `packages/fortios/hfortix_fortios/firewall/ipmacBindingTable.py`
+- `packages/fortios/hfortix_fortios/firewall/ipmacBindingSetting.py`
+
+**Features:**
+- Consistent API across all wrappers (create, get, update, delete, exists, etc.)
+- Automatic input normalization (strings → lists where needed)
+- Built-in validation using centralized validators
+- Type hints for better IDE support
+- Pythonic interface - more intuitive than raw API calls
+
+**Usage Example:**
+```python
+from hfortix_fortios import FortiOS
+
+fgt = FortiOS(host='192.168.1.1', token='your-token')
+
+# SSH Host Key Management
+fgt.firewall.ssh_host_key.create(
+    name='server1-key',
+    type='RSA',
+    ip='10.0.0.100',
+    port=22,
+    status='trusted'
+)
+
+# Traffic Shaping
+fgt.firewall.traffic_shaper.create(
+    name='limit-100mbps',
+    maximum_bandwidth=100000,  # kbps
+    guaranteed_bandwidth=50000
+)
+
+# Service Management
+fgt.firewall.service_custom.create(
+    name='custom-app',
+    tcp_portrange='8080-8090',
+    protocol='TCP/UDP/SCTP'
+)
+```
+
+---
 
 ### 1. ✅ Connection Pool Monitoring (Bug Fix + Enhancement)
 
@@ -355,40 +528,53 @@ from hfortix_fortios import (
 
 ## Summary Statistics
 
-### Files Created: 17
+### Files Created: 36
+- 6 centralized helper modules (\_helpers/\*.py)
+- 12 convenience wrapper files (firewall/\*.py)
 - 3 debug package files (base.py, formatters.py, handlers.py)
 - 3 logging package files (base.py, formatters.py, handlers.py)
 - 3 type stub files (.pyi)
 - 1 types module (types.py)
-- 2 documentation files (DEBUGGING.md, RATE_LIMITING.md)
+- 3 documentation files (DEBUGGING.md, RATE_LIMITING.md, HELPER_MIGRATION_GUIDE.md)
 - 2 RST wrapper files (debugging.rst, rate-limiting.rst)
-- 3 package **init**.py files
+- 3 package \_\_init\_\_.py files
 
-### Files Modified: 10
+### Files Modified: 35+
+- 6 helper reorganization (\_helpers/ created, old locations updated)
+- 20+ firewall wrapper imports updated
 - 2 HTTP clients (sync and async)
 - 1 FortiOS client
-- 2 package **init**.py files
+- 3 package \_\_init\_\_.py files
 - 1 logging configuration
-- 4 documentation files (CHANGELOG.md, README.md, etc.)
+- 5 documentation files (CHANGELOG.md, README.md, QUICKSTART.md, SCHEDULE_WRAPPERS.md, IMPROVEMENTS_SUMMARY.md)
 
-### Lines of Code Added: ~3,500
+### Files Removed: 3
+- `api/_helpers/helpers.py` (replaced by centralized _helpers/)
+- `firewall/_helpers.py` (replaced by centralized _helpers/)
+- Entire `api/_helpers/` directory (deprecated)
+
+### Lines of Code Added: ~6,500+
+- Convenience wrappers: ~2,500 lines (12 new wrappers)
+- Centralized helpers: ~600 lines (organized into 5 modules)
 - Debug utilities: ~600 lines
 - Logging utilities: ~400 lines
 - Type definitions: ~300 lines
 - Type stubs: ~400 lines
-- Documentation: ~1,050 lines
-- Updates to existing files: ~750 lines
+- Documentation: ~1,700 lines
+- Updates to existing files: ~1,000 lines
 
 ### Key Improvements
-1. ✅ Fixed connection pool monitoring bug
-2. ✅ Added request inspection API
-3. ✅ Enhanced debug mode with boolean support
-4. ✅ Created comprehensive debug utilities
-5. ✅ Improved structured logging
-6. ✅ Added type definitions and stubs
-7. ✅ Enhanced package exports
-8. ✅ Created extensive documentation
-9. ✅ Organized code into consistent patterns
+0. ✅ Centralized all helpers to single source of truth
+1. ✅ Added 12 new firewall convenience wrappers
+2. ✅ Fixed connection pool monitoring bug
+3. ✅ Added request inspection API
+4. ✅ Enhanced debug mode with boolean support
+5. ✅ Created comprehensive debug utilities
+6. ✅ Improved structured logging
+7. ✅ Added type definitions and stubs
+8. ✅ Enhanced package exports
+9. ✅ Created extensive documentation
+10. ✅ Organized code into consistent patterns
 
 ---
 
@@ -405,10 +591,12 @@ from hfortix_fortios import (
 
 These improvements significantly enhance the developer experience and production-readiness of the HFortix SDK:
 
+- **Better Code Organization**: Centralized helpers eliminate duplication and improve maintainability
+- **Better Developer Experience**: 12 new convenience wrappers for advanced firewall features
 - **Better Debugging**: Comprehensive tools for identifying and fixing issues
 - **Better Observability**: Full visibility into SDK behavior
 - **Better Type Safety**: Enhanced IDE support and type checking
-- **Better Documentation**: Complete guides for all features
-- **Better Organization**: Consistent, maintainable code structure
+- **Better Documentation**: Complete guides including migration path for helpers
+- **Better Architecture**: Consistent, scalable structure ready for future expansion
 
-All changes are backward-compatible and follow established patterns in the codebase.
+All changes maintain backward compatibility where possible, with clear migration paths documented for breaking changes.

@@ -2,12 +2,12 @@
 
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
-from hfortix_fortios.api._helpers import (
+from hfortix_fortios._helpers import (
     validate_ip_address,
     validate_mac_address,
+    validate_seq_num,
     validate_status,
 )
-from hfortix_fortios.firewall._helpers import validate_seq_num
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine

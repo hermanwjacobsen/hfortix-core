@@ -9,10 +9,10 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.4.1**
+> **⚠️ BETA STATUS - Version 0.4.2**
 >
-> - **Current Version**: 0.4.1 (Published to PyPI - January 2, 2026)
-> - **Major Release**: Modular package architecture with enhanced debugging and observability
+> - **Current Version**: 0.4.2 (Published to PyPI - January 2, 2026)
+> - **Major Release**: Generic request() method for rapid API testing
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
 > All implementations are functional but in **BETA**. APIs work correctly but may have incomplete
@@ -44,6 +44,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - ⚡ **Dual-Pattern Interface**: Flexible syntax supporting both dictionary and keyword arguments
 - 🏗️ **Repository Organization**: Clean structure with all dev tools
 - ⚡ **Unified Module Generator**: Single tool handles all edge cases (digit-prefixed names, certificates, nested resources)
+- ✨ **Handler Protocol System** (v0.4.1): Extensible plugin architecture for custom audit handlers - See [HANDLER_PROTOCOL_SYSTEM.md](docs/fortios/HANDLER_PROTOCOL_SYSTEM.md)
 - ✨ **Monitor API** (v0.3.11): 6 categories with 50+ monitoring endpoints (firewall stats, sessions, EMS, etc.)
 - ✨ **Log Configuration** (v0.3.11): 56 endpoints for comprehensive logging setup
 - ✨ **Firewall Expansion** (v0.3.11): FTP proxy, ICAP, IPS, DoS policies, access-proxy (WAF)
@@ -53,13 +54,32 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Quick Start Guide**: [QUICKSTART.md](https://github.com/hermanwjacobsen/hfortix/blob/main/QUICKSTART.md) - Getting started guide
 - **Full Changelog**: [CHANGELOG.md](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) - Complete version history
 
-**Latest Features (v0.4.1 - January 2, 2026):**
+**Latest Features (v0.4.2 - January 2, 2026):**
 
 > **✅ PUBLISHED TO PYPI - January 2, 2026**
 >
-> Version 0.4.1 includes enhanced debugging, observability improvements, and better IDE support.
+> Version 0.4.2 introduces the generic request() method for rapid API testing and prototyping.
 >
 > **All packages remain in BETA** until v1.0 with comprehensive unit test coverage.
+
+- 🎯 **Generic request() Method** (v0.4.2):
+  - **Zero-Translation API Workflow**: Copy JSON directly from FortiGate GUI API preview
+  - Accepts exact JSON format shown in FortiGate GUI when viewing/editing objects
+  - Supports all CRUD operations: GET, POST, PUT, DELETE
+  - Perfect for rapid API testing and prototyping
+  - Example:
+    ```python
+    # Copy this directly from FortiGate GUI API preview
+    config = {
+        "method": "POST",
+        "url": "/api/v2/cmdb/firewall/address",
+        "params": {"vdom": "test"},
+        "data": {"name": "host1", "subnet": "10.0.0.1/32"}
+    }
+    result = fgt.request(config)
+    ```
+  - See [REQUEST_METHOD_GUIDE.md](REQUEST_METHOD_GUIDE.md) for complete guide
+  - Test suite: 14 comprehensive pytest tests validating all functionality
 
 - 📦 **Modular Package Structure**: Major architectural improvement with split packages (v0.4.0)
   - **hfortix-core**: Core exceptions and HTTP client framework (sync/async)
@@ -347,6 +367,12 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Modular Architecture**: Each product module can be used independently
 - **PyPI Installation**: `pip install hfortix` - simple and straightforward
 - **Comprehensive Exception Handling**: 387+ FortiOS error codes with detailed descriptions
+- **Convenience Wrappers**: High-level wrappers for common operations (policies, schedules, services, shapers, SSH/SSL proxy, wildcard FQDN)
+  - ⚠️ **Note**: Some FortiOS API endpoints have limitations:
+    - **SSH/SSL Proxy**: See [SSH/SSL Proxy Limitations](docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md#fortios-api-limitations)
+    - **Wildcard FQDN**: Create/Update/Delete operations not supported via API (use CLI). Read operations work normally.
+  - SSH/SSL proxy wrappers document all known API restrictions
+  - Test coverage: 67 comprehensive tests across SSH/SSL proxy features + 38 tests for wildcard FQDN (12 passing read tests)
 - **Automatic Retry Logic**: Built-in retry mechanism with exponential backoff for transient failures
 - **HTTP/2 Support**: Modern HTTP client with connection multiplexing for improved performance
 - **Circuit Breaker**: Prevents cascade failures with automatic recovery
@@ -391,10 +417,11 @@ hfortix/
 ### Feature Guides
 
 #### Convenience Wrappers (Start Here!)
-- **[docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md](docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md)** - **Overview of all convenience wrappers** (policies, shapers, schedules, services) with common patterns and examples
+- **[docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md](docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md)** - **Overview of all convenience wrappers** (policies, shapers, schedules, services, SSH/SSL proxy) with common patterns and examples
 - **[docs/fortios/wrappers/FIREWALL_POLICY_WRAPPER.md](docs/fortios/wrappers/FIREWALL_POLICY_WRAPPER.md)** - Detailed firewall policy API reference (150+ parameters)
 - **[docs/fortios/wrappers/SHAPER_WRAPPERS.md](docs/fortios/wrappers/SHAPER_WRAPPERS.md)** - Detailed traffic shaper API reference (per-IP and traffic shapers)
 - **[docs/fortios/wrappers/SCHEDULE_WRAPPERS.md](docs/fortios/wrappers/SCHEDULE_WRAPPERS.md)** - Schedule management reference (onetime, recurring, groups)
+- **[docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md](docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md)** - SSH/SSL proxy configuration with **FortiOS API limitations** documented
 - **[docs/fortios/ERROR_HANDLING_CONFIG.md](docs/fortios/ERROR_HANDLING_CONFIG.md)** - Configurable error handling for wrappers
 
 #### Framework & Advanced Features
@@ -749,6 +776,7 @@ fgt.api.cmdb.firewall.policy.create(
 **Documentation:**
 
 - **Full Guide**: [docs/fortios/AUDIT_LOGGING.md](docs/fortios/AUDIT_LOGGING.md)
+- **Handler Protocol System**: [docs/fortios/HANDLER_PROTOCOL_SYSTEM.md](docs/fortios/HANDLER_PROTOCOL_SYSTEM.md)
 - **Observability**: [docs/fortios/OBSERVABILITY.md](docs/fortios/OBSERVABILITY.md)
 - **Examples**: `examples/audit_logging_demo.py`, `examples/observability_demo.py`
 
@@ -762,6 +790,142 @@ fgt.api.cmdb.firewall.policy.create(
 - ✅ **Observability**: Integration with ELK, Splunk, CloudWatch, Datadog
 
 **Unique to hfortix**: No other Python FortiGate library has built-in enterprise audit logging and observability!
+
+### Handler Protocol System (Plugin Architecture) ✨ NEW in v0.4.1
+
+**Extensible audit logging without modifying HFortix code**. Write custom handlers to integrate with any system.
+
+#### Protocol-Based Architecture
+
+Any class implementing `log_operation(operation: dict)` can be used as an audit handler:
+
+```python
+from typing import Any
+from hfortix import FortiOS
+
+class SlackNotifier:
+    """Send notifications to Slack when firewall rules change"""
+
+    def __init__(self, webhook_url: str):
+        self.webhook_url = webhook_url
+
+    def log_operation(self, operation: dict[str, Any]) -> None:
+        """Called after every API operation"""
+        if 'firewall.policy' in operation.get('object_type', ''):
+            action = operation['action']
+            user = operation.get('user_context', {}).get('username', 'Unknown')
+            object_name = operation.get('object_name', 'N/A')
+
+            message = f"🔥 Firewall changed by {user}: {action} {object_name}"
+            self._send_to_slack(message)
+
+    def _send_to_slack(self, message: str):
+        import requests
+        requests.post(self.webhook_url, json={"text": message})
+
+# Use it
+handler = SlackNotifier("https://hooks.slack.com/services/YOUR/WEBHOOK")
+fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
+
+# Now all firewall policy changes trigger Slack notifications
+fgt.api.cmdb.firewall.policy.create(name="Block-Malware", ...)
+# → Slack: "🔥 Firewall changed by admin: create Block-Malware"
+```
+
+#### Enhanced CompositeHandler
+
+Route operations to different handlers based on priority and filters:
+
+```python
+from hfortix_core.audit import CompositeHandler, FileHandler, SyslogHandler
+
+# Define filters
+def is_critical(op):
+    return op['action'] == 'delete' or not op['success']
+
+def is_policy_change(op):
+    return 'policy' in op.get('object_type', '')
+
+# Priority-based routing with filters
+handler = CompositeHandler([
+    # Critical operations to dedicated file (highest priority)
+    (FileHandler('/var/log/critical.jsonl'), 100, is_critical),
+
+    # Policy changes to SIEM (medium priority)
+    (SyslogHandler('siem.company.com:514'), 50, is_policy_change),
+
+    # Everything to general log (lowest priority)
+    (FileHandler('/var/log/all.jsonl'), 1, None),
+])
+
+fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
+
+# Error tracking
+summary = handler.error_summary
+print(f"Total handler errors: {summary['total_errors']}")
+```
+
+#### Built-in Custom Handler Examples
+
+**Kafka Handler** - Stream events to Kafka for distributed systems:
+```python
+from examples.custom_handlers.kafka_handler import KafkaHandler
+
+handler = KafkaHandler(
+    bootstrap_servers=["kafka1:9092", "kafka2:9092"],
+    topic="fortinet-audit"
+)
+fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
+```
+
+**Database Handler** - Store audit logs in SQL databases:
+```python
+from examples.custom_handlers.database_handler import DatabaseHandler
+
+# SQLite for development
+handler = DatabaseHandler("sqlite:///audit.db")
+
+# PostgreSQL for production
+handler = DatabaseHandler("postgresql://user:pass@localhost/audit_db")
+
+fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
+```
+
+**Webhook Handler** - Send notifications to Slack, Teams, Discord:
+```python
+from examples.custom_handlers.webhook_handler import SlackNotifier, TeamsNotifier
+
+# Slack notifications (only for policy changes)
+slack = SlackNotifier(
+    "https://hooks.slack.com/services/YOUR/WEBHOOK",
+    filter_fn=lambda op: 'policy' in op.get('object_type', '')
+)
+
+# Teams alerts (only for failures)
+teams = TeamsNotifier(
+    "https://outlook.office.com/webhook/...",
+    filter_fn=lambda op: not op['success']
+)
+
+# Use both
+handler = CompositeHandler([slack, teams])
+fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
+```
+
+**Features:**
+
+- ✅ **No Inheritance Required**: Protocol-based (duck typing)
+- ✅ **Priority Ordering**: Execute handlers in priority order
+- ✅ **Conditional Routing**: Filter which operations go where
+- ✅ **Error Aggregation**: Track handler reliability
+- ✅ **Dynamic Management**: Add/remove handlers at runtime
+- ✅ **Production Ready**: Kafka, Database, Webhook examples included
+
+**Documentation:**
+
+- **Complete Guide**: [docs/fortios/HANDLER_PROTOCOL_SYSTEM.md](docs/fortios/HANDLER_PROTOCOL_SYSTEM.md) (800+ lines)
+- **Examples**: `examples/custom_handlers/` (Kafka, Database, Webhook handlers)
+- **Demo**: `examples/composite_handler_demo.py`
 
 ### Read-Only Mode & Operation Tracking ✨ NEW in v0.3.17
 

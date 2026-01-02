@@ -11,6 +11,7 @@ Advanced topics, patterns, and techniques for working with HFortix.
    :maxdepth: 1
 
    audit-logging
+   handler-protocol-system
    observability
    debugging
    rate-limiting
@@ -30,6 +31,13 @@ Advanced Topics
    Enterprise audit logging with SIEM integration for compliance (SOC 2, HIPAA, PCI-DSS).
    Built-in handlers for syslog, files, and streams. Automatic data sanitization and
    user context tracking.
+
+**Handler Protocol System** *(New in v0.4.1)*
+   Extensible plugin architecture for custom audit handlers. Write handlers that integrate
+   with Kafka, databases, webhooks, or any external system without modifying HFortix code.
+   Protocol-based design with priority routing, conditional filtering, error aggregation,
+   and dynamic management. Includes production-ready examples for Kafka, PostgreSQL/MySQL,
+   and Slack/Teams/Discord notifications.
 
 **Observability**
    Structured logging and distributed tracing for production systems. Includes

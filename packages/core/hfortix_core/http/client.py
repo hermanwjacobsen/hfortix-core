@@ -1434,9 +1434,22 @@ class HTTPClient(BaseHTTPClient):
         data: dict[str, Any],
         params: Optional[dict[str, Any]] = None,
         vdom: Optional[Union[str, bool]] = None,
+        scope: Optional[str] = None,
         raw_json: bool = False,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """POST request - Create new object"""
+        """POST request - Create new object
+
+        Args:
+            scope: Optional scope parameter for global objects
+                   ('global' or 'vdom'). Required when creating
+                   objects in global scope.
+        """
+        # Add scope to params if provided
+        if scope:
+            if params is None:
+                params = {}
+            params["scope"] = scope
+
         return self.request(
             "POST",
             api_type,
@@ -1454,9 +1467,22 @@ class HTTPClient(BaseHTTPClient):
         data: dict[str, Any],
         params: Optional[dict[str, Any]] = None,
         vdom: Optional[Union[str, bool]] = None,
+        scope: Optional[str] = None,
         raw_json: bool = False,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """PUT request - Update existing object"""
+        """PUT request - Update existing object
+
+        Args:
+            scope: Optional scope parameter for global objects
+                   ('global' or 'vdom'). Required when updating
+                   objects in global scope.
+        """
+        # Add scope to params if provided
+        if scope:
+            if params is None:
+                params = {}
+            params["scope"] = scope
+
         return self.request(
             "PUT",
             api_type,
@@ -1473,9 +1499,22 @@ class HTTPClient(BaseHTTPClient):
         path: str,
         params: Optional[dict[str, Any]] = None,
         vdom: Optional[Union[str, bool]] = None,
+        scope: Optional[str] = None,
         raw_json: bool = False,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """DELETE request - Delete object"""
+        """DELETE request - Delete object
+
+        Args:
+            scope: Optional scope parameter for global objects
+                   ('global' or 'vdom'). Required when deleting
+                   objects in global scope.
+        """
+        # Add scope to params if provided
+        if scope:
+            if params is None:
+                params = {}
+            params["scope"] = scope
+
         return self.request(
             "DELETE",
             api_type,

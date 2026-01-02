@@ -20,7 +20,7 @@ from typing import (
     Union,
 )
 
-from hfortix_fortios.api._helpers import (
+from hfortix_fortios._helpers import (
     build_cmdb_payload_normalized,
     validate_color,
 )

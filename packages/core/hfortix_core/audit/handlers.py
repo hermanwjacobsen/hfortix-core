@@ -342,12 +342,16 @@ class StreamHandler:
 
 class CompositeHandler:
     """
-    Send audit logs to multiple handlers
+    Send audit logs to multiple handlers with advanced routing
 
-    Allows sending the same audit log to multiple destinations simultaneously.
-    Useful for compliance (send to SIEM) + debugging (send to file) scenarios.
+    Features:
+    - Multiple destination routing
+    - Priority-based ordering
+    - Conditional routing with filters
+    - Error aggregation and reporting
+    - Individual handler enable/disable
 
-    Example:
+    Example (Basic):
         >>> from hfortix_core.audit import CompositeHandler, SyslogHandler, FileHandler  # noqa: E501
         >>>
         >>> # Send to both SIEM and local file
@@ -358,51 +362,226 @@ class CompositeHandler:
         >>>
         >>> fgt = FortiOS("192.168.1.99", token="...", audit_handler=handler)
 
+    Example (Priority and Filtering):
+        >>> # Higher priority handlers execute first
+        >>> handler = CompositeHandler([
+        ...     (critical_handler, 10, lambda op: op['action'] == 'delete'),
+        ...     (normal_handler, 5, lambda op: op['success']),
+        ...     (all_handler, 1, None),  # No filter, always executes
+        ... ])
+
     Error Handling:
-        If one handler fails, others continue. Errors are logged but don't
-        stop processing.
+        If one handler fails, others continue. Errors are aggregated and
+        can be retrieved via error_summary property.
     """
 
-    def __init__(self, handlers: list[Any]):
+    def __init__(
+        self,
+        handlers: list[Any],
+        aggregate_errors: bool = True,
+        error_threshold: int = 10,
+    ):
         """
         Initialize Composite handler
 
         Args:
-            handlers: List of handlers implementing the AuditHandler protocol
+            handlers: List of handlers or tuples (handler, priority, filter_fn)
+                - handler: Implements AuditHandler protocol
+                - priority: Int (higher = executes first), default: 0
+                - filter_fn: Callable[[dict], bool] or None, default: None
+            aggregate_errors: Track errors for reporting
+            error_threshold: Max errors to track per handler
         """
-        self.handlers = handlers
+        self.aggregate_errors = aggregate_errors
+        self.error_threshold = error_threshold
+        self.error_counts: dict[str, int] = {}
+        self.error_samples: dict[str, list[str]] = {}
+
+        # Parse and sort handlers by priority
+        self._handlers: list[tuple[Any, int, Any]] = []
+
+        for item in handlers:
+            if isinstance(item, tuple):
+                if len(item) == 2:
+                    # (handler, priority)
+                    handler, priority = item
+                    filter_fn = None
+                elif len(item) == 3:
+                    # (handler, priority, filter_fn)
+                    handler, priority, filter_fn = item
+                else:
+                    raise ValueError(
+                        f"Invalid handler tuple: {item}. "
+                        "Expected (handler, priority[, filter_fn])"
+                    )
+            else:
+                # Just handler - use defaults
+                handler = item
+                priority = 0
+                filter_fn = None
+
+            self._handlers.append((handler, priority, filter_fn))
+
+        # Sort by priority (highest first)
+        self._handlers.sort(key=lambda x: x[1], reverse=True)
 
         logger.debug(
-            f"CompositeHandler initialized with {len(handlers)} handlers",
-            extra={"handler_count": len(handlers)},
+            (
+                f"CompositeHandler initialized with "
+                f"{len(self._handlers)} handlers"
+            ),
+            extra={
+                "handler_count": len(self._handlers),
+                "priorities": [p for _, p, _ in self._handlers],
+            },
         )
 
     def log_operation(self, operation: dict[str, Any]) -> None:
         """
-        Send operation to all handlers
+        Send operation to all matching handlers
 
         Args:
             operation: Operation data dictionary
         """
-        for i, handler in enumerate(self.handlers):
+        for handler, priority, filter_fn in self._handlers:
+            # Apply filter if present
+            if filter_fn is not None:
+                try:
+                    if not filter_fn(operation):
+                        continue  # Skip this handler
+                except Exception as e:
+                    logger.error(
+                        f"Filter function failed: {e}",
+                        extra={
+                            "handler_type": type(handler).__name__,
+                            "error": str(e),
+                            "request_id": operation.get("request_id"),
+                        },
+                    )
+                    continue  # Skip on filter error
+
+            # Execute handler
             try:
                 handler.log_operation(operation)
             except Exception as e:
+                # Track error if aggregation enabled
+                if self.aggregate_errors:
+                    self._record_error(handler, e, operation)
+
                 # Log error but continue to other handlers
                 logger.error(
-                    f"Handler {i} failed in CompositeHandler: {e}",
+                    f"Handler failed in CompositeHandler: {e}",
                     extra={
                         "error": str(e),
-                        "handler_index": i,
                         "handler_type": type(handler).__name__,
+                        "priority": priority,
                         "request_id": operation.get("request_id"),
                     },
                     exc_info=True,
                 )
 
+    def _record_error(
+        self, handler: Any, error: Exception, operation: dict[str, Any]
+    ) -> None:
+        """Record error for aggregation"""
+        handler_key = f"{type(handler).__module__}.{type(handler).__name__}"
+
+        # Increment error count
+        self.error_counts[handler_key] = (
+            self.error_counts.get(handler_key, 0) + 1
+        )
+
+        # Store error sample (limited)
+        if handler_key not in self.error_samples:
+            self.error_samples[handler_key] = []
+
+        if len(self.error_samples[handler_key]) < self.error_threshold:
+            error_msg = (
+                f"[{operation.get('request_id')}] {type(error).__name__}: "
+                f"{str(error)}"
+            )
+            self.error_samples[handler_key].append(error_msg)
+
+    @property
+    def error_summary(self) -> dict[str, Any]:
+        """
+        Get summary of handler errors
+
+        Returns:
+            Dictionary with error counts and samples per handler
+        """
+        return {
+            "total_errors": sum(self.error_counts.values()),
+            "errors_by_handler": {
+                handler: {
+                    "count": count,
+                    "samples": self.error_samples.get(handler, []),
+                }
+                for handler, count in self.error_counts.items()
+            },
+        }
+
+    def reset_errors(self) -> None:
+        """Clear error tracking"""
+        self.error_counts.clear()
+        self.error_samples.clear()
+
+    def add_handler(
+        self, handler: Any, priority: int = 0, filter_fn: Any = None
+    ) -> None:
+        """
+        Add handler dynamically
+
+        Args:
+            handler: Handler implementing AuditHandler protocol
+            priority: Execution priority (higher = first)
+            filter_fn: Optional filter function
+        """
+        self._handlers.append((handler, priority, filter_fn))
+        # Re-sort by priority
+        self._handlers.sort(key=lambda x: x[1], reverse=True)
+
+        logger.debug(
+            f"Handler added to CompositeHandler: {type(handler).__name__}",
+            extra={"priority": priority, "has_filter": filter_fn is not None},
+        )
+
+    def remove_handler(self, handler: Any) -> bool:
+        """
+        Remove handler
+
+        Args:
+            handler: Handler to remove
+
+        Returns:
+            True if handler was found and removed
+        """
+        original_count = len(self._handlers)
+        self._handlers = [
+            (h, p, f) for h, p, f in self._handlers if h is not handler
+        ]
+
+        removed = len(self._handlers) < original_count
+        if removed:
+            logger.debug(
+                f"Handler removed from CompositeHandler: "
+                f"{type(handler).__name__}"
+            )
+
+        return removed
+
+    def get_handlers(self) -> list[tuple[Any, int, Any]]:
+        """
+        Get list of all handlers with their priority and filters
+
+        Returns:
+            List of (handler, priority, filter_fn) tuples
+        """
+        return self._handlers.copy()
+
     def close(self) -> None:
         """Close all handlers that support it"""
-        for handler in self.handlers:
+        for handler, _, _ in self._handlers:
             if hasattr(handler, "close"):
                 try:
                     handler.close()

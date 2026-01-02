@@ -2,8 +2,11 @@
 
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
-from hfortix_fortios.api._helpers import normalize_to_name_list, validate_color
-from hfortix_fortios.firewall._helpers import validate_schedule_name
+from hfortix_fortios._helpers import (
+    normalize_to_name_list,
+    validate_color,
+    validate_schedule_name,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine

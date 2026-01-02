@@ -84,13 +84,13 @@ result = fgt.firewall.schedule_group.clone(
 
 ### 2. Response Helper Functions
 
-Added to `hfortix.FortiOS.api._helpers`:
+Available from `hfortix_fortios._helpers`:
 
 #### ✅ `get_mkey(response)`
 **Extract the created object's name from response**
 
 ```python
-from hfortix.FortiOS.api._helpers import get_mkey
+from hfortix_fortios._helpers import get_mkey
 
 # OLD WAY (ugly):
 result = fgt.firewall.schedule_onetime.create(name='test', ...)
@@ -105,7 +105,7 @@ print(f"Created: {get_mkey(result)}")  # Much better!
 **Check if operation succeeded**
 
 ```python
-from hfortix.FortiOS.api._helpers import is_success
+from hfortix_fortios._helpers import is_success
 
 result = fgt.firewall.schedule_onetime.create(...)
 if is_success(result):
@@ -118,7 +118,7 @@ else:
 **Extract results from response**
 
 ```python
-from hfortix.FortiOS.api._helpers import get_results
+from hfortix_fortios._helpers import get_results
 
 response = fgt.firewall.schedule_onetime.get()
 schedules = get_results(response)

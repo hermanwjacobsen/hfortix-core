@@ -2,7 +2,7 @@
 Validation helpers for search search endpoint.
 
 Each endpoint has its own validation file to keep validation logic
-separate and maintainable. Use central cmdb._helpers tools for common tasks.
+separate and maintainable. Use central _helpers tools for common tasks.
 
 Auto-generated from OpenAPI specification by generate_validators.py
 Customize as needed for endpoint-specific business logic.
@@ -10,7 +10,7 @@ Customize as needed for endpoint-specific business logic.
 
 from typing import Any
 
-from hfortix_fortios.api._helpers import validate_required_fields
+from hfortix_fortios._helpers import validate_required_fields
 
 # Valid enum values from API documentation
 # ============================================================================

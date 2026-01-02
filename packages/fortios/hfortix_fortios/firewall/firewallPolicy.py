@@ -20,11 +20,9 @@ from typing import (  # noqa: F401
     cast,
 )
 
-# Import shared helpers from the API layer
-from hfortix_fortios.api._helpers import build_cmdb_payload_normalized
-
-# Import shared firewall helpers
-from hfortix_fortios.firewall._helpers import (
+# Import shared helpers
+from hfortix_fortios._helpers import (
+    build_cmdb_payload_normalized,
     validate_address_pairs,
     validate_policy_id,
 )

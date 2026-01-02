@@ -10,12 +10,11 @@ Includes functions for:
 - Validation
 - Data cleaning
 
-Note: This module imports from the central API helpers and adds
-firewall-specific functionality on top.
+Note: This module imports from the central helpers and re-exports them.
 """
 
-# Import from central API helpers
-from hfortix_fortios.api._helpers import (
+# Import from central helpers
+from hfortix_fortios._helpers import (
     build_cmdb_payload,
     normalize_member_list,
     normalize_to_name_list,

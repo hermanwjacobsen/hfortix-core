@@ -2,8 +2,8 @@
 
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
-from hfortix_fortios.api._helpers import validate_color
-from hfortix_fortios.firewall._helpers import (
+from hfortix_fortios._helpers import (
+    validate_color,
     validate_day_names,
     validate_schedule_name,
     validate_time_format,

@@ -52,6 +52,7 @@ logs = fgt.api.log.disk.traffic.get()
 
 ### Getting Started
 
+- **[../../REQUEST_METHOD_GUIDE.md](../../REQUEST_METHOD_GUIDE.md)** - **NEW:** Generic request() method - Copy JSON from GUI API preview
 - **[../SECURITY.md](../SECURITY.md)** - Security best practices and API token setup
 - **[ASYNC_GUIDE.md](ASYNC_GUIDE.md)** - Async/await support for concurrent operations
 - **[FILTERING_GUIDE.md](FILTERING_GUIDE.md)** - Complete guide to filtering API queries (50+ examples)
@@ -65,6 +66,7 @@ High-level interfaces that simplify common operations:
 - **[wrappers/FIREWALL_POLICY_WRAPPER.md](wrappers/FIREWALL_POLICY_WRAPPER.md)** - Firewall policy management (150+ parameters)
 - **[wrappers/SHAPER_WRAPPERS.md](wrappers/SHAPER_WRAPPERS.md)** - Traffic shaping (per-IP and traffic shapers)
 - **[wrappers/SCHEDULE_WRAPPERS.md](wrappers/SCHEDULE_WRAPPERS.md)** - Schedule management (onetime, recurring, groups)
+- **[wrappers/SSH_SSL_PROXY_WRAPPERS.md](wrappers/SSH_SSL_PROXY_WRAPPERS.md)** - SSH/SSL proxy with **FortiOS API limitations** documented
 - **[ERROR_HANDLING_CONFIG.md](ERROR_HANDLING_CONFIG.md)** - Configurable error handling for wrappers
 
 ### API Reference

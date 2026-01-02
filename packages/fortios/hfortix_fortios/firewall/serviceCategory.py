@@ -18,7 +18,7 @@ from typing import (
     Union,
 )
 
-from hfortix_fortios.api._helpers import build_cmdb_payload_normalized
+from hfortix_fortios._helpers import build_cmdb_payload_normalized
 
 if TYPE_CHECKING:
     from hfortix_fortios.client import FortiOS
