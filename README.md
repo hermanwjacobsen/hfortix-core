@@ -9,10 +9,10 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.4.0**
+> **⚠️ BETA STATUS - Version 0.4.1**
 >
-> - **Current Version**: 0.4.0 (Published to PyPI - December 31, 2025)
-> - **Major Release**: Modular package architecture (breaking changes from 0.3.x)
+> - **Current Version**: 0.4.1 (Published to PyPI - January 2, 2026)
+> - **Major Release**: Modular package architecture with enhanced debugging and observability
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
 > All implementations are functional but in **BETA**. APIs work correctly but may have incomplete
@@ -53,16 +53,15 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - **Quick Start Guide**: [QUICKSTART.md](https://github.com/hermanwjacobsen/hfortix/blob/main/QUICKSTART.md) - Getting started guide
 - **Full Changelog**: [CHANGELOG.md](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) - Complete version history
 
-**Latest Features (v0.4.0 - December 31, 2025):**
+**Latest Features (v0.4.1 - January 2, 2026):**
 
-> **✅ PUBLISHED TO PYPI - December 31, 2025**
+> **✅ PUBLISHED TO PYPI - January 2, 2026**
 >
-> Version 0.4.0 introduces modular package architecture. This is a MAJOR release with breaking changes.
-> If upgrading from 0.3.x, see migration guide below.
+> Version 0.4.1 includes enhanced debugging, observability improvements, and better IDE support.
 >
 > **All packages remain in BETA** until v1.0 with comprehensive unit test coverage.
 
-- 📦 **Modular Package Structure**: Major architectural improvement with split packages
+- 📦 **Modular Package Structure**: Major architectural improvement with split packages (v0.4.0)
   - **hfortix-core**: Core exceptions and HTTP client framework (sync/async)
   - **hfortix-fortios**: FortiOS/FortiGate client, API endpoints, and firewall helpers
   - **hfortix** (meta-package): Minimal core install, optional extras for products
@@ -73,13 +72,14 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
     - `pip install hfortix[all]` - Everything
     - `pip install hfortix-fortios` - Just FortiOS (includes core)
 
-- 🔧 **Code Quality Improvements**:
+- 🔧 **Code Quality Improvements** (v0.4.0-v0.4.1):
   - Fixed all E501 line length errors
   - Fixed mypy type errors with namespace package imports
   - Enhanced pre-commit configuration for auto-generated code
   - All linters, type checkers, and pre-commit hooks passing
+  - Updated pre-release checks to work with split package architecture
 
-- ⚡ **Smart Retry & Circuit Breaker Enhancements** (v0.4.0 - January 2, 2026):
+- ⚡ **Smart Retry & Circuit Breaker Enhancements** (v0.4.1):
   - **Retry Strategy Selection**: Choose between exponential or linear backoff
     - `retry_strategy="exponential"` (default) - 1s, 2s, 4s, 8s, 16s, 30s (best for transient failures)
     - `retry_strategy="linear"` - 1s, 2s, 3s, 4s, 5s (best for rate limiting scenarios)
@@ -96,7 +96,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
     - Essential for SOC 2, HIPAA, PCI-DSS compliance
   - See `examples/retry_strategy_demo.py` for comprehensive examples
 
-- � **Enhanced Debugging & Observability** (v0.4.0 - January 2, 2026):
+- � **Enhanced Debugging & Observability** (v0.4.1):
   - **Connection Pool Monitoring**: Fixed hardcoded values bug
     - `fgt.connection_stats` - Real-time pool metrics (max_connections, active_requests, pool_exhaustion_count)
     - Track connection exhaustion with timestamps
@@ -128,7 +128,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
     - `docs/fortios/RATE_LIMITING.md` - Rate limit handling guide
     - Integration examples for ELK, Splunk, CloudWatch
 
-- �📊 **Enhanced Structured Logging with Multi-Tenant Support** (v0.4.0 - January 2, 2026):
+- 📊 **Enhanced Structured Logging with Multi-Tenant Support** (v0.4.1):
   - **VDOM/ADOM Fields**: Automatic inclusion in all structured logs
     - `vdom` field automatically added for FortiOS Virtual Domain environments
     - `adom` field support ready for future FortiManager/FortiAnalyzer clients

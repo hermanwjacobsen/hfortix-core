@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- TBD
+
+## [0.4.1] - 2026-01-02
+
+### Added
+
 - **Enhanced Debugging and Observability** (2026-01-02):
   - **Connection Pool Monitoring**: Fixed hardcoded values bug in `get_connection_stats()`
     - Now returns real-time metrics: actual `max_connections` and `max_keepalive_connections`

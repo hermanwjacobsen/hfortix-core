@@ -10,8 +10,10 @@ build:
     python: "3.11"
   jobs:
     post_install:
-      # Install the package so autodoc can import it
-      - pip install -e .
+      # Install all split packages so autodoc can import them
+      - pip install -e packages/core
+      - pip install -e packages/fortios
+      - pip install -e packages/meta
 
 sphinx:
   configuration: docs/source/conf.py
@@ -19,11 +21,15 @@ sphinx:
 
 python:
   install:
-    # Install the main package with all dependencies
+    # Install the core package
     - method: pip
-      path: .
-      extra_requirements:
-        - dev
+      path: packages/core
+    # Install the fortios package
+    - method: pip
+      path: packages/fortios
+    # Install the meta package
+    - method: pip
+      path: packages/meta
     # Install documentation dependencies
     - requirements: docs/requirements.txt
 

@@ -146,17 +146,17 @@ clean:
 # Individual package build targets
 build-core:
 	@echo "Building hfortix-core..."
-	cd packages/core && rm -rf dist/ build/ *.egg-info && python -m build
+	cd packages/core && rm -rf dist/ build/ *.egg-info && python3 -m build
 	@echo "✅ hfortix-core built!"
 
 build-fortios:
 	@echo "Building hfortix-fortios..."
-	cd packages/fortios && rm -rf dist/ build/ *.egg-info && python -m build
+	cd packages/fortios && rm -rf dist/ build/ *.egg-info && python3 -m build
 	@echo "✅ hfortix-fortios built!"
 
 build-meta:
 	@echo "Building hfortix (meta-package)..."
-	cd packages/meta && rm -rf dist/ build/ *.egg-info && python -m build
+	cd packages/meta && rm -rf dist/ build/ *.egg-info && python3 -m build
 	@echo "✅ hfortix (meta) built!"
 
 # Build all packages
