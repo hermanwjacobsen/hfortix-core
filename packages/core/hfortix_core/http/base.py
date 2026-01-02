@@ -52,6 +52,8 @@ class BaseHTTPClient:
         max_connections: int = 100,
         max_keepalive_connections: int = 20,
         adaptive_retry: bool = False,
+        retry_strategy: str = "exponential",
+        retry_jitter: bool = False,
     ) -> None:
         """Initialize base HTTP client with shared configuration
 
@@ -61,6 +63,12 @@ class BaseHTTPClient:
                           When enabled, monitors response times and adjusts
                           retry delays
                           based on FortiGate health signals.
+            retry_strategy: Retry backoff strategy - 'exponential' (default)
+                          or 'linear'. Exponential: 1s, 2s, 4s, 8s, 16s, 30s.
+                          Linear: 1s, 2s, 3s, 4s, 5s.
+            retry_jitter: Add random jitter (0-25% of delay) to retry delays
+                         to prevent thundering herd problem when multiple
+                         clients retry simultaneously (default: False).
         """
         # Validate parameters
         if not url:
@@ -81,6 +89,10 @@ class BaseHTTPClient:
             raise ValueError("max_connections must be > 0")
         if max_keepalive_connections < 0:
             raise ValueError("max_keepalive_connections must be >= 0")
+        if retry_strategy not in ("exponential", "linear"):
+            raise ValueError(
+                "retry_strategy must be 'exponential' or 'linear'"
+            )
 
         # Auto-adjust keepalive connections if needed (don't error)
         # httpx and other libraries allow these to be independent, but we'll
@@ -127,6 +139,8 @@ class BaseHTTPClient:
 
         # Adaptive retry configuration
         self._adaptive_retry = adaptive_retry
+        self._retry_strategy = retry_strategy
+        self._retry_jitter = retry_jitter
         # endpoint -> deque of response times
         self._response_times: dict[str, deque] = {}
         # 500ms baseline
@@ -194,6 +208,54 @@ class BaseHTTPClient:
                 return obj
 
         return sanitize_recursive(data)
+
+    def _log_context(
+        self,
+        request_id: Optional[str] = None,
+        **extra_fields: Any,
+    ) -> dict[str, Any]:
+        """
+        Build consistent logging context for structured logging
+
+        Provides standard fields for all log events, ensuring consistency
+        across the codebase. Automatically includes vdom/adom for multi-tenant
+        environments.
+
+        Args:
+            request_id: Optional request ID for correlation
+            **extra_fields: Additional fields to include (endpoint, method,
+                          status_code, duration_seconds, etc.)
+
+        Returns:
+            Dictionary with logging context ready for logger.info(extra=...)
+
+        Examples:
+            >>> ctx = self._log_context(request_id="abc123",
+            ...                        endpoint="/api/v2/cmdb/firewall/policy",
+            ...                        method="GET")
+            >>> logger.info("Request started", extra=ctx)
+        """
+        context: dict[str, Any] = {}
+
+        # Add request_id if provided
+        if request_id:
+            context["request_id"] = request_id
+
+        # Add vdom for FortiOS multi-tenancy (if configured)
+        if self._vdom:
+            context["vdom"] = self._vdom
+
+        # Add adom for FortiManager/FortiAnalyzer (future support)
+        # This allows FortiManager/FortiAnalyzer clients to set _adom
+        # Using getattr to avoid type checker errors for optional attribute
+        adom = getattr(self, "_adom", None)
+        if adom:
+            context["adom"] = adom
+
+        # Add all extra fields
+        context.update(extra_fields)
+
+        return context
 
     @staticmethod
     def _normalize_path(path: str) -> str:
@@ -414,13 +476,31 @@ class BaseHTTPClient:
             except ValueError:
                 pass
 
-        # Start with exponential backoff: 1s, 2s, 4s, 8s, max 30s
-        delay = min(2**attempt, 30)
+        # Calculate base delay based on retry strategy
+        if self._retry_strategy == "exponential":
+            # Exponential backoff: 1s, 2s, 4s, 8s, 16s, max 30s
+            delay = min(2**attempt, 30.0)
+        else:  # linear
+            # Linear backoff: 1s, 2s, 3s, 4s, 5s, max 30s
+            delay = min((attempt + 1) * 1.0, 30.0)
 
         # Apply adaptive backpressure if enabled
         if self._adaptive_retry and endpoint:
             delay = self._apply_adaptive_backpressure(
                 delay, response, endpoint
+            )
+
+        # Add jitter if enabled (0-25% random variation)
+        if self._retry_jitter:
+            import random
+
+            jitter_amount = delay * random.uniform(0, 0.25)
+            delay = delay + jitter_amount
+            logger.debug(
+                "Applied jitter to retry delay: %.2fs + %.2fs jitter = %.2fs",
+                delay - jitter_amount,
+                jitter_amount,
+                delay,
             )
 
         return delay

@@ -9,6 +9,118 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Enhanced Debugging and Observability** (2026-01-02):
+  - **Connection Pool Monitoring**: Fixed hardcoded values bug in `get_connection_stats()`
+    - Now returns real-time metrics: actual `max_connections` and `max_keepalive_connections`
+    - Added tracking: `active_requests`, `total_requests`, `pool_exhaustion_count`
+    - Pool exhaustion timestamps for identifying capacity issues
+    - Applies to both sync (`HTTPClient`) and async (`AsyncHTTPClient`) implementations
+  - **Request Inspection API**: New `inspect_last_request()` method
+    - Returns detailed info about last API call: method, endpoint, params, response_time_ms, status_code
+    - Essential for debugging slow requests and diagnosing API issues
+    - Available on both HTTP client implementations
+  - **Enhanced Debug Mode**: FortiOS client now supports `debug=True` (boolean)
+    - Previous: `debug="DEBUG"` (string only)
+    - Now: `debug=True` (convenience) or `debug="DEBUG"` (explicit level)
+    - Automatically enables DEBUG-level logging when `debug=True`
+  - **Convenience Properties**: Easy access to debugging information
+    - `FortiOS.connection_stats` property - Real-time connection pool metrics
+    - `FortiOS.last_request` property - Last request debugging details
+    - No need to access internal `_client` anymore
+  - **DebugSession Context Manager**: Comprehensive session monitoring
+    - Captures all requests, timing, and connection stats during session
+    - Auto-calculates aggregate metrics: avg/min/max response times
+    - Prints detailed summary on exit (optional)
+    - Example: `with DebugSession(fgt) as session: ...`
+  - **Debug Utilities**: Helper functions for debugging
+    - `debug_timer()` - Context manager for timing operations
+    - `format_request_info()` - Pretty-print request details
+    - `format_connection_stats()` - Pretty-print connection statistics
+    - `print_debug_info()` - Comprehensive debug output
+  - **Structured Logging Enhancements**: Better logging configuration
+    - `configure_logging()` now supports `include_trace`, `output_file`, `structured` parameters
+    - File logging: Log to both console and file simultaneously
+    - Request correlation: Include trace IDs in all logs with `include_trace=True`
+    - `RequestLogger` context manager for consistent request/response logging
+  - **Modular Architecture**: Reorganized code structure
+    - New `hfortix_core.logging/` package: `base.py`, `formatters.py`, `handlers.py`
+    - New `hfortix_core.debug/` package: `base.py`, `formatters.py`, `handlers.py`
+    - Follows consistent pattern with `hfortix_core.audit/` package
+    - Protocol definitions in `base.py` for extensibility
+
+- **Enhanced Type Hints and IDE Support** (2026-01-02):
+  - **Type Definitions Module**: New `hfortix_core.types` module
+    - `APIResponse`, `ListResponse`, `ObjectResponse`, `ErrorResponse` TypedDicts
+    - `ConnectionStats`, `RequestInfo` for debugging types
+    - `CircuitBreakerState` literal type
+    - Better IDE autocomplete and type checking
+  - **Type Stub Files (.pyi)**: Enhanced IDE support
+    - `hfortix_core/http/client.pyi` - Sync HTTP client stubs
+    - `hfortix_core/http/async_client.pyi` - Async HTTP client stubs
+    - `hfortix_fortios/client.pyi` - FortiOS client stubs
+    - Improved autocomplete in VS Code, PyCharm, and other IDEs
+  - **Enhanced Package Exports**: Easier imports
+    - Convenience wrappers now exported from main package: `FirewallPolicy`, `ScheduleRecurring`, etc.
+    - Debug utilities exported: `DebugSession`, `debug_timer`, `format_connection_stats`, etc.
+    - Common exceptions exported: All core exceptions available from `hfortix_fortios`
+    - Example: `from hfortix_fortios import FortiOS, FirewallPolicy, DebugSession`
+
+- **Comprehensive Documentation** (2026-01-02):
+  - **Rate Limiting Guide**: New `docs/fortios/RATE_LIMITING.md`
+    - HTTP 429 handling and automatic retry strategies
+    - Circuit breaker configuration and patterns
+    - Async patterns for high throughput
+    - Connection pool management best practices
+    - Production-ready configuration examples
+  - **Debugging Guide**: New `docs/fortios/DEBUGGING.md`
+    - Debug mode usage (`debug=True` vs `debug="DEBUG"`)
+    - Connection statistics monitoring
+    - Request inspection techniques
+    - DebugSession for performance analysis
+    - Logging configuration and structured logging
+    - Integration with ELK, Splunk, CloudWatch
+    - Common debugging scenarios with solutions
+
+- **Enhanced Structured Logging with Multi-Tenant Support** (2026-01-02):
+  - **VDOM/ADOM Fields**: Automatic inclusion in all structured logs
+    - `vdom` field automatically added for FortiOS Virtual Domain environments
+    - `adom` field support ready for future FortiManager/FortiAnalyzer clients
+    - Essential for multi-tenant environments and per-customer observability
+  - **Consistent Log Context**: New `_log_context()` helper method
+    - Centralized logging context builder in `BaseHTTPClient`
+    - Ensures all log events have consistent field naming
+    - Automatically includes request_id, method, endpoint, status_code, duration_seconds
+  - **Updated Documentation**: Enhanced `StructuredFormatter` with standard field definitions
+    - Documents all standard log fields (timestamp, level, logger, message)
+    - Documents common extra fields (request_id, method, endpoint, vdom, adom, etc.)
+    - Examples showing multi-tenant logging usage
+  - **Benefits for Multi-Tenant Deployments**:
+    - Easy log filtering: `jq '.vdom == "customer_a"' logs.json`
+    - Per-tenant metrics and dashboards in ELK/Splunk/Datadog
+    - Audit trail isolation by virtual domain
+    - Compliance reporting per customer/tenant
+  - See `docs/fortios/OBSERVABILITY.md` for complete documentation
+
+- **Smart Retry & Circuit Breaker Enhancements** (2026-01-02):
+  - **Retry Strategy Selection**: Choose between exponential or linear backoff strategies
+    - New parameter: `retry_strategy` - "exponential" (default) or "linear"
+    - Exponential: 1s, 2s, 4s, 8s, 16s, 30s (best for transient failures like network glitches)
+    - Linear: 1s, 2s, 3s, 4s, 5s (best for rate limiting scenarios)
+  - **Jitter Support**: Prevent thundering herd problem
+    - New parameter: `retry_jitter` (bool, default: False)
+    - Adds 0-25% random variation to retry delays
+    - Prevents multiple clients from retrying simultaneously
+    - Recommended for production deployments with multiple instances
+  - **Public Telemetry APIs**: Monitor retry patterns and circuit breaker health
+    - `FortiOS.get_retry_stats()` - Get retry statistics (total, by endpoint, by reason)
+    - `FortiOS.get_circuit_breaker_state()` - Get circuit breaker state and failure count
+    - `FortiOS.get_health_metrics()` - Comprehensive health view (already existed, now documented)
+  - **Batch Audit Log Export**: Export tracked operations for compliance reporting
+    - `FortiOS.export_audit_logs()` - Export to JSON, CSV, or text format
+    - Filter by HTTP method, API type, or timestamp
+    - Essential for SOC 2, HIPAA, PCI-DSS compliance audits
+  - **Examples**: New `examples/retry_strategy_demo.py` with 6 comprehensive demonstrations
+
 - **Enterprise Audit Logging**: Complete audit logging system for compliance (SOC 2, HIPAA, PCI-DSS)
   - Built-in handlers: `SyslogHandler`, `FileHandler`, `StreamHandler`, `CompositeHandler`
   - Multiple formatters: JSON, Syslog RFC 5424, CEF (Common Event Format)
@@ -25,10 +137,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `configure_logging()` helper for easy setup (text or JSON format)
   - `StructuredFormatter` for machine-readable JSON logs (ELK, Splunk, CloudWatch compatible)
   - `TextFormatter` with optional ANSI color codes for terminal output
-  - `trace_id` parameter for distributed tracing and request correlation
-  - Automatic trace_id inclusion in audit logs and user_context
-  - Support for custom logging handlers
-  - See `docs/source/fortios/guides/audit-logging.rst` for examples
+  - `trace_id` parameter for distributed tracing and request correlation across microservices
+  - `user_context` parameter for change management metadata in all logs
+  - Automatic trace_id and user_context inclusion in audit logs
+  - Support for custom logging handlers (file, syslog, cloud)
+  - Integration examples for ELK Stack, Splunk, AWS CloudWatch, GCP Logging, Datadog
+  - Production-ready patterns for Kubernetes and cloud-native deployments
+  - See `docs/fortios/OBSERVABILITY.md` for comprehensive guide
+  - See `examples/observability_demo.py` for 7 interactive demos
+  - **Production Ready**: Complete observability stack for distributed systems
 
 ## [0.4.0] - 2025-12-31
 
@@ -963,7 +1080,7 @@ except Exception as e:
   - Complete example file: `examples/custom_http_client_example.py`
   - Three production-ready examples: AuditLoggingHTTPClient, CachingHTTPClient, FakeHTTPClient
   - Documentation in README.md "Extensibility" section
-  - Use cases: SO.dev/HIPAA/PCI-DSS compliance, CI/CD testing, performance optimization
+  - Use cases: SOC 2/HIPAA/PCI-DSS compliance, CI/CD testing, performance optimization
 
 - **Environment Variables Support**: Load credentials from environment variables
   - Support for `FORTIOS_HOST`, `FORTIOS_TOKEN`, `FORTIOS_USERNAME`, `FORTIOS_PASSWORD`

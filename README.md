@@ -36,8 +36,6 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 **Test Coverage:** 226 test files (145 CMDB, 81 Monitor) with 75%+ pass rate (~50% of generated endpoints tested)
 **Note:** All implementations remain in beta until version 1.0.0 with comprehensive unit test coverage.
 
-**Development Files:** All development tools, scripts, and internal documentation are organized in the `.dev/` directory and excluded from releases. See `.dev/README.md` for development setup and contributing guidelines.
-
 **🔥 Recent Highlights (December 2025):**
 
 - 🎉 **100% API COVERAGE**: Complete implementation of ALL documented FortiOS 7.6.5 API categories!
@@ -81,6 +79,71 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
   - Enhanced pre-commit configuration for auto-generated code
   - All linters, type checkers, and pre-commit hooks passing
 
+- ⚡ **Smart Retry & Circuit Breaker Enhancements** (v0.4.0 - January 2, 2026):
+  - **Retry Strategy Selection**: Choose between exponential or linear backoff
+    - `retry_strategy="exponential"` (default) - 1s, 2s, 4s, 8s, 16s, 30s (best for transient failures)
+    - `retry_strategy="linear"` - 1s, 2s, 3s, 4s, 5s (best for rate limiting scenarios)
+  - **Jitter Support**: Add random variation to prevent thundering herd
+    - `retry_jitter=True` - Adds 0-25% random variation to retry delays
+    - Prevents multiple clients from retrying simultaneously
+  - **Public Telemetry APIs**: Monitor retry patterns and circuit health
+    - `fgt.get_retry_stats()` - Track retries by endpoint and reason
+    - `fgt.get_circuit_breaker_state()` - Monitor circuit breaker health
+    - `fgt.get_health_metrics()` - Comprehensive health view
+  - **Audit Log Export**: Batch export for compliance reporting
+    - `fgt.export_audit_logs()` - Export to JSON/CSV/text format
+    - Filter by method, API type, or timestamp
+    - Essential for SOC 2, HIPAA, PCI-DSS compliance
+  - See `examples/retry_strategy_demo.py` for comprehensive examples
+
+- � **Enhanced Debugging & Observability** (v0.4.0 - January 2, 2026):
+  - **Connection Pool Monitoring**: Fixed hardcoded values bug
+    - `fgt.connection_stats` - Real-time pool metrics (max_connections, active_requests, pool_exhaustion_count)
+    - Track connection exhaustion with timestamps
+    - Essential for capacity planning and performance tuning
+  - **Request Inspection**: Debug slow or failed requests
+    - `fgt.last_request` - Detailed info about last API call (method, endpoint, response_time_ms, status_code)
+    - `inspect_last_request()` method on HTTP clients
+    - Identify performance bottlenecks quickly
+  - **Enhanced Debug Mode**: Simplified debugging
+    - `debug=True` - Quick debug mode (enables DEBUG logging)
+    - `debug="INFO"` - Explicit log level control
+    - `debug_options` parameter for advanced configuration
+  - **DebugSession Context Manager**: Comprehensive session monitoring
+    - Capture all requests, timing, and connection stats
+    - Auto-calculate aggregate metrics (avg/min/max response times)
+    - Print detailed summary on exit
+    - Example: `with DebugSession(fgt) as session: ...`
+  - **Debug Utilities**: Helper functions for debugging
+    - `debug_timer()` - Time operations with context manager
+    - `format_request_info()` - Pretty-print request details
+    - `format_connection_stats()` - Pretty-print connection stats
+    - `print_debug_info()` - Comprehensive debug output
+  - **Enhanced Type Hints**: Better IDE support
+    - New type stubs (.pyi files) for all clients
+    - TypedDict definitions for API responses
+    - Improved autocomplete in VS Code, PyCharm
+  - **Comprehensive Documentation**:
+    - `docs/fortios/DEBUGGING.md` - Complete debugging guide
+    - `docs/fortios/RATE_LIMITING.md` - Rate limit handling guide
+    - Integration examples for ELK, Splunk, CloudWatch
+
+- �📊 **Enhanced Structured Logging with Multi-Tenant Support** (v0.4.0 - January 2, 2026):
+  - **VDOM/ADOM Fields**: Automatic inclusion in all structured logs
+    - `vdom` field automatically added for FortiOS Virtual Domain environments
+    - `adom` field support ready for future FortiManager/FortiAnalyzer clients
+    - Essential for multi-tenant environments and per-customer observability
+  - **Consistent Log Context**: All log events include standard fields
+    - request_id, method, endpoint, status_code, duration_seconds
+    - vdom/adom (when configured)
+    - error_type, attempt, max_attempts (for errors/retries)
+  - **Multi-Tenant Benefits**:
+    - Easy log filtering: `jq '.vdom == "customer_a"' logs.json`
+    - Per-tenant metrics and dashboards in ELK/Splunk/Datadog
+    - Audit trail isolation by virtual domain
+    - Compliance reporting per customer/tenant
+  - See `docs/fortios/OBSERVABILITY.md` for complete documentation
+
 **Features from v0.3.39 (December 29, 2025):**
 
 - 🎨 **Complete Service Management Wrappers**: Production-ready wrappers for firewall services
@@ -119,7 +182,6 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
   - Full parameter support with comprehensive validation
   - ⚠️ **Important:** Rename operations not supported (FortiOS API limitation - name is immutable primary key)
   - See `docs/fortios/wrappers/SHAPER_WRAPPERS.md` for complete guide and examples
-  - Comprehensive test suite: `.dev/pytests/firewall/shaper.py` (20 tests passing)
 
 **Features from v0.3.34 (December 25, 2025):**
 
@@ -307,17 +369,18 @@ hfortix/
 │   ├── fortios/       # FortiOS-specific guides
 │   └── source/        # Sphinx documentation source
 ├── examples/          # Example scripts and usage patterns
-├── .dev/              # Development tools (excluded from releases)
-│   ├── scripts/       # Development scripts (doc generation, etc.)
-│   ├── pytests/       # Development tests
-│   └── docs/          # Internal development documentation
+├── examples/          # Example scripts
+├── docs/              # User documentation
+├── packages/          # Modular packages
+│   ├── core/          # hfortix-core package
+│   ├── fortios/       # hfortix-fortios package
+│   └── meta/          # hfortix meta-package
 ├── README.md          # This file
 ├── QUICKSTART.md      # Quick reference guide
 ├── CHANGELOG.md       # Version history
 └── pyproject.toml     # Package configuration
 ```
 
-**Note:** The `.dev/` directory contains development-only files and is excluded from PyPI releases.
 ## 📚 Documentation
 
 ### Getting Started
@@ -564,6 +627,141 @@ fgt = FortiOS('192.168.1.99', token='your-token', debug='info')
 - Automatic sensitive data sanitization
 - Request/response logging with timing
 - Hierarchical loggers for fine-grained control
+
+### Enterprise Audit Logging & Observability ✨ NEW in v0.4.0
+
+Production-ready audit logging and observability for compliance and distributed systems:
+
+```python
+from hfortix_fortios import FortiOS, configure_logging
+from hfortix_core.audit import FileHandler, SyslogHandler
+
+# 1. Configure structured logging (one-time setup)
+configure_logging(level="INFO", format="json")  # JSON logs for ELK/Splunk/CloudWatch
+
+# 2. Create client with audit logging and observability
+audit_handler = SyslogHandler("siem.company.com:514")  # Send to SIEM
+
+fgt = FortiOS(
+    "192.168.1.99",
+    token="your-token",
+    audit_handler=audit_handler,           # Audit logs to SIEM
+    trace_id="req-abc-123",                # Distributed tracing ID
+    user_context={                          # Change management metadata
+        "username": "john.doe",
+        "ticket": "CHG-12345",
+        "environment": "production"
+    }
+)
+
+# All API calls are automatically logged with full context
+fgt.api.cmdb.firewall.address.create(name="web-server", subnet="10.0.0.1/32")
+```
+
+**Audit Log Output (JSONL format)**:
+```json
+{"timestamp":"2026-01-02T10:30:15Z","request_id":"a1b2c3d4","method":"POST","endpoint":"/api/v2/cmdb/firewall/address","action":"create","object_type":"firewall.address","object_name":"web-server","data":{"name":"web-server","subnet":"10.0.0.1/32"},"status_code":200,"success":true,"duration_ms":145,"host":"192.168.1.99","vdom":"root","trace_id":"req-abc-123","user_context":{"username":"john.doe","ticket":"CHG-12345","environment":"production"}}
+```
+
+**Key Features:**
+
+- **Compliance Ready**: SOC 2, HIPAA, PCI-DSS audit trails
+- **Multiple Handlers**: File, Syslog (RFC 5424), Stream, Composite
+- **Multiple Formatters**: JSON, Syslog, CEF (Common Event Format)
+- **Distributed Tracing**: `trace_id` for request correlation across microservices
+- **User Context**: Track who, what, when, why for change management
+- **SIEM Integration**: Compatible with Splunk, ELK, QRadar, ArcSight
+- **Structured Logging**: JSON format for log aggregation (ELK, Splunk, CloudWatch)
+- **Data Sanitization**: Automatic masking of passwords, tokens, keys
+- **Non-Blocking**: Audit failures never break API operations
+
+**Available Handlers:**
+
+```python
+from hfortix_core.audit import (
+    FileHandler,        # Log to local file (JSONL format)
+    SyslogHandler,      # Send to syslog server (RFC 5424)
+    StreamHandler,      # Log to stdout/stderr
+    CompositeHandler,   # Send to multiple destinations
+    NullHandler         # Disable audit logging
+)
+
+# File logging
+file_handler = FileHandler("/var/log/fortinet-audit.jsonl")
+
+# Syslog to SIEM
+syslog_handler = SyslogHandler("siem.company.com:514")
+
+# Multiple destinations
+composite = CompositeHandler([
+    FileHandler("/var/log/audit.jsonl"),
+    SyslogHandler("siem.company.com:514")
+])
+```
+
+**Production Example:**
+
+```python
+from hfortix_fortios import FortiOS, configure_logging
+from hfortix_core.audit import CompositeHandler, FileHandler, SyslogHandler
+import uuid
+
+# Configure JSON logging for production
+configure_logging(level="INFO", format="json")
+
+# Setup audit logging to multiple destinations
+audit = CompositeHandler([
+    FileHandler("/var/log/fortinet/audit.jsonl"),    # Local backup
+    SyslogHandler("siem.company.com:514")            # SIEM
+])
+
+# Generate trace_id for distributed tracing
+trace_id = f"req-{uuid.uuid4().hex[:16]}"
+
+# Create client with full observability
+fgt = FortiOS(
+    "192.168.1.99",
+    token="your-token",
+    verify=True,  # Always verify SSL in production
+    audit_handler=audit,
+    trace_id=trace_id,
+    user_context={
+        "username": "automation",
+        "service": "firewall-manager",
+        "environment": "production",
+        "ticket": "CHG-67890"
+    }
+)
+
+# All operations automatically logged with full context
+fgt.api.cmdb.firewall.policy.create(
+    policyid=100,
+    srcintf=["port1"],
+    dstintf=["port2"],
+    srcaddr=["all"],
+    dstaddr=["all"],
+    service=["ALL"],
+    action="accept",
+    schedule="always"
+)
+```
+
+**Documentation:**
+
+- **Full Guide**: [docs/fortios/AUDIT_LOGGING.md](docs/fortios/AUDIT_LOGGING.md)
+- **Observability**: [docs/fortios/OBSERVABILITY.md](docs/fortios/OBSERVABILITY.md)
+- **Examples**: `examples/audit_logging_demo.py`, `examples/observability_demo.py`
+
+**Benefits:**
+
+- ✅ **Compliance**: Automatic audit trails for SOC 2, HIPAA, PCI-DSS
+- ✅ **Troubleshooting**: Complete operation history with timing
+- ✅ **Change Management**: Link changes to tickets and users
+- ✅ **Security**: Track who made what changes and when
+- ✅ **Distributed Systems**: Correlate requests across microservices
+- ✅ **Observability**: Integration with ELK, Splunk, CloudWatch, Datadog
+
+**Unique to hfortix**: No other Python FortiGate library has built-in enterprise audit logging and observability!
 
 ### Read-Only Mode & Operation Tracking ✨ NEW in v0.3.17
 
@@ -843,7 +1041,7 @@ See `examples/custom_http_client_example.py` for production-ready implementation
 
 **Use Cases:**
 
-- **Enterprise Compliance**: Log all FortiGate changes to SIEM for SO.dev/HIPAA/PCI-DSS
+- **Enterprise Compliance**: Log all FortiGate changes to SIEM for SOC 2/HIPAA/PCI-DSS
 - **Development/Testing**: Use fake client in CI/CD pipelines without FortiGate hardware
 - **Performance Optimization**: Cache frequently-read data (address objects, service definitions)
 - **Custom Authentication**: Integrate with corporate SSO or vault systems
@@ -904,12 +1102,29 @@ fgt._client.configure_endpoint_timeout(
 # Fast operations remain fast (10s connect, 300s read)
 
 # 5. Structured logging (machine-readable logs with extra fields)
-# All logs include: request_id, endpoint, method, status_code, duration
+# All logs include: request_id, endpoint, method, status_code, duration, vdom/adom
 # Compatible with Elasticsearch, Splunk, CloudWatch
 import hfortix
 
 hfortix.set_log_level('INFO')  # See request/response timing
 # Logs include: timestamp, level, module, request_id, endpoint, duration, status
+
+# 6. Multi-tenant logging with VDOM/ADOM
+# When vdom is configured, it's automatically added to all structured logs
+fgt = FortiOS(
+    host="192.168.1.99",
+    token="token",
+    vdom="customer_a"  # Virtual Domain for multi-tenant environments
+)
+
+# All logs automatically include vdom field:
+# {"timestamp":"...","level":"INFO","vdom":"customer_a","endpoint":"/api/v2/cmdb/firewall/policy",...}
+
+# Benefits for multi-tenant environments:
+# - Filter logs by customer: jq '.vdom == "customer_a"' logs.json
+# - Per-tenant metrics in ELK/Splunk/Datadog
+# - Audit trail isolation by virtual domain
+# - Compliance reporting per customer/tenant
 ```
 
 **Benefits:**

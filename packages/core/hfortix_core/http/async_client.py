@@ -81,6 +81,8 @@ class AsyncHTTPClient(BaseHTTPClient):
         read_only: bool = False,
         track_operations: bool = False,
         adaptive_retry: bool = False,
+        retry_strategy: str = "exponential",
+        retry_jitter: bool = False,
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
@@ -145,6 +147,11 @@ class AsyncHTTPClient(BaseHTTPClient):
                           retry delays based on
                           FortiGate health signals (slow responses, 503
                           errors).
+            retry_strategy: Retry backoff strategy - 'exponential' (default)
+                          or 'linear'. Exponential: 1s, 2s, 4s, 8s, 16s, 30s.
+                          Linear: 1s, 2s, 3s, 4s, 5s.
+            retry_jitter: Add random jitter (0-25% of delay) to retry delays
+                         to prevent thundering herd problem (default: False).
             audit_handler: Handler for audit logging (implements AuditHandler
             protocol).
                           Use built-in handlers: SyslogHandler, FileHandler,
@@ -187,12 +194,18 @@ class AsyncHTTPClient(BaseHTTPClient):
             max_connections=max_connections,
             max_keepalive_connections=max_keepalive_connections,
             adaptive_retry=adaptive_retry,
+            retry_strategy=retry_strategy,
+            retry_jitter=retry_jitter,
         )
 
         # Store circuit breaker auto-retry settings
         self._circuit_breaker_auto_retry = circuit_breaker_auto_retry
         self._circuit_breaker_max_retries = circuit_breaker_max_retries
         self._circuit_breaker_retry_delay = circuit_breaker_retry_delay
+
+        # Store connection pool settings for monitoring
+        self._max_connections = max_connections
+        self._max_keepalive_connections = max_keepalive_connections
 
         # Set default User-Agent if not provided
         if user_agent is None:
@@ -234,6 +247,17 @@ class AsyncHTTPClient(BaseHTTPClient):
         self._audit_handler = audit_handler
         self._audit_callback = audit_callback
         self._user_context = user_context or {}
+
+        # Connection pool monitoring
+        self._active_requests = 0
+        self._total_requests = 0
+        self._pool_exhaustion_count = 0
+        self._pool_exhaustion_timestamps: list[float] = []
+        
+        # Request inspection for debugging
+        self._last_request: Optional[dict[str, Any]] = None
+        self._last_response: Optional[dict[str, Any]] = None
+        self._last_response_time: Optional[float] = None
 
         # Set token if provided
         if token:
@@ -362,11 +386,75 @@ class AsyncHTTPClient(BaseHTTPClient):
                 del self._client.headers["X-CSRFTOKEN"]
 
     def get_connection_stats(self) -> dict[str, Any]:
-        """Get connection statistics (placeholder for async)"""
+        """
+        Get HTTP connection pool statistics (async client)
+
+        Returns:
+            dict: Connection statistics including:
+                - http2_enabled: Whether HTTP/2 is enabled
+                - max_connections: Maximum number of connections allowed
+                - max_keepalive_connections: Maximum keepalive connections
+                - active_requests: Current number of active requests
+                - total_requests: Total requests made since initialization
+                - pool_exhaustion_count: Times pool reached capacity
+                - circuit_breaker_state: Current circuit breaker state
+                - consecutive_failures: Number of consecutive failures
+
+        Example:
+            >>> stats = client.get_connection_stats()
+            >>> print(f"Circuit breaker: {stats['circuit_breaker_state']}")
+            >>> print(f"Active requests: {stats['active_requests']}")
+        """
         return {
-            "active_connections": 0,  # httpx.AsyncClient doesn't expose this easily  # noqa: E501
-            "idle_connections": 0,
+            "http2_enabled": True,
+            "max_connections": self._max_connections,
+            "max_keepalive_connections": self._max_keepalive_connections,
+            "active_requests": self._active_requests,
+            "total_requests": self._total_requests,
+            "pool_exhaustion_count": self._pool_exhaustion_count,
+            "circuit_breaker_state": self._circuit_breaker["state"],
+            "consecutive_failures": self._circuit_breaker[
+                "consecutive_failures"
+            ],
+            "last_failure_time": self._circuit_breaker["last_failure_time"],
         }
+
+    def inspect_last_request(self) -> dict[str, Any]:
+        """
+        Get details of last API request for debugging
+
+        Returns:
+            dict: Request information including:
+                - method: HTTP method used
+                - endpoint: API endpoint path
+                - params: Query parameters
+                - response_time_ms: Response time in milliseconds
+                - status_code: HTTP status code
+                - error: Error message if no requests made
+
+        Example:
+            >>> await client.get("/api/v2/cmdb/firewall/address")
+            >>> info = client.inspect_last_request()
+            >>> print(f"Last request took {info['response_time_ms']:.2f}ms")
+        """
+        if not self._last_request:
+            return {"error": "No requests have been made yet"}
+
+        result: dict[str, Any] = {
+            "method": self._last_request.get("method"),
+            "endpoint": self._last_request.get("endpoint"),
+            "params": self._last_request.get("params"),
+            "response_time_ms": (
+                round(self._last_response_time * 1000, 2)
+                if self._last_response_time
+                else None
+            ),
+        }
+
+        if self._last_response:
+            result["status_code"] = self._last_response.get("status_code")
+
+        return result
 
     async def _check_circuit_breaker(  # type: ignore[override]
         self, endpoint: str
@@ -707,12 +795,12 @@ class AsyncHTTPClient(BaseHTTPClient):
         except RuntimeError:
             logger.error(
                 "Circuit breaker blocked request",
-                extra={
-                    "request_id": request_id,
-                    "method": method,
-                    "endpoint": full_path,
-                    "circuit_state": self._circuit_breaker["state"],
-                },
+                extra=self._log_context(
+                    request_id=request_id,
+                    method=method,
+                    endpoint=full_path,
+                    circuit_state=self._circuit_breaker["state"],
+                ),
             )
             raise
 
@@ -722,13 +810,13 @@ class AsyncHTTPClient(BaseHTTPClient):
         # Log request start
         logger.debug(
             "Async request started",
-            extra={
-                "request_id": request_id,
-                "method": method.upper(),
-                "endpoint": full_path,
-                "has_data": bool(data),
-                "has_params": bool(params),
-            },
+            extra=self._log_context(
+                request_id=request_id,
+                method=method.upper(),
+                endpoint=full_path,
+                has_data=bool(data),
+                has_params=bool(params),
+            ),
         )
 
         # Track timing
@@ -741,17 +829,56 @@ class AsyncHTTPClient(BaseHTTPClient):
         last_error = None
         for attempt in range(self._max_retries + 1):
             try:
-                # Make async request
-                res = await self._client.request(
-                    method=method,
-                    url=url,
-                    json=data if data else None,
-                    params=params if params else None,
-                    timeout=endpoint_timeout if endpoint_timeout else None,
-                )
+                # Track active requests and total requests
+                self._active_requests += 1
+                self._total_requests += 1
+                
+                # Store request details for debugging
+                self._last_request = {
+                    "method": method.upper(),
+                    "endpoint": full_path,
+                    "params": params,
+                    "data": data,
+                    "timestamp": time.time(),
+                }
+                
+                try:
+                    # Make async request
+                    res = await self._client.request(
+                        method=method,
+                        url=url,
+                        json=data if data else None,
+                        params=params if params else None,
+                        timeout=endpoint_timeout if endpoint_timeout else None,
+                    )
+                    
+                    # Store response details for debugging
+                    self._last_response = {
+                        "status_code": res.status_code,
+                        "headers": dict(res.headers),
+                    }
+                    
+                except httpx.PoolTimeout as e:
+                    # Track pool exhaustion
+                    self._pool_exhaustion_count += 1
+                    self._pool_exhaustion_timestamps.append(time.time())
+                    logger.warning(
+                        "Connection pool exhausted (async)",
+                        extra={
+                            "request_id": request_id,
+                            "endpoint": full_path,
+                            "active_requests": self._active_requests,
+                            "max_connections": self._max_connections,
+                        },
+                    )
+                    raise
+                finally:
+                    # Always decrement active requests
+                    self._active_requests -= 1
 
                 # Calculate duration
                 duration = time.time() - start_time
+                self._last_response_time = duration
 
                 # Record response time for adaptive backpressure (if enabled)
                 self._record_response_time(endpoint_key, duration)
@@ -771,14 +898,14 @@ class AsyncHTTPClient(BaseHTTPClient):
                 # Log successful response
                 logger.info(
                     "Async request completed successfully",
-                    extra={
-                        "request_id": request_id,
-                        "method": method.upper(),
-                        "endpoint": full_path,
-                        "status_code": res.status_code,
-                        "duration_seconds": round(duration, 3),
-                        "attempts": attempt + 1,
-                    },
+                    extra=self._log_context(
+                        request_id=request_id,
+                        method=method.upper(),
+                        endpoint=full_path,
+                        status_code=res.status_code,
+                        duration_seconds=round(duration, 3),
+                        attempts=attempt + 1,
+                    ),
                 )
 
                 # Audit logging for successful operations
@@ -823,16 +950,16 @@ class AsyncHTTPClient(BaseHTTPClient):
 
                     logger.info(
                         "Retrying async request after delay",
-                        extra={
-                            "request_id": request_id,
-                            "method": method.upper(),
-                            "endpoint": full_path,
-                            "error_type": type(e).__name__,
-                            "attempt": attempt + 1,
-                            "max_attempts": self._max_retries + 1,
-                            "delay_seconds": delay,
-                            "adaptive_retry": self._adaptive_retry,
-                        },
+                        extra=self._log_context(
+                            request_id=request_id,
+                            method=method.upper(),
+                            endpoint=full_path,
+                            error_type=type(e).__name__,
+                            attempt=attempt + 1,
+                            max_attempts=self._max_retries + 1,
+                            delay_seconds=delay,
+                            adaptive_retry=self._adaptive_retry,
+                        ),
                     )
 
                     # Wait before retry (async sleep)
@@ -846,13 +973,13 @@ class AsyncHTTPClient(BaseHTTPClient):
             self._retry_stats["failed_requests"] += 1
             logger.error(
                 "Async request failed after all retries",
-                extra={
-                    "request_id": request_id,
-                    "method": method.upper(),
-                    "endpoint": full_path,
-                    "total_attempts": self._max_retries + 1,
-                    "error_type": type(last_error).__name__,
-                },
+                extra=self._log_context(
+                    request_id=request_id,
+                    method=method.upper(),
+                    endpoint=full_path,
+                    total_attempts=self._max_retries + 1,
+                    error_type=type(last_error).__name__,
+                ),
             )
 
             # Audit log the failure

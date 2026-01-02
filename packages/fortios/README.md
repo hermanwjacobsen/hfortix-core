@@ -191,13 +191,101 @@ print(f"Recommended settings: {results['recommendations']}")
 
 ### 🔧 Enterprise Features
 
+- **Audit Logging**: Built-in compliance logging with SIEM integration (SOC 2, HIPAA, PCI-DSS)
+- **Observability**: Structured logging, distributed tracing with `trace_id`, user context tracking
 - **HTTP/2 Support**: Connection multiplexing for better performance
-- **Automatic Retry**: Handles transient failures (429, 500, 502, 503, 504)
+- **Automatic Retry**: Handles transient failures (429, 500, 502, 503, 504) with exponential/linear/fibonacci backoff
 - **Circuit Breaker**: Prevents cascade failures with automatic recovery
 - **Request Tracking**: Correlation IDs for distributed tracing
 - **Validation Framework**: 832 auto-generated validators
+
+### 🔍 Debugging & Monitoring (v0.4.0)
+
+**Quick Debug Mode:**
+```python
+# Enable debug logging with simple boolean
+fgt = FortiOS(host="...", token="...", debug=True)
+```
+
+**Connection Pool Monitoring:**
+```python
+# Real-time connection statistics
+stats = fgt.connection_stats
+print(f"Active: {stats['active_requests']}/{stats['max_connections']}")
+print(f"Total requests: {stats['total_requests']}")
+print(f"Pool exhaustion: {stats['pool_exhaustion_count']}")
+```
+
+**Request Inspection:**
+```python
+# Debug slow or failed requests
+result = fgt.api.cmdb.firewall.address.list()
+info = fgt.last_request
+print(f"Endpoint: {info['endpoint']}")
+print(f"Response time: {info['response_time_ms']}ms")
+print(f"Status: {info['status_code']}")
+```
+
+**Debug Session:**
+```python
+from hfortix_fortios import DebugSession
+
+# Comprehensive session monitoring
+with DebugSession(fgt) as session:
+    # Make API calls
+    fgt.api.cmdb.firewall.address.list()
+    fgt.api.cmdb.firewall.policy.list()
+    
+    # Auto-prints summary on exit:
+    # - Duration, total requests, success/failure counts
+    # - Avg/min/max response times
+    # - Connection pool deltas
+```
+
+**Performance Profiling:**
+```python
+from hfortix_fortios import debug_timer
+
+# Time individual operations
+with debug_timer("Fetch all addresses") as timing:
+    result = fgt.api.cmdb.firewall.address.list()
+
+print(f"Took {timing['duration_ms']:.1f}ms")
+```
+
+**Enhanced Logging:**
+```python
+from hfortix_fortios import configure_logging
+
+# JSON logging for ELK/Splunk
+configure_logging(
+    level="INFO",
+    format="json",
+    include_trace=True,  # Add request_id to all logs
+    output_file="/var/log/fortios.log"  # Log to file
+)
+
+# Text logging with colors for development
+configure_logging(
+    level="DEBUG",
+    format="text",
+    use_color=True
+)
+```
+
+**Type Hints & IDE Support:**
+```python
+# Full type hints for better autocomplete
+from hfortix_fortios import FortiOS
+from hfortix_core import APIResponse, ListResponse
+
+fgt: FortiOS = FortiOS(host="...", token="...")
+response: APIResponse = fgt.api.cmdb.firewall.address.get(name="test")
+```
+
+See `docs/fortios/DEBUGGING.md` for complete debugging guide.
 - **Type Safety**: Full type hints with IDE autocomplete
-- **Structured Logging**: Machine-readable logs for aggregation tools
+- **Structured Logging**: Machine-readable JSON logs for ELK/Splunk/CloudWatch
 
 ## Import Patterns
 

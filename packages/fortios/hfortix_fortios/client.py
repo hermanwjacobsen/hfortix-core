@@ -153,7 +153,8 @@ class FortiOS:
         verify: bool = True,
         vdom: Optional[str] = None,
         port: Optional[int] = None,
-        debug: Optional[str] = None,
+        debug: Union[str, bool, None] = None,
+        debug_options: Optional[dict[str, Any]] = None,
         max_retries: int = 3,
         connect_timeout: float = 10.0,
         read_timeout: float = 300.0,
@@ -168,6 +169,9 @@ class FortiOS:
         session_idle_timeout: Union[int, float, None] = 300,
         read_only: bool = False,
         track_operations: bool = False,
+        adaptive_retry: bool = False,
+        retry_strategy: str = "exponential",
+        retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
         audit_handler: Optional[Any] = None,
@@ -191,7 +195,8 @@ class FortiOS:
         verify: bool = True,
         vdom: Optional[str] = None,
         port: Optional[int] = None,
-        debug: Optional[str] = None,
+        debug: Union[str, bool, None] = None,
+        debug_options: Optional[dict[str, Any]] = None,
         max_retries: int = 3,
         connect_timeout: float = 10.0,
         read_timeout: float = 300.0,
@@ -206,6 +211,9 @@ class FortiOS:
         session_idle_timeout: Union[int, float, None] = 300,
         read_only: bool = False,
         track_operations: bool = False,
+        adaptive_retry: bool = False,
+        retry_strategy: str = "exponential",
+        retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
         audit_handler: Optional[Any] = None,
@@ -228,7 +236,8 @@ class FortiOS:
         verify: bool = True,
         vdom: Optional[str] = None,
         port: Optional[int] = None,
-        debug: Optional[str] = None,
+        debug: Union[str, bool, None] = None,
+        debug_options: Optional[dict[str, Any]] = None,
         max_retries: int = 3,
         connect_timeout: float = 10.0,
         read_timeout: float = 300.0,
@@ -244,6 +253,8 @@ class FortiOS:
         read_only: bool = False,
         track_operations: bool = False,
         adaptive_retry: bool = False,
+        retry_strategy: str = "exponential",
+        retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
         audit_handler: Optional[Any] = None,
@@ -291,8 +302,10 @@ class FortiOS:
             like 8443)
             debug: Logging level for this instance ('debug', 'info', 'warning',
             'error', 'off')
+                   Can be a string level or boolean True for 'debug' level
                    If not specified, uses the global log level set via
                    hfortix.set_log_level()
+            debug_options: Optional dict with debugging configuration options
             max_retries: Maximum number of retry attempts on transient failures
             (default: 3)
             connect_timeout: Timeout for establishing connection in seconds
@@ -382,6 +395,16 @@ class FortiOS:
                           delays when FortiGate is overloaded to prevent
                           cascading failures.
                           Access health metrics via get_health_metrics().
+            retry_strategy: Retry backoff strategy (default: "exponential").
+                          - "exponential": 1s, 2s, 4s, 8s, 16s, 30s (recommended
+                          for transient failures)
+                          - "linear": 1s, 2s, 3s, 4s, 5s (better for rate
+                          limiting scenarios)
+            retry_jitter: Add random jitter to retry delays (default: False).
+                         Adds 0-25% random variation to prevent thundering
+                         herd when multiple
+                         clients retry simultaneously. Recommended for
+                         production deployments.
             error_mode: How convenience wrappers handle errors (default:
             "raise").
 
@@ -596,9 +619,21 @@ class FortiOS:
         if client is None:
             self._validate_credentials(token, username, password)
 
+        # Store debug options
+        self._debug_options = debug_options or {}
+        self._debug_enabled = False
+
         # Set up instance-specific logging if requested
         if debug:
-            self._setup_logging(debug)
+            if isinstance(debug, bool):
+                # Boolean debug - enable DEBUG level
+                if debug:
+                    self._setup_logging("DEBUG")
+                    self._debug_enabled = True
+            elif isinstance(debug, str):
+                # String debug - use as log level
+                self._setup_logging(debug.upper())
+                self._debug_enabled = (debug.upper() == "DEBUG")
 
         # If trace_id is provided, automatically include in user_context
         if trace_id:
@@ -654,6 +689,8 @@ class FortiOS:
                     read_only=read_only,
                     track_operations=track_operations,
                     adaptive_retry=adaptive_retry,
+                    retry_strategy=retry_strategy,
+                    retry_jitter=retry_jitter,
                     audit_handler=audit_handler,  # type: ignore[call-arg]
                     audit_callback=audit_callback,  # type: ignore[call-arg]
                     user_context=user_context,  # type: ignore[call-arg]
@@ -681,6 +718,8 @@ class FortiOS:
                     read_only=read_only,
                     track_operations=track_operations,
                     adaptive_retry=adaptive_retry,
+                    retry_strategy=retry_strategy,
+                    retry_jitter=retry_jitter,
                     audit_handler=audit_handler,  # type: ignore[call-arg]
                     audit_callback=audit_callback,  # type: ignore[call-arg]
                     user_context=user_context,  # type: ignore[call-arg]
@@ -1017,6 +1056,226 @@ class FortiOS:
             )
         return self._client.get_write_operations()
 
+    def export_audit_logs(
+        self,
+        filepath: Optional[str] = None,
+        format: str = "json",
+        filter_method: Optional[str] = None,
+        filter_api_type: Optional[str] = None,
+        since: Optional[str] = None,
+    ) -> Optional[str]:
+        """
+        Export audit logs to file or return as string
+
+        Exports all tracked operations (requires track_operations=True) to a
+        file or returns as formatted string. Useful for compliance reporting,
+        change documentation, and integration with external SIEM systems.
+
+        Args:
+            filepath: Path to export file (optional). If None, returns string
+            format: Export format - "json" (default), "csv", or "text"
+            filter_method: Filter by HTTP method (e.g., "POST", "PUT",
+            "DELETE")
+            filter_api_type: Filter by API type (e.g., "cmdb", "monitor")
+            since: Filter operations since ISO 8601 timestamp
+                  (e.g., "2025-01-01T00:00:00Z")
+
+        Returns:
+            Formatted string if filepath is None, otherwise None (writes to
+            file)
+
+        Raises:
+            RuntimeError: If track_operations was not enabled
+            ValueError: If invalid format specified
+
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...", track_operations=True)
+            >>> # Make some changes
+            >>> fgt.api.cmdb.firewall.address.create(name="test",
+            ...                                       subnet="10.0.0.1/32")
+            >>> fgt.api.cmdb.firewall.policy.update("10", action="deny")
+            >>>
+            >>> # Export to JSON file
+            >>> fgt.export_audit_logs("audit.json", format="json")
+            >>>
+            >>> # Export only write operations to CSV
+            >>> fgt.export_audit_logs("changes.csv", format="csv",
+            ...                       filter_method="POST,PUT,DELETE")
+            >>>
+            >>> # Get as string for processing
+            >>> audit_json = fgt.export_audit_logs(format="json")
+            >>> send_to_siem(audit_json)
+
+        Note:
+            For real-time audit logging to SIEM, use audit_handler parameter
+            when initializing FortiOS client instead.
+        """
+        if not hasattr(self._client, "get_operations"):
+            raise RuntimeError(
+                "Operation tracking is not enabled. "
+                "Initialize FortiOS with track_operations=True to use this feature."  # noqa: E501
+            )
+
+        if format not in ("json", "csv", "text"):
+            raise ValueError(
+                f"Invalid format '{format}'. Must be 'json', 'csv', or 'text'"
+            )
+
+        # Get operations and apply filters
+        operations = self._client.get_operations()
+
+        # Filter by method
+        if filter_method:
+            methods = [m.strip().upper() for m in filter_method.split(",")]
+            operations = [
+                op for op in operations if op.get("method") in methods
+            ]
+
+        # Filter by API type
+        if filter_api_type:
+            operations = [
+                op
+                for op in operations
+                if op.get("api_type") == filter_api_type
+            ]
+
+        # Filter by timestamp
+        if since:
+            operations = [
+                op for op in operations if op.get("timestamp", "") >= since
+            ]
+
+        # Format output
+        if format == "json":
+            import json
+
+            output = json.dumps(operations, indent=2)
+        elif format == "csv":
+            import csv
+            import io
+
+            output_buffer = io.StringIO()
+            if operations:
+                fieldnames = operations[0].keys()
+                writer = csv.DictWriter(output_buffer, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(operations)
+                output = output_buffer.getvalue()
+            else:
+                output = ""
+        else:  # text
+            lines = []
+            for op in operations:
+                lines.append(
+                    f"{op.get('timestamp')} [{op.get('method')}] "
+                    f"{op.get('api_type')}{op.get('path')} "
+                    f"(status: {op.get('status_code')})"
+                )
+            output = "\n".join(lines)
+
+        # Write to file or return string
+        if filepath:
+            with open(filepath, "w") as f:
+                f.write(output)
+            return None
+        else:
+            return output
+
+    def get_retry_stats(self) -> dict[str, Any]:
+        """
+        Get retry statistics from HTTP client
+
+        Returns statistics about retry attempts, including total retries,
+        reasons for retries, and per-endpoint retry counts. Useful for
+        monitoring FortiGate health and diagnosing connectivity issues.
+
+        Returns:
+            Dictionary containing:
+
+            - total_retries: Total number of retry attempts across all requests
+            - total_requests: Total number of requests made
+            - successful_requests: Number of requests that succeeded
+            - failed_requests: Number of requests that ultimately failed
+            - retry_by_reason: Dict mapping retry reason to count
+              (e.g., {"timeout": 10, "rate_limit": 8, "server_error": 5})
+            - retry_by_endpoint: Dict mapping endpoint to retry count
+            - last_retry_time: Unix timestamp of most recent retry
+
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...", max_retries=5)
+            >>> # Make some requests that might retry
+            >>> fgt.api.cmdb.firewall.policy.list()
+            >>>
+            >>> stats = fgt.get_retry_stats()
+            >>> print(f"Total retries: {stats['total_retries']}")
+            >>> print(f"Success rate: {stats['successful_requests'] / stats['total_requests'] * 100:.1f}%")
+            >>> for reason, count in stats['retry_by_reason'].items():
+            ...     print(f"  {reason}: {count} retries")
+            Total retries: 23
+            Success rate: 98.5%
+              timeout: 10 retries
+              rate_limit: 8 retries
+              server_error: 5 retries
+
+        Note:
+            Stats are cumulative for the lifetime of the FortiOS client instance.
+        """
+        if not hasattr(self._client, "get_retry_stats"):
+            return {
+                "total_retries": 0,
+                "total_requests": 0,
+                "successful_requests": 0,
+                "failed_requests": 0,
+                "retry_by_reason": {},
+                "retry_by_endpoint": {},
+                "last_retry_time": None,
+            }
+        return self._client.get_retry_stats()
+
+    def get_circuit_breaker_state(self) -> dict[str, Any]:
+        """
+        Get current circuit breaker state
+
+        Returns the current state of the circuit breaker, including whether
+        it's open, closed, or half-open, the number of consecutive failures,
+        and the configured threshold.
+
+        Returns:
+            Dictionary containing:
+
+            - state: Current state - "closed", "open", or "half_open"
+            - consecutive_failures: Number of consecutive failures
+            - failure_threshold: Threshold for opening circuit
+            - timeout: Seconds to wait before transitioning to half-open
+            - last_failure_time: Unix timestamp of most recent failure
+
+        Example:
+            >>> fgt = FortiOS("192.0.2.10", token="...",
+            ...               circuit_breaker_threshold=10)
+            >>> # Make requests
+            >>> try:
+            ...     fgt.api.cmdb.firewall.policy.list()
+            ... except CircuitBreakerOpenError:
+            ...     state = fgt.get_circuit_breaker_state()
+            ...     print(f"Circuit is {state['state']}")
+            ...     print(f"Failures: {state['consecutive_failures']}/{state['failure_threshold']}")
+            Circuit is open
+            Failures: 10/10
+
+        Note:
+            Circuit breaker automatically resets after successful requests.
+            You can manually reset with fgt._client.reset_circuit_breaker().
+        """
+        if not hasattr(self._client, "get_circuit_breaker_state"):
+            return {
+                "state": "closed",
+                "consecutive_failures": 0,
+                "failure_threshold": 0,
+                "timeout": 0,
+                "last_failure_time": None,
+            }
+        return self._client.get_circuit_breaker_state()
+
     def get_health_metrics(self) -> dict[str, Any]:
         """
         Get comprehensive health metrics for HTTP client
@@ -1125,6 +1384,62 @@ class FortiOS:
             result = self._client.close()
             if result is not None:
                 await result
+
+    @property
+    def connection_stats(self) -> dict[str, Any]:
+        """
+        Get connection pool and health statistics
+        
+        Convenience property that returns real-time connection pool metrics,
+        circuit breaker state, and request statistics.
+        
+        Returns:
+            Dictionary with connection metrics:
+                - http2_enabled: Whether HTTP/2 is enabled
+                - max_connections: Maximum connections allowed
+                - max_keepalive_connections: Maximum keepalive connections
+                - active_requests: Current active requests
+                - total_requests: Total requests since initialization
+                - pool_exhaustion_count: Times pool reached capacity
+                - circuit_breaker_state: Current state (closed/open/half-open)
+                - consecutive_failures: Consecutive failure count
+                - last_failure_time: Timestamp of last failure
+        
+        Example:
+            >>> fgt = FortiOS("192.168.1.99", token="...")
+            >>> stats = fgt.connection_stats
+            >>> print(f"Active: {stats['active_requests']}/{stats['max_connections']}")
+            >>> print(f"Pool exhaustions: {stats['pool_exhaustion_count']}")
+            >>> print(f"Circuit breaker: {stats['circuit_breaker_state']}")
+        """
+        return self._client.get_connection_stats()
+
+    @property
+    def last_request(self) -> dict[str, Any]:
+        """
+        Get details of last API request (for debugging)
+        
+        Returns information about the most recent API call including method,
+        endpoint, response time, and status code. Useful for troubleshooting
+        and performance analysis.
+        
+        Returns:
+            Dictionary with request details:
+                - method: HTTP method (GET, POST, PUT, DELETE)
+                - endpoint: API endpoint path
+                - params: Query parameters used
+                - response_time_ms: Response time in milliseconds
+                - status_code: HTTP status code
+                - error: Error message if no requests made yet
+        
+        Example:
+            >>> fgt = FortiOS("192.168.1.99", token="...")
+            >>> fgt.api.cmdb.firewall.address.list()
+            >>> info = fgt.last_request
+            >>> print(f"Last request: {info['method']} {info['endpoint']}")
+            >>> print(f"Response time: {info['response_time_ms']:.2f}ms")
+        """
+        return self._client.inspect_last_request()
 
     def __enter__(self) -> "FortiOS":
         """Context manager entry (sync mode only)"""

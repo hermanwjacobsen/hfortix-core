@@ -20,6 +20,24 @@ class StructuredFormatter(logging.Formatter):
     Useful for log aggregation systems like ELK, Splunk, CloudWatch
     that can parse JSON logs for better searching and analysis.
     
+    Standard Fields (always present):
+        - timestamp: ISO 8601 UTC timestamp
+        - level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        - logger: Logger name (e.g., "hfortix.http.client")
+        - message: Log message
+    
+    Common Extra Fields (added via extra={...}):
+        - request_id: Unique request identifier for correlation
+        - method: HTTP method (GET, POST, PUT, DELETE, PATCH)
+        - endpoint: API endpoint path
+        - status_code: HTTP status code
+        - duration_seconds: Request duration in seconds
+        - vdom: FortiOS Virtual Domain (multi-tenant environments)
+        - adom: FortiManager/FortiAnalyzer Administrative Domain
+        - error_type: Exception class name (for errors)
+        - attempt: Current retry attempt number
+        - max_attempts: Maximum retry attempts
+    
     Example:
         >>> import logging
         >>> from hfortix_core.logging import StructuredFormatter
@@ -28,10 +46,27 @@ class StructuredFormatter(logging.Formatter):
         >>> handler.setFormatter(StructuredFormatter())
         >>> logger = logging.getLogger("hfortix")
         >>> logger.addHandler(handler)
-        >>> logger.info("API request completed", extra={"endpoint": "/api/v2/cmdb/firewall/policy", "duration_ms": 145})
+        >>> 
+        >>> # Basic usage
+        >>> logger.info("API request completed", 
+        ...            extra={"endpoint": "/api/v2/cmdb/firewall/policy",
+        ...                   "duration_seconds": 0.145})
         
         Output:
-        {"timestamp":"2026-01-02T14:23:45.123Z","level":"INFO","logger":"hfortix","message":"API request completed","endpoint":"/api/v2/cmdb/firewall/policy","duration_ms":145}
+        {"timestamp":"2026-01-02T14:23:45.123Z","level":"INFO",
+         "logger":"hfortix","message":"API request completed",
+         "endpoint":"/api/v2/cmdb/firewall/policy","duration_seconds":0.145}
+        
+        >>> # Multi-tenant usage
+        >>> logger.info("Policy created",
+        ...            extra={"vdom": "customer_a", "endpoint": "/api/v2/cmdb/firewall/policy",
+        ...                   "request_id": "req-123", "status_code": 200})
+        
+        Output:
+        {"timestamp":"2026-01-02T14:23:45.456Z","level":"INFO",
+         "logger":"hfortix","message":"Policy created","vdom":"customer_a",
+         "endpoint":"/api/v2/cmdb/firewall/policy","request_id":"req-123",
+         "status_code":200}
     """
     
     def __init__(

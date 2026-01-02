@@ -50,19 +50,25 @@ Key Features
    100% coverage of FortiOS 7.6.5 API (750+ endpoints across 77 categories)
 
 🎯 **Fully Typed**
-   Complete type hints for excellent IDE support and type safety
+   Complete type hints with .pyi stubs for excellent IDE support and type safety
 
 ⚡ **Modern & Fast**
-   Async/await support with httpx, connection pooling, and circuit breakers
+   Async/await support with httpx, HTTP/2, connection pooling, and circuit breakers
 
 🛡️ **Production Ready**
-   Comprehensive error handling, validation, retry logic, and logging
+   Comprehensive error handling, validation, retry logic, and structured logging
 
 🔄 **Flexible Interface**
    Dual-pattern syntax supporting both dictionary and keyword arguments
 
 🎨 **Convenience Wrappers**
    High-level wrappers for common tasks (firewall policies, schedules, services)
+
+🔍 **Enhanced Debugging** *(New in v0.4.0)*
+   Connection pool monitoring, request inspection, debug sessions, and performance profiling
+
+📊 **Advanced Observability** *(New in v0.4.0)*
+   Structured logging, multi-tenant support, request tracing, and SIEM integration
 
 Quick Example - FortiOS
 -----------------------

@@ -16,8 +16,103 @@ from typing import Literal
 
 from .client import FortiOS
 
+# Import convenience wrappers for easier access
+from .firewall import (
+    FirewallPolicy,
+    IPMACBindingSetting,
+    IPMACBindingTable,
+    ScheduleGroup,
+    ScheduleOnetime,
+    ScheduleRecurring,
+    ServiceCategory,
+    ServiceCustom,
+    ServiceGroup,
+    ShaperPerIp,
+    TrafficShaper,
+)
+
+# Import debug utilities from core for convenience
+from hfortix_core import (
+    DebugSession,
+    debug_timer,
+    format_connection_stats,
+    format_request_info,
+    print_debug_info,
+)
+
+# Import commonly used exceptions
+from hfortix_core import (
+    APIError,
+    AuthenticationError,
+    AuthorizationError,
+    BadRequestError,
+    CircuitBreakerOpenError,
+    ConfigurationError,
+    DuplicateEntryError,
+    EntryInUseError,
+    FortinetError,
+    InvalidValueError,
+    MethodNotAllowedError,
+    NonRetryableError,
+    OperationNotSupportedError,
+    PermissionDeniedError,
+    RateLimitError,
+    ReadOnlyModeError,
+    ResourceNotFoundError,
+    RetryableError,
+    ServerError,
+    ServiceUnavailableError,
+    TimeoutError,
+    VDOMError,
+)
+
 __version__ = "0.4.0"
-__all__ = ["FortiOS", "configure_logging"]
+__all__ = [
+    # Main client
+    "FortiOS",
+    "configure_logging",
+    # Convenience wrappers
+    "FirewallPolicy",
+    "IPMACBindingSetting",
+    "IPMACBindingTable",
+    "ScheduleGroup",
+    "ScheduleOnetime",
+    "ScheduleRecurring",
+    "ServiceCategory",
+    "ServiceCustom",
+    "ServiceGroup",
+    "ShaperPerIp",
+    "TrafficShaper",
+    # Debug utilities
+    "DebugSession",
+    "debug_timer",
+    "format_connection_stats",
+    "format_request_info",
+    "print_debug_info",
+    # Exceptions
+    "FortinetError",
+    "APIError",
+    "AuthenticationError",
+    "AuthorizationError",
+    "RetryableError",
+    "NonRetryableError",
+    "ConfigurationError",
+    "VDOMError",
+    "OperationNotSupportedError",
+    "ReadOnlyModeError",
+    "BadRequestError",
+    "ResourceNotFoundError",
+    "MethodNotAllowedError",
+    "RateLimitError",
+    "ServerError",
+    "ServiceUnavailableError",
+    "CircuitBreakerOpenError",
+    "TimeoutError",
+    "DuplicateEntryError",
+    "EntryInUseError",
+    "InvalidValueError",
+    "PermissionDeniedError",
+]
 
 
 def configure_logging(
@@ -25,6 +120,9 @@ def configure_logging(
     format: Literal["json", "text"] = "text",
     handler: logging.Handler | None = None,
     use_color: bool = False,
+    include_trace: bool = False,
+    output_file: str | None = None,
+    structured: bool = False,
 ) -> None:
     """
     Configure logging for HFortix library
@@ -38,6 +136,9 @@ def configure_logging(
         format: Output format - "json" for structured logs or "text" for human-readable
         handler: Custom logging handler (optional, default: StreamHandler to stdout)
         use_color: Use ANSI color codes in text format (default: False)
+        include_trace: Include request/trace IDs in all logs (default: False)
+        output_file: Path to log file (logs to both file and console if provided)
+        structured: Force structured logging with extra fields (default: False)
     
     Examples:
         Basic text logging:
@@ -56,11 +157,15 @@ def configure_logging(
         >>> configure_logging(level="DEBUG", format="text", use_color=True)
         >>> # Debug logs with ANSI colors
         
-        Custom handler:
+        Log to file:
         
-        >>> import logging
-        >>> file_handler = logging.FileHandler("/var/log/hfortix.log")
-        >>> configure_logging(level="INFO", format="json", handler=file_handler)
+        >>> configure_logging(level="INFO", format="json", output_file="/var/log/hfortix.log")
+        >>> # Logs to both console and file
+        
+        With request tracing:
+        
+        >>> configure_logging(level="INFO", format="json", include_trace=True)
+        >>> # All logs include request_id for correlation
     
     Note:
         This configures all loggers under the "hfortix" namespace:
@@ -68,7 +173,7 @@ def configure_logging(
         - hfortix.audit (Audit logging)
         - hfortix.core (Core utilities)
     """
-    # Import formatters
+    # Import formatters from logging package
     from hfortix_core.logging import StructuredFormatter, TextFormatter
     
     # Get root hfortix logger
@@ -83,24 +188,39 @@ def configure_logging(
     # Remove existing handlers to avoid duplicates
     logger.handlers.clear()
     
-    # Create handler if not provided
-    if handler is None:
-        handler = logging.StreamHandler(sys.stdout)
-    
-    # Set formatter based on format type
-    if format == "json":
+    # Choose formatter based on format type or structured flag
+    if format == "json" or structured:
         formatter = StructuredFormatter()
     else:
         formatter = TextFormatter(use_color=use_color)
     
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
+    # Create console handler if not provided
+    if handler is None:
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+    else:
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+    
+    # Add file handler if output_file is specified
+    if output_file:
+        file_handler = logging.FileHandler(output_file)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        logger.info(f"Logging to file: {output_file}")
     
     # Prevent propagation to root logger to avoid duplicate logs
     logger.propagate = False
     
     # Log configuration
+    extra = {"format": format, "level": logging.getLevelName(level)}
+    if include_trace:
+        extra["trace_enabled"] = True
+    if output_file:
+        extra["output_file"] = output_file
+        
     logger.debug(
         f"Logging configured: level={logging.getLevelName(level)}, format={format}",
-        extra={"format": format, "level": logging.getLevelName(level)},
+        extra=extra,
     )

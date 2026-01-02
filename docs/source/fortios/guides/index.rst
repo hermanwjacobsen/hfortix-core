@@ -11,6 +11,9 @@ Advanced topics, patterns, and techniques for working with HFortix.
    :maxdepth: 1
 
    audit-logging
+   observability
+   debugging
+   rate-limiting
    filtering
    validation
    performance
@@ -27,6 +30,25 @@ Advanced Topics
    Enterprise audit logging with SIEM integration for compliance (SOC 2, HIPAA, PCI-DSS).
    Built-in handlers for syslog, files, and streams. Automatic data sanitization and
    user context tracking.
+
+**Observability**
+   Structured logging and distributed tracing for production systems. Includes
+   ``configure_logging()`` helper, JSON formatters, ``trace_id`` parameter for
+   request correlation, and automatic VDOM/ADOM inclusion for multi-tenant environments.
+   Integration with ELK, Splunk, CloudWatch, and Datadog.
+
+**Debugging** *(New in v0.4.0)*
+   Comprehensive debugging tools and techniques. Covers debug mode (``debug=True``),
+   connection pool monitoring (``fgt.connection_stats``), request inspection
+   (``fgt.last_request``), DebugSession context manager, performance profiling,
+   and structured logging configuration. Includes integration examples for
+   ELK, Splunk, and CloudWatch.
+
+**Rate Limiting** *(New in v0.4.0)*
+   Complete guide to handling API rate limits and building resilient applications.
+   Covers HTTP 429 handling, retry strategies (exponential/linear/fibonacci),
+   circuit breaker patterns, connection pool management, and async patterns for
+   high throughput. Includes production-ready configuration examples.
 
 **Filtering**
    Complete guide to filtering and querying API results. 50+ examples covering

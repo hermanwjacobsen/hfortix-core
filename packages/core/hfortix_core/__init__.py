@@ -31,9 +31,32 @@ from .exceptions import (
     TimeoutError,
     VDOMError,
 )
+from .types import (
+    APIResponse,
+    CircuitBreakerState,
+    ConnectionStats,
+    ErrorResponse,
+    ListResponse,
+    ObjectResponse,
+    RequestInfo,
+)
+from .logging import (
+    RequestLogger,
+    log_operation,
+    StructuredFormatter,
+    TextFormatter,
+)
+from .debug import (
+    DebugSession,
+    debug_timer,
+    format_connection_stats,
+    format_request_info,
+    print_debug_info,
+)
 
 __version__ = "0.4.0"
 __all__ = [
+    # Exceptions
     "FortinetError",
     "APIError",
     "AuthenticationError",
@@ -56,4 +79,23 @@ __all__ = [
     "EntryInUseError",
     "InvalidValueError",
     "PermissionDeniedError",
+    # Type definitions
+    "APIResponse",
+    "ListResponse",
+    "ObjectResponse",
+    "ErrorResponse",
+    "ConnectionStats",
+    "RequestInfo",
+    "CircuitBreakerState",
+    # Logging utilities
+    "RequestLogger",
+    "log_operation",
+    "StructuredFormatter",
+    "TextFormatter",
+    # Debug utilities
+    "DebugSession",
+    "debug_timer",
+    "format_connection_stats",
+    "format_request_info",
+    "print_debug_info",
 ]
