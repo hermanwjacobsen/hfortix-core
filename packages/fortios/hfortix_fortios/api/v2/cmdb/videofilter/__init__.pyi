@@ -1,19 +1,22 @@
-"""
-Type stubs for videofilter category.
+"""Type stubs for VIDEOFILTER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.977987+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .keyword import Keyword as Keyword
-from .profile import Profile as Profile
-from .youtube_key import YoutubeKey as YoutubeKey
 
-__all__ = [
-    "Keyword",
-    "Profile",
-    "YoutubeKey",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import keyword
+    from . import profile
+    from . import youtube_key
+
+
+class Videofilter:
+    """Type stub for Videofilter."""
+
+    keyword: keyword.Keyword
+    profile: profile.Profile
+    youtube_key: youtube_key.YoutubeKey
+
+    def __init__(self, client: IHTTPClient) -> None: ...

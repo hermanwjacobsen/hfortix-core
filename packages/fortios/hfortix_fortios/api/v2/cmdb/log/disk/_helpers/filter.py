@@ -892,7 +892,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/disk/filter",
     "category": "cmdb",
-    "api_path": "log/disk/filter",
+    "api_path": "log.disk/filter",
     "help": "Configure filters for local disk logging. Use these filters to determine the log messages to record according to severity and type.",
     "total_fields": 14,
     "required_fields_count": 0,

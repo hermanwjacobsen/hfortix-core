@@ -1,19 +1,22 @@
-"""
-Type stubs for endpoint_control category.
+"""Type stubs for ENDPOINT_CONTROL category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.986217+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .fctems import Fctems as Fctems
-from .fctems_override import FctemsOverride as FctemsOverride
-from .settings import Settings as Settings
 
-__all__ = [
-    "Fctems",
-    "FctemsOverride",
-    "Settings",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import fctems
+    from . import fctems_override
+    from . import settings
+
+
+class EndpointControl:
+    """Type stub for EndpointControl."""
+
+    fctems: fctems.Fctems
+    fctems_override: fctems_override.FctemsOverride
+    settings: settings.Settings
+
+    def __init__(self, client: IHTTPClient) -> None: ...

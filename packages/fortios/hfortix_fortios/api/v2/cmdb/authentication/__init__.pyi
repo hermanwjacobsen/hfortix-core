@@ -1,19 +1,22 @@
-"""
-Type stubs for authentication category.
+"""Type stubs for AUTHENTICATION category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.983878+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .rule import Rule as Rule
-from .scheme import Scheme as Scheme
-from .setting import Setting as Setting
 
-__all__ = [
-    "Rule",
-    "Scheme",
-    "Setting",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import rule
+    from . import scheme
+    from . import setting
+
+
+class Authentication:
+    """Type stub for Authentication."""
+
+    rule: rule.Rule
+    scheme: scheme.Scheme
+    setting: setting.Setting
+
+    def __init__(self, client: IHTTPClient) -> None: ...

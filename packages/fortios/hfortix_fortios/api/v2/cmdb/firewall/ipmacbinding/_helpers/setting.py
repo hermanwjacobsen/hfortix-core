@@ -615,7 +615,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/ipmacbinding/setting",
     "category": "cmdb",
-    "api_path": "firewall/ipmacbinding/setting",
+    "api_path": "firewall.ipmacbinding/setting",
     "help": "Configure IP to MAC binding settings.",
     "total_fields": 3,
     "required_fields_count": 0,

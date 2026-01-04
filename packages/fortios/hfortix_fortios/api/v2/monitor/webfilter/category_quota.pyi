@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class CategoryQuota:
+class TrustedUrls:
     """
-    Monitor endpoint for webfilter/category-quota
+    Monitor endpoint for webfilter/trusted-urls
     
-    Path: webfilter/category_quota
+    Path: webfilter/trusted_urls
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class CategoryQuota:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "TrustedUrls",
+]

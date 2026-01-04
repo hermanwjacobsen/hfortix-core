@@ -821,7 +821,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/qos/dot1p_map",
     "category": "cmdb",
-    "api_path": "switch-controller/qos/dot1p-map",
+    "api_path": "switch-controller.qos/dot1p-map",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure FortiSwitch QoS 802.1p.",

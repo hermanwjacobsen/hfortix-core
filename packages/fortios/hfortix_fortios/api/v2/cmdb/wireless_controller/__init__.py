@@ -8,23 +8,6 @@ from .arrp_profile import ArrpProfile
 from .ble_profile import BleProfile
 from .bonjour_profile import BonjourProfile
 from .global_setting import GlobalSetting
-from .hotspot20_anqp_3gpp_cellular import Hotspot20Anqp3gppCellular
-from .hotspot20_anqp_ip_address_type import Hotspot20AnqpIpAddressType
-from .hotspot20_anqp_nai_realm import Hotspot20AnqpNaiRealm
-from .hotspot20_anqp_network_auth_type import Hotspot20AnqpNetworkAuthType
-from .hotspot20_anqp_roaming_consortium import Hotspot20AnqpRoamingConsortium
-from .hotspot20_anqp_venue_name import Hotspot20AnqpVenueName
-from .hotspot20_anqp_venue_url import Hotspot20AnqpVenueUrl
-from .hotspot20_h2qp_advice_of_charge import Hotspot20H2qpAdviceOfCharge
-from .hotspot20_h2qp_conn_capability import Hotspot20H2qpConnCapability
-from .hotspot20_h2qp_operator_name import Hotspot20H2qpOperatorName
-from .hotspot20_h2qp_osu_provider import Hotspot20H2qpOsuProvider
-from .hotspot20_h2qp_osu_provider_nai import Hotspot20H2qpOsuProviderNai
-from .hotspot20_h2qp_terms_and_conditions import Hotspot20H2qpTermsAndConditions
-from .hotspot20_h2qp_wan_metric import Hotspot20H2qpWanMetric
-from .hotspot20_hs_profile import Hotspot20HsProfile
-from .hotspot20_icon import Hotspot20Icon
-from .hotspot20_qos_map import Hotspot20QosMap
 from .inter_controller import InterController
 from .log import Log
 from .lw_profile import LwProfile
@@ -55,23 +38,6 @@ __all__ = [
     "BonjourProfile",
     "GlobalSetting",
     "Hotspot20",
-    "Hotspot20Anqp3gppCellular",
-    "Hotspot20AnqpIpAddressType",
-    "Hotspot20AnqpNaiRealm",
-    "Hotspot20AnqpNetworkAuthType",
-    "Hotspot20AnqpRoamingConsortium",
-    "Hotspot20AnqpVenueName",
-    "Hotspot20AnqpVenueUrl",
-    "Hotspot20H2qpAdviceOfCharge",
-    "Hotspot20H2qpConnCapability",
-    "Hotspot20H2qpOperatorName",
-    "Hotspot20H2qpOsuProvider",
-    "Hotspot20H2qpOsuProviderNai",
-    "Hotspot20H2qpTermsAndConditions",
-    "Hotspot20H2qpWanMetric",
-    "Hotspot20HsProfile",
-    "Hotspot20Icon",
-    "Hotspot20QosMap",
     "InterController",
     "Log",
     "LwProfile",
@@ -113,23 +79,6 @@ class WirelessController:
         self.ble_profile = BleProfile(client)
         self.bonjour_profile = BonjourProfile(client)
         self.global_setting = GlobalSetting(client)
-        self.hotspot20_anqp_3gpp_cellular = Hotspot20Anqp3gppCellular(client)
-        self.hotspot20_anqp_ip_address_type = Hotspot20AnqpIpAddressType(client)
-        self.hotspot20_anqp_nai_realm = Hotspot20AnqpNaiRealm(client)
-        self.hotspot20_anqp_network_auth_type = Hotspot20AnqpNetworkAuthType(client)
-        self.hotspot20_anqp_roaming_consortium = Hotspot20AnqpRoamingConsortium(client)
-        self.hotspot20_anqp_venue_name = Hotspot20AnqpVenueName(client)
-        self.hotspot20_anqp_venue_url = Hotspot20AnqpVenueUrl(client)
-        self.hotspot20_h2qp_advice_of_charge = Hotspot20H2qpAdviceOfCharge(client)
-        self.hotspot20_h2qp_conn_capability = Hotspot20H2qpConnCapability(client)
-        self.hotspot20_h2qp_operator_name = Hotspot20H2qpOperatorName(client)
-        self.hotspot20_h2qp_osu_provider = Hotspot20H2qpOsuProvider(client)
-        self.hotspot20_h2qp_osu_provider_nai = Hotspot20H2qpOsuProviderNai(client)
-        self.hotspot20_h2qp_terms_and_conditions = Hotspot20H2qpTermsAndConditions(client)
-        self.hotspot20_h2qp_wan_metric = Hotspot20H2qpWanMetric(client)
-        self.hotspot20_hs_profile = Hotspot20HsProfile(client)
-        self.hotspot20_icon = Hotspot20Icon(client)
-        self.hotspot20_qos_map = Hotspot20QosMap(client)
         self.inter_controller = InterController(client)
         self.log = Log(client)
         self.lw_profile = LwProfile(client)

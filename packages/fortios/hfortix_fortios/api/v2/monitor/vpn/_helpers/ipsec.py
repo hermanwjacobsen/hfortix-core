@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn/ipsec",
     "category": "monitor",
     "api_path": "vpn/ipsec",
-    "help": "Monitor endpoint for vpn/ipsec",
+    "help": "Monitor endpoint for vpn/ipsec/connection-count",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

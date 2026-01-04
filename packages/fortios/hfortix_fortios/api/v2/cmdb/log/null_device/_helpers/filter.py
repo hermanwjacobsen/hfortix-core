@@ -868,7 +868,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/null_device/filter",
     "category": "cmdb",
-    "api_path": "log/null-device/filter",
+    "api_path": "log.null-device/filter",
     "help": "Filters for null device logging.",
     "total_fields": 13,
     "required_fields_count": 0,

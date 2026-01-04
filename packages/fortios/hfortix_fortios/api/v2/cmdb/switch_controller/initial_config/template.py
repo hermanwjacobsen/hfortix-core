@@ -105,9 +105,9 @@ class Template:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/switch-controller/initial-config/template/" + str(name)
+            endpoint = "/switch-controller.initial-config/template/" + str(name)
         else:
-            endpoint = "/switch-controller/initial-config/template"
+            endpoint = "/switch-controller.initial-config/template"
         
         params.update(kwargs)
         return self._client.get(
@@ -193,7 +193,7 @@ class Template:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/switch-controller/initial-config/template/" + str(name_value)
+        endpoint = "/switch-controller.initial-config/template/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -276,7 +276,7 @@ class Template:
                 endpoint="cmdb/switch_controller/initial_config/template",
             )
 
-        endpoint = "/switch-controller/initial-config/template"
+        endpoint = "/switch-controller.initial-config/template"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -319,7 +319,7 @@ class Template:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/switch-controller/initial-config/template/" + str(name)
+        endpoint = "/switch-controller.initial-config/template/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

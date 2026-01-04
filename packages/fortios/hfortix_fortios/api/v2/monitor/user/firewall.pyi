@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Firewall:
+class Proxy:
     """
-    Monitor endpoint for user/firewall
+    Configuration for user/proxy/count
     
-    Path: user/firewall
+    Path: user/proxy
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Firewall:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Proxy",
+]

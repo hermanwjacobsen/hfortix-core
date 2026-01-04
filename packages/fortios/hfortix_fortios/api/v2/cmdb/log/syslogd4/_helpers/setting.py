@@ -830,7 +830,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/syslogd4/setting",
     "category": "cmdb",
-    "api_path": "log/syslogd4/setting",
+    "api_path": "log.syslogd4/setting",
     "help": "Global settings for remote syslog server.",
     "total_fields": 17,
     "required_fields_count": 2,

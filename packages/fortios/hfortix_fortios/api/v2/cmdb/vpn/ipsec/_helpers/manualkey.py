@@ -664,7 +664,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/ipsec/manualkey",
     "category": "cmdb",
-    "api_path": "vpn/ipsec/manualkey",
+    "api_path": "vpn.ipsec/manualkey",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure IPsec manual keys.",

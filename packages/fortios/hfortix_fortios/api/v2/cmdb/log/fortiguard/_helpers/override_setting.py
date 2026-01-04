@@ -700,7 +700,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/fortiguard/override_setting",
     "category": "cmdb",
-    "api_path": "log/fortiguard/override-setting",
+    "api_path": "log.fortiguard/override-setting",
     "help": "Override global FortiCloud logging settings for this VDOM.",
     "total_fields": 9,
     "required_fields_count": 0,

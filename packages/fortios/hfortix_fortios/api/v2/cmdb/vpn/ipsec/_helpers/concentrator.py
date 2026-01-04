@@ -589,7 +589,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/ipsec/concentrator",
     "category": "cmdb",
-    "api_path": "vpn/ipsec/concentrator",
+    "api_path": "vpn.ipsec/concentrator",
     "mkey": "id",
     "mkey_type": "integer",
     "help": "Concentrator configuration.",

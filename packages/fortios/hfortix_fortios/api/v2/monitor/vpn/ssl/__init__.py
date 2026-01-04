@@ -2,13 +2,11 @@
 
 from .clear_tunnel import ClearTunnel
 from .delete import Delete
-from .stats import Stats
 
 __all__ = [
     "ClearTunnel",
     "Delete",
     "Ssl",
-    "Stats",
 ]
 
 
@@ -23,4 +21,3 @@ class Ssl:
         """
         self.clear_tunnel = ClearTunnel(client)
         self.delete = Delete(client)
-        self.stats = Stats(client)

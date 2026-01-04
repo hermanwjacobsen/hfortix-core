@@ -584,7 +584,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/ipmacbinding/table",
     "category": "cmdb",
-    "api_path": "firewall/ipmacbinding/table",
+    "api_path": "firewall.ipmacbinding/table",
     "mkey": "seq-num",
     "mkey_type": "integer",
     "help": "Configure IP to MAC address pairs in the IP/MAC binding table.",

@@ -105,9 +105,9 @@ class PerIpShaper:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/firewall/shaper/per-ip-shaper/" + str(name)
+            endpoint = "/firewall.shaper/per-ip-shaper/" + str(name)
         else:
-            endpoint = "/firewall/shaper/per-ip-shaper"
+            endpoint = "/firewall.shaper/per-ip-shaper"
         
         params.update(kwargs)
         return self._client.get(
@@ -201,7 +201,7 @@ class PerIpShaper:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/firewall/shaper/per-ip-shaper/" + str(name_value)
+        endpoint = "/firewall.shaper/per-ip-shaper/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -292,7 +292,7 @@ class PerIpShaper:
                 endpoint="cmdb/firewall/shaper/per_ip_shaper",
             )
 
-        endpoint = "/firewall/shaper/per-ip-shaper"
+        endpoint = "/firewall.shaper/per-ip-shaper"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -335,7 +335,7 @@ class PerIpShaper:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/firewall/shaper/per-ip-shaper/" + str(name)
+        endpoint = "/firewall.shaper/per-ip-shaper/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

@@ -551,7 +551,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/wildcard_fqdn/custom",
     "category": "cmdb",
-    "api_path": "firewall/wildcard-fqdn/custom",
+    "api_path": "firewall.wildcard-fqdn/custom",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Config global/VDOM Wildcard FQDN address.",

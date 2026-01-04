@@ -633,7 +633,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/auto_config/policy",
     "category": "cmdb",
-    "api_path": "switch-controller/auto-config/policy",
+    "api_path": "switch-controller.auto-config/policy",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Policy definitions which can define the behavior on auto configured interfaces.",

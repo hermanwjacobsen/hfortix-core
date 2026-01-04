@@ -559,7 +559,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/wildcard_fqdn/group",
     "category": "cmdb",
-    "api_path": "firewall/wildcard-fqdn/group",
+    "api_path": "firewall.wildcard-fqdn/group",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Config global Wildcard FQDN address groups.",

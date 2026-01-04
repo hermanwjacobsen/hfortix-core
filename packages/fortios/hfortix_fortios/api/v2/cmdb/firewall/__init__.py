@@ -47,8 +47,6 @@ from .internet_service_reputation import InternetServiceReputation
 from .internet_service_sld import InternetServiceSld
 from .internet_service_subapp import InternetServiceSubapp
 from .ip_translation import IpTranslation
-from .ipmacbinding_setting import IpmacbindingSetting
-from .ipmacbinding_table import IpmacbindingTable
 from .ippool import Ippool
 from .ippool6 import Ippool6
 from .ldb_monitor import LdbMonitor
@@ -67,24 +65,11 @@ from .proxy_address import ProxyAddress
 from .proxy_addrgrp import ProxyAddrgrp
 from .proxy_policy import ProxyPolicy
 from .region import Region
-from .schedule_group import ScheduleGroup
-from .schedule_onetime import ScheduleOnetime
-from .schedule_recurring import ScheduleRecurring
 from .security_policy import SecurityPolicy
-from .service_category import ServiceCategory
-from .service_custom import ServiceCustom
-from .service_group import ServiceGroup
-from .shaper_per_ip_shaper import ShaperPerIpShaper
-from .shaper_traffic_shaper import ShaperTrafficShaper
 from .shaping_policy import ShapingPolicy
 from .shaping_profile import ShapingProfile
 from .sniffer import Sniffer
-from .ssh_host_key import SshHostKey
-from .ssh_local_ca import SshLocalCa
-from .ssh_local_key import SshLocalKey
-from .ssh_setting import SshSetting
 from .ssl_server import SslServer
-from .ssl_setting import SslSetting
 from .ssl_ssh_profile import SslSshProfile
 from .traffic_class import TrafficClass
 from .ttl_policy import TtlPolicy
@@ -94,8 +79,6 @@ from .vip import Vip
 from .vip6 import Vip6
 from .vipgrp import Vipgrp
 from .vipgrp6 import Vipgrp6
-from .wildcard_fqdn_custom import WildcardFqdnCustom
-from .wildcard_fqdn_group import WildcardFqdnGroup
 
 __all__ = [
     "AccessProxy",
@@ -140,8 +123,6 @@ __all__ = [
     "InternetServiceSubapp",
     "IpTranslation",
     "Ipmacbinding",
-    "IpmacbindingSetting",
-    "IpmacbindingTable",
     "Ippool",
     "Ippool6",
     "LdbMonitor",
@@ -161,28 +142,15 @@ __all__ = [
     "ProxyPolicy",
     "Region",
     "Schedule",
-    "ScheduleGroup",
-    "ScheduleOnetime",
-    "ScheduleRecurring",
     "SecurityPolicy",
     "Service",
-    "ServiceCategory",
-    "ServiceCustom",
-    "ServiceGroup",
     "Shaper",
-    "ShaperPerIpShaper",
-    "ShaperTrafficShaper",
     "ShapingPolicy",
     "ShapingProfile",
     "Sniffer",
     "Ssh",
-    "SshHostKey",
-    "SshLocalCa",
-    "SshLocalKey",
-    "SshSetting",
     "Ssl",
     "SslServer",
-    "SslSetting",
     "SslSshProfile",
     "TrafficClass",
     "TtlPolicy",
@@ -193,8 +161,6 @@ __all__ = [
     "Vipgrp",
     "Vipgrp6",
     "WildcardFqdn",
-    "WildcardFqdnCustom",
-    "WildcardFqdnGroup",
 ]
 
 
@@ -254,8 +220,6 @@ class Firewall:
         self.internet_service_sld = InternetServiceSld(client)
         self.internet_service_subapp = InternetServiceSubapp(client)
         self.ip_translation = IpTranslation(client)
-        self.ipmacbinding_setting = IpmacbindingSetting(client)
-        self.ipmacbinding_table = IpmacbindingTable(client)
         self.ippool = Ippool(client)
         self.ippool6 = Ippool6(client)
         self.ldb_monitor = LdbMonitor(client)
@@ -274,24 +238,11 @@ class Firewall:
         self.proxy_addrgrp = ProxyAddrgrp(client)
         self.proxy_policy = ProxyPolicy(client)
         self.region = Region(client)
-        self.schedule_group = ScheduleGroup(client)
-        self.schedule_onetime = ScheduleOnetime(client)
-        self.schedule_recurring = ScheduleRecurring(client)
         self.security_policy = SecurityPolicy(client)
-        self.service_category = ServiceCategory(client)
-        self.service_custom = ServiceCustom(client)
-        self.service_group = ServiceGroup(client)
-        self.shaper_per_ip_shaper = ShaperPerIpShaper(client)
-        self.shaper_traffic_shaper = ShaperTrafficShaper(client)
         self.shaping_policy = ShapingPolicy(client)
         self.shaping_profile = ShapingProfile(client)
         self.sniffer = Sniffer(client)
-        self.ssh_host_key = SshHostKey(client)
-        self.ssh_local_ca = SshLocalCa(client)
-        self.ssh_local_key = SshLocalKey(client)
-        self.ssh_setting = SshSetting(client)
         self.ssl_server = SslServer(client)
-        self.ssl_setting = SslSetting(client)
         self.ssl_ssh_profile = SslSshProfile(client)
         self.traffic_class = TrafficClass(client)
         self.ttl_policy = TtlPolicy(client)
@@ -301,5 +252,3 @@ class Firewall:
         self.vip6 = Vip6(client)
         self.vipgrp = Vipgrp(client)
         self.vipgrp6 = Vipgrp6(client)
-        self.wildcard_fqdn_custom = WildcardFqdnCustom(client)
-        self.wildcard_fqdn_group = WildcardFqdnGroup(client)

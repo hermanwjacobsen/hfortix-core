@@ -605,7 +605,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/replacemsg/spam",
     "category": "cmdb",
-    "api_path": "system/replacemsg/spam",
+    "api_path": "system.replacemsg/spam",
     "mkey": "msg-type",
     "mkey_type": "string",
     "help": "Replacement messages.",

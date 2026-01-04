@@ -2,7 +2,6 @@
 
 from .dhcp_renew import DhcpRenew
 from .dhcp_status import DhcpStatus
-from .kernel_interfaces import KernelInterfaces
 from .poe import Poe
 from .poe_usage import PoeUsage
 from .speed_test_status import SpeedTestStatus
@@ -14,7 +13,6 @@ __all__ = [
     "DhcpRenew",
     "DhcpStatus",
     "Interface",
-    "KernelInterfaces",
     "Poe",
     "PoeUsage",
     "SpeedTestStatus",
@@ -35,7 +33,6 @@ class Interface:
         """
         self.dhcp_renew = DhcpRenew(client)
         self.dhcp_status = DhcpStatus(client)
-        self.kernel_interfaces = KernelInterfaces(client)
         self.poe = Poe(client)
         self.poe_usage = PoeUsage(client)
         self.speed_test_status = SpeedTestStatus(client)

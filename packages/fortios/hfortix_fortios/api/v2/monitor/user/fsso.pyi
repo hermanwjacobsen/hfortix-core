@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Fsso:
+class Proxy:
     """
-    Monitor endpoint for user/fsso
+    Configuration for user/proxy/count
     
-    Path: user/fsso
+    Path: user/proxy
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Fsso:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Proxy",
+]

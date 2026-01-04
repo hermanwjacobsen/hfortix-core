@@ -110,8 +110,7 @@ class VirtualSwitch:
         )
 
 
-
-    def post(
+    def put(
         self,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
@@ -119,40 +118,38 @@ class VirtualSwitch:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create new system/virtual_switch object.
+        Update existing system/virtual_switch object.
 
         Configuration for system/virtual-switch
 
         Args:
-            payload_dict: Complete object data as dict. Alternative to individual parameters.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
-            raw_json: If True, return raw API response without processing.
+            payload_dict: Object data as dict. Must include name (primary key).
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
             **kwargs: Additional parameters
 
         Returns:
-            API response dict containing created object with assigned identifier.
+            API response dict
+
+        Raises:
+            ValueError: If name is missing from payload
 
         Examples:
-            >>> # Create using individual parameters
-            >>> result = fgt.api.cmdb.system_virtual_switch.post(
-            ...     name="example",
-            ...     # ... other required fields
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.system_virtual_switch.put(
+            ...     name="existing-object",
+            ...     # ... fields to update
             ... )
-            >>> print(f"Created object: {result['results']}")
             
-            >>> # Create using payload dict
-            >>> payload = VirtualSwitch.defaults()  # Start with defaults
-            >>> payload['name'] = 'my-object'
-            >>> result = fgt.api.cmdb.system_virtual_switch.post(payload_dict=payload)
-
-        Note:
-            Required fields: {{ ", ".join(VirtualSwitch.required_fields()) }}
-            
-            Use VirtualSwitch.help('field_name') to get field details.
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": "existing-object",
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.system_virtual_switch.put(payload_dict=payload)
 
         See Also:
-            - get(): Retrieve objects
-            - put(): Update existing object
+            - post(): Create new object
             - set(): Intelligent create or update
         """
         # Build payload using helper function
@@ -160,7 +157,7 @@ class VirtualSwitch:
         payload_data = build_cmdb_payload(
             data=payload_dict,
         )
-
+        
         # Check for deprecated fields and warn users
         from ._helpers.virtual_switch import DEPRECATED_FIELDS
         if DEPRECATED_FIELDS:
@@ -170,11 +167,16 @@ class VirtualSwitch:
                 deprecated_fields=DEPRECATED_FIELDS,
                 endpoint="cmdb/system/virtual_switch",
             )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = f"/system/virtual-switch/{name_value}"
 
-        endpoint = "/system/virtual-switch"
-        return self._client.post(
+        return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
+
 
 
 

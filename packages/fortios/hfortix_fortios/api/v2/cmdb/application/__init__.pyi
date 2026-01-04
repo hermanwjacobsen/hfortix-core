@@ -1,23 +1,26 @@
-"""
-Type stubs for application category.
+"""Type stubs for APPLICATION category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.986764+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .custom import Custom as Custom
-from .group import Group as Group
-from .list import List as List
-from .name import Name as Name
-from .rule_settings import RuleSettings as RuleSettings
 
-__all__ = [
-    "Custom",
-    "Group",
-    "List",
-    "Name",
-    "RuleSettings",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import custom
+    from . import group
+    from . import list
+    from . import name
+    from . import rule_settings
+
+
+class Application:
+    """Type stub for Application."""
+
+    custom: custom.Custom
+    group: group.Group
+    list: list.List
+    name: name.Name
+    rule_settings: rule_settings.RuleSettings
+
+    def __init__(self, client: IHTTPClient) -> None: ...

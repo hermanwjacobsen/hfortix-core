@@ -595,7 +595,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/initial_config/vlans",
     "category": "cmdb",
-    "api_path": "switch-controller/initial-config/vlans",
+    "api_path": "switch-controller.initial-config/vlans",
     "help": "Configure initial template for auto-generated VLAN interfaces.",
     "total_fields": 8,
     "required_fields_count": 0,

@@ -871,7 +871,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/fortianalyzer_cloud/setting",
     "category": "cmdb",
-    "api_path": "log/fortianalyzer-cloud/setting",
+    "api_path": "log.fortianalyzer-cloud/setting",
     "help": "Global FortiAnalyzer Cloud settings.",
     "total_fields": 23,
     "required_fields_count": 1,

@@ -1,29 +1,32 @@
-"""
-Type stubs for emailfilter category.
+"""Type stubs for EMAILFILTER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.988763+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .block_allow_list import BlockAllowList as BlockAllowList
-from .bword import Bword as Bword
-from .dnsbl import Dnsbl as Dnsbl
-from .fortishield import Fortishield as Fortishield
-from .iptrust import Iptrust as Iptrust
-from .mheader import Mheader as Mheader
-from .options import Options as Options
-from .profile import Profile as Profile
 
-__all__ = [
-    "BlockAllowList",
-    "Bword",
-    "Dnsbl",
-    "Fortishield",
-    "Iptrust",
-    "Mheader",
-    "Options",
-    "Profile",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import block_allow_list
+    from . import bword
+    from . import dnsbl
+    from . import fortishield
+    from . import iptrust
+    from . import mheader
+    from . import options
+    from . import profile
+
+
+class Emailfilter:
+    """Type stub for Emailfilter."""
+
+    block_allow_list: block_allow_list.BlockAllowList
+    bword: bword.Bword
+    dnsbl: dnsbl.Dnsbl
+    fortishield: fortishield.Fortishield
+    iptrust: iptrust.Iptrust
+    mheader: mheader.Mheader
+    options: options.Options
+    profile: profile.Profile
+
+    def __init__(self, client: IHTTPClient) -> None: ...

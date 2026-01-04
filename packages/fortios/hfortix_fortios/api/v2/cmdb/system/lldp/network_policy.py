@@ -105,9 +105,9 @@ class NetworkPolicy:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/system/lldp/network-policy/" + str(name)
+            endpoint = "/system.lldp/network-policy/" + str(name)
         else:
-            endpoint = "/system/lldp/network-policy"
+            endpoint = "/system.lldp/network-policy"
         
         params.update(kwargs)
         return self._client.get(
@@ -201,7 +201,7 @@ class NetworkPolicy:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/system/lldp/network-policy/" + str(name_value)
+        endpoint = "/system.lldp/network-policy/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -292,7 +292,7 @@ class NetworkPolicy:
                 endpoint="cmdb/system/lldp/network_policy",
             )
 
-        endpoint = "/system/lldp/network-policy"
+        endpoint = "/system.lldp/network-policy"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -335,7 +335,7 @@ class NetworkPolicy:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/system/lldp/network-policy/" + str(name)
+        endpoint = "/system.lldp/network-policy/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

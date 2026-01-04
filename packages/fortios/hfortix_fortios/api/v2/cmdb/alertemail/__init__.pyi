@@ -1,15 +1,18 @@
-"""
-Type stubs for alertemail category.
+"""Type stubs for ALERTEMAIL category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.981967+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .setting import Setting as Setting
 
-__all__ = [
-    "Setting",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import setting
+
+
+class Alertemail:
+    """Type stub for Alertemail."""
+
+    setting: setting.Setting
+
+    def __init__(self, client: IHTTPClient) -> None: ...

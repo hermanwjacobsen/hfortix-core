@@ -105,9 +105,9 @@ class Crl:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/vpn/certificate/crl/" + str(name)
+            endpoint = "/vpn.certificate/crl/" + str(name)
         else:
-            endpoint = "/vpn/certificate/crl"
+            endpoint = "/vpn.certificate/crl"
         
         params.update(kwargs)
         return self._client.get(
@@ -207,7 +207,7 @@ class Crl:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/vpn/certificate/crl/" + str(name_value)
+        endpoint = "/vpn.certificate/crl/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -304,7 +304,7 @@ class Crl:
                 endpoint="cmdb/vpn/certificate/crl",
             )
 
-        endpoint = "/vpn/certificate/crl"
+        endpoint = "/vpn.certificate/crl"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -347,7 +347,7 @@ class Crl:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/vpn/certificate/crl/" + str(name)
+        endpoint = "/vpn.certificate/crl/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

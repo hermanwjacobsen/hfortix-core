@@ -105,9 +105,9 @@ class Manualkey:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/vpn/ipsec/manualkey/" + str(name)
+            endpoint = "/vpn.ipsec/manualkey/" + str(name)
         else:
-            endpoint = "/vpn/ipsec/manualkey"
+            endpoint = "/vpn.ipsec/manualkey"
         
         params.update(kwargs)
         return self._client.get(
@@ -203,7 +203,7 @@ class Manualkey:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/vpn/ipsec/manualkey/" + str(name_value)
+        endpoint = "/vpn.ipsec/manualkey/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -296,7 +296,7 @@ class Manualkey:
                 endpoint="cmdb/vpn/ipsec/manualkey",
             )
 
-        endpoint = "/vpn/ipsec/manualkey"
+        endpoint = "/vpn.ipsec/manualkey"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -339,7 +339,7 @@ class Manualkey:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/vpn/ipsec/manualkey/" + str(name)
+        endpoint = "/vpn.ipsec/manualkey/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

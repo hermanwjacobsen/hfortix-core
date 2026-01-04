@@ -45,72 +45,72 @@ class Shutdown:
         """Initialize Shutdown endpoint."""
         self._client = client
 
-
-
-    def post(
+    def get(
         self,
+        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create new system/os/shutdown object.
+        Retrieve system/os/shutdown configuration.
 
         Configuration for system/os/shutdown
 
         Args:
-            payload_dict: Complete object data as dict. Alternative to individual parameters.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            name: Name identifier to retrieve specific object. If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
-            **kwargs: Additional parameters
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            API response dict containing created object with assigned identifier.
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
 
         Examples:
-            >>> # Create using individual parameters
-            >>> result = fgt.api.monitor.system_os_shutdown.post(
-            ...     name="example",
-            ...     # ... other required fields
+            >>> # Get all system/os/shutdown objects
+            >>> result = fgt.api.monitor.system_os_shutdown.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get with filter
+            >>> result = fgt.api.monitor.system_os_shutdown.get(
+            ...     payload_dict={"filter": ["name==test"]}
             ... )
-            >>> print(f"Created object: {result['results']}")
             
-            >>> # Create using payload dict
-            >>> payload = Shutdown.defaults()  # Start with defaults
-            >>> payload['name'] = 'my-object'
-            >>> result = fgt.api.monitor.system_os_shutdown.post(payload_dict=payload)
-
-        Note:
-            Required fields: {{ ", ".join(Shutdown.required_fields()) }}
-            
-            Use Shutdown.help('field_name') to get field details.
+            >>> # Get schema information
+            >>> schema = fgt.api.monitor.system_os_shutdown.get(action="schema")
 
         See Also:
-            - get(): Retrieve objects
-            - put(): Update existing object
-            - set(): Intelligent create or update
+            - post(): Create new system/os/shutdown object
+            - put(): Update existing system/os/shutdown object
+            - delete(): Remove system/os/shutdown object
+            - exists(): Check if object exists
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
-            data=payload_dict,
+        params = payload_dict.copy() if payload_dict else {}
+        
+        if name:
+            endpoint = f"/system/os/shutdown/{name}"
+        else:
+            endpoint = "/system/os/shutdown"
+        
+        params.update(kwargs)
+        return self._client.get(
+            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
 
-        # Check for deprecated fields and warn users
-        from ._helpers.shutdown import DEPRECATED_FIELDS
-        if DEPRECATED_FIELDS:
-            from hfortix_core import check_deprecated_fields
-            check_deprecated_fields(
-                payload=payload_data,
-                deprecated_fields=DEPRECATED_FIELDS,
-                endpoint="monitor/system/os/shutdown",
-            )
 
-        endpoint = "/system/os/shutdown"
-        return self._client.post(
-            "monitor", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
-        )
+
 
 
 

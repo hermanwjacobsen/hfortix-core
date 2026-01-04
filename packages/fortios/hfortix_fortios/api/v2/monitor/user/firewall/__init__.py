@@ -1,12 +1,10 @@
 """FortiOS CMDB - Firewall category"""
 
 from .auth import Auth
-from .count import Count
 from .deauth import Deauth
 
 __all__ = [
     "Auth",
-    "Count",
     "Deauth",
     "Firewall",
 ]
@@ -22,5 +20,4 @@ class Firewall:
             client: HTTP client instance for API communication
         """
         self.auth = Auth(client)
-        self.count = Count(client)
         self.deauth = Deauth(client)

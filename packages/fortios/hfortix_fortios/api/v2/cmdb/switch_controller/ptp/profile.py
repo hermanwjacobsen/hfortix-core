@@ -105,9 +105,9 @@ class Profile:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/switch-controller/ptp/profile/" + str(name)
+            endpoint = "/switch-controller.ptp/profile/" + str(name)
         else:
-            endpoint = "/switch-controller/ptp/profile"
+            endpoint = "/switch-controller.ptp/profile"
         
         params.update(kwargs)
         return self._client.get(
@@ -195,7 +195,7 @@ class Profile:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/switch-controller/ptp/profile/" + str(name_value)
+        endpoint = "/switch-controller.ptp/profile/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -280,7 +280,7 @@ class Profile:
                 endpoint="cmdb/switch_controller/ptp/profile",
             )
 
-        endpoint = "/switch-controller/ptp/profile"
+        endpoint = "/switch-controller.ptp/profile"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -323,7 +323,7 @@ class Profile:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/switch-controller/ptp/profile/" + str(name)
+        endpoint = "/switch-controller.ptp/profile/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

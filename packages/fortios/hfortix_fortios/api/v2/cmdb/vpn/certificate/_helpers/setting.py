@@ -960,7 +960,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/certificate/setting",
     "category": "cmdb",
-    "api_path": "vpn/certificate/setting",
+    "api_path": "vpn.certificate/setting",
     "help": "VPN certificate setting.",
     "total_fields": 33,
     "required_fields_count": 1,

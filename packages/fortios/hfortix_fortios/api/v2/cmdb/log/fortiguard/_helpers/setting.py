@@ -772,7 +772,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/fortiguard/setting",
     "category": "cmdb",
-    "api_path": "log/fortiguard/setting",
+    "api_path": "log.fortiguard/setting",
     "help": "Configure logging to FortiCloud.",
     "total_fields": 15,
     "required_fields_count": 1,

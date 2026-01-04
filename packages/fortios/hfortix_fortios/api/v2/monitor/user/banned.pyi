@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Banned:
+class Proxy:
     """
-    Monitor endpoint for user/banned
+    Configuration for user/proxy/count
     
-    Path: user/banned
+    Path: user/proxy
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Banned:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Proxy",
+]

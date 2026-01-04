@@ -124,9 +124,9 @@ class Utm:
         params = payload_dict.copy() if payload_dict else {}
         
         if msg_type:
-            endpoint = "/system/replacemsg/utm/" + str(msg_type)
+            endpoint = "/system.replacemsg/utm/" + str(msg_type)
         else:
-            endpoint = "/system/replacemsg/utm"
+            endpoint = "/system.replacemsg/utm"
         
         params.update(kwargs)
         
@@ -218,7 +218,7 @@ class Utm:
         msg_type_value = payload_data.get("msg-type")
         if not msg_type_value:
             raise ValueError("msg-type is required for PUT")
-        endpoint = "/system/replacemsg/utm/" + str(msg_type_value)
+        endpoint = "/system.replacemsg/utm/" + str(msg_type_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -296,7 +296,7 @@ class Utm:
                 endpoint="cmdb/system/replacemsg/utm",
             )
 
-        endpoint = "/system/replacemsg/utm"
+        endpoint = "/system.replacemsg/utm"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -339,7 +339,7 @@ class Utm:
         """
         if not msg_type:
             raise ValueError("msg-type is required for DELETE")
-        endpoint = "/system/replacemsg/utm/" + str(msg_type)
+        endpoint = "/system.replacemsg/utm/" + str(msg_type)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

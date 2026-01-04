@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class HaPeer:
+class Performance:
     """
-    Monitor endpoint for system/ha-peer
+    Configuration for system/performance/status
     
-    Path: system/ha_peer
+    Path: system/performance
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class HaPeer:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]

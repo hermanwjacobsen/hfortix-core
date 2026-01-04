@@ -603,7 +603,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/schedule/onetime",
     "category": "cmdb",
-    "api_path": "firewall/schedule/onetime",
+    "api_path": "firewall.schedule/onetime",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Onetime schedule configuration.",

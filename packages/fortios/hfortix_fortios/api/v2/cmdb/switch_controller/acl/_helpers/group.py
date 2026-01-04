@@ -551,7 +551,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/acl/group",
     "category": "cmdb",
-    "api_path": "switch-controller/acl/group",
+    "api_path": "switch-controller.acl/group",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure ACL groups to be applied on managed FortiSwitch ports.",

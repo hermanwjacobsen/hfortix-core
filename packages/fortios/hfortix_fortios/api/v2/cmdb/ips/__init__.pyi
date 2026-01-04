@@ -1,29 +1,32 @@
-"""
-Type stubs for ips category.
+"""Type stubs for IPS category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.978284+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .custom import Custom as Custom
-from .decoder import Decoder as Decoder
-from .global_setting import GlobalSetting as GlobalSetting
-from .rule import Rule as Rule
-from .rule_settings import RuleSettings as RuleSettings
-from .sensor import Sensor as Sensor
-from .settings import Settings as Settings
-from .view_map import ViewMap as ViewMap
 
-__all__ = [
-    "Custom",
-    "Decoder",
-    "GlobalSetting",
-    "Rule",
-    "RuleSettings",
-    "Sensor",
-    "Settings",
-    "ViewMap",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import custom
+    from . import decoder
+    from . import global_setting
+    from . import rule
+    from . import rule_settings
+    from . import sensor
+    from . import settings
+    from . import view_map
+
+
+class Ips:
+    """Type stub for Ips."""
+
+    custom: custom.Custom
+    decoder: decoder.Decoder
+    global_setting: global_setting.GlobalSetting
+    rule: rule.Rule
+    rule_settings: rule_settings.RuleSettings
+    sensor: sensor.Sensor
+    settings: settings.Settings
+    view_map: view_map.ViewMap
+
+    def __init__(self, client: IHTTPClient) -> None: ...

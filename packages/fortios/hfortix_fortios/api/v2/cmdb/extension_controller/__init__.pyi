@@ -1,25 +1,28 @@
-"""
-Type stubs for extension_controller category.
+"""Type stubs for EXTENSION_CONTROLLER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.993312+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .dataplan import Dataplan as Dataplan
-from .extender import Extender as Extender
-from .extender_profile import ExtenderProfile as ExtenderProfile
-from .extender_vap import ExtenderVap as ExtenderVap
-from .fortigate import Fortigate as Fortigate
-from .fortigate_profile import FortigateProfile as FortigateProfile
 
-__all__ = [
-    "Dataplan",
-    "Extender",
-    "ExtenderProfile",
-    "ExtenderVap",
-    "Fortigate",
-    "FortigateProfile",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import dataplan
+    from . import extender
+    from . import extender_profile
+    from . import extender_vap
+    from . import fortigate
+    from . import fortigate_profile
+
+
+class ExtensionController:
+    """Type stub for ExtensionController."""
+
+    dataplan: dataplan.Dataplan
+    extender: extender.Extender
+    extender_profile: extender_profile.ExtenderProfile
+    extender_vap: extender_vap.ExtenderVap
+    fortigate: fortigate.Fortigate
+    fortigate_profile: fortigate_profile.FortigateProfile
+
+    def __init__(self, client: IHTTPClient) -> None: ...

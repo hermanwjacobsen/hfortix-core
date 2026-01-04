@@ -5,7 +5,6 @@ from .download import Download
 from .list import List
 from .meta import Meta
 from .start import Start
-from .start_base import Start
 from .stop import Stop
 
 __all__ = [
@@ -14,7 +13,6 @@ __all__ = [
     "List",
     "Meta",
     "Sniffer",
-    "Start",
     "Start",
     "Stop",
 ]
@@ -33,6 +31,5 @@ class Sniffer:
         self.download = Download(client)
         self.list = List(client)
         self.meta = Meta(client)
-        self.start = Start(client)
         self.start = Start(client)
         self.stop = Stop(client)

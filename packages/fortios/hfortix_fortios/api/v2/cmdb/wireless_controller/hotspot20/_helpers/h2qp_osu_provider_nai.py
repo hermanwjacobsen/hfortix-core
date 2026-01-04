@@ -555,7 +555,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "wireless_controller/hotspot20/h2qp_osu_provider_nai",
     "category": "cmdb",
-    "api_path": "wireless-controller/hotspot20/h2qp-osu-provider-nai",
+    "api_path": "wireless-controller.hotspot20/h2qp-osu-provider-nai",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure online sign up (OSU) provider NAI list.",

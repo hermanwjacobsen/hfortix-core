@@ -608,7 +608,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/security_policy/local_access",
     "category": "cmdb",
-    "api_path": "switch-controller/security-policy/local-access",
+    "api_path": "switch-controller.security-policy/local-access",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure allowaccess list for mgmt and internal interfaces on managed FortiSwitch units.",

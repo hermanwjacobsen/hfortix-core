@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Csf:
     """
-    Configuration for system/csf
+    Monitor endpoint for system/csf/pending-authorizations
     
     Path: system/csf
     Category: monitor

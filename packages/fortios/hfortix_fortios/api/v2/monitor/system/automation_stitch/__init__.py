@@ -1,12 +1,10 @@
 """FortiOS CMDB - AutomationStitch category"""
 
-from .stats import Stats
 from .test import Test
 from .webhook import Webhook
 
 __all__ = [
     "AutomationStitch",
-    "Stats",
     "Test",
     "Webhook",
 ]
@@ -21,6 +19,5 @@ class AutomationStitch:
         Args:
             client: HTTP client instance for API communication
         """
-        self.stats = Stats(client)
         self.test = Test(client)
         self.webhook = Webhook(client)

@@ -931,7 +931,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/disk/setting",
     "category": "cmdb",
-    "api_path": "log/disk/setting",
+    "api_path": "log.disk/setting",
     "help": "Settings for local disk logging.",
     "total_fields": 31,
     "required_fields_count": 2,

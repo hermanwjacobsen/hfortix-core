@@ -605,7 +605,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/certificate/remote",
     "category": "cmdb",
-    "api_path": "vpn/certificate/remote",
+    "api_path": "vpn.certificate/remote",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Remote certificate as a PEM file.",

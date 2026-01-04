@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AvailableInterfaces:
     """
-    Monitor endpoint for system/available-interfaces
+    Configuration for system/available-interfaces/meta
     
     Path: system/available_interfaces
     Category: monitor
@@ -80,3 +80,8 @@ class AvailableInterfaces:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AvailableInterfaces",
+]

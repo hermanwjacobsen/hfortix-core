@@ -562,7 +562,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "wireless_controller/hotspot20/anqp_3gpp_cellular",
     "category": "cmdb",
-    "api_path": "wireless-controller/hotspot20/anqp-3gpp-cellular",
+    "api_path": "wireless-controller.hotspot20/anqp-3gpp-cellular",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure 3GPP public land mobile network (PLMN).",

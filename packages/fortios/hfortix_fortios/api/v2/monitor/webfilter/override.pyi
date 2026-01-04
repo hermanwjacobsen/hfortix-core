@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Override:
+class TrustedUrls:
     """
-    Monitor endpoint for webfilter/override
+    Monitor endpoint for webfilter/trusted-urls
     
-    Path: webfilter/override
+    Path: webfilter/trusted_urls
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Override:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "TrustedUrls",
+]

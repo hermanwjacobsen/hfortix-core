@@ -955,7 +955,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/security_policy/x802_1X",
     "category": "cmdb",
-    "api_path": "switch-controller/security-policy/802-1X",
+    "api_path": "switch-controller.security-policy/802-1X",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure 802.1x MAC Authentication Bypass (MAB) policies.",

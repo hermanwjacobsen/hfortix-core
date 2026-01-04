@@ -24,7 +24,6 @@ from .automation_condition import AutomationCondition
 from .automation_destination import AutomationDestination
 from .automation_stitch import AutomationStitch
 from .automation_trigger import AutomationTrigger
-from .autoupdate_schedule import AutoupdateSchedule
 from .central_management import CentralManagement
 from .cloud_service import CloudService
 from .console import Console
@@ -34,8 +33,6 @@ from .ddns import Ddns
 from .dedicated_mgmt import DedicatedMgmt
 from .device_upgrade import DeviceUpgrade
 from .device_upgrade_exemptions import DeviceUpgradeExemptions
-from .dhcp6_server import Dhcp6Server
-from .dhcp_server import DhcpServer
 from .dns import Dns
 from .dns64 import Dns64
 from .dns_database import DnsDatabase
@@ -70,7 +67,6 @@ from .ipsec_aggregate import IpsecAggregate
 from .ipv6_neighbor_cache import Ipv6NeighborCache
 from .ipv6_tunnel import Ipv6Tunnel
 from .link_monitor import LinkMonitor
-from .lldp_network_policy import LldpNetworkPolicy
 from .lte_modem import LteModem
 from .mac_address_table import MacAddressTable
 from .mobile_tunnel import MobileTunnel
@@ -91,39 +87,20 @@ from .pppoe_interface import PppoeInterface
 from .probe_response import ProbeResponse
 from .proxy_arp import ProxyArp
 from .ptp import Ptp
-from .replacemsg_admin import ReplacemsgAdmin
-from .replacemsg_alertmail import ReplacemsgAlertmail
-from .replacemsg_auth import ReplacemsgAuth
-from .replacemsg_automation import ReplacemsgAutomation
-from .replacemsg_fortiguard_wf import ReplacemsgFortiguardWf
 from .replacemsg_group import ReplacemsgGroup
-from .replacemsg_http import ReplacemsgHttp
 from .replacemsg_image import ReplacemsgImage
-from .replacemsg_mail import ReplacemsgMail
-from .replacemsg_nac_quar import ReplacemsgNacQuar
-from .replacemsg_spam import ReplacemsgSpam
-from .replacemsg_sslvpn import ReplacemsgSslvpn
-from .replacemsg_traffic_quota import ReplacemsgTrafficQuota
-from .replacemsg_utm import ReplacemsgUtm
 from .resource_limits import ResourceLimits
 from .saml import Saml
 from .sdn_connector import SdnConnector
 from .sdn_proxy import SdnProxy
 from .sdn_vpn import SdnVpn
 from .sdwan import Sdwan
-from .security_rating_controls import SecurityRatingControls
-from .security_rating_settings import SecurityRatingSettings
 from .session_helper import SessionHelper
 from .session_ttl import SessionTtl
 from .settings import Settings
 from .sflow import Sflow
 from .sit_tunnel import SitTunnel
 from .sms_server import SmsServer
-from .snmp_community import SnmpCommunity
-from .snmp_mib_view import SnmpMibView
-from .snmp_rmon_stat import SnmpRmonStat
-from .snmp_sysinfo import SnmpSysinfo
-from .snmp_user import SnmpUser
 from .sov_sase import SovSase
 from .speed_test_schedule import SpeedTestSchedule
 from .speed_test_server import SpeedTestServer
@@ -172,7 +149,6 @@ __all__ = [
     "AutomationStitch",
     "AutomationTrigger",
     "Autoupdate",
-    "AutoupdateSchedule",
     "CentralManagement",
     "CloudService",
     "Console",
@@ -184,8 +160,6 @@ __all__ = [
     "DeviceUpgradeExemptions",
     "Dhcp",
     "Dhcp6",
-    "Dhcp6Server",
-    "DhcpServer",
     "Dns",
     "Dns64",
     "DnsDatabase",
@@ -221,7 +195,6 @@ __all__ = [
     "Ipv6Tunnel",
     "LinkMonitor",
     "Lldp",
-    "LldpNetworkPolicy",
     "LteModem",
     "MacAddressTable",
     "MobileTunnel",
@@ -243,20 +216,8 @@ __all__ = [
     "ProxyArp",
     "Ptp",
     "Replacemsg",
-    "ReplacemsgAdmin",
-    "ReplacemsgAlertmail",
-    "ReplacemsgAuth",
-    "ReplacemsgAutomation",
-    "ReplacemsgFortiguardWf",
     "ReplacemsgGroup",
-    "ReplacemsgHttp",
     "ReplacemsgImage",
-    "ReplacemsgMail",
-    "ReplacemsgNacQuar",
-    "ReplacemsgSpam",
-    "ReplacemsgSslvpn",
-    "ReplacemsgTrafficQuota",
-    "ReplacemsgUtm",
     "ResourceLimits",
     "Saml",
     "SdnConnector",
@@ -264,8 +225,6 @@ __all__ = [
     "SdnVpn",
     "Sdwan",
     "SecurityRating",
-    "SecurityRatingControls",
-    "SecurityRatingSettings",
     "SessionHelper",
     "SessionTtl",
     "Settings",
@@ -273,11 +232,6 @@ __all__ = [
     "SitTunnel",
     "SmsServer",
     "Snmp",
-    "SnmpCommunity",
-    "SnmpMibView",
-    "SnmpRmonStat",
-    "SnmpSysinfo",
-    "SnmpUser",
     "SovSase",
     "SpeedTestSchedule",
     "SpeedTestServer",
@@ -345,7 +299,6 @@ class System:
         self.automation_destination = AutomationDestination(client)
         self.automation_stitch = AutomationStitch(client)
         self.automation_trigger = AutomationTrigger(client)
-        self.autoupdate_schedule = AutoupdateSchedule(client)
         self.central_management = CentralManagement(client)
         self.cloud_service = CloudService(client)
         self.console = Console(client)
@@ -355,8 +308,6 @@ class System:
         self.dedicated_mgmt = DedicatedMgmt(client)
         self.device_upgrade = DeviceUpgrade(client)
         self.device_upgrade_exemptions = DeviceUpgradeExemptions(client)
-        self.dhcp6_server = Dhcp6Server(client)
-        self.dhcp_server = DhcpServer(client)
         self.dns = Dns(client)
         self.dns64 = Dns64(client)
         self.dns_database = DnsDatabase(client)
@@ -391,7 +342,6 @@ class System:
         self.ipv6_neighbor_cache = Ipv6NeighborCache(client)
         self.ipv6_tunnel = Ipv6Tunnel(client)
         self.link_monitor = LinkMonitor(client)
-        self.lldp_network_policy = LldpNetworkPolicy(client)
         self.lte_modem = LteModem(client)
         self.mac_address_table = MacAddressTable(client)
         self.mobile_tunnel = MobileTunnel(client)
@@ -412,39 +362,20 @@ class System:
         self.probe_response = ProbeResponse(client)
         self.proxy_arp = ProxyArp(client)
         self.ptp = Ptp(client)
-        self.replacemsg_admin = ReplacemsgAdmin(client)
-        self.replacemsg_alertmail = ReplacemsgAlertmail(client)
-        self.replacemsg_auth = ReplacemsgAuth(client)
-        self.replacemsg_automation = ReplacemsgAutomation(client)
-        self.replacemsg_fortiguard_wf = ReplacemsgFortiguardWf(client)
         self.replacemsg_group = ReplacemsgGroup(client)
-        self.replacemsg_http = ReplacemsgHttp(client)
         self.replacemsg_image = ReplacemsgImage(client)
-        self.replacemsg_mail = ReplacemsgMail(client)
-        self.replacemsg_nac_quar = ReplacemsgNacQuar(client)
-        self.replacemsg_spam = ReplacemsgSpam(client)
-        self.replacemsg_sslvpn = ReplacemsgSslvpn(client)
-        self.replacemsg_traffic_quota = ReplacemsgTrafficQuota(client)
-        self.replacemsg_utm = ReplacemsgUtm(client)
         self.resource_limits = ResourceLimits(client)
         self.saml = Saml(client)
         self.sdn_connector = SdnConnector(client)
         self.sdn_proxy = SdnProxy(client)
         self.sdn_vpn = SdnVpn(client)
         self.sdwan = Sdwan(client)
-        self.security_rating_controls = SecurityRatingControls(client)
-        self.security_rating_settings = SecurityRatingSettings(client)
         self.session_helper = SessionHelper(client)
         self.session_ttl = SessionTtl(client)
         self.settings = Settings(client)
         self.sflow = Sflow(client)
         self.sit_tunnel = SitTunnel(client)
         self.sms_server = SmsServer(client)
-        self.snmp_community = SnmpCommunity(client)
-        self.snmp_mib_view = SnmpMibView(client)
-        self.snmp_rmon_stat = SnmpRmonStat(client)
-        self.snmp_sysinfo = SnmpSysinfo(client)
-        self.snmp_user = SnmpUser(client)
         self.sov_sase = SovSase(client)
         self.speed_test_schedule = SpeedTestSchedule(client)
         self.speed_test_server = SpeedTestServer(client)

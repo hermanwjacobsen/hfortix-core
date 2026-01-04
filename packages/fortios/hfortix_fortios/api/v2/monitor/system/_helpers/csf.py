@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/csf",
     "category": "monitor",
     "api_path": "system/csf",
-    "help": "Configuration for system/csf",
+    "help": "Monitor endpoint for system/csf/pending-authorizations",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class ConfigScript:
+class Performance:
     """
-    Configuration for system/config-script
+    Configuration for system/performance/status
     
-    Path: system/config_script
+    Path: system/performance
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class ConfigScript:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]

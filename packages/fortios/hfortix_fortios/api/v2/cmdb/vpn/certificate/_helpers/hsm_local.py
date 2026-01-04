@@ -726,7 +726,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/certificate/hsm_local",
     "category": "cmdb",
-    "api_path": "vpn/certificate/hsm-local",
+    "api_path": "vpn.certificate/hsm-local",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Local certificates whose keys are stored on HSM.",

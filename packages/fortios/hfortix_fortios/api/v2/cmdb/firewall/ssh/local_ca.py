@@ -105,9 +105,9 @@ class LocalCa:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/firewall/ssh/local-ca/" + str(name)
+            endpoint = "/firewall.ssh/local-ca/" + str(name)
         else:
-            endpoint = "/firewall/ssh/local-ca"
+            endpoint = "/firewall.ssh/local-ca"
         
         params.update(kwargs)
         return self._client.get(
@@ -191,7 +191,7 @@ class LocalCa:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/firewall/ssh/local-ca/" + str(name_value)
+        endpoint = "/firewall.ssh/local-ca/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -272,7 +272,7 @@ class LocalCa:
                 endpoint="cmdb/firewall/ssh/local_ca",
             )
 
-        endpoint = "/firewall/ssh/local-ca"
+        endpoint = "/firewall.ssh/local-ca"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -315,7 +315,7 @@ class LocalCa:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/firewall/ssh/local-ca/" + str(name)
+        endpoint = "/firewall.ssh/local-ca/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

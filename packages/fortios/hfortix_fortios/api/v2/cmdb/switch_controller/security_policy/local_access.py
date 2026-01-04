@@ -105,9 +105,9 @@ class LocalAccess:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/switch-controller/security-policy/local-access/" + str(name)
+            endpoint = "/switch-controller.security-policy/local-access/" + str(name)
         else:
-            endpoint = "/switch-controller/security-policy/local-access"
+            endpoint = "/switch-controller.security-policy/local-access"
         
         params.update(kwargs)
         return self._client.get(
@@ -185,7 +185,7 @@ class LocalAccess:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/switch-controller/security-policy/local-access/" + str(name_value)
+        endpoint = "/switch-controller.security-policy/local-access/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -260,7 +260,7 @@ class LocalAccess:
                 endpoint="cmdb/switch_controller/security_policy/local_access",
             )
 
-        endpoint = "/switch-controller/security-policy/local-access"
+        endpoint = "/switch-controller.security-policy/local-access"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -303,7 +303,7 @@ class LocalAccess:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/switch-controller/security-policy/local-access/" + str(name)
+        endpoint = "/switch-controller.security-policy/local-access/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

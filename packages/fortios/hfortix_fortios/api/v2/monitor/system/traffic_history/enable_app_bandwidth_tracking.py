@@ -45,72 +45,72 @@ class EnableAppBandwidthTracking:
         """Initialize EnableAppBandwidthTracking endpoint."""
         self._client = client
 
-
-
-    def post(
+    def get(
         self,
+        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create new system/traffic_history/enable_app_bandwidth_tracking object.
+        Retrieve system/traffic_history/enable_app_bandwidth_tracking configuration.
 
         Configuration for system/traffic-history/enable-app-bandwidth-tracking
 
         Args:
-            payload_dict: Complete object data as dict. Alternative to individual parameters.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            name: Name identifier to retrieve specific object. If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
-            **kwargs: Additional parameters
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            API response dict containing created object with assigned identifier.
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
 
         Examples:
-            >>> # Create using individual parameters
-            >>> result = fgt.api.monitor.system_traffic_history_enable_app_bandwidth_tracking.post(
-            ...     name="example",
-            ...     # ... other required fields
+            >>> # Get all system/traffic_history/enable_app_bandwidth_tracking objects
+            >>> result = fgt.api.monitor.system_traffic_history_enable_app_bandwidth_tracking.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get with filter
+            >>> result = fgt.api.monitor.system_traffic_history_enable_app_bandwidth_tracking.get(
+            ...     payload_dict={"filter": ["name==test"]}
             ... )
-            >>> print(f"Created object: {result['results']}")
             
-            >>> # Create using payload dict
-            >>> payload = EnableAppBandwidthTracking.defaults()  # Start with defaults
-            >>> payload['name'] = 'my-object'
-            >>> result = fgt.api.monitor.system_traffic_history_enable_app_bandwidth_tracking.post(payload_dict=payload)
-
-        Note:
-            Required fields: {{ ", ".join(EnableAppBandwidthTracking.required_fields()) }}
-            
-            Use EnableAppBandwidthTracking.help('field_name') to get field details.
+            >>> # Get schema information
+            >>> schema = fgt.api.monitor.system_traffic_history_enable_app_bandwidth_tracking.get(action="schema")
 
         See Also:
-            - get(): Retrieve objects
-            - put(): Update existing object
-            - set(): Intelligent create or update
+            - post(): Create new system/traffic_history/enable_app_bandwidth_tracking object
+            - put(): Update existing system/traffic_history/enable_app_bandwidth_tracking object
+            - delete(): Remove system/traffic_history/enable_app_bandwidth_tracking object
+            - exists(): Check if object exists
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
-            data=payload_dict,
+        params = payload_dict.copy() if payload_dict else {}
+        
+        if name:
+            endpoint = f"/system/traffic-history/enable-app-bandwidth-tracking/{name}"
+        else:
+            endpoint = "/system/traffic-history/enable-app-bandwidth-tracking"
+        
+        params.update(kwargs)
+        return self._client.get(
+            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
 
-        # Check for deprecated fields and warn users
-        from ._helpers.enable_app_bandwidth_tracking import DEPRECATED_FIELDS
-        if DEPRECATED_FIELDS:
-            from hfortix_core import check_deprecated_fields
-            check_deprecated_fields(
-                payload=payload_data,
-                deprecated_fields=DEPRECATED_FIELDS,
-                endpoint="monitor/system/traffic_history/enable_app_bandwidth_tracking",
-            )
 
-        endpoint = "/system/traffic-history/enable-app-bandwidth-tracking"
-        return self._client.post(
-            "monitor", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
-        )
+
 
 
 

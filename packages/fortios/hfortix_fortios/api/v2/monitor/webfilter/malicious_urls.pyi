@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class MaliciousUrls:
     """
-    Monitor endpoint for webfilter/malicious-urls
+    Configuration for webfilter/malicious-urls/stat
     
     Path: webfilter/malicious_urls
     Category: monitor
@@ -80,3 +80,8 @@ class MaliciousUrls:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "MaliciousUrls",
+]

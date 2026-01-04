@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Interface:
+class Performance:
     """
-    Configuration for system/interface
+    Configuration for system/performance/status
     
-    Path: system/interface
+    Path: system/performance
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Interface:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]

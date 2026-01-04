@@ -868,7 +868,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/memory/filter",
     "category": "cmdb",
-    "api_path": "log/memory/filter",
+    "api_path": "log.memory/filter",
     "help": "Filters for memory buffer.",
     "total_fields": 13,
     "required_fields_count": 0,

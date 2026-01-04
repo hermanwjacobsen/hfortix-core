@@ -1,109 +1,94 @@
-"""
-Type stubs for switch_controller category.
+"""Type stubs for SWITCH_CONTROLLER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.992190+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .acl_group import AclGroup as AclGroup
-from .acl_ingress import AclIngress as AclIngress
-from .auto_config_custom import AutoConfigCustom as AutoConfigCustom
-from .auto_config_default import AutoConfigDefault as AutoConfigDefault
-from .auto_config_policy import AutoConfigPolicy as AutoConfigPolicy
-from .custom_command import CustomCommand as CustomCommand
-from .dynamic_port_policy import DynamicPortPolicy as DynamicPortPolicy
-from .flow_tracking import FlowTracking as FlowTracking
-from .fortilink_settings import FortilinkSettings as FortilinkSettings
-from .global_setting import GlobalSetting as GlobalSetting
-from .igmp_snooping import IgmpSnooping as IgmpSnooping
-from .initial_config_template import InitialConfigTemplate as InitialConfigTemplate
-from .initial_config_vlans import InitialConfigVlans as InitialConfigVlans
-from .ip_source_guard_log import IpSourceGuardLog as IpSourceGuardLog
-from .lldp_profile import LldpProfile as LldpProfile
-from .lldp_settings import LldpSettings as LldpSettings
-from .location import Location as Location
-from .mac_policy import MacPolicy as MacPolicy
-from .managed_switch import ManagedSwitch as ManagedSwitch
-from .network_monitor_settings import NetworkMonitorSettings as NetworkMonitorSettings
-from .ptp_interface_policy import PtpInterfacePolicy as PtpInterfacePolicy
-from .ptp_profile import PtpProfile as PtpProfile
-from .qos_dot1p_map import QosDot1pMap as QosDot1pMap
-from .qos_ip_dscp_map import QosIpDscpMap as QosIpDscpMap
-from .qos_qos_policy import QosQosPolicy as QosQosPolicy
-from .qos_queue_policy import QosQueuePolicy as QosQueuePolicy
-from .remote_log import RemoteLog as RemoteLog
-from .security_policy_802_1X import SecurityPolicy8021x as SecurityPolicy8021x
-from .security_policy_local_access import SecurityPolicyLocalAccess as SecurityPolicyLocalAccess
-from .sflow import Sflow as Sflow
-from .snmp_community import SnmpCommunity as SnmpCommunity
-from .snmp_sysinfo import SnmpSysinfo as SnmpSysinfo
-from .snmp_trap_threshold import SnmpTrapThreshold as SnmpTrapThreshold
-from .snmp_user import SnmpUser as SnmpUser
-from .storm_control import StormControl as StormControl
-from .storm_control_policy import StormControlPolicy as StormControlPolicy
-from .stp_instance import StpInstance as StpInstance
-from .stp_settings import StpSettings as StpSettings
-from .switch_group import SwitchGroup as SwitchGroup
-from .switch_interface_tag import SwitchInterfaceTag as SwitchInterfaceTag
-from .switch_log import SwitchLog as SwitchLog
-from .switch_profile import SwitchProfile as SwitchProfile
-from .system import System as System
-from .traffic_policy import TrafficPolicy as TrafficPolicy
-from .traffic_sniffer import TrafficSniffer as TrafficSniffer
-from .virtual_port_pool import VirtualPortPool as VirtualPortPool
-from .vlan_policy import VlanPolicy as VlanPolicy
-from .x802_1X_settings import X8021xSettings as X8021xSettings
 
-__all__ = [
-    "AclGroup",
-    "AclIngress",
-    "AutoConfigCustom",
-    "AutoConfigDefault",
-    "AutoConfigPolicy",
-    "CustomCommand",
-    "DynamicPortPolicy",
-    "FlowTracking",
-    "FortilinkSettings",
-    "GlobalSetting",
-    "IgmpSnooping",
-    "InitialConfigTemplate",
-    "InitialConfigVlans",
-    "IpSourceGuardLog",
-    "LldpProfile",
-    "LldpSettings",
-    "Location",
-    "MacPolicy",
-    "ManagedSwitch",
-    "NetworkMonitorSettings",
-    "PtpInterfacePolicy",
-    "PtpProfile",
-    "QosDot1pMap",
-    "QosIpDscpMap",
-    "QosQosPolicy",
-    "QosQueuePolicy",
-    "RemoteLog",
-    "SecurityPolicy8021x",
-    "SecurityPolicyLocalAccess",
-    "Sflow",
-    "SnmpCommunity",
-    "SnmpSysinfo",
-    "SnmpTrapThreshold",
-    "SnmpUser",
-    "StormControl",
-    "StormControlPolicy",
-    "StpInstance",
-    "StpSettings",
-    "SwitchGroup",
-    "SwitchInterfaceTag",
-    "SwitchLog",
-    "SwitchProfile",
-    "System",
-    "TrafficPolicy",
-    "TrafficSniffer",
-    "VirtualPortPool",
-    "VlanPolicy",
-    "X8021xSettings",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import acl
+    from . import auto_config
+    from . import custom_command
+    from . import dynamic_port_policy
+    from . import flow_tracking
+    from . import fortilink_settings
+    from . import global_setting
+    from . import igmp_snooping
+    from . import initial_config
+    from . import ip_source_guard_log
+    from . import lldp_profile
+    from . import lldp_settings
+    from . import location
+    from . import mac_policy
+    from . import managed_switch
+    from . import network_monitor_settings
+    from . import ptp
+    from . import qos
+    from . import remote_log
+    from . import security_policy
+    from . import sflow
+    from . import snmp_community
+    from . import snmp_sysinfo
+    from . import snmp_trap_threshold
+    from . import snmp_user
+    from . import storm_control
+    from . import storm_control_policy
+    from . import stp_instance
+    from . import stp_settings
+    from . import switch_group
+    from . import switch_interface_tag
+    from . import switch_log
+    from . import switch_profile
+    from . import system
+    from . import traffic_policy
+    from . import traffic_sniffer
+    from . import virtual_port_pool
+    from . import vlan_policy
+    from . import x802_1X_settings
+
+
+class SwitchController:
+    """Type stub for SwitchController."""
+
+    acl: acl.Acl
+    auto_config: auto_config.AutoConfig
+    initial_config: initial_config.InitialConfig
+    ptp: ptp.Ptp
+    qos: qos.Qos
+    security_policy: security_policy.SecurityPolicy
+    custom_command: custom_command.CustomCommand
+    dynamic_port_policy: dynamic_port_policy.DynamicPortPolicy
+    flow_tracking: flow_tracking.FlowTracking
+    fortilink_settings: fortilink_settings.FortilinkSettings
+    global_setting: global_setting.GlobalSetting
+    igmp_snooping: igmp_snooping.IgmpSnooping
+    ip_source_guard_log: ip_source_guard_log.IpSourceGuardLog
+    lldp_profile: lldp_profile.LldpProfile
+    lldp_settings: lldp_settings.LldpSettings
+    location: location.Location
+    mac_policy: mac_policy.MacPolicy
+    managed_switch: managed_switch.ManagedSwitch
+    network_monitor_settings: network_monitor_settings.NetworkMonitorSettings
+    remote_log: remote_log.RemoteLog
+    sflow: sflow.Sflow
+    snmp_community: snmp_community.SnmpCommunity
+    snmp_sysinfo: snmp_sysinfo.SnmpSysinfo
+    snmp_trap_threshold: snmp_trap_threshold.SnmpTrapThreshold
+    snmp_user: snmp_user.SnmpUser
+    storm_control: storm_control.StormControl
+    storm_control_policy: storm_control_policy.StormControlPolicy
+    stp_instance: stp_instance.StpInstance
+    stp_settings: stp_settings.StpSettings
+    switch_group: switch_group.SwitchGroup
+    switch_interface_tag: switch_interface_tag.SwitchInterfaceTag
+    switch_log: switch_log.SwitchLog
+    switch_profile: switch_profile.SwitchProfile
+    system: system.System
+    traffic_policy: traffic_policy.TrafficPolicy
+    traffic_sniffer: traffic_sniffer.TrafficSniffer
+    virtual_port_pool: virtual_port_pool.VirtualPortPool
+    vlan_policy: vlan_policy.VlanPolicy
+    x802_1X_settings: x802_1X_settings.X8021xSettings
+
+    def __init__(self, client: IHTTPClient) -> None: ...

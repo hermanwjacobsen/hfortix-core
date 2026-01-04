@@ -105,9 +105,9 @@ class H2qpWanMetric:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/wireless-controller/hotspot20/h2qp-wan-metric/" + str(name)
+            endpoint = "/wireless-controller.hotspot20/h2qp-wan-metric/" + str(name)
         else:
-            endpoint = "/wireless-controller/hotspot20/h2qp-wan-metric"
+            endpoint = "/wireless-controller.hotspot20/h2qp-wan-metric"
         
         params.update(kwargs)
         return self._client.get(
@@ -199,7 +199,7 @@ class H2qpWanMetric:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/wireless-controller/hotspot20/h2qp-wan-metric/" + str(name_value)
+        endpoint = "/wireless-controller.hotspot20/h2qp-wan-metric/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -288,7 +288,7 @@ class H2qpWanMetric:
                 endpoint="cmdb/wireless_controller/hotspot20/h2qp_wan_metric",
             )
 
-        endpoint = "/wireless-controller/hotspot20/h2qp-wan-metric"
+        endpoint = "/wireless-controller.hotspot20/h2qp-wan-metric"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -331,7 +331,7 @@ class H2qpWanMetric:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/wireless-controller/hotspot20/h2qp-wan-metric/" + str(name)
+        endpoint = "/wireless-controller.hotspot20/h2qp-wan-metric/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

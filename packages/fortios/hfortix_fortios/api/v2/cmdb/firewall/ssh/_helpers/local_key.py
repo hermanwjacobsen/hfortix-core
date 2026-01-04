@@ -587,7 +587,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/ssh/local_key",
     "category": "cmdb",
-    "api_path": "firewall/ssh/local-key",
+    "api_path": "firewall.ssh/local-key",
     "mkey": "name",
     "mkey_type": "string",
     "help": "SSH proxy local keys.",

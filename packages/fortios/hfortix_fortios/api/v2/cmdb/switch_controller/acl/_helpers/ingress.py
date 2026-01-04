@@ -589,7 +589,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/acl/ingress",
     "category": "cmdb",
-    "api_path": "switch-controller/acl/ingress",
+    "api_path": "switch-controller.acl/ingress",
     "mkey": "id",
     "mkey_type": "integer",
     "help": "Configure ingress ACL policies to be applied on managed FortiSwitch ports.",

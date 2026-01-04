@@ -105,9 +105,9 @@ class Concentrator:
         params = payload_dict.copy() if payload_dict else {}
         
         if id:
-            endpoint = "/vpn/ipsec/concentrator/" + str(id)
+            endpoint = "/vpn.ipsec/concentrator/" + str(id)
         else:
-            endpoint = "/vpn/ipsec/concentrator"
+            endpoint = "/vpn.ipsec/concentrator"
         
         params.update(kwargs)
         return self._client.get(
@@ -188,7 +188,7 @@ class Concentrator:
         id_value = payload_data.get("id")
         if not id_value:
             raise ValueError("id is required for PUT")
-        endpoint = "/vpn/ipsec/concentrator/" + str(id_value)
+        endpoint = "/vpn.ipsec/concentrator/" + str(id_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -266,7 +266,7 @@ class Concentrator:
                 endpoint="cmdb/vpn/ipsec/concentrator",
             )
 
-        endpoint = "/vpn/ipsec/concentrator"
+        endpoint = "/vpn.ipsec/concentrator"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -309,7 +309,7 @@ class Concentrator:
         """
         if not id:
             raise ValueError("id is required for DELETE")
-        endpoint = "/vpn/ipsec/concentrator/" + str(id)
+        endpoint = "/vpn.ipsec/concentrator/" + str(id)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

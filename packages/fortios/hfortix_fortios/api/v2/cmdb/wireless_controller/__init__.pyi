@@ -1,99 +1,72 @@
-"""
-Type stubs for wireless_controller category.
+"""Type stubs for WIRELESS_CONTROLLER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.985355+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .access_control_list import AccessControlList as AccessControlList
-from .ap_status import ApStatus as ApStatus
-from .apcfg_profile import ApcfgProfile as ApcfgProfile
-from .arrp_profile import ArrpProfile as ArrpProfile
-from .ble_profile import BleProfile as BleProfile
-from .bonjour_profile import BonjourProfile as BonjourProfile
-from .global_setting import GlobalSetting as GlobalSetting
-from .hotspot20_anqp_3gpp_cellular import Hotspot20Anqp3gppCellular as Hotspot20Anqp3gppCellular
-from .hotspot20_anqp_ip_address_type import Hotspot20AnqpIpAddressType as Hotspot20AnqpIpAddressType
-from .hotspot20_anqp_nai_realm import Hotspot20AnqpNaiRealm as Hotspot20AnqpNaiRealm
-from .hotspot20_anqp_network_auth_type import Hotspot20AnqpNetworkAuthType as Hotspot20AnqpNetworkAuthType
-from .hotspot20_anqp_roaming_consortium import Hotspot20AnqpRoamingConsortium as Hotspot20AnqpRoamingConsortium
-from .hotspot20_anqp_venue_name import Hotspot20AnqpVenueName as Hotspot20AnqpVenueName
-from .hotspot20_anqp_venue_url import Hotspot20AnqpVenueUrl as Hotspot20AnqpVenueUrl
-from .hotspot20_h2qp_advice_of_charge import Hotspot20H2qpAdviceOfCharge as Hotspot20H2qpAdviceOfCharge
-from .hotspot20_h2qp_conn_capability import Hotspot20H2qpConnCapability as Hotspot20H2qpConnCapability
-from .hotspot20_h2qp_operator_name import Hotspot20H2qpOperatorName as Hotspot20H2qpOperatorName
-from .hotspot20_h2qp_osu_provider import Hotspot20H2qpOsuProvider as Hotspot20H2qpOsuProvider
-from .hotspot20_h2qp_osu_provider_nai import Hotspot20H2qpOsuProviderNai as Hotspot20H2qpOsuProviderNai
-from .hotspot20_h2qp_terms_and_conditions import Hotspot20H2qpTermsAndConditions as Hotspot20H2qpTermsAndConditions
-from .hotspot20_h2qp_wan_metric import Hotspot20H2qpWanMetric as Hotspot20H2qpWanMetric
-from .hotspot20_hs_profile import Hotspot20HsProfile as Hotspot20HsProfile
-from .hotspot20_icon import Hotspot20Icon as Hotspot20Icon
-from .hotspot20_qos_map import Hotspot20QosMap as Hotspot20QosMap
-from .inter_controller import InterController as InterController
-from .log import Log as Log
-from .mpsk_profile import MpskProfile as MpskProfile
-from .nac_profile import NacProfile as NacProfile
-from .qos_profile import QosProfile as QosProfile
-from .region import Region as Region
-from .setting import Setting as Setting
-from .snmp import Snmp as Snmp
-from .ssid_policy import SsidPolicy as SsidPolicy
-from .syslog_profile import SyslogProfile as SyslogProfile
-from .timers import Timers as Timers
-from .utm_profile import UtmProfile as UtmProfile
-from .vap import Vap as Vap
-from .vap_group import VapGroup as VapGroup
-from .wag_profile import WagProfile as WagProfile
-from .wids_profile import WidsProfile as WidsProfile
-from .wtp import Wtp as Wtp
-from .wtp_group import WtpGroup as WtpGroup
-from .wtp_profile import WtpProfile as WtpProfile
 
-__all__ = [
-    "AccessControlList",
-    "ApStatus",
-    "ApcfgProfile",
-    "ArrpProfile",
-    "BleProfile",
-    "BonjourProfile",
-    "GlobalSetting",
-    "Hotspot20Anqp3gppCellular",
-    "Hotspot20AnqpIpAddressType",
-    "Hotspot20AnqpNaiRealm",
-    "Hotspot20AnqpNetworkAuthType",
-    "Hotspot20AnqpRoamingConsortium",
-    "Hotspot20AnqpVenueName",
-    "Hotspot20AnqpVenueUrl",
-    "Hotspot20H2qpAdviceOfCharge",
-    "Hotspot20H2qpConnCapability",
-    "Hotspot20H2qpOperatorName",
-    "Hotspot20H2qpOsuProvider",
-    "Hotspot20H2qpOsuProviderNai",
-    "Hotspot20H2qpTermsAndConditions",
-    "Hotspot20H2qpWanMetric",
-    "Hotspot20HsProfile",
-    "Hotspot20Icon",
-    "Hotspot20QosMap",
-    "InterController",
-    "Log",
-    "MpskProfile",
-    "NacProfile",
-    "QosProfile",
-    "Region",
-    "Setting",
-    "Snmp",
-    "SsidPolicy",
-    "SyslogProfile",
-    "Timers",
-    "UtmProfile",
-    "Vap",
-    "VapGroup",
-    "WagProfile",
-    "WidsProfile",
-    "Wtp",
-    "WtpGroup",
-    "WtpProfile",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import access_control_list
+    from . import ap_status
+    from . import apcfg_profile
+    from . import arrp_profile
+    from . import ble_profile
+    from . import bonjour_profile
+    from . import global_setting
+    from . import hotspot20
+    from . import inter_controller
+    from . import log
+    from . import lw_profile
+    from . import mpsk_profile
+    from . import nac_profile
+    from . import qos_profile
+    from . import region
+    from . import setting
+    from . import snmp
+    from . import ssid_policy
+    from . import syslog_profile
+    from . import timers
+    from . import utm_profile
+    from . import vap
+    from . import vap_group
+    from . import wag_profile
+    from . import wids_profile
+    from . import wtp
+    from . import wtp_group
+    from . import wtp_profile
+
+
+class WirelessController:
+    """Type stub for WirelessController."""
+
+    hotspot20: hotspot20.Hotspot20
+    access_control_list: access_control_list.AccessControlList
+    ap_status: ap_status.ApStatus
+    apcfg_profile: apcfg_profile.ApcfgProfile
+    arrp_profile: arrp_profile.ArrpProfile
+    ble_profile: ble_profile.BleProfile
+    bonjour_profile: bonjour_profile.BonjourProfile
+    global_setting: global_setting.GlobalSetting
+    inter_controller: inter_controller.InterController
+    log: log.Log
+    lw_profile: lw_profile.LwProfile
+    mpsk_profile: mpsk_profile.MpskProfile
+    nac_profile: nac_profile.NacProfile
+    qos_profile: qos_profile.QosProfile
+    region: region.Region
+    setting: setting.Setting
+    snmp: snmp.Snmp
+    ssid_policy: ssid_policy.SsidPolicy
+    syslog_profile: syslog_profile.SyslogProfile
+    timers: timers.Timers
+    utm_profile: utm_profile.UtmProfile
+    vap: vap.Vap
+    vap_group: vap_group.VapGroup
+    wag_profile: wag_profile.WagProfile
+    wids_profile: wids_profile.WidsProfile
+    wtp: wtp.Wtp
+    wtp_group: wtp_group.WtpGroup
+    wtp_profile: wtp_profile.WtpProfile
+
+    def __init__(self, client: IHTTPClient) -> None: ...

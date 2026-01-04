@@ -1,29 +1,32 @@
-"""
-Type stubs for dlp category.
+"""Type stubs for DLP category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.989315+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .data_type import DataType as DataType
-from .dictionary import Dictionary as Dictionary
-from .exact_data_match import ExactDataMatch as ExactDataMatch
-from .filepattern import Filepattern as Filepattern
-from .label import Label as Label
-from .profile import Profile as Profile
-from .sensor import Sensor as Sensor
-from .settings import Settings as Settings
 
-__all__ = [
-    "DataType",
-    "Dictionary",
-    "ExactDataMatch",
-    "Filepattern",
-    "Label",
-    "Profile",
-    "Sensor",
-    "Settings",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import data_type
+    from . import dictionary
+    from . import exact_data_match
+    from . import filepattern
+    from . import label
+    from . import profile
+    from . import sensor
+    from . import settings
+
+
+class Dlp:
+    """Type stub for Dlp."""
+
+    data_type: data_type.DataType
+    dictionary: dictionary.Dictionary
+    exact_data_match: exact_data_match.ExactDataMatch
+    filepattern: filepattern.Filepattern
+    label: label.Label
+    profile: profile.Profile
+    sensor: sensor.Sensor
+    settings: settings.Settings
+
+    def __init__(self, client: IHTTPClient) -> None: ...

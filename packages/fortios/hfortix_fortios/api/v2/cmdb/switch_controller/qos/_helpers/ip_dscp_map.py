@@ -580,7 +580,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/qos/ip_dscp_map",
     "category": "cmdb",
-    "api_path": "switch-controller/qos/ip-dscp-map",
+    "api_path": "switch-controller.qos/ip-dscp-map",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure FortiSwitch QoS IP precedence/DSCP.",

@@ -854,7 +854,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/syslogd2/override_setting",
     "category": "cmdb",
-    "api_path": "log/syslogd2/override-setting",
+    "api_path": "log.syslogd2/override-setting",
     "help": "Override settings for remote syslog server.",
     "total_fields": 18,
     "required_fields_count": 2,

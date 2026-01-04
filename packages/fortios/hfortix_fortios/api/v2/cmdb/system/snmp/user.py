@@ -105,9 +105,9 @@ class User:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/system/snmp/user/" + str(name)
+            endpoint = "/system.snmp/user/" + str(name)
         else:
-            endpoint = "/system/snmp/user"
+            endpoint = "/system.snmp/user"
         
         params.update(kwargs)
         return self._client.get(
@@ -227,7 +227,7 @@ class User:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/system/snmp/user/" + str(name_value)
+        endpoint = "/system.snmp/user/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -344,7 +344,7 @@ class User:
                 endpoint="cmdb/system/snmp/user",
             )
 
-        endpoint = "/system/snmp/user"
+        endpoint = "/system.snmp/user"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -387,7 +387,7 @@ class User:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/system/snmp/user/" + str(name)
+        endpoint = "/system.snmp/user/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

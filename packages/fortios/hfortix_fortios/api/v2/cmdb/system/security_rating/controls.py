@@ -105,9 +105,9 @@ class Controls:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/system/security-rating/controls/" + str(name)
+            endpoint = "/system.security-rating/controls/" + str(name)
         else:
-            endpoint = "/system/security-rating/controls"
+            endpoint = "/system.security-rating/controls"
         
         params.update(kwargs)
         return self._client.get(
@@ -185,7 +185,7 @@ class Controls:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/system/security-rating/controls/" + str(name_value)
+        endpoint = "/system.security-rating/controls/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -260,7 +260,7 @@ class Controls:
                 endpoint="cmdb/system/security_rating/controls",
             )
 
-        endpoint = "/system/security-rating/controls"
+        endpoint = "/system.security-rating/controls"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -303,7 +303,7 @@ class Controls:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/system/security-rating/controls/" + str(name)
+        endpoint = "/system.security-rating/controls/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

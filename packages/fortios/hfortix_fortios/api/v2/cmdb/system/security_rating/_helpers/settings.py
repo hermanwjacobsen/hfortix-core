@@ -567,7 +567,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/security_rating/settings",
     "category": "cmdb",
-    "api_path": "system/security-rating/settings",
+    "api_path": "system.security-rating/settings",
     "help": "Settings for Security Rating.",
     "total_fields": 1,
     "required_fields_count": 0,

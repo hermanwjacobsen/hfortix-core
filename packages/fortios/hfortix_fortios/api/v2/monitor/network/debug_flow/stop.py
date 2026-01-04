@@ -45,72 +45,72 @@ class Stop:
         """Initialize Stop endpoint."""
         self._client = client
 
-
-
-    def post(
+    def get(
         self,
+        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create new network/debug_flow/stop object.
+        Retrieve network/debug_flow/stop configuration.
 
         Configuration for network/debug-flow/stop
 
         Args:
-            payload_dict: Complete object data as dict. Alternative to individual parameters.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            name: Name identifier to retrieve specific object. If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
-            **kwargs: Additional parameters
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            API response dict containing created object with assigned identifier.
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
 
         Examples:
-            >>> # Create using individual parameters
-            >>> result = fgt.api.monitor.network_debug_flow_stop.post(
-            ...     name="example",
-            ...     # ... other required fields
+            >>> # Get all network/debug_flow/stop objects
+            >>> result = fgt.api.monitor.network_debug_flow_stop.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get with filter
+            >>> result = fgt.api.monitor.network_debug_flow_stop.get(
+            ...     payload_dict={"filter": ["name==test"]}
             ... )
-            >>> print(f"Created object: {result['results']}")
             
-            >>> # Create using payload dict
-            >>> payload = Stop.defaults()  # Start with defaults
-            >>> payload['name'] = 'my-object'
-            >>> result = fgt.api.monitor.network_debug_flow_stop.post(payload_dict=payload)
-
-        Note:
-            Required fields: {{ ", ".join(Stop.required_fields()) }}
-            
-            Use Stop.help('field_name') to get field details.
+            >>> # Get schema information
+            >>> schema = fgt.api.monitor.network_debug_flow_stop.get(action="schema")
 
         See Also:
-            - get(): Retrieve objects
-            - put(): Update existing object
-            - set(): Intelligent create or update
+            - post(): Create new network/debug_flow/stop object
+            - put(): Update existing network/debug_flow/stop object
+            - delete(): Remove network/debug_flow/stop object
+            - exists(): Check if object exists
         """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
-            data=payload_dict,
+        params = payload_dict.copy() if payload_dict else {}
+        
+        if name:
+            endpoint = f"/network/debug-flow/stop/{name}"
+        else:
+            endpoint = "/network/debug-flow/stop"
+        
+        params.update(kwargs)
+        return self._client.get(
+            "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
 
-        # Check for deprecated fields and warn users
-        from ._helpers.stop import DEPRECATED_FIELDS
-        if DEPRECATED_FIELDS:
-            from hfortix_core import check_deprecated_fields
-            check_deprecated_fields(
-                payload=payload_data,
-                deprecated_fields=DEPRECATED_FIELDS,
-                endpoint="monitor/network/debug_flow/stop",
-            )
 
-        endpoint = "/network/debug-flow/stop"
-        return self._client.post(
-            "monitor", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
-        )
+
 
 
 

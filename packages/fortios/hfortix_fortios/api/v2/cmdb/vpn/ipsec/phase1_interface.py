@@ -105,9 +105,9 @@ class Phase1Interface:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/vpn/ipsec/phase1-interface/" + str(name)
+            endpoint = "/vpn.ipsec/phase1-interface/" + str(name)
         else:
-            endpoint = "/vpn/ipsec/phase1-interface"
+            endpoint = "/vpn.ipsec/phase1-interface"
         
         params.update(kwargs)
         return self._client.get(
@@ -579,7 +579,7 @@ class Phase1Interface:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/vpn/ipsec/phase1-interface/" + str(name_value)
+        endpoint = "/vpn.ipsec/phase1-interface/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -1048,7 +1048,7 @@ class Phase1Interface:
                 endpoint="cmdb/vpn/ipsec/phase1_interface",
             )
 
-        endpoint = "/vpn/ipsec/phase1-interface"
+        endpoint = "/vpn.ipsec/phase1-interface"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -1091,7 +1091,7 @@ class Phase1Interface:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/vpn/ipsec/phase1-interface/" + str(name)
+        endpoint = "/vpn.ipsec/phase1-interface/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

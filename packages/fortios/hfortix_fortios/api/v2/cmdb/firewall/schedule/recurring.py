@@ -105,9 +105,9 @@ class Recurring:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/firewall/schedule/recurring/" + str(name)
+            endpoint = "/firewall.schedule/recurring/" + str(name)
         else:
-            endpoint = "/firewall/schedule/recurring"
+            endpoint = "/firewall.schedule/recurring"
         
         params.update(kwargs)
         return self._client.get(
@@ -195,7 +195,7 @@ class Recurring:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/firewall/schedule/recurring/" + str(name_value)
+        endpoint = "/firewall.schedule/recurring/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -280,7 +280,7 @@ class Recurring:
                 endpoint="cmdb/firewall/schedule/recurring",
             )
 
-        endpoint = "/firewall/schedule/recurring"
+        endpoint = "/firewall.schedule/recurring"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -323,7 +323,7 @@ class Recurring:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/firewall/schedule/recurring/" + str(name)
+        endpoint = "/firewall.schedule/recurring/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

@@ -3041,7 +3041,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/ipsec/phase1",
     "category": "cmdb",
-    "api_path": "vpn/ipsec/phase1",
+    "api_path": "vpn.ipsec/phase1",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure VPN remote gateway.",

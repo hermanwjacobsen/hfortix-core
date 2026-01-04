@@ -105,9 +105,9 @@ class RmonStat:
         params = payload_dict.copy() if payload_dict else {}
         
         if id:
-            endpoint = "/system/snmp/rmon-stat/" + str(id)
+            endpoint = "/system.snmp/rmon-stat/" + str(id)
         else:
-            endpoint = "/system/snmp/rmon-stat"
+            endpoint = "/system.snmp/rmon-stat"
         
         params.update(kwargs)
         return self._client.get(
@@ -185,7 +185,7 @@ class RmonStat:
         id_value = payload_data.get("id")
         if not id_value:
             raise ValueError("id is required for PUT")
-        endpoint = "/system/snmp/rmon-stat/" + str(id_value)
+        endpoint = "/system.snmp/rmon-stat/" + str(id_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -260,7 +260,7 @@ class RmonStat:
                 endpoint="cmdb/system/snmp/rmon_stat",
             )
 
-        endpoint = "/system/snmp/rmon-stat"
+        endpoint = "/system.snmp/rmon-stat"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -303,7 +303,7 @@ class RmonStat:
         """
         if not id:
             raise ValueError("id is required for DELETE")
-        endpoint = "/system/snmp/rmon-stat/" + str(id)
+        endpoint = "/system.snmp/rmon-stat/" + str(id)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

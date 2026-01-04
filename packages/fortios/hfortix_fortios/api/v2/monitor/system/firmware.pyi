@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Firmware:
+class Performance:
     """
-    Configuration for system/firmware
+    Configuration for system/performance/status
     
-    Path: system/firmware
+    Path: system/performance
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Firmware:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]
