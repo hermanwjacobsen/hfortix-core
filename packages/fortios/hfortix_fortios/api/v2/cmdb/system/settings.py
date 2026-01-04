@@ -1,42 +1,26 @@
 """
-FortiOS CMDB - Cmdb System Settings
+FortiOS CMDB - System settings
 
-Configuration endpoint for managing cmdb system settings objects.
+Configuration endpoint for managing cmdb system/settings objects.
 
 API Endpoints:
     GET    /cmdb/system/settings
+    POST   /cmdb/system/settings
     PUT    /cmdb/system/settings/{identifier}
+    DELETE /cmdb/system/settings/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.system.settings.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.system.settings.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.system.settings.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.system.settings.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.system.settings.delete(name="item_name")
+    >>> items = fgt.api.cmdb.system_settings.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -45,77 +29,81 @@ from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class Settings:
-    """
-    Settings Operations.
-
-    Provides CRUD operations for FortiOS settings configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        put(): Update existing configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """Settings Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize Settings endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize Settings endpoint."""
         self._client = client
 
     def get(
         self,
+        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        exclude_default_values: bool | None = None,
-        stat_items: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select all entries in a CLI table.
+        Retrieve system/settings configuration.
+
+        Configure VDOM settings.
 
         Args:
-            exclude_default_values: Exclude properties/objects with default
-            value (optional)
-            stat_items: Items to count occurrence in entire response (multiple
-            items should be separated by '|'). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: Name identifier to retrieve specific object. If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all system/settings objects
+            >>> result = fgt.api.cmdb.system_settings.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.system_settings.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.system_settings.get(action="schema")
+
+        See Also:
+            - post(): Create new system/settings object
+            - put(): Update existing system/settings object
+            - delete(): Remove system/settings object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-        endpoint = "/system/settings"
-        if exclude_default_values is not None:
-            params["exclude-default-values"] = exclude_default_values
-        if stat_items is not None:
-            params["stat-items"] = stat_items
+        
+        if name:
+            endpoint = f"/system/settings/{name}"
+        else:
+            endpoint = "/system/settings"
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -124,19 +112,16 @@ class Settings:
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
         comments: str | None = None,
         vdom_type: str | None = None,
         lan_extension_controller_addr: str | None = None,
-        lan_extension_controller_port: int | None = None,
         opmode: str | None = None,
         ngfw_mode: str | None = None,
         http_external_dest: str | None = None,
         firewall_session_dirty: str | None = None,
         manageip: str | None = None,
         gateway: str | None = None,
-        ip: str | None = None,
+        ip: Any | None = None,
         manageip6: str | None = None,
         gateway6: str | None = None,
         ip6: str | None = None,
@@ -162,7 +147,7 @@ class Settings:
         dhcp_server_ip: str | None = None,
         dhcp6_server_ip: str | None = None,
         central_nat: str | None = None,
-        gui_default_policy_columns: list | None = None,
+        gui_default_policy_columns: str | list | None = None,
         lldp_reception: str | None = None,
         lldp_transmission: str | None = None,
         link_down_access: str | None = None,
@@ -211,8 +196,11 @@ class Settings:
         gui_ap_profile: str | None = None,
         gui_security_profile_group: str | None = None,
         gui_local_in_policy: str | None = None,
+        gui_wanopt_cache: str | None = None,
         gui_explicit_proxy: str | None = None,
         gui_dynamic_routing: str | None = None,
+        gui_sslvpn_personal_bookmarks: str | None = None,
+        gui_sslvpn_realms: str | None = None,
         gui_policy_based_ipsec: str | None = None,
         gui_threat_weight: str | None = None,
         gui_spamfilter: str | None = None,
@@ -221,6 +209,7 @@ class Settings:
         gui_ips: str | None = None,
         gui_dhcp_advanced: str | None = None,
         gui_vpn: str | None = None,
+        gui_sslvpn: str | None = None,
         gui_wireless_controller: str | None = None,
         gui_advanced_wireless_features: str | None = None,
         gui_switch_controller: str | None = None,
@@ -246,6 +235,7 @@ class Settings:
         gui_ztna: str | None = None,
         gui_ot: str | None = None,
         gui_dynamic_device_os_id: str | None = None,
+        gui_gtp: str | None = None,
         location_id: str | None = None,
         ike_session_resume: str | None = None,
         ike_quick_crash_detect: str | None = None,
@@ -268,614 +258,918 @@ class Settings:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing system/settings object.
+
+        Configure VDOM settings.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            comments: VDOM comments. (optional)
-            vdom_type: Vdom type (traffic, lan-extension or admin). (optional)
-            lan_extension_controller_addr: Controller IP address or FQDN to
-            connect. (optional)
-            lan_extension_controller_port: Controller port to connect.
-            (optional)
-            opmode: Firewall operation mode (NAT or Transparent). (optional)
-            ngfw_mode: Next Generation Firewall (NGFW) mode. (optional)
-            http_external_dest: Offload HTTP traffic to FortiWeb or FortiCache.
-            (optional)
-            firewall_session_dirty: Select how to manage sessions affected by
-            firewall policy configuration changes. (optional)
-            manageip: Transparent mode IPv4 management IP address and netmask.
-            (optional)
-            gateway: Transparent mode IPv4 default gateway IP address.
-            (optional)
-            ip: IP address and netmask. (optional)
-            manageip6: Transparent mode IPv6 management IP address and netmask.
-            (optional)
-            gateway6: Transparent mode IPv6 default gateway IP address.
-            (optional)
-            ip6: IPv6 address prefix for NAT mode. (optional)
-            device: Interface to use for management access for NAT mode.
-            (optional)
-            bfd: Enable/disable Bi-directional Forwarding Detection (BFD) on
-            all interfaces. (optional)
-            bfd_desired_min_tx: BFD desired minimal transmit interval (1 -
-            100000 ms, default = 250). (optional)
-            bfd_required_min_rx: BFD required minimal receive interval (1 -
-            100000 ms, default = 250). (optional)
-            bfd_detect_mult: BFD detection multiplier (1 - 50, default = 3).
-            (optional)
-            bfd_dont_enforce_src_port: Enable to not enforce verifying the
-            source port of BFD Packets. (optional)
-            utf8_spam_tagging: Enable/disable converting antispam tags to UTF-8
-            for better non-ASCII character support. (optional)
-            wccp_cache_engine: Enable/disable WCCP cache engine. (optional)
-            vpn_stats_log: Enable/disable periodic VPN log statistics for one
-            or more types of VPN. Separate names with a space. (optional)
-            vpn_stats_period: Period to send VPN log statistics (0 or 60 -
-            86400 sec). (optional)
-            v4_ecmp_mode: IPv4 Equal-cost multi-path (ECMP) routing and load
-            balancing mode. (optional)
-            mac_ttl: Duration of MAC addresses in Transparent mode (300 -
-            8640000 sec, default = 300). (optional)
-            fw_session_hairpin: Enable/disable checking for a matching policy
-            each time hairpin traffic goes through the FortiGate. (optional)
-            prp_trailer_action: Enable/disable action to take on PRP trailer.
-            (optional)
-            snat_hairpin_traffic: Enable/disable source NAT (SNAT) for VIP
-            hairpin traffic. (optional)
-            dhcp_proxy: Enable/disable the DHCP Proxy. (optional)
-            dhcp_proxy_interface_select_method: Specify how to select outgoing
-            interface to reach server. (optional)
-            dhcp_proxy_interface: Specify outgoing interface to reach server.
-            (optional)
-            dhcp_proxy_vrf_select: VRF ID used for connection to server.
-            (optional)
-            dhcp_server_ip: DHCP Server IPv4 address. (optional)
-            dhcp6_server_ip: DHCPv6 server IPv6 address. (optional)
-            central_nat: Enable/disable central NAT. (optional)
-            gui_default_policy_columns: Default columns to display for policy
-            lists on GUI. (optional)
-            lldp_reception: Enable/disable Link Layer Discovery Protocol (LLDP)
-            reception for this VDOM or apply global settings to this VDOM.
-            (optional)
-            lldp_transmission: Enable/disable Link Layer Discovery Protocol
-            (LLDP) transmission for this VDOM or apply global settings to this
-            VDOM. (optional)
-            link_down_access: Enable/disable link down access traffic.
-            (optional)
-            nat46_generate_ipv6_fragment_header: Enable/disable NAT46 IPv6
-            fragment header generation. (optional)
-            nat46_force_ipv4_packet_forwarding: Enable/disable mandatory IPv4
-            packet forwarding in NAT46. (optional)
-            nat64_force_ipv6_packet_forwarding: Enable/disable mandatory IPv6
-            packet forwarding in NAT64. (optional)
-            detect_unknown_esp: Enable/disable detection of unknown ESP packets
-            (default = enable). (optional)
-            intree_ses_best_route: Force the intree session to always use the
-            best route. (optional)
-            auxiliary_session: Enable/disable auxiliary session. (optional)
-            asymroute: Enable/disable IPv4 asymmetric routing. (optional)
-            asymroute_icmp: Enable/disable ICMP asymmetric routing. (optional)
-            tcp_session_without_syn: Enable/disable allowing TCP session
-            without SYN flags. (optional)
-            ses_denied_traffic: Enable/disable including denied session in the
-            session table. (optional)
-            ses_denied_multicast_traffic: Enable/disable including denied
-            multicast session in the session table. (optional)
-            strict_src_check: Enable/disable strict source verification.
-            (optional)
-            allow_linkdown_path: Enable/disable link down path. (optional)
-            asymroute6: Enable/disable asymmetric IPv6 routing. (optional)
-            asymroute6_icmp: Enable/disable asymmetric ICMPv6 routing.
-            (optional)
-            sctp_session_without_init: Enable/disable SCTP session creation
-            without SCTP INIT. (optional)
-            sip_expectation: Enable/disable the SIP kernel session helper to
-            create an expectation for port 5060. (optional)
-            sip_nat_trace: Enable/disable recording the original SIP source IP
-            address when NAT is used. (optional)
-            h323_direct_model: Enable/disable H323 direct model. (optional)
-            status: Enable/disable this VDOM. (optional)
-            sip_tcp_port: TCP port the SIP proxy monitors for SIP traffic (0 -
-            65535, default = 5060). (optional)
-            sip_udp_port: UDP port the SIP proxy monitors for SIP traffic (0 -
-            65535, default = 5060). (optional)
-            sip_ssl_port: TCP port the SIP proxy monitors for SIP SSL/TLS
-            traffic (0 - 65535, default = 5061). (optional)
-            sccp_port: TCP port the SCCP proxy monitors for SCCP traffic (0 -
-            65535, default = 2000). (optional)
-            multicast_forward: Enable/disable multicast forwarding. (optional)
-            multicast_ttl_notchange: Enable/disable preventing the FortiGate
-            from changing the TTL for forwarded multicast packets. (optional)
-            multicast_skip_policy: Enable/disable allowing multicast traffic
-            through the FortiGate without a policy check. (optional)
-            allow_subnet_overlap: Enable/disable allowing interface subnets to
-            use overlapping IP addresses. (optional)
-            deny_tcp_with_icmp: Enable/disable denying TCP by sending an ICMP
-            communication prohibited packet. (optional)
-            ecmp_max_paths: Maximum number of Equal Cost Multi-Path (ECMP)
-            next-hops. Set to 1 to disable ECMP routing (1 - 255, default =
-            255). (optional)
-            discovered_device_timeout: Timeout for discovered devices (1 - 365
-            days, default = 28). (optional)
-            email_portal_check_dns: Enable/disable using DNS to validate email
-            addresses collected by a captive portal. (optional)
-            default_voip_alg_mode: Configure how the FortiGate handles VoIP
-            traffic when a policy that accepts the traffic doesn't include a
-            VoIP profile. (optional)
-            gui_icap: Enable/disable ICAP on the GUI. (optional)
-            gui_implicit_policy: Enable/disable implicit firewall policies on
-            the GUI. (optional)
-            gui_dns_database: Enable/disable DNS database settings on the GUI.
-            (optional)
-            gui_load_balance: Enable/disable server load balancing on the GUI.
-            (optional)
-            gui_multicast_policy: Enable/disable multicast firewall policies on
-            the GUI. (optional)
-            gui_dos_policy: Enable/disable DoS policies on the GUI. (optional)
-            gui_object_colors: Enable/disable object colors on the GUI.
-            (optional)
-            gui_route_tag_address_creation: Enable/disable route-tag addresses
-            on the GUI. (optional)
-            gui_voip_profile: Enable/disable VoIP profiles on the GUI.
-            (optional)
-            gui_ap_profile: Enable/disable FortiAP profiles on the GUI.
-            (optional)
-            gui_security_profile_group: Enable/disable Security Profile Groups
-            on the GUI. (optional)
-            gui_local_in_policy: Enable/disable Local-In policies on the GUI.
-            (optional)
-            gui_explicit_proxy: Enable/disable the explicit proxy on the GUI.
-            (optional)
-            gui_dynamic_routing: Enable/disable dynamic routing on the GUI.
-            (optional)
-            gui_policy_based_ipsec: Enable/disable policy-based IPsec VPN on
-            the GUI. (optional)
-            gui_threat_weight: Enable/disable threat weight on the GUI.
-            (optional)
-            gui_spamfilter: Enable/disable Antispam on the GUI. (optional)
-            gui_file_filter: Enable/disable File-filter on the GUI. (optional)
-            gui_application_control: Enable/disable application control on the
-            GUI. (optional)
-            gui_ips: Enable/disable IPS on the GUI. (optional)
-            gui_dhcp_advanced: Enable/disable advanced DHCP options on the GUI.
-            (optional)
-            gui_vpn: Enable/disable IPsec VPN settings pages on the GUI.
-            (optional)
-            gui_wireless_controller: Enable/disable the wireless controller on
-            the GUI. (optional)
-            gui_advanced_wireless_features: Enable/disable advanced wireless
-            features in GUI. (optional)
-            gui_switch_controller: Enable/disable the switch controller on the
-            GUI. (optional)
-            gui_fortiap_split_tunneling: Enable/disable FortiAP split tunneling
-            on the GUI. (optional)
-            gui_webfilter_advanced: Enable/disable advanced web filtering on
-            the GUI. (optional)
-            gui_traffic_shaping: Enable/disable traffic shaping on the GUI.
-            (optional)
-            gui_wan_load_balancing: Enable/disable SD-WAN on the GUI.
-            (optional)
-            gui_antivirus: Enable/disable AntiVirus on the GUI. (optional)
-            gui_webfilter: Enable/disable Web filtering on the GUI. (optional)
-            gui_videofilter: Enable/disable Video filtering on the GUI.
-            (optional)
-            gui_dnsfilter: Enable/disable DNS Filtering on the GUI. (optional)
-            gui_waf_profile: Enable/disable Web Application Firewall on the
-            GUI. (optional)
-            gui_dlp_profile: Enable/disable Data Loss Prevention on the GUI.
-            (optional)
-            gui_dlp_advanced: Enable/disable Show advanced DLP expressions on
-            the GUI. (optional)
-            gui_virtual_patch_profile: Enable/disable Virtual Patching on the
-            GUI. (optional)
-            gui_casb: Enable/disable Inline-CASB on the GUI. (optional)
-            gui_fortiextender_controller: Enable/disable FortiExtender on the
-            GUI. (optional)
-            gui_advanced_policy: Enable/disable advanced policy configuration
-            on the GUI. (optional)
-            gui_allow_unnamed_policy: Enable/disable the requirement for policy
-            naming on the GUI. (optional)
-            gui_email_collection: Enable/disable email collection on the GUI.
-            (optional)
-            gui_multiple_interface_policy: Enable/disable adding multiple
-            interfaces to a policy on the GUI. (optional)
-            gui_policy_disclaimer: Enable/disable policy disclaimer on the GUI.
-            (optional)
-            gui_ztna: Enable/disable Zero Trust Network Access features on the
-            GUI. (optional)
-            gui_ot: Enable/disable Operational technology features on the GUI.
-            (optional)
-            gui_dynamic_device_os_id: Enable/disable Create dynamic addresses
-            to manage known devices. (optional)
-            location_id: Local location ID in the form of an IPv4 address.
-            (optional)
-            ike_session_resume: Enable/disable IKEv2 session resumption (RFC
-            5723). (optional)
-            ike_quick_crash_detect: Enable/disable IKE quick crash detection
-            (RFC 6290). (optional)
-            ike_dn_format: Configure IKE ASN.1 Distinguished Name format
-            conventions. (optional)
-            ike_port: UDP port for IKE/IPsec traffic (default 500). (optional)
-            ike_tcp_port: TCP port for IKE/IPsec traffic (default 443).
-            (optional)
-            ike_policy_route: Enable/disable IKE Policy Based Routing (PBR).
-            (optional)
-            ike_detailed_event_logs: Enable/disable detail log for IKE events.
-            (optional)
-            block_land_attack: Enable/disable blocking of land attacks.
-            (optional)
-            default_app_port_as_service: Enable/disable policy service
-            enforcement based on application default ports. (optional)
-            fqdn_session_check: Enable/disable dirty session check caused by
-            FQDN updates. (optional)
-            ext_resource_session_check: Enable/disable dirty session check
-            caused by external resource updates. (optional)
-            dyn_addr_session_check: Enable/disable dirty session check caused
-            by dynamic address updates. (optional)
-            default_policy_expiry_days: Default policy expiry in days (0 - 365
-            days, default = 30). (optional)
-            gui_enforce_change_summary: Enforce change summaries for select
-            tables in the GUI. (optional)
-            internet_service_database_cache: Enable/disable Internet Service
-            database caching. (optional)
-            internet_service_app_ctrl_size: Maximum number of tuple entries
-            (protocol, port, IP address, application ID) stored by the
-            FortiGate unit (0 - 4294967295, default = 32768). A smaller value
-            limits the FortiGate unit from learning about internet
-            applications. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include name (primary key).
+            comments: VDOM comments.
+            vdom_type: Vdom type (traffic, lan-extension or admin).
+            lan_extension_controller_addr: Controller IP address or FQDN to connect.
+            opmode: Firewall operation mode (NAT or Transparent).
+            ngfw_mode: Next Generation Firewall (NGFW) mode.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.system_settings.put(
+            ...     name="existing-object",
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": "existing-object",
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.system_settings.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/system/settings"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if comments is not None:
-            data_payload["comments"] = comments
-        if vdom_type is not None:
-            data_payload["vdom-type"] = vdom_type
-        if lan_extension_controller_addr is not None:
-            data_payload["lan-extension-controller-addr"] = (
-                lan_extension_controller_addr
-            )
-        if lan_extension_controller_port is not None:
-            data_payload["lan-extension-controller-port"] = (
-                lan_extension_controller_port
-            )
-        if opmode is not None:
-            data_payload["opmode"] = opmode
-        if ngfw_mode is not None:
-            data_payload["ngfw-mode"] = ngfw_mode
-        if http_external_dest is not None:
-            data_payload["http-external-dest"] = http_external_dest
-        if firewall_session_dirty is not None:
-            data_payload["firewall-session-dirty"] = firewall_session_dirty
-        if manageip is not None:
-            data_payload["manageip"] = manageip
-        if gateway is not None:
-            data_payload["gateway"] = gateway
-        if ip is not None:
-            data_payload["ip"] = ip
-        if manageip6 is not None:
-            data_payload["manageip6"] = manageip6
-        if gateway6 is not None:
-            data_payload["gateway6"] = gateway6
-        if ip6 is not None:
-            data_payload["ip6"] = ip6
-        if device is not None:
-            data_payload["device"] = device
-        if bfd is not None:
-            data_payload["bfd"] = bfd
-        if bfd_desired_min_tx is not None:
-            data_payload["bfd-desired-min-tx"] = bfd_desired_min_tx
-        if bfd_required_min_rx is not None:
-            data_payload["bfd-required-min-rx"] = bfd_required_min_rx
-        if bfd_detect_mult is not None:
-            data_payload["bfd-detect-mult"] = bfd_detect_mult
-        if bfd_dont_enforce_src_port is not None:
-            data_payload["bfd-dont-enforce-src-port"] = (
-                bfd_dont_enforce_src_port
-            )
-        if utf8_spam_tagging is not None:
-            data_payload["utf8-spam-tagging"] = utf8_spam_tagging
-        if wccp_cache_engine is not None:
-            data_payload["wccp-cache-engine"] = wccp_cache_engine
-        if vpn_stats_log is not None:
-            data_payload["vpn-stats-log"] = vpn_stats_log
-        if vpn_stats_period is not None:
-            data_payload["vpn-stats-period"] = vpn_stats_period
-        if v4_ecmp_mode is not None:
-            data_payload["v4-ecmp-mode"] = v4_ecmp_mode
-        if mac_ttl is not None:
-            data_payload["mac-ttl"] = mac_ttl
-        if fw_session_hairpin is not None:
-            data_payload["fw-session-hairpin"] = fw_session_hairpin
-        if prp_trailer_action is not None:
-            data_payload["prp-trailer-action"] = prp_trailer_action
-        if snat_hairpin_traffic is not None:
-            data_payload["snat-hairpin-traffic"] = snat_hairpin_traffic
-        if dhcp_proxy is not None:
-            data_payload["dhcp-proxy"] = dhcp_proxy
-        if dhcp_proxy_interface_select_method is not None:
-            data_payload["dhcp-proxy-interface-select-method"] = (
-                dhcp_proxy_interface_select_method
-            )
-        if dhcp_proxy_interface is not None:
-            data_payload["dhcp-proxy-interface"] = dhcp_proxy_interface
-        if dhcp_proxy_vrf_select is not None:
-            data_payload["dhcp-proxy-vrf-select"] = dhcp_proxy_vrf_select
-        if dhcp_server_ip is not None:
-            data_payload["dhcp-server-ip"] = dhcp_server_ip
-        if dhcp6_server_ip is not None:
-            data_payload["dhcp6-server-ip"] = dhcp6_server_ip
-        if central_nat is not None:
-            data_payload["central-nat"] = central_nat
-        if gui_default_policy_columns is not None:
-            data_payload["gui-default-policy-columns"] = (
-                gui_default_policy_columns
-            )
-        if lldp_reception is not None:
-            data_payload["lldp-reception"] = lldp_reception
-        if lldp_transmission is not None:
-            data_payload["lldp-transmission"] = lldp_transmission
-        if link_down_access is not None:
-            data_payload["link-down-access"] = link_down_access
-        if nat46_generate_ipv6_fragment_header is not None:
-            data_payload["nat46-generate-ipv6-fragment-header"] = (
-                nat46_generate_ipv6_fragment_header
-            )
-        if nat46_force_ipv4_packet_forwarding is not None:
-            data_payload["nat46-force-ipv4-packet-forwarding"] = (
-                nat46_force_ipv4_packet_forwarding
-            )
-        if nat64_force_ipv6_packet_forwarding is not None:
-            data_payload["nat64-force-ipv6-packet-forwarding"] = (
-                nat64_force_ipv6_packet_forwarding
-            )
-        if detect_unknown_esp is not None:
-            data_payload["detect-unknown-esp"] = detect_unknown_esp
-        if intree_ses_best_route is not None:
-            data_payload["intree-ses-best-route"] = intree_ses_best_route
-        if auxiliary_session is not None:
-            data_payload["auxiliary-session"] = auxiliary_session
-        if asymroute is not None:
-            data_payload["asymroute"] = asymroute
-        if asymroute_icmp is not None:
-            data_payload["asymroute-icmp"] = asymroute_icmp
-        if tcp_session_without_syn is not None:
-            data_payload["tcp-session-without-syn"] = tcp_session_without_syn
-        if ses_denied_traffic is not None:
-            data_payload["ses-denied-traffic"] = ses_denied_traffic
-        if ses_denied_multicast_traffic is not None:
-            data_payload["ses-denied-multicast-traffic"] = (
-                ses_denied_multicast_traffic
-            )
-        if strict_src_check is not None:
-            data_payload["strict-src-check"] = strict_src_check
-        if allow_linkdown_path is not None:
-            data_payload["allow-linkdown-path"] = allow_linkdown_path
-        if asymroute6 is not None:
-            data_payload["asymroute6"] = asymroute6
-        if asymroute6_icmp is not None:
-            data_payload["asymroute6-icmp"] = asymroute6_icmp
-        if sctp_session_without_init is not None:
-            data_payload["sctp-session-without-init"] = (
-                sctp_session_without_init
-            )
-        if sip_expectation is not None:
-            data_payload["sip-expectation"] = sip_expectation
-        if sip_nat_trace is not None:
-            data_payload["sip-nat-trace"] = sip_nat_trace
-        if h323_direct_model is not None:
-            data_payload["h323-direct-model"] = h323_direct_model
-        if status is not None:
-            data_payload["status"] = status
-        if sip_tcp_port is not None:
-            data_payload["sip-tcp-port"] = sip_tcp_port
-        if sip_udp_port is not None:
-            data_payload["sip-udp-port"] = sip_udp_port
-        if sip_ssl_port is not None:
-            data_payload["sip-ssl-port"] = sip_ssl_port
-        if sccp_port is not None:
-            data_payload["sccp-port"] = sccp_port
-        if multicast_forward is not None:
-            data_payload["multicast-forward"] = multicast_forward
-        if multicast_ttl_notchange is not None:
-            data_payload["multicast-ttl-notchange"] = multicast_ttl_notchange
-        if multicast_skip_policy is not None:
-            data_payload["multicast-skip-policy"] = multicast_skip_policy
-        if allow_subnet_overlap is not None:
-            data_payload["allow-subnet-overlap"] = allow_subnet_overlap
-        if deny_tcp_with_icmp is not None:
-            data_payload["deny-tcp-with-icmp"] = deny_tcp_with_icmp
-        if ecmp_max_paths is not None:
-            data_payload["ecmp-max-paths"] = ecmp_max_paths
-        if discovered_device_timeout is not None:
-            data_payload["discovered-device-timeout"] = (
-                discovered_device_timeout
-            )
-        if email_portal_check_dns is not None:
-            data_payload["email-portal-check-dns"] = email_portal_check_dns
-        if default_voip_alg_mode is not None:
-            data_payload["default-voip-alg-mode"] = default_voip_alg_mode
-        if gui_icap is not None:
-            data_payload["gui-icap"] = gui_icap
-        if gui_implicit_policy is not None:
-            data_payload["gui-implicit-policy"] = gui_implicit_policy
-        if gui_dns_database is not None:
-            data_payload["gui-dns-database"] = gui_dns_database
-        if gui_load_balance is not None:
-            data_payload["gui-load-balance"] = gui_load_balance
-        if gui_multicast_policy is not None:
-            data_payload["gui-multicast-policy"] = gui_multicast_policy
-        if gui_dos_policy is not None:
-            data_payload["gui-dos-policy"] = gui_dos_policy
-        if gui_object_colors is not None:
-            data_payload["gui-object-colors"] = gui_object_colors
-        if gui_route_tag_address_creation is not None:
-            data_payload["gui-route-tag-address-creation"] = (
-                gui_route_tag_address_creation
-            )
-        if gui_voip_profile is not None:
-            data_payload["gui-voip-profile"] = gui_voip_profile
-        if gui_ap_profile is not None:
-            data_payload["gui-ap-profile"] = gui_ap_profile
-        if gui_security_profile_group is not None:
-            data_payload["gui-security-profile-group"] = (
-                gui_security_profile_group
-            )
-        if gui_local_in_policy is not None:
-            data_payload["gui-local-in-policy"] = gui_local_in_policy
-        if gui_explicit_proxy is not None:
-            data_payload["gui-explicit-proxy"] = gui_explicit_proxy
-        if gui_dynamic_routing is not None:
-            data_payload["gui-dynamic-routing"] = gui_dynamic_routing
-        if gui_policy_based_ipsec is not None:
-            data_payload["gui-policy-based-ipsec"] = gui_policy_based_ipsec
-        if gui_threat_weight is not None:
-            data_payload["gui-threat-weight"] = gui_threat_weight
-        if gui_spamfilter is not None:
-            data_payload["gui-spamfilter"] = gui_spamfilter
-        if gui_file_filter is not None:
-            data_payload["gui-file-filter"] = gui_file_filter
-        if gui_application_control is not None:
-            data_payload["gui-application-control"] = gui_application_control
-        if gui_ips is not None:
-            data_payload["gui-ips"] = gui_ips
-        if gui_dhcp_advanced is not None:
-            data_payload["gui-dhcp-advanced"] = gui_dhcp_advanced
-        if gui_vpn is not None:
-            data_payload["gui-vpn"] = gui_vpn
-        if gui_wireless_controller is not None:
-            data_payload["gui-wireless-controller"] = gui_wireless_controller
-        if gui_advanced_wireless_features is not None:
-            data_payload["gui-advanced-wireless-features"] = (
-                gui_advanced_wireless_features
-            )
-        if gui_switch_controller is not None:
-            data_payload["gui-switch-controller"] = gui_switch_controller
-        if gui_fortiap_split_tunneling is not None:
-            data_payload["gui-fortiap-split-tunneling"] = (
-                gui_fortiap_split_tunneling
-            )
-        if gui_webfilter_advanced is not None:
-            data_payload["gui-webfilter-advanced"] = gui_webfilter_advanced
-        if gui_traffic_shaping is not None:
-            data_payload["gui-traffic-shaping"] = gui_traffic_shaping
-        if gui_wan_load_balancing is not None:
-            data_payload["gui-wan-load-balancing"] = gui_wan_load_balancing
-        if gui_antivirus is not None:
-            data_payload["gui-antivirus"] = gui_antivirus
-        if gui_webfilter is not None:
-            data_payload["gui-webfilter"] = gui_webfilter
-        if gui_videofilter is not None:
-            data_payload["gui-videofilter"] = gui_videofilter
-        if gui_dnsfilter is not None:
-            data_payload["gui-dnsfilter"] = gui_dnsfilter
-        if gui_waf_profile is not None:
-            data_payload["gui-waf-profile"] = gui_waf_profile
-        if gui_dlp_profile is not None:
-            data_payload["gui-dlp-profile"] = gui_dlp_profile
-        if gui_dlp_advanced is not None:
-            data_payload["gui-dlp-advanced"] = gui_dlp_advanced
-        if gui_virtual_patch_profile is not None:
-            data_payload["gui-virtual-patch-profile"] = (
-                gui_virtual_patch_profile
-            )
-        if gui_casb is not None:
-            data_payload["gui-casb"] = gui_casb
-        if gui_fortiextender_controller is not None:
-            data_payload["gui-fortiextender-controller"] = (
-                gui_fortiextender_controller
-            )
-        if gui_advanced_policy is not None:
-            data_payload["gui-advanced-policy"] = gui_advanced_policy
-        if gui_allow_unnamed_policy is not None:
-            data_payload["gui-allow-unnamed-policy"] = gui_allow_unnamed_policy
-        if gui_email_collection is not None:
-            data_payload["gui-email-collection"] = gui_email_collection
-        if gui_multiple_interface_policy is not None:
-            data_payload["gui-multiple-interface-policy"] = (
-                gui_multiple_interface_policy
-            )
-        if gui_policy_disclaimer is not None:
-            data_payload["gui-policy-disclaimer"] = gui_policy_disclaimer
-        if gui_ztna is not None:
-            data_payload["gui-ztna"] = gui_ztna
-        if gui_ot is not None:
-            data_payload["gui-ot"] = gui_ot
-        if gui_dynamic_device_os_id is not None:
-            data_payload["gui-dynamic-device-os-id"] = gui_dynamic_device_os_id
-        if location_id is not None:
-            data_payload["location-id"] = location_id
-        if ike_session_resume is not None:
-            data_payload["ike-session-resume"] = ike_session_resume
-        if ike_quick_crash_detect is not None:
-            data_payload["ike-quick-crash-detect"] = ike_quick_crash_detect
-        if ike_dn_format is not None:
-            data_payload["ike-dn-format"] = ike_dn_format
-        if ike_port is not None:
-            data_payload["ike-port"] = ike_port
-        if ike_tcp_port is not None:
-            data_payload["ike-tcp-port"] = ike_tcp_port
-        if ike_policy_route is not None:
-            data_payload["ike-policy-route"] = ike_policy_route
-        if ike_detailed_event_logs is not None:
-            data_payload["ike-detailed-event-logs"] = ike_detailed_event_logs
-        if block_land_attack is not None:
-            data_payload["block-land-attack"] = block_land_attack
-        if default_app_port_as_service is not None:
-            data_payload["default-app-port-as-service"] = (
-                default_app_port_as_service
-            )
-        if fqdn_session_check is not None:
-            data_payload["fqdn-session-check"] = fqdn_session_check
-        if ext_resource_session_check is not None:
-            data_payload["ext-resource-session-check"] = (
-                ext_resource_session_check
-            )
-        if dyn_addr_session_check is not None:
-            data_payload["dyn-addr-session-check"] = dyn_addr_session_check
-        if default_policy_expiry_days is not None:
-            data_payload["default-policy-expiry-days"] = (
-                default_policy_expiry_days
-            )
-        if gui_enforce_change_summary is not None:
-            data_payload["gui-enforce-change-summary"] = (
-                gui_enforce_change_summary
-            )
-        if internet_service_database_cache is not None:
-            data_payload["internet-service-database-cache"] = (
-                internet_service_database_cache
-            )
-        if internet_service_app_ctrl_size is not None:
-            data_payload["internet-service-app-ctrl-size"] = (
-                internet_service_app_ctrl_size
-            )
-        data_payload.update(kwargs)
-        return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            comments=comments,
+            vdom_type=vdom_type,
+            lan_extension_controller_addr=lan_extension_controller_addr,
+            opmode=opmode,
+            ngfw_mode=ngfw_mode,
+            http_external_dest=http_external_dest,
+            firewall_session_dirty=firewall_session_dirty,
+            manageip=manageip,
+            gateway=gateway,
+            ip=ip,
+            manageip6=manageip6,
+            gateway6=gateway6,
+            ip6=ip6,
+            device=device,
+            bfd=bfd,
+            bfd_desired_min_tx=bfd_desired_min_tx,
+            bfd_required_min_rx=bfd_required_min_rx,
+            bfd_detect_mult=bfd_detect_mult,
+            bfd_dont_enforce_src_port=bfd_dont_enforce_src_port,
+            utf8_spam_tagging=utf8_spam_tagging,
+            wccp_cache_engine=wccp_cache_engine,
+            vpn_stats_log=vpn_stats_log,
+            vpn_stats_period=vpn_stats_period,
+            v4_ecmp_mode=v4_ecmp_mode,
+            mac_ttl=mac_ttl,
+            fw_session_hairpin=fw_session_hairpin,
+            prp_trailer_action=prp_trailer_action,
+            snat_hairpin_traffic=snat_hairpin_traffic,
+            dhcp_proxy=dhcp_proxy,
+            dhcp_proxy_interface_select_method=dhcp_proxy_interface_select_method,
+            dhcp_proxy_interface=dhcp_proxy_interface,
+            dhcp_proxy_vrf_select=dhcp_proxy_vrf_select,
+            dhcp_server_ip=dhcp_server_ip,
+            dhcp6_server_ip=dhcp6_server_ip,
+            central_nat=central_nat,
+            gui_default_policy_columns=gui_default_policy_columns,
+            lldp_reception=lldp_reception,
+            lldp_transmission=lldp_transmission,
+            link_down_access=link_down_access,
+            nat46_generate_ipv6_fragment_header=nat46_generate_ipv6_fragment_header,
+            nat46_force_ipv4_packet_forwarding=nat46_force_ipv4_packet_forwarding,
+            nat64_force_ipv6_packet_forwarding=nat64_force_ipv6_packet_forwarding,
+            detect_unknown_esp=detect_unknown_esp,
+            intree_ses_best_route=intree_ses_best_route,
+            auxiliary_session=auxiliary_session,
+            asymroute=asymroute,
+            asymroute_icmp=asymroute_icmp,
+            tcp_session_without_syn=tcp_session_without_syn,
+            ses_denied_traffic=ses_denied_traffic,
+            ses_denied_multicast_traffic=ses_denied_multicast_traffic,
+            strict_src_check=strict_src_check,
+            allow_linkdown_path=allow_linkdown_path,
+            asymroute6=asymroute6,
+            asymroute6_icmp=asymroute6_icmp,
+            sctp_session_without_init=sctp_session_without_init,
+            sip_expectation=sip_expectation,
+            sip_nat_trace=sip_nat_trace,
+            h323_direct_model=h323_direct_model,
+            status=status,
+            sip_tcp_port=sip_tcp_port,
+            sip_udp_port=sip_udp_port,
+            sip_ssl_port=sip_ssl_port,
+            sccp_port=sccp_port,
+            multicast_forward=multicast_forward,
+            multicast_ttl_notchange=multicast_ttl_notchange,
+            multicast_skip_policy=multicast_skip_policy,
+            allow_subnet_overlap=allow_subnet_overlap,
+            deny_tcp_with_icmp=deny_tcp_with_icmp,
+            ecmp_max_paths=ecmp_max_paths,
+            discovered_device_timeout=discovered_device_timeout,
+            email_portal_check_dns=email_portal_check_dns,
+            default_voip_alg_mode=default_voip_alg_mode,
+            gui_icap=gui_icap,
+            gui_implicit_policy=gui_implicit_policy,
+            gui_dns_database=gui_dns_database,
+            gui_load_balance=gui_load_balance,
+            gui_multicast_policy=gui_multicast_policy,
+            gui_dos_policy=gui_dos_policy,
+            gui_object_colors=gui_object_colors,
+            gui_route_tag_address_creation=gui_route_tag_address_creation,
+            gui_voip_profile=gui_voip_profile,
+            gui_ap_profile=gui_ap_profile,
+            gui_security_profile_group=gui_security_profile_group,
+            gui_local_in_policy=gui_local_in_policy,
+            gui_wanopt_cache=gui_wanopt_cache,
+            gui_explicit_proxy=gui_explicit_proxy,
+            gui_dynamic_routing=gui_dynamic_routing,
+            gui_sslvpn_personal_bookmarks=gui_sslvpn_personal_bookmarks,
+            gui_sslvpn_realms=gui_sslvpn_realms,
+            gui_policy_based_ipsec=gui_policy_based_ipsec,
+            gui_threat_weight=gui_threat_weight,
+            gui_spamfilter=gui_spamfilter,
+            gui_file_filter=gui_file_filter,
+            gui_application_control=gui_application_control,
+            gui_ips=gui_ips,
+            gui_dhcp_advanced=gui_dhcp_advanced,
+            gui_vpn=gui_vpn,
+            gui_sslvpn=gui_sslvpn,
+            gui_wireless_controller=gui_wireless_controller,
+            gui_advanced_wireless_features=gui_advanced_wireless_features,
+            gui_switch_controller=gui_switch_controller,
+            gui_fortiap_split_tunneling=gui_fortiap_split_tunneling,
+            gui_webfilter_advanced=gui_webfilter_advanced,
+            gui_traffic_shaping=gui_traffic_shaping,
+            gui_wan_load_balancing=gui_wan_load_balancing,
+            gui_antivirus=gui_antivirus,
+            gui_webfilter=gui_webfilter,
+            gui_videofilter=gui_videofilter,
+            gui_dnsfilter=gui_dnsfilter,
+            gui_waf_profile=gui_waf_profile,
+            gui_dlp_profile=gui_dlp_profile,
+            gui_dlp_advanced=gui_dlp_advanced,
+            gui_virtual_patch_profile=gui_virtual_patch_profile,
+            gui_casb=gui_casb,
+            gui_fortiextender_controller=gui_fortiextender_controller,
+            gui_advanced_policy=gui_advanced_policy,
+            gui_allow_unnamed_policy=gui_allow_unnamed_policy,
+            gui_email_collection=gui_email_collection,
+            gui_multiple_interface_policy=gui_multiple_interface_policy,
+            gui_policy_disclaimer=gui_policy_disclaimer,
+            gui_ztna=gui_ztna,
+            gui_ot=gui_ot,
+            gui_dynamic_device_os_id=gui_dynamic_device_os_id,
+            gui_gtp=gui_gtp,
+            location_id=location_id,
+            ike_session_resume=ike_session_resume,
+            ike_quick_crash_detect=ike_quick_crash_detect,
+            ike_dn_format=ike_dn_format,
+            ike_port=ike_port,
+            ike_tcp_port=ike_tcp_port,
+            ike_policy_route=ike_policy_route,
+            ike_detailed_event_logs=ike_detailed_event_logs,
+            block_land_attack=block_land_attack,
+            default_app_port_as_service=default_app_port_as_service,
+            fqdn_session_check=fqdn_session_check,
+            ext_resource_session_check=ext_resource_session_check,
+            dyn_addr_session_check=dyn_addr_session_check,
+            default_policy_expiry_days=default_policy_expiry_days,
+            gui_enforce_change_summary=gui_enforce_change_summary,
+            internet_service_database_cache=internet_service_database_cache,
+            internet_service_app_ctrl_size=internet_service_app_ctrl_size,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.settings import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/settings",
+            )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = f"/system/settings/{name_value}"
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        comments: str | None = None,
+        vdom_type: str | None = None,
+        lan_extension_controller_addr: str | None = None,
+        opmode: str | None = None,
+        ngfw_mode: str | None = None,
+        http_external_dest: str | None = None,
+        firewall_session_dirty: str | None = None,
+        manageip: str | None = None,
+        gateway: str | None = None,
+        ip: Any | None = None,
+        manageip6: str | None = None,
+        gateway6: str | None = None,
+        ip6: str | None = None,
+        device: str | None = None,
+        bfd: str | None = None,
+        bfd_desired_min_tx: int | None = None,
+        bfd_required_min_rx: int | None = None,
+        bfd_detect_mult: int | None = None,
+        bfd_dont_enforce_src_port: str | None = None,
+        utf8_spam_tagging: str | None = None,
+        wccp_cache_engine: str | None = None,
+        vpn_stats_log: str | None = None,
+        vpn_stats_period: int | None = None,
+        v4_ecmp_mode: str | None = None,
+        mac_ttl: int | None = None,
+        fw_session_hairpin: str | None = None,
+        prp_trailer_action: str | None = None,
+        snat_hairpin_traffic: str | None = None,
+        dhcp_proxy: str | None = None,
+        dhcp_proxy_interface_select_method: str | None = None,
+        dhcp_proxy_interface: str | None = None,
+        dhcp_proxy_vrf_select: int | None = None,
+        dhcp_server_ip: str | None = None,
+        dhcp6_server_ip: str | None = None,
+        central_nat: str | None = None,
+        gui_default_policy_columns: str | list | None = None,
+        lldp_reception: str | None = None,
+        lldp_transmission: str | None = None,
+        link_down_access: str | None = None,
+        nat46_generate_ipv6_fragment_header: str | None = None,
+        nat46_force_ipv4_packet_forwarding: str | None = None,
+        nat64_force_ipv6_packet_forwarding: str | None = None,
+        detect_unknown_esp: str | None = None,
+        intree_ses_best_route: str | None = None,
+        auxiliary_session: str | None = None,
+        asymroute: str | None = None,
+        asymroute_icmp: str | None = None,
+        tcp_session_without_syn: str | None = None,
+        ses_denied_traffic: str | None = None,
+        ses_denied_multicast_traffic: str | None = None,
+        strict_src_check: str | None = None,
+        allow_linkdown_path: str | None = None,
+        asymroute6: str | None = None,
+        asymroute6_icmp: str | None = None,
+        sctp_session_without_init: str | None = None,
+        sip_expectation: str | None = None,
+        sip_nat_trace: str | None = None,
+        h323_direct_model: str | None = None,
+        status: str | None = None,
+        sip_tcp_port: int | None = None,
+        sip_udp_port: int | None = None,
+        sip_ssl_port: int | None = None,
+        sccp_port: int | None = None,
+        multicast_forward: str | None = None,
+        multicast_ttl_notchange: str | None = None,
+        multicast_skip_policy: str | None = None,
+        allow_subnet_overlap: str | None = None,
+        deny_tcp_with_icmp: str | None = None,
+        ecmp_max_paths: int | None = None,
+        discovered_device_timeout: int | None = None,
+        email_portal_check_dns: str | None = None,
+        default_voip_alg_mode: str | None = None,
+        gui_icap: str | None = None,
+        gui_implicit_policy: str | None = None,
+        gui_dns_database: str | None = None,
+        gui_load_balance: str | None = None,
+        gui_multicast_policy: str | None = None,
+        gui_dos_policy: str | None = None,
+        gui_object_colors: str | None = None,
+        gui_route_tag_address_creation: str | None = None,
+        gui_voip_profile: str | None = None,
+        gui_ap_profile: str | None = None,
+        gui_security_profile_group: str | None = None,
+        gui_local_in_policy: str | None = None,
+        gui_wanopt_cache: str | None = None,
+        gui_explicit_proxy: str | None = None,
+        gui_dynamic_routing: str | None = None,
+        gui_sslvpn_personal_bookmarks: str | None = None,
+        gui_sslvpn_realms: str | None = None,
+        gui_policy_based_ipsec: str | None = None,
+        gui_threat_weight: str | None = None,
+        gui_spamfilter: str | None = None,
+        gui_file_filter: str | None = None,
+        gui_application_control: str | None = None,
+        gui_ips: str | None = None,
+        gui_dhcp_advanced: str | None = None,
+        gui_vpn: str | None = None,
+        gui_sslvpn: str | None = None,
+        gui_wireless_controller: str | None = None,
+        gui_advanced_wireless_features: str | None = None,
+        gui_switch_controller: str | None = None,
+        gui_fortiap_split_tunneling: str | None = None,
+        gui_webfilter_advanced: str | None = None,
+        gui_traffic_shaping: str | None = None,
+        gui_wan_load_balancing: str | None = None,
+        gui_antivirus: str | None = None,
+        gui_webfilter: str | None = None,
+        gui_videofilter: str | None = None,
+        gui_dnsfilter: str | None = None,
+        gui_waf_profile: str | None = None,
+        gui_dlp_profile: str | None = None,
+        gui_dlp_advanced: str | None = None,
+        gui_virtual_patch_profile: str | None = None,
+        gui_casb: str | None = None,
+        gui_fortiextender_controller: str | None = None,
+        gui_advanced_policy: str | None = None,
+        gui_allow_unnamed_policy: str | None = None,
+        gui_email_collection: str | None = None,
+        gui_multiple_interface_policy: str | None = None,
+        gui_policy_disclaimer: str | None = None,
+        gui_ztna: str | None = None,
+        gui_ot: str | None = None,
+        gui_dynamic_device_os_id: str | None = None,
+        gui_gtp: str | None = None,
+        location_id: str | None = None,
+        ike_session_resume: str | None = None,
+        ike_quick_crash_detect: str | None = None,
+        ike_dn_format: str | None = None,
+        ike_port: int | None = None,
+        ike_tcp_port: int | None = None,
+        ike_policy_route: str | None = None,
+        ike_detailed_event_logs: str | None = None,
+        block_land_attack: str | None = None,
+        default_app_port_as_service: str | None = None,
+        fqdn_session_check: str | None = None,
+        ext_resource_session_check: str | None = None,
+        dyn_addr_session_check: str | None = None,
+        default_policy_expiry_days: int | None = None,
+        gui_enforce_change_summary: str | None = None,
+        internet_service_database_cache: str | None = None,
+        internet_service_app_ctrl_size: int | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new system/settings object.
+
+        Configure VDOM settings.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            comments: VDOM comments.
+            vdom_type: Vdom type (traffic, lan-extension or admin).
+            lan_extension_controller_addr: Controller IP address or FQDN to connect.
+            opmode: Firewall operation mode (NAT or Transparent).
+            ngfw_mode: Next Generation Firewall (NGFW) mode.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned identifier.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.system_settings.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created object: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = Settings.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.system_settings.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Settings.required_fields()) }}
+            
+            Use Settings.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            comments=comments,
+            vdom_type=vdom_type,
+            lan_extension_controller_addr=lan_extension_controller_addr,
+            opmode=opmode,
+            ngfw_mode=ngfw_mode,
+            http_external_dest=http_external_dest,
+            firewall_session_dirty=firewall_session_dirty,
+            manageip=manageip,
+            gateway=gateway,
+            ip=ip,
+            manageip6=manageip6,
+            gateway6=gateway6,
+            ip6=ip6,
+            device=device,
+            bfd=bfd,
+            bfd_desired_min_tx=bfd_desired_min_tx,
+            bfd_required_min_rx=bfd_required_min_rx,
+            bfd_detect_mult=bfd_detect_mult,
+            bfd_dont_enforce_src_port=bfd_dont_enforce_src_port,
+            utf8_spam_tagging=utf8_spam_tagging,
+            wccp_cache_engine=wccp_cache_engine,
+            vpn_stats_log=vpn_stats_log,
+            vpn_stats_period=vpn_stats_period,
+            v4_ecmp_mode=v4_ecmp_mode,
+            mac_ttl=mac_ttl,
+            fw_session_hairpin=fw_session_hairpin,
+            prp_trailer_action=prp_trailer_action,
+            snat_hairpin_traffic=snat_hairpin_traffic,
+            dhcp_proxy=dhcp_proxy,
+            dhcp_proxy_interface_select_method=dhcp_proxy_interface_select_method,
+            dhcp_proxy_interface=dhcp_proxy_interface,
+            dhcp_proxy_vrf_select=dhcp_proxy_vrf_select,
+            dhcp_server_ip=dhcp_server_ip,
+            dhcp6_server_ip=dhcp6_server_ip,
+            central_nat=central_nat,
+            gui_default_policy_columns=gui_default_policy_columns,
+            lldp_reception=lldp_reception,
+            lldp_transmission=lldp_transmission,
+            link_down_access=link_down_access,
+            nat46_generate_ipv6_fragment_header=nat46_generate_ipv6_fragment_header,
+            nat46_force_ipv4_packet_forwarding=nat46_force_ipv4_packet_forwarding,
+            nat64_force_ipv6_packet_forwarding=nat64_force_ipv6_packet_forwarding,
+            detect_unknown_esp=detect_unknown_esp,
+            intree_ses_best_route=intree_ses_best_route,
+            auxiliary_session=auxiliary_session,
+            asymroute=asymroute,
+            asymroute_icmp=asymroute_icmp,
+            tcp_session_without_syn=tcp_session_without_syn,
+            ses_denied_traffic=ses_denied_traffic,
+            ses_denied_multicast_traffic=ses_denied_multicast_traffic,
+            strict_src_check=strict_src_check,
+            allow_linkdown_path=allow_linkdown_path,
+            asymroute6=asymroute6,
+            asymroute6_icmp=asymroute6_icmp,
+            sctp_session_without_init=sctp_session_without_init,
+            sip_expectation=sip_expectation,
+            sip_nat_trace=sip_nat_trace,
+            h323_direct_model=h323_direct_model,
+            status=status,
+            sip_tcp_port=sip_tcp_port,
+            sip_udp_port=sip_udp_port,
+            sip_ssl_port=sip_ssl_port,
+            sccp_port=sccp_port,
+            multicast_forward=multicast_forward,
+            multicast_ttl_notchange=multicast_ttl_notchange,
+            multicast_skip_policy=multicast_skip_policy,
+            allow_subnet_overlap=allow_subnet_overlap,
+            deny_tcp_with_icmp=deny_tcp_with_icmp,
+            ecmp_max_paths=ecmp_max_paths,
+            discovered_device_timeout=discovered_device_timeout,
+            email_portal_check_dns=email_portal_check_dns,
+            default_voip_alg_mode=default_voip_alg_mode,
+            gui_icap=gui_icap,
+            gui_implicit_policy=gui_implicit_policy,
+            gui_dns_database=gui_dns_database,
+            gui_load_balance=gui_load_balance,
+            gui_multicast_policy=gui_multicast_policy,
+            gui_dos_policy=gui_dos_policy,
+            gui_object_colors=gui_object_colors,
+            gui_route_tag_address_creation=gui_route_tag_address_creation,
+            gui_voip_profile=gui_voip_profile,
+            gui_ap_profile=gui_ap_profile,
+            gui_security_profile_group=gui_security_profile_group,
+            gui_local_in_policy=gui_local_in_policy,
+            gui_wanopt_cache=gui_wanopt_cache,
+            gui_explicit_proxy=gui_explicit_proxy,
+            gui_dynamic_routing=gui_dynamic_routing,
+            gui_sslvpn_personal_bookmarks=gui_sslvpn_personal_bookmarks,
+            gui_sslvpn_realms=gui_sslvpn_realms,
+            gui_policy_based_ipsec=gui_policy_based_ipsec,
+            gui_threat_weight=gui_threat_weight,
+            gui_spamfilter=gui_spamfilter,
+            gui_file_filter=gui_file_filter,
+            gui_application_control=gui_application_control,
+            gui_ips=gui_ips,
+            gui_dhcp_advanced=gui_dhcp_advanced,
+            gui_vpn=gui_vpn,
+            gui_sslvpn=gui_sslvpn,
+            gui_wireless_controller=gui_wireless_controller,
+            gui_advanced_wireless_features=gui_advanced_wireless_features,
+            gui_switch_controller=gui_switch_controller,
+            gui_fortiap_split_tunneling=gui_fortiap_split_tunneling,
+            gui_webfilter_advanced=gui_webfilter_advanced,
+            gui_traffic_shaping=gui_traffic_shaping,
+            gui_wan_load_balancing=gui_wan_load_balancing,
+            gui_antivirus=gui_antivirus,
+            gui_webfilter=gui_webfilter,
+            gui_videofilter=gui_videofilter,
+            gui_dnsfilter=gui_dnsfilter,
+            gui_waf_profile=gui_waf_profile,
+            gui_dlp_profile=gui_dlp_profile,
+            gui_dlp_advanced=gui_dlp_advanced,
+            gui_virtual_patch_profile=gui_virtual_patch_profile,
+            gui_casb=gui_casb,
+            gui_fortiextender_controller=gui_fortiextender_controller,
+            gui_advanced_policy=gui_advanced_policy,
+            gui_allow_unnamed_policy=gui_allow_unnamed_policy,
+            gui_email_collection=gui_email_collection,
+            gui_multiple_interface_policy=gui_multiple_interface_policy,
+            gui_policy_disclaimer=gui_policy_disclaimer,
+            gui_ztna=gui_ztna,
+            gui_ot=gui_ot,
+            gui_dynamic_device_os_id=gui_dynamic_device_os_id,
+            gui_gtp=gui_gtp,
+            location_id=location_id,
+            ike_session_resume=ike_session_resume,
+            ike_quick_crash_detect=ike_quick_crash_detect,
+            ike_dn_format=ike_dn_format,
+            ike_port=ike_port,
+            ike_tcp_port=ike_tcp_port,
+            ike_policy_route=ike_policy_route,
+            ike_detailed_event_logs=ike_detailed_event_logs,
+            block_land_attack=block_land_attack,
+            default_app_port_as_service=default_app_port_as_service,
+            fqdn_session_check=fqdn_session_check,
+            ext_resource_session_check=ext_resource_session_check,
+            dyn_addr_session_check=dyn_addr_session_check,
+            default_policy_expiry_days=default_policy_expiry_days,
+            gui_enforce_change_summary=gui_enforce_change_summary,
+            internet_service_database_cache=internet_service_database_cache,
+            internet_service_app_ctrl_size=internet_service_app_ctrl_size,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.settings import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/settings",
+            )
+
+        endpoint = "/system/settings"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete system/settings object.
+
+        Configure VDOM settings.
+
+        Args:
+            name: Object name (primary key)
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.system_settings.delete(name="object-to-delete")
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not name:
+            raise ValueError("name is required for DELETE")
+        endpoint = f"/system/settings/{name}"
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if system/settings object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            name: Object name (primary key)
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.system_settings.exists(name="my-object"):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.system_settings.exists(name="old-object"):
+            ...     fgt.api.cmdb.system_settings.delete(name="old-object")
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update system/settings object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
+
+        Args:
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": "my-object",
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.system_settings.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.system_settings.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(Settings.help())
+            
+            >>> # Get field information
+            >>> print(Settings.help("comments"))
+        """
+        from ._helpers.settings import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = Settings.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = Settings.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.settings import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = Settings.field_info("comments")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.settings import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = Settings.validate_field("comments", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.settings import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = Settings.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.settings import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = Settings.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.settings import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = Settings.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.settings import get_schema_info
+
+        return get_schema_info()

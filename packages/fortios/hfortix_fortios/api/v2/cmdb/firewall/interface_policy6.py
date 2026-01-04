@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb Firewall Interface Policy6
+FortiOS CMDB - Firewall interface_policy6
 
-Configuration endpoint for managing cmdb firewall interface policy6 objects.
+Configuration endpoint for managing cmdb firewall/interface_policy6 objects.
 
 API Endpoints:
     GET    /cmdb/firewall/interface_policy6
     POST   /cmdb/firewall/interface_policy6
-    GET    /cmdb/firewall/interface_policy6
     PUT    /cmdb/firewall/interface_policy6/{identifier}
     DELETE /cmdb/firewall/interface_policy6/{identifier}
 
@@ -15,32 +14,13 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.firewall.interface_policy6.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.firewall.interface_policy6.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.firewall.interface_policy6.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.firewall.interface_policy6.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result =
-    fgt.api.cmdb.firewall.interface_policy6.delete(name="item_name")
+    >>> items = fgt.api.cmdb.firewall_interface_policy6.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -49,96 +29,86 @@ from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class InterfacePolicy6:
-    """
-    Interfacepolicy6 Operations.
-
-    Provides CRUD operations for FortiOS interfacepolicy6 configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """InterfacePolicy6 Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize InterfacePolicy6 endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize InterfacePolicy6 endpoint."""
         self._client = client
 
     def get(
         self,
-        policyid: str | None = None,
+        policyid: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve firewall/interface_policy6 configuration.
+
+        Configure IPv6 interface policies.
 
         Args:
-            policyid: Object identifier (optional for list, required for
-            specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            policyid: Integer identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all firewall/interface_policy6 objects
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific firewall/interface_policy6 by policyid
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.get(policyid=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.firewall_interface_policy6.get(action="schema")
+
+        See Also:
+            - post(): Create new firewall/interface_policy6 object
+            - put(): Update existing firewall/interface_policy6 object
+            - delete(): Remove firewall/interface_policy6 object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if policyid:
-            endpoint = f"/firewall/interface-policy6/{policyid}"
+            endpoint = "/firewall/interface-policy6/" + str(policyid)
         else:
             endpoint = "/firewall/interface-policy6"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -146,217 +116,16 @@ class InterfacePolicy6:
 
     def put(
         self,
-        policyid: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
-        uuid: str | None = None,
-        status: str | None = None,
-        comments: str | None = None,
-        logtraffic: str | None = None,
-        interface: str | None = None,
-        srcaddr6: list | None = None,
-        dstaddr6: list | None = None,
-        service6: list | None = None,
-        application_list_status: str | None = None,
-        application_list: str | None = None,
-        ips_sensor_status: str | None = None,
-        ips_sensor: str | None = None,
-        dsri: str | None = None,
-        av_profile_status: str | None = None,
-        av_profile: str | None = None,
-        webfilter_profile_status: str | None = None,
-        webfilter_profile: str | None = None,
-        casb_profile_status: str | None = None,
-        casb_profile: str | None = None,
-        emailfilter_profile_status: str | None = None,
-        emailfilter_profile: str | None = None,
-        dlp_profile_status: str | None = None,
-        dlp_profile: str | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Update this specific resource.
-
-        Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            policyid: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            policyid: Policy ID (0 - 4294967295). (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            status: Enable/disable this policy. (optional)
-            comments: Comments. (optional)
-            logtraffic: Logging type to be used in this policy (Options: all |
-            utm | disable, Default: utm). (optional)
-            interface: Monitored interface name from available interfaces.
-            (optional)
-            srcaddr6: IPv6 address object to limit traffic monitoring to
-            network traffic sent from the specified address or range.
-            (optional)
-            dstaddr6: IPv6 address object to limit traffic monitoring to
-            network traffic sent to the specified address or range. (optional)
-            service6: Service name. (optional)
-            application_list_status: Enable/disable application control.
-            (optional)
-            application_list: Application list name. (optional)
-            ips_sensor_status: Enable/disable IPS. (optional)
-            ips_sensor: IPS sensor name. (optional)
-            dsri: Enable/disable DSRI. (optional)
-            av_profile_status: Enable/disable antivirus. (optional)
-            av_profile: Antivirus profile. (optional)
-            webfilter_profile_status: Enable/disable web filtering. (optional)
-            webfilter_profile: Web filter profile. (optional)
-            casb_profile_status: Enable/disable CASB. (optional)
-            casb_profile: CASB profile. (optional)
-            emailfilter_profile_status: Enable/disable email filter. (optional)
-            emailfilter_profile: Email filter profile. (optional)
-            dlp_profile_status: Enable/disable DLP. (optional)
-            dlp_profile: DLP profile name. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not policyid:
-            raise ValueError("policyid is required for put()")
-        endpoint = f"/firewall/interface-policy6/{policyid}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if policyid is not None:
-            data_payload["policyid"] = policyid
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if status is not None:
-            data_payload["status"] = status
-        if comments is not None:
-            data_payload["comments"] = comments
-        if logtraffic is not None:
-            data_payload["logtraffic"] = logtraffic
-        if interface is not None:
-            data_payload["interface"] = interface
-        if srcaddr6 is not None:
-            data_payload["srcaddr6"] = srcaddr6
-        if dstaddr6 is not None:
-            data_payload["dstaddr6"] = dstaddr6
-        if service6 is not None:
-            data_payload["service6"] = service6
-        if application_list_status is not None:
-            data_payload["application-list-status"] = application_list_status
-        if application_list is not None:
-            data_payload["application-list"] = application_list
-        if ips_sensor_status is not None:
-            data_payload["ips-sensor-status"] = ips_sensor_status
-        if ips_sensor is not None:
-            data_payload["ips-sensor"] = ips_sensor
-        if dsri is not None:
-            data_payload["dsri"] = dsri
-        if av_profile_status is not None:
-            data_payload["av-profile-status"] = av_profile_status
-        if av_profile is not None:
-            data_payload["av-profile"] = av_profile
-        if webfilter_profile_status is not None:
-            data_payload["webfilter-profile-status"] = webfilter_profile_status
-        if webfilter_profile is not None:
-            data_payload["webfilter-profile"] = webfilter_profile
-        if casb_profile_status is not None:
-            data_payload["casb-profile-status"] = casb_profile_status
-        if casb_profile is not None:
-            data_payload["casb-profile"] = casb_profile
-        if emailfilter_profile_status is not None:
-            data_payload["emailfilter-profile-status"] = (
-                emailfilter_profile_status
-            )
-        if emailfilter_profile is not None:
-            data_payload["emailfilter-profile"] = emailfilter_profile
-        if dlp_profile_status is not None:
-            data_payload["dlp-profile-status"] = dlp_profile_status
-        if dlp_profile is not None:
-            data_payload["dlp-profile"] = dlp_profile
-        data_payload.update(kwargs)
-        return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
-        )
-
-    def delete(
-        self,
-        policyid: str | None = None,
-        payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Delete this specific resource.
-
-        Args:
-            policyid: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not policyid:
-            raise ValueError("policyid is required for delete()")
-        endpoint = f"/firewall/interface-policy6/{policyid}"
-        params.update(kwargs)
-        return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
-        )
-
-    def post(
-        self,
-        payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
         policyid: int | None = None,
         uuid: str | None = None,
         status: str | None = None,
         comments: str | None = None,
         logtraffic: str | None = None,
         interface: str | None = None,
-        srcaddr6: list | None = None,
-        dstaddr6: list | None = None,
-        service6: list | None = None,
+        srcaddr6: str | list | None = None,
+        dstaddr6: str | list | None = None,
+        service6: str | list | None = None,
         application_list_status: str | None = None,
         application_list: str | None = None,
         ips_sensor_status: str | None = None,
@@ -377,117 +146,567 @@ class InterfacePolicy6:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Update existing firewall/interface_policy6 object.
+
+        Configure IPv6 interface policies.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            policyid: Policy ID (0 - 4294967295). (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            status: Enable/disable this policy. (optional)
-            comments: Comments. (optional)
-            logtraffic: Logging type to be used in this policy (Options: all |
-            utm | disable, Default: utm). (optional)
-            interface: Monitored interface name from available interfaces.
-            (optional)
-            srcaddr6: IPv6 address object to limit traffic monitoring to
-            network traffic sent from the specified address or range.
-            (optional)
-            dstaddr6: IPv6 address object to limit traffic monitoring to
-            network traffic sent to the specified address or range. (optional)
-            service6: Service name. (optional)
-            application_list_status: Enable/disable application control.
-            (optional)
-            application_list: Application list name. (optional)
-            ips_sensor_status: Enable/disable IPS. (optional)
-            ips_sensor: IPS sensor name. (optional)
-            dsri: Enable/disable DSRI. (optional)
-            av_profile_status: Enable/disable antivirus. (optional)
-            av_profile: Antivirus profile. (optional)
-            webfilter_profile_status: Enable/disable web filtering. (optional)
-            webfilter_profile: Web filter profile. (optional)
-            casb_profile_status: Enable/disable CASB. (optional)
-            casb_profile: CASB profile. (optional)
-            emailfilter_profile_status: Enable/disable email filter. (optional)
-            emailfilter_profile: Email filter profile. (optional)
-            dlp_profile_status: Enable/disable DLP. (optional)
-            dlp_profile: DLP profile name. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include policyid (primary key).
+            policyid: Policy ID (0 - 4294967295).
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            status: Enable/disable this policy.
+            comments: Comments.
+            logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If policyid is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.put(
+            ...     policyid=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "policyid": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/firewall/interface-policy6"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if policyid is not None:
-            data_payload["policyid"] = policyid
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if status is not None:
-            data_payload["status"] = status
-        if comments is not None:
-            data_payload["comments"] = comments
-        if logtraffic is not None:
-            data_payload["logtraffic"] = logtraffic
-        if interface is not None:
-            data_payload["interface"] = interface
-        if srcaddr6 is not None:
-            data_payload["srcaddr6"] = srcaddr6
-        if dstaddr6 is not None:
-            data_payload["dstaddr6"] = dstaddr6
-        if service6 is not None:
-            data_payload["service6"] = service6
-        if application_list_status is not None:
-            data_payload["application-list-status"] = application_list_status
-        if application_list is not None:
-            data_payload["application-list"] = application_list
-        if ips_sensor_status is not None:
-            data_payload["ips-sensor-status"] = ips_sensor_status
-        if ips_sensor is not None:
-            data_payload["ips-sensor"] = ips_sensor
-        if dsri is not None:
-            data_payload["dsri"] = dsri
-        if av_profile_status is not None:
-            data_payload["av-profile-status"] = av_profile_status
-        if av_profile is not None:
-            data_payload["av-profile"] = av_profile
-        if webfilter_profile_status is not None:
-            data_payload["webfilter-profile-status"] = webfilter_profile_status
-        if webfilter_profile is not None:
-            data_payload["webfilter-profile"] = webfilter_profile
-        if casb_profile_status is not None:
-            data_payload["casb-profile-status"] = casb_profile_status
-        if casb_profile is not None:
-            data_payload["casb-profile"] = casb_profile
-        if emailfilter_profile_status is not None:
-            data_payload["emailfilter-profile-status"] = (
-                emailfilter_profile_status
-            )
-        if emailfilter_profile is not None:
-            data_payload["emailfilter-profile"] = emailfilter_profile
-        if dlp_profile_status is not None:
-            data_payload["dlp-profile-status"] = dlp_profile_status
-        if dlp_profile is not None:
-            data_payload["dlp-profile"] = dlp_profile
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            policyid=policyid,
+            uuid=uuid,
+            status=status,
+            comments=comments,
+            logtraffic=logtraffic,
+            interface=interface,
+            srcaddr6=srcaddr6,
+            dstaddr6=dstaddr6,
+            service6=service6,
+            application_list_status=application_list_status,
+            application_list=application_list,
+            ips_sensor_status=ips_sensor_status,
+            ips_sensor=ips_sensor,
+            dsri=dsri,
+            av_profile_status=av_profile_status,
+            av_profile=av_profile,
+            webfilter_profile_status=webfilter_profile_status,
+            webfilter_profile=webfilter_profile,
+            casb_profile_status=casb_profile_status,
+            casb_profile=casb_profile,
+            emailfilter_profile_status=emailfilter_profile_status,
+            emailfilter_profile=emailfilter_profile,
+            dlp_profile_status=dlp_profile_status,
+            dlp_profile=dlp_profile,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.interface_policy6 import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/interface_policy6",
+            )
+        
+        policyid_value = payload_data.get("policyid")
+        if not policyid_value:
+            raise ValueError("policyid is required for PUT")
+        endpoint = "/firewall/interface-policy6/" + str(policyid_value)
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        policyid: int | None = None,
+        uuid: str | None = None,
+        status: str | None = None,
+        comments: str | None = None,
+        logtraffic: str | None = None,
+        interface: str | None = None,
+        srcaddr6: str | list | None = None,
+        dstaddr6: str | list | None = None,
+        service6: str | list | None = None,
+        application_list_status: str | None = None,
+        application_list: str | None = None,
+        ips_sensor_status: str | None = None,
+        ips_sensor: str | None = None,
+        dsri: str | None = None,
+        av_profile_status: str | None = None,
+        av_profile: str | None = None,
+        webfilter_profile_status: str | None = None,
+        webfilter_profile: str | None = None,
+        casb_profile_status: str | None = None,
+        casb_profile: str | None = None,
+        emailfilter_profile_status: str | None = None,
+        emailfilter_profile: str | None = None,
+        dlp_profile_status: str | None = None,
+        dlp_profile: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new firewall/interface_policy6 object.
+
+        Configure IPv6 interface policies.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            policyid: Policy ID (0 - 4294967295).
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            status: Enable/disable this policy.
+            comments: Comments.
+            logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned policyid.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created policyid: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = InterfacePolicy6.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(InterfacePolicy6.required_fields()) }}
+            
+            Use InterfacePolicy6.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            policyid=policyid,
+            uuid=uuid,
+            status=status,
+            comments=comments,
+            logtraffic=logtraffic,
+            interface=interface,
+            srcaddr6=srcaddr6,
+            dstaddr6=dstaddr6,
+            service6=service6,
+            application_list_status=application_list_status,
+            application_list=application_list,
+            ips_sensor_status=ips_sensor_status,
+            ips_sensor=ips_sensor,
+            dsri=dsri,
+            av_profile_status=av_profile_status,
+            av_profile=av_profile,
+            webfilter_profile_status=webfilter_profile_status,
+            webfilter_profile=webfilter_profile,
+            casb_profile_status=casb_profile_status,
+            casb_profile=casb_profile,
+            emailfilter_profile_status=emailfilter_profile_status,
+            emailfilter_profile=emailfilter_profile,
+            dlp_profile_status=dlp_profile_status,
+            dlp_profile=dlp_profile,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.interface_policy6 import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/interface_policy6",
+            )
+
+        endpoint = "/firewall/interface-policy6"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        policyid: int | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete firewall/interface_policy6 object.
+
+        Configure IPv6 interface policies.
+
+        Args:
+            policyid: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If policyid is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.delete(policyid=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not policyid:
+            raise ValueError("policyid is required for DELETE")
+        endpoint = "/firewall/interface-policy6/" + str(policyid)
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        policyid: int,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if firewall/interface_policy6 object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            policyid: Primary key identifier
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.firewall_interface_policy6.exists(policyid=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.firewall_interface_policy6.exists(policyid=1):
+            ...     fgt.api.cmdb.firewall_interface_policy6.delete(policyid=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(policyid=policyid, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update firewall/interface_policy6 object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (policyid) in the payload.
+
+        Args:
+            payload_dict: Resource data including policyid (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If policyid is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "policyid": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_interface_policy6.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.firewall_interface_policy6.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("policyid")
+        if not mkey_value:
+            raise ValueError("policyid is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(policyid=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(InterfacePolicy6.help())
+            
+            >>> # Get field information
+            >>> print(InterfacePolicy6.help("policyid"))
+        """
+        from ._helpers.interface_policy6 import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = InterfacePolicy6.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = InterfacePolicy6.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.interface_policy6 import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = InterfacePolicy6.field_info("policyid")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.interface_policy6 import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = InterfacePolicy6.validate_field("policyid", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.interface_policy6 import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = InterfacePolicy6.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.interface_policy6 import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = InterfacePolicy6.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.interface_policy6 import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = InterfacePolicy6.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.interface_policy6 import get_schema_info
+
+        return get_schema_info()

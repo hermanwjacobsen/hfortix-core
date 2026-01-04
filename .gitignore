@@ -49,6 +49,10 @@ ENV/
 # But DO include the example file
 !.env.example
 
+# Archive directories (backups before major refactoring)
+archive_*/
+.archive/
+
 # Examples directory (demonstrations only, not for distribution)
 examples/
 

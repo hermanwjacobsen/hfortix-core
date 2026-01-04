@@ -1,19 +1,210 @@
 """
-Validation helpers for log disk_setting endpoint.
+Validation helpers for log/disk_setting endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
+
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema
+# ============================================================================
+
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
+
+# Fields marked as required (after filtering false positives)
+REQUIRED_FIELDS = [
+    "uploaduser",  # Username required to log into the FTP server to upload disk log files.
+    "interface",  # Specify outgoing interface to reach server.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "status": "enable",
+    "ips-archive": "enable",
+    "max-log-file-size": 20,
+    "max-policy-packet-capture-size": 100,
+    "roll-schedule": "daily",
+    "roll-day": "sunday",
+    "roll-time": "",
+    "diskfull": "overwrite",
+    "log-quota": 0,
+    "dlp-archive-quota": 0,
+    "report-quota": 0,
+    "maximum-log-age": 7,
+    "upload": "disable",
+    "upload-destination": "ftp-server",
+    "uploadip": "0.0.0.0",
+    "uploadport": 21,
+    "source-ip": "0.0.0.0",
+    "uploaduser": "",
+    "uploaddir": "",
+    "uploadtype": "traffic event virus webfilter IPS emailfilter dlp-archive anomaly voip dlp app-ctrl waf gtp dns ssh ssl",
+    "uploadsched": "disable",
+    "uploadtime": "",
+    "upload-delete-files": "enable",
+    "upload-ssl-conn": "default",
+    "full-first-warning-threshold": 75,
+    "full-second-warning-threshold": 90,
+    "full-final-warning-threshold": 95,
+    "interface-select-method": "auto",
+    "interface": "",
+    "vrf-select": 0,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "status": "option",  # Enable/disable local disk logging.
+    "ips-archive": "option",  # Enable/disable IPS packet archiving to the local disk.
+    "max-log-file-size": "integer",  # Maximum log file size before rolling (1 - 100 Mbytes).
+    "max-policy-packet-capture-size": "integer",  # Maximum size of policy sniffer in MB (0 means unlimited).
+    "roll-schedule": "option",  # Frequency to check log file for rolling.
+    "roll-day": "option",  # Day of week on which to roll log file.
+    "roll-time": "user",  # Time of day to roll the log file (hh:mm).
+    "diskfull": "option",  # Action to take when disk is full. The system can overwrite t
+    "log-quota": "integer",  # Disk log quota (MB).
+    "dlp-archive-quota": "integer",  # DLP archive quota (MB).
+    "report-quota": "integer",  # Report db quota (MB).
+    "maximum-log-age": "integer",  # Delete log files older than (days).
+    "upload": "option",  # Enable/disable uploading log files when they are rolled.
+    "upload-destination": "option",  # The type of server to upload log files to. Only FTP is curre
+    "uploadip": "ipv4-address",  # IP address of the FTP server to upload log files to.
+    "uploadport": "integer",  # TCP port to use for communicating with the FTP server (defau
+    "source-ip": "ipv4-address",  # Source IP address to use for uploading disk log files.
+    "uploaduser": "string",  # Username required to log into the FTP server to upload disk 
+    "uploadpass": "password",  # Password required to log into the FTP server to upload disk 
+    "uploaddir": "string",  # The remote directory on the FTP server to upload log files t
+    "uploadtype": "option",  # Types of log files to upload. Separate multiple entries with
+    "uploadsched": "option",  # Set the schedule for uploading log files to the FTP server (
+    "uploadtime": "user",  # Time of day at which log files are uploaded if uploadsched i
+    "upload-delete-files": "option",  # Delete log files after uploading (default = enable).
+    "upload-ssl-conn": "option",  # Enable/disable encrypted FTPS communication to upload log fi
+    "full-first-warning-threshold": "integer",  # Log full first warning threshold as a percent (1 - 98, defau
+    "full-second-warning-threshold": "integer",  # Log full second warning threshold as a percent (2 - 99, defa
+    "full-final-warning-threshold": "integer",  # Log full final warning threshold as a percent (3 - 100, defa
+    "interface-select-method": "option",  # Specify how to select outgoing interface to reach server.
+    "interface": "string",  # Specify outgoing interface to reach server.
+    "vrf-select": "integer",  # VRF ID used for connection to server.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "status": "Enable/disable local disk logging.",
+    "ips-archive": "Enable/disable IPS packet archiving to the local disk.",
+    "max-log-file-size": "Maximum log file size before rolling (1 - 100 Mbytes).",
+    "max-policy-packet-capture-size": "Maximum size of policy sniffer in MB (0 means unlimited).",
+    "roll-schedule": "Frequency to check log file for rolling.",
+    "roll-day": "Day of week on which to roll log file.",
+    "roll-time": "Time of day to roll the log file (hh:mm).",
+    "diskfull": "Action to take when disk is full. The system can overwrite the oldest log messages or stop logging when the disk is full (default = overwrite).",
+    "log-quota": "Disk log quota (MB).",
+    "dlp-archive-quota": "DLP archive quota (MB).",
+    "report-quota": "Report db quota (MB).",
+    "maximum-log-age": "Delete log files older than (days).",
+    "upload": "Enable/disable uploading log files when they are rolled.",
+    "upload-destination": "The type of server to upload log files to. Only FTP is currently supported.",
+    "uploadip": "IP address of the FTP server to upload log files to.",
+    "uploadport": "TCP port to use for communicating with the FTP server (default = 21).",
+    "source-ip": "Source IP address to use for uploading disk log files.",
+    "uploaduser": "Username required to log into the FTP server to upload disk log files.",
+    "uploadpass": "Password required to log into the FTP server to upload disk log files.",
+    "uploaddir": "The remote directory on the FTP server to upload log files to.",
+    "uploadtype": "Types of log files to upload. Separate multiple entries with a space.",
+    "uploadsched": "Set the schedule for uploading log files to the FTP server (default = disable = upload when rolling).",
+    "uploadtime": "Time of day at which log files are uploaded if uploadsched is enabled (hh:mm or hh).",
+    "upload-delete-files": "Delete log files after uploading (default = enable).",
+    "upload-ssl-conn": "Enable/disable encrypted FTPS communication to upload log files.",
+    "full-first-warning-threshold": "Log full first warning threshold as a percent (1 - 98, default = 75).",
+    "full-second-warning-threshold": "Log full second warning threshold as a percent (2 - 99, default = 90).",
+    "full-final-warning-threshold": "Log full final warning threshold as a percent (3 - 100, default = 95).",
+    "interface-select-method": "Specify how to select outgoing interface to reach server.",
+    "interface": "Specify outgoing interface to reach server.",
+    "vrf-select": "VRF ID used for connection to server.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "max-log-file-size": {"type": "integer", "min": 1, "max": 100},
+    "max-policy-packet-capture-size": {"type": "integer", "min": 0, "max": 4294967295},
+    "log-quota": {"type": "integer", "min": 0, "max": 4294967295},
+    "dlp-archive-quota": {"type": "integer", "min": 0, "max": 4294967295},
+    "report-quota": {"type": "integer", "min": 0, "max": 4294967295},
+    "maximum-log-age": {"type": "integer", "min": 0, "max": 3650},
+    "uploadport": {"type": "integer", "min": 0, "max": 65535},
+    "uploaduser": {"type": "string", "max_length": 35},
+    "uploaddir": {"type": "string", "max_length": 63},
+    "full-first-warning-threshold": {"type": "integer", "min": 1, "max": 98},
+    "full-second-warning-threshold": {"type": "integer", "min": 2, "max": 99},
+    "full-final-warning-threshold": {"type": "integer", "min": 3, "max": 100},
+    "interface": {"type": "string", "max_length": 15},
+    "vrf-select": {"type": "integer", "min": 0, "max": 511},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+}
+
 
 # Valid enum values from API documentation
-VALID_BODY_STATUS = ["enable", "disable"]
-VALID_BODY_IPS_ARCHIVE = ["enable", "disable"]
-VALID_BODY_ROLL_SCHEDULE = ["daily", "weekly"]
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_IPS_ARCHIVE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ROLL_SCHEDULE = [
+    "daily",
+    "weekly",
+]
 VALID_BODY_ROLL_DAY = [
     "sunday",
     "monday",
@@ -23,9 +214,17 @@ VALID_BODY_ROLL_DAY = [
     "friday",
     "saturday",
 ]
-VALID_BODY_DISKFULL = ["overwrite", "nolog"]
-VALID_BODY_UPLOAD = ["enable", "disable"]
-VALID_BODY_UPLOAD_DESTINATION = ["ftp-server"]
+VALID_BODY_DISKFULL = [
+    "overwrite",
+    "nolog",
+]
+VALID_BODY_UPLOAD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_UPLOAD_DESTINATION = [
+    "ftp-server",
+]
 VALID_BODY_UPLOADTYPE = [
     "traffic",
     "event",
@@ -38,7 +237,8 @@ VALID_BODY_UPLOADTYPE = [
     "voip",
     "dlp",
     "app-ctrl",
-    "wa",
+    "waf",
+    "gtp",
     "dns",
     "ssh",
     "ssl",
@@ -47,10 +247,25 @@ VALID_BODY_UPLOADTYPE = [
     "virtual-patch",
     "debug",
 ]
-VALID_BODY_UPLOADSCHED = ["disable", "enable"]
-VALID_BODY_UPLOAD_DELETE_FILES = ["enable", "disable"]
-VALID_BODY_UPLOAD_SSL_CONN = ["default", "high", "low", "disable"]
-VALID_BODY_INTERFACE_SELECT_METHOD = ["auto", "sdwan", "specify"]
+VALID_BODY_UPLOADSCHED = [
+    "disable",
+    "enable",
+]
+VALID_BODY_UPLOAD_DELETE_FILES = [
+    "enable",
+    "disable",
+]
+VALID_BODY_UPLOAD_SSL_CONN = [
+    "default",
+    "high",
+    "low",
+    "disable",
+]
+VALID_BODY_INTERFACE_SELECT_METHOD = [
+    "auto",
+    "sdwan",
+    "specify",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -58,13 +273,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_disk_setting_get(
+def validate_log_disk_setting_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for log/disk_setting.
 
     Args:
         attr: Attribute filter (optional)
@@ -74,9 +289,17 @@ def validate_disk_setting_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_log_disk_setting_get()
+        >>> assert is_valid == True
+        
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_log_disk_setting_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -91,319 +314,638 @@ def validate_disk_setting_get(
 
 
 # ============================================================================
+# POST Validation
+# ============================================================================
+
+
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for log/disk_setting.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
+    """
+    # Check always-required fields
+    missing_fields = []
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
+
+    return (True, None)
+
+
+def validate_log_disk_setting_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
+    """
+    Validate POST request to create new log/disk_setting object.
+
+    This validator performs two-stage validation:
+    1. Required fields check (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Args:
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
+
+    Returns:
+        Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "uploaduser": True,  # Username required to log into the FTP server to up
+        ...     "interface": True,  # Specify outgoing interface to reach server.
+        ... }
+        >>> is_valid, error = validate_log_disk_setting_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "uploaduser": True,
+        ...     "status": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_log_disk_setting_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["status"] = "invalid-value"
+        >>> is_valid, error = validate_log_disk_setting_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_log_disk_setting_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
+    """
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate enum values
+    if "status" in payload:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
+    if "ips-archive" in payload:
+        value = payload["ips-archive"]
+        if value not in VALID_BODY_IPS_ARCHIVE:
+            desc = FIELD_DESCRIPTIONS.get("ips-archive", "")
+            error_msg = f"Invalid value for 'ips-archive': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IPS_ARCHIVE)}"
+            error_msg += f"\n  → Example: ips-archive='{{ VALID_BODY_IPS_ARCHIVE[0] }}'"
+            return (False, error_msg)
+    if "roll-schedule" in payload:
+        value = payload["roll-schedule"]
+        if value not in VALID_BODY_ROLL_SCHEDULE:
+            desc = FIELD_DESCRIPTIONS.get("roll-schedule", "")
+            error_msg = f"Invalid value for 'roll-schedule': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ROLL_SCHEDULE)}"
+            error_msg += f"\n  → Example: roll-schedule='{{ VALID_BODY_ROLL_SCHEDULE[0] }}'"
+            return (False, error_msg)
+    if "roll-day" in payload:
+        value = payload["roll-day"]
+        if value not in VALID_BODY_ROLL_DAY:
+            desc = FIELD_DESCRIPTIONS.get("roll-day", "")
+            error_msg = f"Invalid value for 'roll-day': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ROLL_DAY)}"
+            error_msg += f"\n  → Example: roll-day='{{ VALID_BODY_ROLL_DAY[0] }}'"
+            return (False, error_msg)
+    if "diskfull" in payload:
+        value = payload["diskfull"]
+        if value not in VALID_BODY_DISKFULL:
+            desc = FIELD_DESCRIPTIONS.get("diskfull", "")
+            error_msg = f"Invalid value for 'diskfull': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DISKFULL)}"
+            error_msg += f"\n  → Example: diskfull='{{ VALID_BODY_DISKFULL[0] }}'"
+            return (False, error_msg)
+    if "upload" in payload:
+        value = payload["upload"]
+        if value not in VALID_BODY_UPLOAD:
+            desc = FIELD_DESCRIPTIONS.get("upload", "")
+            error_msg = f"Invalid value for 'upload': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPLOAD)}"
+            error_msg += f"\n  → Example: upload='{{ VALID_BODY_UPLOAD[0] }}'"
+            return (False, error_msg)
+    if "upload-destination" in payload:
+        value = payload["upload-destination"]
+        if value not in VALID_BODY_UPLOAD_DESTINATION:
+            desc = FIELD_DESCRIPTIONS.get("upload-destination", "")
+            error_msg = f"Invalid value for 'upload-destination': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPLOAD_DESTINATION)}"
+            error_msg += f"\n  → Example: upload-destination='{{ VALID_BODY_UPLOAD_DESTINATION[0] }}'"
+            return (False, error_msg)
+    if "uploadtype" in payload:
+        value = payload["uploadtype"]
+        if value not in VALID_BODY_UPLOADTYPE:
+            desc = FIELD_DESCRIPTIONS.get("uploadtype", "")
+            error_msg = f"Invalid value for 'uploadtype': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPLOADTYPE)}"
+            error_msg += f"\n  → Example: uploadtype='{{ VALID_BODY_UPLOADTYPE[0] }}'"
+            return (False, error_msg)
+    if "uploadsched" in payload:
+        value = payload["uploadsched"]
+        if value not in VALID_BODY_UPLOADSCHED:
+            desc = FIELD_DESCRIPTIONS.get("uploadsched", "")
+            error_msg = f"Invalid value for 'uploadsched': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPLOADSCHED)}"
+            error_msg += f"\n  → Example: uploadsched='{{ VALID_BODY_UPLOADSCHED[0] }}'"
+            return (False, error_msg)
+    if "upload-delete-files" in payload:
+        value = payload["upload-delete-files"]
+        if value not in VALID_BODY_UPLOAD_DELETE_FILES:
+            desc = FIELD_DESCRIPTIONS.get("upload-delete-files", "")
+            error_msg = f"Invalid value for 'upload-delete-files': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPLOAD_DELETE_FILES)}"
+            error_msg += f"\n  → Example: upload-delete-files='{{ VALID_BODY_UPLOAD_DELETE_FILES[0] }}'"
+            return (False, error_msg)
+    if "upload-ssl-conn" in payload:
+        value = payload["upload-ssl-conn"]
+        if value not in VALID_BODY_UPLOAD_SSL_CONN:
+            desc = FIELD_DESCRIPTIONS.get("upload-ssl-conn", "")
+            error_msg = f"Invalid value for 'upload-ssl-conn': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPLOAD_SSL_CONN)}"
+            error_msg += f"\n  → Example: upload-ssl-conn='{{ VALID_BODY_UPLOAD_SSL_CONN[0] }}'"
+            return (False, error_msg)
+    if "interface-select-method" in payload:
+        value = payload["interface-select-method"]
+        if value not in VALID_BODY_INTERFACE_SELECT_METHOD:
+            desc = FIELD_DESCRIPTIONS.get("interface-select-method", "")
+            error_msg = f"Invalid value for 'interface-select-method': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERFACE_SELECT_METHOD)}"
+            error_msg += f"\n  → Example: interface-select-method='{{ VALID_BODY_INTERFACE_SELECT_METHOD[0] }}'"
+            return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
 # PUT Validation
 # ============================================================================
 
 
-def validate_disk_setting_put(
-    payload: dict[str, Any] | None = None,
+def validate_log_disk_setting_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update log/disk_setting.
 
     Args:
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_log_disk_setting_put(payload)
     """
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate status if present
+    # Step 1: Validate enum values
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
             return (
                 False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
             )
-
-    # Validate ips-archive if present
     if "ips-archive" in payload:
-        value = payload.get("ips-archive")
-        if value and value not in VALID_BODY_IPS_ARCHIVE:
+        value = payload["ips-archive"]
+        if value not in VALID_BODY_IPS_ARCHIVE:
             return (
                 False,
-                f"Invalid ips-archive '{value}'. Must be one of: {', '.join(VALID_BODY_IPS_ARCHIVE)}",
+                f"Invalid value for 'ips-archive'='{value}'. Must be one of: {', '.join(VALID_BODY_IPS_ARCHIVE)}",
             )
-
-    # Validate max-log-file-size if present
-    if "max-log-file-size" in payload:
-        value = payload.get("max-log-file-size")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100:
-                    return (
-                        False,
-                        "max-log-file-size must be between 1 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"max-log-file-size must be numeric, got: {value}",
-                )
-
-    # Validate max-policy-packet-capture-size if present
-    if "max-policy-packet-capture-size" in payload:
-        value = payload.get("max-policy-packet-capture-size")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "max-policy-packet-capture-size must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"max-policy-packet-capture-size must be numeric, got: {value}",
-                )
-
-    # Validate roll-schedule if present
     if "roll-schedule" in payload:
-        value = payload.get("roll-schedule")
-        if value and value not in VALID_BODY_ROLL_SCHEDULE:
+        value = payload["roll-schedule"]
+        if value not in VALID_BODY_ROLL_SCHEDULE:
             return (
                 False,
-                f"Invalid roll-schedule '{value}'. Must be one of: {', '.join(VALID_BODY_ROLL_SCHEDULE)}",
+                f"Invalid value for 'roll-schedule'='{value}'. Must be one of: {', '.join(VALID_BODY_ROLL_SCHEDULE)}",
             )
-
-    # Validate roll-day if present
     if "roll-day" in payload:
-        value = payload.get("roll-day")
-        if value and value not in VALID_BODY_ROLL_DAY:
+        value = payload["roll-day"]
+        if value not in VALID_BODY_ROLL_DAY:
             return (
                 False,
-                f"Invalid roll-day '{value}'. Must be one of: {', '.join(VALID_BODY_ROLL_DAY)}",
+                f"Invalid value for 'roll-day'='{value}'. Must be one of: {', '.join(VALID_BODY_ROLL_DAY)}",
             )
-
-    # Validate diskfull if present
     if "diskfull" in payload:
-        value = payload.get("diskfull")
-        if value and value not in VALID_BODY_DISKFULL:
+        value = payload["diskfull"]
+        if value not in VALID_BODY_DISKFULL:
             return (
                 False,
-                f"Invalid diskfull '{value}'. Must be one of: {', '.join(VALID_BODY_DISKFULL)}",
+                f"Invalid value for 'diskfull'='{value}'. Must be one of: {', '.join(VALID_BODY_DISKFULL)}",
             )
-
-    # Validate log-quota if present
-    if "log-quota" in payload:
-        value = payload.get("log-quota")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "log-quota must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"log-quota must be numeric, got: {value}")
-
-    # Validate dlp-archive-quota if present
-    if "dlp-archive-quota" in payload:
-        value = payload.get("dlp-archive-quota")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "dlp-archive-quota must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dlp-archive-quota must be numeric, got: {value}",
-                )
-
-    # Validate report-quota if present
-    if "report-quota" in payload:
-        value = payload.get("report-quota")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "report-quota must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"report-quota must be numeric, got: {value}")
-
-    # Validate maximum-log-age if present
-    if "maximum-log-age" in payload:
-        value = payload.get("maximum-log-age")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 3650:
-                    return (
-                        False,
-                        "maximum-log-age must be between 0 and 3650",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"maximum-log-age must be numeric, got: {value}",
-                )
-
-    # Validate upload if present
     if "upload" in payload:
-        value = payload.get("upload")
-        if value and value not in VALID_BODY_UPLOAD:
+        value = payload["upload"]
+        if value not in VALID_BODY_UPLOAD:
             return (
                 False,
-                f"Invalid upload '{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD)}",
+                f"Invalid value for 'upload'='{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD)}",
             )
-
-    # Validate upload-destination if present
     if "upload-destination" in payload:
-        value = payload.get("upload-destination")
-        if value and value not in VALID_BODY_UPLOAD_DESTINATION:
+        value = payload["upload-destination"]
+        if value not in VALID_BODY_UPLOAD_DESTINATION:
             return (
                 False,
-                f"Invalid upload-destination '{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD_DESTINATION)}",
+                f"Invalid value for 'upload-destination'='{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD_DESTINATION)}",
             )
-
-    # Validate uploadport if present
-    if "uploadport" in payload:
-        value = payload.get("uploadport")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "uploadport must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"uploadport must be numeric, got: {value}")
-
-    # Validate uploaduser if present
-    if "uploaduser" in payload:
-        value = payload.get("uploaduser")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "uploaduser cannot exceed 35 characters")
-
-    # Validate uploaddir if present
-    if "uploaddir" in payload:
-        value = payload.get("uploaddir")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "uploaddir cannot exceed 63 characters")
-
-    # Validate uploadtype if present
     if "uploadtype" in payload:
-        value = payload.get("uploadtype")
-        if value and value not in VALID_BODY_UPLOADTYPE:
+        value = payload["uploadtype"]
+        if value not in VALID_BODY_UPLOADTYPE:
             return (
                 False,
-                f"Invalid uploadtype '{value}'. Must be one of: {', '.join(VALID_BODY_UPLOADTYPE)}",
+                f"Invalid value for 'uploadtype'='{value}'. Must be one of: {', '.join(VALID_BODY_UPLOADTYPE)}",
             )
-
-    # Validate uploadsched if present
     if "uploadsched" in payload:
-        value = payload.get("uploadsched")
-        if value and value not in VALID_BODY_UPLOADSCHED:
+        value = payload["uploadsched"]
+        if value not in VALID_BODY_UPLOADSCHED:
             return (
                 False,
-                f"Invalid uploadsched '{value}'. Must be one of: {', '.join(VALID_BODY_UPLOADSCHED)}",
+                f"Invalid value for 'uploadsched'='{value}'. Must be one of: {', '.join(VALID_BODY_UPLOADSCHED)}",
             )
-
-    # Validate upload-delete-files if present
     if "upload-delete-files" in payload:
-        value = payload.get("upload-delete-files")
-        if value and value not in VALID_BODY_UPLOAD_DELETE_FILES:
+        value = payload["upload-delete-files"]
+        if value not in VALID_BODY_UPLOAD_DELETE_FILES:
             return (
                 False,
-                f"Invalid upload-delete-files '{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD_DELETE_FILES)}",
+                f"Invalid value for 'upload-delete-files'='{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD_DELETE_FILES)}",
             )
-
-    # Validate upload-ssl-conn if present
     if "upload-ssl-conn" in payload:
-        value = payload.get("upload-ssl-conn")
-        if value and value not in VALID_BODY_UPLOAD_SSL_CONN:
+        value = payload["upload-ssl-conn"]
+        if value not in VALID_BODY_UPLOAD_SSL_CONN:
             return (
                 False,
-                f"Invalid upload-ssl-conn '{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD_SSL_CONN)}",
+                f"Invalid value for 'upload-ssl-conn'='{value}'. Must be one of: {', '.join(VALID_BODY_UPLOAD_SSL_CONN)}",
             )
-
-    # Validate full-first-warning-threshold if present
-    if "full-first-warning-threshold" in payload:
-        value = payload.get("full-first-warning-threshold")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 98:
-                    return (
-                        False,
-                        "full-first-warning-threshold must be between 1 and 98",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"full-first-warning-threshold must be numeric, got: {value}",
-                )
-
-    # Validate full-second-warning-threshold if present
-    if "full-second-warning-threshold" in payload:
-        value = payload.get("full-second-warning-threshold")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 99:
-                    return (
-                        False,
-                        "full-second-warning-threshold must be between 2 and 99",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"full-second-warning-threshold must be numeric, got: {value}",
-                )
-
-    # Validate full-final-warning-threshold if present
-    if "full-final-warning-threshold" in payload:
-        value = payload.get("full-final-warning-threshold")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 3 or int_val > 100:
-                    return (
-                        False,
-                        "full-final-warning-threshold must be between 3 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"full-final-warning-threshold must be numeric, got: {value}",
-                )
-
-    # Validate interface-select-method if present
     if "interface-select-method" in payload:
-        value = payload.get("interface-select-method")
-        if value and value not in VALID_BODY_INTERFACE_SELECT_METHOD:
+        value = payload["interface-select-method"]
+        if value not in VALID_BODY_INTERFACE_SELECT_METHOD:
             return (
                 False,
-                f"Invalid interface-select-method '{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
+                f"Invalid value for 'interface-select-method'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
             )
-
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "interface cannot exceed 15 characters")
-
-    # Validate vrf-select if present
-    if "vrf-select" in payload:
-        value = payload.get("vrf-select")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 511:
-                    return (False, "vrf-select must be between 0 and 511")
-            except (ValueError, TypeError):
-                return (False, f"vrf-select must be numeric, got: {value}")
 
     return (True, None)
+
+
+# ============================================================================
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
+# ============================================================================
+
+
+def get_field_description(field_name: str) -> str | None:
+    """
+    Get description/help text for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
+    """
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "log/disk_setting",
+    "category": "cmdb",
+    "api_path": "log.disk/setting",
+    "help": "Settings for local disk logging.",
+    "total_fields": 31,
+    "required_fields_count": 2,
+    "fields_with_defaults_count": 30,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

@@ -1,25 +1,25 @@
-"""FortiOS CMDB - Endpoint-control category"""
+"""FortiOS CMDB - EndpointControl category"""
 
 from .fctems import Fctems
 from .fctems_override import FctemsOverride
 from .settings import Settings
 
-__all__ = ["Fctems", "FctemsOverride", "Settings"]
+__all__ = [
+    "EndpointControl",
+    "Fctems",
+    "FctemsOverride",
+    "Settings",
+]
 
 
 class EndpointControl:
-    """
-    EndpointControl category wrapper.
-
-    This class provides access to all endpoint-control CMDB endpoints.
-    """
+    """EndpointControl endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize EndpointControl with all endpoint classes.
-
+        """EndpointControl endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.fctems = Fctems(client)
         self.fctems_override = FctemsOverride(client)

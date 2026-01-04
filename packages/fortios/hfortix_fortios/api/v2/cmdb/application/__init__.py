@@ -6,22 +6,24 @@ from .list import List
 from .name import Name
 from .rule_settings import RuleSettings
 
-__all__ = ["Custom", "Group", "List", "Name", "RuleSettings"]
+__all__ = [
+    "Application",
+    "Custom",
+    "Group",
+    "List",
+    "Name",
+    "RuleSettings",
+]
 
 
 class Application:
-    """
-    Application category wrapper.
-
-    This class provides access to all application CMDB endpoints.
-    """
+    """Application endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Application with all endpoint classes.
-
+        """Application endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.custom = Custom(client)
         self.group = Group(client)

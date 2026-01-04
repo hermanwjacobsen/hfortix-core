@@ -1,0 +1,108 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+
+# Payload TypedDict for IDE autocomplete
+class LldpSettingsPayload(TypedDict, total=False):
+    """
+    Type hints for switch_controller/lldp_settings payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: LldpSettingsPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    tx_hold: NotRequired[int]  # Number of tx-intervals before local LLDP data expires (1 - 1
+    tx_interval: NotRequired[int]  # Frequency of LLDP PDU transmission from FortiSwitch (5 - 409
+    fast_start_interval: NotRequired[int]  # Frequency of LLDP PDU transmission from FortiSwitch for the 
+    management_interface: NotRequired[Literal["internal", "mgmt"]]  # Primary management interface to be advertised in LLDP and CD
+    device_detection: NotRequired[Literal["disable", "enable"]]  # Enable/disable dynamic detection of LLDP neighbor devices fo
+
+
+class LldpSettings:
+    """
+    Configure FortiSwitch LLDP settings.
+    
+    Path: switch_controller/lldp_settings
+    Category: cmdb
+    """
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def post(
+        self,
+        payload_dict: LldpSettingsPayload | None = ...,
+        tx_hold: int | None = ...,
+        tx_interval: int | None = ...,
+        fast_start_interval: int | None = ...,
+        management_interface: Literal["internal", "mgmt"] | None = ...,
+        device_detection: Literal["disable", "enable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def put(
+        self,
+        payload_dict: LldpSettingsPayload | None = ...,
+        tx_hold: int | None = ...,
+        tx_interval: int | None = ...,
+        fast_start_interval: int | None = ...,
+        management_interface: Literal["internal", "mgmt"] | None = ...,
+        device_detection: Literal["disable", "enable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]: ...
+    
+    def set(
+        self,
+        payload_dict: LldpSettingsPayload | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...

@@ -1,64 +1,238 @@
 """
-Validation helpers for user domain_controller endpoint.
+Validation helpers for user/domain_controller endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
     "hostname",  # Hostname of the server to connect to.
-    "interface",  # Specify outgoing interface to reach server.
-    "name",  # Domain controller entry name.
+    "username",  # User name to sign in with. Must have proper permissions for service.
     "password",  # Password for specified username.
-    "username",  # User name to sign in with. Must have proper permissions for
+    "interface",  # Specify outgoing interface to reach server.
+    "adlds-dn",  # AD LDS distinguished name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
+    "name": "",
     "ad-mode": "none",
-    "adlds-ip-address": "0.0.0.0",
-    "adlds-ip6": "::",
-    "adlds-port": 389,
-    "change-detection": "disable",
-    "change-detection-period": 60,
-    "dns-srv-lookup": "disable",
-    "interface-select-method": "auto",
+    "hostname": "",
+    "username": "",
     "ip-address": "0.0.0.0",
     "ip6": "::",
     "port": 445,
     "source-ip-address": "0.0.0.0",
     "source-ip6": "::",
+    "source-port": 0,
+    "interface-select-method": "auto",
+    "interface": "",
+    "domain-name": "",
+    "replication-port": 0,
+    "change-detection": "disable",
+    "change-detection-period": 60,
+    "dns-srv-lookup": "disable",
+    "adlds-dn": "",
+    "adlds-ip-address": "0.0.0.0",
+    "adlds-ip6": "::",
+    "adlds-port": 389,
 }
 
-# Fields wrongly marked as required in schema (schema bugs)
-# These are specialized features and should be OPTIONAL
-SCHEMA_FALSE_POSITIVES = [
-    "adlds-dn",  # AD LDS distinguished name.
-]
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # Domain controller entry name.
+    "ad-mode": "option",  # Set Active Directory mode.
+    "hostname": "string",  # Hostname of the server to connect to.
+    "username": "string",  # User name to sign in with. Must have proper permissions for 
+    "password": "password",  # Password for specified username.
+    "ip-address": "ipv4-address",  # Domain controller IPv4 address.
+    "ip6": "ipv6-address",  # Domain controller IPv6 address.
+    "port": "integer",  # Port to be used for communication with the domain controller
+    "source-ip-address": "ipv4-address",  # FortiGate IPv4 address to be used for communication with the
+    "source-ip6": "ipv6-address",  # FortiGate IPv6 address to be used for communication with the
+    "source-port": "integer",  # Source port to be used for communication with the domain con
+    "interface-select-method": "option",  # Specify how to select outgoing interface to reach server.
+    "interface": "string",  # Specify outgoing interface to reach server.
+    "extra-server": "string",  # Extra servers.
+    "domain-name": "string",  # Domain DNS name.
+    "replication-port": "integer",  # Port to be used for communication with the domain controller
+    "ldap-server": "string",  # LDAP server name(s).
+    "change-detection": "option",  # Enable/disable detection of a configuration change in the Ac
+    "change-detection-period": "integer",  # Minutes to detect a configuration change in the Active Direc
+    "dns-srv-lookup": "option",  # Enable/disable DNS service lookup.
+    "adlds-dn": "string",  # AD LDS distinguished name.
+    "adlds-ip-address": "ipv4-address",  # AD LDS IPv4 address.
+    "adlds-ip6": "ipv6-address",  # AD LDS IPv6 address.
+    "adlds-port": "integer",  # Port number of AD LDS service (default = 389).
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "Domain controller entry name.",
+    "ad-mode": "Set Active Directory mode.",
+    "hostname": "Hostname of the server to connect to.",
+    "username": "User name to sign in with. Must have proper permissions for service.",
+    "password": "Password for specified username.",
+    "ip-address": "Domain controller IPv4 address.",
+    "ip6": "Domain controller IPv6 address.",
+    "port": "Port to be used for communication with the domain controller (default = 445).",
+    "source-ip-address": "FortiGate IPv4 address to be used for communication with the domain controller.",
+    "source-ip6": "FortiGate IPv6 address to be used for communication with the domain controller.",
+    "source-port": "Source port to be used for communication with the domain controller.",
+    "interface-select-method": "Specify how to select outgoing interface to reach server.",
+    "interface": "Specify outgoing interface to reach server.",
+    "extra-server": "Extra servers.",
+    "domain-name": "Domain DNS name.",
+    "replication-port": "Port to be used for communication with the domain controller for replication service. Port number 0 indicates automatic discovery.",
+    "ldap-server": "LDAP server name(s).",
+    "change-detection": "Enable/disable detection of a configuration change in the Active Directory server.",
+    "change-detection-period": "Minutes to detect a configuration change in the Active Directory server (5 - 10080 minutes (7 days), default = 60).",
+    "dns-srv-lookup": "Enable/disable DNS service lookup.",
+    "adlds-dn": "AD LDS distinguished name.",
+    "adlds-ip-address": "AD LDS IPv4 address.",
+    "adlds-ip6": "AD LDS IPv6 address.",
+    "adlds-port": "Port number of AD LDS service (default = 389).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 35},
+    "hostname": {"type": "string", "max_length": 255},
+    "username": {"type": "string", "max_length": 64},
+    "port": {"type": "integer", "min": 0, "max": 65535},
+    "source-port": {"type": "integer", "min": 0, "max": 65535},
+    "interface": {"type": "string", "max_length": 15},
+    "domain-name": {"type": "string", "max_length": 255},
+    "replication-port": {"type": "integer", "min": 0, "max": 65535},
+    "change-detection-period": {"type": "integer", "min": 5, "max": 10080},
+    "adlds-dn": {"type": "string", "max_length": 255},
+    "adlds-port": {"type": "integer", "min": 0, "max": 65535},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "extra-server": {
+        "id": {
+            "type": "integer",
+            "help": "Server ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "ip-address": {
+            "type": "ipv4-address",
+            "help": "Domain controller IP address.",
+            "required": True,
+            "default": "0.0.0.0",
+        },
+        "port": {
+            "type": "integer",
+            "help": "Port to be used for communication with the domain controller (default = 445).",
+            "default": 445,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "source-ip-address": {
+            "type": "ipv4-address",
+            "help": "FortiGate IPv4 address to be used for communication with the domain controller.",
+            "required": True,
+            "default": "0.0.0.0",
+        },
+        "source-port": {
+            "type": "integer",
+            "help": "Source port to be used for communication with the domain controller.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+    },
+    "ldap-server": {
+        "name": {
+            "type": "string",
+            "help": "LDAP server name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+}
 
 
 # Valid enum values from API documentation
-VALID_BODY_AD_MODE = ["none", "ds", "lds"]
-VALID_BODY_INTERFACE_SELECT_METHOD = ["auto", "sdwan", "specify"]
-VALID_BODY_CHANGE_DETECTION = ["enable", "disable"]
-VALID_BODY_DNS_SRV_LOOKUP = ["enable", "disable"]
+VALID_BODY_AD_MODE = [
+    "none",
+    "ds",
+    "lds",
+]
+VALID_BODY_INTERFACE_SELECT_METHOD = [
+    "auto",
+    "sdwan",
+    "specify",
+]
+VALID_BODY_CHANGE_DETECTION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DNS_SRV_LOOKUP = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -66,13 +240,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_domain_controller_get(
+def validate_user_domain_controller_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for user/domain_controller.
 
     Args:
         attr: Attribute filter (optional)
@@ -82,9 +256,20 @@ def validate_domain_controller_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_user_domain_controller_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_user_domain_controller_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_user_domain_controller_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -105,7 +290,7 @@ def validate_domain_controller_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for user_domain-controller.
+    Validate required fields for user/domain_controller.
 
     This validator checks:
     1. Always-required fields are present
@@ -118,214 +303,128 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "hostname": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_domain_controller_post(
-    payload: dict[str, Any],
+def validate_user_domain_controller_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new user/domain_controller object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - hostname: Hostname of the server to connect to.
-      - interface: Specify outgoing interface to reach server.
-      - name: Domain controller entry name.
-      - password: Password for specified username.
-      - username: User name to sign in with. Must have proper permissions for
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "hostname": True,  # Hostname of the server to connect to.
+        ...     "username": True,  # User name to sign in with. Must have proper permis
+        ... }
+        >>> is_valid, error = validate_user_domain_controller_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "hostname": True,
+        ...     "ad-mode": "none",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_user_domain_controller_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["ad-mode"] = "invalid-value"
+        >>> is_valid, error = validate_user_domain_controller_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_user_domain_controller_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate ad-mode if present
+    # Step 2: Validate enum values
     if "ad-mode" in payload:
-        value = payload.get("ad-mode")
-        if value and value not in VALID_BODY_AD_MODE:
-            return (
-                False,
-                f"Invalid ad-mode '{value}'. Must be one of: {', '.join(VALID_BODY_AD_MODE)}",
-            )
-
-    # Validate hostname if present
-    if "hostname" in payload:
-        value = payload.get("hostname")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "hostname cannot exceed 255 characters")
-
-    # Validate username if present
-    if "username" in payload:
-        value = payload.get("username")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (False, "username cannot exceed 64 characters")
-
-    # Validate port if present
-    if "port" in payload:
-        value = payload.get("port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"port must be numeric, got: {value}")
-
-    # Validate source-port if present
-    if "source-port" in payload:
-        value = payload.get("source-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "source-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"source-port must be numeric, got: {value}")
-
-    # Validate interface-select-method if present
+        value = payload["ad-mode"]
+        if value not in VALID_BODY_AD_MODE:
+            desc = FIELD_DESCRIPTIONS.get("ad-mode", "")
+            error_msg = f"Invalid value for 'ad-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AD_MODE)}"
+            error_msg += f"\n  → Example: ad-mode='{{ VALID_BODY_AD_MODE[0] }}'"
+            return (False, error_msg)
     if "interface-select-method" in payload:
-        value = payload.get("interface-select-method")
-        if value and value not in VALID_BODY_INTERFACE_SELECT_METHOD:
-            return (
-                False,
-                f"Invalid interface-select-method '{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
-            )
-
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "interface cannot exceed 15 characters")
-
-    # Validate domain-name if present
-    if "domain-name" in payload:
-        value = payload.get("domain-name")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "domain-name cannot exceed 255 characters")
-
-    # Validate replication-port if present
-    if "replication-port" in payload:
-        value = payload.get("replication-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "replication-port must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"replication-port must be numeric, got: {value}",
-                )
-
-    # Validate change-detection if present
+        value = payload["interface-select-method"]
+        if value not in VALID_BODY_INTERFACE_SELECT_METHOD:
+            desc = FIELD_DESCRIPTIONS.get("interface-select-method", "")
+            error_msg = f"Invalid value for 'interface-select-method': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERFACE_SELECT_METHOD)}"
+            error_msg += f"\n  → Example: interface-select-method='{{ VALID_BODY_INTERFACE_SELECT_METHOD[0] }}'"
+            return (False, error_msg)
     if "change-detection" in payload:
-        value = payload.get("change-detection")
-        if value and value not in VALID_BODY_CHANGE_DETECTION:
-            return (
-                False,
-                f"Invalid change-detection '{value}'. Must be one of: {', '.join(VALID_BODY_CHANGE_DETECTION)}",
-            )
-
-    # Validate change-detection-period if present
-    if "change-detection-period" in payload:
-        value = payload.get("change-detection-period")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 10080:
-                    return (
-                        False,
-                        "change-detection-period must be between 5 and 10080",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"change-detection-period must be numeric, got: {value}",
-                )
-
-    # Validate dns-srv-lookup if present
+        value = payload["change-detection"]
+        if value not in VALID_BODY_CHANGE_DETECTION:
+            desc = FIELD_DESCRIPTIONS.get("change-detection", "")
+            error_msg = f"Invalid value for 'change-detection': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CHANGE_DETECTION)}"
+            error_msg += f"\n  → Example: change-detection='{{ VALID_BODY_CHANGE_DETECTION[0] }}'"
+            return (False, error_msg)
     if "dns-srv-lookup" in payload:
-        value = payload.get("dns-srv-lookup")
-        if value and value not in VALID_BODY_DNS_SRV_LOOKUP:
-            return (
-                False,
-                f"Invalid dns-srv-lookup '{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SRV_LOOKUP)}",
-            )
-
-    # Validate adlds-dn if present
-    if "adlds-dn" in payload:
-        value = payload.get("adlds-dn")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "adlds-dn cannot exceed 255 characters")
-
-    # Validate adlds-port if present
-    if "adlds-port" in payload:
-        value = payload.get("adlds-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "adlds-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"adlds-port must be numeric, got: {value}")
+        value = payload["dns-srv-lookup"]
+        if value not in VALID_BODY_DNS_SRV_LOOKUP:
+            desc = FIELD_DESCRIPTIONS.get("dns-srv-lookup", "")
+            error_msg = f"Invalid value for 'dns-srv-lookup': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DNS_SRV_LOOKUP)}"
+            error_msg += f"\n  → Example: dns-srv-lookup='{{ VALID_BODY_DNS_SRV_LOOKUP[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -335,187 +434,354 @@ def validate_domain_controller_post(
 # ============================================================================
 
 
-def validate_domain_controller_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_user_domain_controller_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update user/domain_controller.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_user_domain_controller_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate ad-mode if present
+    # Step 1: Validate enum values
     if "ad-mode" in payload:
-        value = payload.get("ad-mode")
-        if value and value not in VALID_BODY_AD_MODE:
+        value = payload["ad-mode"]
+        if value not in VALID_BODY_AD_MODE:
             return (
                 False,
-                f"Invalid ad-mode '{value}'. Must be one of: {', '.join(VALID_BODY_AD_MODE)}",
+                f"Invalid value for 'ad-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_AD_MODE)}",
             )
-
-    # Validate hostname if present
-    if "hostname" in payload:
-        value = payload.get("hostname")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "hostname cannot exceed 255 characters")
-
-    # Validate username if present
-    if "username" in payload:
-        value = payload.get("username")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (False, "username cannot exceed 64 characters")
-
-    # Validate port if present
-    if "port" in payload:
-        value = payload.get("port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"port must be numeric, got: {value}")
-
-    # Validate source-port if present
-    if "source-port" in payload:
-        value = payload.get("source-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "source-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"source-port must be numeric, got: {value}")
-
-    # Validate interface-select-method if present
     if "interface-select-method" in payload:
-        value = payload.get("interface-select-method")
-        if value and value not in VALID_BODY_INTERFACE_SELECT_METHOD:
+        value = payload["interface-select-method"]
+        if value not in VALID_BODY_INTERFACE_SELECT_METHOD:
             return (
                 False,
-                f"Invalid interface-select-method '{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
+                f"Invalid value for 'interface-select-method'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
             )
-
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "interface cannot exceed 15 characters")
-
-    # Validate domain-name if present
-    if "domain-name" in payload:
-        value = payload.get("domain-name")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "domain-name cannot exceed 255 characters")
-
-    # Validate replication-port if present
-    if "replication-port" in payload:
-        value = payload.get("replication-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "replication-port must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"replication-port must be numeric, got: {value}",
-                )
-
-    # Validate change-detection if present
     if "change-detection" in payload:
-        value = payload.get("change-detection")
-        if value and value not in VALID_BODY_CHANGE_DETECTION:
+        value = payload["change-detection"]
+        if value not in VALID_BODY_CHANGE_DETECTION:
             return (
                 False,
-                f"Invalid change-detection '{value}'. Must be one of: {', '.join(VALID_BODY_CHANGE_DETECTION)}",
+                f"Invalid value for 'change-detection'='{value}'. Must be one of: {', '.join(VALID_BODY_CHANGE_DETECTION)}",
             )
-
-    # Validate change-detection-period if present
-    if "change-detection-period" in payload:
-        value = payload.get("change-detection-period")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 10080:
-                    return (
-                        False,
-                        "change-detection-period must be between 5 and 10080",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"change-detection-period must be numeric, got: {value}",
-                )
-
-    # Validate dns-srv-lookup if present
     if "dns-srv-lookup" in payload:
-        value = payload.get("dns-srv-lookup")
-        if value and value not in VALID_BODY_DNS_SRV_LOOKUP:
+        value = payload["dns-srv-lookup"]
+        if value not in VALID_BODY_DNS_SRV_LOOKUP:
             return (
                 False,
-                f"Invalid dns-srv-lookup '{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SRV_LOOKUP)}",
+                f"Invalid value for 'dns-srv-lookup'='{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SRV_LOOKUP)}",
             )
-
-    # Validate adlds-dn if present
-    if "adlds-dn" in payload:
-        value = payload.get("adlds-dn")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "adlds-dn cannot exceed 255 characters")
-
-    # Validate adlds-port if present
-    if "adlds-port" in payload:
-        value = payload.get("adlds-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "adlds-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"adlds-port must be numeric, got: {value}")
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_domain_controller_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "user/domain_controller",
+    "category": "cmdb",
+    "api_path": "user/domain-controller",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure domain controller entries.",
+    "total_fields": 24,
+    "required_fields_count": 5,
+    "fields_with_defaults_count": 21,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

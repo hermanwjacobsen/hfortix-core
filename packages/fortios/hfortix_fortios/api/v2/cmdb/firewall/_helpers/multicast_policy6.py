@@ -1,60 +1,189 @@
 """
-Validation helpers for firewall multicast_policy6 endpoint.
+Validation helpers for firewall/multicast_policy6 endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "dstaddr",  # IPv6 destination address name.
-    "dstintf",  # IPv6 destination interface name.
-    "name",  # Policy name.
-    "srcaddr",  # IPv6 source address name.
     "srcintf",  # IPv6 source interface name.
+    "dstintf",  # IPv6 destination interface name.
+    "srcaddr",  # IPv6 source address name.
+    "dstaddr",  # IPv6 destination address name.
 ]
-
-# Mutually exclusive groups (at least ONE from each group required)
-MUTUALLY_EXCLUSIVE_GROUPS = {
-    "dest_address": ["dstaddr"],
-    "source_address": ["srcaddr"],
-}
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "action": "accept",
-    "auto-asic-offload": "enable",
-    "end-port": 65535,
-    "logtraffic": "utm",
-    "start-port": 1,
-    "status": "enable",
-    "utm-status": "disable",
+    "id": 0,
     "uuid": "00000000-0000-0000-0000-000000000000",
+    "status": "enable",
+    "name": "",
+    "srcintf": "",
+    "dstintf": "",
+    "action": "accept",
+    "protocol": 0,
+    "start-port": 1,
+    "end-port": 65535,
+    "utm-status": "disable",
+    "ips-sensor": "",
+    "logtraffic": "utm",
+    "auto-asic-offload": "enable",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "id": "integer",  # Policy ID (0 - 4294967294).
+    "uuid": "uuid",  # Universally Unique Identifier (UUID; automatically assigned 
+    "status": "option",  # Enable/disable this policy.
+    "name": "string",  # Policy name.
+    "srcintf": "string",  # IPv6 source interface name.
+    "dstintf": "string",  # IPv6 destination interface name.
+    "srcaddr": "string",  # IPv6 source address name.
+    "dstaddr": "string",  # IPv6 destination address name.
+    "action": "option",  # Accept or deny traffic matching the policy.
+    "protocol": "integer",  # Integer value for the protocol type as defined by IANA (0 - 
+    "start-port": "integer",  # Integer value for starting TCP/UDP/SCTP destination port in 
+    "end-port": "integer",  # Integer value for ending TCP/UDP/SCTP destination port in ra
+    "utm-status": "option",  # Enable to add an IPS security profile to the policy.
+    "ips-sensor": "string",  # Name of an existing IPS sensor.
+    "logtraffic": "option",  # Enable or disable logging. Log all sessions or security prof
+    "auto-asic-offload": "option",  # Enable/disable offloading policy traffic for hardware accele
+    "comments": "var-string",  # Comment.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "id": "Policy ID (0 - 4294967294).",
+    "uuid": "Universally Unique Identifier (UUID; automatically assigned but can be manually reset).",
+    "status": "Enable/disable this policy.",
+    "name": "Policy name.",
+    "srcintf": "IPv6 source interface name.",
+    "dstintf": "IPv6 destination interface name.",
+    "srcaddr": "IPv6 source address name.",
+    "dstaddr": "IPv6 destination address name.",
+    "action": "Accept or deny traffic matching the policy.",
+    "protocol": "Integer value for the protocol type as defined by IANA (0 - 255, default = 0).",
+    "start-port": "Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).",
+    "end-port": "Integer value for ending TCP/UDP/SCTP destination port in range (1 - 65535, default = 65535).",
+    "utm-status": "Enable to add an IPS security profile to the policy.",
+    "ips-sensor": "Name of an existing IPS sensor.",
+    "logtraffic": "Enable or disable logging. Log all sessions or security profile sessions.",
+    "auto-asic-offload": "Enable/disable offloading policy traffic for hardware acceleration.",
+    "comments": "Comment.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "id": {"type": "integer", "min": 0, "max": 4294967294},
+    "name": {"type": "string", "max_length": 35},
+    "srcintf": {"type": "string", "max_length": 35},
+    "dstintf": {"type": "string", "max_length": 35},
+    "protocol": {"type": "integer", "min": 0, "max": 255},
+    "start-port": {"type": "integer", "min": 0, "max": 65535},
+    "end-port": {"type": "integer", "min": 0, "max": 65535},
+    "ips-sensor": {"type": "string", "max_length": 47},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "srcaddr": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "dstaddr": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_STATUS = ["enable", "disable"]
-VALID_BODY_ACTION = ["accept", "deny"]
-VALID_BODY_UTM_STATUS = ["enable", "disable"]
-VALID_BODY_LOGTRAFFIC = ["all", "utm", "disable"]
-VALID_BODY_AUTO_ASIC_OFFLOAD = ["enable", "disable"]
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ACTION = [
+    "accept",
+    "deny",
+]
+VALID_BODY_UTM_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOGTRAFFIC = [
+    "all",
+    "utm",
+    "disable",
+]
+VALID_BODY_AUTO_ASIC_OFFLOAD = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -62,13 +191,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_multicast_policy6_get(
+def validate_firewall_multicast_policy6_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for firewall/multicast_policy6.
 
     Args:
         attr: Attribute filter (optional)
@@ -78,9 +207,20 @@ def validate_multicast_policy6_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_firewall_multicast_policy6_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by id
+        >>> is_valid, error = validate_firewall_multicast_policy6_get(id="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_firewall_multicast_policy6_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -101,7 +241,7 @@ def validate_multicast_policy6_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for firewall_multicast-policy6.
+    Validate required fields for firewall/multicast_policy6.
 
     This validator checks:
     1. Always-required fields are present
@@ -114,204 +254,138 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "dstaddr": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
-
-    # Check mutually exclusive groups
-    if not ("dstaddr" in payload):
-        return (False, "Must provide at least one of: dstaddr")
-    if not ("srcaddr" in payload):
-        return (False, "Must provide at least one of: srcaddr")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_multicast_policy6_post(
-    payload: dict[str, Any],
+def validate_firewall_multicast_policy6_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new firewall/multicast_policy6 object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - dstaddr: IPv6 destination address name.
-      - dstintf: IPv6 destination interface name.
-      - name: Policy name.
-      - srcaddr: IPv6 source address name.
-      - srcintf: IPv6 source interface name.
-
-    Mutually exclusive (at least ONE required):
-      - dstaddr
-      - srcaddr
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "srcintf": True,  # IPv6 source interface name.
+        ...     "dstintf": True,  # IPv6 destination interface name.
+        ... }
+        >>> is_valid, error = validate_firewall_multicast_policy6_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "srcintf": True,
+        ...     "status": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_firewall_multicast_policy6_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["status"] = "invalid-value"
+        >>> is_valid, error = validate_firewall_multicast_policy6_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_firewall_multicast_policy6_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate id if present
-    if "id" in payload:
-        value = payload.get("id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967294:
-                    return (False, "id must be between 0 and 4294967294")
-            except (ValueError, TypeError):
-                return (False, f"id must be numeric, got: {value}")
-
-    # Validate status if present
+    # Step 2: Validate enum values
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
-            return (
-                False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
-            )
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate srcintf if present
-    if "srcint" in payload:
-        value = payload.get("srcint")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "srcintf cannot exceed 35 characters")
-
-    # Validate dstintf if present
-    if "dstint" in payload:
-        value = payload.get("dstint")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "dstintf cannot exceed 35 characters")
-
-    # Validate action if present
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
     if "action" in payload:
-        value = payload.get("action")
-        if value and value not in VALID_BODY_ACTION:
-            return (
-                False,
-                f"Invalid action '{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
-            )
-
-    # Validate protocol if present
-    if "protocol" in payload:
-        value = payload.get("protocol")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (False, "protocol must be between 0 and 255")
-            except (ValueError, TypeError):
-                return (False, f"protocol must be numeric, got: {value}")
-
-    # Validate start-port if present
-    if "start-port" in payload:
-        value = payload.get("start-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "start-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"start-port must be numeric, got: {value}")
-
-    # Validate end-port if present
-    if "end-port" in payload:
-        value = payload.get("end-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "end-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"end-port must be numeric, got: {value}")
-
-    # Validate utm-status if present
+        value = payload["action"]
+        if value not in VALID_BODY_ACTION:
+            desc = FIELD_DESCRIPTIONS.get("action", "")
+            error_msg = f"Invalid value for 'action': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACTION)}"
+            error_msg += f"\n  → Example: action='{{ VALID_BODY_ACTION[0] }}'"
+            return (False, error_msg)
     if "utm-status" in payload:
-        value = payload.get("utm-status")
-        if value and value not in VALID_BODY_UTM_STATUS:
-            return (
-                False,
-                f"Invalid utm-status '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
-            )
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate logtraffic if present
+        value = payload["utm-status"]
+        if value not in VALID_BODY_UTM_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("utm-status", "")
+            error_msg = f"Invalid value for 'utm-status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UTM_STATUS)}"
+            error_msg += f"\n  → Example: utm-status='{{ VALID_BODY_UTM_STATUS[0] }}'"
+            return (False, error_msg)
     if "logtraffic" in payload:
-        value = payload.get("logtraffic")
-        if value and value not in VALID_BODY_LOGTRAFFIC:
-            return (
-                False,
-                f"Invalid logtraffic '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
-            )
-
-    # Validate auto-asic-offload if present
+        value = payload["logtraffic"]
+        if value not in VALID_BODY_LOGTRAFFIC:
+            desc = FIELD_DESCRIPTIONS.get("logtraffic", "")
+            error_msg = f"Invalid value for 'logtraffic': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOGTRAFFIC)}"
+            error_msg += f"\n  → Example: logtraffic='{{ VALID_BODY_LOGTRAFFIC[0] }}'"
+            return (False, error_msg)
     if "auto-asic-offload" in payload:
-        value = payload.get("auto-asic-offload")
-        if value and value not in VALID_BODY_AUTO_ASIC_OFFLOAD:
-            return (
-                False,
-                f"Invalid auto-asic-offload '{value}'. Must be one of: {', '.join(VALID_BODY_AUTO_ASIC_OFFLOAD)}",
-            )
-
-    # Validate comments if present
-    if "comments" in payload:
-        value = payload.get("comments")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "comments cannot exceed 1023 characters")
+        value = payload["auto-asic-offload"]
+        if value not in VALID_BODY_AUTO_ASIC_OFFLOAD:
+            desc = FIELD_DESCRIPTIONS.get("auto-asic-offload", "")
+            error_msg = f"Invalid value for 'auto-asic-offload': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AUTO_ASIC_OFFLOAD)}"
+            error_msg += f"\n  → Example: auto-asic-offload='{{ VALID_BODY_AUTO_ASIC_OFFLOAD[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -321,167 +395,361 @@ def validate_multicast_policy6_post(
 # ============================================================================
 
 
-def validate_multicast_policy6_put(
-    id: str | None = None, payload: dict[str, Any] | None = None
+def validate_firewall_multicast_policy6_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update firewall/multicast_policy6.
 
     Args:
-        id: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_firewall_multicast_policy6_put(payload)
     """
-    # id is required for updates
-    if not id:
-        return (False, "id is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate id if present
-    if "id" in payload:
-        value = payload.get("id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967294:
-                    return (False, "id must be between 0 and 4294967294")
-            except (ValueError, TypeError):
-                return (False, f"id must be numeric, got: {value}")
-
-    # Validate status if present
+    # Step 1: Validate enum values
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
             return (
                 False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
             )
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate srcintf if present
-    if "srcint" in payload:
-        value = payload.get("srcint")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "srcintf cannot exceed 35 characters")
-
-    # Validate dstintf if present
-    if "dstint" in payload:
-        value = payload.get("dstint")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "dstintf cannot exceed 35 characters")
-
-    # Validate action if present
     if "action" in payload:
-        value = payload.get("action")
-        if value and value not in VALID_BODY_ACTION:
+        value = payload["action"]
+        if value not in VALID_BODY_ACTION:
             return (
                 False,
-                f"Invalid action '{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
+                f"Invalid value for 'action'='{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
             )
-
-    # Validate protocol if present
-    if "protocol" in payload:
-        value = payload.get("protocol")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (False, "protocol must be between 0 and 255")
-            except (ValueError, TypeError):
-                return (False, f"protocol must be numeric, got: {value}")
-
-    # Validate start-port if present
-    if "start-port" in payload:
-        value = payload.get("start-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "start-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"start-port must be numeric, got: {value}")
-
-    # Validate end-port if present
-    if "end-port" in payload:
-        value = payload.get("end-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "end-port must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"end-port must be numeric, got: {value}")
-
-    # Validate utm-status if present
     if "utm-status" in payload:
-        value = payload.get("utm-status")
-        if value and value not in VALID_BODY_UTM_STATUS:
+        value = payload["utm-status"]
+        if value not in VALID_BODY_UTM_STATUS:
             return (
                 False,
-                f"Invalid utm-status '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
+                f"Invalid value for 'utm-status'='{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
             )
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate logtraffic if present
     if "logtraffic" in payload:
-        value = payload.get("logtraffic")
-        if value and value not in VALID_BODY_LOGTRAFFIC:
+        value = payload["logtraffic"]
+        if value not in VALID_BODY_LOGTRAFFIC:
             return (
                 False,
-                f"Invalid logtraffic '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
+                f"Invalid value for 'logtraffic'='{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
             )
-
-    # Validate auto-asic-offload if present
     if "auto-asic-offload" in payload:
-        value = payload.get("auto-asic-offload")
-        if value and value not in VALID_BODY_AUTO_ASIC_OFFLOAD:
+        value = payload["auto-asic-offload"]
+        if value not in VALID_BODY_AUTO_ASIC_OFFLOAD:
             return (
                 False,
-                f"Invalid auto-asic-offload '{value}'. Must be one of: {', '.join(VALID_BODY_AUTO_ASIC_OFFLOAD)}",
+                f"Invalid value for 'auto-asic-offload'='{value}'. Must be one of: {', '.join(VALID_BODY_AUTO_ASIC_OFFLOAD)}",
             )
-
-    # Validate comments if present
-    if "comments" in payload:
-        value = payload.get("comments")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "comments cannot exceed 1023 characters")
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_multicast_policy6_delete(
-    id: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        id: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not id:
-        return (False, "id is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "firewall/multicast_policy6",
+    "category": "cmdb",
+    "api_path": "firewall/multicast-policy6",
+    "mkey": "id",
+    "mkey_type": "integer",
+    "help": "Configure IPv6 multicast NAT policies.",
+    "total_fields": 17,
+    "required_fields_count": 4,
+    "fields_with_defaults_count": 14,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

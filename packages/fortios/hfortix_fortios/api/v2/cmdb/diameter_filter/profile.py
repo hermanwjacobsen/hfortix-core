@@ -1,142 +1,114 @@
 """
-FortiOS CMDB - Cmdb Diameter Filter Profile
+FortiOS CMDB - Diameter_filter profile
 
-Configuration endpoint for managing cmdb diameter filter profile objects.
+Configuration endpoint for managing cmdb diameter_filter/profile objects.
 
 API Endpoints:
-    GET    /cmdb/diameter-filter/profile
-    POST   /cmdb/diameter-filter/profile
-    GET    /cmdb/diameter-filter/profile
-    PUT    /cmdb/diameter-filter/profile/{identifier}
-    DELETE /cmdb/diameter-filter/profile/{identifier}
+    GET    /cmdb/diameter_filter/profile
+    POST   /cmdb/diameter_filter/profile
+    PUT    /cmdb/diameter_filter/profile/{identifier}
+    DELETE /cmdb/diameter_filter/profile/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.diameter_filter.profile.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.diameter_filter.profile.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.diameter_filter.profile.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.diameter_filter.profile.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.diameter_filter.profile.delete(name="item_name")
+    >>> items = fgt.api.cmdb.diameter_filter_profile.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class Profile:
-    """
-    Profile Operations.
-
-    Provides CRUD operations for FortiOS profile configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """Profile Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize Profile endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize Profile endpoint."""
         self._client = client
 
     def get(
         self,
         name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve diameter_filter/profile configuration.
+
+        Configure Diameter filter profiles.
 
         Args:
-            name: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: String identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all diameter_filter/profile objects
+            >>> result = fgt.api.cmdb.diameter_filter_profile.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific diameter_filter/profile by name
+            >>> result = fgt.api.cmdb.diameter_filter_profile.get(name=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.diameter_filter_profile.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.diameter_filter_profile.get(action="schema")
+
+        See Also:
+            - post(): Create new diameter_filter/profile object
+            - put(): Update existing diameter_filter/profile object
+            - delete(): Remove diameter_filter/profile object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if name:
-            endpoint = f"/diameter-filter/profile/{name}"
+            endpoint = "/diameter-filter/profile/" + str(name)
         else:
             endpoint = "/diameter-filter/profile"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,10 +116,8 @@ class Profile:
 
     def put(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
+        name: str | None = None,
         comment: str | None = None,
         monitor_all_messages: str | None = None,
         log_packet: str | None = None,
@@ -164,135 +134,218 @@ class Profile:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing diameter_filter/profile object.
+
+        Configure Diameter filter profiles.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            name: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            name: Profile name. (optional)
-            comment: Comment. (optional)
-            monitor_all_messages: Enable/disable logging for all User Name and
-            Result Code AVP messages. (optional)
-            log_packet: Enable/disable packet log for triggered diameter
-            settings. (optional)
-            track_requests_answers: Enable/disable validation that each answer
-            has a corresponding request. (optional)
-            missing_request_action: Action to be taken for answers without
-            corresponding request. (optional)
-            protocol_version_invalid: Action to be taken for invalid protocol
-            version. (optional)
-            message_length_invalid: Action to be taken for invalid message
-            length. (optional)
-            request_error_flag_set: Action to be taken for request messages
-            with error flag set. (optional)
-            cmd_flags_reserve_set: Action to be taken for messages with cmd
-            flag reserve bits set. (optional)
-            command_code_invalid: Action to be taken for messages with invalid
-            command code. (optional)
-            command_code_range: Valid range for command codes (0-16777215).
-            (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include name (primary key).
+            name: Profile name.
+            comment: Comment.
+            monitor_all_messages: Enable/disable logging for all User Name and Result Code AVP messages.
+            log_packet: Enable/disable packet log for triggered diameter settings.
+            track_requests_answers: Enable/disable validation that each answer has a corresponding request.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
+            API response dict
 
-        # Build endpoint path
-        if not name:
-            raise ValueError("name is required for put()")
-        endpoint = f"/diameter-filter/profile/{name}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if name is not None:
-            data_payload["name"] = name
-        if comment is not None:
-            data_payload["comment"] = comment
-        if monitor_all_messages is not None:
-            data_payload["monitor-all-messages"] = monitor_all_messages
-        if log_packet is not None:
-            data_payload["log-packet"] = log_packet
-        if track_requests_answers is not None:
-            data_payload["track-requests-answers"] = track_requests_answers
-        if missing_request_action is not None:
-            data_payload["missing-request-action"] = missing_request_action
-        if protocol_version_invalid is not None:
-            data_payload["protocol-version-invalid"] = protocol_version_invalid
-        if message_length_invalid is not None:
-            data_payload["message-length-invalid"] = message_length_invalid
-        if request_error_flag_set is not None:
-            data_payload["request-error-flag-set"] = request_error_flag_set
-        if cmd_flags_reserve_set is not None:
-            data_payload["cmd-flags-reserve-set"] = cmd_flags_reserve_set
-        if command_code_invalid is not None:
-            data_payload["command-code-invalid"] = command_code_invalid
-        if command_code_range is not None:
-            data_payload["command-code-range"] = command_code_range
-        data_payload.update(kwargs)
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.diameter_filter_profile.put(
+            ...     name=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.diameter_filter_profile.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            comment=comment,
+            monitor_all_messages=monitor_all_messages,
+            log_packet=log_packet,
+            track_requests_answers=track_requests_answers,
+            missing_request_action=missing_request_action,
+            protocol_version_invalid=protocol_version_invalid,
+            message_length_invalid=message_length_invalid,
+            request_error_flag_set=request_error_flag_set,
+            cmd_flags_reserve_set=cmd_flags_reserve_set,
+            command_code_invalid=command_code_invalid,
+            command_code_range=command_code_range,
+            data=payload_dict,
+        )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.profile import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/diameter_filter/profile",
+            )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = "/diameter-filter/profile/" + str(name_value)
+
         return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
-    def delete(
+    def post(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        monitor_all_messages: str | None = None,
+        log_packet: str | None = None,
+        track_requests_answers: str | None = None,
+        missing_request_action: str | None = None,
+        protocol_version_invalid: str | None = None,
+        message_length_invalid: str | None = None,
+        request_error_flag_set: str | None = None,
+        cmd_flags_reserve_set: str | None = None,
+        command_code_invalid: str | None = None,
+        command_code_range: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Delete this specific resource.
+        Create new diameter_filter/profile object.
+
+        Configure Diameter filter profiles.
 
         Args:
-            name: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            name: Profile name.
+            comment: Comment.
+            monitor_all_messages: Enable/disable logging for all User Name and Result Code AVP messages.
+            log_packet: Enable/disable packet log for triggered diameter settings.
+            track_requests_answers: Enable/disable validation that each answer has a corresponding request.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
+            API response dict containing created object with assigned name.
 
-        # Build endpoint path
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.diameter_filter_profile.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created name: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = Profile.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.diameter_filter_profile.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Profile.required_fields()) }}
+            
+            Use Profile.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            comment=comment,
+            monitor_all_messages=monitor_all_messages,
+            log_packet=log_packet,
+            track_requests_answers=track_requests_answers,
+            missing_request_action=missing_request_action,
+            protocol_version_invalid=protocol_version_invalid,
+            message_length_invalid=message_length_invalid,
+            request_error_flag_set=request_error_flag_set,
+            cmd_flags_reserve_set=cmd_flags_reserve_set,
+            command_code_invalid=command_code_invalid,
+            command_code_range=command_code_range,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.profile import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/diameter_filter/profile",
+            )
+
+        endpoint = "/diameter-filter/profile"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete diameter_filter/profile object.
+
+        Configure Diameter filter profiles.
+
+        Args:
+            name: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.diameter_filter_profile.delete(name=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
         if not name:
-            raise ValueError("name is required for delete()")
-        endpoint = f"/diameter-filter/profile/{name}"
-        params.update(kwargs)
+            raise ValueError("name is required for DELETE")
+        endpoint = "/diameter-filter/profile/" + str(name)
+
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
     def exists(
@@ -301,142 +354,311 @@ class Profile:
         vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
-        Check if an object exists.
+        Check if diameter_filter/profile object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
 
         Args:
-            name: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
+            name: Primary key identifier
+            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
 
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.diameter_filter_profile.exists(name=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.diameter_filter_profile.exists(name=1):
+            ...     fgt.api.cmdb.diameter_filter_profile.delete(name=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
         """
-        import inspect
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
 
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(name=name, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
+    def set(
         self,
         payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
-        name: str | None = None,
-        comment: str | None = None,
-        monitor_all_messages: str | None = None,
-        log_packet: str | None = None,
-        track_requests_answers: str | None = None,
-        missing_request_action: str | None = None,
-        protocol_version_invalid: str | None = None,
-        message_length_invalid: str | None = None,
-        request_error_flag_set: str | None = None,
-        cmd_flags_reserve_set: str | None = None,
-        command_code_invalid: str | None = None,
-        command_code_range: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Create or update diameter_filter/profile object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            name: Profile name. (optional)
-            comment: Comment. (optional)
-            monitor_all_messages: Enable/disable logging for all User Name and
-            Result Code AVP messages. (optional)
-            log_packet: Enable/disable packet log for triggered diameter
-            settings. (optional)
-            track_requests_answers: Enable/disable validation that each answer
-            has a corresponding request. (optional)
-            missing_request_action: Action to be taken for answers without
-            corresponding request. (optional)
-            protocol_version_invalid: Action to be taken for invalid protocol
-            version. (optional)
-            message_length_invalid: Action to be taken for invalid message
-            length. (optional)
-            request_error_flag_set: Action to be taken for request messages
-            with error flag set. (optional)
-            cmd_flags_reserve_set: Action to be taken for messages with cmd
-            flag reserve bits set. (optional)
-            command_code_invalid: Action to be taken for messages with invalid
-            command code. (optional)
-            command_code_range: Valid range for command codes (0-16777215).
-            (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            Dictionary containing API response
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.diameter_filter_profile.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.diameter_filter_profile.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/diameter-filter/profile"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if name is not None:
-            data_payload["name"] = name
-        if comment is not None:
-            data_payload["comment"] = comment
-        if monitor_all_messages is not None:
-            data_payload["monitor-all-messages"] = monitor_all_messages
-        if log_packet is not None:
-            data_payload["log-packet"] = log_packet
-        if track_requests_answers is not None:
-            data_payload["track-requests-answers"] = track_requests_answers
-        if missing_request_action is not None:
-            data_payload["missing-request-action"] = missing_request_action
-        if protocol_version_invalid is not None:
-            data_payload["protocol-version-invalid"] = protocol_version_invalid
-        if message_length_invalid is not None:
-            data_payload["message-length-invalid"] = message_length_invalid
-        if request_error_flag_set is not None:
-            data_payload["request-error-flag-set"] = request_error_flag_set
-        if cmd_flags_reserve_set is not None:
-            data_payload["cmd-flags-reserve-set"] = cmd_flags_reserve_set
-        if command_code_invalid is not None:
-            data_payload["command-code-invalid"] = command_code_invalid
-        if command_code_range is not None:
-            data_payload["command-code-range"] = command_code_range
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(Profile.help())
+            
+            >>> # Get field information
+            >>> print(Profile.help("name"))
+        """
+        from ._helpers.profile import (
+            get_schema_info,
+            get_field_metadata,
         )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = Profile.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = Profile.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.profile import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = Profile.field_info("name")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.profile import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = Profile.validate_field("name", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.profile import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = Profile.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.profile import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = Profile.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.profile import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = Profile.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.profile import get_schema_info
+
+        return get_schema_info()

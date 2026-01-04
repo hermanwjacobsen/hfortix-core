@@ -1,22 +1,20 @@
-"""FortiOS CMDB - Virtual-patch category"""
+"""FortiOS CMDB - VirtualPatch category"""
 
 from .profile import Profile
 
-__all__ = ["Profile"]
+__all__ = [
+    "Profile",
+    "VirtualPatch",
+]
 
 
 class VirtualPatch:
-    """
-    VirtualPatch category wrapper.
-
-    This class provides access to all virtual-patch CMDB endpoints.
-    """
+    """VirtualPatch endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize VirtualPatch with all endpoint classes.
-
+        """VirtualPatch endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.profile = Profile(client)

@@ -1,43 +1,26 @@
 """
-FortiOS CMDB - Cmdb Vpn Certificate Crl
+FortiOS CMDB - Vpn certificate_crl
 
-Configuration endpoint for managing cmdb vpn certificate crl objects.
+Configuration endpoint for managing cmdb vpn/certificate_crl objects.
 
 API Endpoints:
     GET    /cmdb/vpn/certificate_crl
     POST   /cmdb/vpn/certificate_crl
-    GET    /cmdb/vpn/certificate_crl
+    PUT    /cmdb/vpn/certificate_crl/{identifier}
+    DELETE /cmdb/vpn/certificate_crl/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.vpn.certificate_crl.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.vpn.certificate_crl.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.vpn.certificate_crl.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.vpn.certificate_crl.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.vpn.certificate_crl.delete(name="item_name")
+    >>> items = fgt.api.cmdb.vpn_certificate_crl.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -46,102 +29,94 @@ from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class CertificateCrl:
-    """
-    Certificatecrl Operations.
-
-    Provides CRUD operations for FortiOS certificatecrl configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """CertificateCrl Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize CertificateCrl endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize CertificateCrl endpoint."""
         self._client = client
 
     def get(
         self,
         name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve vpn/certificate_crl configuration.
+
+        Certificate Revocation List as a PEM file.
 
         Args:
-            name: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: String identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all vpn/certificate_crl objects
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific vpn/certificate_crl by name
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.get(name=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.vpn_certificate_crl.get(action="schema")
+
+        See Also:
+            - post(): Create new vpn/certificate_crl object
+            - put(): Update existing vpn/certificate_crl object
+            - delete(): Remove vpn/certificate_crl object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if name:
-            endpoint = f"/vpn.certificate/crl/{name}"
+            endpoint = "/vpn.certificate/crl/" + str(name)
         else:
             endpoint = "/vpn.certificate/crl"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
 
-    def post(
+    def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
         name: str | None = None,
         crl: str | None = None,
         range: str | None = None,
@@ -149,7 +124,7 @@ class CertificateCrl:
         update_vdom: str | None = None,
         ldap_server: str | None = None,
         ldap_username: str | None = None,
-        ldap_password: str | None = None,
+        ldap_password: Any | None = None,
         http_url: str | None = None,
         scep_url: str | None = None,
         scep_cert: str | None = None,
@@ -160,79 +135,534 @@ class CertificateCrl:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Update existing vpn/certificate_crl object.
+
+        Certificate Revocation List as a PEM file.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            name: Name. (optional)
-            crl: Certificate Revocation List as a PEM file. (optional)
+            payload_dict: Object data as dict. Must include name (primary key).
+            name: Name.
+            crl: Certificate Revocation List as a PEM file.
             range: Either global or VDOM IP address range for the certificate.
-            (optional)
-            source: Certificate source type. (optional)
-            update_vdom: VDOM for CRL update. (optional)
-            ldap_server: LDAP server name for CRL auto-update. (optional)
-            ldap_username: LDAP server user name. (optional)
-            ldap_password: LDAP server user password. (optional)
-            http_url: HTTP server URL for CRL auto-update. (optional)
-            scep_url: SCEP server URL for CRL auto-update. (optional)
-            scep_cert: Local certificate for SCEP communication for CRL
-            auto-update. (optional)
-            update_interval: Time in seconds before the FortiGate checks for an
-            updated CRL. Set to 0 to update only when it expires. (optional)
-            source_ip: Source IP address for communications to a HTTP or SCEP
-            CA server. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            source: Certificate source type.
+            update_vdom: VDOM for CRL update.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.put(
+            ...     name=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/vpn.certificate/crl"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if name is not None:
-            data_payload["name"] = name
-        if crl is not None:
-            data_payload["crl"] = crl
-        if range is not None:
-            data_payload["range"] = range
-        if source is not None:
-            data_payload["source"] = source
-        if update_vdom is not None:
-            data_payload["update-vdom"] = update_vdom
-        if ldap_server is not None:
-            data_payload["ldap-server"] = ldap_server
-        if ldap_username is not None:
-            data_payload["ldap-username"] = ldap_username
-        if ldap_password is not None:
-            data_payload["ldap-password"] = ldap_password
-        if http_url is not None:
-            data_payload["http-url"] = http_url
-        if scep_url is not None:
-            data_payload["scep-url"] = scep_url
-        if scep_cert is not None:
-            data_payload["scep-cert"] = scep_cert
-        if update_interval is not None:
-            data_payload["update-interval"] = update_interval
-        if source_ip is not None:
-            data_payload["source-ip"] = source_ip
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            crl=crl,
+            range=range,
+            source=source,
+            update_vdom=update_vdom,
+            ldap_server=ldap_server,
+            ldap_username=ldap_username,
+            ldap_password=ldap_password,
+            http_url=http_url,
+            scep_url=scep_url,
+            scep_cert=scep_cert,
+            update_interval=update_interval,
+            source_ip=source_ip,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.certificate_crl import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/vpn/certificate_crl",
+            )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = "/vpn.certificate/crl/" + str(name_value)
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        crl: str | None = None,
+        range: str | None = None,
+        source: str | None = None,
+        update_vdom: str | None = None,
+        ldap_server: str | None = None,
+        ldap_username: str | None = None,
+        ldap_password: Any | None = None,
+        http_url: str | None = None,
+        scep_url: str | None = None,
+        scep_cert: str | None = None,
+        update_interval: int | None = None,
+        source_ip: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new vpn/certificate_crl object.
+
+        Certificate Revocation List as a PEM file.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            name: Name.
+            crl: Certificate Revocation List as a PEM file.
+            range: Either global or VDOM IP address range for the certificate.
+            source: Certificate source type.
+            update_vdom: VDOM for CRL update.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned name.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created name: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = CertificateCrl.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(CertificateCrl.required_fields()) }}
+            
+            Use CertificateCrl.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            crl=crl,
+            range=range,
+            source=source,
+            update_vdom=update_vdom,
+            ldap_server=ldap_server,
+            ldap_username=ldap_username,
+            ldap_password=ldap_password,
+            http_url=http_url,
+            scep_url=scep_url,
+            scep_cert=scep_cert,
+            update_interval=update_interval,
+            source_ip=source_ip,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.certificate_crl import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/vpn/certificate_crl",
+            )
+
+        endpoint = "/vpn.certificate/crl"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete vpn/certificate_crl object.
+
+        Certificate Revocation List as a PEM file.
+
+        Args:
+            name: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.delete(name=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not name:
+            raise ValueError("name is required for DELETE")
+        endpoint = "/vpn.certificate/crl/" + str(name)
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if vpn/certificate_crl object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            name: Primary key identifier
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.vpn_certificate_crl.exists(name=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.vpn_certificate_crl.exists(name=1):
+            ...     fgt.api.cmdb.vpn_certificate_crl.delete(name=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update vpn/certificate_crl object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
+
+        Args:
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.vpn_certificate_crl.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.vpn_certificate_crl.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(CertificateCrl.help())
+            
+            >>> # Get field information
+            >>> print(CertificateCrl.help("name"))
+        """
+        from ._helpers.certificate_crl import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = CertificateCrl.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = CertificateCrl.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.certificate_crl import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = CertificateCrl.field_info("name")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.certificate_crl import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = CertificateCrl.validate_field("name", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.certificate_crl import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = CertificateCrl.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.certificate_crl import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = CertificateCrl.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.certificate_crl import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = CertificateCrl.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.certificate_crl import get_schema_info
+
+        return get_schema_info()

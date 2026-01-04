@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb System Ipv6 Neighbor Cache
+FortiOS CMDB - System ipv6_neighbor_cache
 
-Configuration endpoint for managing cmdb system ipv6 neighbor cache objects.
+Configuration endpoint for managing cmdb system/ipv6_neighbor_cache objects.
 
 API Endpoints:
     GET    /cmdb/system/ipv6_neighbor_cache
     POST   /cmdb/system/ipv6_neighbor_cache
-    GET    /cmdb/system/ipv6_neighbor_cache
     PUT    /cmdb/system/ipv6_neighbor_cache/{identifier}
     DELETE /cmdb/system/ipv6_neighbor_cache/{identifier}
 
@@ -15,129 +14,101 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.system.ipv6_neighbor_cache.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.system.ipv6_neighbor_cache.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.system.ipv6_neighbor_cache.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.system.ipv6_neighbor_cache.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result =
-    fgt.api.cmdb.system.ipv6_neighbor_cache.delete(name="item_name")
+    >>> items = fgt.api.cmdb.system_ipv6_neighbor_cache.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class Ipv6NeighborCache:
-    """
-    Ipv6Neighborcache Operations.
-
-    Provides CRUD operations for FortiOS ipv6neighborcache configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """Ipv6NeighborCache Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize Ipv6NeighborCache endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize Ipv6NeighborCache endpoint."""
         self._client = client
 
     def get(
         self,
-        id: str | None = None,
+        id: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve system/ipv6_neighbor_cache configuration.
+
+        Configure IPv6 neighbor cache table.
 
         Args:
-            id: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            id: Integer identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all system/ipv6_neighbor_cache objects
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific system/ipv6_neighbor_cache by id
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.get(id=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.system_ipv6_neighbor_cache.get(action="schema")
+
+        See Also:
+            - post(): Create new system/ipv6_neighbor_cache object
+            - put(): Update existing system/ipv6_neighbor_cache object
+            - delete(): Remove system/ipv6_neighbor_cache object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if id:
-            endpoint = f"/system/ipv6-neighbor-cache/{id}"
+            endpoint = "/system/ipv6-neighbor-cache/" + str(id)
         else:
             endpoint = "/system/ipv6-neighbor-cache"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -145,166 +116,7 @@ class Ipv6NeighborCache:
 
     def put(
         self,
-        id: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
-        interface: str | None = None,
-        ipv6: str | None = None,
-        mac: str | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Update this specific resource.
-
-        Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            id: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            id: Unique integer ID of the entry. (optional)
-            interface: Select the associated interface name from available
-            options. (optional)
-            ipv6: IPv6 address (format:
-            xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx). (optional)
-            mac: MAC address (format: xx:xx:xx:xx:xx:xx). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not id:
-            raise ValueError("id is required for put()")
-        endpoint = f"/system/ipv6-neighbor-cache/{id}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if id is not None:
-            data_payload["id"] = id
-        if interface is not None:
-            data_payload["interface"] = interface
-        if ipv6 is not None:
-            data_payload["ipv6"] = ipv6
-        if mac is not None:
-            data_payload["mac"] = mac
-        data_payload.update(kwargs)
-        return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
-        )
-
-    def delete(
-        self,
-        id: str | None = None,
-        payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Delete this specific resource.
-
-        Args:
-            id: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not id:
-            raise ValueError("id is required for delete()")
-        endpoint = f"/system/ipv6-neighbor-cache/{id}"
-        params.update(kwargs)
-        return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
-        )
-
-    def exists(
-        self,
-        id: str,
-        vdom: str | bool | None = None,
-    ) -> Union[bool, Coroutine[Any, Any, bool]]:
-        """
-        Check if an object exists.
-
-        Args:
-            id: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-
-        Returns:
-            True if object exists, False otherwise
-
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
-        """
-        import inspect
-
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(id=id, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
-        self,
-        payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
         id: int | None = None,
         interface: str | None = None,
         ipv6: str | None = None,
@@ -314,50 +126,505 @@ class Ipv6NeighborCache:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Update existing system/ipv6_neighbor_cache object.
+
+        Configure IPv6 neighbor cache table.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            id: Unique integer ID of the entry. (optional)
-            interface: Select the associated interface name from available
-            options. (optional)
-            ipv6: IPv6 address (format:
-            xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx). (optional)
-            mac: MAC address (format: xx:xx:xx:xx:xx:xx). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include id (primary key).
+            id: Unique integer ID of the entry.
+            interface: Select the associated interface name from available options.
+            ipv6: IPv6 address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).
+            mac: MAC address (format: xx:xx:xx:xx:xx:xx).
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If id is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.put(
+            ...     id=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "id": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/system/ipv6-neighbor-cache"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if id is not None:
-            data_payload["id"] = id
-        if interface is not None:
-            data_payload["interface"] = interface
-        if ipv6 is not None:
-            data_payload["ipv6"] = ipv6
-        if mac is not None:
-            data_payload["mac"] = mac
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            id=id,
+            interface=interface,
+            ipv6=ipv6,
+            mac=mac,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.ipv6_neighbor_cache import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/ipv6_neighbor_cache",
+            )
+        
+        id_value = payload_data.get("id")
+        if not id_value:
+            raise ValueError("id is required for PUT")
+        endpoint = "/system/ipv6-neighbor-cache/" + str(id_value)
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        id: int | None = None,
+        interface: str | None = None,
+        ipv6: str | None = None,
+        mac: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new system/ipv6_neighbor_cache object.
+
+        Configure IPv6 neighbor cache table.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            id: Unique integer ID of the entry.
+            interface: Select the associated interface name from available options.
+            ipv6: IPv6 address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).
+            mac: MAC address (format: xx:xx:xx:xx:xx:xx).
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned id.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created id: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = Ipv6NeighborCache.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Ipv6NeighborCache.required_fields()) }}
+            
+            Use Ipv6NeighborCache.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            id=id,
+            interface=interface,
+            ipv6=ipv6,
+            mac=mac,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.ipv6_neighbor_cache import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/ipv6_neighbor_cache",
+            )
+
+        endpoint = "/system/ipv6-neighbor-cache"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        id: int | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete system/ipv6_neighbor_cache object.
+
+        Configure IPv6 neighbor cache table.
+
+        Args:
+            id: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If id is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.delete(id=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not id:
+            raise ValueError("id is required for DELETE")
+        endpoint = "/system/ipv6-neighbor-cache/" + str(id)
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        id: int,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if system/ipv6_neighbor_cache object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            id: Primary key identifier
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.system_ipv6_neighbor_cache.exists(id=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.system_ipv6_neighbor_cache.exists(id=1):
+            ...     fgt.api.cmdb.system_ipv6_neighbor_cache.delete(id=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(id=id, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update system/ipv6_neighbor_cache object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (id) in the payload.
+
+        Args:
+            payload_dict: Resource data including id (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If id is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "id": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.system_ipv6_neighbor_cache.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.system_ipv6_neighbor_cache.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("id")
+        if not mkey_value:
+            raise ValueError("id is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(id=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(Ipv6NeighborCache.help())
+            
+            >>> # Get field information
+            >>> print(Ipv6NeighborCache.help("id"))
+        """
+        from ._helpers.ipv6_neighbor_cache import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = Ipv6NeighborCache.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = Ipv6NeighborCache.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.ipv6_neighbor_cache import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = Ipv6NeighborCache.field_info("id")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.ipv6_neighbor_cache import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = Ipv6NeighborCache.validate_field("id", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.ipv6_neighbor_cache import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = Ipv6NeighborCache.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.ipv6_neighbor_cache import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = Ipv6NeighborCache.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.ipv6_neighbor_cache import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = Ipv6NeighborCache.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.ipv6_neighbor_cache import get_schema_info
+
+        return get_schema_info()

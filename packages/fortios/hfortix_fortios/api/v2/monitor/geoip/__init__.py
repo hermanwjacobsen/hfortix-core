@@ -1,33 +1,27 @@
-"""
-FortiOS Monitor - Geoip
-GeoIP lookup operations
-"""
+"""FortiOS Monitor - Geoip category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["Geoip"]
+from .geoip_query.select import Select
 
-from .geoip_query import GeoipQuery
+class GeoipQueryEndpoints:
+    """Endpoints under geoip_query."""
+
+    def __init__(self, client):
+        self.select = Select(client)
 
 
 class Geoip:
-    """Geoip Monitor category class"""
+    """Geoip endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Geoip Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """Geoip endpoints."""
+        self.geoip_query = GeoipQueryEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.geoip_query = GeoipQuery(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["geoip_query"]
+__all__ = ["Geoip"]

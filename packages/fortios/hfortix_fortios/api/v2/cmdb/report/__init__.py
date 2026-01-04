@@ -3,22 +3,21 @@
 from .layout import Layout
 from .setting import Setting
 
-__all__ = ["Layout", "Setting"]
+__all__ = [
+    "Layout",
+    "Report",
+    "Setting",
+]
 
 
 class Report:
-    """
-    Report category wrapper.
-
-    This class provides access to all report CMDB endpoints.
-    """
+    """Report endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Report with all endpoint classes.
-
+        """Report endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.layout = Layout(client)
         self.setting = Setting(client)

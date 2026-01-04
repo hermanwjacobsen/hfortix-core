@@ -1,33 +1,27 @@
-"""
-FortiOS Monitor - Webproxy
-Web proxy monitoring
-"""
+"""FortiOS Monitor - Webproxy category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["Webproxy"]
+from .pacfile.upload import Upload
 
-from .pacfile import Pacfile
+class PacfileEndpoints:
+    """Endpoints under pacfile."""
+
+    def __init__(self, client):
+        self.upload = Upload(client)
 
 
 class Webproxy:
-    """Webproxy Monitor category class"""
+    """Webproxy endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Webproxy Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """Webproxy endpoints."""
+        self.pacfile = PacfileEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.pacfile = Pacfile(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["pacfile"]
+__all__ = ["Webproxy"]

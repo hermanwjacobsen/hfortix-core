@@ -1,33 +1,15 @@
-"""
-FortiOS Monitor - Videofilter
-Video filter monitoring
-"""
+"""Auto-generated category __init__ file."""
 
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-__all__ = ["Videofilter"]
-
 from .fortiguard_categories import FortiguardCategories
+
+if TYPE_CHECKING:
+    from hfortix_core.client import FortinetClient
 
 
 class Videofilter:
-    """Videofilter Monitor category class"""
+    """Container for {category_name} endpoints."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Videofilter Monitor category
-
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
-
-        # Initialize endpoints
+    def __init__(self, client: "FortinetClient"):
         self.fortiguard_categories = FortiguardCategories(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["fortiguard_categories"]

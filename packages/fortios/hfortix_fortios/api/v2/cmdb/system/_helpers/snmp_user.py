@@ -1,58 +1,192 @@
 """
-Validation helpers for system snmp_user endpoint.
+Validation helpers for system/snmp_user endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "auth-pwd",  # Password for authentication protocol.
-    "interface",  # Specify outgoing interface to reach server.
     "name",  # SNMP user name.
+    "auth-pwd",  # Password for authentication protocol.
     "priv-pwd",  # Password for privacy (encryption) protocol.
+    "interface",  # Specify outgoing interface to reach server.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "auth-proto": "sha",
-    "events": "cpu-high mem-low log-full intf-ip vpn-tun-up vpn-tun-down ha-switch ha-hb-failure ips-signature ips-anomaly av-virus av-oversize av-pattern av-fragmented fm-if-change bgp-established bgp-backward-transition ha-member-up ha-member-down ent-conf-change av-conserve av-bypass av-oversize-passed av-oversize-blocked ips-pkg-update ips-fail-open faz-disconnect faz wc-ap-up wc-ap-down fswctl-session-up fswctl-session-down load-balance-real-server-down per-cpu-high dhcp pool-usage ippool interface ospf-nbr-state-change ospf-virtnbr-state-change",
-    "ha-direct": "disable",
-    "interface-select-method": "auto",
-    "priv-proto": "aes",
-    "queries": "enable",
-    "query-port": 161,
-    "security-level": "no-auth-no-priv",
-    "source-ip": "0.0.0.0",
-    "source-ipv6": "::",
+    "name": "",
     "status": "enable",
+    "trap-status": "enable",
     "trap-lport": 162,
     "trap-rport": 162,
-    "trap-status": "enable",
+    "queries": "enable",
+    "query-port": 161,
+    "notify-hosts": "",
+    "notify-hosts6": "",
+    "source-ip": "0.0.0.0",
+    "source-ipv6": "::",
+    "ha-direct": "disable",
+    "events": "cpu-high mem-low log-full intf-ip vpn-tun-up vpn-tun-down ha-switch ha-hb-failure ips-signature ips-anomaly av-virus av-oversize av-pattern av-fragmented fm-if-change bgp-established bgp-backward-transition ha-member-up ha-member-down ent-conf-change av-conserve av-bypass av-oversize-passed av-oversize-blocked ips-pkg-update ips-fail-open faz-disconnect faz wc-ap-up wc-ap-down fswctl-session-up fswctl-session-down load-balance-real-server-down per-cpu-high dhcp pool-usage ippool interface ospf-nbr-state-change ospf-virtnbr-state-change",
+    "mib-view": "",
+    "security-level": "no-auth-no-priv",
+    "auth-proto": "sha",
+    "priv-proto": "aes",
+    "interface-select-method": "auto",
+    "interface": "",
+    "vrf-select": 0,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # SNMP user name.
+    "status": "option",  # Enable/disable this SNMP user.
+    "trap-status": "option",  # Enable/disable traps for this SNMP user.
+    "trap-lport": "integer",  # SNMPv3 local trap port (default = 162).
+    "trap-rport": "integer",  # SNMPv3 trap remote port (default = 162).
+    "queries": "option",  # Enable/disable SNMP queries for this user.
+    "query-port": "integer",  # SNMPv3 query port (default = 161).
+    "notify-hosts": "ipv4-address",  # SNMP managers to send notifications (traps) to.
+    "notify-hosts6": "ipv6-address",  # IPv6 SNMP managers to send notifications (traps) to.
+    "source-ip": "ipv4-address",  # Source IP for SNMP trap.
+    "source-ipv6": "ipv6-address",  # Source IPv6 for SNMP trap.
+    "ha-direct": "option",  # Enable/disable direct management of HA cluster members.
+    "events": "option",  # SNMP notifications (traps) to send.
+    "mib-view": "string",  # SNMP access control MIB view.
+    "vdoms": "string",  # SNMP access control VDOMs.
+    "security-level": "option",  # Security level for message authentication and encryption.
+    "auth-proto": "option",  # Authentication protocol.
+    "auth-pwd": "password",  # Password for authentication protocol.
+    "priv-proto": "option",  # Privacy (encryption) protocol.
+    "priv-pwd": "password",  # Password for privacy (encryption) protocol.
+    "interface-select-method": "option",  # Specify how to select outgoing interface to reach server.
+    "interface": "string",  # Specify outgoing interface to reach server.
+    "vrf-select": "integer",  # VRF ID used for connection to server.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "SNMP user name.",
+    "status": "Enable/disable this SNMP user.",
+    "trap-status": "Enable/disable traps for this SNMP user.",
+    "trap-lport": "SNMPv3 local trap port (default = 162).",
+    "trap-rport": "SNMPv3 trap remote port (default = 162).",
+    "queries": "Enable/disable SNMP queries for this user.",
+    "query-port": "SNMPv3 query port (default = 161).",
+    "notify-hosts": "SNMP managers to send notifications (traps) to.",
+    "notify-hosts6": "IPv6 SNMP managers to send notifications (traps) to.",
+    "source-ip": "Source IP for SNMP trap.",
+    "source-ipv6": "Source IPv6 for SNMP trap.",
+    "ha-direct": "Enable/disable direct management of HA cluster members.",
+    "events": "SNMP notifications (traps) to send.",
+    "mib-view": "SNMP access control MIB view.",
+    "vdoms": "SNMP access control VDOMs.",
+    "security-level": "Security level for message authentication and encryption.",
+    "auth-proto": "Authentication protocol.",
+    "auth-pwd": "Password for authentication protocol.",
+    "priv-proto": "Privacy (encryption) protocol.",
+    "priv-pwd": "Password for privacy (encryption) protocol.",
+    "interface-select-method": "Specify how to select outgoing interface to reach server.",
+    "interface": "Specify outgoing interface to reach server.",
+    "vrf-select": "VRF ID used for connection to server.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 32},
+    "trap-lport": {"type": "integer", "min": 1, "max": 65535},
+    "trap-rport": {"type": "integer", "min": 1, "max": 65535},
+    "query-port": {"type": "integer", "min": 1, "max": 65535},
+    "mib-view": {"type": "string", "max_length": 32},
+    "interface": {"type": "string", "max_length": 15},
+    "vrf-select": {"type": "integer", "min": 0, "max": 511},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "vdoms": {
+        "name": {
+            "type": "string",
+            "help": "VDOM name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_STATUS = ["enable", "disable"]
-VALID_BODY_TRAP_STATUS = ["enable", "disable"]
-VALID_BODY_QUERIES = ["enable", "disable"]
-VALID_BODY_HA_DIRECT = ["enable", "disable"]
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_TRAP_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_QUERIES = [
+    "enable",
+    "disable",
+]
+VALID_BODY_HA_DIRECT = [
+    "enable",
+    "disable",
+]
 VALID_BODY_EVENTS = [
     "cpu-high",
     "mem-low",
@@ -81,9 +215,6 @@ VALID_BODY_EVENTS = [
     "av-oversize-blocked",
     "ips-pkg-update",
     "ips-fail-open",
-    "temperature-high",
-    "voltage-alert",
-    "power-supply",
     "faz-disconnect",
     "faz",
     "wc-ap-up",
@@ -99,12 +230,31 @@ VALID_BODY_EVENTS = [
     "interface",
     "ospf-nbr-state-change",
     "ospf-virtnbr-state-change",
-    "bfd",
 ]
-VALID_BODY_SECURITY_LEVEL = ["no-auth-no-priv", "auth-no-priv", "auth-priv"]
-VALID_BODY_AUTH_PROTO = ["md5", "sha", "sha224", "sha256", "sha384", "sha512"]
-VALID_BODY_PRIV_PROTO = ["aes", "des", "aes256", "aes256cisco"]
-VALID_BODY_INTERFACE_SELECT_METHOD = ["auto", "sdwan", "specify"]
+VALID_BODY_SECURITY_LEVEL = [
+    "no-auth-no-priv",
+    "auth-no-priv",
+    "auth-priv",
+]
+VALID_BODY_AUTH_PROTO = [
+    "md5",
+    "sha",
+    "sha224",
+    "sha256",
+    "sha384",
+    "sha512",
+]
+VALID_BODY_PRIV_PROTO = [
+    "aes",
+    "des",
+    "aes256",
+    "aes256cisco",
+]
+VALID_BODY_INTERFACE_SELECT_METHOD = [
+    "auto",
+    "sdwan",
+    "specify",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -112,13 +262,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_snmp_user_get(
+def validate_system_snmp_user_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for system/snmp_user.
 
     Args:
         attr: Attribute filter (optional)
@@ -128,9 +278,20 @@ def validate_snmp_user_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_system_snmp_user_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_system_snmp_user_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_system_snmp_user_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -151,7 +312,7 @@ def validate_snmp_user_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for system_snmp_user.
+    Validate required fields for system/snmp_user.
 
     This validator checks:
     1. Always-required fields are present
@@ -164,217 +325,178 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "auth-pwd": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_snmp_user_post(
-    payload: dict[str, Any],
+def validate_system_snmp_user_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new system/snmp_user object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - auth-pwd: Password for authentication protocol.
-      - interface: Specify outgoing interface to reach server.
-      - name: SNMP user name.
-      - priv-pwd: Password for privacy (encryption) protocol.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "name": True,  # SNMP user name.
+        ...     "auth-pwd": True,  # Password for authentication protocol.
+        ... }
+        >>> is_valid, error = validate_system_snmp_user_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "name": True,
+        ...     "status": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_system_snmp_user_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["status"] = "invalid-value"
+        >>> is_valid, error = validate_system_snmp_user_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_system_snmp_user_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "name cannot exceed 32 characters")
-
-    # Validate status if present
+    # Step 2: Validate enum values
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
-            return (
-                False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
-            )
-
-    # Validate trap-status if present
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
     if "trap-status" in payload:
-        value = payload.get("trap-status")
-        if value and value not in VALID_BODY_TRAP_STATUS:
-            return (
-                False,
-                f"Invalid trap-status '{value}'. Must be one of: {', '.join(VALID_BODY_TRAP_STATUS)}",
-            )
-
-    # Validate trap-lport if present
-    if "trap-lport" in payload:
-        value = payload.get("trap-lport")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "trap-lport must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"trap-lport must be numeric, got: {value}")
-
-    # Validate trap-rport if present
-    if "trap-rport" in payload:
-        value = payload.get("trap-rport")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "trap-rport must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"trap-rport must be numeric, got: {value}")
-
-    # Validate queries if present
+        value = payload["trap-status"]
+        if value not in VALID_BODY_TRAP_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("trap-status", "")
+            error_msg = f"Invalid value for 'trap-status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TRAP_STATUS)}"
+            error_msg += f"\n  → Example: trap-status='{{ VALID_BODY_TRAP_STATUS[0] }}'"
+            return (False, error_msg)
     if "queries" in payload:
-        value = payload.get("queries")
-        if value and value not in VALID_BODY_QUERIES:
-            return (
-                False,
-                f"Invalid queries '{value}'. Must be one of: {', '.join(VALID_BODY_QUERIES)}",
-            )
-
-    # Validate query-port if present
-    if "query-port" in payload:
-        value = payload.get("query-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "query-port must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"query-port must be numeric, got: {value}")
-
-    # Validate ha-direct if present
+        value = payload["queries"]
+        if value not in VALID_BODY_QUERIES:
+            desc = FIELD_DESCRIPTIONS.get("queries", "")
+            error_msg = f"Invalid value for 'queries': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_QUERIES)}"
+            error_msg += f"\n  → Example: queries='{{ VALID_BODY_QUERIES[0] }}'"
+            return (False, error_msg)
     if "ha-direct" in payload:
-        value = payload.get("ha-direct")
-        if value and value not in VALID_BODY_HA_DIRECT:
-            return (
-                False,
-                f"Invalid ha-direct '{value}'. Must be one of: {', '.join(VALID_BODY_HA_DIRECT)}",
-            )
-
-    # Validate events if present
+        value = payload["ha-direct"]
+        if value not in VALID_BODY_HA_DIRECT:
+            desc = FIELD_DESCRIPTIONS.get("ha-direct", "")
+            error_msg = f"Invalid value for 'ha-direct': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HA_DIRECT)}"
+            error_msg += f"\n  → Example: ha-direct='{{ VALID_BODY_HA_DIRECT[0] }}'"
+            return (False, error_msg)
     if "events" in payload:
-        value = payload.get("events")
-        if value and value not in VALID_BODY_EVENTS:
-            return (
-                False,
-                f"Invalid events '{value}'. Must be one of: {', '.join(VALID_BODY_EVENTS)}",
-            )
-
-    # Validate mib-view if present
-    if "mib-view" in payload:
-        value = payload.get("mib-view")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "mib-view cannot exceed 32 characters")
-
-    # Validate security-level if present
+        value = payload["events"]
+        if value not in VALID_BODY_EVENTS:
+            desc = FIELD_DESCRIPTIONS.get("events", "")
+            error_msg = f"Invalid value for 'events': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EVENTS)}"
+            error_msg += f"\n  → Example: events='{{ VALID_BODY_EVENTS[0] }}'"
+            return (False, error_msg)
     if "security-level" in payload:
-        value = payload.get("security-level")
-        if value and value not in VALID_BODY_SECURITY_LEVEL:
-            return (
-                False,
-                f"Invalid security-level '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_LEVEL)}",
-            )
-
-    # Validate auth-proto if present
+        value = payload["security-level"]
+        if value not in VALID_BODY_SECURITY_LEVEL:
+            desc = FIELD_DESCRIPTIONS.get("security-level", "")
+            error_msg = f"Invalid value for 'security-level': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SECURITY_LEVEL)}"
+            error_msg += f"\n  → Example: security-level='{{ VALID_BODY_SECURITY_LEVEL[0] }}'"
+            return (False, error_msg)
     if "auth-proto" in payload:
-        value = payload.get("auth-proto")
-        if value and value not in VALID_BODY_AUTH_PROTO:
-            return (
-                False,
-                f"Invalid auth-proto '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_PROTO)}",
-            )
-
-    # Validate priv-proto if present
+        value = payload["auth-proto"]
+        if value not in VALID_BODY_AUTH_PROTO:
+            desc = FIELD_DESCRIPTIONS.get("auth-proto", "")
+            error_msg = f"Invalid value for 'auth-proto': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AUTH_PROTO)}"
+            error_msg += f"\n  → Example: auth-proto='{{ VALID_BODY_AUTH_PROTO[0] }}'"
+            return (False, error_msg)
     if "priv-proto" in payload:
-        value = payload.get("priv-proto")
-        if value and value not in VALID_BODY_PRIV_PROTO:
-            return (
-                False,
-                f"Invalid priv-proto '{value}'. Must be one of: {', '.join(VALID_BODY_PRIV_PROTO)}",
-            )
-
-    # Validate interface-select-method if present
+        value = payload["priv-proto"]
+        if value not in VALID_BODY_PRIV_PROTO:
+            desc = FIELD_DESCRIPTIONS.get("priv-proto", "")
+            error_msg = f"Invalid value for 'priv-proto': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PRIV_PROTO)}"
+            error_msg += f"\n  → Example: priv-proto='{{ VALID_BODY_PRIV_PROTO[0] }}'"
+            return (False, error_msg)
     if "interface-select-method" in payload:
-        value = payload.get("interface-select-method")
-        if value and value not in VALID_BODY_INTERFACE_SELECT_METHOD:
-            return (
-                False,
-                f"Invalid interface-select-method '{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
-            )
-
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "interface cannot exceed 15 characters")
-
-    # Validate vrf-select if present
-    if "vrf-select" in payload:
-        value = payload.get("vrf-select")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 511:
-                    return (False, "vrf-select must be between 0 and 511")
-            except (ValueError, TypeError):
-                return (False, f"vrf-select must be numeric, got: {value}")
+        value = payload["interface-select-method"]
+        if value not in VALID_BODY_INTERFACE_SELECT_METHOD:
+            desc = FIELD_DESCRIPTIONS.get("interface-select-method", "")
+            error_msg = f"Invalid value for 'interface-select-method': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERFACE_SELECT_METHOD)}"
+            error_msg += f"\n  → Example: interface-select-method='{{ VALID_BODY_INTERFACE_SELECT_METHOD[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -384,191 +506,389 @@ def validate_snmp_user_post(
 # ============================================================================
 
 
-def validate_snmp_user_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_system_snmp_user_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update system/snmp_user.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_system_snmp_user_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "name cannot exceed 32 characters")
-
-    # Validate status if present
+    # Step 1: Validate enum values
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
             return (
                 False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
             )
-
-    # Validate trap-status if present
     if "trap-status" in payload:
-        value = payload.get("trap-status")
-        if value and value not in VALID_BODY_TRAP_STATUS:
+        value = payload["trap-status"]
+        if value not in VALID_BODY_TRAP_STATUS:
             return (
                 False,
-                f"Invalid trap-status '{value}'. Must be one of: {', '.join(VALID_BODY_TRAP_STATUS)}",
+                f"Invalid value for 'trap-status'='{value}'. Must be one of: {', '.join(VALID_BODY_TRAP_STATUS)}",
             )
-
-    # Validate trap-lport if present
-    if "trap-lport" in payload:
-        value = payload.get("trap-lport")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "trap-lport must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"trap-lport must be numeric, got: {value}")
-
-    # Validate trap-rport if present
-    if "trap-rport" in payload:
-        value = payload.get("trap-rport")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "trap-rport must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"trap-rport must be numeric, got: {value}")
-
-    # Validate queries if present
     if "queries" in payload:
-        value = payload.get("queries")
-        if value and value not in VALID_BODY_QUERIES:
+        value = payload["queries"]
+        if value not in VALID_BODY_QUERIES:
             return (
                 False,
-                f"Invalid queries '{value}'. Must be one of: {', '.join(VALID_BODY_QUERIES)}",
+                f"Invalid value for 'queries'='{value}'. Must be one of: {', '.join(VALID_BODY_QUERIES)}",
             )
-
-    # Validate query-port if present
-    if "query-port" in payload:
-        value = payload.get("query-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "query-port must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"query-port must be numeric, got: {value}")
-
-    # Validate ha-direct if present
     if "ha-direct" in payload:
-        value = payload.get("ha-direct")
-        if value and value not in VALID_BODY_HA_DIRECT:
+        value = payload["ha-direct"]
+        if value not in VALID_BODY_HA_DIRECT:
             return (
                 False,
-                f"Invalid ha-direct '{value}'. Must be one of: {', '.join(VALID_BODY_HA_DIRECT)}",
+                f"Invalid value for 'ha-direct'='{value}'. Must be one of: {', '.join(VALID_BODY_HA_DIRECT)}",
             )
-
-    # Validate events if present
     if "events" in payload:
-        value = payload.get("events")
-        if value and value not in VALID_BODY_EVENTS:
+        value = payload["events"]
+        if value not in VALID_BODY_EVENTS:
             return (
                 False,
-                f"Invalid events '{value}'. Must be one of: {', '.join(VALID_BODY_EVENTS)}",
+                f"Invalid value for 'events'='{value}'. Must be one of: {', '.join(VALID_BODY_EVENTS)}",
             )
-
-    # Validate mib-view if present
-    if "mib-view" in payload:
-        value = payload.get("mib-view")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "mib-view cannot exceed 32 characters")
-
-    # Validate security-level if present
     if "security-level" in payload:
-        value = payload.get("security-level")
-        if value and value not in VALID_BODY_SECURITY_LEVEL:
+        value = payload["security-level"]
+        if value not in VALID_BODY_SECURITY_LEVEL:
             return (
                 False,
-                f"Invalid security-level '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_LEVEL)}",
+                f"Invalid value for 'security-level'='{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_LEVEL)}",
             )
-
-    # Validate auth-proto if present
     if "auth-proto" in payload:
-        value = payload.get("auth-proto")
-        if value and value not in VALID_BODY_AUTH_PROTO:
+        value = payload["auth-proto"]
+        if value not in VALID_BODY_AUTH_PROTO:
             return (
                 False,
-                f"Invalid auth-proto '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_PROTO)}",
+                f"Invalid value for 'auth-proto'='{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_PROTO)}",
             )
-
-    # Validate priv-proto if present
     if "priv-proto" in payload:
-        value = payload.get("priv-proto")
-        if value and value not in VALID_BODY_PRIV_PROTO:
+        value = payload["priv-proto"]
+        if value not in VALID_BODY_PRIV_PROTO:
             return (
                 False,
-                f"Invalid priv-proto '{value}'. Must be one of: {', '.join(VALID_BODY_PRIV_PROTO)}",
+                f"Invalid value for 'priv-proto'='{value}'. Must be one of: {', '.join(VALID_BODY_PRIV_PROTO)}",
             )
-
-    # Validate interface-select-method if present
     if "interface-select-method" in payload:
-        value = payload.get("interface-select-method")
-        if value and value not in VALID_BODY_INTERFACE_SELECT_METHOD:
+        value = payload["interface-select-method"]
+        if value not in VALID_BODY_INTERFACE_SELECT_METHOD:
             return (
                 False,
-                f"Invalid interface-select-method '{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
+                f"Invalid value for 'interface-select-method'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERFACE_SELECT_METHOD)}",
             )
-
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "interface cannot exceed 15 characters")
-
-    # Validate vrf-select if present
-    if "vrf-select" in payload:
-        value = payload.get("vrf-select")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 511:
-                    return (False, "vrf-select must be between 0 and 511")
-            except (ValueError, TypeError):
-                return (False, f"vrf-select must be numeric, got: {value}")
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_snmp_user_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "system/snmp_user",
+    "category": "cmdb",
+    "api_path": "system.snmp/user",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "SNMP user configuration.",
+    "total_fields": 23,
+    "required_fields_count": 4,
+    "fields_with_defaults_count": 20,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

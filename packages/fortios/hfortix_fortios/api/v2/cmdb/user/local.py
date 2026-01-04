@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb User Local
+FortiOS CMDB - User local
 
-Configuration endpoint for managing cmdb user local objects.
+Configuration endpoint for managing cmdb user/local objects.
 
 API Endpoints:
     GET    /cmdb/user/local
     POST   /cmdb/user/local
-    GET    /cmdb/user/local
     PUT    /cmdb/user/local/{identifier}
     DELETE /cmdb/user/local/{identifier}
 
@@ -15,128 +14,101 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.user.local.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.user.local.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.user.local.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.user.local.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.user.local.delete(name="item_name")
+    >>> items = fgt.api.cmdb.user_local.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class Local:
-    """
-    Local Operations.
-
-    Provides CRUD operations for FortiOS local configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """Local Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize Local endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize Local endpoint."""
         self._client = client
 
     def get(
         self,
         name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve user/local configuration.
+
+        Configure local users.
 
         Args:
-            name: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: String identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all user/local objects
+            >>> result = fgt.api.cmdb.user_local.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific user/local by name
+            >>> result = fgt.api.cmdb.user_local.get(name=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.user_local.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.user_local.get(action="schema")
+
+        See Also:
+            - post(): Create new user/local object
+            - put(): Update existing user/local object
+            - delete(): Remove user/local object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if name:
-            endpoint = f"/user/local/{name}"
+            endpoint = "/user/local/" + str(name)
         else:
             endpoint = "/user/local"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,17 +116,15 @@ class Local:
 
     def put(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
+        name: str | None = None,
         id: int | None = None,
         status: str | None = None,
         type: str | None = None,
-        passwd: str | None = None,
+        passwd: Any | None = None,
         ldap_server: str | None = None,
         radius_server: str | None = None,
-        tacacs_plus__server: str | None = None,
+        tacacs_plus_server: str | None = None,
         saml_server: str | None = None,
         two_factor: str | None = None,
         two_factor_authentication: str | None = None,
@@ -170,7 +140,7 @@ class Local:
         workstation: str | None = None,
         auth_concurrent_override: str | None = None,
         auth_concurrent_value: int | None = None,
-        ppk_secret: str | None = None,
+        ppk_secret: Any | None = None,
         ppk_identity: str | None = None,
         qkd_profile: str | None = None,
         username_sensitivity: str | None = None,
@@ -179,190 +149,263 @@ class Local:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing user/local object.
+
+        Configure local users.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            name: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            name: Local user name. (optional)
-            id: User ID. (optional)
-            status: Enable/disable allowing the local user to authenticate with
-            the FortiGate unit. (optional)
-            type: Authentication method. (optional)
-            passwd: User's password. (optional)
-            ldap_server: Name of LDAP server with which the user must
-            authenticate. (optional)
-            radius_server: Name of RADIUS server with which the user must
-            authenticate. (optional)
-            tacacs_plus__server: Name of TACACS+ server with which the user
-            must authenticate. (optional)
-            saml_server: Name of SAML server with which the user must
-            authenticate. (optional)
-            two_factor: Enable/disable two-factor authentication. (optional)
-            two_factor_authentication: Authentication method by FortiToken
-            Cloud. (optional)
-            two_factor_notification: Notification method for user activation by
-            FortiToken Cloud. (optional)
-            fortitoken: Two-factor recipient's FortiToken serial number.
-            (optional)
-            email_to: Two-factor recipient's email address. (optional)
-            sms_server: Send SMS through FortiGuard or other external server.
-            (optional)
-            sms_custom_server: Two-factor recipient's SMS server. (optional)
-            sms_phone: Two-factor recipient's mobile phone number. (optional)
-            passwd_policy: Password policy to apply to this user, as defined in
-            config user password-policy. (optional)
-            passwd_time: Time of the last password update. (optional)
-            authtimeout: Time in minutes before the authentication timeout for
-            a user is reached. (optional)
-            workstation: Name of the remote user workstation, if you want to
-            limit the user to authenticate only from a particular workstation.
-            (optional)
-            auth_concurrent_override: Enable/disable overriding the
-            policy-auth-concurrent under config system global. (optional)
-            auth_concurrent_value: Maximum number of concurrent logins
-            permitted from the same user. (optional)
-            ppk_secret: IKEv2 Postquantum Preshared Key (ASCII string or
-            hexadecimal encoded with a leading 0x). (optional)
-            ppk_identity: IKEv2 Postquantum Preshared Key Identity. (optional)
-            qkd_profile: Quantum Key Distribution (QKD) profile. (optional)
-            username_sensitivity: Enable/disable case and accent sensitivity
-            when performing username matching (accents are stripped and case is
-            ignored when disabled). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include name (primary key).
+            name: Local user name.
+            id: User ID.
+            status: Enable/disable allowing the local user to authenticate with the FortiGate unit.
+            type: Authentication method.
+            passwd: User's password.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
+            API response dict
 
-        # Build endpoint path
-        if not name:
-            raise ValueError("name is required for put()")
-        endpoint = f"/user/local/{name}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if name is not None:
-            data_payload["name"] = name
-        if id is not None:
-            data_payload["id"] = id
-        if status is not None:
-            data_payload["status"] = status
-        if type is not None:
-            data_payload["type"] = type
-        if passwd is not None:
-            data_payload["passwd"] = passwd
-        if ldap_server is not None:
-            data_payload["ldap-server"] = ldap_server
-        if radius_server is not None:
-            data_payload["radius-server"] = radius_server
-        if tacacs_plus__server is not None:
-            data_payload["tacacs+-server"] = tacacs_plus__server
-        if saml_server is not None:
-            data_payload["saml-server"] = saml_server
-        if two_factor is not None:
-            data_payload["two-factor"] = two_factor
-        if two_factor_authentication is not None:
-            data_payload["two-factor-authentication"] = (
-                two_factor_authentication
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.user_local.put(
+            ...     name=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.user_local.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            id=id,
+            status=status,
+            type=type,
+            passwd=passwd,
+            ldap_server=ldap_server,
+            radius_server=radius_server,
+            tacacs_plus_server=tacacs_plus_server,
+            saml_server=saml_server,
+            two_factor=two_factor,
+            two_factor_authentication=two_factor_authentication,
+            two_factor_notification=two_factor_notification,
+            fortitoken=fortitoken,
+            email_to=email_to,
+            sms_server=sms_server,
+            sms_custom_server=sms_custom_server,
+            sms_phone=sms_phone,
+            passwd_policy=passwd_policy,
+            passwd_time=passwd_time,
+            authtimeout=authtimeout,
+            workstation=workstation,
+            auth_concurrent_override=auth_concurrent_override,
+            auth_concurrent_value=auth_concurrent_value,
+            ppk_secret=ppk_secret,
+            ppk_identity=ppk_identity,
+            qkd_profile=qkd_profile,
+            username_sensitivity=username_sensitivity,
+            data=payload_dict,
+        )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.local import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/user/local",
             )
-        if two_factor_notification is not None:
-            data_payload["two-factor-notification"] = two_factor_notification
-        if fortitoken is not None:
-            data_payload["fortitoken"] = fortitoken
-        if email_to is not None:
-            data_payload["email-to"] = email_to
-        if sms_server is not None:
-            data_payload["sms-server"] = sms_server
-        if sms_custom_server is not None:
-            data_payload["sms-custom-server"] = sms_custom_server
-        if sms_phone is not None:
-            data_payload["sms-phone"] = sms_phone
-        if passwd_policy is not None:
-            data_payload["passwd-policy"] = passwd_policy
-        if passwd_time is not None:
-            data_payload["passwd-time"] = passwd_time
-        if authtimeout is not None:
-            data_payload["authtimeout"] = authtimeout
-        if workstation is not None:
-            data_payload["workstation"] = workstation
-        if auth_concurrent_override is not None:
-            data_payload["auth-concurrent-override"] = auth_concurrent_override
-        if auth_concurrent_value is not None:
-            data_payload["auth-concurrent-value"] = auth_concurrent_value
-        if ppk_secret is not None:
-            data_payload["ppk-secret"] = ppk_secret
-        if ppk_identity is not None:
-            data_payload["ppk-identity"] = ppk_identity
-        if qkd_profile is not None:
-            data_payload["qkd-profile"] = qkd_profile
-        if username_sensitivity is not None:
-            data_payload["username-sensitivity"] = username_sensitivity
-        data_payload.update(kwargs)
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = "/user/local/" + str(name_value)
+
         return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
-    def delete(
+    def post(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        id: int | None = None,
+        status: str | None = None,
+        type: str | None = None,
+        passwd: Any | None = None,
+        ldap_server: str | None = None,
+        radius_server: str | None = None,
+        tacacs_plus_server: str | None = None,
+        saml_server: str | None = None,
+        two_factor: str | None = None,
+        two_factor_authentication: str | None = None,
+        two_factor_notification: str | None = None,
+        fortitoken: str | None = None,
+        email_to: str | None = None,
+        sms_server: str | None = None,
+        sms_custom_server: str | None = None,
+        sms_phone: str | None = None,
+        passwd_policy: str | None = None,
+        passwd_time: str | None = None,
+        authtimeout: int | None = None,
+        workstation: str | None = None,
+        auth_concurrent_override: str | None = None,
+        auth_concurrent_value: int | None = None,
+        ppk_secret: Any | None = None,
+        ppk_identity: str | None = None,
+        qkd_profile: str | None = None,
+        username_sensitivity: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Delete this specific resource.
+        Create new user/local object.
+
+        Configure local users.
 
         Args:
-            name: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            name: Local user name.
+            id: User ID.
+            status: Enable/disable allowing the local user to authenticate with the FortiGate unit.
+            type: Authentication method.
+            passwd: User's password.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
+            API response dict containing created object with assigned name.
 
-        # Build endpoint path
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.user_local.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created name: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = Local.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.user_local.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Local.required_fields()) }}
+            
+            Use Local.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            id=id,
+            status=status,
+            type=type,
+            passwd=passwd,
+            ldap_server=ldap_server,
+            radius_server=radius_server,
+            tacacs_plus_server=tacacs_plus_server,
+            saml_server=saml_server,
+            two_factor=two_factor,
+            two_factor_authentication=two_factor_authentication,
+            two_factor_notification=two_factor_notification,
+            fortitoken=fortitoken,
+            email_to=email_to,
+            sms_server=sms_server,
+            sms_custom_server=sms_custom_server,
+            sms_phone=sms_phone,
+            passwd_policy=passwd_policy,
+            passwd_time=passwd_time,
+            authtimeout=authtimeout,
+            workstation=workstation,
+            auth_concurrent_override=auth_concurrent_override,
+            auth_concurrent_value=auth_concurrent_value,
+            ppk_secret=ppk_secret,
+            ppk_identity=ppk_identity,
+            qkd_profile=qkd_profile,
+            username_sensitivity=username_sensitivity,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.local import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/user/local",
+            )
+
+        endpoint = "/user/local"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete user/local object.
+
+        Configure local users.
+
+        Args:
+            name: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.user_local.delete(name=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
         if not name:
-            raise ValueError("name is required for delete()")
-        endpoint = f"/user/local/{name}"
-        params.update(kwargs)
+            raise ValueError("name is required for DELETE")
+        endpoint = "/user/local/" + str(name)
+
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
     def exists(
@@ -371,212 +414,311 @@ class Local:
         vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
-        Check if an object exists.
+        Check if user/local object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
 
         Args:
-            name: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
+            name: Primary key identifier
+            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
 
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.user_local.exists(name=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.user_local.exists(name=1):
+            ...     fgt.api.cmdb.user_local.delete(name=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
         """
-        import inspect
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
 
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(name=name, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
+    def set(
         self,
         payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
-        name: str | None = None,
-        id: int | None = None,
-        status: str | None = None,
-        type: str | None = None,
-        passwd: str | None = None,
-        ldap_server: str | None = None,
-        radius_server: str | None = None,
-        tacacs_plus__server: str | None = None,
-        saml_server: str | None = None,
-        two_factor: str | None = None,
-        two_factor_authentication: str | None = None,
-        two_factor_notification: str | None = None,
-        fortitoken: str | None = None,
-        email_to: str | None = None,
-        sms_server: str | None = None,
-        sms_custom_server: str | None = None,
-        sms_phone: str | None = None,
-        passwd_policy: str | None = None,
-        passwd_time: str | None = None,
-        authtimeout: int | None = None,
-        workstation: str | None = None,
-        auth_concurrent_override: str | None = None,
-        auth_concurrent_value: int | None = None,
-        ppk_secret: str | None = None,
-        ppk_identity: str | None = None,
-        qkd_profile: str | None = None,
-        username_sensitivity: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Create or update user/local object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            name: Local user name. (optional)
-            id: User ID. (optional)
-            status: Enable/disable allowing the local user to authenticate with
-            the FortiGate unit. (optional)
-            type: Authentication method. (optional)
-            passwd: User's password. (optional)
-            ldap_server: Name of LDAP server with which the user must
-            authenticate. (optional)
-            radius_server: Name of RADIUS server with which the user must
-            authenticate. (optional)
-            tacacs_plus__server: Name of TACACS+ server with which the user
-            must authenticate. (optional)
-            saml_server: Name of SAML server with which the user must
-            authenticate. (optional)
-            two_factor: Enable/disable two-factor authentication. (optional)
-            two_factor_authentication: Authentication method by FortiToken
-            Cloud. (optional)
-            two_factor_notification: Notification method for user activation by
-            FortiToken Cloud. (optional)
-            fortitoken: Two-factor recipient's FortiToken serial number.
-            (optional)
-            email_to: Two-factor recipient's email address. (optional)
-            sms_server: Send SMS through FortiGuard or other external server.
-            (optional)
-            sms_custom_server: Two-factor recipient's SMS server. (optional)
-            sms_phone: Two-factor recipient's mobile phone number. (optional)
-            passwd_policy: Password policy to apply to this user, as defined in
-            config user password-policy. (optional)
-            passwd_time: Time of the last password update. (optional)
-            authtimeout: Time in minutes before the authentication timeout for
-            a user is reached. (optional)
-            workstation: Name of the remote user workstation, if you want to
-            limit the user to authenticate only from a particular workstation.
-            (optional)
-            auth_concurrent_override: Enable/disable overriding the
-            policy-auth-concurrent under config system global. (optional)
-            auth_concurrent_value: Maximum number of concurrent logins
-            permitted from the same user. (optional)
-            ppk_secret: IKEv2 Postquantum Preshared Key (ASCII string or
-            hexadecimal encoded with a leading 0x). (optional)
-            ppk_identity: IKEv2 Postquantum Preshared Key Identity. (optional)
-            qkd_profile: Quantum Key Distribution (QKD) profile. (optional)
-            username_sensitivity: Enable/disable case and accent sensitivity
-            when performing username matching (accents are stripped and case is
-            ignored when disabled). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            Dictionary containing API response
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.user_local.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.user_local.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/user/local"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if name is not None:
-            data_payload["name"] = name
-        if id is not None:
-            data_payload["id"] = id
-        if status is not None:
-            data_payload["status"] = status
-        if type is not None:
-            data_payload["type"] = type
-        if passwd is not None:
-            data_payload["passwd"] = passwd
-        if ldap_server is not None:
-            data_payload["ldap-server"] = ldap_server
-        if radius_server is not None:
-            data_payload["radius-server"] = radius_server
-        if tacacs_plus__server is not None:
-            data_payload["tacacs+-server"] = tacacs_plus__server
-        if saml_server is not None:
-            data_payload["saml-server"] = saml_server
-        if two_factor is not None:
-            data_payload["two-factor"] = two_factor
-        if two_factor_authentication is not None:
-            data_payload["two-factor-authentication"] = (
-                two_factor_authentication
-            )
-        if two_factor_notification is not None:
-            data_payload["two-factor-notification"] = two_factor_notification
-        if fortitoken is not None:
-            data_payload["fortitoken"] = fortitoken
-        if email_to is not None:
-            data_payload["email-to"] = email_to
-        if sms_server is not None:
-            data_payload["sms-server"] = sms_server
-        if sms_custom_server is not None:
-            data_payload["sms-custom-server"] = sms_custom_server
-        if sms_phone is not None:
-            data_payload["sms-phone"] = sms_phone
-        if passwd_policy is not None:
-            data_payload["passwd-policy"] = passwd_policy
-        if passwd_time is not None:
-            data_payload["passwd-time"] = passwd_time
-        if authtimeout is not None:
-            data_payload["authtimeout"] = authtimeout
-        if workstation is not None:
-            data_payload["workstation"] = workstation
-        if auth_concurrent_override is not None:
-            data_payload["auth-concurrent-override"] = auth_concurrent_override
-        if auth_concurrent_value is not None:
-            data_payload["auth-concurrent-value"] = auth_concurrent_value
-        if ppk_secret is not None:
-            data_payload["ppk-secret"] = ppk_secret
-        if ppk_identity is not None:
-            data_payload["ppk-identity"] = ppk_identity
-        if qkd_profile is not None:
-            data_payload["qkd-profile"] = qkd_profile
-        if username_sensitivity is not None:
-            data_payload["username-sensitivity"] = username_sensitivity
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(Local.help())
+            
+            >>> # Get field information
+            >>> print(Local.help("name"))
+        """
+        from ._helpers.local import (
+            get_schema_info,
+            get_field_metadata,
         )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = Local.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = Local.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.local import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = Local.field_info("name")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.local import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = Local.validate_field("name", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.local import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = Local.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.local import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = Local.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.local import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = Local.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.local import get_schema_info
+
+        return get_schema_info()

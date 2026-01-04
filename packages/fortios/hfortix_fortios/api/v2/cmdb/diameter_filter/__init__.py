@@ -1,22 +1,20 @@
-"""FortiOS CMDB - Diameter-filter category"""
+"""FortiOS CMDB - DiameterFilter category"""
 
 from .profile import Profile
 
-__all__ = ["Profile"]
+__all__ = [
+    "DiameterFilter",
+    "Profile",
+]
 
 
 class DiameterFilter:
-    """
-    DiameterFilter category wrapper.
-
-    This class provides access to all diameter-filter CMDB endpoints.
-    """
+    """DiameterFilter endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize DiameterFilter with all endpoint classes.
-
+        """DiameterFilter endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.profile = Profile(client)

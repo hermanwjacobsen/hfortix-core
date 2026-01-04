@@ -1,44 +1,2745 @@
 """
-Validation helpers for router bgp endpoint.
+Validation helpers for router/bgp endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
+
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema
+# ============================================================================
+
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
+
+# Fields marked as required (after filtering false positives)
+REQUIRED_FIELDS = [
+    "as",  # Router AS number, asplain/asdot/asdot+ format, 0 to disable BGP.
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "as": "",
+    "router-id": "",
+    "keepalive-timer": 60,
+    "holdtime-timer": 180,
+    "always-compare-med": "disable",
+    "bestpath-as-path-ignore": "disable",
+    "bestpath-cmp-confed-aspath": "disable",
+    "bestpath-cmp-routerid": "disable",
+    "bestpath-med-confed": "disable",
+    "bestpath-med-missing-as-worst": "disable",
+    "client-to-client-reflection": "enable",
+    "dampening": "disable",
+    "deterministic-med": "disable",
+    "ebgp-multipath": "disable",
+    "ibgp-multipath": "disable",
+    "enforce-first-as": "enable",
+    "fast-external-failover": "enable",
+    "log-neighbour-changes": "enable",
+    "network-import-check": "enable",
+    "ignore-optional-capability": "enable",
+    "additional-path": "disable",
+    "additional-path6": "disable",
+    "additional-path-vpnv4": "disable",
+    "additional-path-vpnv6": "disable",
+    "multipath-recursive-distance": "disable",
+    "recursive-next-hop": "disable",
+    "recursive-inherit-priority": "disable",
+    "tag-resolve-mode": "disable",
+    "cluster-id": "0.0.0.0",
+    "confederation-identifier": 0,
+    "dampening-route-map": "",
+    "dampening-reachability-half-life": 15,
+    "dampening-reuse": 750,
+    "dampening-suppress": 2000,
+    "dampening-max-suppress-time": 60,
+    "dampening-unreachability-half-life": 15,
+    "default-local-preference": 100,
+    "scan-time": 60,
+    "distance-external": 20,
+    "distance-internal": 200,
+    "distance-local": 200,
+    "synchronization": "disable",
+    "graceful-restart": "disable",
+    "graceful-restart-time": 120,
+    "graceful-stalepath-time": 360,
+    "graceful-update-delay": 120,
+    "graceful-end-on-timer": "disable",
+    "additional-path-select": 2,
+    "additional-path-select6": 2,
+    "additional-path-select-vpnv4": 2,
+    "additional-path-select-vpnv6": 2,
+    "cross-family-conditional-adv": "disable",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "as": "user",  # Router AS number, asplain/asdot/asdot+ format, 0 to disable 
+    "router-id": "ipv4-address-any",  # Router ID.
+    "keepalive-timer": "integer",  # Frequency to send keep alive requests.
+    "holdtime-timer": "integer",  # Number of seconds to mark peer as dead.
+    "always-compare-med": "option",  # Enable/disable always compare MED.
+    "bestpath-as-path-ignore": "option",  # Enable/disable ignore AS path.
+    "bestpath-cmp-confed-aspath": "option",  # Enable/disable compare federation AS path length.
+    "bestpath-cmp-routerid": "option",  # Enable/disable compare router ID for identical EBGP paths.
+    "bestpath-med-confed": "option",  # Enable/disable compare MED among confederation paths.
+    "bestpath-med-missing-as-worst": "option",  # Enable/disable treat missing MED as least preferred.
+    "client-to-client-reflection": "option",  # Enable/disable client-to-client route reflection.
+    "dampening": "option",  # Enable/disable route-flap dampening.
+    "deterministic-med": "option",  # Enable/disable enforce deterministic comparison of MED.
+    "ebgp-multipath": "option",  # Enable/disable EBGP multi-path.
+    "ibgp-multipath": "option",  # Enable/disable IBGP multi-path.
+    "enforce-first-as": "option",  # Enable/disable enforce first AS for EBGP routes.
+    "fast-external-failover": "option",  # Enable/disable reset peer BGP session if link goes down.
+    "log-neighbour-changes": "option",  # Log BGP neighbor changes.
+    "network-import-check": "option",  # Enable/disable ensure BGP network route exists in IGP.
+    "ignore-optional-capability": "option",  # Do not send unknown optional capability notification message
+    "additional-path": "option",  # Enable/disable selection of BGP IPv4 additional paths.
+    "additional-path6": "option",  # Enable/disable selection of BGP IPv6 additional paths.
+    "additional-path-vpnv4": "option",  # Enable/disable selection of BGP VPNv4 additional paths.
+    "additional-path-vpnv6": "option",  # Enable/disable selection of BGP VPNv6 additional paths.
+    "multipath-recursive-distance": "option",  # Enable/disable use of recursive distance to select multipath
+    "recursive-next-hop": "option",  # Enable/disable recursive resolution of next-hop using BGP ro
+    "recursive-inherit-priority": "option",  # Enable/disable priority inheritance for recursive resolution
+    "tag-resolve-mode": "option",  # Configure tag-match mode. Resolves BGP routes with other rou
+    "cluster-id": "ipv4-address-any",  # Route reflector cluster ID.
+    "confederation-identifier": "integer",  # Confederation identifier.
+    "confederation-peers": "string",  # Confederation peers.
+    "dampening-route-map": "string",  # Criteria for dampening.
+    "dampening-reachability-half-life": "integer",  # Reachability half-life time for penalty (min).
+    "dampening-reuse": "integer",  # Threshold to reuse routes.
+    "dampening-suppress": "integer",  # Threshold to suppress routes.
+    "dampening-max-suppress-time": "integer",  # Maximum minutes a route can be suppressed.
+    "dampening-unreachability-half-life": "integer",  # Unreachability half-life time for penalty (min).
+    "default-local-preference": "integer",  # Default local preference.
+    "scan-time": "integer",  # Background scanner interval (sec), 0 to disable it.
+    "distance-external": "integer",  # Distance for routes external to the AS.
+    "distance-internal": "integer",  # Distance for routes internal to the AS.
+    "distance-local": "integer",  # Distance for routes local to the AS.
+    "synchronization": "option",  # Enable/disable only advertise routes from iBGP if routes pre
+    "graceful-restart": "option",  # Enable/disable BGP graceful restart capabilities.
+    "graceful-restart-time": "integer",  # Time needed for neighbors to restart (sec).
+    "graceful-stalepath-time": "integer",  # Time to hold stale paths of restarting neighbor (sec).
+    "graceful-update-delay": "integer",  # Route advertisement/selection delay after restart (sec).
+    "graceful-end-on-timer": "option",  # Enable/disable to exit graceful restart on timer only.
+    "additional-path-select": "integer",  # Number of additional paths to be selected for each IPv4 NLRI
+    "additional-path-select6": "integer",  # Number of additional paths to be selected for each IPv6 NLRI
+    "additional-path-select-vpnv4": "integer",  # Number of additional paths to be selected for each VPNv4 NLR
+    "additional-path-select-vpnv6": "integer",  # Number of additional paths to be selected for each VPNv6 NLR
+    "cross-family-conditional-adv": "option",  # Enable/disable cross address family conditional advertisemen
+    "aggregate-address": "string",  # BGP aggregate address table.
+    "aggregate-address6": "string",  # BGP IPv6 aggregate address table.
+    "neighbor": "string",  # BGP neighbor table.
+    "neighbor-group": "string",  # BGP neighbor group table.
+    "neighbor-range": "string",  # BGP neighbor range table.
+    "neighbor-range6": "string",  # BGP IPv6 neighbor range table.
+    "network": "string",  # BGP network table.
+    "network6": "string",  # BGP IPv6 network table.
+    "redistribute": "string",  # BGP IPv4 redistribute table.
+    "redistribute6": "string",  # BGP IPv6 redistribute table.
+    "admin-distance": "string",  # Administrative distance modifications.
+    "vrf": "string",  # BGP VRF leaking table.
+    "vrf6": "string",  # BGP IPv6 VRF leaking table.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "as": "Router AS number, asplain/asdot/asdot+ format, 0 to disable BGP.",
+    "router-id": "Router ID.",
+    "keepalive-timer": "Frequency to send keep alive requests.",
+    "holdtime-timer": "Number of seconds to mark peer as dead.",
+    "always-compare-med": "Enable/disable always compare MED.",
+    "bestpath-as-path-ignore": "Enable/disable ignore AS path.",
+    "bestpath-cmp-confed-aspath": "Enable/disable compare federation AS path length.",
+    "bestpath-cmp-routerid": "Enable/disable compare router ID for identical EBGP paths.",
+    "bestpath-med-confed": "Enable/disable compare MED among confederation paths.",
+    "bestpath-med-missing-as-worst": "Enable/disable treat missing MED as least preferred.",
+    "client-to-client-reflection": "Enable/disable client-to-client route reflection.",
+    "dampening": "Enable/disable route-flap dampening.",
+    "deterministic-med": "Enable/disable enforce deterministic comparison of MED.",
+    "ebgp-multipath": "Enable/disable EBGP multi-path.",
+    "ibgp-multipath": "Enable/disable IBGP multi-path.",
+    "enforce-first-as": "Enable/disable enforce first AS for EBGP routes.",
+    "fast-external-failover": "Enable/disable reset peer BGP session if link goes down.",
+    "log-neighbour-changes": "Log BGP neighbor changes.",
+    "network-import-check": "Enable/disable ensure BGP network route exists in IGP.",
+    "ignore-optional-capability": "Do not send unknown optional capability notification message.",
+    "additional-path": "Enable/disable selection of BGP IPv4 additional paths.",
+    "additional-path6": "Enable/disable selection of BGP IPv6 additional paths.",
+    "additional-path-vpnv4": "Enable/disable selection of BGP VPNv4 additional paths.",
+    "additional-path-vpnv6": "Enable/disable selection of BGP VPNv6 additional paths.",
+    "multipath-recursive-distance": "Enable/disable use of recursive distance to select multipath.",
+    "recursive-next-hop": "Enable/disable recursive resolution of next-hop using BGP route.",
+    "recursive-inherit-priority": "Enable/disable priority inheritance for recursive resolution.",
+    "tag-resolve-mode": "Configure tag-match mode. Resolves BGP routes with other routes containing the same tag.",
+    "cluster-id": "Route reflector cluster ID.",
+    "confederation-identifier": "Confederation identifier.",
+    "confederation-peers": "Confederation peers.",
+    "dampening-route-map": "Criteria for dampening.",
+    "dampening-reachability-half-life": "Reachability half-life time for penalty (min).",
+    "dampening-reuse": "Threshold to reuse routes.",
+    "dampening-suppress": "Threshold to suppress routes.",
+    "dampening-max-suppress-time": "Maximum minutes a route can be suppressed.",
+    "dampening-unreachability-half-life": "Unreachability half-life time for penalty (min).",
+    "default-local-preference": "Default local preference.",
+    "scan-time": "Background scanner interval (sec), 0 to disable it.",
+    "distance-external": "Distance for routes external to the AS.",
+    "distance-internal": "Distance for routes internal to the AS.",
+    "distance-local": "Distance for routes local to the AS.",
+    "synchronization": "Enable/disable only advertise routes from iBGP if routes present in an IGP.",
+    "graceful-restart": "Enable/disable BGP graceful restart capabilities.",
+    "graceful-restart-time": "Time needed for neighbors to restart (sec).",
+    "graceful-stalepath-time": "Time to hold stale paths of restarting neighbor (sec).",
+    "graceful-update-delay": "Route advertisement/selection delay after restart (sec).",
+    "graceful-end-on-timer": "Enable/disable to exit graceful restart on timer only.",
+    "additional-path-select": "Number of additional paths to be selected for each IPv4 NLRI.",
+    "additional-path-select6": "Number of additional paths to be selected for each IPv6 NLRI.",
+    "additional-path-select-vpnv4": "Number of additional paths to be selected for each VPNv4 NLRI.",
+    "additional-path-select-vpnv6": "Number of additional paths to be selected for each VPNv6 NLRI.",
+    "cross-family-conditional-adv": "Enable/disable cross address family conditional advertisement.",
+    "aggregate-address": "BGP aggregate address table.",
+    "aggregate-address6": "BGP IPv6 aggregate address table.",
+    "neighbor": "BGP neighbor table.",
+    "neighbor-group": "BGP neighbor group table.",
+    "neighbor-range": "BGP neighbor range table.",
+    "neighbor-range6": "BGP IPv6 neighbor range table.",
+    "network": "BGP network table.",
+    "network6": "BGP IPv6 network table.",
+    "redistribute": "BGP IPv4 redistribute table.",
+    "redistribute6": "BGP IPv6 redistribute table.",
+    "admin-distance": "Administrative distance modifications.",
+    "vrf": "BGP VRF leaking table.",
+    "vrf6": "BGP IPv6 VRF leaking table.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "keepalive-timer": {"type": "integer", "min": 0, "max": 65535},
+    "holdtime-timer": {"type": "integer", "min": 3, "max": 65535},
+    "confederation-identifier": {"type": "integer", "min": 1, "max": 4294967295},
+    "dampening-route-map": {"type": "string", "max_length": 35},
+    "dampening-reachability-half-life": {"type": "integer", "min": 1, "max": 45},
+    "dampening-reuse": {"type": "integer", "min": 1, "max": 20000},
+    "dampening-suppress": {"type": "integer", "min": 1, "max": 20000},
+    "dampening-max-suppress-time": {"type": "integer", "min": 1, "max": 255},
+    "dampening-unreachability-half-life": {"type": "integer", "min": 1, "max": 45},
+    "default-local-preference": {"type": "integer", "min": 0, "max": 4294967295},
+    "scan-time": {"type": "integer", "min": 5, "max": 60},
+    "distance-external": {"type": "integer", "min": 1, "max": 255},
+    "distance-internal": {"type": "integer", "min": 1, "max": 255},
+    "distance-local": {"type": "integer", "min": 1, "max": 255},
+    "graceful-restart-time": {"type": "integer", "min": 1, "max": 3600},
+    "graceful-stalepath-time": {"type": "integer", "min": 1, "max": 3600},
+    "graceful-update-delay": {"type": "integer", "min": 1, "max": 3600},
+    "additional-path-select": {"type": "integer", "min": 2, "max": 255},
+    "additional-path-select6": {"type": "integer", "min": 2, "max": 255},
+    "additional-path-select-vpnv4": {"type": "integer", "min": 2, "max": 255},
+    "additional-path-select-vpnv6": {"type": "integer", "min": 2, "max": 255},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "confederation-peers": {
+        "peer": {
+            "type": "string",
+            "help": "Peer ID.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "aggregate-address": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "prefix": {
+            "type": "ipv4-classnet-any",
+            "help": "Aggregate prefix.",
+            "required": True,
+            "default": "0.0.0.0 0.0.0.0",
+        },
+        "as-set": {
+            "type": "option",
+            "help": "Enable/disable generate AS set path information.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "summary-only": {
+            "type": "option",
+            "help": "Enable/disable filter more specific routes from updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+    },
+    "aggregate-address6": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "prefix6": {
+            "type": "ipv6-prefix",
+            "help": "Aggregate IPv6 prefix.",
+            "required": True,
+            "default": "::/0",
+        },
+        "as-set": {
+            "type": "option",
+            "help": "Enable/disable generate AS set path information.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "summary-only": {
+            "type": "option",
+            "help": "Enable/disable filter more specific routes from updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+    },
+    "neighbor": {
+        "ip": {
+            "type": "string",
+            "help": "IP/IPv6 address of neighbor.",
+            "required": True,
+            "default": "",
+            "max_length": 45,
+        },
+        "advertisement-interval": {
+            "type": "integer",
+            "help": "Minimum interval (sec) between sending updates.",
+            "default": 30,
+            "min_value": 0,
+            "max_value": 600,
+        },
+        "allowas-in-enable": {
+            "type": "option",
+            "help": "Enable/disable IPv4 Enable to allow my AS in AS path.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 Enable to allow my AS in AS path.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable to allow my AS in AS path for VPNv4 route.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable use of my AS in AS path for VPNv6 route.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable-evpn": {
+            "type": "option",
+            "help": "Enable/disable to allow my AS in AS path for L2VPN EVPN route.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in": {
+            "type": "integer",
+            "help": "IPv4 The maximum number of occurrence of my AS number allowed.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in6": {
+            "type": "integer",
+            "help": "IPv6 The maximum number of occurrence of my AS number allowed.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in-vpnv4": {
+            "type": "integer",
+            "help": "The maximum number of occurrence of my AS number allowed for VPNv4 route.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in-vpnv6": {
+            "type": "integer",
+            "help": "The maximum number of occurrence of my AS number allowed for VPNv6 route.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in-evpn": {
+            "type": "integer",
+            "help": "The maximum number of occurrence of my AS number allowed for L2VPN EVPN route.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "attribute-unchanged": {
+            "type": "option",
+            "help": "IPv4 List of attributes that should be unchanged.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "attribute-unchanged6": {
+            "type": "option",
+            "help": "IPv6 List of attributes that should be unchanged.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "attribute-unchanged-vpnv4": {
+            "type": "option",
+            "help": "List of attributes that should be unchanged for VPNv4 route.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "attribute-unchanged-vpnv6": {
+            "type": "option",
+            "help": "List of attributes that should not be changed for VPNv6 route.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "activate": {
+            "type": "option",
+            "help": "Enable/disable address family IPv4 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate6": {
+            "type": "option",
+            "help": "Enable/disable address family IPv6 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable address family VPNv4 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable address family VPNv6 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate-evpn": {
+            "type": "option",
+            "help": "Enable/disable address family L2VPN EVPN for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "bfd": {
+            "type": "option",
+            "help": "Enable/disable BFD for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-dynamic": {
+            "type": "option",
+            "help": "Enable/disable advertise dynamic capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-orf": {
+            "type": "option",
+            "help": "Accept/Send IPv4 ORF lists to/from this neighbor.",
+            "default": "none",
+            "options": ["none", "receive", "send", "both"],
+        },
+        "capability-orf6": {
+            "type": "option",
+            "help": "Accept/Send IPv6 ORF lists to/from this neighbor.",
+            "default": "none",
+            "options": ["none", "receive", "send", "both"],
+        },
+        "capability-graceful-restart": {
+            "type": "option",
+            "help": "Enable/disable advertise IPv4 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart6": {
+            "type": "option",
+            "help": "Enable/disable advertise IPv6 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable advertise VPNv4 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable advertisement of VPNv6 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart-evpn": {
+            "type": "option",
+            "help": "Enable/disable advertisement of L2VPN EVPN graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-route-refresh": {
+            "type": "option",
+            "help": "Enable/disable advertise route refresh capability to this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "capability-default-originate": {
+            "type": "option",
+            "help": "Enable/disable advertise default IPv4 route to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-default-originate6": {
+            "type": "option",
+            "help": "Enable/disable advertise default IPv6 route to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "dont-capability-negotiate": {
+            "type": "option",
+            "help": "Do not negotiate capabilities with this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "ebgp-enforce-multihop": {
+            "type": "option",
+            "help": "Enable/disable allow multi-hop EBGP neighbors.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "link-down-failover": {
+            "type": "option",
+            "help": "Enable/disable failover upon link down.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "stale-route": {
+            "type": "option",
+            "help": "Enable/disable stale route after neighbor down.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self": {
+            "type": "option",
+            "help": "Enable/disable IPv4 next-hop calculation for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 next-hop calculation for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-rr": {
+            "type": "option",
+            "help": "Enable/disable setting nexthop's address to interface's IPv4 address for route-reflector routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-rr6": {
+            "type": "option",
+            "help": "Enable/disable setting nexthop's address to interface's IPv6 address for route-reflector routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable setting VPNv4 next-hop to interface's IP address for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable use of outgoing interface's IP address as VPNv6 next-hop for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "override-capability": {
+            "type": "option",
+            "help": "Enable/disable override result of capability negotiation.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "passive": {
+            "type": "option",
+            "help": "Enable/disable sending of open messages to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as": {
+            "type": "option",
+            "help": "Enable/disable remove private AS number from IPv4 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as6": {
+            "type": "option",
+            "help": "Enable/disable remove private AS number from IPv6 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable remove private AS number from VPNv4 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable to remove private AS number from VPNv6 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as-evpn": {
+            "type": "option",
+            "help": "Enable/disable removing private AS number from L2VPN EVPN outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client": {
+            "type": "option",
+            "help": "Enable/disable IPv4 AS route reflector client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 AS route reflector client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable VPNv4 AS route reflector client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 AS route reflector client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client-evpn": {
+            "type": "option",
+            "help": "Enable/disable L2VPN EVPN AS route reflector client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client": {
+            "type": "option",
+            "help": "Enable/disable IPv4 AS route server client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 AS route server client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable VPNv4 AS route server client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 AS route server client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client-evpn": {
+            "type": "option",
+            "help": "Enable/disable L2VPN EVPN AS route server client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to IPv4 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change6": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to IPv6 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to VPNv4 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to VPNv6 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change-evpn": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to L2VPN EVPN route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "shutdown": {
+            "type": "option",
+            "help": "Enable/disable shutdown this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration": {
+            "type": "option",
+            "help": "Enable/disable allow IPv4 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration6": {
+            "type": "option",
+            "help": "Enable/disable allow IPv6 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable allow VPNv4 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration-evpn": {
+            "type": "option",
+            "help": "Enable/disable L2VPN EVPN inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "as-override": {
+            "type": "option",
+            "help": "Enable/disable replace peer AS with own AS for IPv4.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "as-override6": {
+            "type": "option",
+            "help": "Enable/disable replace peer AS with own AS for IPv6.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "strict-capability-match": {
+            "type": "option",
+            "help": "Enable/disable strict capability matching.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "default-originate-routemap": {
+            "type": "string",
+            "help": "Route map to specify criteria to originate IPv4 default.",
+            "default": "",
+            "max_length": 35,
+        },
+        "default-originate-routemap6": {
+            "type": "string",
+            "help": "Route map to specify criteria to originate IPv6 default.",
+            "default": "",
+            "max_length": 35,
+        },
+        "description": {
+            "type": "string",
+            "help": "Description.",
+            "default": "",
+            "max_length": 63,
+        },
+        "distribute-list-in": {
+            "type": "string",
+            "help": "Filter for IPv4 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-in6": {
+            "type": "string",
+            "help": "Filter for IPv6 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-in-vpnv4": {
+            "type": "string",
+            "help": "Filter for VPNv4 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-in-vpnv6": {
+            "type": "string",
+            "help": "Filter for VPNv6 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out": {
+            "type": "string",
+            "help": "Filter for IPv4 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out6": {
+            "type": "string",
+            "help": "Filter for IPv6 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out-vpnv4": {
+            "type": "string",
+            "help": "Filter for VPNv4 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out-vpnv6": {
+            "type": "string",
+            "help": "Filter for VPNv6 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "ebgp-multihop-ttl": {
+            "type": "integer",
+            "help": "EBGP multihop TTL for this peer.",
+            "default": 255,
+            "min_value": 1,
+            "max_value": 255,
+        },
+        "filter-list-in": {
+            "type": "string",
+            "help": "BGP filter for IPv4 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-in6": {
+            "type": "string",
+            "help": "BGP filter for IPv6 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-in-vpnv4": {
+            "type": "string",
+            "help": "BGP filter for VPNv4 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-in-vpnv6": {
+            "type": "string",
+            "help": "BGP filter for VPNv6 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out": {
+            "type": "string",
+            "help": "BGP filter for IPv4 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out6": {
+            "type": "string",
+            "help": "BGP filter for IPv6 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out-vpnv4": {
+            "type": "string",
+            "help": "BGP filter for VPNv4 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out-vpnv6": {
+            "type": "string",
+            "help": "BGP filter for VPNv6 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "interface": {
+            "type": "string",
+            "help": "Specify outgoing interface for peer connection. For IPv6 peer, the interface should have link-local address.",
+            "default": "",
+            "max_length": 15,
+        },
+        "maximum-prefix": {
+            "type": "integer",
+            "help": "Maximum number of IPv4 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix6": {
+            "type": "integer",
+            "help": "Maximum number of IPv6 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-vpnv4": {
+            "type": "integer",
+            "help": "Maximum number of VPNv4 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-vpnv6": {
+            "type": "integer",
+            "help": "Maximum number of VPNv6 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-evpn": {
+            "type": "integer",
+            "help": "Maximum number of L2VPN EVPN prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-threshold": {
+            "type": "integer",
+            "help": "Maximum IPv4 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold6": {
+            "type": "integer",
+            "help": "Maximum IPv6 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold-vpnv4": {
+            "type": "integer",
+            "help": "Maximum VPNv4 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold-vpnv6": {
+            "type": "integer",
+            "help": "Maximum VPNv6 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold-evpn": {
+            "type": "integer",
+            "help": "Maximum L2VPN EVPN prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-warning-only": {
+            "type": "option",
+            "help": "Enable/disable IPv4 Only give warning message when limit is exceeded.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 Only give warning message when limit is exceeded.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable only giving warning message when limit is exceeded for VPNv4 routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable warning message when limit is exceeded for VPNv6 routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only-evpn": {
+            "type": "option",
+            "help": "Enable/disable only sending warning message when exceeding limit of L2VPN EVPN routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "prefix-list-in": {
+            "type": "string",
+            "help": "IPv4 Inbound filter for updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-in6": {
+            "type": "string",
+            "help": "IPv6 Inbound filter for updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-in-vpnv4": {
+            "type": "string",
+            "help": "Inbound filter for VPNv4 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-in-vpnv6": {
+            "type": "string",
+            "help": "Inbound filter for VPNv6 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out": {
+            "type": "string",
+            "help": "IPv4 Outbound filter for updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out6": {
+            "type": "string",
+            "help": "IPv6 Outbound filter for updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out-vpnv4": {
+            "type": "string",
+            "help": "Outbound filter for VPNv4 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out-vpnv6": {
+            "type": "string",
+            "help": "Outbound filter for VPNv6 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "remote-as": {
+            "type": "user",
+            "help": "AS number of neighbor.",
+            "required": True,
+            "default": "",
+        },
+        "local-as": {
+            "type": "user",
+            "help": "Local AS number of neighbor.",
+            "default": "",
+        },
+        "local-as-no-prepend": {
+            "type": "option",
+            "help": "Do not prepend local-as to incoming updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "local-as-replace-as": {
+            "type": "option",
+            "help": "Replace real AS with local-as in outgoing updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "retain-stale-time": {
+            "type": "integer",
+            "help": "Time to retain stale routes.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "route-map-in": {
+            "type": "string",
+            "help": "IPv4 Inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in6": {
+            "type": "string",
+            "help": "IPv6 Inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in-vpnv4": {
+            "type": "string",
+            "help": "VPNv4 inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in-vpnv6": {
+            "type": "string",
+            "help": "VPNv6 inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in-evpn": {
+            "type": "string",
+            "help": "L2VPN EVPN inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out": {
+            "type": "string",
+            "help": "IPv4 outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-preferable": {
+            "type": "string",
+            "help": "IPv4 outbound route map filter if the peer is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out6": {
+            "type": "string",
+            "help": "IPv6 Outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out6-preferable": {
+            "type": "string",
+            "help": "IPv6 outbound route map filter if the peer is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv4": {
+            "type": "string",
+            "help": "VPNv4 outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv6": {
+            "type": "string",
+            "help": "VPNv6 outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv4-preferable": {
+            "type": "string",
+            "help": "VPNv4 outbound route map filter if the peer is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv6-preferable": {
+            "type": "string",
+            "help": "VPNv6 outbound route map filter if this neighbor is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-evpn": {
+            "type": "string",
+            "help": "L2VPN EVPN outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "send-community": {
+            "type": "option",
+            "help": "IPv4 Send community attribute to neighbor.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community6": {
+            "type": "option",
+            "help": "IPv6 Send community attribute to neighbor.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community-vpnv4": {
+            "type": "option",
+            "help": "Send community attribute to neighbor for VPNv4 address family.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable sending community attribute to this neighbor for VPNv6 address family.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community-evpn": {
+            "type": "option",
+            "help": "Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "keep-alive-timer": {
+            "type": "integer",
+            "help": "Keep alive timer interval (sec).",
+            "default": 4294967295,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "holdtime-timer": {
+            "type": "integer",
+            "help": "Interval (sec) before peer considered dead.",
+            "default": 4294967295,
+            "min_value": 3,
+            "max_value": 65535,
+        },
+        "connect-timer": {
+            "type": "integer",
+            "help": "Interval (sec) for connect timer.",
+            "default": 4294967295,
+            "min_value": 1,
+            "max_value": 65535,
+        },
+        "unsuppress-map": {
+            "type": "string",
+            "help": "IPv4 Route map to selectively unsuppress suppressed routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "unsuppress-map6": {
+            "type": "string",
+            "help": "IPv6 Route map to selectively unsuppress suppressed routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "update-source": {
+            "type": "string",
+            "help": "Interface to use as source IP/IPv6 address of TCP connections.",
+            "default": "",
+            "max_length": 15,
+        },
+        "weight": {
+            "type": "integer",
+            "help": "Neighbor weight.",
+            "default": 4294967295,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "restart-time": {
+            "type": "integer",
+            "help": "Graceful restart delay time (sec, 0 = global default).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 3600,
+        },
+        "additional-path": {
+            "type": "option",
+            "help": "Enable/disable IPv4 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "additional-path6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "additional-path-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable VPNv4 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "additional-path-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "adv-additional-path": {
+            "type": "integer",
+            "help": "Number of IPv4 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "adv-additional-path6": {
+            "type": "integer",
+            "help": "Number of IPv6 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "adv-additional-path-vpnv4": {
+            "type": "integer",
+            "help": "Number of VPNv4 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "adv-additional-path-vpnv6": {
+            "type": "integer",
+            "help": "Number of VPNv6 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "password": {
+            "type": "password",
+            "help": "Password used in MD5 authentication.",
+            "max_length": 128,
+        },
+        "auth-options": {
+            "type": "string",
+            "help": "Key-chain name for TCP authentication options.",
+            "default": "",
+            "max_length": 35,
+        },
+        "conditional-advertise": {
+            "type": "string",
+            "help": "Conditional advertisement.",
+        },
+        "conditional-advertise6": {
+            "type": "string",
+            "help": "IPv6 conditional advertisement.",
+        },
+    },
+    "neighbor-group": {
+        "name": {
+            "type": "string",
+            "help": "Neighbor group name.",
+            "required": True,
+            "default": "",
+            "max_length": 45,
+        },
+        "advertisement-interval": {
+            "type": "integer",
+            "help": "Minimum interval (sec) between sending updates.",
+            "default": 30,
+            "min_value": 0,
+            "max_value": 600,
+        },
+        "allowas-in-enable": {
+            "type": "option",
+            "help": "Enable/disable IPv4 Enable to allow my AS in AS path.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 Enable to allow my AS in AS path.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable to allow my AS in AS path for VPNv4 route.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable use of my AS in AS path for VPNv6 route.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in-enable-evpn": {
+            "type": "option",
+            "help": "Enable/disable to allow my AS in AS path for L2VPN EVPN route.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "allowas-in": {
+            "type": "integer",
+            "help": "IPv4 The maximum number of occurrence of my AS number allowed.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in6": {
+            "type": "integer",
+            "help": "IPv6 The maximum number of occurrence of my AS number allowed.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in-vpnv4": {
+            "type": "integer",
+            "help": "The maximum number of occurrence of my AS number allowed for VPNv4 route.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in-vpnv6": {
+            "type": "integer",
+            "help": "The maximum number of occurrence of my AS number allowed for VPNv6 route.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "allowas-in-evpn": {
+            "type": "integer",
+            "help": "The maximum number of occurrence of my AS number allowed for L2VPN EVPN route.",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 10,
+        },
+        "attribute-unchanged": {
+            "type": "option",
+            "help": "IPv4 List of attributes that should be unchanged.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "attribute-unchanged6": {
+            "type": "option",
+            "help": "IPv6 List of attributes that should be unchanged.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "attribute-unchanged-vpnv4": {
+            "type": "option",
+            "help": "List of attributes that should be unchanged for VPNv4 route.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "attribute-unchanged-vpnv6": {
+            "type": "option",
+            "help": "List of attributes that should not be changed for VPNv6 route.",
+            "default": "",
+            "options": ["as-path", "med", "next-hop"],
+        },
+        "activate": {
+            "type": "option",
+            "help": "Enable/disable address family IPv4 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate6": {
+            "type": "option",
+            "help": "Enable/disable address family IPv6 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable address family VPNv4 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable address family VPNv6 for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "activate-evpn": {
+            "type": "option",
+            "help": "Enable/disable address family L2VPN EVPN for this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "bfd": {
+            "type": "option",
+            "help": "Enable/disable BFD for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-dynamic": {
+            "type": "option",
+            "help": "Enable/disable advertise dynamic capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-orf": {
+            "type": "option",
+            "help": "Accept/Send IPv4 ORF lists to/from this neighbor.",
+            "default": "none",
+            "options": ["none", "receive", "send", "both"],
+        },
+        "capability-orf6": {
+            "type": "option",
+            "help": "Accept/Send IPv6 ORF lists to/from this neighbor.",
+            "default": "none",
+            "options": ["none", "receive", "send", "both"],
+        },
+        "capability-graceful-restart": {
+            "type": "option",
+            "help": "Enable/disable advertise IPv4 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart6": {
+            "type": "option",
+            "help": "Enable/disable advertise IPv6 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable advertise VPNv4 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable advertisement of VPNv6 graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-graceful-restart-evpn": {
+            "type": "option",
+            "help": "Enable/disable advertisement of L2VPN EVPN graceful restart capability to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-route-refresh": {
+            "type": "option",
+            "help": "Enable/disable advertise route refresh capability to this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "capability-default-originate": {
+            "type": "option",
+            "help": "Enable/disable advertise default IPv4 route to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "capability-default-originate6": {
+            "type": "option",
+            "help": "Enable/disable advertise default IPv6 route to this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "dont-capability-negotiate": {
+            "type": "option",
+            "help": "Do not negotiate capabilities with this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "ebgp-enforce-multihop": {
+            "type": "option",
+            "help": "Enable/disable allow multi-hop EBGP neighbors.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "link-down-failover": {
+            "type": "option",
+            "help": "Enable/disable failover upon link down.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "stale-route": {
+            "type": "option",
+            "help": "Enable/disable stale route after neighbor down.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self": {
+            "type": "option",
+            "help": "Enable/disable IPv4 next-hop calculation for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 next-hop calculation for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-rr": {
+            "type": "option",
+            "help": "Enable/disable setting nexthop's address to interface's IPv4 address for route-reflector routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-rr6": {
+            "type": "option",
+            "help": "Enable/disable setting nexthop's address to interface's IPv6 address for route-reflector routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable setting VPNv4 next-hop to interface's IP address for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "next-hop-self-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable use of outgoing interface's IP address as VPNv6 next-hop for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "override-capability": {
+            "type": "option",
+            "help": "Enable/disable override result of capability negotiation.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "passive": {
+            "type": "option",
+            "help": "Enable/disable sending of open messages to this neighbor.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as": {
+            "type": "option",
+            "help": "Enable/disable remove private AS number from IPv4 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as6": {
+            "type": "option",
+            "help": "Enable/disable remove private AS number from IPv6 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable remove private AS number from VPNv4 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable to remove private AS number from VPNv6 outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "remove-private-as-evpn": {
+            "type": "option",
+            "help": "Enable/disable removing private AS number from L2VPN EVPN outbound updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client": {
+            "type": "option",
+            "help": "Enable/disable IPv4 AS route reflector client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 AS route reflector client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable VPNv4 AS route reflector client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 AS route reflector client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-reflector-client-evpn": {
+            "type": "option",
+            "help": "Enable/disable L2VPN EVPN AS route reflector client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client": {
+            "type": "option",
+            "help": "Enable/disable IPv4 AS route server client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 AS route server client.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable VPNv4 AS route server client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 AS route server client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-server-client-evpn": {
+            "type": "option",
+            "help": "Enable/disable L2VPN EVPN AS route server client for this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to IPv4 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change6": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to IPv6 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to VPNv4 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to VPNv6 route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "rr-attr-allow-change-evpn": {
+            "type": "option",
+            "help": "Enable/disable allowing change of route attributes when advertising to L2VPN EVPN route reflector clients.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "shutdown": {
+            "type": "option",
+            "help": "Enable/disable shutdown this neighbor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration": {
+            "type": "option",
+            "help": "Enable/disable allow IPv4 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration6": {
+            "type": "option",
+            "help": "Enable/disable allow IPv6 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable allow VPNv4 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "soft-reconfiguration-evpn": {
+            "type": "option",
+            "help": "Enable/disable L2VPN EVPN inbound soft reconfiguration.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "as-override": {
+            "type": "option",
+            "help": "Enable/disable replace peer AS with own AS for IPv4.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "as-override6": {
+            "type": "option",
+            "help": "Enable/disable replace peer AS with own AS for IPv6.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "strict-capability-match": {
+            "type": "option",
+            "help": "Enable/disable strict capability matching.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "default-originate-routemap": {
+            "type": "string",
+            "help": "Route map to specify criteria to originate IPv4 default.",
+            "default": "",
+            "max_length": 35,
+        },
+        "default-originate-routemap6": {
+            "type": "string",
+            "help": "Route map to specify criteria to originate IPv6 default.",
+            "default": "",
+            "max_length": 35,
+        },
+        "description": {
+            "type": "string",
+            "help": "Description.",
+            "default": "",
+            "max_length": 63,
+        },
+        "distribute-list-in": {
+            "type": "string",
+            "help": "Filter for IPv4 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-in6": {
+            "type": "string",
+            "help": "Filter for IPv6 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-in-vpnv4": {
+            "type": "string",
+            "help": "Filter for VPNv4 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-in-vpnv6": {
+            "type": "string",
+            "help": "Filter for VPNv6 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out": {
+            "type": "string",
+            "help": "Filter for IPv4 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out6": {
+            "type": "string",
+            "help": "Filter for IPv6 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out-vpnv4": {
+            "type": "string",
+            "help": "Filter for VPNv4 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distribute-list-out-vpnv6": {
+            "type": "string",
+            "help": "Filter for VPNv6 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "ebgp-multihop-ttl": {
+            "type": "integer",
+            "help": "EBGP multihop TTL for this peer.",
+            "default": 255,
+            "min_value": 1,
+            "max_value": 255,
+        },
+        "filter-list-in": {
+            "type": "string",
+            "help": "BGP filter for IPv4 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-in6": {
+            "type": "string",
+            "help": "BGP filter for IPv6 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-in-vpnv4": {
+            "type": "string",
+            "help": "BGP filter for VPNv4 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-in-vpnv6": {
+            "type": "string",
+            "help": "BGP filter for VPNv6 inbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out": {
+            "type": "string",
+            "help": "BGP filter for IPv4 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out6": {
+            "type": "string",
+            "help": "BGP filter for IPv6 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out-vpnv4": {
+            "type": "string",
+            "help": "BGP filter for VPNv4 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "filter-list-out-vpnv6": {
+            "type": "string",
+            "help": "BGP filter for VPNv6 outbound routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "interface": {
+            "type": "string",
+            "help": "Specify outgoing interface for peer connection. For IPv6 peer, the interface should have link-local address.",
+            "default": "",
+            "max_length": 15,
+        },
+        "maximum-prefix": {
+            "type": "integer",
+            "help": "Maximum number of IPv4 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix6": {
+            "type": "integer",
+            "help": "Maximum number of IPv6 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-vpnv4": {
+            "type": "integer",
+            "help": "Maximum number of VPNv4 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-vpnv6": {
+            "type": "integer",
+            "help": "Maximum number of VPNv6 prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-evpn": {
+            "type": "integer",
+            "help": "Maximum number of L2VPN EVPN prefixes to accept from this peer.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 4294967295,
+        },
+        "maximum-prefix-threshold": {
+            "type": "integer",
+            "help": "Maximum IPv4 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold6": {
+            "type": "integer",
+            "help": "Maximum IPv6 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold-vpnv4": {
+            "type": "integer",
+            "help": "Maximum VPNv4 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold-vpnv6": {
+            "type": "integer",
+            "help": "Maximum VPNv6 prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-threshold-evpn": {
+            "type": "integer",
+            "help": "Maximum L2VPN EVPN prefix threshold value (1 - 100 percent).",
+            "default": 75,
+            "min_value": 1,
+            "max_value": 100,
+        },
+        "maximum-prefix-warning-only": {
+            "type": "option",
+            "help": "Enable/disable IPv4 Only give warning message when limit is exceeded.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 Only give warning message when limit is exceeded.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable only giving warning message when limit is exceeded for VPNv4 routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable warning message when limit is exceeded for VPNv6 routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "maximum-prefix-warning-only-evpn": {
+            "type": "option",
+            "help": "Enable/disable only sending warning message when exceeding limit of L2VPN EVPN routes.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "prefix-list-in": {
+            "type": "string",
+            "help": "IPv4 Inbound filter for updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-in6": {
+            "type": "string",
+            "help": "IPv6 Inbound filter for updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-in-vpnv4": {
+            "type": "string",
+            "help": "Inbound filter for VPNv4 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-in-vpnv6": {
+            "type": "string",
+            "help": "Inbound filter for VPNv6 updates from this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out": {
+            "type": "string",
+            "help": "IPv4 Outbound filter for updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out6": {
+            "type": "string",
+            "help": "IPv6 Outbound filter for updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out-vpnv4": {
+            "type": "string",
+            "help": "Outbound filter for VPNv4 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-list-out-vpnv6": {
+            "type": "string",
+            "help": "Outbound filter for VPNv6 updates to this neighbor.",
+            "default": "",
+            "max_length": 35,
+        },
+        "remote-as": {
+            "type": "user",
+            "help": "AS number of neighbor.",
+            "required": True,
+            "default": "",
+        },
+        "remote-as-filter": {
+            "type": "string",
+            "help": "BGP filter for remote AS.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+        "local-as": {
+            "type": "user",
+            "help": "Local AS number of neighbor.",
+            "default": "",
+        },
+        "local-as-no-prepend": {
+            "type": "option",
+            "help": "Do not prepend local-as to incoming updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "local-as-replace-as": {
+            "type": "option",
+            "help": "Replace real AS with local-as in outgoing updates.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "retain-stale-time": {
+            "type": "integer",
+            "help": "Time to retain stale routes.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "route-map-in": {
+            "type": "string",
+            "help": "IPv4 Inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in6": {
+            "type": "string",
+            "help": "IPv6 Inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in-vpnv4": {
+            "type": "string",
+            "help": "VPNv4 inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in-vpnv6": {
+            "type": "string",
+            "help": "VPNv6 inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-in-evpn": {
+            "type": "string",
+            "help": "L2VPN EVPN inbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out": {
+            "type": "string",
+            "help": "IPv4 outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-preferable": {
+            "type": "string",
+            "help": "IPv4 outbound route map filter if the peer is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out6": {
+            "type": "string",
+            "help": "IPv6 Outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out6-preferable": {
+            "type": "string",
+            "help": "IPv6 outbound route map filter if the peer is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv4": {
+            "type": "string",
+            "help": "VPNv4 outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv6": {
+            "type": "string",
+            "help": "VPNv6 outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv4-preferable": {
+            "type": "string",
+            "help": "VPNv4 outbound route map filter if the peer is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-vpnv6-preferable": {
+            "type": "string",
+            "help": "VPNv6 outbound route map filter if this neighbor is preferred.",
+            "default": "",
+            "max_length": 35,
+        },
+        "route-map-out-evpn": {
+            "type": "string",
+            "help": "L2VPN EVPN outbound route map filter.",
+            "default": "",
+            "max_length": 35,
+        },
+        "send-community": {
+            "type": "option",
+            "help": "IPv4 Send community attribute to neighbor.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community6": {
+            "type": "option",
+            "help": "IPv6 Send community attribute to neighbor.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community-vpnv4": {
+            "type": "option",
+            "help": "Send community attribute to neighbor for VPNv4 address family.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable sending community attribute to this neighbor for VPNv6 address family.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "send-community-evpn": {
+            "type": "option",
+            "help": "Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.",
+            "default": "both",
+            "options": ["standard", "extended", "both", "disable"],
+        },
+        "keep-alive-timer": {
+            "type": "integer",
+            "help": "Keep alive timer interval (sec).",
+            "default": 4294967295,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "holdtime-timer": {
+            "type": "integer",
+            "help": "Interval (sec) before peer considered dead.",
+            "default": 4294967295,
+            "min_value": 3,
+            "max_value": 65535,
+        },
+        "connect-timer": {
+            "type": "integer",
+            "help": "Interval (sec) for connect timer.",
+            "default": 4294967295,
+            "min_value": 1,
+            "max_value": 65535,
+        },
+        "unsuppress-map": {
+            "type": "string",
+            "help": "IPv4 Route map to selectively unsuppress suppressed routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "unsuppress-map6": {
+            "type": "string",
+            "help": "IPv6 Route map to selectively unsuppress suppressed routes.",
+            "default": "",
+            "max_length": 35,
+        },
+        "update-source": {
+            "type": "string",
+            "help": "Interface to use as source IP/IPv6 address of TCP connections.",
+            "default": "",
+            "max_length": 15,
+        },
+        "weight": {
+            "type": "integer",
+            "help": "Neighbor weight.",
+            "default": 4294967295,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "restart-time": {
+            "type": "integer",
+            "help": "Graceful restart delay time (sec, 0 = global default).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 3600,
+        },
+        "additional-path": {
+            "type": "option",
+            "help": "Enable/disable IPv4 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "additional-path6": {
+            "type": "option",
+            "help": "Enable/disable IPv6 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "additional-path-vpnv4": {
+            "type": "option",
+            "help": "Enable/disable VPNv4 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "additional-path-vpnv6": {
+            "type": "option",
+            "help": "Enable/disable VPNv6 additional-path capability.",
+            "default": "disable",
+            "options": ["send", "receive", "both", "disable"],
+        },
+        "adv-additional-path": {
+            "type": "integer",
+            "help": "Number of IPv4 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "adv-additional-path6": {
+            "type": "integer",
+            "help": "Number of IPv6 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "adv-additional-path-vpnv4": {
+            "type": "integer",
+            "help": "Number of VPNv4 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "adv-additional-path-vpnv6": {
+            "type": "integer",
+            "help": "Number of VPNv6 additional paths that can be advertised to this neighbor.",
+            "default": 2,
+            "min_value": 2,
+            "max_value": 255,
+        },
+        "password": {
+            "type": "password",
+            "help": "Password used in MD5 authentication.",
+            "max_length": 128,
+        },
+        "auth-options": {
+            "type": "string",
+            "help": "Key-chain name for TCP authentication options.",
+            "default": "",
+            "max_length": 35,
+        },
+    },
+    "neighbor-range": {
+        "id": {
+            "type": "integer",
+            "help": "Neighbor range ID.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "prefix": {
+            "type": "ipv4-classnet",
+            "help": "Neighbor range prefix.",
+            "required": True,
+            "default": "0.0.0.0 0.0.0.0",
+        },
+        "max-neighbor-num": {
+            "type": "integer",
+            "help": "Maximum number of neighbors.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 1000,
+        },
+        "neighbor-group": {
+            "type": "string",
+            "help": "Neighbor group name.",
+            "required": True,
+            "default": "",
+            "max_length": 63,
+        },
+    },
+    "neighbor-range6": {
+        "id": {
+            "type": "integer",
+            "help": "IPv6 neighbor range ID.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "prefix6": {
+            "type": "ipv6-network",
+            "help": "IPv6 prefix.",
+            "required": True,
+            "default": "::/0",
+        },
+        "max-neighbor-num": {
+            "type": "integer",
+            "help": "Maximum number of neighbors.",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 1000,
+        },
+        "neighbor-group": {
+            "type": "string",
+            "help": "Neighbor group name.",
+            "required": True,
+            "default": "",
+            "max_length": 63,
+        },
+    },
+    "network": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "prefix": {
+            "type": "ipv4-classnet",
+            "help": "Network prefix.",
+            "required": True,
+            "default": "0.0.0.0 0.0.0.0",
+        },
+        "network-import-check": {
+            "type": "option",
+            "help": "Configure insurance of BGP network route existence in IGP.",
+            "default": "global",
+            "options": ["global", "enable", "disable"],
+        },
+        "backdoor": {
+            "type": "option",
+            "help": "Enable/disable route as backdoor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-map": {
+            "type": "string",
+            "help": "Route map to modify generated route.",
+            "default": "",
+            "max_length": 35,
+        },
+        "prefix-name": {
+            "type": "string",
+            "help": "Name of firewall address or address group.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "network6": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "prefix6": {
+            "type": "ipv6-network",
+            "help": "Network IPv6 prefix.",
+            "required": True,
+            "default": "::/0",
+        },
+        "network-import-check": {
+            "type": "option",
+            "help": "Configure insurance of BGP network route existence in IGP.",
+            "default": "global",
+            "options": ["global", "enable", "disable"],
+        },
+        "backdoor": {
+            "type": "option",
+            "help": "Enable/disable route as backdoor.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-map": {
+            "type": "string",
+            "help": "Route map to modify generated route.",
+            "default": "",
+            "max_length": 35,
+        },
+    },
+    "redistribute": {
+        "name": {
+            "type": "string",
+            "help": "Distribute list entry name.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+        "status": {
+            "type": "option",
+            "help": "Status.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-map": {
+            "type": "string",
+            "help": "Route map name.",
+            "default": "",
+            "max_length": 35,
+        },
+    },
+    "redistribute6": {
+        "name": {
+            "type": "string",
+            "help": "Distribute list entry name.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+        "status": {
+            "type": "option",
+            "help": "Status.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "route-map": {
+            "type": "string",
+            "help": "Route map name.",
+            "default": "",
+            "max_length": 35,
+        },
+    },
+    "admin-distance": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "neighbour-prefix": {
+            "type": "ipv4-classnet",
+            "help": "Neighbor address prefix.",
+            "required": True,
+            "default": "0.0.0.0 0.0.0.0",
+        },
+        "route-list": {
+            "type": "string",
+            "help": "Access list of routes to apply new distance to.",
+            "default": "",
+            "max_length": 35,
+        },
+        "distance": {
+            "type": "integer",
+            "help": "Administrative distance to apply (1 - 255).",
+            "required": True,
+            "default": 0,
+            "min_value": 1,
+            "max_value": 255,
+        },
+    },
+    "vrf": {
+        "vrf": {
+            "type": "string",
+            "help": "Origin VRF ID <0-511>.",
+            "default": "",
+            "max_length": 7,
+        },
+        "role": {
+            "type": "option",
+            "help": "VRF role.",
+            "default": "standalone",
+            "options": ["standalone", "ce", "pe"],
+        },
+        "rd": {
+            "type": "string",
+            "help": "Route Distinguisher: AA:NN|A.B.C.D:NN.",
+            "default": "",
+            "max_length": 79,
+        },
+        "export-rt": {
+            "type": "string",
+            "help": "List of export route target.",
+        },
+        "import-rt": {
+            "type": "string",
+            "help": "List of import route target.",
+        },
+        "import-route-map": {
+            "type": "string",
+            "help": "Import route map.",
+            "default": "",
+            "max_length": 35,
+        },
+        "leak-target": {
+            "type": "string",
+            "help": "Target VRF table.",
+        },
+    },
+    "vrf6": {
+        "vrf": {
+            "type": "string",
+            "help": "Origin VRF ID <0-511>.",
+            "default": "",
+            "max_length": 7,
+        },
+        "role": {
+            "type": "option",
+            "help": "VRF role.",
+            "default": "standalone",
+            "options": ["standalone", "ce", "pe"],
+        },
+        "rd": {
+            "type": "string",
+            "help": "Route Distinguisher: AA:NN|A.B.C.D:NN.",
+            "default": "",
+            "max_length": 79,
+        },
+        "export-rt": {
+            "type": "string",
+            "help": "List of export route target.",
+        },
+        "import-rt": {
+            "type": "string",
+            "help": "List of import route target.",
+        },
+        "import-route-map": {
+            "type": "string",
+            "help": "Import route map.",
+            "default": "",
+            "max_length": 35,
+        },
+        "leak-target": {
+            "type": "string",
+            "help": "Target VRF table.",
+        },
+    },
+}
+
 
 # Valid enum values from API documentation
-VALID_BODY_ALWAYS_COMPARE_MED = ["enable", "disable"]
-VALID_BODY_BESTPATH_AS_PATH_IGNORE = ["enable", "disable"]
-VALID_BODY_BESTPATH_CMP_CONFED_ASPATH = ["enable", "disable"]
-VALID_BODY_BESTPATH_CMP_ROUTERID = ["enable", "disable"]
-VALID_BODY_BESTPATH_MED_CONFED = ["enable", "disable"]
-VALID_BODY_BESTPATH_MED_MISSING_AS_WORST = ["enable", "disable"]
-VALID_BODY_CLIENT_TO_CLIENT_REFLECTION = ["enable", "disable"]
-VALID_BODY_DAMPENING = ["enable", "disable"]
-VALID_BODY_DETERMINISTIC_MED = ["enable", "disable"]
-VALID_BODY_EBGP_MULTIPATH = ["enable", "disable"]
-VALID_BODY_IBGP_MULTIPATH = ["enable", "disable"]
-VALID_BODY_ENFORCE_FIRST_AS = ["enable", "disable"]
-VALID_BODY_FAST_EXTERNAL_FAILOVER = ["enable", "disable"]
-VALID_BODY_LOG_NEIGHBOUR_CHANGES = ["enable", "disable"]
-VALID_BODY_NETWORK_IMPORT_CHECK = ["enable", "disable"]
-VALID_BODY_IGNORE_OPTIONAL_CAPABILITY = ["enable", "disable"]
-VALID_BODY_ADDITIONAL_PATH = ["enable", "disable"]
-VALID_BODY_ADDITIONAL_PATH6 = ["enable", "disable"]
-VALID_BODY_ADDITIONAL_PATH_VPNV4 = ["enable", "disable"]
-VALID_BODY_ADDITIONAL_PATH_VPNV6 = ["enable", "disable"]
-VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE = ["enable", "disable"]
-VALID_BODY_RECURSIVE_NEXT_HOP = ["enable", "disable"]
-VALID_BODY_RECURSIVE_INHERIT_PRIORITY = ["enable", "disable"]
-VALID_BODY_TAG_RESOLVE_MODE = ["disable", "preferred", "merge", "merge-all"]
-VALID_BODY_SYNCHRONIZATION = ["enable", "disable"]
-VALID_BODY_GRACEFUL_RESTART = ["enable", "disable"]
-VALID_BODY_GRACEFUL_END_ON_TIMER = ["enable", "disable"]
-VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV = ["enable", "disable"]
+VALID_BODY_ALWAYS_COMPARE_MED = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BESTPATH_AS_PATH_IGNORE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BESTPATH_CMP_CONFED_ASPATH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BESTPATH_CMP_ROUTERID = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BESTPATH_MED_CONFED = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BESTPATH_MED_MISSING_AS_WORST = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CLIENT_TO_CLIENT_REFLECTION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DAMPENING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DETERMINISTIC_MED = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EBGP_MULTIPATH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_IBGP_MULTIPATH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ENFORCE_FIRST_AS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_FAST_EXTERNAL_FAILOVER = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOG_NEIGHBOUR_CHANGES = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NETWORK_IMPORT_CHECK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_IGNORE_OPTIONAL_CAPABILITY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ADDITIONAL_PATH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ADDITIONAL_PATH6 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ADDITIONAL_PATH_VPNV4 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ADDITIONAL_PATH_VPNV6 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_RECURSIVE_NEXT_HOP = [
+    "enable",
+    "disable",
+]
+VALID_BODY_RECURSIVE_INHERIT_PRIORITY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_TAG_RESOLVE_MODE = [
+    "disable",
+    "preferred",
+    "merge",
+    "merge-all",
+]
+VALID_BODY_SYNCHRONIZATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_GRACEFUL_RESTART = [
+    "enable",
+    "disable",
+]
+VALID_BODY_GRACEFUL_END_ON_TIMER = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -46,13 +2747,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_bgp_get(
+def validate_router_bgp_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for router/bgp.
 
     Args:
         attr: Attribute filter (optional)
@@ -62,9 +2763,17 @@ def validate_bgp_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_router_bgp_get()
+        >>> assert is_valid == True
+        
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_router_bgp_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -79,607 +2788,909 @@ def validate_bgp_get(
 
 
 # ============================================================================
+# POST Validation
+# ============================================================================
+
+
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for router/bgp.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
+    """
+    # Check always-required fields
+    missing_fields = []
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
+
+    return (True, None)
+
+
+def validate_router_bgp_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
+    """
+    Validate POST request to create new router/bgp object.
+
+    This validator performs two-stage validation:
+    1. Required fields check (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Args:
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
+
+    Returns:
+        Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "as": True,  # Router AS number, asplain/asdot/asdot+ format, 0 t
+        ... }
+        >>> is_valid, error = validate_router_bgp_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "as": True,
+        ...     "always-compare-med": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_router_bgp_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["always-compare-med"] = "invalid-value"
+        >>> is_valid, error = validate_router_bgp_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_router_bgp_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
+    """
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate enum values
+    if "always-compare-med" in payload:
+        value = payload["always-compare-med"]
+        if value not in VALID_BODY_ALWAYS_COMPARE_MED:
+            desc = FIELD_DESCRIPTIONS.get("always-compare-med", "")
+            error_msg = f"Invalid value for 'always-compare-med': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ALWAYS_COMPARE_MED)}"
+            error_msg += f"\n  → Example: always-compare-med='{{ VALID_BODY_ALWAYS_COMPARE_MED[0] }}'"
+            return (False, error_msg)
+    if "bestpath-as-path-ignore" in payload:
+        value = payload["bestpath-as-path-ignore"]
+        if value not in VALID_BODY_BESTPATH_AS_PATH_IGNORE:
+            desc = FIELD_DESCRIPTIONS.get("bestpath-as-path-ignore", "")
+            error_msg = f"Invalid value for 'bestpath-as-path-ignore': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BESTPATH_AS_PATH_IGNORE)}"
+            error_msg += f"\n  → Example: bestpath-as-path-ignore='{{ VALID_BODY_BESTPATH_AS_PATH_IGNORE[0] }}'"
+            return (False, error_msg)
+    if "bestpath-cmp-confed-aspath" in payload:
+        value = payload["bestpath-cmp-confed-aspath"]
+        if value not in VALID_BODY_BESTPATH_CMP_CONFED_ASPATH:
+            desc = FIELD_DESCRIPTIONS.get("bestpath-cmp-confed-aspath", "")
+            error_msg = f"Invalid value for 'bestpath-cmp-confed-aspath': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BESTPATH_CMP_CONFED_ASPATH)}"
+            error_msg += f"\n  → Example: bestpath-cmp-confed-aspath='{{ VALID_BODY_BESTPATH_CMP_CONFED_ASPATH[0] }}'"
+            return (False, error_msg)
+    if "bestpath-cmp-routerid" in payload:
+        value = payload["bestpath-cmp-routerid"]
+        if value not in VALID_BODY_BESTPATH_CMP_ROUTERID:
+            desc = FIELD_DESCRIPTIONS.get("bestpath-cmp-routerid", "")
+            error_msg = f"Invalid value for 'bestpath-cmp-routerid': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BESTPATH_CMP_ROUTERID)}"
+            error_msg += f"\n  → Example: bestpath-cmp-routerid='{{ VALID_BODY_BESTPATH_CMP_ROUTERID[0] }}'"
+            return (False, error_msg)
+    if "bestpath-med-confed" in payload:
+        value = payload["bestpath-med-confed"]
+        if value not in VALID_BODY_BESTPATH_MED_CONFED:
+            desc = FIELD_DESCRIPTIONS.get("bestpath-med-confed", "")
+            error_msg = f"Invalid value for 'bestpath-med-confed': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BESTPATH_MED_CONFED)}"
+            error_msg += f"\n  → Example: bestpath-med-confed='{{ VALID_BODY_BESTPATH_MED_CONFED[0] }}'"
+            return (False, error_msg)
+    if "bestpath-med-missing-as-worst" in payload:
+        value = payload["bestpath-med-missing-as-worst"]
+        if value not in VALID_BODY_BESTPATH_MED_MISSING_AS_WORST:
+            desc = FIELD_DESCRIPTIONS.get("bestpath-med-missing-as-worst", "")
+            error_msg = f"Invalid value for 'bestpath-med-missing-as-worst': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BESTPATH_MED_MISSING_AS_WORST)}"
+            error_msg += f"\n  → Example: bestpath-med-missing-as-worst='{{ VALID_BODY_BESTPATH_MED_MISSING_AS_WORST[0] }}'"
+            return (False, error_msg)
+    if "client-to-client-reflection" in payload:
+        value = payload["client-to-client-reflection"]
+        if value not in VALID_BODY_CLIENT_TO_CLIENT_REFLECTION:
+            desc = FIELD_DESCRIPTIONS.get("client-to-client-reflection", "")
+            error_msg = f"Invalid value for 'client-to-client-reflection': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CLIENT_TO_CLIENT_REFLECTION)}"
+            error_msg += f"\n  → Example: client-to-client-reflection='{{ VALID_BODY_CLIENT_TO_CLIENT_REFLECTION[0] }}'"
+            return (False, error_msg)
+    if "dampening" in payload:
+        value = payload["dampening"]
+        if value not in VALID_BODY_DAMPENING:
+            desc = FIELD_DESCRIPTIONS.get("dampening", "")
+            error_msg = f"Invalid value for 'dampening': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DAMPENING)}"
+            error_msg += f"\n  → Example: dampening='{{ VALID_BODY_DAMPENING[0] }}'"
+            return (False, error_msg)
+    if "deterministic-med" in payload:
+        value = payload["deterministic-med"]
+        if value not in VALID_BODY_DETERMINISTIC_MED:
+            desc = FIELD_DESCRIPTIONS.get("deterministic-med", "")
+            error_msg = f"Invalid value for 'deterministic-med': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DETERMINISTIC_MED)}"
+            error_msg += f"\n  → Example: deterministic-med='{{ VALID_BODY_DETERMINISTIC_MED[0] }}'"
+            return (False, error_msg)
+    if "ebgp-multipath" in payload:
+        value = payload["ebgp-multipath"]
+        if value not in VALID_BODY_EBGP_MULTIPATH:
+            desc = FIELD_DESCRIPTIONS.get("ebgp-multipath", "")
+            error_msg = f"Invalid value for 'ebgp-multipath': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EBGP_MULTIPATH)}"
+            error_msg += f"\n  → Example: ebgp-multipath='{{ VALID_BODY_EBGP_MULTIPATH[0] }}'"
+            return (False, error_msg)
+    if "ibgp-multipath" in payload:
+        value = payload["ibgp-multipath"]
+        if value not in VALID_BODY_IBGP_MULTIPATH:
+            desc = FIELD_DESCRIPTIONS.get("ibgp-multipath", "")
+            error_msg = f"Invalid value for 'ibgp-multipath': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IBGP_MULTIPATH)}"
+            error_msg += f"\n  → Example: ibgp-multipath='{{ VALID_BODY_IBGP_MULTIPATH[0] }}'"
+            return (False, error_msg)
+    if "enforce-first-as" in payload:
+        value = payload["enforce-first-as"]
+        if value not in VALID_BODY_ENFORCE_FIRST_AS:
+            desc = FIELD_DESCRIPTIONS.get("enforce-first-as", "")
+            error_msg = f"Invalid value for 'enforce-first-as': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ENFORCE_FIRST_AS)}"
+            error_msg += f"\n  → Example: enforce-first-as='{{ VALID_BODY_ENFORCE_FIRST_AS[0] }}'"
+            return (False, error_msg)
+    if "fast-external-failover" in payload:
+        value = payload["fast-external-failover"]
+        if value not in VALID_BODY_FAST_EXTERNAL_FAILOVER:
+            desc = FIELD_DESCRIPTIONS.get("fast-external-failover", "")
+            error_msg = f"Invalid value for 'fast-external-failover': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FAST_EXTERNAL_FAILOVER)}"
+            error_msg += f"\n  → Example: fast-external-failover='{{ VALID_BODY_FAST_EXTERNAL_FAILOVER[0] }}'"
+            return (False, error_msg)
+    if "log-neighbour-changes" in payload:
+        value = payload["log-neighbour-changes"]
+        if value not in VALID_BODY_LOG_NEIGHBOUR_CHANGES:
+            desc = FIELD_DESCRIPTIONS.get("log-neighbour-changes", "")
+            error_msg = f"Invalid value for 'log-neighbour-changes': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOG_NEIGHBOUR_CHANGES)}"
+            error_msg += f"\n  → Example: log-neighbour-changes='{{ VALID_BODY_LOG_NEIGHBOUR_CHANGES[0] }}'"
+            return (False, error_msg)
+    if "network-import-check" in payload:
+        value = payload["network-import-check"]
+        if value not in VALID_BODY_NETWORK_IMPORT_CHECK:
+            desc = FIELD_DESCRIPTIONS.get("network-import-check", "")
+            error_msg = f"Invalid value for 'network-import-check': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NETWORK_IMPORT_CHECK)}"
+            error_msg += f"\n  → Example: network-import-check='{{ VALID_BODY_NETWORK_IMPORT_CHECK[0] }}'"
+            return (False, error_msg)
+    if "ignore-optional-capability" in payload:
+        value = payload["ignore-optional-capability"]
+        if value not in VALID_BODY_IGNORE_OPTIONAL_CAPABILITY:
+            desc = FIELD_DESCRIPTIONS.get("ignore-optional-capability", "")
+            error_msg = f"Invalid value for 'ignore-optional-capability': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IGNORE_OPTIONAL_CAPABILITY)}"
+            error_msg += f"\n  → Example: ignore-optional-capability='{{ VALID_BODY_IGNORE_OPTIONAL_CAPABILITY[0] }}'"
+            return (False, error_msg)
+    if "additional-path" in payload:
+        value = payload["additional-path"]
+        if value not in VALID_BODY_ADDITIONAL_PATH:
+            desc = FIELD_DESCRIPTIONS.get("additional-path", "")
+            error_msg = f"Invalid value for 'additional-path': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADDITIONAL_PATH)}"
+            error_msg += f"\n  → Example: additional-path='{{ VALID_BODY_ADDITIONAL_PATH[0] }}'"
+            return (False, error_msg)
+    if "additional-path6" in payload:
+        value = payload["additional-path6"]
+        if value not in VALID_BODY_ADDITIONAL_PATH6:
+            desc = FIELD_DESCRIPTIONS.get("additional-path6", "")
+            error_msg = f"Invalid value for 'additional-path6': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADDITIONAL_PATH6)}"
+            error_msg += f"\n  → Example: additional-path6='{{ VALID_BODY_ADDITIONAL_PATH6[0] }}'"
+            return (False, error_msg)
+    if "additional-path-vpnv4" in payload:
+        value = payload["additional-path-vpnv4"]
+        if value not in VALID_BODY_ADDITIONAL_PATH_VPNV4:
+            desc = FIELD_DESCRIPTIONS.get("additional-path-vpnv4", "")
+            error_msg = f"Invalid value for 'additional-path-vpnv4': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADDITIONAL_PATH_VPNV4)}"
+            error_msg += f"\n  → Example: additional-path-vpnv4='{{ VALID_BODY_ADDITIONAL_PATH_VPNV4[0] }}'"
+            return (False, error_msg)
+    if "additional-path-vpnv6" in payload:
+        value = payload["additional-path-vpnv6"]
+        if value not in VALID_BODY_ADDITIONAL_PATH_VPNV6:
+            desc = FIELD_DESCRIPTIONS.get("additional-path-vpnv6", "")
+            error_msg = f"Invalid value for 'additional-path-vpnv6': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADDITIONAL_PATH_VPNV6)}"
+            error_msg += f"\n  → Example: additional-path-vpnv6='{{ VALID_BODY_ADDITIONAL_PATH_VPNV6[0] }}'"
+            return (False, error_msg)
+    if "multipath-recursive-distance" in payload:
+        value = payload["multipath-recursive-distance"]
+        if value not in VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE:
+            desc = FIELD_DESCRIPTIONS.get("multipath-recursive-distance", "")
+            error_msg = f"Invalid value for 'multipath-recursive-distance': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE)}"
+            error_msg += f"\n  → Example: multipath-recursive-distance='{{ VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE[0] }}'"
+            return (False, error_msg)
+    if "recursive-next-hop" in payload:
+        value = payload["recursive-next-hop"]
+        if value not in VALID_BODY_RECURSIVE_NEXT_HOP:
+            desc = FIELD_DESCRIPTIONS.get("recursive-next-hop", "")
+            error_msg = f"Invalid value for 'recursive-next-hop': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RECURSIVE_NEXT_HOP)}"
+            error_msg += f"\n  → Example: recursive-next-hop='{{ VALID_BODY_RECURSIVE_NEXT_HOP[0] }}'"
+            return (False, error_msg)
+    if "recursive-inherit-priority" in payload:
+        value = payload["recursive-inherit-priority"]
+        if value not in VALID_BODY_RECURSIVE_INHERIT_PRIORITY:
+            desc = FIELD_DESCRIPTIONS.get("recursive-inherit-priority", "")
+            error_msg = f"Invalid value for 'recursive-inherit-priority': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RECURSIVE_INHERIT_PRIORITY)}"
+            error_msg += f"\n  → Example: recursive-inherit-priority='{{ VALID_BODY_RECURSIVE_INHERIT_PRIORITY[0] }}'"
+            return (False, error_msg)
+    if "tag-resolve-mode" in payload:
+        value = payload["tag-resolve-mode"]
+        if value not in VALID_BODY_TAG_RESOLVE_MODE:
+            desc = FIELD_DESCRIPTIONS.get("tag-resolve-mode", "")
+            error_msg = f"Invalid value for 'tag-resolve-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TAG_RESOLVE_MODE)}"
+            error_msg += f"\n  → Example: tag-resolve-mode='{{ VALID_BODY_TAG_RESOLVE_MODE[0] }}'"
+            return (False, error_msg)
+    if "synchronization" in payload:
+        value = payload["synchronization"]
+        if value not in VALID_BODY_SYNCHRONIZATION:
+            desc = FIELD_DESCRIPTIONS.get("synchronization", "")
+            error_msg = f"Invalid value for 'synchronization': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SYNCHRONIZATION)}"
+            error_msg += f"\n  → Example: synchronization='{{ VALID_BODY_SYNCHRONIZATION[0] }}'"
+            return (False, error_msg)
+    if "graceful-restart" in payload:
+        value = payload["graceful-restart"]
+        if value not in VALID_BODY_GRACEFUL_RESTART:
+            desc = FIELD_DESCRIPTIONS.get("graceful-restart", "")
+            error_msg = f"Invalid value for 'graceful-restart': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_GRACEFUL_RESTART)}"
+            error_msg += f"\n  → Example: graceful-restart='{{ VALID_BODY_GRACEFUL_RESTART[0] }}'"
+            return (False, error_msg)
+    if "graceful-end-on-timer" in payload:
+        value = payload["graceful-end-on-timer"]
+        if value not in VALID_BODY_GRACEFUL_END_ON_TIMER:
+            desc = FIELD_DESCRIPTIONS.get("graceful-end-on-timer", "")
+            error_msg = f"Invalid value for 'graceful-end-on-timer': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_GRACEFUL_END_ON_TIMER)}"
+            error_msg += f"\n  → Example: graceful-end-on-timer='{{ VALID_BODY_GRACEFUL_END_ON_TIMER[0] }}'"
+            return (False, error_msg)
+    if "cross-family-conditional-adv" in payload:
+        value = payload["cross-family-conditional-adv"]
+        if value not in VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV:
+            desc = FIELD_DESCRIPTIONS.get("cross-family-conditional-adv", "")
+            error_msg = f"Invalid value for 'cross-family-conditional-adv': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV)}"
+            error_msg += f"\n  → Example: cross-family-conditional-adv='{{ VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV[0] }}'"
+            return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
 # PUT Validation
 # ============================================================================
 
 
-def validate_bgp_put(
-    payload: dict[str, Any] | None = None,
+def validate_router_bgp_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update router/bgp.
 
     Args:
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_router_bgp_put(payload)
     """
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate keepalive-timer if present
-    if "keepalive-timer" in payload:
-        value = payload.get("keepalive-timer")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "keepalive-timer must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"keepalive-timer must be numeric, got: {value}",
-                )
-
-    # Validate holdtime-timer if present
-    if "holdtime-timer" in payload:
-        value = payload.get("holdtime-timer")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 3 or int_val > 65535:
-                    return (
-                        False,
-                        "holdtime-timer must be between 3 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"holdtime-timer must be numeric, got: {value}")
-
-    # Validate always-compare-med if present
+    # Step 1: Validate enum values
     if "always-compare-med" in payload:
-        value = payload.get("always-compare-med")
-        if value and value not in VALID_BODY_ALWAYS_COMPARE_MED:
+        value = payload["always-compare-med"]
+        if value not in VALID_BODY_ALWAYS_COMPARE_MED:
             return (
                 False,
-                f"Invalid always-compare-med '{value}'. Must be one of: {', '.join(VALID_BODY_ALWAYS_COMPARE_MED)}",
+                f"Invalid value for 'always-compare-med'='{value}'. Must be one of: {', '.join(VALID_BODY_ALWAYS_COMPARE_MED)}",
             )
-
-    # Validate bestpath-as-path-ignore if present
     if "bestpath-as-path-ignore" in payload:
-        value = payload.get("bestpath-as-path-ignore")
-        if value and value not in VALID_BODY_BESTPATH_AS_PATH_IGNORE:
+        value = payload["bestpath-as-path-ignore"]
+        if value not in VALID_BODY_BESTPATH_AS_PATH_IGNORE:
             return (
                 False,
-                f"Invalid bestpath-as-path-ignore '{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_AS_PATH_IGNORE)}",
+                f"Invalid value for 'bestpath-as-path-ignore'='{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_AS_PATH_IGNORE)}",
             )
-
-    # Validate bestpath-cmp-confed-aspath if present
     if "bestpath-cmp-confed-aspath" in payload:
-        value = payload.get("bestpath-cmp-confed-aspath")
-        if value and value not in VALID_BODY_BESTPATH_CMP_CONFED_ASPATH:
+        value = payload["bestpath-cmp-confed-aspath"]
+        if value not in VALID_BODY_BESTPATH_CMP_CONFED_ASPATH:
             return (
                 False,
-                f"Invalid bestpath-cmp-confed-aspath '{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_CMP_CONFED_ASPATH)}",
+                f"Invalid value for 'bestpath-cmp-confed-aspath'='{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_CMP_CONFED_ASPATH)}",
             )
-
-    # Validate bestpath-cmp-routerid if present
     if "bestpath-cmp-routerid" in payload:
-        value = payload.get("bestpath-cmp-routerid")
-        if value and value not in VALID_BODY_BESTPATH_CMP_ROUTERID:
+        value = payload["bestpath-cmp-routerid"]
+        if value not in VALID_BODY_BESTPATH_CMP_ROUTERID:
             return (
                 False,
-                f"Invalid bestpath-cmp-routerid '{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_CMP_ROUTERID)}",
+                f"Invalid value for 'bestpath-cmp-routerid'='{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_CMP_ROUTERID)}",
             )
-
-    # Validate bestpath-med-confed if present
     if "bestpath-med-confed" in payload:
-        value = payload.get("bestpath-med-confed")
-        if value and value not in VALID_BODY_BESTPATH_MED_CONFED:
+        value = payload["bestpath-med-confed"]
+        if value not in VALID_BODY_BESTPATH_MED_CONFED:
             return (
                 False,
-                f"Invalid bestpath-med-confed '{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_MED_CONFED)}",
+                f"Invalid value for 'bestpath-med-confed'='{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_MED_CONFED)}",
             )
-
-    # Validate bestpath-med-missing-as-worst if present
     if "bestpath-med-missing-as-worst" in payload:
-        value = payload.get("bestpath-med-missing-as-worst")
-        if value and value not in VALID_BODY_BESTPATH_MED_MISSING_AS_WORST:
+        value = payload["bestpath-med-missing-as-worst"]
+        if value not in VALID_BODY_BESTPATH_MED_MISSING_AS_WORST:
             return (
                 False,
-                f"Invalid bestpath-med-missing-as-worst '{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_MED_MISSING_AS_WORST)}",
+                f"Invalid value for 'bestpath-med-missing-as-worst'='{value}'. Must be one of: {', '.join(VALID_BODY_BESTPATH_MED_MISSING_AS_WORST)}",
             )
-
-    # Validate client-to-client-reflection if present
     if "client-to-client-reflection" in payload:
-        value = payload.get("client-to-client-reflection")
-        if value and value not in VALID_BODY_CLIENT_TO_CLIENT_REFLECTION:
+        value = payload["client-to-client-reflection"]
+        if value not in VALID_BODY_CLIENT_TO_CLIENT_REFLECTION:
             return (
                 False,
-                f"Invalid client-to-client-reflection '{value}'. Must be one of: {', '.join(VALID_BODY_CLIENT_TO_CLIENT_REFLECTION)}",
+                f"Invalid value for 'client-to-client-reflection'='{value}'. Must be one of: {', '.join(VALID_BODY_CLIENT_TO_CLIENT_REFLECTION)}",
             )
-
-    # Validate dampening if present
     if "dampening" in payload:
-        value = payload.get("dampening")
-        if value and value not in VALID_BODY_DAMPENING:
+        value = payload["dampening"]
+        if value not in VALID_BODY_DAMPENING:
             return (
                 False,
-                f"Invalid dampening '{value}'. Must be one of: {', '.join(VALID_BODY_DAMPENING)}",
+                f"Invalid value for 'dampening'='{value}'. Must be one of: {', '.join(VALID_BODY_DAMPENING)}",
             )
-
-    # Validate deterministic-med if present
     if "deterministic-med" in payload:
-        value = payload.get("deterministic-med")
-        if value and value not in VALID_BODY_DETERMINISTIC_MED:
+        value = payload["deterministic-med"]
+        if value not in VALID_BODY_DETERMINISTIC_MED:
             return (
                 False,
-                f"Invalid deterministic-med '{value}'. Must be one of: {', '.join(VALID_BODY_DETERMINISTIC_MED)}",
+                f"Invalid value for 'deterministic-med'='{value}'. Must be one of: {', '.join(VALID_BODY_DETERMINISTIC_MED)}",
             )
-
-    # Validate ebgp-multipath if present
     if "ebgp-multipath" in payload:
-        value = payload.get("ebgp-multipath")
-        if value and value not in VALID_BODY_EBGP_MULTIPATH:
+        value = payload["ebgp-multipath"]
+        if value not in VALID_BODY_EBGP_MULTIPATH:
             return (
                 False,
-                f"Invalid ebgp-multipath '{value}'. Must be one of: {', '.join(VALID_BODY_EBGP_MULTIPATH)}",
+                f"Invalid value for 'ebgp-multipath'='{value}'. Must be one of: {', '.join(VALID_BODY_EBGP_MULTIPATH)}",
             )
-
-    # Validate ibgp-multipath if present
     if "ibgp-multipath" in payload:
-        value = payload.get("ibgp-multipath")
-        if value and value not in VALID_BODY_IBGP_MULTIPATH:
+        value = payload["ibgp-multipath"]
+        if value not in VALID_BODY_IBGP_MULTIPATH:
             return (
                 False,
-                f"Invalid ibgp-multipath '{value}'. Must be one of: {', '.join(VALID_BODY_IBGP_MULTIPATH)}",
+                f"Invalid value for 'ibgp-multipath'='{value}'. Must be one of: {', '.join(VALID_BODY_IBGP_MULTIPATH)}",
             )
-
-    # Validate enforce-first-as if present
     if "enforce-first-as" in payload:
-        value = payload.get("enforce-first-as")
-        if value and value not in VALID_BODY_ENFORCE_FIRST_AS:
+        value = payload["enforce-first-as"]
+        if value not in VALID_BODY_ENFORCE_FIRST_AS:
             return (
                 False,
-                f"Invalid enforce-first-as '{value}'. Must be one of: {', '.join(VALID_BODY_ENFORCE_FIRST_AS)}",
+                f"Invalid value for 'enforce-first-as'='{value}'. Must be one of: {', '.join(VALID_BODY_ENFORCE_FIRST_AS)}",
             )
-
-    # Validate fast-external-failover if present
     if "fast-external-failover" in payload:
-        value = payload.get("fast-external-failover")
-        if value and value not in VALID_BODY_FAST_EXTERNAL_FAILOVER:
+        value = payload["fast-external-failover"]
+        if value not in VALID_BODY_FAST_EXTERNAL_FAILOVER:
             return (
                 False,
-                f"Invalid fast-external-failover '{value}'. Must be one of: {', '.join(VALID_BODY_FAST_EXTERNAL_FAILOVER)}",
+                f"Invalid value for 'fast-external-failover'='{value}'. Must be one of: {', '.join(VALID_BODY_FAST_EXTERNAL_FAILOVER)}",
             )
-
-    # Validate log-neighbour-changes if present
     if "log-neighbour-changes" in payload:
-        value = payload.get("log-neighbour-changes")
-        if value and value not in VALID_BODY_LOG_NEIGHBOUR_CHANGES:
+        value = payload["log-neighbour-changes"]
+        if value not in VALID_BODY_LOG_NEIGHBOUR_CHANGES:
             return (
                 False,
-                f"Invalid log-neighbour-changes '{value}'. Must be one of: {', '.join(VALID_BODY_LOG_NEIGHBOUR_CHANGES)}",
+                f"Invalid value for 'log-neighbour-changes'='{value}'. Must be one of: {', '.join(VALID_BODY_LOG_NEIGHBOUR_CHANGES)}",
             )
-
-    # Validate network-import-check if present
     if "network-import-check" in payload:
-        value = payload.get("network-import-check")
-        if value and value not in VALID_BODY_NETWORK_IMPORT_CHECK:
+        value = payload["network-import-check"]
+        if value not in VALID_BODY_NETWORK_IMPORT_CHECK:
             return (
                 False,
-                f"Invalid network-import-check '{value}'. Must be one of: {', '.join(VALID_BODY_NETWORK_IMPORT_CHECK)}",
+                f"Invalid value for 'network-import-check'='{value}'. Must be one of: {', '.join(VALID_BODY_NETWORK_IMPORT_CHECK)}",
             )
-
-    # Validate ignore-optional-capability if present
     if "ignore-optional-capability" in payload:
-        value = payload.get("ignore-optional-capability")
-        if value and value not in VALID_BODY_IGNORE_OPTIONAL_CAPABILITY:
+        value = payload["ignore-optional-capability"]
+        if value not in VALID_BODY_IGNORE_OPTIONAL_CAPABILITY:
             return (
                 False,
-                f"Invalid ignore-optional-capability '{value}'. Must be one of: {', '.join(VALID_BODY_IGNORE_OPTIONAL_CAPABILITY)}",
+                f"Invalid value for 'ignore-optional-capability'='{value}'. Must be one of: {', '.join(VALID_BODY_IGNORE_OPTIONAL_CAPABILITY)}",
             )
-
-    # Validate additional-path if present
     if "additional-path" in payload:
-        value = payload.get("additional-path")
-        if value and value not in VALID_BODY_ADDITIONAL_PATH:
+        value = payload["additional-path"]
+        if value not in VALID_BODY_ADDITIONAL_PATH:
             return (
                 False,
-                f"Invalid additional-path '{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH)}",
+                f"Invalid value for 'additional-path'='{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH)}",
             )
-
-    # Validate additional-path6 if present
     if "additional-path6" in payload:
-        value = payload.get("additional-path6")
-        if value and value not in VALID_BODY_ADDITIONAL_PATH6:
+        value = payload["additional-path6"]
+        if value not in VALID_BODY_ADDITIONAL_PATH6:
             return (
                 False,
-                f"Invalid additional-path6 '{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH6)}",
+                f"Invalid value for 'additional-path6'='{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH6)}",
             )
-
-    # Validate additional-path-vpnv4 if present
     if "additional-path-vpnv4" in payload:
-        value = payload.get("additional-path-vpnv4")
-        if value and value not in VALID_BODY_ADDITIONAL_PATH_VPNV4:
+        value = payload["additional-path-vpnv4"]
+        if value not in VALID_BODY_ADDITIONAL_PATH_VPNV4:
             return (
                 False,
-                f"Invalid additional-path-vpnv4 '{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH_VPNV4)}",
+                f"Invalid value for 'additional-path-vpnv4'='{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH_VPNV4)}",
             )
-
-    # Validate additional-path-vpnv6 if present
     if "additional-path-vpnv6" in payload:
-        value = payload.get("additional-path-vpnv6")
-        if value and value not in VALID_BODY_ADDITIONAL_PATH_VPNV6:
+        value = payload["additional-path-vpnv6"]
+        if value not in VALID_BODY_ADDITIONAL_PATH_VPNV6:
             return (
                 False,
-                f"Invalid additional-path-vpnv6 '{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH_VPNV6)}",
+                f"Invalid value for 'additional-path-vpnv6'='{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_PATH_VPNV6)}",
             )
-
-    # Validate multipath-recursive-distance if present
     if "multipath-recursive-distance" in payload:
-        value = payload.get("multipath-recursive-distance")
-        if value and value not in VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE:
+        value = payload["multipath-recursive-distance"]
+        if value not in VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE:
             return (
                 False,
-                f"Invalid multipath-recursive-distance '{value}'. Must be one of: {', '.join(VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE)}",
+                f"Invalid value for 'multipath-recursive-distance'='{value}'. Must be one of: {', '.join(VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE)}",
             )
-
-    # Validate recursive-next-hop if present
     if "recursive-next-hop" in payload:
-        value = payload.get("recursive-next-hop")
-        if value and value not in VALID_BODY_RECURSIVE_NEXT_HOP:
+        value = payload["recursive-next-hop"]
+        if value not in VALID_BODY_RECURSIVE_NEXT_HOP:
             return (
                 False,
-                f"Invalid recursive-next-hop '{value}'. Must be one of: {', '.join(VALID_BODY_RECURSIVE_NEXT_HOP)}",
+                f"Invalid value for 'recursive-next-hop'='{value}'. Must be one of: {', '.join(VALID_BODY_RECURSIVE_NEXT_HOP)}",
             )
-
-    # Validate recursive-inherit-priority if present
     if "recursive-inherit-priority" in payload:
-        value = payload.get("recursive-inherit-priority")
-        if value and value not in VALID_BODY_RECURSIVE_INHERIT_PRIORITY:
+        value = payload["recursive-inherit-priority"]
+        if value not in VALID_BODY_RECURSIVE_INHERIT_PRIORITY:
             return (
                 False,
-                f"Invalid recursive-inherit-priority '{value}'. Must be one of: {', '.join(VALID_BODY_RECURSIVE_INHERIT_PRIORITY)}",
+                f"Invalid value for 'recursive-inherit-priority'='{value}'. Must be one of: {', '.join(VALID_BODY_RECURSIVE_INHERIT_PRIORITY)}",
             )
-
-    # Validate tag-resolve-mode if present
     if "tag-resolve-mode" in payload:
-        value = payload.get("tag-resolve-mode")
-        if value and value not in VALID_BODY_TAG_RESOLVE_MODE:
+        value = payload["tag-resolve-mode"]
+        if value not in VALID_BODY_TAG_RESOLVE_MODE:
             return (
                 False,
-                f"Invalid tag-resolve-mode '{value}'. Must be one of: {', '.join(VALID_BODY_TAG_RESOLVE_MODE)}",
+                f"Invalid value for 'tag-resolve-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_TAG_RESOLVE_MODE)}",
             )
-
-    # Validate confederation-identifier if present
-    if "confederation-identifier" in payload:
-        value = payload.get("confederation-identifier")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 4294967295:
-                    return (
-                        False,
-                        "confederation-identifier must be between 1 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"confederation-identifier must be numeric, got: {value}",
-                )
-
-    # Validate dampening-route-map if present
-    if "dampening-route-map" in payload:
-        value = payload.get("dampening-route-map")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "dampening-route-map cannot exceed 35 characters")
-
-    # Validate dampening-reachability-half-life if present
-    if "dampening-reachability-half-life" in payload:
-        value = payload.get("dampening-reachability-half-life")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 45:
-                    return (
-                        False,
-                        "dampening-reachability-half-life must be between 1 and 45",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dampening-reachability-half-life must be numeric, got: {value}",
-                )
-
-    # Validate dampening-reuse if present
-    if "dampening-reuse" in payload:
-        value = payload.get("dampening-reuse")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 20000:
-                    return (
-                        False,
-                        "dampening-reuse must be between 1 and 20000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dampening-reuse must be numeric, got: {value}",
-                )
-
-    # Validate dampening-suppress if present
-    if "dampening-suppress" in payload:
-        value = payload.get("dampening-suppress")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 20000:
-                    return (
-                        False,
-                        "dampening-suppress must be between 1 and 20000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dampening-suppress must be numeric, got: {value}",
-                )
-
-    # Validate dampening-max-suppress-time if present
-    if "dampening-max-suppress-time" in payload:
-        value = payload.get("dampening-max-suppress-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (
-                        False,
-                        "dampening-max-suppress-time must be between 1 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dampening-max-suppress-time must be numeric, got: {value}",
-                )
-
-    # Validate dampening-unreachability-half-life if present
-    if "dampening-unreachability-half-life" in payload:
-        value = payload.get("dampening-unreachability-half-life")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 45:
-                    return (
-                        False,
-                        "dampening-unreachability-half-life must be between 1 and 45",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dampening-unreachability-half-life must be numeric, got: {value}",
-                )
-
-    # Validate default-local-preference if present
-    if "default-local-preference" in payload:
-        value = payload.get("default-local-preference")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "default-local-preference must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"default-local-preference must be numeric, got: {value}",
-                )
-
-    # Validate scan-time if present
-    if "scan-time" in payload:
-        value = payload.get("scan-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 60:
-                    return (False, "scan-time must be between 5 and 60")
-            except (ValueError, TypeError):
-                return (False, f"scan-time must be numeric, got: {value}")
-
-    # Validate distance-external if present
-    if "distance-external" in payload:
-        value = payload.get("distance-external")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (
-                        False,
-                        "distance-external must be between 1 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"distance-external must be numeric, got: {value}",
-                )
-
-    # Validate distance-internal if present
-    if "distance-internal" in payload:
-        value = payload.get("distance-internal")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (
-                        False,
-                        "distance-internal must be between 1 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"distance-internal must be numeric, got: {value}",
-                )
-
-    # Validate distance-local if present
-    if "distance-local" in payload:
-        value = payload.get("distance-local")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (False, "distance-local must be between 1 and 255")
-            except (ValueError, TypeError):
-                return (False, f"distance-local must be numeric, got: {value}")
-
-    # Validate synchronization if present
     if "synchronization" in payload:
-        value = payload.get("synchronization")
-        if value and value not in VALID_BODY_SYNCHRONIZATION:
+        value = payload["synchronization"]
+        if value not in VALID_BODY_SYNCHRONIZATION:
             return (
                 False,
-                f"Invalid synchronization '{value}'. Must be one of: {', '.join(VALID_BODY_SYNCHRONIZATION)}",
+                f"Invalid value for 'synchronization'='{value}'. Must be one of: {', '.join(VALID_BODY_SYNCHRONIZATION)}",
             )
-
-    # Validate graceful-restart if present
     if "graceful-restart" in payload:
-        value = payload.get("graceful-restart")
-        if value and value not in VALID_BODY_GRACEFUL_RESTART:
+        value = payload["graceful-restart"]
+        if value not in VALID_BODY_GRACEFUL_RESTART:
             return (
                 False,
-                f"Invalid graceful-restart '{value}'. Must be one of: {', '.join(VALID_BODY_GRACEFUL_RESTART)}",
+                f"Invalid value for 'graceful-restart'='{value}'. Must be one of: {', '.join(VALID_BODY_GRACEFUL_RESTART)}",
             )
-
-    # Validate graceful-restart-time if present
-    if "graceful-restart-time" in payload:
-        value = payload.get("graceful-restart-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "graceful-restart-time must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"graceful-restart-time must be numeric, got: {value}",
-                )
-
-    # Validate graceful-stalepath-time if present
-    if "graceful-stalepath-time" in payload:
-        value = payload.get("graceful-stalepath-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "graceful-stalepath-time must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"graceful-stalepath-time must be numeric, got: {value}",
-                )
-
-    # Validate graceful-update-delay if present
-    if "graceful-update-delay" in payload:
-        value = payload.get("graceful-update-delay")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "graceful-update-delay must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"graceful-update-delay must be numeric, got: {value}",
-                )
-
-    # Validate graceful-end-on-timer if present
     if "graceful-end-on-timer" in payload:
-        value = payload.get("graceful-end-on-timer")
-        if value and value not in VALID_BODY_GRACEFUL_END_ON_TIMER:
+        value = payload["graceful-end-on-timer"]
+        if value not in VALID_BODY_GRACEFUL_END_ON_TIMER:
             return (
                 False,
-                f"Invalid graceful-end-on-timer '{value}'. Must be one of: {', '.join(VALID_BODY_GRACEFUL_END_ON_TIMER)}",
+                f"Invalid value for 'graceful-end-on-timer'='{value}'. Must be one of: {', '.join(VALID_BODY_GRACEFUL_END_ON_TIMER)}",
             )
-
-    # Validate additional-path-select if present
-    if "additional-path-select" in payload:
-        value = payload.get("additional-path-select")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 255:
-                    return (
-                        False,
-                        "additional-path-select must be between 2 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"additional-path-select must be numeric, got: {value}",
-                )
-
-    # Validate additional-path-select6 if present
-    if "additional-path-select6" in payload:
-        value = payload.get("additional-path-select6")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 255:
-                    return (
-                        False,
-                        "additional-path-select6 must be between 2 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"additional-path-select6 must be numeric, got: {value}",
-                )
-
-    # Validate additional-path-select-vpnv4 if present
-    if "additional-path-select-vpnv4" in payload:
-        value = payload.get("additional-path-select-vpnv4")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 255:
-                    return (
-                        False,
-                        "additional-path-select-vpnv4 must be between 2 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"additional-path-select-vpnv4 must be numeric, got: {value}",
-                )
-
-    # Validate additional-path-select-vpnv6 if present
-    if "additional-path-select-vpnv6" in payload:
-        value = payload.get("additional-path-select-vpnv6")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 255:
-                    return (
-                        False,
-                        "additional-path-select-vpnv6 must be between 2 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"additional-path-select-vpnv6 must be numeric, got: {value}",
-                )
-
-    # Validate cross-family-conditional-adv if present
     if "cross-family-conditional-adv" in payload:
-        value = payload.get("cross-family-conditional-adv")
-        if value and value not in VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV:
+        value = payload["cross-family-conditional-adv"]
+        if value not in VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV:
             return (
                 False,
-                f"Invalid cross-family-conditional-adv '{value}'. Must be one of: {', '.join(VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV)}",
+                f"Invalid value for 'cross-family-conditional-adv'='{value}'. Must be one of: {', '.join(VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV)}",
             )
 
     return (True, None)
+
+
+# ============================================================================
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
+# ============================================================================
+
+
+def get_field_description(field_name: str) -> str | None:
+    """
+    Get description/help text for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
+    """
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "router/bgp",
+    "category": "cmdb",
+    "api_path": "router/bgp",
+    "help": "Configure BGP.",
+    "total_fields": 66,
+    "required_fields_count": 1,
+    "fields_with_defaults_count": 52,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

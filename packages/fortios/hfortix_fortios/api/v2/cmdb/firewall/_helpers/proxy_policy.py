@@ -1,76 +1,555 @@
 """
-Validation helpers for firewall proxy_policy endpoint.
+Validation helpers for firewall/proxy_policy endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "dstintf",  # Destination interface names.
-    "isolator-server",  # Isolator server name.
-    "name",  # Policy name.
     "proxy",  # Type of explicit proxy.
-    "schedule",  # Name of schedule object.
-    "service",  # Name of service objects.
     "srcintf",  # Source interface names.
+    "dstintf",  # Destination interface names.
+    "schedule",  # Name of schedule object.
+    "isolator-server",  # Isolator server name.
 ]
-
-# Mutually exclusive groups (at least ONE from each group required)
-MUTUALLY_EXCLUSIVE_GROUPS = {
-    "dest_address": ["dstaddr", "dstaddr6"],
-    "source_address": ["srcaddr", "srcaddr6"],
-}
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "action": "deny",
-    "block-notification": "disable",
-    "detect-https-in-http-request": "disable",
+    "uuid": "00000000-0000-0000-0000-000000000000",
+    "policyid": 0,
+    "name": "",
+    "proxy": "",
+    "ztna-tags-match-logic": "or",
     "device-ownership": "disable",
-    "disclaimer": "disable",
-    "dstaddr-negate": "disable",
-    "http-tunnel-auth": "disable",
-    "https-sub-category": "disable",
     "internet-service": "disable",
     "internet-service-negate": "disable",
     "internet-service6": "disable",
     "internet-service6-negate": "disable",
-    "log-http-transaction": "disable",
-    "logtraffic": "utm",
-    "logtraffic-start": "disable",
-    "profile-protocol-options": "default",
-    "profile-type": "single",
-    "proxy": "explicit-web",
-    "schedule": "always",
-    "service-negate": "disable",
     "srcaddr-negate": "disable",
-    "ssh-policy-redirect": "disable",
-    "ssl-ssh-profile": "no-inspection",
+    "dstaddr-negate": "disable",
+    "ztna-ems-tag-negate": "disable",
+    "service-negate": "disable",
+    "action": "deny",
     "status": "enable",
+    "schedule": "",
+    "logtraffic": "utm",
+    "session-ttl": 0,
+    "http-tunnel-auth": "disable",
+    "ssh-policy-redirect": "disable",
+    "webproxy-forward-server": "",
+    "isolator-server": "",
+    "webproxy-profile": "",
     "transparent": "disable",
-    "utm-status": "disable",
-    "uuid": "00000000-0000-0000-0000-000000000000",
     "webcache": "disable",
     "webcache-https": "disable",
-    "ztna-ems-tag-negate": "disable",
-    "ztna-tags-match-logic": "or",
+    "disclaimer": "disable",
+    "utm-status": "disable",
+    "profile-type": "single",
+    "profile-group": "",
+    "profile-protocol-options": "default",
+    "ssl-ssh-profile": "no-inspection",
+    "av-profile": "",
+    "webfilter-profile": "",
+    "dnsfilter-profile": "",
+    "emailfilter-profile": "",
+    "dlp-profile": "",
+    "file-filter-profile": "",
+    "ips-sensor": "",
+    "application-list": "",
+    "ips-voip-filter": "",
+    "sctp-filter-profile": "",
+    "icap-profile": "",
+    "videofilter-profile": "",
+    "waf-profile": "",
+    "ssh-filter-profile": "",
+    "casb-profile": "",
+    "replacemsg-override-group": "",
+    "logtraffic-start": "disable",
+    "log-http-transaction": "disable",
+    "block-notification": "disable",
+    "https-sub-category": "disable",
+    "decrypted-traffic-mirror": "",
+    "detect-https-in-http-request": "disable",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "uuid": "uuid",  # Universally Unique Identifier (UUID; automatically assigned 
+    "policyid": "integer",  # Policy ID.
+    "name": "string",  # Policy name.
+    "proxy": "option",  # Type of explicit proxy.
+    "access-proxy": "string",  # IPv4 access proxy.
+    "access-proxy6": "string",  # IPv6 access proxy.
+    "ztna-proxy": "string",  # ZTNA proxies.
+    "srcintf": "string",  # Source interface names.
+    "dstintf": "string",  # Destination interface names.
+    "srcaddr": "string",  # Source address objects.
+    "poolname": "string",  # Name of IP pool object.
+    "dstaddr": "string",  # Destination address objects.
+    "ztna-ems-tag": "string",  # ZTNA EMS Tag names.
+    "ztna-tags-match-logic": "option",  # ZTNA tag matching logic.
+    "device-ownership": "option",  # When enabled, the ownership enforcement will be done at poli
+    "url-risk": "string",  # URL risk level name.
+    "internet-service": "option",  # Enable/disable use of Internet Services for this policy. If 
+    "internet-service-negate": "option",  # When enabled, Internet Services match against any internet s
+    "internet-service-name": "string",  # Internet Service name.
+    "internet-service-group": "string",  # Internet Service group name.
+    "internet-service-custom": "string",  # Custom Internet Service name.
+    "internet-service-custom-group": "string",  # Custom Internet Service group name.
+    "internet-service-fortiguard": "string",  # FortiGuard Internet Service name.
+    "internet-service6": "option",  # Enable/disable use of Internet Services IPv6 for this policy
+    "internet-service6-negate": "option",  # When enabled, Internet Services match against any internet s
+    "internet-service6-name": "string",  # Internet Service IPv6 name.
+    "internet-service6-group": "string",  # Internet Service IPv6 group name.
+    "internet-service6-custom": "string",  # Custom Internet Service IPv6 name.
+    "internet-service6-custom-group": "string",  # Custom Internet Service IPv6 group name.
+    "internet-service6-fortiguard": "string",  # FortiGuard Internet Service IPv6 name.
+    "service": "string",  # Name of service objects.
+    "srcaddr-negate": "option",  # When enabled, source addresses match against any address EXC
+    "dstaddr-negate": "option",  # When enabled, destination addresses match against any addres
+    "ztna-ems-tag-negate": "option",  # When enabled, ZTNA EMS tags match against any tag EXCEPT the
+    "service-negate": "option",  # When enabled, services match against any service EXCEPT the 
+    "action": "option",  # Accept or deny traffic matching the policy parameters.
+    "status": "option",  # Enable/disable the active status of the policy.
+    "schedule": "string",  # Name of schedule object.
+    "logtraffic": "option",  # Enable/disable logging traffic through the policy.
+    "session-ttl": "integer",  # TTL in seconds for sessions accepted by this policy (0 means
+    "srcaddr6": "string",  # IPv6 source address objects.
+    "dstaddr6": "string",  # IPv6 destination address objects.
+    "groups": "string",  # Names of group objects.
+    "users": "string",  # Names of user objects.
+    "http-tunnel-auth": "option",  # Enable/disable HTTP tunnel authentication.
+    "ssh-policy-redirect": "option",  # Redirect SSH traffic to matching transparent proxy policy.
+    "webproxy-forward-server": "string",  # Web proxy forward server name.
+    "isolator-server": "string",  # Isolator server name.
+    "webproxy-profile": "string",  # Name of web proxy profile.
+    "transparent": "option",  # Enable to use the IP address of the client to connect to the
+    "webcache": "option",  # Enable/disable web caching.
+    "webcache-https": "option",  # Enable/disable web caching for HTTPS (Requires deep-inspecti
+    "disclaimer": "option",  # Web proxy disclaimer setting: by domain, policy, or user.
+    "utm-status": "option",  # Enable the use of UTM profiles/sensors/lists.
+    "profile-type": "option",  # Determine whether the firewall policy allows security profil
+    "profile-group": "string",  # Name of profile group.
+    "profile-protocol-options": "string",  # Name of an existing Protocol options profile.
+    "ssl-ssh-profile": "string",  # Name of an existing SSL SSH profile.
+    "av-profile": "string",  # Name of an existing Antivirus profile.
+    "webfilter-profile": "string",  # Name of an existing Web filter profile.
+    "dnsfilter-profile": "string",  # Name of an existing DNS filter profile.
+    "emailfilter-profile": "string",  # Name of an existing email filter profile.
+    "dlp-profile": "string",  # Name of an existing DLP profile.
+    "file-filter-profile": "string",  # Name of an existing file-filter profile.
+    "ips-sensor": "string",  # Name of an existing IPS sensor.
+    "application-list": "string",  # Name of an existing Application list.
+    "ips-voip-filter": "string",  # Name of an existing VoIP (ips) profile.
+    "sctp-filter-profile": "string",  # Name of an existing SCTP filter profile.
+    "icap-profile": "string",  # Name of an existing ICAP profile.
+    "videofilter-profile": "string",  # Name of an existing VideoFilter profile.
+    "waf-profile": "string",  # Name of an existing Web application firewall profile.
+    "ssh-filter-profile": "string",  # Name of an existing SSH filter profile.
+    "casb-profile": "string",  # Name of an existing CASB profile.
+    "replacemsg-override-group": "string",  # Authentication replacement message override group.
+    "logtraffic-start": "option",  # Enable/disable policy log traffic start.
+    "log-http-transaction": "option",  # Enable/disable HTTP transaction log.
+    "comments": "var-string",  # Optional comments.
+    "block-notification": "option",  # Enable/disable block notification.
+    "redirect-url": "var-string",  # Redirect URL for further explicit web proxy processing.
+    "https-sub-category": "option",  # Enable/disable HTTPS sub-category policy matching.
+    "decrypted-traffic-mirror": "string",  # Decrypted traffic mirror.
+    "detect-https-in-http-request": "option",  # Enable/disable detection of HTTPS in HTTP request.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "uuid": "Universally Unique Identifier (UUID; automatically assigned but can be manually reset).",
+    "policyid": "Policy ID.",
+    "name": "Policy name.",
+    "proxy": "Type of explicit proxy.",
+    "access-proxy": "IPv4 access proxy.",
+    "access-proxy6": "IPv6 access proxy.",
+    "ztna-proxy": "ZTNA proxies.",
+    "srcintf": "Source interface names.",
+    "dstintf": "Destination interface names.",
+    "srcaddr": "Source address objects.",
+    "poolname": "Name of IP pool object.",
+    "dstaddr": "Destination address objects.",
+    "ztna-ems-tag": "ZTNA EMS Tag names.",
+    "ztna-tags-match-logic": "ZTNA tag matching logic.",
+    "device-ownership": "When enabled, the ownership enforcement will be done at policy level.",
+    "url-risk": "URL risk level name.",
+    "internet-service": "Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.",
+    "internet-service-negate": "When enabled, Internet Services match against any internet service EXCEPT the selected Internet Service.",
+    "internet-service-name": "Internet Service name.",
+    "internet-service-group": "Internet Service group name.",
+    "internet-service-custom": "Custom Internet Service name.",
+    "internet-service-custom-group": "Custom Internet Service group name.",
+    "internet-service-fortiguard": "FortiGuard Internet Service name.",
+    "internet-service6": "Enable/disable use of Internet Services IPv6 for this policy. If enabled, destination IPv6 address and service are not used.",
+    "internet-service6-negate": "When enabled, Internet Services match against any internet service IPv6 EXCEPT the selected Internet Service IPv6.",
+    "internet-service6-name": "Internet Service IPv6 name.",
+    "internet-service6-group": "Internet Service IPv6 group name.",
+    "internet-service6-custom": "Custom Internet Service IPv6 name.",
+    "internet-service6-custom-group": "Custom Internet Service IPv6 group name.",
+    "internet-service6-fortiguard": "FortiGuard Internet Service IPv6 name.",
+    "service": "Name of service objects.",
+    "srcaddr-negate": "When enabled, source addresses match against any address EXCEPT the specified source addresses.",
+    "dstaddr-negate": "When enabled, destination addresses match against any address EXCEPT the specified destination addresses.",
+    "ztna-ems-tag-negate": "When enabled, ZTNA EMS tags match against any tag EXCEPT the specified ZTNA EMS tags.",
+    "service-negate": "When enabled, services match against any service EXCEPT the specified destination services.",
+    "action": "Accept or deny traffic matching the policy parameters.",
+    "status": "Enable/disable the active status of the policy.",
+    "schedule": "Name of schedule object.",
+    "logtraffic": "Enable/disable logging traffic through the policy.",
+    "session-ttl": "TTL in seconds for sessions accepted by this policy (0 means use the system default session TTL).",
+    "srcaddr6": "IPv6 source address objects.",
+    "dstaddr6": "IPv6 destination address objects.",
+    "groups": "Names of group objects.",
+    "users": "Names of user objects.",
+    "http-tunnel-auth": "Enable/disable HTTP tunnel authentication.",
+    "ssh-policy-redirect": "Redirect SSH traffic to matching transparent proxy policy.",
+    "webproxy-forward-server": "Web proxy forward server name.",
+    "isolator-server": "Isolator server name.",
+    "webproxy-profile": "Name of web proxy profile.",
+    "transparent": "Enable to use the IP address of the client to connect to the server.",
+    "webcache": "Enable/disable web caching.",
+    "webcache-https": "Enable/disable web caching for HTTPS (Requires deep-inspection enabled in ssl-ssh-profile).",
+    "disclaimer": "Web proxy disclaimer setting: by domain, policy, or user.",
+    "utm-status": "Enable the use of UTM profiles/sensors/lists.",
+    "profile-type": "Determine whether the firewall policy allows security profile groups or single profiles only.",
+    "profile-group": "Name of profile group.",
+    "profile-protocol-options": "Name of an existing Protocol options profile.",
+    "ssl-ssh-profile": "Name of an existing SSL SSH profile.",
+    "av-profile": "Name of an existing Antivirus profile.",
+    "webfilter-profile": "Name of an existing Web filter profile.",
+    "dnsfilter-profile": "Name of an existing DNS filter profile.",
+    "emailfilter-profile": "Name of an existing email filter profile.",
+    "dlp-profile": "Name of an existing DLP profile.",
+    "file-filter-profile": "Name of an existing file-filter profile.",
+    "ips-sensor": "Name of an existing IPS sensor.",
+    "application-list": "Name of an existing Application list.",
+    "ips-voip-filter": "Name of an existing VoIP (ips) profile.",
+    "sctp-filter-profile": "Name of an existing SCTP filter profile.",
+    "icap-profile": "Name of an existing ICAP profile.",
+    "videofilter-profile": "Name of an existing VideoFilter profile.",
+    "waf-profile": "Name of an existing Web application firewall profile.",
+    "ssh-filter-profile": "Name of an existing SSH filter profile.",
+    "casb-profile": "Name of an existing CASB profile.",
+    "replacemsg-override-group": "Authentication replacement message override group.",
+    "logtraffic-start": "Enable/disable policy log traffic start.",
+    "log-http-transaction": "Enable/disable HTTP transaction log.",
+    "comments": "Optional comments.",
+    "block-notification": "Enable/disable block notification.",
+    "redirect-url": "Redirect URL for further explicit web proxy processing.",
+    "https-sub-category": "Enable/disable HTTPS sub-category policy matching.",
+    "decrypted-traffic-mirror": "Decrypted traffic mirror.",
+    "detect-https-in-http-request": "Enable/disable detection of HTTPS in HTTP request.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "policyid": {"type": "integer", "min": 0, "max": 4294967295},
+    "name": {"type": "string", "max_length": 35},
+    "schedule": {"type": "string", "max_length": 35},
+    "session-ttl": {"type": "integer", "min": 300, "max": 2764800},
+    "webproxy-forward-server": {"type": "string", "max_length": 63},
+    "isolator-server": {"type": "string", "max_length": 63},
+    "webproxy-profile": {"type": "string", "max_length": 63},
+    "profile-group": {"type": "string", "max_length": 47},
+    "profile-protocol-options": {"type": "string", "max_length": 47},
+    "ssl-ssh-profile": {"type": "string", "max_length": 47},
+    "av-profile": {"type": "string", "max_length": 47},
+    "webfilter-profile": {"type": "string", "max_length": 47},
+    "dnsfilter-profile": {"type": "string", "max_length": 47},
+    "emailfilter-profile": {"type": "string", "max_length": 47},
+    "dlp-profile": {"type": "string", "max_length": 47},
+    "file-filter-profile": {"type": "string", "max_length": 47},
+    "ips-sensor": {"type": "string", "max_length": 47},
+    "application-list": {"type": "string", "max_length": 47},
+    "ips-voip-filter": {"type": "string", "max_length": 47},
+    "sctp-filter-profile": {"type": "string", "max_length": 47},
+    "icap-profile": {"type": "string", "max_length": 47},
+    "videofilter-profile": {"type": "string", "max_length": 47},
+    "waf-profile": {"type": "string", "max_length": 47},
+    "ssh-filter-profile": {"type": "string", "max_length": 47},
+    "casb-profile": {"type": "string", "max_length": 47},
+    "replacemsg-override-group": {"type": "string", "max_length": 35},
+    "decrypted-traffic-mirror": {"type": "string", "max_length": 35},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "access-proxy": {
+        "name": {
+            "type": "string",
+            "help": "Access Proxy name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "access-proxy6": {
+        "name": {
+            "type": "string",
+            "help": "Access proxy name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "ztna-proxy": {
+        "name": {
+            "type": "string",
+            "help": "ZTNA proxy name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "srcintf": {
+        "name": {
+            "type": "string",
+            "help": "Interface name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "dstintf": {
+        "name": {
+            "type": "string",
+            "help": "Interface name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "srcaddr": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "poolname": {
+        "name": {
+            "type": "string",
+            "help": "IP pool name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "dstaddr": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "ztna-ems-tag": {
+        "name": {
+            "type": "string",
+            "help": "EMS Tag name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "url-risk": {
+        "name": {
+            "type": "string",
+            "help": "Risk level name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-name": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-group": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-custom": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-custom-group": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-fortiguard": {
+        "name": {
+            "type": "string",
+            "help": "FortiGuard Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-name": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service IPv6 name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-group": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service IPv6 group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-custom": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service IPv6 name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-custom-group": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service IPv6 group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-fortiguard": {
+        "name": {
+            "type": "string",
+            "help": "FortiGuard Internet Service IPv6 name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "service": {
+        "name": {
+            "type": "string",
+            "help": "Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "srcaddr6": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "dstaddr6": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "groups": {
+        "name": {
+            "type": "string",
+            "help": "Group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "users": {
+        "name": {
+            "type": "string",
+            "help": "Group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
 }
 
 
@@ -83,31 +562,117 @@ VALID_BODY_PROXY = [
     "ssh-tunnel",
     "access-proxy",
     "ztna-proxy",
+    "wanopt",
 ]
-VALID_BODY_ZTNA_TAGS_MATCH_LOGIC = ["or", "and"]
-VALID_BODY_DEVICE_OWNERSHIP = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE_NEGATE = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE6 = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE6_NEGATE = ["enable", "disable"]
-VALID_BODY_SRCADDR_NEGATE = ["enable", "disable"]
-VALID_BODY_DSTADDR_NEGATE = ["enable", "disable"]
-VALID_BODY_ZTNA_EMS_TAG_NEGATE = ["enable", "disable"]
-VALID_BODY_SERVICE_NEGATE = ["enable", "disable"]
-VALID_BODY_ACTION = ["accept", "deny", "redirect", "isolate"]
-VALID_BODY_STATUS = ["enable", "disable"]
-VALID_BODY_LOGTRAFFIC = ["all", "utm", "disable"]
-VALID_BODY_HTTP_TUNNEL_AUTH = ["enable", "disable"]
-VALID_BODY_SSH_POLICY_REDIRECT = ["enable", "disable"]
-VALID_BODY_TRANSPARENT = ["enable", "disable"]
-VALID_BODY_DISCLAIMER = ["disable", "domain", "policy", "user"]
-VALID_BODY_UTM_STATUS = ["enable", "disable"]
-VALID_BODY_PROFILE_TYPE = ["single", "group"]
-VALID_BODY_LOGTRAFFIC_START = ["enable", "disable"]
-VALID_BODY_LOG_HTTP_TRANSACTION = ["enable", "disable"]
-VALID_BODY_BLOCK_NOTIFICATION = ["enable", "disable"]
-VALID_BODY_HTTPS_SUB_CATEGORY = ["enable", "disable"]
-VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST = ["enable", "disable"]
+VALID_BODY_ZTNA_TAGS_MATCH_LOGIC = [
+    "or",
+    "and",
+]
+VALID_BODY_DEVICE_OWNERSHIP = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE6 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE6_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SRCADDR_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DSTADDR_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ZTNA_EMS_TAG_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SERVICE_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ACTION = [
+    "accept",
+    "deny",
+    "redirect",
+    "isolate",
+]
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOGTRAFFIC = [
+    "all",
+    "utm",
+    "disable",
+]
+VALID_BODY_HTTP_TUNNEL_AUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SSH_POLICY_REDIRECT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_TRANSPARENT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WEBCACHE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WEBCACHE_HTTPS = [
+    "disable",
+    "enable",
+]
+VALID_BODY_DISCLAIMER = [
+    "disable",
+    "domain",
+    "policy",
+    "user",
+]
+VALID_BODY_UTM_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PROFILE_TYPE = [
+    "single",
+    "group",
+]
+VALID_BODY_LOGTRAFFIC_START = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOG_HTTP_TRANSACTION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BLOCK_NOTIFICATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_HTTPS_SUB_CATEGORY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -115,13 +680,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_proxy_policy_get(
+def validate_firewall_proxy_policy_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for firewall/proxy_policy.
 
     Args:
         attr: Attribute filter (optional)
@@ -131,9 +696,20 @@ def validate_proxy_policy_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_firewall_proxy_policy_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by policyid
+        >>> is_valid, error = validate_firewall_proxy_policy_get(policyid="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_firewall_proxy_policy_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -154,7 +730,7 @@ def validate_proxy_policy_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for firewall_proxy-policy.
+    Validate required fields for firewall/proxy_policy.
 
     This validator checks:
     1. Always-required fields are present
@@ -167,514 +743,358 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "dstintf": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
-
-    # Check mutually exclusive groups
-    if not ("dstaddr" in payload or "dstaddr6" in payload):
-        return (False, "Must provide at least one of: dstaddr, dstaddr6")
-    if not ("srcaddr" in payload or "srcaddr6" in payload):
-        return (False, "Must provide at least one of: srcaddr, srcaddr6")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_proxy_policy_post(
-    payload: dict[str, Any],
+def validate_firewall_proxy_policy_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new firewall/proxy_policy object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - dstintf: Destination interface names.
-      - isolator-server: Isolator server name.
-      - name: Policy name.
-      - proxy: Type of explicit proxy.
-      - schedule: Name of schedule object.
-      - service: Name of service objects.
-      - srcintf: Source interface names.
-
-    Mutually exclusive (at least ONE required):
-      - dstaddr OR dstaddr6
-      - srcaddr OR srcaddr6
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "proxy": True,  # Type of explicit proxy.
+        ...     "srcintf": True,  # Source interface names.
+        ... }
+        >>> is_valid, error = validate_firewall_proxy_policy_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "proxy": True,
+        ...     "proxy": "explicit-web",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_firewall_proxy_policy_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["proxy"] = "invalid-value"
+        >>> is_valid, error = validate_firewall_proxy_policy_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_firewall_proxy_policy_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate policyid if present
-    if "policyid" in payload:
-        value = payload.get("policyid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "policyid must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"policyid must be numeric, got: {value}")
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate proxy if present
+    # Step 2: Validate enum values
     if "proxy" in payload:
-        value = payload.get("proxy")
-        if value and value not in VALID_BODY_PROXY:
-            return (
-                False,
-                f"Invalid proxy '{value}'. Must be one of: {', '.join(VALID_BODY_PROXY)}",
-            )
-
-    # Validate ztna-tags-match-logic if present
+        value = payload["proxy"]
+        if value not in VALID_BODY_PROXY:
+            desc = FIELD_DESCRIPTIONS.get("proxy", "")
+            error_msg = f"Invalid value for 'proxy': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROXY)}"
+            error_msg += f"\n  → Example: proxy='{{ VALID_BODY_PROXY[0] }}'"
+            return (False, error_msg)
     if "ztna-tags-match-logic" in payload:
-        value = payload.get("ztna-tags-match-logic")
-        if value and value not in VALID_BODY_ZTNA_TAGS_MATCH_LOGIC:
-            return (
-                False,
-                f"Invalid ztna-tags-match-logic '{value}'. Must be one of: {', '.join(VALID_BODY_ZTNA_TAGS_MATCH_LOGIC)}",
-            )
-
-    # Validate device-ownership if present
+        value = payload["ztna-tags-match-logic"]
+        if value not in VALID_BODY_ZTNA_TAGS_MATCH_LOGIC:
+            desc = FIELD_DESCRIPTIONS.get("ztna-tags-match-logic", "")
+            error_msg = f"Invalid value for 'ztna-tags-match-logic': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ZTNA_TAGS_MATCH_LOGIC)}"
+            error_msg += f"\n  → Example: ztna-tags-match-logic='{{ VALID_BODY_ZTNA_TAGS_MATCH_LOGIC[0] }}'"
+            return (False, error_msg)
     if "device-ownership" in payload:
-        value = payload.get("device-ownership")
-        if value and value not in VALID_BODY_DEVICE_OWNERSHIP:
-            return (
-                False,
-                f"Invalid device-ownership '{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_OWNERSHIP)}",
-            )
-
-    # Validate internet-service if present
+        value = payload["device-ownership"]
+        if value not in VALID_BODY_DEVICE_OWNERSHIP:
+            desc = FIELD_DESCRIPTIONS.get("device-ownership", "")
+            error_msg = f"Invalid value for 'device-ownership': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DEVICE_OWNERSHIP)}"
+            error_msg += f"\n  → Example: device-ownership='{{ VALID_BODY_DEVICE_OWNERSHIP[0] }}'"
+            return (False, error_msg)
     if "internet-service" in payload:
-        value = payload.get("internet-service")
-        if value and value not in VALID_BODY_INTERNET_SERVICE:
-            return (
-                False,
-                f"Invalid internet-service '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE)}",
-            )
-
-    # Validate internet-service-negate if present
+        value = payload["internet-service"]
+        if value not in VALID_BODY_INTERNET_SERVICE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service", "")
+            error_msg = f"Invalid value for 'internet-service': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE)}"
+            error_msg += f"\n  → Example: internet-service='{{ VALID_BODY_INTERNET_SERVICE[0] }}'"
+            return (False, error_msg)
     if "internet-service-negate" in payload:
-        value = payload.get("internet-service-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
-            return (
-                False,
-                f"Invalid internet-service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_NEGATE)}",
-            )
-
-    # Validate internet-service6 if present
+        value = payload["internet-service-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service-negate", "")
+            error_msg = f"Invalid value for 'internet-service-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE_NEGATE)}"
+            error_msg += f"\n  → Example: internet-service-negate='{{ VALID_BODY_INTERNET_SERVICE_NEGATE[0] }}'"
+            return (False, error_msg)
     if "internet-service6" in payload:
-        value = payload.get("internet-service6")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6:
-            return (
-                False,
-                f"Invalid internet-service6 '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6)}",
-            )
-
-    # Validate internet-service6-negate if present
+        value = payload["internet-service6"]
+        if value not in VALID_BODY_INTERNET_SERVICE6:
+            desc = FIELD_DESCRIPTIONS.get("internet-service6", "")
+            error_msg = f"Invalid value for 'internet-service6': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE6)}"
+            error_msg += f"\n  → Example: internet-service6='{{ VALID_BODY_INTERNET_SERVICE6[0] }}'"
+            return (False, error_msg)
     if "internet-service6-negate" in payload:
-        value = payload.get("internet-service6-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
-            return (
-                False,
-                f"Invalid internet-service6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_NEGATE)}",
-            )
-
-    # Validate srcaddr-negate if present
+        value = payload["internet-service6-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service6-negate", "")
+            error_msg = f"Invalid value for 'internet-service6-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE6_NEGATE)}"
+            error_msg += f"\n  → Example: internet-service6-negate='{{ VALID_BODY_INTERNET_SERVICE6_NEGATE[0] }}'"
+            return (False, error_msg)
     if "srcaddr-negate" in payload:
-        value = payload.get("srcaddr-negate")
-        if value and value not in VALID_BODY_SRCADDR_NEGATE:
-            return (
-                False,
-                f"Invalid srcaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR_NEGATE)}",
-            )
-
-    # Validate dstaddr-negate if present
+        value = payload["srcaddr-negate"]
+        if value not in VALID_BODY_SRCADDR_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("srcaddr-negate", "")
+            error_msg = f"Invalid value for 'srcaddr-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SRCADDR_NEGATE)}"
+            error_msg += f"\n  → Example: srcaddr-negate='{{ VALID_BODY_SRCADDR_NEGATE[0] }}'"
+            return (False, error_msg)
     if "dstaddr-negate" in payload:
-        value = payload.get("dstaddr-negate")
-        if value and value not in VALID_BODY_DSTADDR_NEGATE:
-            return (
-                False,
-                f"Invalid dstaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR_NEGATE)}",
-            )
-
-    # Validate ztna-ems-tag-negate if present
+        value = payload["dstaddr-negate"]
+        if value not in VALID_BODY_DSTADDR_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("dstaddr-negate", "")
+            error_msg = f"Invalid value for 'dstaddr-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DSTADDR_NEGATE)}"
+            error_msg += f"\n  → Example: dstaddr-negate='{{ VALID_BODY_DSTADDR_NEGATE[0] }}'"
+            return (False, error_msg)
     if "ztna-ems-tag-negate" in payload:
-        value = payload.get("ztna-ems-tag-negate")
-        if value and value not in VALID_BODY_ZTNA_EMS_TAG_NEGATE:
-            return (
-                False,
-                f"Invalid ztna-ems-tag-negate '{value}'. Must be one of: {', '.join(VALID_BODY_ZTNA_EMS_TAG_NEGATE)}",
-            )
-
-    # Validate service-negate if present
+        value = payload["ztna-ems-tag-negate"]
+        if value not in VALID_BODY_ZTNA_EMS_TAG_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("ztna-ems-tag-negate", "")
+            error_msg = f"Invalid value for 'ztna-ems-tag-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ZTNA_EMS_TAG_NEGATE)}"
+            error_msg += f"\n  → Example: ztna-ems-tag-negate='{{ VALID_BODY_ZTNA_EMS_TAG_NEGATE[0] }}'"
+            return (False, error_msg)
     if "service-negate" in payload:
-        value = payload.get("service-negate")
-        if value and value not in VALID_BODY_SERVICE_NEGATE:
-            return (
-                False,
-                f"Invalid service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SERVICE_NEGATE)}",
-            )
-
-    # Validate action if present
+        value = payload["service-negate"]
+        if value not in VALID_BODY_SERVICE_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("service-negate", "")
+            error_msg = f"Invalid value for 'service-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SERVICE_NEGATE)}"
+            error_msg += f"\n  → Example: service-negate='{{ VALID_BODY_SERVICE_NEGATE[0] }}'"
+            return (False, error_msg)
     if "action" in payload:
-        value = payload.get("action")
-        if value and value not in VALID_BODY_ACTION:
-            return (
-                False,
-                f"Invalid action '{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
-            )
-
-    # Validate status if present
+        value = payload["action"]
+        if value not in VALID_BODY_ACTION:
+            desc = FIELD_DESCRIPTIONS.get("action", "")
+            error_msg = f"Invalid value for 'action': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACTION)}"
+            error_msg += f"\n  → Example: action='{{ VALID_BODY_ACTION[0] }}'"
+            return (False, error_msg)
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
-            return (
-                False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
-            )
-
-    # Validate schedule if present
-    if "schedule" in payload:
-        value = payload.get("schedule")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "schedule cannot exceed 35 characters")
-
-    # Validate logtraffic if present
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
     if "logtraffic" in payload:
-        value = payload.get("logtraffic")
-        if value and value not in VALID_BODY_LOGTRAFFIC:
-            return (
-                False,
-                f"Invalid logtraffic '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
-            )
-
-    # Validate session-ttl if present
-    if "session-ttl" in payload:
-        value = payload.get("session-ttl")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 2764800:
-                    return (
-                        False,
-                        "session-ttl must be between 300 and 2764800",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"session-ttl must be numeric, got: {value}")
-
-    # Validate http-tunnel-auth if present
+        value = payload["logtraffic"]
+        if value not in VALID_BODY_LOGTRAFFIC:
+            desc = FIELD_DESCRIPTIONS.get("logtraffic", "")
+            error_msg = f"Invalid value for 'logtraffic': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOGTRAFFIC)}"
+            error_msg += f"\n  → Example: logtraffic='{{ VALID_BODY_LOGTRAFFIC[0] }}'"
+            return (False, error_msg)
     if "http-tunnel-auth" in payload:
-        value = payload.get("http-tunnel-auth")
-        if value and value not in VALID_BODY_HTTP_TUNNEL_AUTH:
-            return (
-                False,
-                f"Invalid http-tunnel-auth '{value}'. Must be one of: {', '.join(VALID_BODY_HTTP_TUNNEL_AUTH)}",
-            )
-
-    # Validate ssh-policy-redirect if present
+        value = payload["http-tunnel-auth"]
+        if value not in VALID_BODY_HTTP_TUNNEL_AUTH:
+            desc = FIELD_DESCRIPTIONS.get("http-tunnel-auth", "")
+            error_msg = f"Invalid value for 'http-tunnel-auth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HTTP_TUNNEL_AUTH)}"
+            error_msg += f"\n  → Example: http-tunnel-auth='{{ VALID_BODY_HTTP_TUNNEL_AUTH[0] }}'"
+            return (False, error_msg)
     if "ssh-policy-redirect" in payload:
-        value = payload.get("ssh-policy-redirect")
-        if value and value not in VALID_BODY_SSH_POLICY_REDIRECT:
-            return (
-                False,
-                f"Invalid ssh-policy-redirect '{value}'. Must be one of: {', '.join(VALID_BODY_SSH_POLICY_REDIRECT)}",
-            )
-
-    # Validate webproxy-forward-server if present
-    if "webproxy-forward-server" in payload:
-        value = payload.get("webproxy-forward-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (
-                False,
-                "webproxy-forward-server cannot exceed 63 characters",
-            )
-
-    # Validate isolator-server if present
-    if "isolator-server" in payload:
-        value = payload.get("isolator-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "isolator-server cannot exceed 63 characters")
-
-    # Validate webproxy-profile if present
-    if "webproxy-profile" in payload:
-        value = payload.get("webproxy-profile")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "webproxy-profile cannot exceed 63 characters")
-
-    # Validate transparent if present
+        value = payload["ssh-policy-redirect"]
+        if value not in VALID_BODY_SSH_POLICY_REDIRECT:
+            desc = FIELD_DESCRIPTIONS.get("ssh-policy-redirect", "")
+            error_msg = f"Invalid value for 'ssh-policy-redirect': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SSH_POLICY_REDIRECT)}"
+            error_msg += f"\n  → Example: ssh-policy-redirect='{{ VALID_BODY_SSH_POLICY_REDIRECT[0] }}'"
+            return (False, error_msg)
     if "transparent" in payload:
-        value = payload.get("transparent")
-        if value and value not in VALID_BODY_TRANSPARENT:
-            return (
-                False,
-                f"Invalid transparent '{value}'. Must be one of: {', '.join(VALID_BODY_TRANSPARENT)}",
-            )
-
-    # Validate disclaimer if present
+        value = payload["transparent"]
+        if value not in VALID_BODY_TRANSPARENT:
+            desc = FIELD_DESCRIPTIONS.get("transparent", "")
+            error_msg = f"Invalid value for 'transparent': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TRANSPARENT)}"
+            error_msg += f"\n  → Example: transparent='{{ VALID_BODY_TRANSPARENT[0] }}'"
+            return (False, error_msg)
+    if "webcache" in payload:
+        value = payload["webcache"]
+        if value not in VALID_BODY_WEBCACHE:
+            desc = FIELD_DESCRIPTIONS.get("webcache", "")
+            error_msg = f"Invalid value for 'webcache': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WEBCACHE)}"
+            error_msg += f"\n  → Example: webcache='{{ VALID_BODY_WEBCACHE[0] }}'"
+            return (False, error_msg)
+    if "webcache-https" in payload:
+        value = payload["webcache-https"]
+        if value not in VALID_BODY_WEBCACHE_HTTPS:
+            desc = FIELD_DESCRIPTIONS.get("webcache-https", "")
+            error_msg = f"Invalid value for 'webcache-https': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WEBCACHE_HTTPS)}"
+            error_msg += f"\n  → Example: webcache-https='{{ VALID_BODY_WEBCACHE_HTTPS[0] }}'"
+            return (False, error_msg)
     if "disclaimer" in payload:
-        value = payload.get("disclaimer")
-        if value and value not in VALID_BODY_DISCLAIMER:
-            return (
-                False,
-                f"Invalid disclaimer '{value}'. Must be one of: {', '.join(VALID_BODY_DISCLAIMER)}",
-            )
-
-    # Validate utm-status if present
+        value = payload["disclaimer"]
+        if value not in VALID_BODY_DISCLAIMER:
+            desc = FIELD_DESCRIPTIONS.get("disclaimer", "")
+            error_msg = f"Invalid value for 'disclaimer': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DISCLAIMER)}"
+            error_msg += f"\n  → Example: disclaimer='{{ VALID_BODY_DISCLAIMER[0] }}'"
+            return (False, error_msg)
     if "utm-status" in payload:
-        value = payload.get("utm-status")
-        if value and value not in VALID_BODY_UTM_STATUS:
-            return (
-                False,
-                f"Invalid utm-status '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
-            )
-
-    # Validate profile-type if present
+        value = payload["utm-status"]
+        if value not in VALID_BODY_UTM_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("utm-status", "")
+            error_msg = f"Invalid value for 'utm-status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UTM_STATUS)}"
+            error_msg += f"\n  → Example: utm-status='{{ VALID_BODY_UTM_STATUS[0] }}'"
+            return (False, error_msg)
     if "profile-type" in payload:
-        value = payload.get("profile-type")
-        if value and value not in VALID_BODY_PROFILE_TYPE:
-            return (
-                False,
-                f"Invalid profile-type '{value}'. Must be one of: {', '.join(VALID_BODY_PROFILE_TYPE)}",
-            )
-
-    # Validate profile-group if present
-    if "profile-group" in payload:
-        value = payload.get("profile-group")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "profile-group cannot exceed 47 characters")
-
-    # Validate profile-protocol-options if present
-    if "profile-protocol-options" in payload:
-        value = payload.get("profile-protocol-options")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "profile-protocol-options cannot exceed 47 characters",
-            )
-
-    # Validate ssl-ssh-profile if present
-    if "ssl-ssh-profile" in payload:
-        value = payload.get("ssl-ssh-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssl-ssh-profile cannot exceed 47 characters")
-
-    # Validate av-profile if present
-    if "av-profile" in payload:
-        value = payload.get("av-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "av-profile cannot exceed 47 characters")
-
-    # Validate webfilter-profile if present
-    if "webfilter-profile" in payload:
-        value = payload.get("webfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "webfilter-profile cannot exceed 47 characters")
-
-    # Validate dnsfilter-profile if present
-    if "dnsfilter-profile" in payload:
-        value = payload.get("dnsfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dnsfilter-profile cannot exceed 47 characters")
-
-    # Validate emailfilter-profile if present
-    if "emailfilter-profile" in payload:
-        value = payload.get("emailfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "emailfilter-profile cannot exceed 47 characters")
-
-    # Validate dlp-profile if present
-    if "dlp-profile" in payload:
-        value = payload.get("dlp-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dlp-profile cannot exceed 47 characters")
-
-    # Validate file-filter-profile if present
-    if "file-filter-profile" in payload:
-        value = payload.get("file-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "file-filter-profile cannot exceed 47 characters")
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate application-list if present
-    if "application-list" in payload:
-        value = payload.get("application-list")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "application-list cannot exceed 47 characters")
-
-    # Validate ips-voip-filter if present
-    if "ips-voip-filter" in payload:
-        value = payload.get("ips-voip-filter")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-voip-filter cannot exceed 47 characters")
-
-    # Validate sctp-filter-profile if present
-    if "sctp-filter-profile" in payload:
-        value = payload.get("sctp-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "sctp-filter-profile cannot exceed 47 characters")
-
-    # Validate icap-profile if present
-    if "icap-profile" in payload:
-        value = payload.get("icap-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "icap-profile cannot exceed 47 characters")
-
-    # Validate videofilter-profile if present
-    if "videofilter-profile" in payload:
-        value = payload.get("videofilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "videofilter-profile cannot exceed 47 characters")
-
-    # Validate waf-profile if present
-    if "waf-profile" in payload:
-        value = payload.get("waf-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "waf-profile cannot exceed 47 characters")
-
-    # Validate ssh-filter-profile if present
-    if "ssh-filter-profile" in payload:
-        value = payload.get("ssh-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssh-filter-profile cannot exceed 47 characters")
-
-    # Validate casb-profile if present
-    if "casb-profile" in payload:
-        value = payload.get("casb-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "casb-profile cannot exceed 47 characters")
-
-    # Validate replacemsg-override-group if present
-    if "replacemsg-override-group" in payload:
-        value = payload.get("replacemsg-override-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "replacemsg-override-group cannot exceed 35 characters",
-            )
-
-    # Validate logtraffic-start if present
+        value = payload["profile-type"]
+        if value not in VALID_BODY_PROFILE_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("profile-type", "")
+            error_msg = f"Invalid value for 'profile-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROFILE_TYPE)}"
+            error_msg += f"\n  → Example: profile-type='{{ VALID_BODY_PROFILE_TYPE[0] }}'"
+            return (False, error_msg)
     if "logtraffic-start" in payload:
-        value = payload.get("logtraffic-start")
-        if value and value not in VALID_BODY_LOGTRAFFIC_START:
-            return (
-                False,
-                f"Invalid logtraffic-start '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC_START)}",
-            )
-
-    # Validate log-http-transaction if present
+        value = payload["logtraffic-start"]
+        if value not in VALID_BODY_LOGTRAFFIC_START:
+            desc = FIELD_DESCRIPTIONS.get("logtraffic-start", "")
+            error_msg = f"Invalid value for 'logtraffic-start': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOGTRAFFIC_START)}"
+            error_msg += f"\n  → Example: logtraffic-start='{{ VALID_BODY_LOGTRAFFIC_START[0] }}'"
+            return (False, error_msg)
     if "log-http-transaction" in payload:
-        value = payload.get("log-http-transaction")
-        if value and value not in VALID_BODY_LOG_HTTP_TRANSACTION:
-            return (
-                False,
-                f"Invalid log-http-transaction '{value}'. Must be one of: {', '.join(VALID_BODY_LOG_HTTP_TRANSACTION)}",
-            )
-
-    # Validate comments if present
-    if "comments" in payload:
-        value = payload.get("comments")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "comments cannot exceed 1023 characters")
-
-    # Validate block-notification if present
+        value = payload["log-http-transaction"]
+        if value not in VALID_BODY_LOG_HTTP_TRANSACTION:
+            desc = FIELD_DESCRIPTIONS.get("log-http-transaction", "")
+            error_msg = f"Invalid value for 'log-http-transaction': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOG_HTTP_TRANSACTION)}"
+            error_msg += f"\n  → Example: log-http-transaction='{{ VALID_BODY_LOG_HTTP_TRANSACTION[0] }}'"
+            return (False, error_msg)
     if "block-notification" in payload:
-        value = payload.get("block-notification")
-        if value and value not in VALID_BODY_BLOCK_NOTIFICATION:
-            return (
-                False,
-                f"Invalid block-notification '{value}'. Must be one of: {', '.join(VALID_BODY_BLOCK_NOTIFICATION)}",
-            )
-
-    # Validate redirect-url if present
-    if "redirect-url" in payload:
-        value = payload.get("redirect-url")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "redirect-url cannot exceed 1023 characters")
-
-    # Validate https-sub-category if present
+        value = payload["block-notification"]
+        if value not in VALID_BODY_BLOCK_NOTIFICATION:
+            desc = FIELD_DESCRIPTIONS.get("block-notification", "")
+            error_msg = f"Invalid value for 'block-notification': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BLOCK_NOTIFICATION)}"
+            error_msg += f"\n  → Example: block-notification='{{ VALID_BODY_BLOCK_NOTIFICATION[0] }}'"
+            return (False, error_msg)
     if "https-sub-category" in payload:
-        value = payload.get("https-sub-category")
-        if value and value not in VALID_BODY_HTTPS_SUB_CATEGORY:
-            return (
-                False,
-                f"Invalid https-sub-category '{value}'. Must be one of: {', '.join(VALID_BODY_HTTPS_SUB_CATEGORY)}",
-            )
-
-    # Validate decrypted-traffic-mirror if present
-    if "decrypted-traffic-mirror" in payload:
-        value = payload.get("decrypted-traffic-mirror")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "decrypted-traffic-mirror cannot exceed 35 characters",
-            )
-
-    # Validate detect-https-in-http-request if present
+        value = payload["https-sub-category"]
+        if value not in VALID_BODY_HTTPS_SUB_CATEGORY:
+            desc = FIELD_DESCRIPTIONS.get("https-sub-category", "")
+            error_msg = f"Invalid value for 'https-sub-category': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HTTPS_SUB_CATEGORY)}"
+            error_msg += f"\n  → Example: https-sub-category='{{ VALID_BODY_HTTPS_SUB_CATEGORY[0] }}'"
+            return (False, error_msg)
     if "detect-https-in-http-request" in payload:
-        value = payload.get("detect-https-in-http-request")
-        if value and value not in VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST:
-            return (
-                False,
-                f"Invalid detect-https-in-http-request '{value}'. Must be one of: {', '.join(VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST)}",
-            )
+        value = payload["detect-https-in-http-request"]
+        if value not in VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST:
+            desc = FIELD_DESCRIPTIONS.get("detect-https-in-http-request", "")
+            error_msg = f"Invalid value for 'detect-https-in-http-request': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST)}"
+            error_msg += f"\n  → Example: detect-https-in-http-request='{{ VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -684,475 +1104,515 @@ def validate_proxy_policy_post(
 # ============================================================================
 
 
-def validate_proxy_policy_put(
-    policyid: str | None = None, payload: dict[str, Any] | None = None
+def validate_firewall_proxy_policy_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update firewall/proxy_policy.
 
     Args:
-        policyid: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_firewall_proxy_policy_put(payload)
     """
-    # policyid is required for updates
-    if not policyid:
-        return (False, "policyid is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate policyid if present
-    if "policyid" in payload:
-        value = payload.get("policyid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "policyid must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"policyid must be numeric, got: {value}")
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate proxy if present
+    # Step 1: Validate enum values
     if "proxy" in payload:
-        value = payload.get("proxy")
-        if value and value not in VALID_BODY_PROXY:
+        value = payload["proxy"]
+        if value not in VALID_BODY_PROXY:
             return (
                 False,
-                f"Invalid proxy '{value}'. Must be one of: {', '.join(VALID_BODY_PROXY)}",
+                f"Invalid value for 'proxy'='{value}'. Must be one of: {', '.join(VALID_BODY_PROXY)}",
             )
-
-    # Validate ztna-tags-match-logic if present
     if "ztna-tags-match-logic" in payload:
-        value = payload.get("ztna-tags-match-logic")
-        if value and value not in VALID_BODY_ZTNA_TAGS_MATCH_LOGIC:
+        value = payload["ztna-tags-match-logic"]
+        if value not in VALID_BODY_ZTNA_TAGS_MATCH_LOGIC:
             return (
                 False,
-                f"Invalid ztna-tags-match-logic '{value}'. Must be one of: {', '.join(VALID_BODY_ZTNA_TAGS_MATCH_LOGIC)}",
+                f"Invalid value for 'ztna-tags-match-logic'='{value}'. Must be one of: {', '.join(VALID_BODY_ZTNA_TAGS_MATCH_LOGIC)}",
             )
-
-    # Validate device-ownership if present
     if "device-ownership" in payload:
-        value = payload.get("device-ownership")
-        if value and value not in VALID_BODY_DEVICE_OWNERSHIP:
+        value = payload["device-ownership"]
+        if value not in VALID_BODY_DEVICE_OWNERSHIP:
             return (
                 False,
-                f"Invalid device-ownership '{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_OWNERSHIP)}",
+                f"Invalid value for 'device-ownership'='{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_OWNERSHIP)}",
             )
-
-    # Validate internet-service if present
     if "internet-service" in payload:
-        value = payload.get("internet-service")
-        if value and value not in VALID_BODY_INTERNET_SERVICE:
+        value = payload["internet-service"]
+        if value not in VALID_BODY_INTERNET_SERVICE:
             return (
                 False,
-                f"Invalid internet-service '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE)}",
+                f"Invalid value for 'internet-service'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE)}",
             )
-
-    # Validate internet-service-negate if present
     if "internet-service-negate" in payload:
-        value = payload.get("internet-service-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
+        value = payload["internet-service-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
             return (
                 False,
-                f"Invalid internet-service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_NEGATE)}",
+                f"Invalid value for 'internet-service-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_NEGATE)}",
             )
-
-    # Validate internet-service6 if present
     if "internet-service6" in payload:
-        value = payload.get("internet-service6")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6:
+        value = payload["internet-service6"]
+        if value not in VALID_BODY_INTERNET_SERVICE6:
             return (
                 False,
-                f"Invalid internet-service6 '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6)}",
+                f"Invalid value for 'internet-service6'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6)}",
             )
-
-    # Validate internet-service6-negate if present
     if "internet-service6-negate" in payload:
-        value = payload.get("internet-service6-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
+        value = payload["internet-service6-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
             return (
                 False,
-                f"Invalid internet-service6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_NEGATE)}",
+                f"Invalid value for 'internet-service6-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_NEGATE)}",
             )
-
-    # Validate srcaddr-negate if present
     if "srcaddr-negate" in payload:
-        value = payload.get("srcaddr-negate")
-        if value and value not in VALID_BODY_SRCADDR_NEGATE:
+        value = payload["srcaddr-negate"]
+        if value not in VALID_BODY_SRCADDR_NEGATE:
             return (
                 False,
-                f"Invalid srcaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR_NEGATE)}",
+                f"Invalid value for 'srcaddr-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR_NEGATE)}",
             )
-
-    # Validate dstaddr-negate if present
     if "dstaddr-negate" in payload:
-        value = payload.get("dstaddr-negate")
-        if value and value not in VALID_BODY_DSTADDR_NEGATE:
+        value = payload["dstaddr-negate"]
+        if value not in VALID_BODY_DSTADDR_NEGATE:
             return (
                 False,
-                f"Invalid dstaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR_NEGATE)}",
+                f"Invalid value for 'dstaddr-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR_NEGATE)}",
             )
-
-    # Validate ztna-ems-tag-negate if present
     if "ztna-ems-tag-negate" in payload:
-        value = payload.get("ztna-ems-tag-negate")
-        if value and value not in VALID_BODY_ZTNA_EMS_TAG_NEGATE:
+        value = payload["ztna-ems-tag-negate"]
+        if value not in VALID_BODY_ZTNA_EMS_TAG_NEGATE:
             return (
                 False,
-                f"Invalid ztna-ems-tag-negate '{value}'. Must be one of: {', '.join(VALID_BODY_ZTNA_EMS_TAG_NEGATE)}",
+                f"Invalid value for 'ztna-ems-tag-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_ZTNA_EMS_TAG_NEGATE)}",
             )
-
-    # Validate service-negate if present
     if "service-negate" in payload:
-        value = payload.get("service-negate")
-        if value and value not in VALID_BODY_SERVICE_NEGATE:
+        value = payload["service-negate"]
+        if value not in VALID_BODY_SERVICE_NEGATE:
             return (
                 False,
-                f"Invalid service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SERVICE_NEGATE)}",
+                f"Invalid value for 'service-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_SERVICE_NEGATE)}",
             )
-
-    # Validate action if present
     if "action" in payload:
-        value = payload.get("action")
-        if value and value not in VALID_BODY_ACTION:
+        value = payload["action"]
+        if value not in VALID_BODY_ACTION:
             return (
                 False,
-                f"Invalid action '{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
+                f"Invalid value for 'action'='{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
             )
-
-    # Validate status if present
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
             return (
                 False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
             )
-
-    # Validate schedule if present
-    if "schedule" in payload:
-        value = payload.get("schedule")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "schedule cannot exceed 35 characters")
-
-    # Validate logtraffic if present
     if "logtraffic" in payload:
-        value = payload.get("logtraffic")
-        if value and value not in VALID_BODY_LOGTRAFFIC:
+        value = payload["logtraffic"]
+        if value not in VALID_BODY_LOGTRAFFIC:
             return (
                 False,
-                f"Invalid logtraffic '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
+                f"Invalid value for 'logtraffic'='{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
             )
-
-    # Validate session-ttl if present
-    if "session-ttl" in payload:
-        value = payload.get("session-ttl")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 2764800:
-                    return (
-                        False,
-                        "session-ttl must be between 300 and 2764800",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"session-ttl must be numeric, got: {value}")
-
-    # Validate http-tunnel-auth if present
     if "http-tunnel-auth" in payload:
-        value = payload.get("http-tunnel-auth")
-        if value and value not in VALID_BODY_HTTP_TUNNEL_AUTH:
+        value = payload["http-tunnel-auth"]
+        if value not in VALID_BODY_HTTP_TUNNEL_AUTH:
             return (
                 False,
-                f"Invalid http-tunnel-auth '{value}'. Must be one of: {', '.join(VALID_BODY_HTTP_TUNNEL_AUTH)}",
+                f"Invalid value for 'http-tunnel-auth'='{value}'. Must be one of: {', '.join(VALID_BODY_HTTP_TUNNEL_AUTH)}",
             )
-
-    # Validate ssh-policy-redirect if present
     if "ssh-policy-redirect" in payload:
-        value = payload.get("ssh-policy-redirect")
-        if value and value not in VALID_BODY_SSH_POLICY_REDIRECT:
+        value = payload["ssh-policy-redirect"]
+        if value not in VALID_BODY_SSH_POLICY_REDIRECT:
             return (
                 False,
-                f"Invalid ssh-policy-redirect '{value}'. Must be one of: {', '.join(VALID_BODY_SSH_POLICY_REDIRECT)}",
+                f"Invalid value for 'ssh-policy-redirect'='{value}'. Must be one of: {', '.join(VALID_BODY_SSH_POLICY_REDIRECT)}",
             )
-
-    # Validate webproxy-forward-server if present
-    if "webproxy-forward-server" in payload:
-        value = payload.get("webproxy-forward-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (
-                False,
-                "webproxy-forward-server cannot exceed 63 characters",
-            )
-
-    # Validate isolator-server if present
-    if "isolator-server" in payload:
-        value = payload.get("isolator-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "isolator-server cannot exceed 63 characters")
-
-    # Validate webproxy-profile if present
-    if "webproxy-profile" in payload:
-        value = payload.get("webproxy-profile")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "webproxy-profile cannot exceed 63 characters")
-
-    # Validate transparent if present
     if "transparent" in payload:
-        value = payload.get("transparent")
-        if value and value not in VALID_BODY_TRANSPARENT:
+        value = payload["transparent"]
+        if value not in VALID_BODY_TRANSPARENT:
             return (
                 False,
-                f"Invalid transparent '{value}'. Must be one of: {', '.join(VALID_BODY_TRANSPARENT)}",
+                f"Invalid value for 'transparent'='{value}'. Must be one of: {', '.join(VALID_BODY_TRANSPARENT)}",
             )
-
-    # Validate disclaimer if present
+    if "webcache" in payload:
+        value = payload["webcache"]
+        if value not in VALID_BODY_WEBCACHE:
+            return (
+                False,
+                f"Invalid value for 'webcache'='{value}'. Must be one of: {', '.join(VALID_BODY_WEBCACHE)}",
+            )
+    if "webcache-https" in payload:
+        value = payload["webcache-https"]
+        if value not in VALID_BODY_WEBCACHE_HTTPS:
+            return (
+                False,
+                f"Invalid value for 'webcache-https'='{value}'. Must be one of: {', '.join(VALID_BODY_WEBCACHE_HTTPS)}",
+            )
     if "disclaimer" in payload:
-        value = payload.get("disclaimer")
-        if value and value not in VALID_BODY_DISCLAIMER:
+        value = payload["disclaimer"]
+        if value not in VALID_BODY_DISCLAIMER:
             return (
                 False,
-                f"Invalid disclaimer '{value}'. Must be one of: {', '.join(VALID_BODY_DISCLAIMER)}",
+                f"Invalid value for 'disclaimer'='{value}'. Must be one of: {', '.join(VALID_BODY_DISCLAIMER)}",
             )
-
-    # Validate utm-status if present
     if "utm-status" in payload:
-        value = payload.get("utm-status")
-        if value and value not in VALID_BODY_UTM_STATUS:
+        value = payload["utm-status"]
+        if value not in VALID_BODY_UTM_STATUS:
             return (
                 False,
-                f"Invalid utm-status '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
+                f"Invalid value for 'utm-status'='{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
             )
-
-    # Validate profile-type if present
     if "profile-type" in payload:
-        value = payload.get("profile-type")
-        if value and value not in VALID_BODY_PROFILE_TYPE:
+        value = payload["profile-type"]
+        if value not in VALID_BODY_PROFILE_TYPE:
             return (
                 False,
-                f"Invalid profile-type '{value}'. Must be one of: {', '.join(VALID_BODY_PROFILE_TYPE)}",
+                f"Invalid value for 'profile-type'='{value}'. Must be one of: {', '.join(VALID_BODY_PROFILE_TYPE)}",
             )
-
-    # Validate profile-group if present
-    if "profile-group" in payload:
-        value = payload.get("profile-group")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "profile-group cannot exceed 47 characters")
-
-    # Validate profile-protocol-options if present
-    if "profile-protocol-options" in payload:
-        value = payload.get("profile-protocol-options")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "profile-protocol-options cannot exceed 47 characters",
-            )
-
-    # Validate ssl-ssh-profile if present
-    if "ssl-ssh-profile" in payload:
-        value = payload.get("ssl-ssh-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssl-ssh-profile cannot exceed 47 characters")
-
-    # Validate av-profile if present
-    if "av-profile" in payload:
-        value = payload.get("av-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "av-profile cannot exceed 47 characters")
-
-    # Validate webfilter-profile if present
-    if "webfilter-profile" in payload:
-        value = payload.get("webfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "webfilter-profile cannot exceed 47 characters")
-
-    # Validate dnsfilter-profile if present
-    if "dnsfilter-profile" in payload:
-        value = payload.get("dnsfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dnsfilter-profile cannot exceed 47 characters")
-
-    # Validate emailfilter-profile if present
-    if "emailfilter-profile" in payload:
-        value = payload.get("emailfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "emailfilter-profile cannot exceed 47 characters")
-
-    # Validate dlp-profile if present
-    if "dlp-profile" in payload:
-        value = payload.get("dlp-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dlp-profile cannot exceed 47 characters")
-
-    # Validate file-filter-profile if present
-    if "file-filter-profile" in payload:
-        value = payload.get("file-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "file-filter-profile cannot exceed 47 characters")
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate application-list if present
-    if "application-list" in payload:
-        value = payload.get("application-list")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "application-list cannot exceed 47 characters")
-
-    # Validate ips-voip-filter if present
-    if "ips-voip-filter" in payload:
-        value = payload.get("ips-voip-filter")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-voip-filter cannot exceed 47 characters")
-
-    # Validate sctp-filter-profile if present
-    if "sctp-filter-profile" in payload:
-        value = payload.get("sctp-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "sctp-filter-profile cannot exceed 47 characters")
-
-    # Validate icap-profile if present
-    if "icap-profile" in payload:
-        value = payload.get("icap-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "icap-profile cannot exceed 47 characters")
-
-    # Validate videofilter-profile if present
-    if "videofilter-profile" in payload:
-        value = payload.get("videofilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "videofilter-profile cannot exceed 47 characters")
-
-    # Validate waf-profile if present
-    if "waf-profile" in payload:
-        value = payload.get("waf-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "waf-profile cannot exceed 47 characters")
-
-    # Validate ssh-filter-profile if present
-    if "ssh-filter-profile" in payload:
-        value = payload.get("ssh-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssh-filter-profile cannot exceed 47 characters")
-
-    # Validate casb-profile if present
-    if "casb-profile" in payload:
-        value = payload.get("casb-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "casb-profile cannot exceed 47 characters")
-
-    # Validate replacemsg-override-group if present
-    if "replacemsg-override-group" in payload:
-        value = payload.get("replacemsg-override-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "replacemsg-override-group cannot exceed 35 characters",
-            )
-
-    # Validate logtraffic-start if present
     if "logtraffic-start" in payload:
-        value = payload.get("logtraffic-start")
-        if value and value not in VALID_BODY_LOGTRAFFIC_START:
+        value = payload["logtraffic-start"]
+        if value not in VALID_BODY_LOGTRAFFIC_START:
             return (
                 False,
-                f"Invalid logtraffic-start '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC_START)}",
+                f"Invalid value for 'logtraffic-start'='{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC_START)}",
             )
-
-    # Validate log-http-transaction if present
     if "log-http-transaction" in payload:
-        value = payload.get("log-http-transaction")
-        if value and value not in VALID_BODY_LOG_HTTP_TRANSACTION:
+        value = payload["log-http-transaction"]
+        if value not in VALID_BODY_LOG_HTTP_TRANSACTION:
             return (
                 False,
-                f"Invalid log-http-transaction '{value}'. Must be one of: {', '.join(VALID_BODY_LOG_HTTP_TRANSACTION)}",
+                f"Invalid value for 'log-http-transaction'='{value}'. Must be one of: {', '.join(VALID_BODY_LOG_HTTP_TRANSACTION)}",
             )
-
-    # Validate comments if present
-    if "comments" in payload:
-        value = payload.get("comments")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "comments cannot exceed 1023 characters")
-
-    # Validate block-notification if present
     if "block-notification" in payload:
-        value = payload.get("block-notification")
-        if value and value not in VALID_BODY_BLOCK_NOTIFICATION:
+        value = payload["block-notification"]
+        if value not in VALID_BODY_BLOCK_NOTIFICATION:
             return (
                 False,
-                f"Invalid block-notification '{value}'. Must be one of: {', '.join(VALID_BODY_BLOCK_NOTIFICATION)}",
+                f"Invalid value for 'block-notification'='{value}'. Must be one of: {', '.join(VALID_BODY_BLOCK_NOTIFICATION)}",
             )
-
-    # Validate redirect-url if present
-    if "redirect-url" in payload:
-        value = payload.get("redirect-url")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "redirect-url cannot exceed 1023 characters")
-
-    # Validate https-sub-category if present
     if "https-sub-category" in payload:
-        value = payload.get("https-sub-category")
-        if value and value not in VALID_BODY_HTTPS_SUB_CATEGORY:
+        value = payload["https-sub-category"]
+        if value not in VALID_BODY_HTTPS_SUB_CATEGORY:
             return (
                 False,
-                f"Invalid https-sub-category '{value}'. Must be one of: {', '.join(VALID_BODY_HTTPS_SUB_CATEGORY)}",
+                f"Invalid value for 'https-sub-category'='{value}'. Must be one of: {', '.join(VALID_BODY_HTTPS_SUB_CATEGORY)}",
             )
-
-    # Validate decrypted-traffic-mirror if present
-    if "decrypted-traffic-mirror" in payload:
-        value = payload.get("decrypted-traffic-mirror")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "decrypted-traffic-mirror cannot exceed 35 characters",
-            )
-
-    # Validate detect-https-in-http-request if present
     if "detect-https-in-http-request" in payload:
-        value = payload.get("detect-https-in-http-request")
-        if value and value not in VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST:
+        value = payload["detect-https-in-http-request"]
+        if value not in VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST:
             return (
                 False,
-                f"Invalid detect-https-in-http-request '{value}'. Must be one of: {', '.join(VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST)}",
+                f"Invalid value for 'detect-https-in-http-request'='{value}'. Must be one of: {', '.join(VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST)}",
             )
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_proxy_policy_delete(
-    policyid: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        policyid: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not policyid:
-        return (False, "policyid is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "firewall/proxy_policy",
+    "category": "cmdb",
+    "api_path": "firewall/proxy-policy",
+    "mkey": "policyid",
+    "mkey_type": "integer",
+    "help": "Configure proxy policies.",
+    "total_fields": 82,
+    "required_fields_count": 5,
+    "fields_with_defaults_count": 55,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

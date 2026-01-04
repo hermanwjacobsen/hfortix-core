@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb Firewall Ssl Server
+FortiOS CMDB - Firewall ssl_server
 
-Configuration endpoint for managing cmdb firewall ssl server objects.
+Configuration endpoint for managing cmdb firewall/ssl_server objects.
 
 API Endpoints:
     GET    /cmdb/firewall/ssl_server
     POST   /cmdb/firewall/ssl_server
-    GET    /cmdb/firewall/ssl_server
     PUT    /cmdb/firewall/ssl_server/{identifier}
     DELETE /cmdb/firewall/ssl_server/{identifier}
 
@@ -15,128 +14,101 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.firewall.ssl_server.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.firewall.ssl_server.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.firewall.ssl_server.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.firewall.ssl_server.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.firewall.ssl_server.delete(name="item_name")
+    >>> items = fgt.api.cmdb.firewall_ssl_server.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class SslServer:
-    """
-    Sslserver Operations.
-
-    Provides CRUD operations for FortiOS sslserver configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """SslServer Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize SslServer endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize SslServer endpoint."""
         self._client = client
 
     def get(
         self,
         name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve firewall/ssl_server configuration.
+
+        Configure SSL servers.
 
         Args:
-            name: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: String identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all firewall/ssl_server objects
+            >>> result = fgt.api.cmdb.firewall_ssl_server.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific firewall/ssl_server by name
+            >>> result = fgt.api.cmdb.firewall_ssl_server.get(name=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.firewall_ssl_server.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.firewall_ssl_server.get(action="schema")
+
+        See Also:
+            - post(): Create new firewall/ssl_server object
+            - put(): Update existing firewall/ssl_server object
+            - delete(): Remove firewall/ssl_server object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if name:
-            endpoint = f"/firewall/ssl-server/{name}"
+            endpoint = "/firewall/ssl-server/" + str(name)
         else:
             endpoint = "/firewall/ssl-server"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,16 +116,14 @@ class SslServer:
 
     def put(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
+        name: str | None = None,
         ip: str | None = None,
         port: int | None = None,
         ssl_mode: str | None = None,
         add_header_x_forwarded_proto: str | None = None,
         mapped_port: int | None = None,
-        ssl_cert: list | None = None,
+        ssl_cert: str | list | None = None,
         ssl_dh_bits: str | None = None,
         ssl_algorithm: str | None = None,
         ssl_client_renegotiation: str | None = None,
@@ -166,141 +136,224 @@ class SslServer:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing firewall/ssl_server object.
+
+        Configure SSL servers.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            name: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            name: Server name. (optional)
-            ip: IPv4 address of the SSL server. (optional)
-            port: Server service port (1 - 65535, default = 443). (optional)
+            payload_dict: Object data as dict. Must include name (primary key).
+            name: Server name.
+            ip: IPv4 address of the SSL server.
+            port: Server service port (1 - 65535, default = 443).
             ssl_mode: SSL/TLS mode for encryption and decryption of traffic.
-            (optional)
-            add_header_x_forwarded_proto: Enable/disable adding an
-            X-Forwarded-Proto header to forwarded requests. (optional)
-            mapped_port: Mapped server service port (1 - 65535, default = 80).
-            (optional)
-            ssl_cert: List of certificate names to use for SSL connections to
-            this server. (default = "Fortinet_SSL"). (optional)
-            ssl_dh_bits: Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA
-            negotiation (default = 2048). (optional)
-            ssl_algorithm: Relative strength of encryption algorithms accepted
-            in negotiation. (optional)
-            ssl_client_renegotiation: Allow or block client renegotiation by
-            server. (optional)
-            ssl_min_version: Lowest SSL/TLS version to negotiate. (optional)
-            ssl_max_version: Highest SSL/TLS version to negotiate. (optional)
-            ssl_send_empty_frags: Enable/disable sending empty fragments to
-            avoid attack on CBC IV. (optional)
-            url_rewrite: Enable/disable rewriting the URL. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            add_header_x_forwarded_proto: Enable/disable adding an X-Forwarded-Proto header to forwarded requests.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
+            API response dict
 
-        # Build endpoint path
-        if not name:
-            raise ValueError("name is required for put()")
-        endpoint = f"/firewall/ssl-server/{name}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if name is not None:
-            data_payload["name"] = name
-        if ip is not None:
-            data_payload["ip"] = ip
-        if port is not None:
-            data_payload["port"] = port
-        if ssl_mode is not None:
-            data_payload["ssl-mode"] = ssl_mode
-        if add_header_x_forwarded_proto is not None:
-            data_payload["add-header-x-forwarded-proto"] = (
-                add_header_x_forwarded_proto
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.firewall_ssl_server.put(
+            ...     name=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_ssl_server.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            ip=ip,
+            port=port,
+            ssl_mode=ssl_mode,
+            add_header_x_forwarded_proto=add_header_x_forwarded_proto,
+            mapped_port=mapped_port,
+            ssl_cert=ssl_cert,
+            ssl_dh_bits=ssl_dh_bits,
+            ssl_algorithm=ssl_algorithm,
+            ssl_client_renegotiation=ssl_client_renegotiation,
+            ssl_min_version=ssl_min_version,
+            ssl_max_version=ssl_max_version,
+            ssl_send_empty_frags=ssl_send_empty_frags,
+            url_rewrite=url_rewrite,
+            data=payload_dict,
+        )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.ssl_server import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/ssl_server",
             )
-        if mapped_port is not None:
-            data_payload["mapped-port"] = mapped_port
-        if ssl_cert is not None:
-            data_payload["ssl-cert"] = ssl_cert
-        if ssl_dh_bits is not None:
-            data_payload["ssl-dh-bits"] = ssl_dh_bits
-        if ssl_algorithm is not None:
-            data_payload["ssl-algorithm"] = ssl_algorithm
-        if ssl_client_renegotiation is not None:
-            data_payload["ssl-client-renegotiation"] = ssl_client_renegotiation
-        if ssl_min_version is not None:
-            data_payload["ssl-min-version"] = ssl_min_version
-        if ssl_max_version is not None:
-            data_payload["ssl-max-version"] = ssl_max_version
-        if ssl_send_empty_frags is not None:
-            data_payload["ssl-send-empty-frags"] = ssl_send_empty_frags
-        if url_rewrite is not None:
-            data_payload["url-rewrite"] = url_rewrite
-        data_payload.update(kwargs)
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = "/firewall/ssl-server/" + str(name_value)
+
         return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
-    def delete(
+    def post(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        ip: str | None = None,
+        port: int | None = None,
+        ssl_mode: str | None = None,
+        add_header_x_forwarded_proto: str | None = None,
+        mapped_port: int | None = None,
+        ssl_cert: str | list | None = None,
+        ssl_dh_bits: str | None = None,
+        ssl_algorithm: str | None = None,
+        ssl_client_renegotiation: str | None = None,
+        ssl_min_version: str | None = None,
+        ssl_max_version: str | None = None,
+        ssl_send_empty_frags: str | None = None,
+        url_rewrite: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Delete this specific resource.
+        Create new firewall/ssl_server object.
+
+        Configure SSL servers.
 
         Args:
-            name: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            name: Server name.
+            ip: IPv4 address of the SSL server.
+            port: Server service port (1 - 65535, default = 443).
+            ssl_mode: SSL/TLS mode for encryption and decryption of traffic.
+            add_header_x_forwarded_proto: Enable/disable adding an X-Forwarded-Proto header to forwarded requests.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
+            API response dict containing created object with assigned name.
 
-        # Build endpoint path
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.firewall_ssl_server.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created name: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = SslServer.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.firewall_ssl_server.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(SslServer.required_fields()) }}
+            
+            Use SslServer.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            ip=ip,
+            port=port,
+            ssl_mode=ssl_mode,
+            add_header_x_forwarded_proto=add_header_x_forwarded_proto,
+            mapped_port=mapped_port,
+            ssl_cert=ssl_cert,
+            ssl_dh_bits=ssl_dh_bits,
+            ssl_algorithm=ssl_algorithm,
+            ssl_client_renegotiation=ssl_client_renegotiation,
+            ssl_min_version=ssl_min_version,
+            ssl_max_version=ssl_max_version,
+            ssl_send_empty_frags=ssl_send_empty_frags,
+            url_rewrite=url_rewrite,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.ssl_server import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/ssl_server",
+            )
+
+        endpoint = "/firewall/ssl-server"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete firewall/ssl_server object.
+
+        Configure SSL servers.
+
+        Args:
+            name: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.firewall_ssl_server.delete(name=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
         if not name:
-            raise ValueError("name is required for delete()")
-        endpoint = f"/firewall/ssl-server/{name}"
-        params.update(kwargs)
+            raise ValueError("name is required for DELETE")
+        endpoint = "/firewall/ssl-server/" + str(name)
+
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
     def exists(
@@ -309,150 +362,311 @@ class SslServer:
         vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
-        Check if an object exists.
+        Check if firewall/ssl_server object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
 
         Args:
-            name: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
+            name: Primary key identifier
+            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
 
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.firewall_ssl_server.exists(name=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.firewall_ssl_server.exists(name=1):
+            ...     fgt.api.cmdb.firewall_ssl_server.delete(name=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
         """
-        import inspect
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
 
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(name=name, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
+    def set(
         self,
         payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
-        name: str | None = None,
-        ip: str | None = None,
-        port: int | None = None,
-        ssl_mode: str | None = None,
-        add_header_x_forwarded_proto: str | None = None,
-        mapped_port: int | None = None,
-        ssl_cert: list | None = None,
-        ssl_dh_bits: str | None = None,
-        ssl_algorithm: str | None = None,
-        ssl_client_renegotiation: str | None = None,
-        ssl_min_version: str | None = None,
-        ssl_max_version: str | None = None,
-        ssl_send_empty_frags: str | None = None,
-        url_rewrite: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Create or update firewall/ssl_server object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            name: Server name. (optional)
-            ip: IPv4 address of the SSL server. (optional)
-            port: Server service port (1 - 65535, default = 443). (optional)
-            ssl_mode: SSL/TLS mode for encryption and decryption of traffic.
-            (optional)
-            add_header_x_forwarded_proto: Enable/disable adding an
-            X-Forwarded-Proto header to forwarded requests. (optional)
-            mapped_port: Mapped server service port (1 - 65535, default = 80).
-            (optional)
-            ssl_cert: List of certificate names to use for SSL connections to
-            this server. (default = "Fortinet_SSL"). (optional)
-            ssl_dh_bits: Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA
-            negotiation (default = 2048). (optional)
-            ssl_algorithm: Relative strength of encryption algorithms accepted
-            in negotiation. (optional)
-            ssl_client_renegotiation: Allow or block client renegotiation by
-            server. (optional)
-            ssl_min_version: Lowest SSL/TLS version to negotiate. (optional)
-            ssl_max_version: Highest SSL/TLS version to negotiate. (optional)
-            ssl_send_empty_frags: Enable/disable sending empty fragments to
-            avoid attack on CBC IV. (optional)
-            url_rewrite: Enable/disable rewriting the URL. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            Dictionary containing API response
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_ssl_server.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.firewall_ssl_server.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/firewall/ssl-server"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if name is not None:
-            data_payload["name"] = name
-        if ip is not None:
-            data_payload["ip"] = ip
-        if port is not None:
-            data_payload["port"] = port
-        if ssl_mode is not None:
-            data_payload["ssl-mode"] = ssl_mode
-        if add_header_x_forwarded_proto is not None:
-            data_payload["add-header-x-forwarded-proto"] = (
-                add_header_x_forwarded_proto
-            )
-        if mapped_port is not None:
-            data_payload["mapped-port"] = mapped_port
-        if ssl_cert is not None:
-            data_payload["ssl-cert"] = ssl_cert
-        if ssl_dh_bits is not None:
-            data_payload["ssl-dh-bits"] = ssl_dh_bits
-        if ssl_algorithm is not None:
-            data_payload["ssl-algorithm"] = ssl_algorithm
-        if ssl_client_renegotiation is not None:
-            data_payload["ssl-client-renegotiation"] = ssl_client_renegotiation
-        if ssl_min_version is not None:
-            data_payload["ssl-min-version"] = ssl_min_version
-        if ssl_max_version is not None:
-            data_payload["ssl-max-version"] = ssl_max_version
-        if ssl_send_empty_frags is not None:
-            data_payload["ssl-send-empty-frags"] = ssl_send_empty_frags
-        if url_rewrite is not None:
-            data_payload["url-rewrite"] = url_rewrite
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(SslServer.help())
+            
+            >>> # Get field information
+            >>> print(SslServer.help("name"))
+        """
+        from ._helpers.ssl_server import (
+            get_schema_info,
+            get_field_metadata,
         )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = SslServer.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = SslServer.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.ssl_server import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = SslServer.field_info("name")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.ssl_server import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = SslServer.validate_field("name", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.ssl_server import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = SslServer.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.ssl_server import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = SslServer.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.ssl_server import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = SslServer.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.ssl_server import get_schema_info
+
+        return get_schema_info()

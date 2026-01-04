@@ -12,22 +12,18 @@ __all__ = [
     "WebPortal",
     "WebPortalBookmark",
     "WebProxy",
+    "Ztna",
 ]
 
 
 class Ztna:
-    """
-    Ztna category wrapper.
-
-    This class provides access to all ztna CMDB endpoints.
-    """
+    """Ztna endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Ztna with all endpoint classes.
-
+        """Ztna endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.reverse_connector = ReverseConnector(client)
         self.traffic_forward_proxy = TrafficForwardProxy(client)

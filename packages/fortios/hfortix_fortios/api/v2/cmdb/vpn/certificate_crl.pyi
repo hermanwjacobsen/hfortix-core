@@ -1,0 +1,133 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+
+# Payload TypedDict for IDE autocomplete
+class CertificateCrlPayload(TypedDict, total=False):
+    """
+    Type hints for vpn/certificate_crl payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: CertificateCrlPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: str  # Name.
+    crl: NotRequired[str]  # Certificate Revocation List as a PEM file.
+    range: NotRequired[Literal["global", "vdom"]]  # Either global or VDOM IP address range for the certificate.
+    source: NotRequired[Literal["factory", "user", "bundle"]]  # Certificate source type.
+    update_vdom: NotRequired[str]  # VDOM for CRL update.
+    ldap_server: NotRequired[str]  # LDAP server name for CRL auto-update.
+    ldap_username: NotRequired[str]  # LDAP server user name.
+    ldap_password: NotRequired[str]  # LDAP server user password.
+    http_url: NotRequired[str]  # HTTP server URL for CRL auto-update.
+    scep_url: NotRequired[str]  # SCEP server URL for CRL auto-update.
+    scep_cert: NotRequired[str]  # Local certificate for SCEP communication for CRL auto-update
+    update_interval: NotRequired[int]  # Time in seconds before the FortiGate checks for an updated C
+    source_ip: NotRequired[str]  # Source IP address for communications to a HTTP or SCEP CA se
+
+
+class CertificateCrl:
+    """
+    Certificate Revocation List as a PEM file.
+    
+    Path: vpn/certificate_crl
+    Category: cmdb
+    Primary Key: name
+    """
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def post(
+        self,
+        payload_dict: CertificateCrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def put(
+        self,
+        payload_dict: CertificateCrlPayload | None = ...,
+        name: str | None = ...,
+        crl: str | None = ...,
+        range: Literal["global", "vdom"] | None = ...,
+        source: Literal["factory", "user", "bundle"] | None = ...,
+        update_vdom: str | None = ...,
+        ldap_server: str | None = ...,
+        ldap_username: str | None = ...,
+        ldap_password: str | None = ...,
+        http_url: str | None = ...,
+        scep_url: str | None = ...,
+        scep_cert: str | None = ...,
+        update_interval: int | None = ...,
+        source_ip: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]: ...
+    
+    def set(
+        self,
+        payload_dict: CertificateCrlPayload | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...

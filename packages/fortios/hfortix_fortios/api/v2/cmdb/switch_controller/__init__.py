@@ -1,4 +1,4 @@
-"""FortiOS CMDB - Switch-controller category"""
+"""FortiOS CMDB - SwitchController category"""
 
 from .acl_group import AclGroup
 from .acl_ingress import AclIngress
@@ -9,7 +9,7 @@ from .custom_command import CustomCommand
 from .dynamic_port_policy import DynamicPortPolicy
 from .flow_tracking import FlowTracking
 from .fortilink_settings import FortilinkSettings
-from .global_ import Global
+from .global_setting import GlobalSetting
 from .igmp_snooping import IgmpSnooping
 from .initial_config_template import InitialConfigTemplate
 from .initial_config_vlans import InitialConfigVlans
@@ -27,7 +27,7 @@ from .qos_ip_dscp_map import QosIpDscpMap
 from .qos_qos_policy import QosQosPolicy
 from .qos_queue_policy import QosQueuePolicy
 from .remote_log import RemoteLog
-from .security_policy__802_1X import SecurityPolicyEight02OneX
+from .security_policy_802_1X import SecurityPolicy8021x
 from .security_policy_local_access import SecurityPolicyLocalAccess
 from .sflow import Sflow
 from .snmp_community import SnmpCommunity
@@ -47,6 +47,7 @@ from .traffic_policy import TrafficPolicy
 from .traffic_sniffer import TrafficSniffer
 from .virtual_port_pool import VirtualPortPool
 from .vlan_policy import VlanPolicy
+from .x802_1X_settings import X8021xSettings
 
 __all__ = [
     "AclGroup",
@@ -58,7 +59,7 @@ __all__ = [
     "DynamicPortPolicy",
     "FlowTracking",
     "FortilinkSettings",
-    "Global",
+    "GlobalSetting",
     "IgmpSnooping",
     "InitialConfigTemplate",
     "InitialConfigVlans",
@@ -76,7 +77,7 @@ __all__ = [
     "QosQosPolicy",
     "QosQueuePolicy",
     "RemoteLog",
-    "SecurityPolicyEight02OneX",
+    "SecurityPolicy8021x",
     "SecurityPolicyLocalAccess",
     "Sflow",
     "SnmpCommunity",
@@ -87,6 +88,7 @@ __all__ = [
     "StormControlPolicy",
     "StpInstance",
     "StpSettings",
+    "SwitchController",
     "SwitchGroup",
     "SwitchInterfaceTag",
     "SwitchLog",
@@ -96,22 +98,18 @@ __all__ = [
     "TrafficSniffer",
     "VirtualPortPool",
     "VlanPolicy",
+    "X8021xSettings",
 ]
 
 
 class SwitchController:
-    """
-    SwitchController category wrapper.
-
-    This class provides access to all switch-controller CMDB endpoints.
-    """
+    """SwitchController endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize SwitchController with all endpoint classes.
-
+        """SwitchController endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.acl_group = AclGroup(client)
         self.acl_ingress = AclIngress(client)
@@ -122,7 +120,7 @@ class SwitchController:
         self.dynamic_port_policy = DynamicPortPolicy(client)
         self.flow_tracking = FlowTracking(client)
         self.fortilink_settings = FortilinkSettings(client)
-        self.global_ = Global(client)
+        self.global_setting = GlobalSetting(client)
         self.igmp_snooping = IgmpSnooping(client)
         self.initial_config_template = InitialConfigTemplate(client)
         self.initial_config_vlans = InitialConfigVlans(client)
@@ -140,7 +138,7 @@ class SwitchController:
         self.qos_qos_policy = QosQosPolicy(client)
         self.qos_queue_policy = QosQueuePolicy(client)
         self.remote_log = RemoteLog(client)
-        self.security_policy__802_1x = SecurityPolicyEight02OneX(client)
+        self.security_policy_802_1X = SecurityPolicy8021x(client)
         self.security_policy_local_access = SecurityPolicyLocalAccess(client)
         self.sflow = Sflow(client)
         self.snmp_community = SnmpCommunity(client)
@@ -160,3 +158,4 @@ class SwitchController:
         self.traffic_sniffer = TrafficSniffer(client)
         self.virtual_port_pool = VirtualPortPool(client)
         self.vlan_policy = VlanPolicy(client)
+        self.x802_1X_settings = X8021xSettings(client)

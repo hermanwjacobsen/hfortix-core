@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb System Speed Test Schedule
+FortiOS CMDB - System speed_test_schedule
 
-Configuration endpoint for managing cmdb system speed test schedule objects.
+Configuration endpoint for managing cmdb system/speed_test_schedule objects.
 
 API Endpoints:
     GET    /cmdb/system/speed_test_schedule
     POST   /cmdb/system/speed_test_schedule
-    GET    /cmdb/system/speed_test_schedule
     PUT    /cmdb/system/speed_test_schedule/{identifier}
     DELETE /cmdb/system/speed_test_schedule/{identifier}
 
@@ -15,128 +14,101 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.system.speed_test_schedule.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.system.speed_test_schedule.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.system.speed_test_schedule.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.system.speed_test_schedule.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result =
-    fgt.api.cmdb.system.speed_test_schedule.delete(name="item_name")
+    >>> items = fgt.api.cmdb.system_speed_test_schedule.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Coroutine, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
+    from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class SpeedTestSchedule:
-    """
-    Speedtestschedule Operations.
-
-    Provides CRUD operations for FortiOS speedtestschedule configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """SpeedTestSchedule Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize SpeedTestSchedule endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize SpeedTestSchedule endpoint."""
         self._client = client
 
     def get(
         self,
         interface: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve system/speed_test_schedule configuration.
+
+        Speed test schedule for each interface.
 
         Args:
-            interface: Object identifier (optional for list, required for
-            specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            interface: String identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all system/speed_test_schedule objects
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific system/speed_test_schedule by interface
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.get(interface=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.system_speed_test_schedule.get(action="schema")
+
+        See Also:
+            - post(): Create new system/speed_test_schedule object
+            - put(): Update existing system/speed_test_schedule object
+            - delete(): Remove system/speed_test_schedule object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if interface:
-            endpoint = f"/system/speed-test-schedule/{interface}"
+            endpoint = "/system/speed-test-schedule/" + str(interface)
         else:
             endpoint = "/system/speed-test-schedule"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,227 +116,252 @@ class SpeedTestSchedule:
 
     def put(
         self,
-        interface: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
+        interface: str | None = None,
         status: str | None = None,
         diffserv: str | None = None,
         server_name: str | None = None,
         mode: str | None = None,
-        schedules: list | None = None,
+        schedules: str | list | None = None,
         dynamic_server: str | None = None,
         ctrl_port: int | None = None,
         server_port: int | None = None,
         update_shaper: str | None = None,
         update_inbandwidth: str | None = None,
         update_outbandwidth: str | None = None,
-        update_interface_shaping: str | None = None,
         update_inbandwidth_maximum: int | None = None,
         update_inbandwidth_minimum: int | None = None,
         update_outbandwidth_maximum: int | None = None,
         update_outbandwidth_minimum: int | None = None,
-        expected_inbandwidth_minimum: int | None = None,
-        expected_inbandwidth_maximum: int | None = None,
-        expected_outbandwidth_minimum: int | None = None,
-        expected_outbandwidth_maximum: int | None = None,
-        retries: int | None = None,
-        retry_pause: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing system/speed_test_schedule object.
+
+        Speed test schedule for each interface.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            interface: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            interface: Interface name. (optional)
-            status: Enable/disable scheduled speed test. (optional)
-            diffserv: DSCP used for speed test. (optional)
-            server_name: Speed test server name in system.speed-test-server
-            list or leave it as empty to choose default server "FTNT_Auto".
-            (optional)
+            payload_dict: Object data as dict. Must include interface (primary key).
+            interface: Interface name.
+            status: Enable/disable scheduled speed test.
+            diffserv: DSCP used for speed test.
+            server_name: Speed test server name.
             mode: Protocol Auto(default), TCP or UDP used for speed test.
-            (optional)
-            schedules: Schedules for the interface. (optional)
-            dynamic_server: Enable/disable dynamic server option. (optional)
-            ctrl_port: Port of the controller to get access token. (optional)
-            server_port: Port of the server to run speed test. (optional)
-            update_shaper: Set egress shaper based on the test result.
-            (optional)
-            update_inbandwidth: Enable/disable bypassing interface's inbound
-            bandwidth setting. (optional)
-            update_outbandwidth: Enable/disable bypassing interface's outbound
-            bandwidth setting. (optional)
-            update_interface_shaping: Enable/disable using the speedtest
-            results as reference for interface shaping (overriding configured
-            in/outbandwidth). (optional)
-            update_inbandwidth_maximum: Maximum downloading bandwidth (kbps) to
-            be used in a speed test. (optional)
-            update_inbandwidth_minimum: Minimum downloading bandwidth (kbps) to
-            be considered effective. (optional)
-            update_outbandwidth_maximum: Maximum uploading bandwidth (kbps) to
-            be used in a speed test. (optional)
-            update_outbandwidth_minimum: Minimum uploading bandwidth (kbps) to
-            be considered effective. (optional)
-            expected_inbandwidth_minimum: Set the minimum inbandwidth threshold
-            for applying speedtest results on shaping-profile. (optional)
-            expected_inbandwidth_maximum: Set the maximum inbandwidth threshold
-            for applying speedtest results on shaping-profile. (optional)
-            expected_outbandwidth_minimum: Set the minimum outbandwidth
-            threshold for applying speedtest results on shaping-profile.
-            (optional)
-            expected_outbandwidth_maximum: Set the maximum outbandwidth
-            threshold for applying speedtest results on shaping-profile.
-            (optional)
-            retries: Maximum number of times the FortiGate unit will attempt to
-            contact the same server before considering the speed test has
-            failed (1 - 10, default = 5). (optional)
-            retry_pause: Number of seconds the FortiGate pauses between
-            successive speed tests before trying a different server (60 - 3600,
-            default = 300). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
+            API response dict
 
-        # Build endpoint path
-        if not interface:
-            raise ValueError("interface is required for put()")
-        endpoint = f"/system/speed-test-schedule/{interface}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if interface is not None:
-            data_payload["interface"] = interface
-        if status is not None:
-            data_payload["status"] = status
-        if diffserv is not None:
-            data_payload["diffserv"] = diffserv
-        if server_name is not None:
-            data_payload["server-name"] = server_name
-        if mode is not None:
-            data_payload["mode"] = mode
-        if schedules is not None:
-            data_payload["schedules"] = schedules
-        if dynamic_server is not None:
-            data_payload["dynamic-server"] = dynamic_server
-        if ctrl_port is not None:
-            data_payload["ctrl-port"] = ctrl_port
-        if server_port is not None:
-            data_payload["server-port"] = server_port
-        if update_shaper is not None:
-            data_payload["update-shaper"] = update_shaper
-        if update_inbandwidth is not None:
-            data_payload["update-inbandwidth"] = update_inbandwidth
-        if update_outbandwidth is not None:
-            data_payload["update-outbandwidth"] = update_outbandwidth
-        if update_interface_shaping is not None:
-            data_payload["update-interface-shaping"] = update_interface_shaping
-        if update_inbandwidth_maximum is not None:
-            data_payload["update-inbandwidth-maximum"] = (
-                update_inbandwidth_maximum
+        Raises:
+            ValueError: If interface is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.put(
+            ...     interface=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "interface": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            interface=interface,
+            status=status,
+            diffserv=diffserv,
+            server_name=server_name,
+            mode=mode,
+            schedules=schedules,
+            dynamic_server=dynamic_server,
+            ctrl_port=ctrl_port,
+            server_port=server_port,
+            update_shaper=update_shaper,
+            update_inbandwidth=update_inbandwidth,
+            update_outbandwidth=update_outbandwidth,
+            update_inbandwidth_maximum=update_inbandwidth_maximum,
+            update_inbandwidth_minimum=update_inbandwidth_minimum,
+            update_outbandwidth_maximum=update_outbandwidth_maximum,
+            update_outbandwidth_minimum=update_outbandwidth_minimum,
+            data=payload_dict,
+        )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.speed_test_schedule import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/speed_test_schedule",
             )
-        if update_inbandwidth_minimum is not None:
-            data_payload["update-inbandwidth-minimum"] = (
-                update_inbandwidth_minimum
-            )
-        if update_outbandwidth_maximum is not None:
-            data_payload["update-outbandwidth-maximum"] = (
-                update_outbandwidth_maximum
-            )
-        if update_outbandwidth_minimum is not None:
-            data_payload["update-outbandwidth-minimum"] = (
-                update_outbandwidth_minimum
-            )
-        if expected_inbandwidth_minimum is not None:
-            data_payload["expected-inbandwidth-minimum"] = (
-                expected_inbandwidth_minimum
-            )
-        if expected_inbandwidth_maximum is not None:
-            data_payload["expected-inbandwidth-maximum"] = (
-                expected_inbandwidth_maximum
-            )
-        if expected_outbandwidth_minimum is not None:
-            data_payload["expected-outbandwidth-minimum"] = (
-                expected_outbandwidth_minimum
-            )
-        if expected_outbandwidth_maximum is not None:
-            data_payload["expected-outbandwidth-maximum"] = (
-                expected_outbandwidth_maximum
-            )
-        if retries is not None:
-            data_payload["retries"] = retries
-        if retry_pause is not None:
-            data_payload["retry-pause"] = retry_pause
-        data_payload.update(kwargs)
+        
+        interface_value = payload_data.get("interface")
+        if not interface_value:
+            raise ValueError("interface is required for PUT")
+        endpoint = "/system/speed-test-schedule/" + str(interface_value)
+
         return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        interface: str | None = None,
+        status: str | None = None,
+        diffserv: str | None = None,
+        server_name: str | None = None,
+        mode: str | None = None,
+        schedules: str | list | None = None,
+        dynamic_server: str | None = None,
+        ctrl_port: int | None = None,
+        server_port: int | None = None,
+        update_shaper: str | None = None,
+        update_inbandwidth: str | None = None,
+        update_outbandwidth: str | None = None,
+        update_inbandwidth_maximum: int | None = None,
+        update_inbandwidth_minimum: int | None = None,
+        update_outbandwidth_maximum: int | None = None,
+        update_outbandwidth_minimum: int | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new system/speed_test_schedule object.
+
+        Speed test schedule for each interface.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            interface: Interface name.
+            status: Enable/disable scheduled speed test.
+            diffserv: DSCP used for speed test.
+            server_name: Speed test server name.
+            mode: Protocol Auto(default), TCP or UDP used for speed test.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned interface.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created interface: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = SpeedTestSchedule.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(SpeedTestSchedule.required_fields()) }}
+            
+            Use SpeedTestSchedule.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            interface=interface,
+            status=status,
+            diffserv=diffserv,
+            server_name=server_name,
+            mode=mode,
+            schedules=schedules,
+            dynamic_server=dynamic_server,
+            ctrl_port=ctrl_port,
+            server_port=server_port,
+            update_shaper=update_shaper,
+            update_inbandwidth=update_inbandwidth,
+            update_outbandwidth=update_outbandwidth,
+            update_inbandwidth_maximum=update_inbandwidth_maximum,
+            update_inbandwidth_minimum=update_inbandwidth_minimum,
+            update_outbandwidth_maximum=update_outbandwidth_maximum,
+            update_outbandwidth_minimum=update_outbandwidth_minimum,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.speed_test_schedule import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/speed_test_schedule",
+            )
+
+        endpoint = "/system/speed-test-schedule"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
     def delete(
         self,
         interface: str | None = None,
-        payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Delete this specific resource.
+        Delete system/speed_test_schedule object.
+
+        Speed test schedule for each interface.
 
         Args:
-            interface: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            interface: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
+            API response dict
 
-        # Build endpoint path
+        Raises:
+            ValueError: If interface is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.delete(interface=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
         if not interface:
-            raise ValueError("interface is required for delete()")
-        endpoint = f"/system/speed-test-schedule/{interface}"
-        params.update(kwargs)
+            raise ValueError("interface is required for DELETE")
+        endpoint = "/system/speed-test-schedule/" + str(interface)
+
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
     def exists(
@@ -373,214 +370,311 @@ class SpeedTestSchedule:
         vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
-        Check if an object exists.
+        Check if system/speed_test_schedule object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
 
         Args:
-            interface: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
+            interface: Primary key identifier
+            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
 
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.system_speed_test_schedule.exists(interface=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.system_speed_test_schedule.exists(interface=1):
+            ...     fgt.api.cmdb.system_speed_test_schedule.delete(interface=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
         """
-        import inspect
+        try:
+            response = self.get(interface=interface, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
 
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(interface=interface, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
+    def set(
         self,
         payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
-        interface: str | None = None,
-        status: str | None = None,
-        diffserv: str | None = None,
-        server_name: str | None = None,
-        mode: str | None = None,
-        schedules: list | None = None,
-        dynamic_server: str | None = None,
-        ctrl_port: int | None = None,
-        server_port: int | None = None,
-        update_shaper: str | None = None,
-        update_inbandwidth: str | None = None,
-        update_outbandwidth: str | None = None,
-        update_interface_shaping: str | None = None,
-        update_inbandwidth_maximum: int | None = None,
-        update_inbandwidth_minimum: int | None = None,
-        update_outbandwidth_maximum: int | None = None,
-        update_outbandwidth_minimum: int | None = None,
-        expected_inbandwidth_minimum: int | None = None,
-        expected_inbandwidth_maximum: int | None = None,
-        expected_outbandwidth_minimum: int | None = None,
-        expected_outbandwidth_maximum: int | None = None,
-        retries: int | None = None,
-        retry_pause: int | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Create or update system/speed_test_schedule object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (interface) in the payload.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            interface: Interface name. (optional)
-            status: Enable/disable scheduled speed test. (optional)
-            diffserv: DSCP used for speed test. (optional)
-            server_name: Speed test server name in system.speed-test-server
-            list or leave it as empty to choose default server "FTNT_Auto".
-            (optional)
-            mode: Protocol Auto(default), TCP or UDP used for speed test.
-            (optional)
-            schedules: Schedules for the interface. (optional)
-            dynamic_server: Enable/disable dynamic server option. (optional)
-            ctrl_port: Port of the controller to get access token. (optional)
-            server_port: Port of the server to run speed test. (optional)
-            update_shaper: Set egress shaper based on the test result.
-            (optional)
-            update_inbandwidth: Enable/disable bypassing interface's inbound
-            bandwidth setting. (optional)
-            update_outbandwidth: Enable/disable bypassing interface's outbound
-            bandwidth setting. (optional)
-            update_interface_shaping: Enable/disable using the speedtest
-            results as reference for interface shaping (overriding configured
-            in/outbandwidth). (optional)
-            update_inbandwidth_maximum: Maximum downloading bandwidth (kbps) to
-            be used in a speed test. (optional)
-            update_inbandwidth_minimum: Minimum downloading bandwidth (kbps) to
-            be considered effective. (optional)
-            update_outbandwidth_maximum: Maximum uploading bandwidth (kbps) to
-            be used in a speed test. (optional)
-            update_outbandwidth_minimum: Minimum uploading bandwidth (kbps) to
-            be considered effective. (optional)
-            expected_inbandwidth_minimum: Set the minimum inbandwidth threshold
-            for applying speedtest results on shaping-profile. (optional)
-            expected_inbandwidth_maximum: Set the maximum inbandwidth threshold
-            for applying speedtest results on shaping-profile. (optional)
-            expected_outbandwidth_minimum: Set the minimum outbandwidth
-            threshold for applying speedtest results on shaping-profile.
-            (optional)
-            expected_outbandwidth_maximum: Set the maximum outbandwidth
-            threshold for applying speedtest results on shaping-profile.
-            (optional)
-            retries: Maximum number of times the FortiGate unit will attempt to
-            contact the same server before considering the speed test has
-            failed (1 - 10, default = 5). (optional)
-            retry_pause: Number of seconds the FortiGate pauses between
-            successive speed tests before trying a different server (60 - 3600,
-            default = 300). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Resource data including interface (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            Dictionary containing API response
+            API response dictionary
+
+        Raises:
+            ValueError: If interface is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "interface": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.system_speed_test_schedule.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.system_speed_test_schedule.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/system/speed-test-schedule"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if interface is not None:
-            data_payload["interface"] = interface
-        if status is not None:
-            data_payload["status"] = status
-        if diffserv is not None:
-            data_payload["diffserv"] = diffserv
-        if server_name is not None:
-            data_payload["server-name"] = server_name
-        if mode is not None:
-            data_payload["mode"] = mode
-        if schedules is not None:
-            data_payload["schedules"] = schedules
-        if dynamic_server is not None:
-            data_payload["dynamic-server"] = dynamic_server
-        if ctrl_port is not None:
-            data_payload["ctrl-port"] = ctrl_port
-        if server_port is not None:
-            data_payload["server-port"] = server_port
-        if update_shaper is not None:
-            data_payload["update-shaper"] = update_shaper
-        if update_inbandwidth is not None:
-            data_payload["update-inbandwidth"] = update_inbandwidth
-        if update_outbandwidth is not None:
-            data_payload["update-outbandwidth"] = update_outbandwidth
-        if update_interface_shaping is not None:
-            data_payload["update-interface-shaping"] = update_interface_shaping
-        if update_inbandwidth_maximum is not None:
-            data_payload["update-inbandwidth-maximum"] = (
-                update_inbandwidth_maximum
-            )
-        if update_inbandwidth_minimum is not None:
-            data_payload["update-inbandwidth-minimum"] = (
-                update_inbandwidth_minimum
-            )
-        if update_outbandwidth_maximum is not None:
-            data_payload["update-outbandwidth-maximum"] = (
-                update_outbandwidth_maximum
-            )
-        if update_outbandwidth_minimum is not None:
-            data_payload["update-outbandwidth-minimum"] = (
-                update_outbandwidth_minimum
-            )
-        if expected_inbandwidth_minimum is not None:
-            data_payload["expected-inbandwidth-minimum"] = (
-                expected_inbandwidth_minimum
-            )
-        if expected_inbandwidth_maximum is not None:
-            data_payload["expected-inbandwidth-maximum"] = (
-                expected_inbandwidth_maximum
-            )
-        if expected_outbandwidth_minimum is not None:
-            data_payload["expected-outbandwidth-minimum"] = (
-                expected_outbandwidth_minimum
-            )
-        if expected_outbandwidth_maximum is not None:
-            data_payload["expected-outbandwidth-maximum"] = (
-                expected_outbandwidth_maximum
-            )
-        if retries is not None:
-            data_payload["retries"] = retries
-        if retry_pause is not None:
-            data_payload["retry-pause"] = retry_pause
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("interface")
+        if not mkey_value:
+            raise ValueError("interface is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(interface=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(SpeedTestSchedule.help())
+            
+            >>> # Get field information
+            >>> print(SpeedTestSchedule.help("interface"))
+        """
+        from ._helpers.speed_test_schedule import (
+            get_schema_info,
+            get_field_metadata,
         )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = SpeedTestSchedule.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = SpeedTestSchedule.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.speed_test_schedule import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = SpeedTestSchedule.field_info("interface")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.speed_test_schedule import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = SpeedTestSchedule.validate_field("interface", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.speed_test_schedule import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = SpeedTestSchedule.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.speed_test_schedule import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = SpeedTestSchedule.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.speed_test_schedule import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = SpeedTestSchedule.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.speed_test_schedule import get_schema_info
+
+        return get_schema_info()

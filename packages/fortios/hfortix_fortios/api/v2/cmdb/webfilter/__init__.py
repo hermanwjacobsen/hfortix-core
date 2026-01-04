@@ -30,22 +30,18 @@ __all__ = [
     "Profile",
     "SearchEngine",
     "Urlfilter",
+    "Webfilter",
 ]
 
 
 class Webfilter:
-    """
-    Webfilter category wrapper.
-
-    This class provides access to all webfilter CMDB endpoints.
-    """
+    """Webfilter endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Webfilter with all endpoint classes.
-
+        """Webfilter endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.content = Content(client)
         self.content_header = ContentHeader(client)

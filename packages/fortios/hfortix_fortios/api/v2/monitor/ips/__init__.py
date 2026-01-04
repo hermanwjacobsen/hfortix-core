@@ -1,47 +1,21 @@
-"""
-FortiOS Monitor - Ips
-IPS monitoring and operations
-"""
+"""Auto-generated category __init__ file."""
 
 from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-__all__ = ["Ips"]
 
 from .anomaly import Anomaly
 from .hold_signatures import HoldSignatures
 from .metadata import Metadata
 from .rate_based import RateBased
-from .session import Session
+
+if TYPE_CHECKING:
+    from hfortix_core.client import FortinetClient
 
 
 class Ips:
-    """Ips Monitor category class"""
+    """Container for {category_name} endpoints."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Ips Monitor category
-
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
-
-        # Initialize endpoints
+    def __init__(self, client: "FortinetClient"):
         self.anomaly = Anomaly(client)
         self.hold_signatures = HoldSignatures(client)
         self.metadata = Metadata(client)
         self.rate_based = RateBased(client)
-        self.session = Session(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return [
-            "anomaly",
-            "hold_signatures",
-            "metadata",
-            "rate_based",
-            "session",
-        ]

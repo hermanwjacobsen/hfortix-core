@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb Firewall Sniffer
+FortiOS CMDB - Firewall sniffer
 
-Configuration endpoint for managing cmdb firewall sniffer objects.
+Configuration endpoint for managing cmdb firewall/sniffer objects.
 
 API Endpoints:
     GET    /cmdb/firewall/sniffer
     POST   /cmdb/firewall/sniffer
-    GET    /cmdb/firewall/sniffer
     PUT    /cmdb/firewall/sniffer/{identifier}
     DELETE /cmdb/firewall/sniffer/{identifier}
 
@@ -15,128 +14,101 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.firewall.sniffer.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.firewall.sniffer.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.firewall.sniffer.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.firewall.sniffer.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.firewall.sniffer.delete(name="item_name")
+    >>> items = fgt.api.cmdb.firewall_sniffer.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class Sniffer:
-    """
-    Sniffer Operations.
-
-    Provides CRUD operations for FortiOS sniffer configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """Sniffer Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize Sniffer endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize Sniffer endpoint."""
         self._client = client
 
     def get(
         self,
-        id: str | None = None,
+        id: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve firewall/sniffer configuration.
+
+        Configure sniffer.
 
         Args:
-            id: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            id: Integer identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all firewall/sniffer objects
+            >>> result = fgt.api.cmdb.firewall_sniffer.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific firewall/sniffer by id
+            >>> result = fgt.api.cmdb.firewall_sniffer.get(id=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.firewall_sniffer.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.firewall_sniffer.get(action="schema")
+
+        See Also:
+            - post(): Create new firewall/sniffer object
+            - put(): Update existing firewall/sniffer object
+            - delete(): Remove firewall/sniffer object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if id:
-            endpoint = f"/firewall/sniffer/{id}"
+            endpoint = "/firewall/sniffer/" + str(id)
         else:
             endpoint = "/firewall/sniffer"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,287 +116,7 @@ class Sniffer:
 
     def put(
         self,
-        id: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
-        uuid: str | None = None,
-        status: str | None = None,
-        logtraffic: str | None = None,
-        ipv6: str | None = None,
-        non_ip: str | None = None,
-        interface: str | None = None,
-        host: str | None = None,
-        port: str | None = None,
-        protocol: str | None = None,
-        vlan: str | None = None,
-        application_list_status: str | None = None,
-        application_list: str | None = None,
-        ips_sensor_status: str | None = None,
-        ips_sensor: str | None = None,
-        dsri: str | None = None,
-        av_profile_status: str | None = None,
-        av_profile: str | None = None,
-        webfilter_profile_status: str | None = None,
-        webfilter_profile: str | None = None,
-        emailfilter_profile_status: str | None = None,
-        emailfilter_profile: str | None = None,
-        dlp_profile_status: str | None = None,
-        dlp_profile: str | None = None,
-        ip_threatfeed_status: str | None = None,
-        ip_threatfeed: list | None = None,
-        file_filter_profile_status: str | None = None,
-        file_filter_profile: str | None = None,
-        ips_dos_status: str | None = None,
-        anomaly: list | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Update this specific resource.
-
-        Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            id: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            id: Sniffer ID (0 - 9999). (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            status: Enable/disable the active status of the sniffer. (optional)
-            logtraffic: Either log all sessions, only sessions that have a
-            security profile applied, or disable all logging for this policy.
-            (optional)
-            ipv6: Enable/disable sniffing IPv6 packets. (optional)
-            non_ip: Enable/disable sniffing non-IP packets. (optional)
-            interface: Interface name that traffic sniffing will take place on.
-            (optional)
-            host: Hosts to filter for in sniffer traffic (Format examples:
-            1.1.1.1, 2.2.2.0/24, 3.3.3.3/255.255.255.0, 4.4.4.0-4.4.4.240).
-            (optional)
-            port: Ports to sniff (Format examples: 10, :20, 30:40, 50-,
-            100-200). (optional)
-            protocol: Integer value for the protocol type as defined by IANA (0
-            - 255). (optional)
-            vlan: List of VLANs to sniff. (optional)
-            application_list_status: Enable/disable application control
-            profile. (optional)
-            application_list: Name of an existing application list. (optional)
-            ips_sensor_status: Enable/disable IPS sensor. (optional)
-            ips_sensor: Name of an existing IPS sensor. (optional)
-            dsri: Enable/disable DSRI. (optional)
-            av_profile_status: Enable/disable antivirus profile. (optional)
-            av_profile: Name of an existing antivirus profile. (optional)
-            webfilter_profile_status: Enable/disable web filter profile.
-            (optional)
-            webfilter_profile: Name of an existing web filter profile.
-            (optional)
-            emailfilter_profile_status: Enable/disable emailfilter. (optional)
-            emailfilter_profile: Name of an existing email filter profile.
-            (optional)
-            dlp_profile_status: Enable/disable DLP profile. (optional)
-            dlp_profile: Name of an existing DLP profile. (optional)
-            ip_threatfeed_status: Enable/disable IP threat feed. (optional)
-            ip_threatfeed: Name of an existing IP threat feed. (optional)
-            file_filter_profile_status: Enable/disable file filter. (optional)
-            file_filter_profile: Name of an existing file-filter profile.
-            (optional)
-            ips_dos_status: Enable/disable IPS DoS anomaly detection.
-            (optional)
-            anomaly: Configuration method to edit Denial of Service (DoS)
-            anomaly settings. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not id:
-            raise ValueError("id is required for put()")
-        endpoint = f"/firewall/sniffer/{id}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if id is not None:
-            data_payload["id"] = id
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if status is not None:
-            data_payload["status"] = status
-        if logtraffic is not None:
-            data_payload["logtraffic"] = logtraffic
-        if ipv6 is not None:
-            data_payload["ipv6"] = ipv6
-        if non_ip is not None:
-            data_payload["non-ip"] = non_ip
-        if interface is not None:
-            data_payload["interface"] = interface
-        if host is not None:
-            data_payload["host"] = host
-        if port is not None:
-            data_payload["port"] = port
-        if protocol is not None:
-            data_payload["protocol"] = protocol
-        if vlan is not None:
-            data_payload["vlan"] = vlan
-        if application_list_status is not None:
-            data_payload["application-list-status"] = application_list_status
-        if application_list is not None:
-            data_payload["application-list"] = application_list
-        if ips_sensor_status is not None:
-            data_payload["ips-sensor-status"] = ips_sensor_status
-        if ips_sensor is not None:
-            data_payload["ips-sensor"] = ips_sensor
-        if dsri is not None:
-            data_payload["dsri"] = dsri
-        if av_profile_status is not None:
-            data_payload["av-profile-status"] = av_profile_status
-        if av_profile is not None:
-            data_payload["av-profile"] = av_profile
-        if webfilter_profile_status is not None:
-            data_payload["webfilter-profile-status"] = webfilter_profile_status
-        if webfilter_profile is not None:
-            data_payload["webfilter-profile"] = webfilter_profile
-        if emailfilter_profile_status is not None:
-            data_payload["emailfilter-profile-status"] = (
-                emailfilter_profile_status
-            )
-        if emailfilter_profile is not None:
-            data_payload["emailfilter-profile"] = emailfilter_profile
-        if dlp_profile_status is not None:
-            data_payload["dlp-profile-status"] = dlp_profile_status
-        if dlp_profile is not None:
-            data_payload["dlp-profile"] = dlp_profile
-        if ip_threatfeed_status is not None:
-            data_payload["ip-threatfeed-status"] = ip_threatfeed_status
-        if ip_threatfeed is not None:
-            data_payload["ip-threatfeed"] = ip_threatfeed
-        if file_filter_profile_status is not None:
-            data_payload["file-filter-profile-status"] = (
-                file_filter_profile_status
-            )
-        if file_filter_profile is not None:
-            data_payload["file-filter-profile"] = file_filter_profile
-        if ips_dos_status is not None:
-            data_payload["ips-dos-status"] = ips_dos_status
-        if anomaly is not None:
-            data_payload["anomaly"] = anomaly
-        data_payload.update(kwargs)
-        return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
-        )
-
-    def delete(
-        self,
-        id: str | None = None,
-        payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Delete this specific resource.
-
-        Args:
-            id: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not id:
-            raise ValueError("id is required for delete()")
-        endpoint = f"/firewall/sniffer/{id}"
-        params.update(kwargs)
-        return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
-        )
-
-    def exists(
-        self,
-        id: str,
-        vdom: str | bool | None = None,
-    ) -> Union[bool, Coroutine[Any, Any, bool]]:
-        """
-        Check if an object exists.
-
-        Args:
-            id: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-
-        Returns:
-            True if object exists, False otherwise
-
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
-        """
-        import inspect
-
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(id=id, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
-        self,
-        payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
         id: int | None = None,
         uuid: str | None = None,
         status: str | None = None,
@@ -450,155 +142,595 @@ class Sniffer:
         dlp_profile_status: str | None = None,
         dlp_profile: str | None = None,
         ip_threatfeed_status: str | None = None,
-        ip_threatfeed: list | None = None,
+        ip_threatfeed: str | list | None = None,
         file_filter_profile_status: str | None = None,
         file_filter_profile: str | None = None,
         ips_dos_status: str | None = None,
-        anomaly: list | None = None,
+        anomaly: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Update existing firewall/sniffer object.
+
+        Configure sniffer.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            id: Sniffer ID (0 - 9999). (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            status: Enable/disable the active status of the sniffer. (optional)
-            logtraffic: Either log all sessions, only sessions that have a
-            security profile applied, or disable all logging for this policy.
-            (optional)
-            ipv6: Enable/disable sniffing IPv6 packets. (optional)
-            non_ip: Enable/disable sniffing non-IP packets. (optional)
-            interface: Interface name that traffic sniffing will take place on.
-            (optional)
-            host: Hosts to filter for in sniffer traffic (Format examples:
-            1.1.1.1, 2.2.2.0/24, 3.3.3.3/255.255.255.0, 4.4.4.0-4.4.4.240).
-            (optional)
-            port: Ports to sniff (Format examples: 10, :20, 30:40, 50-,
-            100-200). (optional)
-            protocol: Integer value for the protocol type as defined by IANA (0
-            - 255). (optional)
-            vlan: List of VLANs to sniff. (optional)
-            application_list_status: Enable/disable application control
-            profile. (optional)
-            application_list: Name of an existing application list. (optional)
-            ips_sensor_status: Enable/disable IPS sensor. (optional)
-            ips_sensor: Name of an existing IPS sensor. (optional)
-            dsri: Enable/disable DSRI. (optional)
-            av_profile_status: Enable/disable antivirus profile. (optional)
-            av_profile: Name of an existing antivirus profile. (optional)
-            webfilter_profile_status: Enable/disable web filter profile.
-            (optional)
-            webfilter_profile: Name of an existing web filter profile.
-            (optional)
-            emailfilter_profile_status: Enable/disable emailfilter. (optional)
-            emailfilter_profile: Name of an existing email filter profile.
-            (optional)
-            dlp_profile_status: Enable/disable DLP profile. (optional)
-            dlp_profile: Name of an existing DLP profile. (optional)
-            ip_threatfeed_status: Enable/disable IP threat feed. (optional)
-            ip_threatfeed: Name of an existing IP threat feed. (optional)
-            file_filter_profile_status: Enable/disable file filter. (optional)
-            file_filter_profile: Name of an existing file-filter profile.
-            (optional)
-            ips_dos_status: Enable/disable IPS DoS anomaly detection.
-            (optional)
-            anomaly: Configuration method to edit Denial of Service (DoS)
-            anomaly settings. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include id (primary key).
+            id: Sniffer ID (0 - 9999).
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            status: Enable/disable the active status of the sniffer.
+            logtraffic: Either log all sessions, only sessions that have a security profile applied, or disable all logging for this policy.
+            ipv6: Enable/disable sniffing IPv6 packets.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If id is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.firewall_sniffer.put(
+            ...     id=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "id": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_sniffer.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/firewall/sniffer"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if id is not None:
-            data_payload["id"] = id
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if status is not None:
-            data_payload["status"] = status
-        if logtraffic is not None:
-            data_payload["logtraffic"] = logtraffic
-        if ipv6 is not None:
-            data_payload["ipv6"] = ipv6
-        if non_ip is not None:
-            data_payload["non-ip"] = non_ip
-        if interface is not None:
-            data_payload["interface"] = interface
-        if host is not None:
-            data_payload["host"] = host
-        if port is not None:
-            data_payload["port"] = port
-        if protocol is not None:
-            data_payload["protocol"] = protocol
-        if vlan is not None:
-            data_payload["vlan"] = vlan
-        if application_list_status is not None:
-            data_payload["application-list-status"] = application_list_status
-        if application_list is not None:
-            data_payload["application-list"] = application_list
-        if ips_sensor_status is not None:
-            data_payload["ips-sensor-status"] = ips_sensor_status
-        if ips_sensor is not None:
-            data_payload["ips-sensor"] = ips_sensor
-        if dsri is not None:
-            data_payload["dsri"] = dsri
-        if av_profile_status is not None:
-            data_payload["av-profile-status"] = av_profile_status
-        if av_profile is not None:
-            data_payload["av-profile"] = av_profile
-        if webfilter_profile_status is not None:
-            data_payload["webfilter-profile-status"] = webfilter_profile_status
-        if webfilter_profile is not None:
-            data_payload["webfilter-profile"] = webfilter_profile
-        if emailfilter_profile_status is not None:
-            data_payload["emailfilter-profile-status"] = (
-                emailfilter_profile_status
-            )
-        if emailfilter_profile is not None:
-            data_payload["emailfilter-profile"] = emailfilter_profile
-        if dlp_profile_status is not None:
-            data_payload["dlp-profile-status"] = dlp_profile_status
-        if dlp_profile is not None:
-            data_payload["dlp-profile"] = dlp_profile
-        if ip_threatfeed_status is not None:
-            data_payload["ip-threatfeed-status"] = ip_threatfeed_status
-        if ip_threatfeed is not None:
-            data_payload["ip-threatfeed"] = ip_threatfeed
-        if file_filter_profile_status is not None:
-            data_payload["file-filter-profile-status"] = (
-                file_filter_profile_status
-            )
-        if file_filter_profile is not None:
-            data_payload["file-filter-profile"] = file_filter_profile
-        if ips_dos_status is not None:
-            data_payload["ips-dos-status"] = ips_dos_status
-        if anomaly is not None:
-            data_payload["anomaly"] = anomaly
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            id=id,
+            uuid=uuid,
+            status=status,
+            logtraffic=logtraffic,
+            ipv6=ipv6,
+            non_ip=non_ip,
+            interface=interface,
+            host=host,
+            port=port,
+            protocol=protocol,
+            vlan=vlan,
+            application_list_status=application_list_status,
+            application_list=application_list,
+            ips_sensor_status=ips_sensor_status,
+            ips_sensor=ips_sensor,
+            dsri=dsri,
+            av_profile_status=av_profile_status,
+            av_profile=av_profile,
+            webfilter_profile_status=webfilter_profile_status,
+            webfilter_profile=webfilter_profile,
+            emailfilter_profile_status=emailfilter_profile_status,
+            emailfilter_profile=emailfilter_profile,
+            dlp_profile_status=dlp_profile_status,
+            dlp_profile=dlp_profile,
+            ip_threatfeed_status=ip_threatfeed_status,
+            ip_threatfeed=ip_threatfeed,
+            file_filter_profile_status=file_filter_profile_status,
+            file_filter_profile=file_filter_profile,
+            ips_dos_status=ips_dos_status,
+            anomaly=anomaly,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.sniffer import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/sniffer",
+            )
+        
+        id_value = payload_data.get("id")
+        if not id_value:
+            raise ValueError("id is required for PUT")
+        endpoint = "/firewall/sniffer/" + str(id_value)
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        id: int | None = None,
+        uuid: str | None = None,
+        status: str | None = None,
+        logtraffic: str | None = None,
+        ipv6: str | None = None,
+        non_ip: str | None = None,
+        interface: str | None = None,
+        host: str | None = None,
+        port: str | None = None,
+        protocol: str | None = None,
+        vlan: str | None = None,
+        application_list_status: str | None = None,
+        application_list: str | None = None,
+        ips_sensor_status: str | None = None,
+        ips_sensor: str | None = None,
+        dsri: str | None = None,
+        av_profile_status: str | None = None,
+        av_profile: str | None = None,
+        webfilter_profile_status: str | None = None,
+        webfilter_profile: str | None = None,
+        emailfilter_profile_status: str | None = None,
+        emailfilter_profile: str | None = None,
+        dlp_profile_status: str | None = None,
+        dlp_profile: str | None = None,
+        ip_threatfeed_status: str | None = None,
+        ip_threatfeed: str | list | None = None,
+        file_filter_profile_status: str | None = None,
+        file_filter_profile: str | None = None,
+        ips_dos_status: str | None = None,
+        anomaly: str | list | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new firewall/sniffer object.
+
+        Configure sniffer.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            id: Sniffer ID (0 - 9999).
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            status: Enable/disable the active status of the sniffer.
+            logtraffic: Either log all sessions, only sessions that have a security profile applied, or disable all logging for this policy.
+            ipv6: Enable/disable sniffing IPv6 packets.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned id.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.firewall_sniffer.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created id: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = Sniffer.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.firewall_sniffer.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Sniffer.required_fields()) }}
+            
+            Use Sniffer.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            id=id,
+            uuid=uuid,
+            status=status,
+            logtraffic=logtraffic,
+            ipv6=ipv6,
+            non_ip=non_ip,
+            interface=interface,
+            host=host,
+            port=port,
+            protocol=protocol,
+            vlan=vlan,
+            application_list_status=application_list_status,
+            application_list=application_list,
+            ips_sensor_status=ips_sensor_status,
+            ips_sensor=ips_sensor,
+            dsri=dsri,
+            av_profile_status=av_profile_status,
+            av_profile=av_profile,
+            webfilter_profile_status=webfilter_profile_status,
+            webfilter_profile=webfilter_profile,
+            emailfilter_profile_status=emailfilter_profile_status,
+            emailfilter_profile=emailfilter_profile,
+            dlp_profile_status=dlp_profile_status,
+            dlp_profile=dlp_profile,
+            ip_threatfeed_status=ip_threatfeed_status,
+            ip_threatfeed=ip_threatfeed,
+            file_filter_profile_status=file_filter_profile_status,
+            file_filter_profile=file_filter_profile,
+            ips_dos_status=ips_dos_status,
+            anomaly=anomaly,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.sniffer import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/sniffer",
+            )
+
+        endpoint = "/firewall/sniffer"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        id: int | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete firewall/sniffer object.
+
+        Configure sniffer.
+
+        Args:
+            id: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If id is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.firewall_sniffer.delete(id=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not id:
+            raise ValueError("id is required for DELETE")
+        endpoint = "/firewall/sniffer/" + str(id)
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        id: int,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if firewall/sniffer object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            id: Primary key identifier
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.firewall_sniffer.exists(id=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.firewall_sniffer.exists(id=1):
+            ...     fgt.api.cmdb.firewall_sniffer.delete(id=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(id=id, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update firewall/sniffer object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (id) in the payload.
+
+        Args:
+            payload_dict: Resource data including id (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If id is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "id": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_sniffer.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.firewall_sniffer.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("id")
+        if not mkey_value:
+            raise ValueError("id is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(id=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(Sniffer.help())
+            
+            >>> # Get field information
+            >>> print(Sniffer.help("id"))
+        """
+        from ._helpers.sniffer import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = Sniffer.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = Sniffer.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.sniffer import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = Sniffer.field_info("id")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.sniffer import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = Sniffer.validate_field("id", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.sniffer import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = Sniffer.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.sniffer import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = Sniffer.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.sniffer import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = Sniffer.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.sniffer import get_schema_info
+
+        return get_schema_info()

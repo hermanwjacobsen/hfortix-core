@@ -4,22 +4,22 @@ from .rule import Rule
 from .scheme import Scheme
 from .setting import Setting
 
-__all__ = ["Rule", "Scheme", "Setting"]
+__all__ = [
+    "Authentication",
+    "Rule",
+    "Scheme",
+    "Setting",
+]
 
 
 class Authentication:
-    """
-    Authentication category wrapper.
-
-    This class provides access to all authentication CMDB endpoints.
-    """
+    """Authentication endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Authentication with all endpoint classes.
-
+        """Authentication endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.rule = Rule(client)
         self.scheme = Scheme(client)

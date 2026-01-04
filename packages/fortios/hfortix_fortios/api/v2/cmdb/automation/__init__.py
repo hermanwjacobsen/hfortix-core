@@ -2,21 +2,19 @@
 
 from .setting import Setting
 
-__all__ = ["Setting"]
+__all__ = [
+    "Automation",
+    "Setting",
+]
 
 
 class Automation:
-    """
-    Automation category wrapper.
-
-    This class provides access to all automation CMDB endpoints.
-    """
+    """Automation endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Automation with all endpoint classes.
-
+        """Automation endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.setting = Setting(client)

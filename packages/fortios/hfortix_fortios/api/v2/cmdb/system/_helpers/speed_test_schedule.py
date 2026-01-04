@@ -1,52 +1,182 @@
 """
-Validation helpers for system speed_test_schedule endpoint.
+Validation helpers for system/speed_test_schedule endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
     "schedules",  # Schedules for the interface.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "ctrl-port": 5200,
-    "dynamic-server": "disable",
-    "mode": "Auto",
-    "server-port": 5201,
+    "interface": "",
     "status": "enable",
+    "diffserv": "",
+    "server-name": "",
+    "mode": "Auto",
+    "dynamic-server": "disable",
+    "ctrl-port": 5200,
+    "server-port": 5201,
+    "update-shaper": "disable",
     "update-inbandwidth": "disable",
     "update-outbandwidth": "disable",
-    "update-shaper": "disable",
+    "update-inbandwidth-maximum": 0,
+    "update-inbandwidth-minimum": 0,
+    "update-outbandwidth-maximum": 0,
+    "update-outbandwidth-minimum": 0,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "interface": "string",  # Interface name.
+    "status": "option",  # Enable/disable scheduled speed test.
+    "diffserv": "user",  # DSCP used for speed test.
+    "server-name": "string",  # Speed test server name.
+    "mode": "option",  # Protocol Auto(default), TCP or UDP used for speed test.
+    "schedules": "string",  # Schedules for the interface.
+    "dynamic-server": "option",  # Enable/disable dynamic server option.
+    "ctrl-port": "integer",  # Port of the controller to get access token.
+    "server-port": "integer",  # Port of the server to run speed test.
+    "update-shaper": "option",  # Set egress shaper based on the test result.
+    "update-inbandwidth": "option",  # Enable/disable bypassing interface's inbound bandwidth setti
+    "update-outbandwidth": "option",  # Enable/disable bypassing interface's outbound bandwidth sett
+    "update-inbandwidth-maximum": "integer",  # Maximum downloading bandwidth (kbps) to be used in a speed t
+    "update-inbandwidth-minimum": "integer",  # Minimum downloading bandwidth (kbps) to be considered effect
+    "update-outbandwidth-maximum": "integer",  # Maximum uploading bandwidth (kbps) to be used in a speed tes
+    "update-outbandwidth-minimum": "integer",  # Minimum uploading bandwidth (kbps) to be considered effectiv
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "interface": "Interface name.",
+    "status": "Enable/disable scheduled speed test.",
+    "diffserv": "DSCP used for speed test.",
+    "server-name": "Speed test server name.",
+    "mode": "Protocol Auto(default), TCP or UDP used for speed test.",
+    "schedules": "Schedules for the interface.",
+    "dynamic-server": "Enable/disable dynamic server option.",
+    "ctrl-port": "Port of the controller to get access token.",
+    "server-port": "Port of the server to run speed test.",
+    "update-shaper": "Set egress shaper based on the test result.",
+    "update-inbandwidth": "Enable/disable bypassing interface's inbound bandwidth setting.",
+    "update-outbandwidth": "Enable/disable bypassing interface's outbound bandwidth setting.",
+    "update-inbandwidth-maximum": "Maximum downloading bandwidth (kbps) to be used in a speed test.",
+    "update-inbandwidth-minimum": "Minimum downloading bandwidth (kbps) to be considered effective.",
+    "update-outbandwidth-maximum": "Maximum uploading bandwidth (kbps) to be used in a speed test.",
+    "update-outbandwidth-minimum": "Minimum uploading bandwidth (kbps) to be considered effective.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "interface": {"type": "string", "max_length": 35},
+    "server-name": {"type": "string", "max_length": 35},
+    "ctrl-port": {"type": "integer", "min": 1, "max": 65535},
+    "server-port": {"type": "integer", "min": 1, "max": 65535},
+    "update-inbandwidth-maximum": {"type": "integer", "min": 0, "max": 16776000},
+    "update-inbandwidth-minimum": {"type": "integer", "min": 0, "max": 16776000},
+    "update-outbandwidth-maximum": {"type": "integer", "min": 0, "max": 16776000},
+    "update-outbandwidth-minimum": {"type": "integer", "min": 0, "max": 16776000},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "schedules": {
+        "name": {
+            "type": "string",
+            "help": "Name of a firewall recurring schedule.",
+            "required": True,
+            "default": "",
+            "max_length": 31,
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_STATUS = ["disable", "enable"]
-VALID_BODY_MODE = ["UDP", "TCP", "Auto"]
-VALID_BODY_DYNAMIC_SERVER = ["disable", "enable"]
-VALID_BODY_UPDATE_SHAPER = ["disable", "local", "remote", "both"]
-VALID_BODY_UPDATE_INBANDWIDTH = ["disable", "enable"]
-VALID_BODY_UPDATE_OUTBANDWIDTH = ["disable", "enable"]
-VALID_BODY_UPDATE_INTERFACE_SHAPING = ["disable", "enable"]
+VALID_BODY_STATUS = [
+    "disable",
+    "enable",
+]
+VALID_BODY_MODE = [
+    "UDP",
+    "TCP",
+    "Auto",
+]
+VALID_BODY_DYNAMIC_SERVER = [
+    "disable",
+    "enable",
+]
+VALID_BODY_UPDATE_SHAPER = [
+    "disable",
+    "local",
+    "remote",
+    "both",
+]
+VALID_BODY_UPDATE_INBANDWIDTH = [
+    "disable",
+    "enable",
+]
+VALID_BODY_UPDATE_OUTBANDWIDTH = [
+    "disable",
+    "enable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -54,13 +184,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_speed_test_schedule_get(
+def validate_system_speed_test_schedule_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for system/speed_test_schedule.
 
     Args:
         attr: Attribute filter (optional)
@@ -70,9 +200,20 @@ def validate_speed_test_schedule_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_system_speed_test_schedule_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by interface
+        >>> is_valid, error = validate_system_speed_test_schedule_get(interface="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_system_speed_test_schedule_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -93,7 +234,7 @@ def validate_speed_test_schedule_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for system_speed-test-schedule.
+    Validate required fields for system/speed_test_schedule.
 
     This validator checks:
     1. Always-required fields are present
@@ -106,325 +247,518 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "schedules": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_speed_test_schedule_post(
-    payload: dict[str, Any],
+def validate_system_speed_test_schedule_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new system/speed_test_schedule object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - schedules: Schedules for the interface.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "schedules": True,  # Schedules for the interface.
+        ... }
+        >>> is_valid, error = validate_system_speed_test_schedule_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "schedules": True,
+        ...     "status": "disable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_system_speed_test_schedule_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["status"] = "invalid-value"
+        >>> is_valid, error = validate_system_speed_test_schedule_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_system_speed_test_schedule_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "interface cannot exceed 35 characters")
-
-    # Validate status if present
+    # Step 2: Validate enum values
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
-            return (
-                False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
-            )
-
-    # Validate server-name if present
-    if "server-name" in payload:
-        value = payload.get("server-name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "server-name cannot exceed 35 characters")
-
-    # Validate mode if present
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
     if "mode" in payload:
-        value = payload.get("mode")
-        if value and value not in VALID_BODY_MODE:
-            return (
-                False,
-                f"Invalid mode '{value}'. Must be one of: {', '.join(VALID_BODY_MODE)}",
-            )
-
-    # Validate dynamic-server if present
+        value = payload["mode"]
+        if value not in VALID_BODY_MODE:
+            desc = FIELD_DESCRIPTIONS.get("mode", "")
+            error_msg = f"Invalid value for 'mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MODE)}"
+            error_msg += f"\n  → Example: mode='{{ VALID_BODY_MODE[0] }}'"
+            return (False, error_msg)
     if "dynamic-server" in payload:
-        value = payload.get("dynamic-server")
-        if value and value not in VALID_BODY_DYNAMIC_SERVER:
-            return (
-                False,
-                f"Invalid dynamic-server '{value}'. Must be one of: {', '.join(VALID_BODY_DYNAMIC_SERVER)}",
-            )
-
-    # Validate ctrl-port if present
-    if "ctrl-port" in payload:
-        value = payload.get("ctrl-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "ctrl-port must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"ctrl-port must be numeric, got: {value}")
-
-    # Validate server-port if present
-    if "server-port" in payload:
-        value = payload.get("server-port")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "server-port must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"server-port must be numeric, got: {value}")
-
-    # Validate update-shaper if present
+        value = payload["dynamic-server"]
+        if value not in VALID_BODY_DYNAMIC_SERVER:
+            desc = FIELD_DESCRIPTIONS.get("dynamic-server", "")
+            error_msg = f"Invalid value for 'dynamic-server': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DYNAMIC_SERVER)}"
+            error_msg += f"\n  → Example: dynamic-server='{{ VALID_BODY_DYNAMIC_SERVER[0] }}'"
+            return (False, error_msg)
     if "update-shaper" in payload:
-        value = payload.get("update-shaper")
-        if value and value not in VALID_BODY_UPDATE_SHAPER:
-            return (
-                False,
-                f"Invalid update-shaper '{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_SHAPER)}",
-            )
-
-    # Validate update-inbandwidth if present
+        value = payload["update-shaper"]
+        if value not in VALID_BODY_UPDATE_SHAPER:
+            desc = FIELD_DESCRIPTIONS.get("update-shaper", "")
+            error_msg = f"Invalid value for 'update-shaper': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPDATE_SHAPER)}"
+            error_msg += f"\n  → Example: update-shaper='{{ VALID_BODY_UPDATE_SHAPER[0] }}'"
+            return (False, error_msg)
     if "update-inbandwidth" in payload:
-        value = payload.get("update-inbandwidth")
-        if value and value not in VALID_BODY_UPDATE_INBANDWIDTH:
-            return (
-                False,
-                f"Invalid update-inbandwidth '{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_INBANDWIDTH)}",
-            )
-
-    # Validate update-outbandwidth if present
+        value = payload["update-inbandwidth"]
+        if value not in VALID_BODY_UPDATE_INBANDWIDTH:
+            desc = FIELD_DESCRIPTIONS.get("update-inbandwidth", "")
+            error_msg = f"Invalid value for 'update-inbandwidth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPDATE_INBANDWIDTH)}"
+            error_msg += f"\n  → Example: update-inbandwidth='{{ VALID_BODY_UPDATE_INBANDWIDTH[0] }}'"
+            return (False, error_msg)
     if "update-outbandwidth" in payload:
-        value = payload.get("update-outbandwidth")
-        if value and value not in VALID_BODY_UPDATE_OUTBANDWIDTH:
-            return (
-                False,
-                f"Invalid update-outbandwidth '{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_OUTBANDWIDTH)}",
-            )
-
-    # Validate update-interface-shaping if present
-    if "update-interface-shaping" in payload:
-        value = payload.get("update-interface-shaping")
-        if value and value not in VALID_BODY_UPDATE_INTERFACE_SHAPING:
-            return (
-                False,
-                f"Invalid update-interface-shaping '{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_INTERFACE_SHAPING)}",
-            )
-
-    # Validate update-inbandwidth-maximum if present
-    if "update-inbandwidth-maximum" in payload:
-        value = payload.get("update-inbandwidth-maximum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "update-inbandwidth-maximum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"update-inbandwidth-maximum must be numeric, got: {value}",
-                )
-
-    # Validate update-inbandwidth-minimum if present
-    if "update-inbandwidth-minimum" in payload:
-        value = payload.get("update-inbandwidth-minimum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "update-inbandwidth-minimum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"update-inbandwidth-minimum must be numeric, got: {value}",
-                )
-
-    # Validate update-outbandwidth-maximum if present
-    if "update-outbandwidth-maximum" in payload:
-        value = payload.get("update-outbandwidth-maximum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "update-outbandwidth-maximum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"update-outbandwidth-maximum must be numeric, got: {value}",
-                )
-
-    # Validate update-outbandwidth-minimum if present
-    if "update-outbandwidth-minimum" in payload:
-        value = payload.get("update-outbandwidth-minimum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "update-outbandwidth-minimum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"update-outbandwidth-minimum must be numeric, got: {value}",
-                )
-
-    # Validate expected-inbandwidth-minimum if present
-    if "expected-inbandwidth-minimum" in payload:
-        value = payload.get("expected-inbandwidth-minimum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "expected-inbandwidth-minimum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"expected-inbandwidth-minimum must be numeric, got: {value}",
-                )
-
-    # Validate expected-inbandwidth-maximum if present
-    if "expected-inbandwidth-maximum" in payload:
-        value = payload.get("expected-inbandwidth-maximum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "expected-inbandwidth-maximum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"expected-inbandwidth-maximum must be numeric, got: {value}",
-                )
-
-    # Validate expected-outbandwidth-minimum if present
-    if "expected-outbandwidth-minimum" in payload:
-        value = payload.get("expected-outbandwidth-minimum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "expected-outbandwidth-minimum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"expected-outbandwidth-minimum must be numeric, got: {value}",
-                )
-
-    # Validate expected-outbandwidth-maximum if present
-    if "expected-outbandwidth-maximum" in payload:
-        value = payload.get("expected-outbandwidth-maximum")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "expected-outbandwidth-maximum must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"expected-outbandwidth-maximum must be numeric, got: {value}",
-                )
-
-    # Validate retries if present
-    if "retries" in payload:
-        value = payload.get("retries")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 10:
-                    return (False, "retries must be between 1 and 10")
-            except (ValueError, TypeError):
-                return (False, f"retries must be numeric, got: {value}")
-
-    # Validate retry-pause if present
-    if "retry-pause" in payload:
-        value = payload.get("retry-pause")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 60 or int_val > 3600:
-                    return (False, "retry-pause must be between 60 and 3600")
-            except (ValueError, TypeError):
-                return (False, f"retry-pause must be numeric, got: {value}")
+        value = payload["update-outbandwidth"]
+        if value not in VALID_BODY_UPDATE_OUTBANDWIDTH:
+            desc = FIELD_DESCRIPTIONS.get("update-outbandwidth", "")
+            error_msg = f"Invalid value for 'update-outbandwidth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPDATE_OUTBANDWIDTH)}"
+            error_msg += f"\n  → Example: update-outbandwidth='{{ VALID_BODY_UPDATE_OUTBANDWIDTH[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# PUT Validation
+# ============================================================================
+
+
+def validate_system_speed_test_schedule_put(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
+    """
+    Validate PUT request to update system/speed_test_schedule.
+
+    Args:
+        payload: Request body data
+        **params: Query parameters
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_system_speed_test_schedule_put(payload)
+    """
+    # Step 1: Validate enum values
+    if "status" in payload:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            return (
+                False,
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+            )
+    if "mode" in payload:
+        value = payload["mode"]
+        if value not in VALID_BODY_MODE:
+            return (
+                False,
+                f"Invalid value for 'mode'='{value}'. Must be one of: {', '.join(VALID_BODY_MODE)}",
+            )
+    if "dynamic-server" in payload:
+        value = payload["dynamic-server"]
+        if value not in VALID_BODY_DYNAMIC_SERVER:
+            return (
+                False,
+                f"Invalid value for 'dynamic-server'='{value}'. Must be one of: {', '.join(VALID_BODY_DYNAMIC_SERVER)}",
+            )
+    if "update-shaper" in payload:
+        value = payload["update-shaper"]
+        if value not in VALID_BODY_UPDATE_SHAPER:
+            return (
+                False,
+                f"Invalid value for 'update-shaper'='{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_SHAPER)}",
+            )
+    if "update-inbandwidth" in payload:
+        value = payload["update-inbandwidth"]
+        if value not in VALID_BODY_UPDATE_INBANDWIDTH:
+            return (
+                False,
+                f"Invalid value for 'update-inbandwidth'='{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_INBANDWIDTH)}",
+            )
+    if "update-outbandwidth" in payload:
+        value = payload["update-outbandwidth"]
+        if value not in VALID_BODY_UPDATE_OUTBANDWIDTH:
+            return (
+                False,
+                f"Invalid value for 'update-outbandwidth'='{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_OUTBANDWIDTH)}",
+            )
+
+    return (True, None)
+
+
+# ============================================================================
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
+# ============================================================================
+
+
+def get_field_description(field_name: str) -> str | None:
+    """
+    Get description/help text for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
+    """
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "system/speed_test_schedule",
+    "category": "cmdb",
+    "api_path": "system/speed-test-schedule",
+    "mkey": "interface",
+    "mkey_type": "string",
+    "help": "Speed test schedule for each interface.",
+    "total_fields": 16,
+    "required_fields_count": 1,
+    "fields_with_defaults_count": 15,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

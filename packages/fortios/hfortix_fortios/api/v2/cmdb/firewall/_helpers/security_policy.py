@@ -1,47 +1,66 @@
 """
-Validation helpers for firewall security_policy endpoint.
+Validation helpers for firewall/security_policy endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "dstintf",  # Outgoing (egress) interface.
-    "name",  # Policy name.
-    "schedule",  # Schedule name.
-    "service",  # Service and service group names.
     "srcintf",  # Incoming (ingress) interface.
+    "dstintf",  # Outgoing (egress) interface.
+    "schedule",  # Schedule name.
 ]
-
-# Mutually exclusive groups (at least ONE from each group required)
-MUTUALLY_EXCLUSIVE_GROUPS = {
-    "dest_address": ["dstaddr", "dstaddr6"],
-    "source_address": ["srcaddr", "srcaddr6"],
-}
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "action": "deny",
+    "uuid": "00000000-0000-0000-0000-000000000000",
+    "policyid": 0,
+    "name": "",
+    "srcaddr-negate": "disable",
     "dstaddr-negate": "disable",
+    "srcaddr6-negate": "disable",
     "dstaddr6-negate": "disable",
-    "enforce-default-app-port": "enable",
     "internet-service": "disable",
     "internet-service-negate": "disable",
     "internet-service-src": "disable",
@@ -50,46 +69,598 @@ FIELDS_WITH_DEFAULTS = {
     "internet-service6-negate": "disable",
     "internet-service6-src": "disable",
     "internet-service6-src-negate": "disable",
-    "learning-mode": "disable",
+    "enforce-default-app-port": "enable",
+    "service-negate": "disable",
+    "action": "deny",
+    "send-deny-packet": "disable",
+    "schedule": "",
+    "status": "enable",
     "logtraffic": "utm",
+    "learning-mode": "disable",
     "nat46": "disable",
     "nat64": "disable",
-    "profile-protocol-options": "default",
     "profile-type": "single",
-    "schedule": "always",
-    "send-deny-packet": "disable",
-    "service-negate": "disable",
-    "srcaddr-negate": "disable",
-    "srcaddr6-negate": "disable",
+    "profile-group": "",
+    "profile-protocol-options": "default",
     "ssl-ssh-profile": "no-inspection",
-    "status": "enable",
-    "uuid": "00000000-0000-0000-0000-000000000000",
+    "av-profile": "",
+    "webfilter-profile": "",
+    "dnsfilter-profile": "",
+    "emailfilter-profile": "",
+    "dlp-profile": "",
+    "file-filter-profile": "",
+    "ips-sensor": "",
+    "application-list": "",
+    "voip-profile": "",
+    "ips-voip-filter": "",
+    "sctp-filter-profile": "",
+    "diameter-filter-profile": "",
+    "virtual-patch-profile": "",
+    "icap-profile": "",
+    "videofilter-profile": "",
+    "ssh-filter-profile": "",
+    "casb-profile": "",
+    "url-category": "",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "uuid": "uuid",  # Universally Unique Identifier (UUID; automatically assigned 
+    "policyid": "integer",  # Policy ID.
+    "name": "string",  # Policy name.
+    "comments": "var-string",  # Comment.
+    "srcintf": "string",  # Incoming (ingress) interface.
+    "dstintf": "string",  # Outgoing (egress) interface.
+    "srcaddr": "string",  # Source IPv4 address name and address group names.
+    "srcaddr-negate": "option",  # When enabled srcaddr specifies what the source address must 
+    "dstaddr": "string",  # Destination IPv4 address name and address group names.
+    "dstaddr-negate": "option",  # When enabled dstaddr specifies what the destination address 
+    "srcaddr6": "string",  # Source IPv6 address name and address group names.
+    "srcaddr6-negate": "option",  # When enabled srcaddr6 specifies what the source address must
+    "dstaddr6": "string",  # Destination IPv6 address name and address group names.
+    "dstaddr6-negate": "option",  # When enabled dstaddr6 specifies what the destination address
+    "internet-service": "option",  # Enable/disable use of Internet Services for this policy. If 
+    "internet-service-name": "string",  # Internet Service name.
+    "internet-service-negate": "option",  # When enabled internet-service specifies what the service mus
+    "internet-service-group": "string",  # Internet Service group name.
+    "internet-service-custom": "string",  # Custom Internet Service name.
+    "internet-service-custom-group": "string",  # Custom Internet Service group name.
+    "internet-service-src": "option",  # Enable/disable use of Internet Services in source for this p
+    "internet-service-src-name": "string",  # Internet Service source name.
+    "internet-service-src-negate": "option",  # When enabled internet-service-src specifies what the service
+    "internet-service-src-group": "string",  # Internet Service source group name.
+    "internet-service-src-custom": "string",  # Custom Internet Service source name.
+    "internet-service-src-custom-group": "string",  # Custom Internet Service source group name.
+    "internet-service6": "option",  # Enable/disable use of IPv6 Internet Services for this policy
+    "internet-service6-name": "string",  # IPv6 Internet Service name.
+    "internet-service6-negate": "option",  # When enabled internet-service6 specifies what the service mu
+    "internet-service6-group": "string",  # Internet Service group name.
+    "internet-service6-custom": "string",  # Custom IPv6 Internet Service name.
+    "internet-service6-custom-group": "string",  # Custom IPv6 Internet Service group name.
+    "internet-service6-src": "option",  # Enable/disable use of IPv6 Internet Services in source for t
+    "internet-service6-src-name": "string",  # IPv6 Internet Service source name.
+    "internet-service6-src-negate": "option",  # When enabled internet-service6-src specifies what the servic
+    "internet-service6-src-group": "string",  # Internet Service6 source group name.
+    "internet-service6-src-custom": "string",  # Custom IPv6 Internet Service source name.
+    "internet-service6-src-custom-group": "string",  # Custom Internet Service6 source group name.
+    "enforce-default-app-port": "option",  # Enable/disable default application port enforcement for allo
+    "service": "string",  # Service and service group names.
+    "service-negate": "option",  # When enabled service specifies what the service must NOT be.
+    "action": "option",  # Policy action (accept/deny).
+    "send-deny-packet": "option",  # Enable to send a reply when a session is denied or blocked b
+    "schedule": "string",  # Schedule name.
+    "status": "option",  # Enable or disable this policy.
+    "logtraffic": "option",  # Enable or disable logging. Log all sessions or security prof
+    "learning-mode": "option",  # Enable to allow everything, but log all of the meaningful da
+    "nat46": "option",  # Enable/disable NAT46.
+    "nat64": "option",  # Enable/disable NAT64.
+    "profile-type": "option",  # Determine whether the firewall policy allows security profil
+    "profile-group": "string",  # Name of profile group.
+    "profile-protocol-options": "string",  # Name of an existing Protocol options profile.
+    "ssl-ssh-profile": "string",  # Name of an existing SSL SSH profile.
+    "av-profile": "string",  # Name of an existing Antivirus profile.
+    "webfilter-profile": "string",  # Name of an existing Web filter profile.
+    "dnsfilter-profile": "string",  # Name of an existing DNS filter profile.
+    "emailfilter-profile": "string",  # Name of an existing email filter profile.
+    "dlp-profile": "string",  # Name of an existing DLP profile.
+    "file-filter-profile": "string",  # Name of an existing file-filter profile.
+    "ips-sensor": "string",  # Name of an existing IPS sensor.
+    "application-list": "string",  # Name of an existing Application list.
+    "voip-profile": "string",  # Name of an existing VoIP (voipd) profile.
+    "ips-voip-filter": "string",  # Name of an existing VoIP (ips) profile.
+    "sctp-filter-profile": "string",  # Name of an existing SCTP filter profile.
+    "diameter-filter-profile": "string",  # Name of an existing Diameter filter profile.
+    "virtual-patch-profile": "string",  # Name of an existing virtual-patch profile.
+    "icap-profile": "string",  # Name of an existing ICAP profile.
+    "videofilter-profile": "string",  # Name of an existing VideoFilter profile.
+    "ssh-filter-profile": "string",  # Name of an existing SSH filter profile.
+    "casb-profile": "string",  # Name of an existing CASB profile.
+    "application": "string",  # Application ID list.
+    "app-category": "string",  # Application category ID list.
+    "url-category": "user",  # URL categories or groups.
+    "app-group": "string",  # Application group names.
+    "groups": "string",  # Names of user groups that can authenticate with this policy.
+    "users": "string",  # Names of individual users that can authenticate with this po
+    "fsso-groups": "string",  # Names of FSSO groups.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "uuid": "Universally Unique Identifier (UUID; automatically assigned but can be manually reset).",
+    "policyid": "Policy ID.",
+    "name": "Policy name.",
+    "comments": "Comment.",
+    "srcintf": "Incoming (ingress) interface.",
+    "dstintf": "Outgoing (egress) interface.",
+    "srcaddr": "Source IPv4 address name and address group names.",
+    "srcaddr-negate": "When enabled srcaddr specifies what the source address must NOT be.",
+    "dstaddr": "Destination IPv4 address name and address group names.",
+    "dstaddr-negate": "When enabled dstaddr specifies what the destination address must NOT be.",
+    "srcaddr6": "Source IPv6 address name and address group names.",
+    "srcaddr6-negate": "When enabled srcaddr6 specifies what the source address must NOT be.",
+    "dstaddr6": "Destination IPv6 address name and address group names.",
+    "dstaddr6-negate": "When enabled dstaddr6 specifies what the destination address must NOT be.",
+    "internet-service": "Enable/disable use of Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.",
+    "internet-service-name": "Internet Service name.",
+    "internet-service-negate": "When enabled internet-service specifies what the service must NOT be.",
+    "internet-service-group": "Internet Service group name.",
+    "internet-service-custom": "Custom Internet Service name.",
+    "internet-service-custom-group": "Custom Internet Service group name.",
+    "internet-service-src": "Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.",
+    "internet-service-src-name": "Internet Service source name.",
+    "internet-service-src-negate": "When enabled internet-service-src specifies what the service must NOT be.",
+    "internet-service-src-group": "Internet Service source group name.",
+    "internet-service-src-custom": "Custom Internet Service source name.",
+    "internet-service-src-custom-group": "Custom Internet Service source group name.",
+    "internet-service6": "Enable/disable use of IPv6 Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.",
+    "internet-service6-name": "IPv6 Internet Service name.",
+    "internet-service6-negate": "When enabled internet-service6 specifies what the service must NOT be.",
+    "internet-service6-group": "Internet Service group name.",
+    "internet-service6-custom": "Custom IPv6 Internet Service name.",
+    "internet-service6-custom-group": "Custom IPv6 Internet Service group name.",
+    "internet-service6-src": "Enable/disable use of IPv6 Internet Services in source for this policy. If enabled, source address is not used.",
+    "internet-service6-src-name": "IPv6 Internet Service source name.",
+    "internet-service6-src-negate": "When enabled internet-service6-src specifies what the service must NOT be.",
+    "internet-service6-src-group": "Internet Service6 source group name.",
+    "internet-service6-src-custom": "Custom IPv6 Internet Service source name.",
+    "internet-service6-src-custom-group": "Custom Internet Service6 source group name.",
+    "enforce-default-app-port": "Enable/disable default application port enforcement for allowed applications.",
+    "service": "Service and service group names.",
+    "service-negate": "When enabled service specifies what the service must NOT be.",
+    "action": "Policy action (accept/deny).",
+    "send-deny-packet": "Enable to send a reply when a session is denied or blocked by a firewall policy.",
+    "schedule": "Schedule name.",
+    "status": "Enable or disable this policy.",
+    "logtraffic": "Enable or disable logging. Log all sessions or security profile sessions.",
+    "learning-mode": "Enable to allow everything, but log all of the meaningful data for security information gathering. A learning report will be generated.",
+    "nat46": "Enable/disable NAT46.",
+    "nat64": "Enable/disable NAT64.",
+    "profile-type": "Determine whether the firewall policy allows security profile groups or single profiles only.",
+    "profile-group": "Name of profile group.",
+    "profile-protocol-options": "Name of an existing Protocol options profile.",
+    "ssl-ssh-profile": "Name of an existing SSL SSH profile.",
+    "av-profile": "Name of an existing Antivirus profile.",
+    "webfilter-profile": "Name of an existing Web filter profile.",
+    "dnsfilter-profile": "Name of an existing DNS filter profile.",
+    "emailfilter-profile": "Name of an existing email filter profile.",
+    "dlp-profile": "Name of an existing DLP profile.",
+    "file-filter-profile": "Name of an existing file-filter profile.",
+    "ips-sensor": "Name of an existing IPS sensor.",
+    "application-list": "Name of an existing Application list.",
+    "voip-profile": "Name of an existing VoIP (voipd) profile.",
+    "ips-voip-filter": "Name of an existing VoIP (ips) profile.",
+    "sctp-filter-profile": "Name of an existing SCTP filter profile.",
+    "diameter-filter-profile": "Name of an existing Diameter filter profile.",
+    "virtual-patch-profile": "Name of an existing virtual-patch profile.",
+    "icap-profile": "Name of an existing ICAP profile.",
+    "videofilter-profile": "Name of an existing VideoFilter profile.",
+    "ssh-filter-profile": "Name of an existing SSH filter profile.",
+    "casb-profile": "Name of an existing CASB profile.",
+    "application": "Application ID list.",
+    "app-category": "Application category ID list.",
+    "url-category": "URL categories or groups.",
+    "app-group": "Application group names.",
+    "groups": "Names of user groups that can authenticate with this policy.",
+    "users": "Names of individual users that can authenticate with this policy.",
+    "fsso-groups": "Names of FSSO groups.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "policyid": {"type": "integer", "min": 0, "max": 4294967294},
+    "name": {"type": "string", "max_length": 35},
+    "schedule": {"type": "string", "max_length": 35},
+    "profile-group": {"type": "string", "max_length": 47},
+    "profile-protocol-options": {"type": "string", "max_length": 47},
+    "ssl-ssh-profile": {"type": "string", "max_length": 47},
+    "av-profile": {"type": "string", "max_length": 47},
+    "webfilter-profile": {"type": "string", "max_length": 47},
+    "dnsfilter-profile": {"type": "string", "max_length": 47},
+    "emailfilter-profile": {"type": "string", "max_length": 47},
+    "dlp-profile": {"type": "string", "max_length": 47},
+    "file-filter-profile": {"type": "string", "max_length": 47},
+    "ips-sensor": {"type": "string", "max_length": 47},
+    "application-list": {"type": "string", "max_length": 47},
+    "voip-profile": {"type": "string", "max_length": 47},
+    "ips-voip-filter": {"type": "string", "max_length": 47},
+    "sctp-filter-profile": {"type": "string", "max_length": 47},
+    "diameter-filter-profile": {"type": "string", "max_length": 47},
+    "virtual-patch-profile": {"type": "string", "max_length": 47},
+    "icap-profile": {"type": "string", "max_length": 47},
+    "videofilter-profile": {"type": "string", "max_length": 47},
+    "ssh-filter-profile": {"type": "string", "max_length": 47},
+    "casb-profile": {"type": "string", "max_length": 47},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "srcintf": {
+        "name": {
+            "type": "string",
+            "help": "Interface name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "dstintf": {
+        "name": {
+            "type": "string",
+            "help": "Interface name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "srcaddr": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "dstaddr": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "srcaddr6": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "dstaddr6": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-name": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-group": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-custom": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-custom-group": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-src-name": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-src-group": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-src-custom": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-src-custom-group": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-name": {
+        "name": {
+            "type": "string",
+            "help": "IPv6 Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-group": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-custom": {
+        "name": {
+            "type": "string",
+            "help": "Custom IPv6 Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-custom-group": {
+        "name": {
+            "type": "string",
+            "help": "Custom IPv6 Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-src-name": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-src-group": {
+        "name": {
+            "type": "string",
+            "help": "Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-src-custom": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-src-custom-group": {
+        "name": {
+            "type": "string",
+            "help": "Custom Internet Service6 group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "service": {
+        "name": {
+            "type": "string",
+            "help": "Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "application": {
+        "id": {
+            "type": "integer",
+            "help": "Application IDs.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+    },
+    "app-category": {
+        "id": {
+            "type": "integer",
+            "help": "Category IDs.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+    },
+    "app-group": {
+        "name": {
+            "type": "string",
+            "help": "Application group names.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "groups": {
+        "name": {
+            "type": "string",
+            "help": "User group name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "users": {
+        "name": {
+            "type": "string",
+            "help": "User name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "fsso-groups": {
+        "name": {
+            "type": "string",
+            "help": "Names of FSSO groups.",
+            "required": True,
+            "default": "",
+            "max_length": 511,
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_SRCADDR_NEGATE = ["enable", "disable"]
-VALID_BODY_DSTADDR_NEGATE = ["enable", "disable"]
-VALID_BODY_SRCADDR6_NEGATE = ["enable", "disable"]
-VALID_BODY_DSTADDR6_NEGATE = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE_NEGATE = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE_SRC = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE_SRC_NEGATE = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE6 = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE6_NEGATE = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE6_SRC = ["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE = ["enable", "disable"]
-VALID_BODY_ENFORCE_DEFAULT_APP_PORT = ["enable", "disable"]
-VALID_BODY_SERVICE_NEGATE = ["enable", "disable"]
-VALID_BODY_ACTION = ["accept", "deny"]
-VALID_BODY_SEND_DENY_PACKET = ["disable", "enable"]
-VALID_BODY_STATUS = ["enable", "disable"]
-VALID_BODY_LOGTRAFFIC = ["all", "utm", "disable"]
-VALID_BODY_LEARNING_MODE = ["enable", "disable"]
-VALID_BODY_NAT46 = ["enable", "disable"]
-VALID_BODY_NAT64 = ["enable", "disable"]
-VALID_BODY_PROFILE_TYPE = ["single", "group"]
+VALID_BODY_SRCADDR_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DSTADDR_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SRCADDR6_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DSTADDR6_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE_SRC = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE_SRC_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE6 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE6_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE6_SRC = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ENFORCE_DEFAULT_APP_PORT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SERVICE_NEGATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ACTION = [
+    "accept",
+    "deny",
+]
+VALID_BODY_SEND_DENY_PACKET = [
+    "disable",
+    "enable",
+]
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOGTRAFFIC = [
+    "all",
+    "utm",
+    "disable",
+]
+VALID_BODY_LEARNING_MODE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NAT46 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NAT64 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PROFILE_TYPE = [
+    "single",
+    "group",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -97,13 +668,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_security_policy_get(
+def validate_firewall_security_policy_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for firewall/security_policy.
 
     Args:
         attr: Attribute filter (optional)
@@ -113,9 +684,20 @@ def validate_security_policy_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_firewall_security_policy_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by policyid
+        >>> is_valid, error = validate_firewall_security_policy_get(policyid="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_firewall_security_policy_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -136,7 +718,7 @@ def validate_security_policy_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for firewall_security-policy.
+    Validate required fields for firewall/security_policy.
 
     This validator checks:
     1. Always-required fields are present
@@ -149,440 +731,308 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "dstintf": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
-
-    # Check mutually exclusive groups
-    if not ("dstaddr" in payload or "dstaddr6" in payload):
-        return (False, "Must provide at least one of: dstaddr, dstaddr6")
-    if not ("srcaddr" in payload or "srcaddr6" in payload):
-        return (False, "Must provide at least one of: srcaddr, srcaddr6")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_security_policy_post(
-    payload: dict[str, Any],
+def validate_firewall_security_policy_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new firewall/security_policy object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - dstintf: Outgoing (egress) interface.
-      - name: Policy name.
-      - schedule: Schedule name.
-      - service: Service and service group names.
-      - srcintf: Incoming (ingress) interface.
-
-    Mutually exclusive (at least ONE required):
-      - dstaddr OR dstaddr6
-      - srcaddr OR srcaddr6
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "srcintf": True,  # Incoming (ingress) interface.
+        ...     "dstintf": True,  # Outgoing (egress) interface.
+        ... }
+        >>> is_valid, error = validate_firewall_security_policy_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "srcintf": True,
+        ...     "srcaddr-negate": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_firewall_security_policy_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["srcaddr-negate"] = "invalid-value"
+        >>> is_valid, error = validate_firewall_security_policy_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_firewall_security_policy_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate policyid if present
-    if "policyid" in payload:
-        value = payload.get("policyid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967294:
-                    return (
-                        False,
-                        "policyid must be between 0 and 4294967294",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"policyid must be numeric, got: {value}")
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comments if present
-    if "comments" in payload:
-        value = payload.get("comments")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "comments cannot exceed 1023 characters")
-
-    # Validate srcaddr-negate if present
+    # Step 2: Validate enum values
     if "srcaddr-negate" in payload:
-        value = payload.get("srcaddr-negate")
-        if value and value not in VALID_BODY_SRCADDR_NEGATE:
-            return (
-                False,
-                f"Invalid srcaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR_NEGATE)}",
-            )
-
-    # Validate dstaddr-negate if present
+        value = payload["srcaddr-negate"]
+        if value not in VALID_BODY_SRCADDR_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("srcaddr-negate", "")
+            error_msg = f"Invalid value for 'srcaddr-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SRCADDR_NEGATE)}"
+            error_msg += f"\n  → Example: srcaddr-negate='{{ VALID_BODY_SRCADDR_NEGATE[0] }}'"
+            return (False, error_msg)
     if "dstaddr-negate" in payload:
-        value = payload.get("dstaddr-negate")
-        if value and value not in VALID_BODY_DSTADDR_NEGATE:
-            return (
-                False,
-                f"Invalid dstaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR_NEGATE)}",
-            )
-
-    # Validate srcaddr6-negate if present
+        value = payload["dstaddr-negate"]
+        if value not in VALID_BODY_DSTADDR_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("dstaddr-negate", "")
+            error_msg = f"Invalid value for 'dstaddr-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DSTADDR_NEGATE)}"
+            error_msg += f"\n  → Example: dstaddr-negate='{{ VALID_BODY_DSTADDR_NEGATE[0] }}'"
+            return (False, error_msg)
     if "srcaddr6-negate" in payload:
-        value = payload.get("srcaddr6-negate")
-        if value and value not in VALID_BODY_SRCADDR6_NEGATE:
-            return (
-                False,
-                f"Invalid srcaddr6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR6_NEGATE)}",
-            )
-
-    # Validate dstaddr6-negate if present
+        value = payload["srcaddr6-negate"]
+        if value not in VALID_BODY_SRCADDR6_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("srcaddr6-negate", "")
+            error_msg = f"Invalid value for 'srcaddr6-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SRCADDR6_NEGATE)}"
+            error_msg += f"\n  → Example: srcaddr6-negate='{{ VALID_BODY_SRCADDR6_NEGATE[0] }}'"
+            return (False, error_msg)
     if "dstaddr6-negate" in payload:
-        value = payload.get("dstaddr6-negate")
-        if value and value not in VALID_BODY_DSTADDR6_NEGATE:
-            return (
-                False,
-                f"Invalid dstaddr6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR6_NEGATE)}",
-            )
-
-    # Validate internet-service if present
+        value = payload["dstaddr6-negate"]
+        if value not in VALID_BODY_DSTADDR6_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("dstaddr6-negate", "")
+            error_msg = f"Invalid value for 'dstaddr6-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DSTADDR6_NEGATE)}"
+            error_msg += f"\n  → Example: dstaddr6-negate='{{ VALID_BODY_DSTADDR6_NEGATE[0] }}'"
+            return (False, error_msg)
     if "internet-service" in payload:
-        value = payload.get("internet-service")
-        if value and value not in VALID_BODY_INTERNET_SERVICE:
-            return (
-                False,
-                f"Invalid internet-service '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE)}",
-            )
-
-    # Validate internet-service-negate if present
+        value = payload["internet-service"]
+        if value not in VALID_BODY_INTERNET_SERVICE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service", "")
+            error_msg = f"Invalid value for 'internet-service': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE)}"
+            error_msg += f"\n  → Example: internet-service='{{ VALID_BODY_INTERNET_SERVICE[0] }}'"
+            return (False, error_msg)
     if "internet-service-negate" in payload:
-        value = payload.get("internet-service-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
-            return (
-                False,
-                f"Invalid internet-service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_NEGATE)}",
-            )
-
-    # Validate internet-service-src if present
+        value = payload["internet-service-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service-negate", "")
+            error_msg = f"Invalid value for 'internet-service-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE_NEGATE)}"
+            error_msg += f"\n  → Example: internet-service-negate='{{ VALID_BODY_INTERNET_SERVICE_NEGATE[0] }}'"
+            return (False, error_msg)
     if "internet-service-src" in payload:
-        value = payload.get("internet-service-src")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_SRC:
-            return (
-                False,
-                f"Invalid internet-service-src '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_SRC)}",
-            )
-
-    # Validate internet-service-src-negate if present
+        value = payload["internet-service-src"]
+        if value not in VALID_BODY_INTERNET_SERVICE_SRC:
+            desc = FIELD_DESCRIPTIONS.get("internet-service-src", "")
+            error_msg = f"Invalid value for 'internet-service-src': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE_SRC)}"
+            error_msg += f"\n  → Example: internet-service-src='{{ VALID_BODY_INTERNET_SERVICE_SRC[0] }}'"
+            return (False, error_msg)
     if "internet-service-src-negate" in payload:
-        value = payload.get("internet-service-src-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_SRC_NEGATE:
-            return (
-                False,
-                f"Invalid internet-service-src-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_SRC_NEGATE)}",
-            )
-
-    # Validate internet-service6 if present
+        value = payload["internet-service-src-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE_SRC_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service-src-negate", "")
+            error_msg = f"Invalid value for 'internet-service-src-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE_SRC_NEGATE)}"
+            error_msg += f"\n  → Example: internet-service-src-negate='{{ VALID_BODY_INTERNET_SERVICE_SRC_NEGATE[0] }}'"
+            return (False, error_msg)
     if "internet-service6" in payload:
-        value = payload.get("internet-service6")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6:
-            return (
-                False,
-                f"Invalid internet-service6 '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6)}",
-            )
-
-    # Validate internet-service6-negate if present
+        value = payload["internet-service6"]
+        if value not in VALID_BODY_INTERNET_SERVICE6:
+            desc = FIELD_DESCRIPTIONS.get("internet-service6", "")
+            error_msg = f"Invalid value for 'internet-service6': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE6)}"
+            error_msg += f"\n  → Example: internet-service6='{{ VALID_BODY_INTERNET_SERVICE6[0] }}'"
+            return (False, error_msg)
     if "internet-service6-negate" in payload:
-        value = payload.get("internet-service6-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
-            return (
-                False,
-                f"Invalid internet-service6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_NEGATE)}",
-            )
-
-    # Validate internet-service6-src if present
+        value = payload["internet-service6-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service6-negate", "")
+            error_msg = f"Invalid value for 'internet-service6-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE6_NEGATE)}"
+            error_msg += f"\n  → Example: internet-service6-negate='{{ VALID_BODY_INTERNET_SERVICE6_NEGATE[0] }}'"
+            return (False, error_msg)
     if "internet-service6-src" in payload:
-        value = payload.get("internet-service6-src")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_SRC:
-            return (
-                False,
-                f"Invalid internet-service6-src '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_SRC)}",
-            )
-
-    # Validate internet-service6-src-negate if present
+        value = payload["internet-service6-src"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_SRC:
+            desc = FIELD_DESCRIPTIONS.get("internet-service6-src", "")
+            error_msg = f"Invalid value for 'internet-service6-src': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE6_SRC)}"
+            error_msg += f"\n  → Example: internet-service6-src='{{ VALID_BODY_INTERNET_SERVICE6_SRC[0] }}'"
+            return (False, error_msg)
     if "internet-service6-src-negate" in payload:
-        value = payload.get("internet-service6-src-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE:
-            return (
-                False,
-                f"Invalid internet-service6-src-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE)}",
-            )
-
-    # Validate enforce-default-app-port if present
+        value = payload["internet-service6-src-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("internet-service6-src-negate", "")
+            error_msg = f"Invalid value for 'internet-service6-src-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE)}"
+            error_msg += f"\n  → Example: internet-service6-src-negate='{{ VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE[0] }}'"
+            return (False, error_msg)
     if "enforce-default-app-port" in payload:
-        value = payload.get("enforce-default-app-port")
-        if value and value not in VALID_BODY_ENFORCE_DEFAULT_APP_PORT:
-            return (
-                False,
-                f"Invalid enforce-default-app-port '{value}'. Must be one of: {', '.join(VALID_BODY_ENFORCE_DEFAULT_APP_PORT)}",
-            )
-
-    # Validate service-negate if present
+        value = payload["enforce-default-app-port"]
+        if value not in VALID_BODY_ENFORCE_DEFAULT_APP_PORT:
+            desc = FIELD_DESCRIPTIONS.get("enforce-default-app-port", "")
+            error_msg = f"Invalid value for 'enforce-default-app-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ENFORCE_DEFAULT_APP_PORT)}"
+            error_msg += f"\n  → Example: enforce-default-app-port='{{ VALID_BODY_ENFORCE_DEFAULT_APP_PORT[0] }}'"
+            return (False, error_msg)
     if "service-negate" in payload:
-        value = payload.get("service-negate")
-        if value and value not in VALID_BODY_SERVICE_NEGATE:
-            return (
-                False,
-                f"Invalid service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SERVICE_NEGATE)}",
-            )
-
-    # Validate action if present
+        value = payload["service-negate"]
+        if value not in VALID_BODY_SERVICE_NEGATE:
+            desc = FIELD_DESCRIPTIONS.get("service-negate", "")
+            error_msg = f"Invalid value for 'service-negate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SERVICE_NEGATE)}"
+            error_msg += f"\n  → Example: service-negate='{{ VALID_BODY_SERVICE_NEGATE[0] }}'"
+            return (False, error_msg)
     if "action" in payload:
-        value = payload.get("action")
-        if value and value not in VALID_BODY_ACTION:
-            return (
-                False,
-                f"Invalid action '{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
-            )
-
-    # Validate send-deny-packet if present
+        value = payload["action"]
+        if value not in VALID_BODY_ACTION:
+            desc = FIELD_DESCRIPTIONS.get("action", "")
+            error_msg = f"Invalid value for 'action': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACTION)}"
+            error_msg += f"\n  → Example: action='{{ VALID_BODY_ACTION[0] }}'"
+            return (False, error_msg)
     if "send-deny-packet" in payload:
-        value = payload.get("send-deny-packet")
-        if value and value not in VALID_BODY_SEND_DENY_PACKET:
-            return (
-                False,
-                f"Invalid send-deny-packet '{value}'. Must be one of: {', '.join(VALID_BODY_SEND_DENY_PACKET)}",
-            )
-
-    # Validate schedule if present
-    if "schedule" in payload:
-        value = payload.get("schedule")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "schedule cannot exceed 35 characters")
-
-    # Validate status if present
+        value = payload["send-deny-packet"]
+        if value not in VALID_BODY_SEND_DENY_PACKET:
+            desc = FIELD_DESCRIPTIONS.get("send-deny-packet", "")
+            error_msg = f"Invalid value for 'send-deny-packet': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SEND_DENY_PACKET)}"
+            error_msg += f"\n  → Example: send-deny-packet='{{ VALID_BODY_SEND_DENY_PACKET[0] }}'"
+            return (False, error_msg)
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
-            return (
-                False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
-            )
-
-    # Validate logtraffic if present
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
     if "logtraffic" in payload:
-        value = payload.get("logtraffic")
-        if value and value not in VALID_BODY_LOGTRAFFIC:
-            return (
-                False,
-                f"Invalid logtraffic '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
-            )
-
-    # Validate learning-mode if present
+        value = payload["logtraffic"]
+        if value not in VALID_BODY_LOGTRAFFIC:
+            desc = FIELD_DESCRIPTIONS.get("logtraffic", "")
+            error_msg = f"Invalid value for 'logtraffic': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOGTRAFFIC)}"
+            error_msg += f"\n  → Example: logtraffic='{{ VALID_BODY_LOGTRAFFIC[0] }}'"
+            return (False, error_msg)
     if "learning-mode" in payload:
-        value = payload.get("learning-mode")
-        if value and value not in VALID_BODY_LEARNING_MODE:
-            return (
-                False,
-                f"Invalid learning-mode '{value}'. Must be one of: {', '.join(VALID_BODY_LEARNING_MODE)}",
-            )
-
-    # Validate nat46 if present
+        value = payload["learning-mode"]
+        if value not in VALID_BODY_LEARNING_MODE:
+            desc = FIELD_DESCRIPTIONS.get("learning-mode", "")
+            error_msg = f"Invalid value for 'learning-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LEARNING_MODE)}"
+            error_msg += f"\n  → Example: learning-mode='{{ VALID_BODY_LEARNING_MODE[0] }}'"
+            return (False, error_msg)
     if "nat46" in payload:
-        value = payload.get("nat46")
-        if value and value not in VALID_BODY_NAT46:
-            return (
-                False,
-                f"Invalid nat46 '{value}'. Must be one of: {', '.join(VALID_BODY_NAT46)}",
-            )
-
-    # Validate nat64 if present
+        value = payload["nat46"]
+        if value not in VALID_BODY_NAT46:
+            desc = FIELD_DESCRIPTIONS.get("nat46", "")
+            error_msg = f"Invalid value for 'nat46': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NAT46)}"
+            error_msg += f"\n  → Example: nat46='{{ VALID_BODY_NAT46[0] }}'"
+            return (False, error_msg)
     if "nat64" in payload:
-        value = payload.get("nat64")
-        if value and value not in VALID_BODY_NAT64:
-            return (
-                False,
-                f"Invalid nat64 '{value}'. Must be one of: {', '.join(VALID_BODY_NAT64)}",
-            )
-
-    # Validate profile-type if present
+        value = payload["nat64"]
+        if value not in VALID_BODY_NAT64:
+            desc = FIELD_DESCRIPTIONS.get("nat64", "")
+            error_msg = f"Invalid value for 'nat64': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NAT64)}"
+            error_msg += f"\n  → Example: nat64='{{ VALID_BODY_NAT64[0] }}'"
+            return (False, error_msg)
     if "profile-type" in payload:
-        value = payload.get("profile-type")
-        if value and value not in VALID_BODY_PROFILE_TYPE:
-            return (
-                False,
-                f"Invalid profile-type '{value}'. Must be one of: {', '.join(VALID_BODY_PROFILE_TYPE)}",
-            )
-
-    # Validate profile-group if present
-    if "profile-group" in payload:
-        value = payload.get("profile-group")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "profile-group cannot exceed 47 characters")
-
-    # Validate profile-protocol-options if present
-    if "profile-protocol-options" in payload:
-        value = payload.get("profile-protocol-options")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "profile-protocol-options cannot exceed 47 characters",
-            )
-
-    # Validate ssl-ssh-profile if present
-    if "ssl-ssh-profile" in payload:
-        value = payload.get("ssl-ssh-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssl-ssh-profile cannot exceed 47 characters")
-
-    # Validate av-profile if present
-    if "av-profile" in payload:
-        value = payload.get("av-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "av-profile cannot exceed 47 characters")
-
-    # Validate webfilter-profile if present
-    if "webfilter-profile" in payload:
-        value = payload.get("webfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "webfilter-profile cannot exceed 47 characters")
-
-    # Validate dnsfilter-profile if present
-    if "dnsfilter-profile" in payload:
-        value = payload.get("dnsfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dnsfilter-profile cannot exceed 47 characters")
-
-    # Validate emailfilter-profile if present
-    if "emailfilter-profile" in payload:
-        value = payload.get("emailfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "emailfilter-profile cannot exceed 47 characters")
-
-    # Validate dlp-profile if present
-    if "dlp-profile" in payload:
-        value = payload.get("dlp-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dlp-profile cannot exceed 47 characters")
-
-    # Validate file-filter-profile if present
-    if "file-filter-profile" in payload:
-        value = payload.get("file-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "file-filter-profile cannot exceed 47 characters")
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate application-list if present
-    if "application-list" in payload:
-        value = payload.get("application-list")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "application-list cannot exceed 47 characters")
-
-    # Validate voip-profile if present
-    if "voip-profile" in payload:
-        value = payload.get("voip-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "voip-profile cannot exceed 47 characters")
-
-    # Validate ips-voip-filter if present
-    if "ips-voip-filter" in payload:
-        value = payload.get("ips-voip-filter")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-voip-filter cannot exceed 47 characters")
-
-    # Validate sctp-filter-profile if present
-    if "sctp-filter-profile" in payload:
-        value = payload.get("sctp-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "sctp-filter-profile cannot exceed 47 characters")
-
-    # Validate diameter-filter-profile if present
-    if "diameter-filter-profile" in payload:
-        value = payload.get("diameter-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "diameter-filter-profile cannot exceed 47 characters",
-            )
-
-    # Validate virtual-patch-profile if present
-    if "virtual-patch-profile" in payload:
-        value = payload.get("virtual-patch-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "virtual-patch-profile cannot exceed 47 characters",
-            )
-
-    # Validate icap-profile if present
-    if "icap-profile" in payload:
-        value = payload.get("icap-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "icap-profile cannot exceed 47 characters")
-
-    # Validate videofilter-profile if present
-    if "videofilter-profile" in payload:
-        value = payload.get("videofilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "videofilter-profile cannot exceed 47 characters")
-
-    # Validate ssh-filter-profile if present
-    if "ssh-filter-profile" in payload:
-        value = payload.get("ssh-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssh-filter-profile cannot exceed 47 characters")
-
-    # Validate casb-profile if present
-    if "casb-profile" in payload:
-        value = payload.get("casb-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "casb-profile cannot exceed 47 characters")
+        value = payload["profile-type"]
+        if value not in VALID_BODY_PROFILE_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("profile-type", "")
+            error_msg = f"Invalid value for 'profile-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROFILE_TYPE)}"
+            error_msg += f"\n  → Example: profile-type='{{ VALID_BODY_PROFILE_TYPE[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -592,407 +1042,480 @@ def validate_security_policy_post(
 # ============================================================================
 
 
-def validate_security_policy_put(
-    policyid: str | None = None, payload: dict[str, Any] | None = None
+def validate_firewall_security_policy_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update firewall/security_policy.
 
     Args:
-        policyid: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_firewall_security_policy_put(payload)
     """
-    # policyid is required for updates
-    if not policyid:
-        return (False, "policyid is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate policyid if present
-    if "policyid" in payload:
-        value = payload.get("policyid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967294:
-                    return (
-                        False,
-                        "policyid must be between 0 and 4294967294",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"policyid must be numeric, got: {value}")
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comments if present
-    if "comments" in payload:
-        value = payload.get("comments")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "comments cannot exceed 1023 characters")
-
-    # Validate srcaddr-negate if present
+    # Step 1: Validate enum values
     if "srcaddr-negate" in payload:
-        value = payload.get("srcaddr-negate")
-        if value and value not in VALID_BODY_SRCADDR_NEGATE:
+        value = payload["srcaddr-negate"]
+        if value not in VALID_BODY_SRCADDR_NEGATE:
             return (
                 False,
-                f"Invalid srcaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR_NEGATE)}",
+                f"Invalid value for 'srcaddr-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR_NEGATE)}",
             )
-
-    # Validate dstaddr-negate if present
     if "dstaddr-negate" in payload:
-        value = payload.get("dstaddr-negate")
-        if value and value not in VALID_BODY_DSTADDR_NEGATE:
+        value = payload["dstaddr-negate"]
+        if value not in VALID_BODY_DSTADDR_NEGATE:
             return (
                 False,
-                f"Invalid dstaddr-negate '{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR_NEGATE)}",
+                f"Invalid value for 'dstaddr-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR_NEGATE)}",
             )
-
-    # Validate srcaddr6-negate if present
     if "srcaddr6-negate" in payload:
-        value = payload.get("srcaddr6-negate")
-        if value and value not in VALID_BODY_SRCADDR6_NEGATE:
+        value = payload["srcaddr6-negate"]
+        if value not in VALID_BODY_SRCADDR6_NEGATE:
             return (
                 False,
-                f"Invalid srcaddr6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR6_NEGATE)}",
+                f"Invalid value for 'srcaddr6-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_SRCADDR6_NEGATE)}",
             )
-
-    # Validate dstaddr6-negate if present
     if "dstaddr6-negate" in payload:
-        value = payload.get("dstaddr6-negate")
-        if value and value not in VALID_BODY_DSTADDR6_NEGATE:
+        value = payload["dstaddr6-negate"]
+        if value not in VALID_BODY_DSTADDR6_NEGATE:
             return (
                 False,
-                f"Invalid dstaddr6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR6_NEGATE)}",
+                f"Invalid value for 'dstaddr6-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_DSTADDR6_NEGATE)}",
             )
-
-    # Validate internet-service if present
     if "internet-service" in payload:
-        value = payload.get("internet-service")
-        if value and value not in VALID_BODY_INTERNET_SERVICE:
+        value = payload["internet-service"]
+        if value not in VALID_BODY_INTERNET_SERVICE:
             return (
                 False,
-                f"Invalid internet-service '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE)}",
+                f"Invalid value for 'internet-service'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE)}",
             )
-
-    # Validate internet-service-negate if present
     if "internet-service-negate" in payload:
-        value = payload.get("internet-service-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
+        value = payload["internet-service-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE_NEGATE:
             return (
                 False,
-                f"Invalid internet-service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_NEGATE)}",
+                f"Invalid value for 'internet-service-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_NEGATE)}",
             )
-
-    # Validate internet-service-src if present
     if "internet-service-src" in payload:
-        value = payload.get("internet-service-src")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_SRC:
+        value = payload["internet-service-src"]
+        if value not in VALID_BODY_INTERNET_SERVICE_SRC:
             return (
                 False,
-                f"Invalid internet-service-src '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_SRC)}",
+                f"Invalid value for 'internet-service-src'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_SRC)}",
             )
-
-    # Validate internet-service-src-negate if present
     if "internet-service-src-negate" in payload:
-        value = payload.get("internet-service-src-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE_SRC_NEGATE:
+        value = payload["internet-service-src-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE_SRC_NEGATE:
             return (
                 False,
-                f"Invalid internet-service-src-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_SRC_NEGATE)}",
+                f"Invalid value for 'internet-service-src-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE_SRC_NEGATE)}",
             )
-
-    # Validate internet-service6 if present
     if "internet-service6" in payload:
-        value = payload.get("internet-service6")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6:
+        value = payload["internet-service6"]
+        if value not in VALID_BODY_INTERNET_SERVICE6:
             return (
                 False,
-                f"Invalid internet-service6 '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6)}",
+                f"Invalid value for 'internet-service6'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6)}",
             )
-
-    # Validate internet-service6-negate if present
     if "internet-service6-negate" in payload:
-        value = payload.get("internet-service6-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
+        value = payload["internet-service6-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_NEGATE:
             return (
                 False,
-                f"Invalid internet-service6-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_NEGATE)}",
+                f"Invalid value for 'internet-service6-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_NEGATE)}",
             )
-
-    # Validate internet-service6-src if present
     if "internet-service6-src" in payload:
-        value = payload.get("internet-service6-src")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_SRC:
+        value = payload["internet-service6-src"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_SRC:
             return (
                 False,
-                f"Invalid internet-service6-src '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_SRC)}",
+                f"Invalid value for 'internet-service6-src'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_SRC)}",
             )
-
-    # Validate internet-service6-src-negate if present
     if "internet-service6-src-negate" in payload:
-        value = payload.get("internet-service6-src-negate")
-        if value and value not in VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE:
+        value = payload["internet-service6-src-negate"]
+        if value not in VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE:
             return (
                 False,
-                f"Invalid internet-service6-src-negate '{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE)}",
+                f"Invalid value for 'internet-service6-src-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE)}",
             )
-
-    # Validate enforce-default-app-port if present
     if "enforce-default-app-port" in payload:
-        value = payload.get("enforce-default-app-port")
-        if value and value not in VALID_BODY_ENFORCE_DEFAULT_APP_PORT:
+        value = payload["enforce-default-app-port"]
+        if value not in VALID_BODY_ENFORCE_DEFAULT_APP_PORT:
             return (
                 False,
-                f"Invalid enforce-default-app-port '{value}'. Must be one of: {', '.join(VALID_BODY_ENFORCE_DEFAULT_APP_PORT)}",
+                f"Invalid value for 'enforce-default-app-port'='{value}'. Must be one of: {', '.join(VALID_BODY_ENFORCE_DEFAULT_APP_PORT)}",
             )
-
-    # Validate service-negate if present
     if "service-negate" in payload:
-        value = payload.get("service-negate")
-        if value and value not in VALID_BODY_SERVICE_NEGATE:
+        value = payload["service-negate"]
+        if value not in VALID_BODY_SERVICE_NEGATE:
             return (
                 False,
-                f"Invalid service-negate '{value}'. Must be one of: {', '.join(VALID_BODY_SERVICE_NEGATE)}",
+                f"Invalid value for 'service-negate'='{value}'. Must be one of: {', '.join(VALID_BODY_SERVICE_NEGATE)}",
             )
-
-    # Validate action if present
     if "action" in payload:
-        value = payload.get("action")
-        if value and value not in VALID_BODY_ACTION:
+        value = payload["action"]
+        if value not in VALID_BODY_ACTION:
             return (
                 False,
-                f"Invalid action '{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
+                f"Invalid value for 'action'='{value}'. Must be one of: {', '.join(VALID_BODY_ACTION)}",
             )
-
-    # Validate send-deny-packet if present
     if "send-deny-packet" in payload:
-        value = payload.get("send-deny-packet")
-        if value and value not in VALID_BODY_SEND_DENY_PACKET:
+        value = payload["send-deny-packet"]
+        if value not in VALID_BODY_SEND_DENY_PACKET:
             return (
                 False,
-                f"Invalid send-deny-packet '{value}'. Must be one of: {', '.join(VALID_BODY_SEND_DENY_PACKET)}",
+                f"Invalid value for 'send-deny-packet'='{value}'. Must be one of: {', '.join(VALID_BODY_SEND_DENY_PACKET)}",
             )
-
-    # Validate schedule if present
-    if "schedule" in payload:
-        value = payload.get("schedule")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "schedule cannot exceed 35 characters")
-
-    # Validate status if present
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
             return (
                 False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
             )
-
-    # Validate logtraffic if present
     if "logtraffic" in payload:
-        value = payload.get("logtraffic")
-        if value and value not in VALID_BODY_LOGTRAFFIC:
+        value = payload["logtraffic"]
+        if value not in VALID_BODY_LOGTRAFFIC:
             return (
                 False,
-                f"Invalid logtraffic '{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
+                f"Invalid value for 'logtraffic'='{value}'. Must be one of: {', '.join(VALID_BODY_LOGTRAFFIC)}",
             )
-
-    # Validate learning-mode if present
     if "learning-mode" in payload:
-        value = payload.get("learning-mode")
-        if value and value not in VALID_BODY_LEARNING_MODE:
+        value = payload["learning-mode"]
+        if value not in VALID_BODY_LEARNING_MODE:
             return (
                 False,
-                f"Invalid learning-mode '{value}'. Must be one of: {', '.join(VALID_BODY_LEARNING_MODE)}",
+                f"Invalid value for 'learning-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_LEARNING_MODE)}",
             )
-
-    # Validate nat46 if present
     if "nat46" in payload:
-        value = payload.get("nat46")
-        if value and value not in VALID_BODY_NAT46:
+        value = payload["nat46"]
+        if value not in VALID_BODY_NAT46:
             return (
                 False,
-                f"Invalid nat46 '{value}'. Must be one of: {', '.join(VALID_BODY_NAT46)}",
+                f"Invalid value for 'nat46'='{value}'. Must be one of: {', '.join(VALID_BODY_NAT46)}",
             )
-
-    # Validate nat64 if present
     if "nat64" in payload:
-        value = payload.get("nat64")
-        if value and value not in VALID_BODY_NAT64:
+        value = payload["nat64"]
+        if value not in VALID_BODY_NAT64:
             return (
                 False,
-                f"Invalid nat64 '{value}'. Must be one of: {', '.join(VALID_BODY_NAT64)}",
+                f"Invalid value for 'nat64'='{value}'. Must be one of: {', '.join(VALID_BODY_NAT64)}",
             )
-
-    # Validate profile-type if present
     if "profile-type" in payload:
-        value = payload.get("profile-type")
-        if value and value not in VALID_BODY_PROFILE_TYPE:
+        value = payload["profile-type"]
+        if value not in VALID_BODY_PROFILE_TYPE:
             return (
                 False,
-                f"Invalid profile-type '{value}'. Must be one of: {', '.join(VALID_BODY_PROFILE_TYPE)}",
+                f"Invalid value for 'profile-type'='{value}'. Must be one of: {', '.join(VALID_BODY_PROFILE_TYPE)}",
             )
-
-    # Validate profile-group if present
-    if "profile-group" in payload:
-        value = payload.get("profile-group")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "profile-group cannot exceed 47 characters")
-
-    # Validate profile-protocol-options if present
-    if "profile-protocol-options" in payload:
-        value = payload.get("profile-protocol-options")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "profile-protocol-options cannot exceed 47 characters",
-            )
-
-    # Validate ssl-ssh-profile if present
-    if "ssl-ssh-profile" in payload:
-        value = payload.get("ssl-ssh-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssl-ssh-profile cannot exceed 47 characters")
-
-    # Validate av-profile if present
-    if "av-profile" in payload:
-        value = payload.get("av-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "av-profile cannot exceed 47 characters")
-
-    # Validate webfilter-profile if present
-    if "webfilter-profile" in payload:
-        value = payload.get("webfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "webfilter-profile cannot exceed 47 characters")
-
-    # Validate dnsfilter-profile if present
-    if "dnsfilter-profile" in payload:
-        value = payload.get("dnsfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dnsfilter-profile cannot exceed 47 characters")
-
-    # Validate emailfilter-profile if present
-    if "emailfilter-profile" in payload:
-        value = payload.get("emailfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "emailfilter-profile cannot exceed 47 characters")
-
-    # Validate dlp-profile if present
-    if "dlp-profile" in payload:
-        value = payload.get("dlp-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "dlp-profile cannot exceed 47 characters")
-
-    # Validate file-filter-profile if present
-    if "file-filter-profile" in payload:
-        value = payload.get("file-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "file-filter-profile cannot exceed 47 characters")
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate application-list if present
-    if "application-list" in payload:
-        value = payload.get("application-list")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "application-list cannot exceed 47 characters")
-
-    # Validate voip-profile if present
-    if "voip-profile" in payload:
-        value = payload.get("voip-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "voip-profile cannot exceed 47 characters")
-
-    # Validate ips-voip-filter if present
-    if "ips-voip-filter" in payload:
-        value = payload.get("ips-voip-filter")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-voip-filter cannot exceed 47 characters")
-
-    # Validate sctp-filter-profile if present
-    if "sctp-filter-profile" in payload:
-        value = payload.get("sctp-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "sctp-filter-profile cannot exceed 47 characters")
-
-    # Validate diameter-filter-profile if present
-    if "diameter-filter-profile" in payload:
-        value = payload.get("diameter-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "diameter-filter-profile cannot exceed 47 characters",
-            )
-
-    # Validate virtual-patch-profile if present
-    if "virtual-patch-profile" in payload:
-        value = payload.get("virtual-patch-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (
-                False,
-                "virtual-patch-profile cannot exceed 47 characters",
-            )
-
-    # Validate icap-profile if present
-    if "icap-profile" in payload:
-        value = payload.get("icap-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "icap-profile cannot exceed 47 characters")
-
-    # Validate videofilter-profile if present
-    if "videofilter-profile" in payload:
-        value = payload.get("videofilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "videofilter-profile cannot exceed 47 characters")
-
-    # Validate ssh-filter-profile if present
-    if "ssh-filter-profile" in payload:
-        value = payload.get("ssh-filter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ssh-filter-profile cannot exceed 47 characters")
-
-    # Validate casb-profile if present
-    if "casb-profile" in payload:
-        value = payload.get("casb-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "casb-profile cannot exceed 47 characters")
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_security_policy_delete(
-    policyid: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        policyid: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not policyid:
-        return (False, "policyid is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "firewall/security_policy",
+    "category": "cmdb",
+    "api_path": "firewall/security-policy",
+    "mkey": "policyid",
+    "mkey_type": "integer",
+    "help": "Configure NGFW IPv4/IPv6 application policies.",
+    "total_fields": 77,
+    "required_fields_count": 3,
+    "fields_with_defaults_count": 47,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

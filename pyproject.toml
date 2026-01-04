@@ -130,10 +130,11 @@ disallow_untyped_defs = false
 warn_return_any = false
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
+testpaths = [".tests/pytests"]
+pythonpath = [".tests/pytests"]
+python_files = ["test_*.py", "auto_test_*.py"]
 python_classes = ["Test*"]
-python_functions = ["test_*"]
+python_functions = ["test_*", "auto_test_*"]
 norecursedirs = [
     ".*",
     "build",
@@ -147,6 +148,7 @@ addopts = [
     "--verbose",
     "--strict-markers",
     "--tb=short",
+    "--import-mode=importlib",
 ]
 filterwarnings = [
     "ignore::pytest.PytestAssertRewriteWarning",

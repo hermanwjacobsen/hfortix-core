@@ -2,21 +2,19 @@
 
 from .setting import Setting
 
-__all__ = ["Setting"]
+__all__ = [
+    "Alertemail",
+    "Setting",
+]
 
 
 class Alertemail:
-    """
-    Alertemail category wrapper.
-
-    This class provides access to all alertemail CMDB endpoints.
-    """
+    """Alertemail endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Alertemail with all endpoint classes.
-
+        """Alertemail endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.setting = Setting(client)

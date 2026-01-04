@@ -1,60 +1,182 @@
 """
-Validation helpers for wireless-controller hotspot20_h2qp_conn_capability
-endpoint.
+Validation helpers for wireless-controller/hotspot20_h2qp_conn_capability endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "name",  # Connection capability name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "esp-port": "unknown",
-    "ftp-port": "unknown",
-    "http-port": "unknown",
+    "name": "",
     "icmp-port": "unknown",
-    "ikev2-port": "unknown",
-    "ikev2-xx-port": "unknown",
-    "pptp-vpn-port": "unknown",
+    "ftp-port": "unknown",
     "ssh-port": "unknown",
+    "http-port": "unknown",
     "tls-port": "unknown",
+    "pptp-vpn-port": "unknown",
     "voip-tcp-port": "unknown",
     "voip-udp-port": "unknown",
+    "ikev2-port": "unknown",
+    "ikev2-xx-port": "unknown",
+    "esp-port": "unknown",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # Connection capability name.
+    "icmp-port": "option",  # Set ICMP port service status.
+    "ftp-port": "option",  # Set FTP port service status.
+    "ssh-port": "option",  # Set SSH port service status.
+    "http-port": "option",  # Set HTTP port service status.
+    "tls-port": "option",  # Set TLS VPN (HTTPS) port service status.
+    "pptp-vpn-port": "option",  # Set Point to Point Tunneling Protocol (PPTP) VPN port servic
+    "voip-tcp-port": "option",  # Set VoIP TCP port service status.
+    "voip-udp-port": "option",  # Set VoIP UDP port service status.
+    "ikev2-port": "option",  # Set IKEv2 port service for IPsec VPN status.
+    "ikev2-xx-port": "option",  # Set UDP port 4500 (which may be used by IKEv2 for IPsec VPN)
+    "esp-port": "option",  # Set ESP port service (used by IPsec VPNs) status.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "Connection capability name.",
+    "icmp-port": "Set ICMP port service status.",
+    "ftp-port": "Set FTP port service status.",
+    "ssh-port": "Set SSH port service status.",
+    "http-port": "Set HTTP port service status.",
+    "tls-port": "Set TLS VPN (HTTPS) port service status.",
+    "pptp-vpn-port": "Set Point to Point Tunneling Protocol (PPTP) VPN port service status.",
+    "voip-tcp-port": "Set VoIP TCP port service status.",
+    "voip-udp-port": "Set VoIP UDP port service status.",
+    "ikev2-port": "Set IKEv2 port service for IPsec VPN status.",
+    "ikev2-xx-port": "Set UDP port 4500 (which may be used by IKEv2 for IPsec VPN) service status.",
+    "esp-port": "Set ESP port service (used by IPsec VPNs) status.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 35},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_ICMP_PORT = ["closed", "open", "unknown"]
-VALID_BODY_FTP_PORT = ["closed", "open", "unknown"]
-VALID_BODY_SSH_PORT = ["closed", "open", "unknown"]
-VALID_BODY_HTTP_PORT = ["closed", "open", "unknown"]
-VALID_BODY_TLS_PORT = ["closed", "open", "unknown"]
-VALID_BODY_PPTP_VPN_PORT = ["closed", "open", "unknown"]
-VALID_BODY_VOIP_TCP_PORT = ["closed", "open", "unknown"]
-VALID_BODY_VOIP_UDP_PORT = ["closed", "open", "unknown"]
-VALID_BODY_IKEV2_PORT = ["closed", "open", "unknown"]
-VALID_BODY_IKEV2_XX_PORT = ["closed", "open", "unknown"]
-VALID_BODY_ESP_PORT = ["closed", "open", "unknown"]
+VALID_BODY_ICMP_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_FTP_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_SSH_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_HTTP_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_TLS_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_PPTP_VPN_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_VOIP_TCP_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_VOIP_UDP_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_IKEV2_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_IKEV2_XX_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
+VALID_BODY_ESP_PORT = [
+    "closed",
+    "open",
+    "unknown",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -62,13 +184,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_hotspot20_h2qp_conn_capability_get(
+def validate_wireless_controller_hotspot20_h2qp_conn_capability_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for wireless-controller/hotspot20_h2qp_conn_capability.
 
     Args:
         attr: Attribute filter (optional)
@@ -78,9 +200,20 @@ def validate_hotspot20_h2qp_conn_capability_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -101,7 +234,7 @@ def validate_hotspot20_h2qp_conn_capability_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for wireless-controller_hotspot20_h2qp-conn-capability.
+    Validate required fields for wireless-controller/hotspot20_h2qp_conn_capability.
 
     This validator checks:
     1. Always-required fields are present
@@ -114,176 +247,195 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "name": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_hotspot20_h2qp_conn_capability_post(
-    payload: dict[str, Any],
+def validate_wireless_controller_hotspot20_h2qp_conn_capability_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new wireless-controller/hotspot20_h2qp_conn_capability object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - name: Connection capability name.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "icmp-port": "closed",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["icmp-port"] = "invalid-value"
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate icmp-port if present
+    # Step 2: Validate enum values
     if "icmp-port" in payload:
-        value = payload.get("icmp-port")
-        if value and value not in VALID_BODY_ICMP_PORT:
-            return (
-                False,
-                f"Invalid icmp-port '{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_PORT)}",
-            )
-
-    # Validate ftp-port if present
+        value = payload["icmp-port"]
+        if value not in VALID_BODY_ICMP_PORT:
+            desc = FIELD_DESCRIPTIONS.get("icmp-port", "")
+            error_msg = f"Invalid value for 'icmp-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ICMP_PORT)}"
+            error_msg += f"\n  → Example: icmp-port='{{ VALID_BODY_ICMP_PORT[0] }}'"
+            return (False, error_msg)
     if "ftp-port" in payload:
-        value = payload.get("ftp-port")
-        if value and value not in VALID_BODY_FTP_PORT:
-            return (
-                False,
-                f"Invalid ftp-port '{value}'. Must be one of: {', '.join(VALID_BODY_FTP_PORT)}",
-            )
-
-    # Validate ssh-port if present
+        value = payload["ftp-port"]
+        if value not in VALID_BODY_FTP_PORT:
+            desc = FIELD_DESCRIPTIONS.get("ftp-port", "")
+            error_msg = f"Invalid value for 'ftp-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FTP_PORT)}"
+            error_msg += f"\n  → Example: ftp-port='{{ VALID_BODY_FTP_PORT[0] }}'"
+            return (False, error_msg)
     if "ssh-port" in payload:
-        value = payload.get("ssh-port")
-        if value and value not in VALID_BODY_SSH_PORT:
-            return (
-                False,
-                f"Invalid ssh-port '{value}'. Must be one of: {', '.join(VALID_BODY_SSH_PORT)}",
-            )
-
-    # Validate http-port if present
+        value = payload["ssh-port"]
+        if value not in VALID_BODY_SSH_PORT:
+            desc = FIELD_DESCRIPTIONS.get("ssh-port", "")
+            error_msg = f"Invalid value for 'ssh-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SSH_PORT)}"
+            error_msg += f"\n  → Example: ssh-port='{{ VALID_BODY_SSH_PORT[0] }}'"
+            return (False, error_msg)
     if "http-port" in payload:
-        value = payload.get("http-port")
-        if value and value not in VALID_BODY_HTTP_PORT:
-            return (
-                False,
-                f"Invalid http-port '{value}'. Must be one of: {', '.join(VALID_BODY_HTTP_PORT)}",
-            )
-
-    # Validate tls-port if present
+        value = payload["http-port"]
+        if value not in VALID_BODY_HTTP_PORT:
+            desc = FIELD_DESCRIPTIONS.get("http-port", "")
+            error_msg = f"Invalid value for 'http-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HTTP_PORT)}"
+            error_msg += f"\n  → Example: http-port='{{ VALID_BODY_HTTP_PORT[0] }}'"
+            return (False, error_msg)
     if "tls-port" in payload:
-        value = payload.get("tls-port")
-        if value and value not in VALID_BODY_TLS_PORT:
-            return (
-                False,
-                f"Invalid tls-port '{value}'. Must be one of: {', '.join(VALID_BODY_TLS_PORT)}",
-            )
-
-    # Validate pptp-vpn-port if present
+        value = payload["tls-port"]
+        if value not in VALID_BODY_TLS_PORT:
+            desc = FIELD_DESCRIPTIONS.get("tls-port", "")
+            error_msg = f"Invalid value for 'tls-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TLS_PORT)}"
+            error_msg += f"\n  → Example: tls-port='{{ VALID_BODY_TLS_PORT[0] }}'"
+            return (False, error_msg)
     if "pptp-vpn-port" in payload:
-        value = payload.get("pptp-vpn-port")
-        if value and value not in VALID_BODY_PPTP_VPN_PORT:
-            return (
-                False,
-                f"Invalid pptp-vpn-port '{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_VPN_PORT)}",
-            )
-
-    # Validate voip-tcp-port if present
+        value = payload["pptp-vpn-port"]
+        if value not in VALID_BODY_PPTP_VPN_PORT:
+            desc = FIELD_DESCRIPTIONS.get("pptp-vpn-port", "")
+            error_msg = f"Invalid value for 'pptp-vpn-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PPTP_VPN_PORT)}"
+            error_msg += f"\n  → Example: pptp-vpn-port='{{ VALID_BODY_PPTP_VPN_PORT[0] }}'"
+            return (False, error_msg)
     if "voip-tcp-port" in payload:
-        value = payload.get("voip-tcp-port")
-        if value and value not in VALID_BODY_VOIP_TCP_PORT:
-            return (
-                False,
-                f"Invalid voip-tcp-port '{value}'. Must be one of: {', '.join(VALID_BODY_VOIP_TCP_PORT)}",
-            )
-
-    # Validate voip-udp-port if present
+        value = payload["voip-tcp-port"]
+        if value not in VALID_BODY_VOIP_TCP_PORT:
+            desc = FIELD_DESCRIPTIONS.get("voip-tcp-port", "")
+            error_msg = f"Invalid value for 'voip-tcp-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VOIP_TCP_PORT)}"
+            error_msg += f"\n  → Example: voip-tcp-port='{{ VALID_BODY_VOIP_TCP_PORT[0] }}'"
+            return (False, error_msg)
     if "voip-udp-port" in payload:
-        value = payload.get("voip-udp-port")
-        if value and value not in VALID_BODY_VOIP_UDP_PORT:
-            return (
-                False,
-                f"Invalid voip-udp-port '{value}'. Must be one of: {', '.join(VALID_BODY_VOIP_UDP_PORT)}",
-            )
-
-    # Validate ikev2-port if present
+        value = payload["voip-udp-port"]
+        if value not in VALID_BODY_VOIP_UDP_PORT:
+            desc = FIELD_DESCRIPTIONS.get("voip-udp-port", "")
+            error_msg = f"Invalid value for 'voip-udp-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VOIP_UDP_PORT)}"
+            error_msg += f"\n  → Example: voip-udp-port='{{ VALID_BODY_VOIP_UDP_PORT[0] }}'"
+            return (False, error_msg)
     if "ikev2-port" in payload:
-        value = payload.get("ikev2-port")
-        if value and value not in VALID_BODY_IKEV2_PORT:
-            return (
-                False,
-                f"Invalid ikev2-port '{value}'. Must be one of: {', '.join(VALID_BODY_IKEV2_PORT)}",
-            )
-
-    # Validate ikev2-xx-port if present
+        value = payload["ikev2-port"]
+        if value not in VALID_BODY_IKEV2_PORT:
+            desc = FIELD_DESCRIPTIONS.get("ikev2-port", "")
+            error_msg = f"Invalid value for 'ikev2-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IKEV2_PORT)}"
+            error_msg += f"\n  → Example: ikev2-port='{{ VALID_BODY_IKEV2_PORT[0] }}'"
+            return (False, error_msg)
     if "ikev2-xx-port" in payload:
-        value = payload.get("ikev2-xx-port")
-        if value and value not in VALID_BODY_IKEV2_XX_PORT:
-            return (
-                False,
-                f"Invalid ikev2-xx-port '{value}'. Must be one of: {', '.join(VALID_BODY_IKEV2_XX_PORT)}",
-            )
-
-    # Validate esp-port if present
+        value = payload["ikev2-xx-port"]
+        if value not in VALID_BODY_IKEV2_XX_PORT:
+            desc = FIELD_DESCRIPTIONS.get("ikev2-xx-port", "")
+            error_msg = f"Invalid value for 'ikev2-xx-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IKEV2_XX_PORT)}"
+            error_msg += f"\n  → Example: ikev2-xx-port='{{ VALID_BODY_IKEV2_XX_PORT[0] }}'"
+            return (False, error_msg)
     if "esp-port" in payload:
-        value = payload.get("esp-port")
-        if value and value not in VALID_BODY_ESP_PORT:
-            return (
-                False,
-                f"Invalid esp-port '{value}'. Must be one of: {', '.join(VALID_BODY_ESP_PORT)}",
-            )
+        value = payload["esp-port"]
+        if value not in VALID_BODY_ESP_PORT:
+            desc = FIELD_DESCRIPTIONS.get("esp-port", "")
+            error_msg = f"Invalid value for 'esp-port': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ESP_PORT)}"
+            error_msg += f"\n  → Example: esp-port='{{ VALID_BODY_ESP_PORT[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -293,153 +445,403 @@ def validate_hotspot20_h2qp_conn_capability_post(
 # ============================================================================
 
 
-def validate_hotspot20_h2qp_conn_capability_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_wireless_controller_hotspot20_h2qp_conn_capability_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update wireless-controller/hotspot20_h2qp_conn_capability.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate icmp-port if present
+    # Step 1: Validate enum values
     if "icmp-port" in payload:
-        value = payload.get("icmp-port")
-        if value and value not in VALID_BODY_ICMP_PORT:
+        value = payload["icmp-port"]
+        if value not in VALID_BODY_ICMP_PORT:
             return (
                 False,
-                f"Invalid icmp-port '{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_PORT)}",
+                f"Invalid value for 'icmp-port'='{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_PORT)}",
             )
-
-    # Validate ftp-port if present
     if "ftp-port" in payload:
-        value = payload.get("ftp-port")
-        if value and value not in VALID_BODY_FTP_PORT:
+        value = payload["ftp-port"]
+        if value not in VALID_BODY_FTP_PORT:
             return (
                 False,
-                f"Invalid ftp-port '{value}'. Must be one of: {', '.join(VALID_BODY_FTP_PORT)}",
+                f"Invalid value for 'ftp-port'='{value}'. Must be one of: {', '.join(VALID_BODY_FTP_PORT)}",
             )
-
-    # Validate ssh-port if present
     if "ssh-port" in payload:
-        value = payload.get("ssh-port")
-        if value and value not in VALID_BODY_SSH_PORT:
+        value = payload["ssh-port"]
+        if value not in VALID_BODY_SSH_PORT:
             return (
                 False,
-                f"Invalid ssh-port '{value}'. Must be one of: {', '.join(VALID_BODY_SSH_PORT)}",
+                f"Invalid value for 'ssh-port'='{value}'. Must be one of: {', '.join(VALID_BODY_SSH_PORT)}",
             )
-
-    # Validate http-port if present
     if "http-port" in payload:
-        value = payload.get("http-port")
-        if value and value not in VALID_BODY_HTTP_PORT:
+        value = payload["http-port"]
+        if value not in VALID_BODY_HTTP_PORT:
             return (
                 False,
-                f"Invalid http-port '{value}'. Must be one of: {', '.join(VALID_BODY_HTTP_PORT)}",
+                f"Invalid value for 'http-port'='{value}'. Must be one of: {', '.join(VALID_BODY_HTTP_PORT)}",
             )
-
-    # Validate tls-port if present
     if "tls-port" in payload:
-        value = payload.get("tls-port")
-        if value and value not in VALID_BODY_TLS_PORT:
+        value = payload["tls-port"]
+        if value not in VALID_BODY_TLS_PORT:
             return (
                 False,
-                f"Invalid tls-port '{value}'. Must be one of: {', '.join(VALID_BODY_TLS_PORT)}",
+                f"Invalid value for 'tls-port'='{value}'. Must be one of: {', '.join(VALID_BODY_TLS_PORT)}",
             )
-
-    # Validate pptp-vpn-port if present
     if "pptp-vpn-port" in payload:
-        value = payload.get("pptp-vpn-port")
-        if value and value not in VALID_BODY_PPTP_VPN_PORT:
+        value = payload["pptp-vpn-port"]
+        if value not in VALID_BODY_PPTP_VPN_PORT:
             return (
                 False,
-                f"Invalid pptp-vpn-port '{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_VPN_PORT)}",
+                f"Invalid value for 'pptp-vpn-port'='{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_VPN_PORT)}",
             )
-
-    # Validate voip-tcp-port if present
     if "voip-tcp-port" in payload:
-        value = payload.get("voip-tcp-port")
-        if value and value not in VALID_BODY_VOIP_TCP_PORT:
+        value = payload["voip-tcp-port"]
+        if value not in VALID_BODY_VOIP_TCP_PORT:
             return (
                 False,
-                f"Invalid voip-tcp-port '{value}'. Must be one of: {', '.join(VALID_BODY_VOIP_TCP_PORT)}",
+                f"Invalid value for 'voip-tcp-port'='{value}'. Must be one of: {', '.join(VALID_BODY_VOIP_TCP_PORT)}",
             )
-
-    # Validate voip-udp-port if present
     if "voip-udp-port" in payload:
-        value = payload.get("voip-udp-port")
-        if value and value not in VALID_BODY_VOIP_UDP_PORT:
+        value = payload["voip-udp-port"]
+        if value not in VALID_BODY_VOIP_UDP_PORT:
             return (
                 False,
-                f"Invalid voip-udp-port '{value}'. Must be one of: {', '.join(VALID_BODY_VOIP_UDP_PORT)}",
+                f"Invalid value for 'voip-udp-port'='{value}'. Must be one of: {', '.join(VALID_BODY_VOIP_UDP_PORT)}",
             )
-
-    # Validate ikev2-port if present
     if "ikev2-port" in payload:
-        value = payload.get("ikev2-port")
-        if value and value not in VALID_BODY_IKEV2_PORT:
+        value = payload["ikev2-port"]
+        if value not in VALID_BODY_IKEV2_PORT:
             return (
                 False,
-                f"Invalid ikev2-port '{value}'. Must be one of: {', '.join(VALID_BODY_IKEV2_PORT)}",
+                f"Invalid value for 'ikev2-port'='{value}'. Must be one of: {', '.join(VALID_BODY_IKEV2_PORT)}",
             )
-
-    # Validate ikev2-xx-port if present
     if "ikev2-xx-port" in payload:
-        value = payload.get("ikev2-xx-port")
-        if value and value not in VALID_BODY_IKEV2_XX_PORT:
+        value = payload["ikev2-xx-port"]
+        if value not in VALID_BODY_IKEV2_XX_PORT:
             return (
                 False,
-                f"Invalid ikev2-xx-port '{value}'. Must be one of: {', '.join(VALID_BODY_IKEV2_XX_PORT)}",
+                f"Invalid value for 'ikev2-xx-port'='{value}'. Must be one of: {', '.join(VALID_BODY_IKEV2_XX_PORT)}",
             )
-
-    # Validate esp-port if present
     if "esp-port" in payload:
-        value = payload.get("esp-port")
-        if value and value not in VALID_BODY_ESP_PORT:
+        value = payload["esp-port"]
+        if value not in VALID_BODY_ESP_PORT:
             return (
                 False,
-                f"Invalid esp-port '{value}'. Must be one of: {', '.join(VALID_BODY_ESP_PORT)}",
+                f"Invalid value for 'esp-port'='{value}'. Must be one of: {', '.join(VALID_BODY_ESP_PORT)}",
             )
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_hotspot20_h2qp_conn_capability_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "wireless-controller/hotspot20_h2qp_conn_capability",
+    "category": "cmdb",
+    "api_path": "wireless-controller.hotspot20/h2qp-conn-capability",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure connection capability.",
+    "total_fields": 12,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 12,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

@@ -23,7 +23,7 @@ from .saml import Saml
 from .scim import Scim
 from .security_exempt_list import SecurityExemptList
 from .setting import Setting
-from .tacacs_plus_ import TacacsPlus
+from .tacacs_plus import TacacsPlus
 
 __all__ = [
     "Adgrp",
@@ -50,22 +50,18 @@ __all__ = [
     "SecurityExemptList",
     "Setting",
     "TacacsPlus",
+    "User",
 ]
 
 
 class User:
-    """
-    User category wrapper.
-
-    This class provides access to all user CMDB endpoints.
-    """
+    """User endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize User with all endpoint classes.
-
+        """User endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.adgrp = Adgrp(client)
         self.certificate = Certificate(client)
@@ -90,4 +86,4 @@ class User:
         self.scim = Scim(client)
         self.security_exempt_list = SecurityExemptList(client)
         self.setting = Setting(client)
-        self.tacacs_plus_ = TacacsPlus(client)
+        self.tacacs_plus = TacacsPlus(client)

@@ -1,0 +1,36 @@
+from typing import Any, Literal
+
+# Enum type aliases for validation
+VALID_BODY_ACCESS_NETWORK_TYPE: Literal["private-network", "private-network-with-guest-access", "chargeable-public-network", "free-public-network", "personal-device-network", "emergency-services-only-network", "test-or-experimental", "wildcard"]
+VALID_BODY_ACCESS_NETWORK_INTERNET: Literal["enable", "disable"]
+VALID_BODY_ACCESS_NETWORK_ASRA: Literal["enable", "disable"]
+VALID_BODY_ACCESS_NETWORK_ESR: Literal["enable", "disable"]
+VALID_BODY_ACCESS_NETWORK_UESA: Literal["enable", "disable"]
+VALID_BODY_VENUE_GROUP: Literal["unspecified", "assembly", "business", "educational", "factory", "institutional", "mercantile", "residential", "storage", "utility", "vehicular", "outdoor"]
+VALID_BODY_VENUE_TYPE: Literal["unspecified", "arena", "stadium", "passenger-terminal", "amphitheater", "amusement-park", "place-of-worship", "convention-center", "library", "museum", "restaurant", "theater", "bar", "coffee-shop", "zoo-or-aquarium", "emergency-center", "doctor-office", "bank", "fire-station", "police-station", "post-office", "professional-office", "research-facility", "attorney-office", "primary-school", "secondary-school", "university-or-college", "factory", "hospital", "long-term-care-facility", "rehab-center", "group-home", "prison-or-jail", "retail-store", "grocery-market", "auto-service-station", "shopping-mall", "gas-station", "private", "hotel-or-motel", "dormitory", "boarding-house", "automobile", "airplane", "bus", "ferry", "ship-or-boat", "train", "motor-bike", "muni-mesh-network", "city-park", "rest-area", "traffic-control", "bus-stop", "kiosk"]
+VALID_BODY_PROXY_ARP: Literal["enable", "disable"]
+VALID_BODY_L2TIF: Literal["enable", "disable"]
+VALID_BODY_PAME_BI: Literal["disable", "enable"]
+VALID_BODY_DGAF: Literal["enable", "disable"]
+VALID_BODY_WNM_SLEEP_MODE: Literal["enable", "disable"]
+VALID_BODY_BSS_TRANSITION: Literal["enable", "disable"]
+VALID_BODY_WBA_OPEN_ROAMING: Literal["disable", "enable"]
+
+# Metadata dictionaries
+FIELD_TYPES: dict[str, str]
+FIELD_DESCRIPTIONS: dict[str, str]
+FIELD_CONSTRAINTS: dict[str, dict[str, Any]]
+NESTED_SCHEMAS: dict[str, dict[str, Any]]
+FIELDS_WITH_DEFAULTS: dict[str, Any]
+
+# Helper functions
+def get_field_type(field_name: str) -> str | None: ...
+def get_field_description(field_name: str) -> str | None: ...
+def get_field_default(field_name: str) -> Any: ...
+def get_field_constraints(field_name: str) -> dict[str, Any]: ...
+def get_nested_schema(field_name: str) -> dict[str, Any] | None: ...
+def get_field_metadata(field_name: str) -> dict[str, Any]: ...
+def validate_field_value(field_name: str, value: Any) -> bool: ...
+def get_all_fields() -> list[str]: ...
+def get_required_fields() -> list[str]: ...
+def get_schema_info() -> dict[str, Any]: ...

@@ -1,69 +1,291 @@
 """
-Validation helpers for icap profile endpoint.
+Validation helpers for icap/profile endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "file-transfer-server",  # ICAP server to use for a file transfer.
-    "name",  # ICAP profile name.
     "request-server",  # ICAP server to use for an HTTP request.
     "response-server",  # ICAP server to use for an HTTP response.
+    "file-transfer-server",  # ICAP server to use for a file transfer.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "204-response": "disable",
-    "204-size-limit": 1,
-    "chunk-encap": "disable",
-    "extension-feature": "scan-progress",
-    "file-transfer": "ssh",
-    "file-transfer-failure": "error",
-    "icap-block-log": "disable",
-    "methods": "delete get head options post put trace connect other",
-    "ocr-only": "disable",
-    "preview": "disable",
+    "replacemsg-group": "",
+    "name": "",
     "request": "disable",
-    "request-failure": "error",
-    "respmod-default-action": "forward",
     "response": "disable",
-    "response-failure": "error",
-    "response-req-hdr": "enable",
-    "scan-progress-interval": 10,
+    "file-transfer": "",
     "streaming-content-bypass": "disable",
+    "ocr-only": "disable",
+    "204-size-limit": 1,
+    "204-response": "disable",
+    "preview": "disable",
+    "preview-data-length": 0,
+    "request-server": "",
+    "response-server": "",
+    "file-transfer-server": "",
+    "request-failure": "error",
+    "response-failure": "error",
+    "file-transfer-failure": "error",
+    "request-path": "",
+    "response-path": "",
+    "file-transfer-path": "",
+    "methods": "delete get head options post put trace connect other",
+    "response-req-hdr": "enable",
+    "respmod-default-action": "forward",
+    "icap-block-log": "disable",
+    "chunk-encap": "disable",
+    "extension-feature": "",
+    "scan-progress-interval": 10,
     "timeout": 30,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "replacemsg-group": "string",  # Replacement message group.
+    "name": "string",  # ICAP profile name.
+    "comment": "var-string",  # Comment.
+    "request": "option",  # Enable/disable whether an HTTP request is passed to an ICAP 
+    "response": "option",  # Enable/disable whether an HTTP response is passed to an ICAP
+    "file-transfer": "option",  # Configure the file transfer protocols to pass transferred fi
+    "streaming-content-bypass": "option",  # Enable/disable bypassing of ICAP server for streaming conten
+    "ocr-only": "option",  # Enable/disable this FortiGate unit to submit only OCR intere
+    "204-size-limit": "integer",  # 204 response size limit to be saved by ICAP client in megaby
+    "204-response": "option",  # Enable/disable allowance of 204 response from ICAP server.
+    "preview": "option",  # Enable/disable preview of data to ICAP server.
+    "preview-data-length": "integer",  # Preview data length to be sent to ICAP server.
+    "request-server": "string",  # ICAP server to use for an HTTP request.
+    "response-server": "string",  # ICAP server to use for an HTTP response.
+    "file-transfer-server": "string",  # ICAP server to use for a file transfer.
+    "request-failure": "option",  # Action to take if the ICAP server cannot be contacted when p
+    "response-failure": "option",  # Action to take if the ICAP server cannot be contacted when p
+    "file-transfer-failure": "option",  # Action to take if the ICAP server cannot be contacted when p
+    "request-path": "string",  # Path component of the ICAP URI that identifies the HTTP requ
+    "response-path": "string",  # Path component of the ICAP URI that identifies the HTTP resp
+    "file-transfer-path": "string",  # Path component of the ICAP URI that identifies the file tran
+    "methods": "option",  # The allowed HTTP methods that will be sent to ICAP server fo
+    "response-req-hdr": "option",  # Enable/disable addition of req-hdr for ICAP response modific
+    "respmod-default-action": "option",  # Default action to ICAP response modification (respmod) proce
+    "icap-block-log": "option",  # Enable/disable UTM log when infection found (default = disab
+    "chunk-encap": "option",  # Enable/disable chunked encapsulation (default = disable).
+    "extension-feature": "option",  # Enable/disable ICAP extension features.
+    "scan-progress-interval": "integer",  # Scan progress interval value.
+    "timeout": "integer",  # Time (in seconds) that ICAP client waits for the response fr
+    "icap-headers": "string",  # Configure ICAP forwarded request headers.
+    "respmod-forward-rules": "string",  # ICAP response mode forward rules.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "replacemsg-group": "Replacement message group.",
+    "name": "ICAP profile name.",
+    "comment": "Comment.",
+    "request": "Enable/disable whether an HTTP request is passed to an ICAP server.",
+    "response": "Enable/disable whether an HTTP response is passed to an ICAP server.",
+    "file-transfer": "Configure the file transfer protocols to pass transferred files to an ICAP server as REQMOD.",
+    "streaming-content-bypass": "Enable/disable bypassing of ICAP server for streaming content.",
+    "ocr-only": "Enable/disable this FortiGate unit to submit only OCR interested content to the ICAP server.",
+    "204-size-limit": "204 response size limit to be saved by ICAP client in megabytes (1 - 10, default = 1 MB).",
+    "204-response": "Enable/disable allowance of 204 response from ICAP server.",
+    "preview": "Enable/disable preview of data to ICAP server.",
+    "preview-data-length": "Preview data length to be sent to ICAP server.",
+    "request-server": "ICAP server to use for an HTTP request.",
+    "response-server": "ICAP server to use for an HTTP response.",
+    "file-transfer-server": "ICAP server to use for a file transfer.",
+    "request-failure": "Action to take if the ICAP server cannot be contacted when processing an HTTP request.",
+    "response-failure": "Action to take if the ICAP server cannot be contacted when processing an HTTP response.",
+    "file-transfer-failure": "Action to take if the ICAP server cannot be contacted when processing a file transfer.",
+    "request-path": "Path component of the ICAP URI that identifies the HTTP request processing service.",
+    "response-path": "Path component of the ICAP URI that identifies the HTTP response processing service.",
+    "file-transfer-path": "Path component of the ICAP URI that identifies the file transfer processing service.",
+    "methods": "The allowed HTTP methods that will be sent to ICAP server for further processing.",
+    "response-req-hdr": "Enable/disable addition of req-hdr for ICAP response modification (respmod) processing.",
+    "respmod-default-action": "Default action to ICAP response modification (respmod) processing.",
+    "icap-block-log": "Enable/disable UTM log when infection found (default = disable).",
+    "chunk-encap": "Enable/disable chunked encapsulation (default = disable).",
+    "extension-feature": "Enable/disable ICAP extension features.",
+    "scan-progress-interval": "Scan progress interval value.",
+    "timeout": "Time (in seconds) that ICAP client waits for the response from ICAP server.",
+    "icap-headers": "Configure ICAP forwarded request headers.",
+    "respmod-forward-rules": "ICAP response mode forward rules.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "replacemsg-group": {"type": "string", "max_length": 35},
+    "name": {"type": "string", "max_length": 47},
+    "204-size-limit": {"type": "integer", "min": 1, "max": 10},
+    "preview-data-length": {"type": "integer", "min": 0, "max": 4096},
+    "request-server": {"type": "string", "max_length": 63},
+    "response-server": {"type": "string", "max_length": 63},
+    "file-transfer-server": {"type": "string", "max_length": 63},
+    "request-path": {"type": "string", "max_length": 127},
+    "response-path": {"type": "string", "max_length": 127},
+    "file-transfer-path": {"type": "string", "max_length": 127},
+    "scan-progress-interval": {"type": "integer", "min": 5, "max": 30},
+    "timeout": {"type": "integer", "min": 30, "max": 3600},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "icap-headers": {
+        "id": {
+            "type": "integer",
+            "help": "HTTP forwarded header ID.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "name": {
+            "type": "string",
+            "help": "HTTP forwarded header name.",
+            "default": "",
+            "max_length": 79,
+        },
+        "content": {
+            "type": "string",
+            "help": "HTTP header content.",
+            "default": "",
+            "max_length": 255,
+        },
+        "base64-encoding": {
+            "type": "option",
+            "help": "Enable/disable use of base64 encoding of HTTP content.",
+            "default": "disable",
+            "options": ["disable", "enable"],
+        },
+    },
+    "respmod-forward-rules": {
+        "name": {
+            "type": "string",
+            "help": "Address name.",
+            "default": "",
+            "max_length": 63,
+        },
+        "host": {
+            "type": "string",
+            "help": "Address object for the host.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+        "header-group": {
+            "type": "string",
+            "help": "HTTP header group.",
+        },
+        "action": {
+            "type": "option",
+            "help": "Action to be taken for ICAP server.",
+            "default": "forward",
+            "options": ["forward", "bypass"],
+        },
+        "http-resp-status-code": {
+            "type": "integer",
+            "help": "HTTP response status code.",
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_REQUEST = ["disable", "enable"]
-VALID_BODY_RESPONSE = ["disable", "enable"]
-VALID_BODY_FILE_TRANSFER = ["ssh", "ftp"]
-VALID_BODY_STREAMING_CONTENT_BYPASS = ["disable", "enable"]
-VALID_BODY_OCR_ONLY = ["disable", "enable"]
-VALID_BODY_204_RESPONSE = ["disable", "enable"]
-VALID_BODY_PREVIEW = ["disable", "enable"]
-VALID_BODY_REQUEST_FAILURE = ["error", "bypass"]
-VALID_BODY_RESPONSE_FAILURE = ["error", "bypass"]
-VALID_BODY_FILE_TRANSFER_FAILURE = ["error", "bypass"]
+VALID_BODY_REQUEST = [
+    "disable",
+    "enable",
+]
+VALID_BODY_RESPONSE = [
+    "disable",
+    "enable",
+]
+VALID_BODY_FILE_TRANSFER = [
+    "ssh",
+    "ftp",
+]
+VALID_BODY_STREAMING_CONTENT_BYPASS = [
+    "disable",
+    "enable",
+]
+VALID_BODY_OCR_ONLY = [
+    "disable",
+    "enable",
+]
+VALID_BODY_204_RESPONSE = [
+    "disable",
+    "enable",
+]
+VALID_BODY_PREVIEW = [
+    "disable",
+    "enable",
+]
+VALID_BODY_REQUEST_FAILURE = [
+    "error",
+    "bypass",
+]
+VALID_BODY_RESPONSE_FAILURE = [
+    "error",
+    "bypass",
+]
+VALID_BODY_FILE_TRANSFER_FAILURE = [
+    "error",
+    "bypass",
+]
 VALID_BODY_METHODS = [
     "delete",
     "get",
@@ -75,11 +297,25 @@ VALID_BODY_METHODS = [
     "connect",
     "other",
 ]
-VALID_BODY_RESPONSE_REQ_HDR = ["disable", "enable"]
-VALID_BODY_RESPMOD_DEFAULT_ACTION = ["forward", "bypass"]
-VALID_BODY_ICAP_BLOCK_LOG = ["disable", "enable"]
-VALID_BODY_CHUNK_ENCAP = ["disable", "enable"]
-VALID_BODY_EXTENSION_FEATURE = ["scan-progress"]
+VALID_BODY_RESPONSE_REQ_HDR = [
+    "disable",
+    "enable",
+]
+VALID_BODY_RESPMOD_DEFAULT_ACTION = [
+    "forward",
+    "bypass",
+]
+VALID_BODY_ICAP_BLOCK_LOG = [
+    "disable",
+    "enable",
+]
+VALID_BODY_CHUNK_ENCAP = [
+    "disable",
+    "enable",
+]
+VALID_BODY_EXTENSION_FEATURE = [
+    "scan-progress",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -87,13 +323,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_profile_get(
+def validate_icap_profile_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for icap/profile.
 
     Args:
         attr: Attribute filter (optional)
@@ -103,9 +339,20 @@ def validate_profile_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_icap_profile_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_icap_profile_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_icap_profile_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -126,7 +373,7 @@ def validate_profile_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for icap_profile.
+    Validate required fields for icap/profile.
 
     This validator checks:
     1. Always-required fields are present
@@ -139,326 +386,248 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "file-transfer-server": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_profile_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
+def validate_icap_profile_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new icap/profile object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - file-transfer-server: ICAP server to use for a file transfer.
-      - name: ICAP profile name.
-      - request-server: ICAP server to use for an HTTP request.
-      - response-server: ICAP server to use for an HTTP response.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "request-server": True,  # ICAP server to use for an HTTP request.
+        ...     "response-server": True,  # ICAP server to use for an HTTP response.
+        ... }
+        >>> is_valid, error = validate_icap_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "request-server": True,
+        ...     "request": "disable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_icap_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["request"] = "invalid-value"
+        >>> is_valid, error = validate_icap_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_icap_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate replacemsg-group if present
-    if "replacemsg-group" in payload:
-        value = payload.get("replacemsg-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "replacemsg-group cannot exceed 35 characters")
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "name cannot exceed 47 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "comment cannot exceed 255 characters")
-
-    # Validate request if present
+    # Step 2: Validate enum values
     if "request" in payload:
-        value = payload.get("request")
-        if value and value not in VALID_BODY_REQUEST:
-            return (
-                False,
-                f"Invalid request '{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST)}",
-            )
-
-    # Validate response if present
+        value = payload["request"]
+        if value not in VALID_BODY_REQUEST:
+            desc = FIELD_DESCRIPTIONS.get("request", "")
+            error_msg = f"Invalid value for 'request': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REQUEST)}"
+            error_msg += f"\n  → Example: request='{{ VALID_BODY_REQUEST[0] }}'"
+            return (False, error_msg)
     if "response" in payload:
-        value = payload.get("response")
-        if value and value not in VALID_BODY_RESPONSE:
-            return (
-                False,
-                f"Invalid response '{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE)}",
-            )
-
-    # Validate file-transfer if present
+        value = payload["response"]
+        if value not in VALID_BODY_RESPONSE:
+            desc = FIELD_DESCRIPTIONS.get("response", "")
+            error_msg = f"Invalid value for 'response': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RESPONSE)}"
+            error_msg += f"\n  → Example: response='{{ VALID_BODY_RESPONSE[0] }}'"
+            return (False, error_msg)
     if "file-transfer" in payload:
-        value = payload.get("file-transfer")
-        if value and value not in VALID_BODY_FILE_TRANSFER:
-            return (
-                False,
-                f"Invalid file-transfer '{value}'. Must be one of: {', '.join(VALID_BODY_FILE_TRANSFER)}",
-            )
-
-    # Validate streaming-content-bypass if present
+        value = payload["file-transfer"]
+        if value not in VALID_BODY_FILE_TRANSFER:
+            desc = FIELD_DESCRIPTIONS.get("file-transfer", "")
+            error_msg = f"Invalid value for 'file-transfer': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FILE_TRANSFER)}"
+            error_msg += f"\n  → Example: file-transfer='{{ VALID_BODY_FILE_TRANSFER[0] }}'"
+            return (False, error_msg)
     if "streaming-content-bypass" in payload:
-        value = payload.get("streaming-content-bypass")
-        if value and value not in VALID_BODY_STREAMING_CONTENT_BYPASS:
-            return (
-                False,
-                f"Invalid streaming-content-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_STREAMING_CONTENT_BYPASS)}",
-            )
-
-    # Validate ocr-only if present
+        value = payload["streaming-content-bypass"]
+        if value not in VALID_BODY_STREAMING_CONTENT_BYPASS:
+            desc = FIELD_DESCRIPTIONS.get("streaming-content-bypass", "")
+            error_msg = f"Invalid value for 'streaming-content-bypass': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STREAMING_CONTENT_BYPASS)}"
+            error_msg += f"\n  → Example: streaming-content-bypass='{{ VALID_BODY_STREAMING_CONTENT_BYPASS[0] }}'"
+            return (False, error_msg)
     if "ocr-only" in payload:
-        value = payload.get("ocr-only")
-        if value and value not in VALID_BODY_OCR_ONLY:
-            return (
-                False,
-                f"Invalid ocr-only '{value}'. Must be one of: {', '.join(VALID_BODY_OCR_ONLY)}",
-            )
-
-    # Validate 204-size-limit if present
-    if "204-size-limit" in payload:
-        value = payload.get("204-size-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 10:
-                    return (False, "204-size-limit must be between 1 and 10")
-            except (ValueError, TypeError):
-                return (False, f"204-size-limit must be numeric, got: {value}")
-
-    # Validate 204-response if present
+        value = payload["ocr-only"]
+        if value not in VALID_BODY_OCR_ONLY:
+            desc = FIELD_DESCRIPTIONS.get("ocr-only", "")
+            error_msg = f"Invalid value for 'ocr-only': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_OCR_ONLY)}"
+            error_msg += f"\n  → Example: ocr-only='{{ VALID_BODY_OCR_ONLY[0] }}'"
+            return (False, error_msg)
     if "204-response" in payload:
-        value = payload.get("204-response")
-        if value and value not in VALID_BODY_204_RESPONSE:
-            return (
-                False,
-                f"Invalid 204-response '{value}'. Must be one of: {', '.join(VALID_BODY_204_RESPONSE)}",
-            )
-
-    # Validate preview if present
+        value = payload["204-response"]
+        if value not in VALID_BODY_204_RESPONSE:
+            desc = FIELD_DESCRIPTIONS.get("204-response", "")
+            error_msg = f"Invalid value for '204-response': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_204_RESPONSE)}"
+            error_msg += f"\n  → Example: 204-response='{{ VALID_BODY_204_RESPONSE[0] }}'"
+            return (False, error_msg)
     if "preview" in payload:
-        value = payload.get("preview")
-        if value and value not in VALID_BODY_PREVIEW:
-            return (
-                False,
-                f"Invalid preview '{value}'. Must be one of: {', '.join(VALID_BODY_PREVIEW)}",
-            )
-
-    # Validate preview-data-length if present
-    if "preview-data-length" in payload:
-        value = payload.get("preview-data-length")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4096:
-                    return (
-                        False,
-                        "preview-data-length must be between 0 and 4096",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"preview-data-length must be numeric, got: {value}",
-                )
-
-    # Validate request-server if present
-    if "request-server" in payload:
-        value = payload.get("request-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "request-server cannot exceed 63 characters")
-
-    # Validate response-server if present
-    if "response-server" in payload:
-        value = payload.get("response-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "response-server cannot exceed 63 characters")
-
-    # Validate file-transfer-server if present
-    if "file-transfer-server" in payload:
-        value = payload.get("file-transfer-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "file-transfer-server cannot exceed 63 characters")
-
-    # Validate request-failure if present
+        value = payload["preview"]
+        if value not in VALID_BODY_PREVIEW:
+            desc = FIELD_DESCRIPTIONS.get("preview", "")
+            error_msg = f"Invalid value for 'preview': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PREVIEW)}"
+            error_msg += f"\n  → Example: preview='{{ VALID_BODY_PREVIEW[0] }}'"
+            return (False, error_msg)
     if "request-failure" in payload:
-        value = payload.get("request-failure")
-        if value and value not in VALID_BODY_REQUEST_FAILURE:
-            return (
-                False,
-                f"Invalid request-failure '{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST_FAILURE)}",
-            )
-
-    # Validate response-failure if present
+        value = payload["request-failure"]
+        if value not in VALID_BODY_REQUEST_FAILURE:
+            desc = FIELD_DESCRIPTIONS.get("request-failure", "")
+            error_msg = f"Invalid value for 'request-failure': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REQUEST_FAILURE)}"
+            error_msg += f"\n  → Example: request-failure='{{ VALID_BODY_REQUEST_FAILURE[0] }}'"
+            return (False, error_msg)
     if "response-failure" in payload:
-        value = payload.get("response-failure")
-        if value and value not in VALID_BODY_RESPONSE_FAILURE:
-            return (
-                False,
-                f"Invalid response-failure '{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE_FAILURE)}",
-            )
-
-    # Validate file-transfer-failure if present
+        value = payload["response-failure"]
+        if value not in VALID_BODY_RESPONSE_FAILURE:
+            desc = FIELD_DESCRIPTIONS.get("response-failure", "")
+            error_msg = f"Invalid value for 'response-failure': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RESPONSE_FAILURE)}"
+            error_msg += f"\n  → Example: response-failure='{{ VALID_BODY_RESPONSE_FAILURE[0] }}'"
+            return (False, error_msg)
     if "file-transfer-failure" in payload:
-        value = payload.get("file-transfer-failure")
-        if value and value not in VALID_BODY_FILE_TRANSFER_FAILURE:
-            return (
-                False,
-                f"Invalid file-transfer-failure '{value}'. Must be one of: {', '.join(VALID_BODY_FILE_TRANSFER_FAILURE)}",
-            )
-
-    # Validate request-path if present
-    if "request-path" in payload:
-        value = payload.get("request-path")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "request-path cannot exceed 127 characters")
-
-    # Validate response-path if present
-    if "response-path" in payload:
-        value = payload.get("response-path")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "response-path cannot exceed 127 characters")
-
-    # Validate file-transfer-path if present
-    if "file-transfer-path" in payload:
-        value = payload.get("file-transfer-path")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "file-transfer-path cannot exceed 127 characters")
-
-    # Validate methods if present
+        value = payload["file-transfer-failure"]
+        if value not in VALID_BODY_FILE_TRANSFER_FAILURE:
+            desc = FIELD_DESCRIPTIONS.get("file-transfer-failure", "")
+            error_msg = f"Invalid value for 'file-transfer-failure': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FILE_TRANSFER_FAILURE)}"
+            error_msg += f"\n  → Example: file-transfer-failure='{{ VALID_BODY_FILE_TRANSFER_FAILURE[0] }}'"
+            return (False, error_msg)
     if "methods" in payload:
-        value = payload.get("methods")
-        if value and value not in VALID_BODY_METHODS:
-            return (
-                False,
-                f"Invalid methods '{value}'. Must be one of: {', '.join(VALID_BODY_METHODS)}",
-            )
-
-    # Validate response-req-hdr if present
+        value = payload["methods"]
+        if value not in VALID_BODY_METHODS:
+            desc = FIELD_DESCRIPTIONS.get("methods", "")
+            error_msg = f"Invalid value for 'methods': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_METHODS)}"
+            error_msg += f"\n  → Example: methods='{{ VALID_BODY_METHODS[0] }}'"
+            return (False, error_msg)
     if "response-req-hdr" in payload:
-        value = payload.get("response-req-hdr")
-        if value and value not in VALID_BODY_RESPONSE_REQ_HDR:
-            return (
-                False,
-                f"Invalid response-req-hdr '{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE_REQ_HDR)}",
-            )
-
-    # Validate respmod-default-action if present
+        value = payload["response-req-hdr"]
+        if value not in VALID_BODY_RESPONSE_REQ_HDR:
+            desc = FIELD_DESCRIPTIONS.get("response-req-hdr", "")
+            error_msg = f"Invalid value for 'response-req-hdr': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RESPONSE_REQ_HDR)}"
+            error_msg += f"\n  → Example: response-req-hdr='{{ VALID_BODY_RESPONSE_REQ_HDR[0] }}'"
+            return (False, error_msg)
     if "respmod-default-action" in payload:
-        value = payload.get("respmod-default-action")
-        if value and value not in VALID_BODY_RESPMOD_DEFAULT_ACTION:
-            return (
-                False,
-                f"Invalid respmod-default-action '{value}'. Must be one of: {', '.join(VALID_BODY_RESPMOD_DEFAULT_ACTION)}",
-            )
-
-    # Validate icap-block-log if present
+        value = payload["respmod-default-action"]
+        if value not in VALID_BODY_RESPMOD_DEFAULT_ACTION:
+            desc = FIELD_DESCRIPTIONS.get("respmod-default-action", "")
+            error_msg = f"Invalid value for 'respmod-default-action': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RESPMOD_DEFAULT_ACTION)}"
+            error_msg += f"\n  → Example: respmod-default-action='{{ VALID_BODY_RESPMOD_DEFAULT_ACTION[0] }}'"
+            return (False, error_msg)
     if "icap-block-log" in payload:
-        value = payload.get("icap-block-log")
-        if value and value not in VALID_BODY_ICAP_BLOCK_LOG:
-            return (
-                False,
-                f"Invalid icap-block-log '{value}'. Must be one of: {', '.join(VALID_BODY_ICAP_BLOCK_LOG)}",
-            )
-
-    # Validate chunk-encap if present
+        value = payload["icap-block-log"]
+        if value not in VALID_BODY_ICAP_BLOCK_LOG:
+            desc = FIELD_DESCRIPTIONS.get("icap-block-log", "")
+            error_msg = f"Invalid value for 'icap-block-log': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ICAP_BLOCK_LOG)}"
+            error_msg += f"\n  → Example: icap-block-log='{{ VALID_BODY_ICAP_BLOCK_LOG[0] }}'"
+            return (False, error_msg)
     if "chunk-encap" in payload:
-        value = payload.get("chunk-encap")
-        if value and value not in VALID_BODY_CHUNK_ENCAP:
-            return (
-                False,
-                f"Invalid chunk-encap '{value}'. Must be one of: {', '.join(VALID_BODY_CHUNK_ENCAP)}",
-            )
-
-    # Validate extension-feature if present
+        value = payload["chunk-encap"]
+        if value not in VALID_BODY_CHUNK_ENCAP:
+            desc = FIELD_DESCRIPTIONS.get("chunk-encap", "")
+            error_msg = f"Invalid value for 'chunk-encap': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CHUNK_ENCAP)}"
+            error_msg += f"\n  → Example: chunk-encap='{{ VALID_BODY_CHUNK_ENCAP[0] }}'"
+            return (False, error_msg)
     if "extension-feature" in payload:
-        value = payload.get("extension-feature")
-        if value and value not in VALID_BODY_EXTENSION_FEATURE:
-            return (
-                False,
-                f"Invalid extension-feature '{value}'. Must be one of: {', '.join(VALID_BODY_EXTENSION_FEATURE)}",
-            )
-
-    # Validate scan-progress-interval if present
-    if "scan-progress-interval" in payload:
-        value = payload.get("scan-progress-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 30:
-                    return (
-                        False,
-                        "scan-progress-interval must be between 5 and 30",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"scan-progress-interval must be numeric, got: {value}",
-                )
-
-    # Validate timeout if present
-    if "timeout" in payload:
-        value = payload.get("timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 3600:
-                    return (False, "timeout must be between 30 and 3600")
-            except (ValueError, TypeError):
-                return (False, f"timeout must be numeric, got: {value}")
+        value = payload["extension-feature"]
+        if value not in VALID_BODY_EXTENSION_FEATURE:
+            desc = FIELD_DESCRIPTIONS.get("extension-feature", "")
+            error_msg = f"Invalid value for 'extension-feature': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EXTENSION_FEATURE)}"
+            error_msg += f"\n  → Example: extension-feature='{{ VALID_BODY_EXTENSION_FEATURE[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -468,302 +637,438 @@ def validate_profile_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
 # ============================================================================
 
 
-def validate_profile_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_icap_profile_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update icap/profile.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_icap_profile_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate replacemsg-group if present
-    if "replacemsg-group" in payload:
-        value = payload.get("replacemsg-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "replacemsg-group cannot exceed 35 characters")
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "name cannot exceed 47 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "comment cannot exceed 255 characters")
-
-    # Validate request if present
+    # Step 1: Validate enum values
     if "request" in payload:
-        value = payload.get("request")
-        if value and value not in VALID_BODY_REQUEST:
+        value = payload["request"]
+        if value not in VALID_BODY_REQUEST:
             return (
                 False,
-                f"Invalid request '{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST)}",
+                f"Invalid value for 'request'='{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST)}",
             )
-
-    # Validate response if present
     if "response" in payload:
-        value = payload.get("response")
-        if value and value not in VALID_BODY_RESPONSE:
+        value = payload["response"]
+        if value not in VALID_BODY_RESPONSE:
             return (
                 False,
-                f"Invalid response '{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE)}",
+                f"Invalid value for 'response'='{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE)}",
             )
-
-    # Validate file-transfer if present
     if "file-transfer" in payload:
-        value = payload.get("file-transfer")
-        if value and value not in VALID_BODY_FILE_TRANSFER:
+        value = payload["file-transfer"]
+        if value not in VALID_BODY_FILE_TRANSFER:
             return (
                 False,
-                f"Invalid file-transfer '{value}'. Must be one of: {', '.join(VALID_BODY_FILE_TRANSFER)}",
+                f"Invalid value for 'file-transfer'='{value}'. Must be one of: {', '.join(VALID_BODY_FILE_TRANSFER)}",
             )
-
-    # Validate streaming-content-bypass if present
     if "streaming-content-bypass" in payload:
-        value = payload.get("streaming-content-bypass")
-        if value and value not in VALID_BODY_STREAMING_CONTENT_BYPASS:
+        value = payload["streaming-content-bypass"]
+        if value not in VALID_BODY_STREAMING_CONTENT_BYPASS:
             return (
                 False,
-                f"Invalid streaming-content-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_STREAMING_CONTENT_BYPASS)}",
+                f"Invalid value for 'streaming-content-bypass'='{value}'. Must be one of: {', '.join(VALID_BODY_STREAMING_CONTENT_BYPASS)}",
             )
-
-    # Validate ocr-only if present
     if "ocr-only" in payload:
-        value = payload.get("ocr-only")
-        if value and value not in VALID_BODY_OCR_ONLY:
+        value = payload["ocr-only"]
+        if value not in VALID_BODY_OCR_ONLY:
             return (
                 False,
-                f"Invalid ocr-only '{value}'. Must be one of: {', '.join(VALID_BODY_OCR_ONLY)}",
+                f"Invalid value for 'ocr-only'='{value}'. Must be one of: {', '.join(VALID_BODY_OCR_ONLY)}",
             )
-
-    # Validate 204-size-limit if present
-    if "204-size-limit" in payload:
-        value = payload.get("204-size-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 10:
-                    return (False, "204-size-limit must be between 1 and 10")
-            except (ValueError, TypeError):
-                return (False, f"204-size-limit must be numeric, got: {value}")
-
-    # Validate 204-response if present
     if "204-response" in payload:
-        value = payload.get("204-response")
-        if value and value not in VALID_BODY_204_RESPONSE:
+        value = payload["204-response"]
+        if value not in VALID_BODY_204_RESPONSE:
             return (
                 False,
-                f"Invalid 204-response '{value}'. Must be one of: {', '.join(VALID_BODY_204_RESPONSE)}",
+                f"Invalid value for '204-response'='{value}'. Must be one of: {', '.join(VALID_BODY_204_RESPONSE)}",
             )
-
-    # Validate preview if present
     if "preview" in payload:
-        value = payload.get("preview")
-        if value and value not in VALID_BODY_PREVIEW:
+        value = payload["preview"]
+        if value not in VALID_BODY_PREVIEW:
             return (
                 False,
-                f"Invalid preview '{value}'. Must be one of: {', '.join(VALID_BODY_PREVIEW)}",
+                f"Invalid value for 'preview'='{value}'. Must be one of: {', '.join(VALID_BODY_PREVIEW)}",
             )
-
-    # Validate preview-data-length if present
-    if "preview-data-length" in payload:
-        value = payload.get("preview-data-length")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4096:
-                    return (
-                        False,
-                        "preview-data-length must be between 0 and 4096",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"preview-data-length must be numeric, got: {value}",
-                )
-
-    # Validate request-server if present
-    if "request-server" in payload:
-        value = payload.get("request-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "request-server cannot exceed 63 characters")
-
-    # Validate response-server if present
-    if "response-server" in payload:
-        value = payload.get("response-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "response-server cannot exceed 63 characters")
-
-    # Validate file-transfer-server if present
-    if "file-transfer-server" in payload:
-        value = payload.get("file-transfer-server")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "file-transfer-server cannot exceed 63 characters")
-
-    # Validate request-failure if present
     if "request-failure" in payload:
-        value = payload.get("request-failure")
-        if value and value not in VALID_BODY_REQUEST_FAILURE:
+        value = payload["request-failure"]
+        if value not in VALID_BODY_REQUEST_FAILURE:
             return (
                 False,
-                f"Invalid request-failure '{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST_FAILURE)}",
+                f"Invalid value for 'request-failure'='{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST_FAILURE)}",
             )
-
-    # Validate response-failure if present
     if "response-failure" in payload:
-        value = payload.get("response-failure")
-        if value and value not in VALID_BODY_RESPONSE_FAILURE:
+        value = payload["response-failure"]
+        if value not in VALID_BODY_RESPONSE_FAILURE:
             return (
                 False,
-                f"Invalid response-failure '{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE_FAILURE)}",
+                f"Invalid value for 'response-failure'='{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE_FAILURE)}",
             )
-
-    # Validate file-transfer-failure if present
     if "file-transfer-failure" in payload:
-        value = payload.get("file-transfer-failure")
-        if value and value not in VALID_BODY_FILE_TRANSFER_FAILURE:
+        value = payload["file-transfer-failure"]
+        if value not in VALID_BODY_FILE_TRANSFER_FAILURE:
             return (
                 False,
-                f"Invalid file-transfer-failure '{value}'. Must be one of: {', '.join(VALID_BODY_FILE_TRANSFER_FAILURE)}",
+                f"Invalid value for 'file-transfer-failure'='{value}'. Must be one of: {', '.join(VALID_BODY_FILE_TRANSFER_FAILURE)}",
             )
-
-    # Validate request-path if present
-    if "request-path" in payload:
-        value = payload.get("request-path")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "request-path cannot exceed 127 characters")
-
-    # Validate response-path if present
-    if "response-path" in payload:
-        value = payload.get("response-path")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "response-path cannot exceed 127 characters")
-
-    # Validate file-transfer-path if present
-    if "file-transfer-path" in payload:
-        value = payload.get("file-transfer-path")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "file-transfer-path cannot exceed 127 characters")
-
-    # Validate methods if present
     if "methods" in payload:
-        value = payload.get("methods")
-        if value and value not in VALID_BODY_METHODS:
+        value = payload["methods"]
+        if value not in VALID_BODY_METHODS:
             return (
                 False,
-                f"Invalid methods '{value}'. Must be one of: {', '.join(VALID_BODY_METHODS)}",
+                f"Invalid value for 'methods'='{value}'. Must be one of: {', '.join(VALID_BODY_METHODS)}",
             )
-
-    # Validate response-req-hdr if present
     if "response-req-hdr" in payload:
-        value = payload.get("response-req-hdr")
-        if value and value not in VALID_BODY_RESPONSE_REQ_HDR:
+        value = payload["response-req-hdr"]
+        if value not in VALID_BODY_RESPONSE_REQ_HDR:
             return (
                 False,
-                f"Invalid response-req-hdr '{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE_REQ_HDR)}",
+                f"Invalid value for 'response-req-hdr'='{value}'. Must be one of: {', '.join(VALID_BODY_RESPONSE_REQ_HDR)}",
             )
-
-    # Validate respmod-default-action if present
     if "respmod-default-action" in payload:
-        value = payload.get("respmod-default-action")
-        if value and value not in VALID_BODY_RESPMOD_DEFAULT_ACTION:
+        value = payload["respmod-default-action"]
+        if value not in VALID_BODY_RESPMOD_DEFAULT_ACTION:
             return (
                 False,
-                f"Invalid respmod-default-action '{value}'. Must be one of: {', '.join(VALID_BODY_RESPMOD_DEFAULT_ACTION)}",
+                f"Invalid value for 'respmod-default-action'='{value}'. Must be one of: {', '.join(VALID_BODY_RESPMOD_DEFAULT_ACTION)}",
             )
-
-    # Validate icap-block-log if present
     if "icap-block-log" in payload:
-        value = payload.get("icap-block-log")
-        if value and value not in VALID_BODY_ICAP_BLOCK_LOG:
+        value = payload["icap-block-log"]
+        if value not in VALID_BODY_ICAP_BLOCK_LOG:
             return (
                 False,
-                f"Invalid icap-block-log '{value}'. Must be one of: {', '.join(VALID_BODY_ICAP_BLOCK_LOG)}",
+                f"Invalid value for 'icap-block-log'='{value}'. Must be one of: {', '.join(VALID_BODY_ICAP_BLOCK_LOG)}",
             )
-
-    # Validate chunk-encap if present
     if "chunk-encap" in payload:
-        value = payload.get("chunk-encap")
-        if value and value not in VALID_BODY_CHUNK_ENCAP:
+        value = payload["chunk-encap"]
+        if value not in VALID_BODY_CHUNK_ENCAP:
             return (
                 False,
-                f"Invalid chunk-encap '{value}'. Must be one of: {', '.join(VALID_BODY_CHUNK_ENCAP)}",
+                f"Invalid value for 'chunk-encap'='{value}'. Must be one of: {', '.join(VALID_BODY_CHUNK_ENCAP)}",
             )
-
-    # Validate extension-feature if present
     if "extension-feature" in payload:
-        value = payload.get("extension-feature")
-        if value and value not in VALID_BODY_EXTENSION_FEATURE:
+        value = payload["extension-feature"]
+        if value not in VALID_BODY_EXTENSION_FEATURE:
             return (
                 False,
-                f"Invalid extension-feature '{value}'. Must be one of: {', '.join(VALID_BODY_EXTENSION_FEATURE)}",
+                f"Invalid value for 'extension-feature'='{value}'. Must be one of: {', '.join(VALID_BODY_EXTENSION_FEATURE)}",
             )
-
-    # Validate scan-progress-interval if present
-    if "scan-progress-interval" in payload:
-        value = payload.get("scan-progress-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 30:
-                    return (
-                        False,
-                        "scan-progress-interval must be between 5 and 30",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"scan-progress-interval must be numeric, got: {value}",
-                )
-
-    # Validate timeout if present
-    if "timeout" in payload:
-        value = payload.get("timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 3600:
-                    return (False, "timeout must be between 30 and 3600")
-            except (ValueError, TypeError):
-                return (False, f"timeout must be numeric, got: {value}")
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_profile_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "icap/profile",
+    "category": "cmdb",
+    "api_path": "icap/profile",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure ICAP profiles.",
+    "total_fields": 31,
+    "required_fields_count": 3,
+    "fields_with_defaults_count": 28,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

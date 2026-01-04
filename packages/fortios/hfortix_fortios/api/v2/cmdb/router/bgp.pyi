@@ -1,0 +1,199 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+
+# Payload TypedDict for IDE autocomplete
+class BgpPayload(TypedDict, total=False):
+    """
+    Type hints for router/bgp payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: BgpPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    as: str  # Router AS number, asplain/asdot/asdot+ format, 0 to disable 
+    router_id: NotRequired[str]  # Router ID.
+    keepalive_timer: NotRequired[int]  # Frequency to send keep alive requests.
+    holdtime_timer: NotRequired[int]  # Number of seconds to mark peer as dead.
+    always_compare_med: NotRequired[Literal["enable", "disable"]]  # Enable/disable always compare MED.
+    bestpath_as_path_ignore: NotRequired[Literal["enable", "disable"]]  # Enable/disable ignore AS path.
+    bestpath_cmp_confed_aspath: NotRequired[Literal["enable", "disable"]]  # Enable/disable compare federation AS path length.
+    bestpath_cmp_routerid: NotRequired[Literal["enable", "disable"]]  # Enable/disable compare router ID for identical EBGP paths.
+    bestpath_med_confed: NotRequired[Literal["enable", "disable"]]  # Enable/disable compare MED among confederation paths.
+    bestpath_med_missing_as_worst: NotRequired[Literal["enable", "disable"]]  # Enable/disable treat missing MED as least preferred.
+    client_to_client_reflection: NotRequired[Literal["enable", "disable"]]  # Enable/disable client-to-client route reflection.
+    dampening: NotRequired[Literal["enable", "disable"]]  # Enable/disable route-flap dampening.
+    deterministic_med: NotRequired[Literal["enable", "disable"]]  # Enable/disable enforce deterministic comparison of MED.
+    ebgp_multipath: NotRequired[Literal["enable", "disable"]]  # Enable/disable EBGP multi-path.
+    ibgp_multipath: NotRequired[Literal["enable", "disable"]]  # Enable/disable IBGP multi-path.
+    enforce_first_as: NotRequired[Literal["enable", "disable"]]  # Enable/disable enforce first AS for EBGP routes.
+    fast_external_failover: NotRequired[Literal["enable", "disable"]]  # Enable/disable reset peer BGP session if link goes down.
+    log_neighbour_changes: NotRequired[Literal["enable", "disable"]]  # Log BGP neighbor changes.
+    network_import_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable ensure BGP network route exists in IGP.
+    ignore_optional_capability: NotRequired[Literal["enable", "disable"]]  # Do not send unknown optional capability notification message
+    additional_path: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP IPv4 additional paths.
+    additional_path6: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP IPv6 additional paths.
+    additional_path_vpnv4: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP VPNv4 additional paths.
+    additional_path_vpnv6: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP VPNv6 additional paths.
+    multipath_recursive_distance: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of recursive distance to select multipath
+    recursive_next_hop: NotRequired[Literal["enable", "disable"]]  # Enable/disable recursive resolution of next-hop using BGP ro
+    recursive_inherit_priority: NotRequired[Literal["enable", "disable"]]  # Enable/disable priority inheritance for recursive resolution
+    tag_resolve_mode: NotRequired[Literal["disable", "preferred", "merge", "merge-all"]]  # Configure tag-match mode. Resolves BGP routes with other rou
+    cluster_id: NotRequired[str]  # Route reflector cluster ID.
+    confederation_identifier: NotRequired[int]  # Confederation identifier.
+    confederation_peers: NotRequired[list[dict[str, Any]]]  # Confederation peers.
+    dampening_route_map: NotRequired[str]  # Criteria for dampening.
+    dampening_reachability_half_life: NotRequired[int]  # Reachability half-life time for penalty (min).
+    dampening_reuse: NotRequired[int]  # Threshold to reuse routes.
+    dampening_suppress: NotRequired[int]  # Threshold to suppress routes.
+    dampening_max_suppress_time: NotRequired[int]  # Maximum minutes a route can be suppressed.
+    dampening_unreachability_half_life: NotRequired[int]  # Unreachability half-life time for penalty (min).
+    default_local_preference: NotRequired[int]  # Default local preference.
+    scan_time: NotRequired[int]  # Background scanner interval (sec), 0 to disable it.
+    distance_external: NotRequired[int]  # Distance for routes external to the AS.
+    distance_internal: NotRequired[int]  # Distance for routes internal to the AS.
+    distance_local: NotRequired[int]  # Distance for routes local to the AS.
+    synchronization: NotRequired[Literal["enable", "disable"]]  # Enable/disable only advertise routes from iBGP if routes pre
+    graceful_restart: NotRequired[Literal["enable", "disable"]]  # Enable/disable BGP graceful restart capabilities.
+    graceful_restart_time: NotRequired[int]  # Time needed for neighbors to restart (sec).
+    graceful_stalepath_time: NotRequired[int]  # Time to hold stale paths of restarting neighbor (sec).
+    graceful_update_delay: NotRequired[int]  # Route advertisement/selection delay after restart (sec).
+    graceful_end_on_timer: NotRequired[Literal["enable", "disable"]]  # Enable/disable to exit graceful restart on timer only.
+    additional_path_select: NotRequired[int]  # Number of additional paths to be selected for each IPv4 NLRI
+    additional_path_select6: NotRequired[int]  # Number of additional paths to be selected for each IPv6 NLRI
+    additional_path_select_vpnv4: NotRequired[int]  # Number of additional paths to be selected for each VPNv4 NLR
+    additional_path_select_vpnv6: NotRequired[int]  # Number of additional paths to be selected for each VPNv6 NLR
+    cross_family_conditional_adv: NotRequired[Literal["enable", "disable"]]  # Enable/disable cross address family conditional advertisemen
+    aggregate_address: NotRequired[list[dict[str, Any]]]  # BGP aggregate address table.
+    aggregate_address6: NotRequired[list[dict[str, Any]]]  # BGP IPv6 aggregate address table.
+    neighbor: NotRequired[list[dict[str, Any]]]  # BGP neighbor table.
+    neighbor_group: NotRequired[list[dict[str, Any]]]  # BGP neighbor group table.
+    neighbor_range: NotRequired[list[dict[str, Any]]]  # BGP neighbor range table.
+    neighbor_range6: NotRequired[list[dict[str, Any]]]  # BGP IPv6 neighbor range table.
+    network: NotRequired[list[dict[str, Any]]]  # BGP network table.
+    network6: NotRequired[list[dict[str, Any]]]  # BGP IPv6 network table.
+    redistribute: NotRequired[list[dict[str, Any]]]  # BGP IPv4 redistribute table.
+    redistribute6: NotRequired[list[dict[str, Any]]]  # BGP IPv6 redistribute table.
+    admin_distance: NotRequired[list[dict[str, Any]]]  # Administrative distance modifications.
+    vrf: NotRequired[list[dict[str, Any]]]  # BGP VRF leaking table.
+    vrf6: NotRequired[list[dict[str, Any]]]  # BGP IPv6 VRF leaking table.
+
+
+class Bgp:
+    """
+    Configure BGP.
+    
+    Path: router/bgp
+    Category: cmdb
+    """
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def post(
+        self,
+        payload_dict: BgpPayload | None = ...,
+        as: str | None = ...,
+        router_id: str | None = ...,
+        keepalive_timer: int | None = ...,
+        holdtime_timer: int | None = ...,
+        always_compare_med: Literal["enable", "disable"] | None = ...,
+        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
+        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
+        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
+        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
+        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
+        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
+        dampening: Literal["enable", "disable"] | None = ...,
+        deterministic_med: Literal["enable", "disable"] | None = ...,
+        ebgp_multipath: Literal["enable", "disable"] | None = ...,
+        ibgp_multipath: Literal["enable", "disable"] | None = ...,
+        enforce_first_as: Literal["enable", "disable"] | None = ...,
+        fast_external_failover: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        network_import_check: Literal["enable", "disable"] | None = ...,
+        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def put(
+        self,
+        payload_dict: BgpPayload | None = ...,
+        as: str | None = ...,
+        router_id: str | None = ...,
+        keepalive_timer: int | None = ...,
+        holdtime_timer: int | None = ...,
+        always_compare_med: Literal["enable", "disable"] | None = ...,
+        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
+        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
+        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
+        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
+        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
+        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
+        dampening: Literal["enable", "disable"] | None = ...,
+        deterministic_med: Literal["enable", "disable"] | None = ...,
+        ebgp_multipath: Literal["enable", "disable"] | None = ...,
+        ibgp_multipath: Literal["enable", "disable"] | None = ...,
+        enforce_first_as: Literal["enable", "disable"] | None = ...,
+        fast_external_failover: Literal["enable", "disable"] | None = ...,
+        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        network_import_check: Literal["enable", "disable"] | None = ...,
+        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]: ...
+    
+    def set(
+        self,
+        payload_dict: BgpPayload | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...

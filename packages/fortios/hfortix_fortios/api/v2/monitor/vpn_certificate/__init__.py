@@ -1,43 +1,65 @@
-"""
-FortiOS Monitor - Vpn Certificate
-VPN certificate monitoring
-"""
+"""FortiOS Monitor - VpnCertificate category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["VpnCertificate"]
+from .ca.import_setting import ImportSetting
+from .crl.import_setting import ImportSetting
+from .csr.generate import Generate
+from .local.create import Create
+from .local.import_setting import ImportSetting
+from .remote.import_setting import ImportSetting
 
-from .ca import Ca
-from .cert_name_available import CertNameAvailable
-from .crl import Crl
-from .csr import Csr
-from .local import Local
-from .remote import Remote
+class CaEndpoints:
+    """Endpoints under ca."""
+
+    def __init__(self, client):
+        self.import_setting = ImportSetting(client)
+
+
+class CrlEndpoints:
+    """Endpoints under crl."""
+
+    def __init__(self, client):
+        self.import_setting = ImportSetting(client)
+
+
+class CsrEndpoints:
+    """Endpoints under csr."""
+
+    def __init__(self, client):
+        self.generate = Generate(client)
+
+
+class LocalEndpoints:
+    """Endpoints under local."""
+
+    def __init__(self, client):
+        self.create = Create(client)
+        self.import_setting = ImportSetting(client)
+
+
+class RemoteEndpoints:
+    """Endpoints under remote."""
+
+    def __init__(self, client):
+        self.import_setting = ImportSetting(client)
 
 
 class VpnCertificate:
-    """VpnCertificate Monitor category class"""
+    """VpnCertificate endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize VpnCertificate Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """VpnCertificate endpoints."""
+        self.ca = CaEndpoints(client)
+        self.crl = CrlEndpoints(client)
+        self.csr = CsrEndpoints(client)
+        self.local = LocalEndpoints(client)
+        self.remote = RemoteEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.ca = Ca(client)
-        self.cert_name_available = CertNameAvailable(client)
-        self.crl = Crl(client)
-        self.csr = Csr(client)
-        self.local = Local(client)
-        self.remote = Remote(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["ca", "cert_name_available", "crl", "csr", "local", "remote"]
+__all__ = ["VpnCertificate"]

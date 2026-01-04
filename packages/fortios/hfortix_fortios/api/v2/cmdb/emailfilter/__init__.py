@@ -13,6 +13,7 @@ __all__ = [
     "BlockAllowList",
     "Bword",
     "Dnsbl",
+    "Emailfilter",
     "Fortishield",
     "Iptrust",
     "Mheader",
@@ -22,18 +23,13 @@ __all__ = [
 
 
 class Emailfilter:
-    """
-    Emailfilter category wrapper.
-
-    This class provides access to all emailfilter CMDB endpoints.
-    """
+    """Emailfilter endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Emailfilter with all endpoint classes.
-
+        """Emailfilter endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.block_allow_list = BlockAllowList(client)
         self.bword = Bword(client)

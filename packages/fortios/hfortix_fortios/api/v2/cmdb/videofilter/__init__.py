@@ -4,22 +4,22 @@ from .keyword import Keyword
 from .profile import Profile
 from .youtube_key import YoutubeKey
 
-__all__ = ["Keyword", "Profile", "YoutubeKey"]
+__all__ = [
+    "Keyword",
+    "Profile",
+    "Videofilter",
+    "YoutubeKey",
+]
 
 
 class Videofilter:
-    """
-    Videofilter category wrapper.
-
-    This class provides access to all videofilter CMDB endpoints.
-    """
+    """Videofilter endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Videofilter with all endpoint classes.
-
+        """Videofilter endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.keyword = Keyword(client)
         self.profile = Profile(client)

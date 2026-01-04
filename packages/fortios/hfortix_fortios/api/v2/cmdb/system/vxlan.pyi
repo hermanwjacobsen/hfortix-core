@@ -1,0 +1,130 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+
+# Payload TypedDict for IDE autocomplete
+class VxlanPayload(TypedDict, total=False):
+    """
+    Type hints for system/vxlan payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: VxlanPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: NotRequired[str]  # VXLAN device or interface name. Must be a unique interface n
+    interface: str  # Outgoing interface for VXLAN encapsulated traffic.
+    vni: int  # VXLAN network ID.
+    ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"]  # IP version to use for the VXLAN interface and so for communi
+    remote_ip: NotRequired[list[dict[str, Any]]]  # IPv4 address of the VXLAN interface on the device at the rem
+    local_ip: NotRequired[str]  # IPv4 address to use as the source address for egress VXLAN p
+    remote_ip6: list[dict[str, Any]]  # IPv6 IP address of the VXLAN interface on the device at the 
+    local_ip6: NotRequired[str]  # IPv6 address to use as the source address for egress VXLAN p
+    dstport: NotRequired[int]  # VXLAN destination port (1 - 65535, default = 4789).
+    multicast_ttl: int  # VXLAN multicast TTL (1-255, default = 0).
+    evpn_id: NotRequired[int]  # EVPN instance.
+    learn_from_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable VXLAN MAC learning from traffic.
+
+
+class Vxlan:
+    """
+    Configure VXLAN devices.
+    
+    Path: system/vxlan
+    Category: cmdb
+    Primary Key: name
+    """
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def post(
+        self,
+        payload_dict: VxlanPayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        vni: int | None = ...,
+        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
+        remote_ip: list[dict[str, Any]] | None = ...,
+        local_ip: str | None = ...,
+        remote_ip6: list[dict[str, Any]] | None = ...,
+        local_ip6: str | None = ...,
+        dstport: int | None = ...,
+        multicast_ttl: int | None = ...,
+        evpn_id: int | None = ...,
+        learn_from_traffic: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def put(
+        self,
+        payload_dict: VxlanPayload | None = ...,
+        name: str | None = ...,
+        interface: str | None = ...,
+        vni: int | None = ...,
+        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
+        remote_ip: list[dict[str, Any]] | None = ...,
+        local_ip: str | None = ...,
+        remote_ip6: list[dict[str, Any]] | None = ...,
+        local_ip6: str | None = ...,
+        dstport: int | None = ...,
+        multicast_ttl: int | None = ...,
+        evpn_id: int | None = ...,
+        learn_from_traffic: Literal["enable", "disable"] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]: ...
+    
+    def set(
+        self,
+        payload_dict: VxlanPayload | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...

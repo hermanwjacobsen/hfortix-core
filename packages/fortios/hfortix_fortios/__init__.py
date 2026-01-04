@@ -49,37 +49,38 @@ from hfortix_core import (
 from .client import FortiOS
 
 # Import convenience wrappers for easier access
-from .firewall import (
-    FirewallPolicy,
-    IPMACBindingSetting,
-    IPMACBindingTable,
-    ScheduleGroup,
-    ScheduleOnetime,
-    ScheduleRecurring,
-    ServiceCategory,
-    ServiceCustom,
-    ServiceGroup,
-    ShaperPerIp,
-    TrafficShaper,
-)
+# NOTE: Commented out old convenience wrappers - using new generated API structure
+# from .firewall import (
+#     FirewallPolicy,
+#     IPMACBindingSetting,
+#     IPMACBindingTable,
+#     ScheduleGroup,
+#     ScheduleOnetime,
+#     ScheduleRecurring,
+#     ServiceCategory,
+#     ServiceCustom,
+#     ServiceGroup,
+#     ShaperPerIp,
+#     TrafficShaper,
+# )
 
 __version__ = "0.4.3"
 __all__ = [
     # Main client
     "FortiOS",
     "configure_logging",
-    # Convenience wrappers
-    "FirewallPolicy",
-    "IPMACBindingSetting",
-    "IPMACBindingTable",
-    "ScheduleGroup",
-    "ScheduleOnetime",
-    "ScheduleRecurring",
-    "ServiceCategory",
-    "ServiceCustom",
-    "ServiceGroup",
-    "ShaperPerIp",
-    "TrafficShaper",
+    # Convenience wrappers - commented out, using generated API
+    # "FirewallPolicy",
+    # "IPMACBindingSetting",
+    # "IPMACBindingTable",
+    # "ScheduleGroup",
+    # "ScheduleOnetime",
+    # "ScheduleRecurring",
+    # "ServiceCategory",
+    # "ServiceCustom",
+    # "ServiceGroup",
+    # "ShaperPerIp",
+    # "TrafficShaper",
     # Debug utilities
     "DebugSession",
     "debug_timer",

@@ -1,47 +1,15 @@
-"""
-FortiOS Monitor - Utm
-UTM (Unified Threat Management) monitoring
-"""
+"""Auto-generated category __init__ file."""
 
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-__all__ = ["Utm"]
-
-from .antivirus import Antivirus
-from .app_lookup import AppLookup
 from .application_categories import ApplicationCategories
-from .blacklisted_certificates import BlacklistedCertificates
-from .rating_lookup import RatingLookup
+
+if TYPE_CHECKING:
+    from hfortix_core.client import FortinetClient
 
 
 class Utm:
-    """Utm Monitor category class"""
+    """Container for {category_name} endpoints."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Utm Monitor category
-
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
-
-        # Initialize endpoints
-        self.antivirus = Antivirus(client)
-        self.app_lookup = AppLookup(client)
+    def __init__(self, client: "FortinetClient"):
         self.application_categories = ApplicationCategories(client)
-        self.blacklisted_certificates = BlacklistedCertificates(client)
-        self.rating_lookup = RatingLookup(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return [
-            "antivirus",
-            "app_lookup",
-            "application_categories",
-            "blacklisted_certificates",
-            "rating_lookup",
-        ]

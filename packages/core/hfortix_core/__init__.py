@@ -7,12 +7,20 @@ Provides:
 - Shared utilities and type definitions
 """
 
+from .cache import (
+    TTLCache,
+    readonly_cache,
+)
 from .debug import (
     DebugSession,
     debug_timer,
     format_connection_stats,
     format_request_info,
     print_debug_info,
+)
+from .deprecation import (
+    check_deprecated_fields,
+    warn_deprecated_field,
 )
 from .exceptions import (
     APIError,
@@ -36,6 +44,7 @@ from .exceptions import (
     ServerError,
     ServiceUnavailableError,
     TimeoutError,
+    ValidationError,
     VDOMError,
 )
 from .logging import (
@@ -56,11 +65,18 @@ from .types import (
 
 __version__ = "0.4.3"
 __all__ = [
+    # Cache utilities
+    "TTLCache",
+    "readonly_cache",
+    # Deprecation utilities
+    "check_deprecated_fields",
+    "warn_deprecated_field",
     # Exceptions
     "FortinetError",
     "APIError",
     "AuthenticationError",
     "AuthorizationError",
+    "ValidationError",
     "RetryableError",
     "NonRetryableError",
     "ConfigurationError",

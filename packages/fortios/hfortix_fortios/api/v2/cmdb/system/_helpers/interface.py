@@ -1,193 +1,1412 @@
 """
-Validation helpers for system interface endpoint.
+Validation helpers for system/interface endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
+    "vdom",  # Interface is in this virtual domain (VDOM).
     "dhcp-relay-interface",  # Specify outgoing interface to reach server.
     "interface",  # Interface name.
-    "name",  # Name.
-    "system-id",  # Define a system ID for the aggregate interface.
-    "vdom",  # Interface is in this virtual domain (VDOM).
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "aggregate-type": "physical",
-    "algorithm": "L4",
-    "allowaccess": "ping",
-    "ap-discover": "enable",
-    "arpforward": "enable",
+    "name": "",
+    "vdom": "",
+    "vrf": 0,
+    "cli-conn-status": 0,
+    "fortilink": "disable",
+    "switch-controller-source-ip": "outbound",
+    "mode": "static",
+    "distance": 5,
+    "priority": 1,
+    "dhcp-relay-interface-select-method": "auto",
+    "dhcp-relay-interface": "",
+    "dhcp-relay-vrf-select": -1,
+    "dhcp-broadcast-flag": "enable",
+    "dhcp-relay-service": "disable",
+    "dhcp-relay-ip": "",
+    "dhcp-relay-source-ip": "0.0.0.0",
+    "dhcp-relay-circuit-id": "",
+    "dhcp-relay-link-selection": "0.0.0.0",
+    "dhcp-relay-request-all-server": "disable",
+    "dhcp-relay-allow-no-end-option": "disable",
+    "dhcp-relay-type": "regular",
+    "dhcp-smart-relay": "disable",
+    "dhcp-relay-agent-option": "enable",
+    "dhcp-classless-route-addition": "enable",
+    "management-ip": "0.0.0.0 0.0.0.0",
+    "ip": "0.0.0.0 0.0.0.0",
+    "allowaccess": "",
+    "gwdetect": "disable",
+    "ping-serv-status": 0,
+    "detectserver": "",
+    "detectprotocol": "ping",
+    "ha-priority": 1,
+    "fail-detect": "disable",
+    "fail-detect-option": "link-down",
+    "fail-alert-method": "link-down",
+    "fail-action-on-extender": "soft-restart",
+    "dhcp-client-identifier": "",
+    "dhcp-renew-time": 0,
+    "ipunnumbered": "0.0.0.0",
+    "username": "",
+    "pppoe-egress-cos": "cos0",
+    "pppoe-unnumbered-negotiate": "enable",
+    "idle-timeout": 0,
+    "detected-peer-mtu": 0,
+    "disc-retry-timeout": 1,
+    "padt-retry-timeout": 1,
+    "service-name": "",
+    "ac-name": "",
+    "lcp-echo-interval": 5,
+    "lcp-max-echo-fails": 3,
+    "defaultgw": "enable",
+    "dns-server-override": "enable",
+    "dns-server-protocol": "cleartext",
     "auth-type": "auto",
-    "auto-auth-extension-device": "disable",
+    "pptp-client": "disable",
+    "pptp-user": "",
+    "pptp-server-ip": "0.0.0.0",
+    "pptp-auth-type": "auto",
+    "pptp-timeout": 0,
+    "arpforward": "enable",
+    "ndiscforward": "enable",
+    "broadcast-forward": "disable",
     "bfd": "global",
     "bfd-desired-min-tx": 250,
     "bfd-detect-mult": 3,
     "bfd-required-min-rx": 250,
-    "broadcast-forward": "disable",
-    "dedicated-to": "none",
-    "default-purdue-level": "3",
-    "defaultgw": "enable",
-    "detectprotocol": "ping",
-    "device-identification": "disable",
-    "device-user-identification": "enable",
-    "dhcp-broadcast-flag": "enable",
-    "dhcp-classless-route-addition": "enable",
-    "dhcp-relay-agent-option": "enable",
-    "dhcp-relay-allow-no-end-option": "disable",
-    "dhcp-relay-interface-select-method": "auto",
-    "dhcp-relay-link-selection": "0.0.0.0",
-    "dhcp-relay-request-all-server": "disable",
-    "dhcp-relay-service": "disable",
-    "dhcp-relay-source-ip": "0.0.0.0",
-    "dhcp-relay-type": "regular",
-    "dhcp-relay-vrf-select": -1,
-    "dhcp-smart-relay": "disable",
-    "disc-retry-timeout": 1,
-    "distance": 5,
-    "dns-server-override": "enable",
-    "dns-server-protocol": "cleartext",
-    "drop-fragment": "disable",
-    "eap-method": "tls",
-    "eap-supplicant": "disable",
-    "exclude-signatures": "iot",
-    "explicit-ftp-proxy": "disable",
-    "explicit-web-proxy": "disable",
-    "external": "disable",
-    "fail-action-on-extender": "soft-restart",
-    "fail-alert-method": "link-down",
-    "fail-detect": "disable",
-    "fail-detect-option": "link-down",
-    "fortilink": "disable",
-    "fortilink-neighbor-detect": "lldp",
-    "fortilink-split-interface": "enable",
-    "gwdetect": "disable",
-    "ha-priority": 1,
-    "icmp-accept-redirect": "enable",
-    "icmp-send-redirect": "enable",
-    "ident-accept": "disable",
-    "ip": "0.0.0.0 0.0.0.0",
-    "ip-managed-by-fortiipam": "inherit-global",
-    "ipmac": "disable",
-    "ips-sniffer-mode": "disable",
-    "ipunnumbered": "0.0.0.0",
     "l2forward": "disable",
-    "lacp-ha-secondary": "enable",
-    "lacp-mode": "active",
-    "lacp-speed": "slow",
-    "lcp-echo-interval": 5,
-    "lcp-max-echo-fails": 3,
-    "link-up-delay": 50,
-    "lldp-reception": "vdom",
-    "lldp-transmission": "vdom",
-    "macaddr": "00:00:00:00:00:00",
-    "managed-subnetwork-size": "256",
-    "management-ip": "0.0.0.0 0.0.0.0",
-    "min-links": 1,
-    "min-links-down": "operational",
-    "mode": "static",
-    "monitor-bandwidth": "disable",
-    "mtu": 1500,
-    "mtu-override": "disable",
-    "ndiscforward": "enable",
-    "netbios-forward": "disable",
-    "netflow-sample-rate": 1,
-    "netflow-sampler": "disable",
-    "padt-retry-timeout": 1,
-    "polling-interval": 20,
-    "pppoe-egress-cos": "cos0",
-    "pppoe-unnumbered-negotiate": "enable",
-    "pptp-auth-type": "auto",
-    "pptp-client": "disable",
-    "pptp-server-ip": "0.0.0.0",
-    "preserve-session-route": "disable",
-    "priority": 1,
-    "priority-override": "enable",
-    "proxy-captive-portal": "disable",
+    "icmp-send-redirect": "enable",
+    "icmp-accept-redirect": "enable",
     "reachable-time": 30000,
-    "remote-ip": "0.0.0.0 0.0.0.0",
-    "role": "undefined",
-    "sample-direction": "both",
-    "sample-rate": 2000,
-    "secondary-IP": "disable",
-    "security-ip-auth-bypass": "disable",
-    "security-mac-auth-bypass": "disable",
-    "security-mode": "none",
-    "sflow-sampler": "disable",
-    "speed": "auto",
-    "src-check": "enable",
-    "status": "up",
+    "vlanforward": "disable",
     "stpforward": "disable",
     "stpforward-mode": "rpl-all-ext-id",
+    "ips-sniffer-mode": "disable",
+    "ident-accept": "disable",
+    "ipmac": "disable",
     "subst": "disable",
+    "macaddr": "00:00:00:00:00:00",
+    "virtual-mac": "00:00:00:00:00:00",
     "substitute-dst-mac": "00:00:00:00:00:00",
-    "switch-controller-access-vlan": "disable",
-    "switch-controller-arp-inspection": "disable",
-    "switch-controller-dhcp-snooping": "disable",
-    "switch-controller-dhcp-snooping-option82": "disable",
-    "switch-controller-dhcp-snooping-verify-mac": "disable",
-    "switch-controller-feature": "none",
-    "switch-controller-igmp-snooping": "disable",
-    "switch-controller-igmp-snooping-fast-leave": "disable",
-    "switch-controller-igmp-snooping-proxy": "disable",
-    "switch-controller-iot-scanning": "disable",
-    "switch-controller-mgmt-vlan": 4094,
-    "switch-controller-netflow-collect": "disable",
-    "switch-controller-offload": "disable",
-    "switch-controller-offload-gw": "disable",
-    "switch-controller-offload-ip": "0.0.0.0",
-    "switch-controller-rspan-mode": "disable",
-    "switch-controller-source-ip": "outbound",
-    "system-id": "00:00:00:00:00:00",
-    "system-id-type": "auto",
+    "speed": "auto",
+    "status": "up",
+    "netbios-forward": "disable",
+    "wins-ip": "0.0.0.0",
+    "type": "vlan",
+    "dedicated-to": "none",
     "trust-ip-1": "0.0.0.0 0.0.0.0",
     "trust-ip-2": "0.0.0.0 0.0.0.0",
     "trust-ip-3": "0.0.0.0 0.0.0.0",
     "trust-ip6-1": "::/0",
     "trust-ip6-2": "::/0",
     "trust-ip6-3": "::/0",
-    "type": "vlan",
-    "virtual-mac": "00:00:00:00:00:00",
-    "vlan-protocol": "8021q",
-    "vlanforward": "disable",
-    "vrrp-virtual-mac": "disable",
+    "ring-rx": 0,
+    "ring-tx": 0,
     "wccp": "disable",
-    "wins-ip": "0.0.0.0",
+    "netflow-sampler": "disable",
+    "netflow-sample-rate": 1,
+    "netflow-sampler-id": 0,
+    "sflow-sampler": "disable",
+    "drop-fragment": "disable",
+    "src-check": "enable",
+    "sample-rate": 2000,
+    "polling-interval": 20,
+    "sample-direction": "both",
+    "explicit-web-proxy": "disable",
+    "explicit-ftp-proxy": "disable",
+    "proxy-captive-portal": "disable",
+    "tcp-mss": 0,
+    "inbandwidth": 0,
+    "outbandwidth": 0,
+    "egress-shaping-profile": "",
+    "ingress-shaping-profile": "",
+    "spillover-threshold": 0,
+    "ingress-spillover-threshold": 0,
+    "weight": 0,
+    "interface": "",
+    "external": "disable",
+    "mtu-override": "disable",
+    "mtu": 1500,
+    "vlan-protocol": "8021q",
+    "vlanid": 0,
+    "forward-domain": 0,
+    "remote-ip": "0.0.0.0 0.0.0.0",
+    "lacp-mode": "active",
+    "lacp-ha-secondary": "enable",
+    "system-id-type": "auto",
+    "system-id": "00:00:00:00:00:00",
+    "lacp-speed": "slow",
+    "min-links": 1,
+    "min-links-down": "operational",
+    "algorithm": "L4",
+    "link-up-delay": 50,
+    "aggregate-type": "physical",
+    "priority-override": "enable",
+    "aggregate": "",
+    "redundant-interface": "",
+    "devindex": 0,
+    "vindex": 0,
+    "switch": "",
+    "alias": "",
+    "security-mode": "none",
+    "security-mac-auth-bypass": "disable",
+    "security-ip-auth-bypass": "disable",
+    "security-external-logout": "",
+    "replacemsg-override-group": "",
+    "auth-cert": "",
+    "auth-portal-addr": "",
+    "security-exempt-list": "",
+    "ike-saml-server": "",
+    "device-identification": "disable",
+    "exclude-signatures": "",
+    "device-user-identification": "enable",
+    "lldp-reception": "vdom",
+    "lldp-transmission": "vdom",
+    "lldp-network-policy": "",
+    "estimated-upstream-bandwidth": 0,
+    "estimated-downstream-bandwidth": 0,
+    "measured-upstream-bandwidth": 0,
+    "measured-downstream-bandwidth": 0,
+    "bandwidth-measure-time": 0,
+    "monitor-bandwidth": "disable",
+    "vrrp-virtual-mac": "disable",
+    "role": "undefined",
+    "snmp-index": 0,
+    "secondary-IP": "disable",
+    "preserve-session-route": "disable",
+    "auto-auth-extension-device": "disable",
+    "ap-discover": "enable",
+    "fortilink-neighbor-detect": "lldp",
+    "ip-managed-by-fortiipam": "inherit-global",
+    "managed-subnetwork-size": "256",
+    "fortilink-split-interface": "enable",
+    "internal": 0,
+    "fortilink-backup-link": 0,
+    "switch-controller-access-vlan": "disable",
+    "switch-controller-traffic-policy": "",
+    "switch-controller-rspan-mode": "disable",
+    "switch-controller-netflow-collect": "disable",
+    "switch-controller-mgmt-vlan": 4094,
+    "switch-controller-igmp-snooping": "disable",
+    "switch-controller-igmp-snooping-proxy": "disable",
+    "switch-controller-igmp-snooping-fast-leave": "disable",
+    "switch-controller-dhcp-snooping": "disable",
+    "switch-controller-dhcp-snooping-verify-mac": "disable",
+    "switch-controller-dhcp-snooping-option82": "disable",
+    "switch-controller-arp-inspection": "disable",
+    "switch-controller-learning-limit": 0,
+    "switch-controller-nac": "",
+    "switch-controller-dynamic": "",
+    "switch-controller-feature": "none",
+    "switch-controller-iot-scanning": "disable",
+    "switch-controller-offload": "disable",
+    "switch-controller-offload-ip": "0.0.0.0",
+    "switch-controller-offload-gw": "disable",
+    "swc-vlan": 0,
+    "swc-first-create": 0,
+    "color": 0,
+    "eap-supplicant": "disable",
+    "eap-method": "",
+    "eap-identity": "",
+    "eap-ca-cert": "",
+    "eap-user-cert": "",
+    "default-purdue-level": "3",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # Name.
+    "vdom": "string",  # Interface is in this virtual domain (VDOM).
+    "vrf": "integer",  # Virtual Routing Forwarding ID.
+    "cli-conn-status": "integer",  # CLI connection status.
+    "fortilink": "option",  # Enable FortiLink to dedicate this interface to manage other 
+    "switch-controller-source-ip": "option",  # Source IP address used in FortiLink over L3 connections.
+    "mode": "option",  # Addressing mode (static, DHCP, PPPoE).
+    "client-options": "string",  # DHCP client options.
+    "distance": "integer",  # Distance for routes learned through PPPoE or DHCP, lower dis
+    "priority": "integer",  # Priority of learned routes.
+    "dhcp-relay-interface-select-method": "option",  # Specify how to select outgoing interface to reach server.
+    "dhcp-relay-interface": "string",  # Specify outgoing interface to reach server.
+    "dhcp-relay-vrf-select": "integer",  # VRF ID used for connection to server.
+    "dhcp-broadcast-flag": "option",  # Enable/disable setting of the broadcast flag in messages sen
+    "dhcp-relay-service": "option",  # Enable/disable allowing this interface to act as a DHCP rela
+    "dhcp-relay-ip": "user",  # DHCP relay IP address.
+    "dhcp-relay-source-ip": "ipv4-address",  # IP address used by the DHCP relay as its source IP.
+    "dhcp-relay-circuit-id": "string",  # DHCP relay circuit ID.
+    "dhcp-relay-link-selection": "ipv4-address",  # DHCP relay link selection.
+    "dhcp-relay-request-all-server": "option",  # Enable/disable sending of DHCP requests to all servers.
+    "dhcp-relay-allow-no-end-option": "option",  # Enable/disable relaying DHCP messages with no end option.
+    "dhcp-relay-type": "option",  # DHCP relay type (regular or IPsec).
+    "dhcp-smart-relay": "option",  # Enable/disable DHCP smart relay.
+    "dhcp-relay-agent-option": "option",  # Enable/disable DHCP relay agent option.
+    "dhcp-classless-route-addition": "option",  # Enable/disable addition of classless static routes retrieved
+    "management-ip": "ipv4-classnet-host",  # High Availability in-band management IP address of this inte
+    "ip": "ipv4-classnet-host",  # Interface IPv4 address and subnet mask, syntax: X.X.X.X/24.
+    "allowaccess": "option",  # Permitted types of management access to this interface.
+    "gwdetect": "option",  # Enable/disable detect gateway alive for first.
+    "ping-serv-status": "integer",  # PING server status.
+    "detectserver": "user",  # Gateway's ping server for this IP.
+    "detectprotocol": "option",  # Protocols used to detect the server.
+    "ha-priority": "integer",  # HA election priority for the PING server.
+    "fail-detect": "option",  # Enable/disable fail detection features for this interface.
+    "fail-detect-option": "option",  # Options for detecting that this interface has failed.
+    "fail-alert-method": "option",  # Select link-failed-signal or link-down method to alert about
+    "fail-action-on-extender": "option",  # Action on FortiExtender when interface fail.
+    "fail-alert-interfaces": "string",  # Names of the FortiGate interfaces to which the link failure 
+    "dhcp-client-identifier": "string",  # DHCP client identifier.
+    "dhcp-renew-time": "integer",  # DHCP renew time in seconds (300-604800), 0 means use the ren
+    "ipunnumbered": "ipv4-address",  # Unnumbered IP used for PPPoE interfaces for which no unique 
+    "username": "string",  # Username of the PPPoE account, provided by your ISP.
+    "pppoe-egress-cos": "option",  # CoS in VLAN tag for outgoing PPPoE/PPP packets.
+    "pppoe-unnumbered-negotiate": "option",  # Enable/disable PPPoE unnumbered negotiation.
+    "password": "password",  # PPPoE account's password.
+    "idle-timeout": "integer",  # PPPoE auto disconnect after idle timeout seconds, 0 means no
+    "detected-peer-mtu": "integer",  # MTU of detected peer (0 - 4294967295).
+    "disc-retry-timeout": "integer",  # Time in seconds to wait before retrying to start a PPPoE dis
+    "padt-retry-timeout": "integer",  # PPPoE Active Discovery Terminate (PADT) used to terminate se
+    "service-name": "string",  # PPPoE service name.
+    "ac-name": "string",  # PPPoE server name.
+    "lcp-echo-interval": "integer",  # Time in seconds between PPPoE Link Control Protocol (LCP) ec
+    "lcp-max-echo-fails": "integer",  # Maximum missed LCP echo messages before disconnect.
+    "defaultgw": "option",  # Enable to get the gateway IP from the DHCP or PPPoE server.
+    "dns-server-override": "option",  # Enable/disable use DNS acquired by DHCP or PPPoE.
+    "dns-server-protocol": "option",  # DNS transport protocols.
+    "auth-type": "option",  # PPP authentication type to use.
+    "pptp-client": "option",  # Enable/disable PPTP client.
+    "pptp-user": "string",  # PPTP user name.
+    "pptp-password": "password",  # PPTP password.
+    "pptp-server-ip": "ipv4-address",  # PPTP server IP address.
+    "pptp-auth-type": "option",  # PPTP authentication type.
+    "pptp-timeout": "integer",  # Idle timer in minutes (0 for disabled).
+    "arpforward": "option",  # Enable/disable ARP forwarding.
+    "ndiscforward": "option",  # Enable/disable NDISC forwarding.
+    "broadcast-forward": "option",  # Enable/disable broadcast forwarding.
+    "bfd": "option",  # Bidirectional Forwarding Detection (BFD) settings.
+    "bfd-desired-min-tx": "integer",  # BFD desired minimal transmit interval.
+    "bfd-detect-mult": "integer",  # BFD detection multiplier.
+    "bfd-required-min-rx": "integer",  # BFD required minimal receive interval.
+    "l2forward": "option",  # Enable/disable l2 forwarding.
+    "icmp-send-redirect": "option",  # Enable/disable sending of ICMP redirects.
+    "icmp-accept-redirect": "option",  # Enable/disable ICMP accept redirect.
+    "reachable-time": "integer",  # IPv4 reachable time in milliseconds (30000 - 3600000, defaul
+    "vlanforward": "option",  # Enable/disable traffic forwarding between VLANs on this inte
+    "stpforward": "option",  # Enable/disable STP forwarding.
+    "stpforward-mode": "option",  # Configure STP forwarding mode.
+    "ips-sniffer-mode": "option",  # Enable/disable the use of this interface as a one-armed snif
+    "ident-accept": "option",  # Enable/disable authentication for this interface.
+    "ipmac": "option",  # Enable/disable IP/MAC binding.
+    "subst": "option",  # Enable to always send packets from this interface to a desti
+    "macaddr": "mac-address",  # Change the interface's MAC address.
+    "virtual-mac": "mac-address",  # Change the interface's virtual MAC address.
+    "substitute-dst-mac": "mac-address",  # Destination MAC address that all packets are sent to from th
+    "speed": "option",  # Interface speed. The default setting and the options availab
+    "status": "option",  # Bring the interface up or shut the interface down.
+    "netbios-forward": "option",  # Enable/disable NETBIOS forwarding.
+    "wins-ip": "ipv4-address",  # WINS server IP.
+    "type": "option",  # Interface type.
+    "dedicated-to": "option",  # Configure interface for single purpose.
+    "trust-ip-1": "ipv4-classnet-any",  # Trusted host for dedicated management traffic (0.0.0.0/24 fo
+    "trust-ip-2": "ipv4-classnet-any",  # Trusted host for dedicated management traffic (0.0.0.0/24 fo
+    "trust-ip-3": "ipv4-classnet-any",  # Trusted host for dedicated management traffic (0.0.0.0/24 fo
+    "trust-ip6-1": "ipv6-prefix",  # Trusted IPv6 host for dedicated management traffic (::/0 for
+    "trust-ip6-2": "ipv6-prefix",  # Trusted IPv6 host for dedicated management traffic (::/0 for
+    "trust-ip6-3": "ipv6-prefix",  # Trusted IPv6 host for dedicated management traffic (::/0 for
+    "ring-rx": "integer",  # RX ring size.
+    "ring-tx": "integer",  # TX ring size.
+    "wccp": "option",  # Enable/disable WCCP on this interface. Used for encapsulated
+    "netflow-sampler": "option",  # Enable/disable NetFlow on this interface and set the data th
+    "netflow-sample-rate": "integer",  # NetFlow sample rate.  Sample one packet every configured num
+    "netflow-sampler-id": "integer",  # Netflow sampler ID.
+    "sflow-sampler": "option",  # Enable/disable sFlow on this interface.
+    "drop-fragment": "option",  # Enable/disable drop fragment packets.
+    "src-check": "option",  # Enable/disable source IP check.
+    "sample-rate": "integer",  # sFlow sample rate (10 - 99999).
+    "polling-interval": "integer",  # sFlow polling interval in seconds (1 - 255).
+    "sample-direction": "option",  # Data that NetFlow collects (rx, tx, or both).
+    "explicit-web-proxy": "option",  # Enable/disable the explicit web proxy on this interface.
+    "explicit-ftp-proxy": "option",  # Enable/disable the explicit FTP proxy on this interface.
+    "proxy-captive-portal": "option",  # Enable/disable proxy captive portal on this interface.
+    "tcp-mss": "integer",  # TCP maximum segment size. 0 means do not change segment size
+    "inbandwidth": "integer",  # Bandwidth limit for incoming traffic (0 - 80000000 kbps), 0 
+    "outbandwidth": "integer",  # Bandwidth limit for outgoing traffic (0 - 80000000 kbps).
+    "egress-shaping-profile": "string",  # Outgoing traffic shaping profile.
+    "ingress-shaping-profile": "string",  # Incoming traffic shaping profile.
+    "spillover-threshold": "integer",  # Egress Spillover threshold (0 - 16776000 kbps), 0 means unli
+    "ingress-spillover-threshold": "integer",  # Ingress Spillover threshold (0 - 16776000 kbps), 0 means unl
+    "weight": "integer",  # Default weight for static routes (if route has no weight con
+    "interface": "string",  # Interface name.
+    "external": "option",  # Enable/disable identifying the interface as an external inte
+    "mtu-override": "option",  # Enable to set a custom MTU for this interface.
+    "mtu": "integer",  # MTU value for this interface.
+    "vlan-protocol": "option",  # Ethernet protocol of VLAN.
+    "vlanid": "integer",  # VLAN ID (1 - 4094).
+    "forward-domain": "integer",  # Transparent mode forward domain.
+    "remote-ip": "ipv4-classnet-host",  # Remote IP address of tunnel.
+    "member": "string",  # Physical interfaces that belong to the aggregate or redundan
+    "lacp-mode": "option",  # LACP mode.
+    "lacp-ha-secondary": "option",  # LACP HA secondary member.
+    "system-id-type": "option",  # Method in which system ID is generated.
+    "system-id": "mac-address",  # Define a system ID for the aggregate interface.
+    "lacp-speed": "option",  # How often the interface sends LACP messages.
+    "min-links": "integer",  # Minimum number of aggregated ports that must be up.
+    "min-links-down": "option",  # Action to take when less than the configured minimum number 
+    "algorithm": "option",  # Frame distribution algorithm.
+    "link-up-delay": "integer",  # Number of milliseconds to wait before considering a link is 
+    "aggregate-type": "option",  # Type of aggregation.
+    "priority-override": "option",  # Enable/disable fail back to higher priority port once recove
+    "aggregate": "string",  # Aggregate interface.
+    "redundant-interface": "string",  # Redundant interface.
+    "devindex": "integer",  # Device Index.
+    "vindex": "integer",  # Switch control interface VLAN ID.
+    "switch": "string",  # Contained in switch.
+    "description": "var-string",  # Description.
+    "alias": "string",  # Alias will be displayed with the interface name to make it e
+    "security-mode": "option",  # Turn on captive portal authentication for this interface.
+    "security-mac-auth-bypass": "option",  # Enable/disable MAC authentication bypass.
+    "security-ip-auth-bypass": "option",  # Enable/disable IP authentication bypass.
+    "security-external-web": "var-string",  # URL of external authentication web server.
+    "security-external-logout": "string",  # URL of external authentication logout server.
+    "replacemsg-override-group": "string",  # Replacement message override group.
+    "security-redirect-url": "var-string",  # URL redirection after disclaimer/authentication.
+    "auth-cert": "string",  # HTTPS server certificate.
+    "auth-portal-addr": "string",  # Address of captive portal.
+    "security-exempt-list": "string",  # Name of security-exempt-list.
+    "security-groups": "string",  # User groups that can authenticate with the captive portal.
+    "ike-saml-server": "string",  # Configure IKE authentication SAML server.
+    "device-identification": "option",  # Enable/disable passively gathering of device identity inform
+    "exclude-signatures": "option",  # Exclude IOT or OT application signatures.
+    "device-user-identification": "option",  # Enable/disable passive gathering of user identity informatio
+    "lldp-reception": "option",  # Enable/disable Link Layer Discovery Protocol (LLDP) receptio
+    "lldp-transmission": "option",  # Enable/disable Link Layer Discovery Protocol (LLDP) transmis
+    "lldp-network-policy": "string",  # LLDP-MED network policy profile.
+    "estimated-upstream-bandwidth": "integer",  # Estimated maximum upstream bandwidth (kbps). Used to estimat
+    "estimated-downstream-bandwidth": "integer",  # Estimated maximum downstream bandwidth (kbps). Used to estim
+    "measured-upstream-bandwidth": "integer",  # Measured upstream bandwidth (kbps).
+    "measured-downstream-bandwidth": "integer",  # Measured downstream bandwidth (kbps).
+    "bandwidth-measure-time": "integer",  # Bandwidth measure time.
+    "monitor-bandwidth": "option",  # Enable monitoring bandwidth on this interface.
+    "vrrp-virtual-mac": "option",  # Enable/disable use of virtual MAC for VRRP.
+    "vrrp": "string",  # VRRP configuration.
+    "role": "option",  # Interface role.
+    "snmp-index": "integer",  # Permanent SNMP Index of the interface.
+    "secondary-IP": "option",  # Enable/disable adding a secondary IP to this interface.
+    "secondaryip": "string",  # Second IP address of interface.
+    "preserve-session-route": "option",  # Enable/disable preservation of session route when dirty.
+    "auto-auth-extension-device": "option",  # Enable/disable automatic authorization of dedicated Fortinet
+    "ap-discover": "option",  # Enable/disable automatic registration of unknown FortiAP dev
+    "fortilink-neighbor-detect": "option",  # Protocol for FortiGate neighbor discovery.
+    "ip-managed-by-fortiipam": "option",  # Enable/disable automatic IP address assignment of this inter
+    "managed-subnetwork-size": "option",  # Number of IP addresses to be allocated by FortiIPAM and used
+    "fortilink-split-interface": "option",  # Enable/disable FortiLink split interface to connect member l
+    "internal": "integer",  # Implicitly created.
+    "fortilink-backup-link": "integer",  # FortiLink split interface backup link.
+    "switch-controller-access-vlan": "option",  # Block FortiSwitch port-to-port traffic.
+    "switch-controller-traffic-policy": "string",  # Switch controller traffic policy for the VLAN.
+    "switch-controller-rspan-mode": "option",  # Stop Layer2 MAC learning and interception of BPDUs and other
+    "switch-controller-netflow-collect": "option",  # NetFlow collection and processing.
+    "switch-controller-mgmt-vlan": "integer",  # VLAN to use for FortiLink management purposes.
+    "switch-controller-igmp-snooping": "option",  # Switch controller IGMP snooping.
+    "switch-controller-igmp-snooping-proxy": "option",  # Switch controller IGMP snooping proxy.
+    "switch-controller-igmp-snooping-fast-leave": "option",  # Switch controller IGMP snooping fast-leave.
+    "switch-controller-dhcp-snooping": "option",  # Switch controller DHCP snooping.
+    "switch-controller-dhcp-snooping-verify-mac": "option",  # Switch controller DHCP snooping verify MAC.
+    "switch-controller-dhcp-snooping-option82": "option",  # Switch controller DHCP snooping option82.
+    "dhcp-snooping-server-list": "string",  # Configure DHCP server access list.
+    "switch-controller-arp-inspection": "option",  # Enable/disable/Monitor FortiSwitch ARP inspection.
+    "switch-controller-learning-limit": "integer",  # Limit the number of dynamic MAC addresses on this VLAN (1 - 
+    "switch-controller-nac": "string",  # Integrated FortiLink settings for managed FortiSwitch.
+    "switch-controller-dynamic": "string",  # Integrated FortiLink settings for managed FortiSwitch.
+    "switch-controller-feature": "option",  # Interface's purpose when assigning traffic (read only).
+    "switch-controller-iot-scanning": "option",  # Enable/disable managed FortiSwitch IoT scanning.
+    "switch-controller-offload": "option",  # Enable/disable managed FortiSwitch routing offload.
+    "switch-controller-offload-ip": "ipv4-address",  # IP for routing offload on FortiSwitch.
+    "switch-controller-offload-gw": "option",  # Enable/disable managed FortiSwitch routing offload gateway.
+    "swc-vlan": "integer",  # Creation status for switch-controller VLANs.
+    "swc-first-create": "integer",  # Initial create for switch-controller VLANs.
+    "color": "integer",  # Color of icon on the GUI.
+    "tagging": "string",  # Config object tagging.
+    "eap-supplicant": "option",  # Enable/disable EAP-Supplicant.
+    "eap-method": "option",  # EAP method.
+    "eap-identity": "string",  # EAP identity.
+    "eap-password": "password",  # EAP password.
+    "eap-ca-cert": "string",  # EAP CA certificate name.
+    "eap-user-cert": "string",  # EAP user certificate name.
+    "default-purdue-level": "option",  # default purdue level of device detected on this interface.
+    "ipv6": "string",  # IPv6 of interface.
+    "physical": "key",  # Print physical interface information.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "Name.",
+    "vdom": "Interface is in this virtual domain (VDOM).",
+    "vrf": "Virtual Routing Forwarding ID.",
+    "cli-conn-status": "CLI connection status.",
+    "fortilink": "Enable FortiLink to dedicate this interface to manage other Fortinet devices.",
+    "switch-controller-source-ip": "Source IP address used in FortiLink over L3 connections.",
+    "mode": "Addressing mode (static, DHCP, PPPoE).",
+    "client-options": "DHCP client options.",
+    "distance": "Distance for routes learned through PPPoE or DHCP, lower distance indicates preferred route.",
+    "priority": "Priority of learned routes.",
+    "dhcp-relay-interface-select-method": "Specify how to select outgoing interface to reach server.",
+    "dhcp-relay-interface": "Specify outgoing interface to reach server.",
+    "dhcp-relay-vrf-select": "VRF ID used for connection to server.",
+    "dhcp-broadcast-flag": "Enable/disable setting of the broadcast flag in messages sent by the DHCP client (default = enable).",
+    "dhcp-relay-service": "Enable/disable allowing this interface to act as a DHCP relay.",
+    "dhcp-relay-ip": "DHCP relay IP address.",
+    "dhcp-relay-source-ip": "IP address used by the DHCP relay as its source IP.",
+    "dhcp-relay-circuit-id": "DHCP relay circuit ID.",
+    "dhcp-relay-link-selection": "DHCP relay link selection.",
+    "dhcp-relay-request-all-server": "Enable/disable sending of DHCP requests to all servers.",
+    "dhcp-relay-allow-no-end-option": "Enable/disable relaying DHCP messages with no end option.",
+    "dhcp-relay-type": "DHCP relay type (regular or IPsec).",
+    "dhcp-smart-relay": "Enable/disable DHCP smart relay.",
+    "dhcp-relay-agent-option": "Enable/disable DHCP relay agent option.",
+    "dhcp-classless-route-addition": "Enable/disable addition of classless static routes retrieved from DHCP server.",
+    "management-ip": "High Availability in-band management IP address of this interface.",
+    "ip": "Interface IPv4 address and subnet mask, syntax: X.X.X.X/24.",
+    "allowaccess": "Permitted types of management access to this interface.",
+    "gwdetect": "Enable/disable detect gateway alive for first.",
+    "ping-serv-status": "PING server status.",
+    "detectserver": "Gateway's ping server for this IP.",
+    "detectprotocol": "Protocols used to detect the server.",
+    "ha-priority": "HA election priority for the PING server.",
+    "fail-detect": "Enable/disable fail detection features for this interface.",
+    "fail-detect-option": "Options for detecting that this interface has failed.",
+    "fail-alert-method": "Select link-failed-signal or link-down method to alert about a failed link.",
+    "fail-action-on-extender": "Action on FortiExtender when interface fail.",
+    "fail-alert-interfaces": "Names of the FortiGate interfaces to which the link failure alert is sent.",
+    "dhcp-client-identifier": "DHCP client identifier.",
+    "dhcp-renew-time": "DHCP renew time in seconds (300-604800), 0 means use the renew time provided by the server.",
+    "ipunnumbered": "Unnumbered IP used for PPPoE interfaces for which no unique local address is provided.",
+    "username": "Username of the PPPoE account, provided by your ISP.",
+    "pppoe-egress-cos": "CoS in VLAN tag for outgoing PPPoE/PPP packets.",
+    "pppoe-unnumbered-negotiate": "Enable/disable PPPoE unnumbered negotiation.",
+    "password": "PPPoE account's password.",
+    "idle-timeout": "PPPoE auto disconnect after idle timeout seconds, 0 means no timeout.",
+    "detected-peer-mtu": "MTU of detected peer (0 - 4294967295).",
+    "disc-retry-timeout": "Time in seconds to wait before retrying to start a PPPoE discovery, 0 means no timeout.",
+    "padt-retry-timeout": "PPPoE Active Discovery Terminate (PADT) used to terminate sessions after an idle time.",
+    "service-name": "PPPoE service name.",
+    "ac-name": "PPPoE server name.",
+    "lcp-echo-interval": "Time in seconds between PPPoE Link Control Protocol (LCP) echo requests.",
+    "lcp-max-echo-fails": "Maximum missed LCP echo messages before disconnect.",
+    "defaultgw": "Enable to get the gateway IP from the DHCP or PPPoE server.",
+    "dns-server-override": "Enable/disable use DNS acquired by DHCP or PPPoE.",
+    "dns-server-protocol": "DNS transport protocols.",
+    "auth-type": "PPP authentication type to use.",
+    "pptp-client": "Enable/disable PPTP client.",
+    "pptp-user": "PPTP user name.",
+    "pptp-password": "PPTP password.",
+    "pptp-server-ip": "PPTP server IP address.",
+    "pptp-auth-type": "PPTP authentication type.",
+    "pptp-timeout": "Idle timer in minutes (0 for disabled).",
+    "arpforward": "Enable/disable ARP forwarding.",
+    "ndiscforward": "Enable/disable NDISC forwarding.",
+    "broadcast-forward": "Enable/disable broadcast forwarding.",
+    "bfd": "Bidirectional Forwarding Detection (BFD) settings.",
+    "bfd-desired-min-tx": "BFD desired minimal transmit interval.",
+    "bfd-detect-mult": "BFD detection multiplier.",
+    "bfd-required-min-rx": "BFD required minimal receive interval.",
+    "l2forward": "Enable/disable l2 forwarding.",
+    "icmp-send-redirect": "Enable/disable sending of ICMP redirects.",
+    "icmp-accept-redirect": "Enable/disable ICMP accept redirect.",
+    "reachable-time": "IPv4 reachable time in milliseconds (30000 - 3600000, default = 30000).",
+    "vlanforward": "Enable/disable traffic forwarding between VLANs on this interface.",
+    "stpforward": "Enable/disable STP forwarding.",
+    "stpforward-mode": "Configure STP forwarding mode.",
+    "ips-sniffer-mode": "Enable/disable the use of this interface as a one-armed sniffer.",
+    "ident-accept": "Enable/disable authentication for this interface.",
+    "ipmac": "Enable/disable IP/MAC binding.",
+    "subst": "Enable to always send packets from this interface to a destination MAC address.",
+    "macaddr": "Change the interface's MAC address.",
+    "virtual-mac": "Change the interface's virtual MAC address.",
+    "substitute-dst-mac": "Destination MAC address that all packets are sent to from this interface.",
+    "speed": "Interface speed. The default setting and the options available depend on the interface hardware.",
+    "status": "Bring the interface up or shut the interface down.",
+    "netbios-forward": "Enable/disable NETBIOS forwarding.",
+    "wins-ip": "WINS server IP.",
+    "type": "Interface type.",
+    "dedicated-to": "Configure interface for single purpose.",
+    "trust-ip-1": "Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).",
+    "trust-ip-2": "Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).",
+    "trust-ip-3": "Trusted host for dedicated management traffic (0.0.0.0/24 for all hosts).",
+    "trust-ip6-1": "Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).",
+    "trust-ip6-2": "Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).",
+    "trust-ip6-3": "Trusted IPv6 host for dedicated management traffic (::/0 for all hosts).",
+    "ring-rx": "RX ring size.",
+    "ring-tx": "TX ring size.",
+    "wccp": "Enable/disable WCCP on this interface. Used for encapsulated WCCP communication between WCCP clients and servers.",
+    "netflow-sampler": "Enable/disable NetFlow on this interface and set the data that NetFlow collects (rx, tx, or both).",
+    "netflow-sample-rate": "NetFlow sample rate.  Sample one packet every configured number of packets (1 - 65535, default = 1, which means standard NetFlow where all packets are sampled).",
+    "netflow-sampler-id": "Netflow sampler ID.",
+    "sflow-sampler": "Enable/disable sFlow on this interface.",
+    "drop-fragment": "Enable/disable drop fragment packets.",
+    "src-check": "Enable/disable source IP check.",
+    "sample-rate": "sFlow sample rate (10 - 99999).",
+    "polling-interval": "sFlow polling interval in seconds (1 - 255).",
+    "sample-direction": "Data that NetFlow collects (rx, tx, or both).",
+    "explicit-web-proxy": "Enable/disable the explicit web proxy on this interface.",
+    "explicit-ftp-proxy": "Enable/disable the explicit FTP proxy on this interface.",
+    "proxy-captive-portal": "Enable/disable proxy captive portal on this interface.",
+    "tcp-mss": "TCP maximum segment size. 0 means do not change segment size.",
+    "inbandwidth": "Bandwidth limit for incoming traffic (0 - 80000000 kbps), 0 means unlimited.",
+    "outbandwidth": "Bandwidth limit for outgoing traffic (0 - 80000000 kbps).",
+    "egress-shaping-profile": "Outgoing traffic shaping profile.",
+    "ingress-shaping-profile": "Incoming traffic shaping profile.",
+    "spillover-threshold": "Egress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.",
+    "ingress-spillover-threshold": "Ingress Spillover threshold (0 - 16776000 kbps), 0 means unlimited.",
+    "weight": "Default weight for static routes (if route has no weight configured).",
+    "interface": "Interface name.",
+    "external": "Enable/disable identifying the interface as an external interface (which usually means it's connected to the Internet).",
+    "mtu-override": "Enable to set a custom MTU for this interface.",
+    "mtu": "MTU value for this interface.",
+    "vlan-protocol": "Ethernet protocol of VLAN.",
+    "vlanid": "VLAN ID (1 - 4094).",
+    "forward-domain": "Transparent mode forward domain.",
+    "remote-ip": "Remote IP address of tunnel.",
+    "member": "Physical interfaces that belong to the aggregate or redundant interface.",
+    "lacp-mode": "LACP mode.",
+    "lacp-ha-secondary": "LACP HA secondary member.",
+    "system-id-type": "Method in which system ID is generated.",
+    "system-id": "Define a system ID for the aggregate interface.",
+    "lacp-speed": "How often the interface sends LACP messages.",
+    "min-links": "Minimum number of aggregated ports that must be up.",
+    "min-links-down": "Action to take when less than the configured minimum number of links are active.",
+    "algorithm": "Frame distribution algorithm.",
+    "link-up-delay": "Number of milliseconds to wait before considering a link is up.",
+    "aggregate-type": "Type of aggregation.",
+    "priority-override": "Enable/disable fail back to higher priority port once recovered.",
+    "aggregate": "Aggregate interface.",
+    "redundant-interface": "Redundant interface.",
+    "devindex": "Device Index.",
+    "vindex": "Switch control interface VLAN ID.",
+    "switch": "Contained in switch.",
+    "description": "Description.",
+    "alias": "Alias will be displayed with the interface name to make it easier to distinguish.",
+    "security-mode": "Turn on captive portal authentication for this interface.",
+    "security-mac-auth-bypass": "Enable/disable MAC authentication bypass.",
+    "security-ip-auth-bypass": "Enable/disable IP authentication bypass.",
+    "security-external-web": "URL of external authentication web server.",
+    "security-external-logout": "URL of external authentication logout server.",
+    "replacemsg-override-group": "Replacement message override group.",
+    "security-redirect-url": "URL redirection after disclaimer/authentication.",
+    "auth-cert": "HTTPS server certificate.",
+    "auth-portal-addr": "Address of captive portal.",
+    "security-exempt-list": "Name of security-exempt-list.",
+    "security-groups": "User groups that can authenticate with the captive portal.",
+    "ike-saml-server": "Configure IKE authentication SAML server.",
+    "device-identification": "Enable/disable passively gathering of device identity information about the devices on the network connected to this interface.",
+    "exclude-signatures": "Exclude IOT or OT application signatures.",
+    "device-user-identification": "Enable/disable passive gathering of user identity information about users on this interface.",
+    "lldp-reception": "Enable/disable Link Layer Discovery Protocol (LLDP) reception.",
+    "lldp-transmission": "Enable/disable Link Layer Discovery Protocol (LLDP) transmission.",
+    "lldp-network-policy": "LLDP-MED network policy profile.",
+    "estimated-upstream-bandwidth": "Estimated maximum upstream bandwidth (kbps). Used to estimate link utilization.",
+    "estimated-downstream-bandwidth": "Estimated maximum downstream bandwidth (kbps). Used to estimate link utilization.",
+    "measured-upstream-bandwidth": "Measured upstream bandwidth (kbps).",
+    "measured-downstream-bandwidth": "Measured downstream bandwidth (kbps).",
+    "bandwidth-measure-time": "Bandwidth measure time.",
+    "monitor-bandwidth": "Enable monitoring bandwidth on this interface.",
+    "vrrp-virtual-mac": "Enable/disable use of virtual MAC for VRRP.",
+    "vrrp": "VRRP configuration.",
+    "role": "Interface role.",
+    "snmp-index": "Permanent SNMP Index of the interface.",
+    "secondary-IP": "Enable/disable adding a secondary IP to this interface.",
+    "secondaryip": "Second IP address of interface.",
+    "preserve-session-route": "Enable/disable preservation of session route when dirty.",
+    "auto-auth-extension-device": "Enable/disable automatic authorization of dedicated Fortinet extension device on this interface.",
+    "ap-discover": "Enable/disable automatic registration of unknown FortiAP devices.",
+    "fortilink-neighbor-detect": "Protocol for FortiGate neighbor discovery.",
+    "ip-managed-by-fortiipam": "Enable/disable automatic IP address assignment of this interface by FortiIPAM.",
+    "managed-subnetwork-size": "Number of IP addresses to be allocated by FortiIPAM and used by this FortiGate unit's DHCP server settings.",
+    "fortilink-split-interface": "Enable/disable FortiLink split interface to connect member link to different FortiSwitch in stack for uplink redundancy.",
+    "internal": "Implicitly created.",
+    "fortilink-backup-link": "FortiLink split interface backup link.",
+    "switch-controller-access-vlan": "Block FortiSwitch port-to-port traffic.",
+    "switch-controller-traffic-policy": "Switch controller traffic policy for the VLAN.",
+    "switch-controller-rspan-mode": "Stop Layer2 MAC learning and interception of BPDUs and other packets on this interface.",
+    "switch-controller-netflow-collect": "NetFlow collection and processing.",
+    "switch-controller-mgmt-vlan": "VLAN to use for FortiLink management purposes.",
+    "switch-controller-igmp-snooping": "Switch controller IGMP snooping.",
+    "switch-controller-igmp-snooping-proxy": "Switch controller IGMP snooping proxy.",
+    "switch-controller-igmp-snooping-fast-leave": "Switch controller IGMP snooping fast-leave.",
+    "switch-controller-dhcp-snooping": "Switch controller DHCP snooping.",
+    "switch-controller-dhcp-snooping-verify-mac": "Switch controller DHCP snooping verify MAC.",
+    "switch-controller-dhcp-snooping-option82": "Switch controller DHCP snooping option82.",
+    "dhcp-snooping-server-list": "Configure DHCP server access list.",
+    "switch-controller-arp-inspection": "Enable/disable/Monitor FortiSwitch ARP inspection.",
+    "switch-controller-learning-limit": "Limit the number of dynamic MAC addresses on this VLAN (1 - 128, 0 = no limit, default).",
+    "switch-controller-nac": "Integrated FortiLink settings for managed FortiSwitch.",
+    "switch-controller-dynamic": "Integrated FortiLink settings for managed FortiSwitch.",
+    "switch-controller-feature": "Interface's purpose when assigning traffic (read only).",
+    "switch-controller-iot-scanning": "Enable/disable managed FortiSwitch IoT scanning.",
+    "switch-controller-offload": "Enable/disable managed FortiSwitch routing offload.",
+    "switch-controller-offload-ip": "IP for routing offload on FortiSwitch.",
+    "switch-controller-offload-gw": "Enable/disable managed FortiSwitch routing offload gateway.",
+    "swc-vlan": "Creation status for switch-controller VLANs.",
+    "swc-first-create": "Initial create for switch-controller VLANs.",
+    "color": "Color of icon on the GUI.",
+    "tagging": "Config object tagging.",
+    "eap-supplicant": "Enable/disable EAP-Supplicant.",
+    "eap-method": "EAP method.",
+    "eap-identity": "EAP identity.",
+    "eap-password": "EAP password.",
+    "eap-ca-cert": "EAP CA certificate name.",
+    "eap-user-cert": "EAP user certificate name.",
+    "default-purdue-level": "default purdue level of device detected on this interface.",
+    "ipv6": "IPv6 of interface.",
+    "physical": "Print physical interface information.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 15},
+    "vdom": {"type": "string", "max_length": 31},
+    "vrf": {"type": "integer", "min": 0, "max": 511},
+    "cli-conn-status": {"type": "integer", "min": 0, "max": 4294967295},
+    "distance": {"type": "integer", "min": 1, "max": 255},
+    "priority": {"type": "integer", "min": 1, "max": 65535},
+    "dhcp-relay-interface": {"type": "string", "max_length": 15},
+    "dhcp-relay-vrf-select": {"type": "integer", "min": 0, "max": 511},
+    "dhcp-relay-circuit-id": {"type": "string", "max_length": 64},
+    "ping-serv-status": {"type": "integer", "min": 0, "max": 255},
+    "ha-priority": {"type": "integer", "min": 1, "max": 50},
+    "dhcp-client-identifier": {"type": "string", "max_length": 48},
+    "dhcp-renew-time": {"type": "integer", "min": 300, "max": 604800},
+    "username": {"type": "string", "max_length": 64},
+    "idle-timeout": {"type": "integer", "min": 0, "max": 32767},
+    "detected-peer-mtu": {"type": "integer", "min": 0, "max": 4294967295},
+    "disc-retry-timeout": {"type": "integer", "min": 0, "max": 4294967295},
+    "padt-retry-timeout": {"type": "integer", "min": 0, "max": 4294967295},
+    "service-name": {"type": "string", "max_length": 63},
+    "ac-name": {"type": "string", "max_length": 63},
+    "lcp-echo-interval": {"type": "integer", "min": 0, "max": 32767},
+    "lcp-max-echo-fails": {"type": "integer", "min": 0, "max": 32767},
+    "pptp-user": {"type": "string", "max_length": 64},
+    "pptp-timeout": {"type": "integer", "min": 0, "max": 65535},
+    "bfd-desired-min-tx": {"type": "integer", "min": 1, "max": 100000},
+    "bfd-detect-mult": {"type": "integer", "min": 1, "max": 50},
+    "bfd-required-min-rx": {"type": "integer", "min": 1, "max": 100000},
+    "reachable-time": {"type": "integer", "min": 30000, "max": 3600000},
+    "ring-rx": {"type": "integer", "min": 0, "max": 4294967295},
+    "ring-tx": {"type": "integer", "min": 0, "max": 4294967295},
+    "netflow-sample-rate": {"type": "integer", "min": 1, "max": 65535},
+    "netflow-sampler-id": {"type": "integer", "min": 1, "max": 254},
+    "sample-rate": {"type": "integer", "min": 10, "max": 99999},
+    "polling-interval": {"type": "integer", "min": 1, "max": 255},
+    "tcp-mss": {"type": "integer", "min": 48, "max": 65535},
+    "inbandwidth": {"type": "integer", "min": 0, "max": 80000000},
+    "outbandwidth": {"type": "integer", "min": 0, "max": 80000000},
+    "egress-shaping-profile": {"type": "string", "max_length": 35},
+    "ingress-shaping-profile": {"type": "string", "max_length": 35},
+    "spillover-threshold": {"type": "integer", "min": 0, "max": 16776000},
+    "ingress-spillover-threshold": {"type": "integer", "min": 0, "max": 16776000},
+    "weight": {"type": "integer", "min": 0, "max": 255},
+    "interface": {"type": "string", "max_length": 15},
+    "mtu": {"type": "integer", "min": 0, "max": 4294967295},
+    "vlanid": {"type": "integer", "min": 1, "max": 4094},
+    "forward-domain": {"type": "integer", "min": 0, "max": 2147483647},
+    "min-links": {"type": "integer", "min": 1, "max": 32},
+    "link-up-delay": {"type": "integer", "min": 50, "max": 3600000},
+    "aggregate": {"type": "string", "max_length": 15},
+    "redundant-interface": {"type": "string", "max_length": 15},
+    "devindex": {"type": "integer", "min": 0, "max": 4294967295},
+    "vindex": {"type": "integer", "min": 0, "max": 65535},
+    "switch": {"type": "string", "max_length": 15},
+    "alias": {"type": "string", "max_length": 25},
+    "security-external-logout": {"type": "string", "max_length": 127},
+    "replacemsg-override-group": {"type": "string", "max_length": 35},
+    "auth-cert": {"type": "string", "max_length": 35},
+    "auth-portal-addr": {"type": "string", "max_length": 63},
+    "security-exempt-list": {"type": "string", "max_length": 35},
+    "ike-saml-server": {"type": "string", "max_length": 35},
+    "lldp-network-policy": {"type": "string", "max_length": 35},
+    "estimated-upstream-bandwidth": {"type": "integer", "min": 0, "max": 4294967295},
+    "estimated-downstream-bandwidth": {"type": "integer", "min": 0, "max": 4294967295},
+    "measured-upstream-bandwidth": {"type": "integer", "min": 0, "max": 4294967295},
+    "measured-downstream-bandwidth": {"type": "integer", "min": 0, "max": 4294967295},
+    "bandwidth-measure-time": {"type": "integer", "min": 0, "max": 4294967295},
+    "snmp-index": {"type": "integer", "min": 0, "max": 2147483647},
+    "internal": {"type": "integer", "min": 0, "max": 255},
+    "fortilink-backup-link": {"type": "integer", "min": 0, "max": 255},
+    "switch-controller-traffic-policy": {"type": "string", "max_length": 63},
+    "switch-controller-mgmt-vlan": {"type": "integer", "min": 1, "max": 4094},
+    "switch-controller-learning-limit": {"type": "integer", "min": 0, "max": 128},
+    "switch-controller-nac": {"type": "string", "max_length": 35},
+    "switch-controller-dynamic": {"type": "string", "max_length": 35},
+    "swc-vlan": {"type": "integer", "min": 0, "max": 4294967295},
+    "swc-first-create": {"type": "integer", "min": 0, "max": 4294967295},
+    "color": {"type": "integer", "min": 0, "max": 32},
+    "eap-identity": {"type": "string", "max_length": 35},
+    "eap-ca-cert": {"type": "string", "max_length": 79},
+    "eap-user-cert": {"type": "string", "max_length": 35},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "client-options": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "code": {
+            "type": "integer",
+            "help": "DHCP client option code.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 255,
+        },
+        "type": {
+            "type": "option",
+            "help": "DHCP client option type.",
+            "default": "hex",
+            "options": ["hex", "string", "ip", "fqdn"],
+        },
+        "value": {
+            "type": "string",
+            "help": "DHCP client option value.",
+            "default": "",
+            "max_length": 312,
+        },
+        "ip": {
+            "type": "user",
+            "help": "DHCP option IPs.",
+            "default": "",
+        },
+    },
+    "fail-alert-interfaces": {
+        "name": {
+            "type": "string",
+            "help": "Names of the non-virtual interface.",
+            "required": True,
+            "default": "",
+            "max_length": 15,
+        },
+    },
+    "member": {
+        "interface-name": {
+            "type": "string",
+            "help": "Physical interface name.",
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "security-groups": {
+        "name": {
+            "type": "string",
+            "help": "Names of user groups that can authenticate with the captive portal.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "vrrp": {
+        "vrid": {
+            "type": "integer",
+            "help": "Virtual router identifier (1 - 255).",
+            "required": True,
+            "default": 0,
+            "min_value": 1,
+            "max_value": 255,
+        },
+        "version": {
+            "type": "option",
+            "help": "VRRP version.",
+            "default": "2",
+            "options": ["2", "3"],
+        },
+        "vrgrp": {
+            "type": "integer",
+            "help": "VRRP group ID (1 - 65535).",
+            "default": 0,
+            "min_value": 1,
+            "max_value": 65535,
+        },
+        "vrip": {
+            "type": "ipv4-address-any",
+            "help": "IP address of the virtual router.",
+            "required": True,
+            "default": "0.0.0.0",
+        },
+        "priority": {
+            "type": "integer",
+            "help": "Priority of the virtual router (1 - 255).",
+            "default": 100,
+            "min_value": 1,
+            "max_value": 255,
+        },
+        "adv-interval": {
+            "type": "integer",
+            "help": "Advertisement interval (250 - 255000 milliseconds).",
+            "default": 1000,
+            "min_value": 250,
+            "max_value": 255000,
+        },
+        "start-time": {
+            "type": "integer",
+            "help": "Startup time (1 - 255 seconds).",
+            "default": 3,
+            "min_value": 1,
+            "max_value": 255,
+        },
+        "preempt": {
+            "type": "option",
+            "help": "Enable/disable preempt mode.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "accept-mode": {
+            "type": "option",
+            "help": "Enable/disable accept mode.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "vrdst": {
+            "type": "ipv4-address-any",
+            "help": "Monitor the route to this destination.",
+            "default": "",
+        },
+        "vrdst-priority": {
+            "type": "integer",
+            "help": "Priority of the virtual router when the virtual router destination becomes unreachable (0 - 254).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 254,
+        },
+        "ignore-default-route": {
+            "type": "option",
+            "help": "Enable/disable ignoring of default route when checking destination.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "status": {
+            "type": "option",
+            "help": "Enable/disable this VRRP configuration.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "proxy-arp": {
+            "type": "string",
+            "help": "VRRP Proxy ARP configuration.",
+        },
+    },
+    "secondaryip": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "ip": {
+            "type": "ipv4-classnet-host",
+            "help": "Secondary IP address of the interface.",
+            "default": "0.0.0.0 0.0.0.0",
+        },
+        "secip-relay-ip": {
+            "type": "user",
+            "help": "DHCP relay IP address.",
+            "default": "",
+        },
+        "allowaccess": {
+            "type": "option",
+            "help": "Management access settings for the secondary IP address.",
+            "default": "",
+            "options": ["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"],
+        },
+        "gwdetect": {
+            "type": "option",
+            "help": "Enable/disable detect gateway alive for first.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "ping-serv-status": {
+            "type": "integer",
+            "help": "PING server status.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 255,
+        },
+        "detectserver": {
+            "type": "user",
+            "help": "Gateway's ping server for this IP.",
+            "default": "",
+        },
+        "detectprotocol": {
+            "type": "option",
+            "help": "Protocols used to detect the server.",
+            "default": "ping",
+            "options": ["ping", "tcp-echo", "udp-echo"],
+        },
+        "ha-priority": {
+            "type": "integer",
+            "help": "HA election priority for the PING server.",
+            "default": 1,
+            "min_value": 1,
+            "max_value": 50,
+        },
+    },
+    "dhcp-snooping-server-list": {
+        "name": {
+            "type": "string",
+            "help": "DHCP server name.",
+            "default": "default",
+            "max_length": 35,
+        },
+        "server-ip": {
+            "type": "ipv4-address",
+            "help": "IP address for DHCP server.",
+            "default": "0.0.0.0",
+        },
+    },
+    "tagging": {
+        "name": {
+            "type": "string",
+            "help": "Tagging entry name.",
+            "default": "",
+            "max_length": 63,
+        },
+        "category": {
+            "type": "string",
+            "help": "Tag category.",
+            "default": "",
+            "max_length": 63,
+        },
+        "tags": {
+            "type": "string",
+            "help": "Tags.",
+        },
+    },
+    "ipv6": {
+        "ip6-mode": {
+            "type": "option",
+            "help": "Addressing mode (static, DHCP, delegated).",
+            "default": "static",
+            "options": ["static", "dhcp", "pppoe", "delegated"],
+        },
+        "client-options": {
+            "type": "string",
+            "help": "DHCP6 client options.",
+        },
+        "nd-mode": {
+            "type": "option",
+            "help": "Neighbor discovery mode.",
+            "default": "basic",
+            "options": ["basic", "SEND-compatible"],
+        },
+        "nd-cert": {
+            "type": "string",
+            "help": "Neighbor discovery certificate.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+        "nd-security-level": {
+            "type": "integer",
+            "help": "Neighbor discovery security level (0 - 7; 0 = least secure, default = 0).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 7,
+        },
+        "nd-timestamp-delta": {
+            "type": "integer",
+            "help": "Neighbor discovery timestamp delta value (1 - 3600 sec; default = 300).",
+            "default": 300,
+            "min_value": 1,
+            "max_value": 3600,
+        },
+        "nd-timestamp-fuzz": {
+            "type": "integer",
+            "help": "Neighbor discovery timestamp fuzz factor (1 - 60 sec; default = 1).",
+            "default": 1,
+            "min_value": 1,
+            "max_value": 60,
+        },
+        "nd-cga-modifier": {
+            "type": "user",
+            "help": "Neighbor discovery CGA modifier.",
+            "default": "",
+        },
+        "ip6-dns-server-override": {
+            "type": "option",
+            "help": "Enable/disable using the DNS server acquired by DHCP.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "ip6-address": {
+            "type": "ipv6-prefix",
+            "help": "Primary IPv6 address prefix. Syntax: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx.",
+            "default": "::/0",
+        },
+        "ip6-extra-addr": {
+            "type": "string",
+            "help": "Extra IPv6 address prefixes of interface.",
+        },
+        "ip6-allowaccess": {
+            "type": "option",
+            "help": "Allow management access to the interface.",
+            "default": "",
+            "options": ["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "fabric", "scim"],
+        },
+        "ip6-send-adv": {
+            "type": "option",
+            "help": "Enable/disable sending advertisements about the interface.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "icmp6-send-redirect": {
+            "type": "option",
+            "help": "Enable/disable sending of ICMPv6 redirects.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "ip6-manage-flag": {
+            "type": "option",
+            "help": "Enable/disable the managed flag.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "ip6-other-flag": {
+            "type": "option",
+            "help": "Enable/disable the other IPv6 flag.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "ip6-max-interval": {
+            "type": "integer",
+            "help": "IPv6 maximum interval (4 to 1800 sec).",
+            "default": 600,
+            "min_value": 4,
+            "max_value": 1800,
+        },
+        "ip6-min-interval": {
+            "type": "integer",
+            "help": "IPv6 minimum interval (3 to 1350 sec).",
+            "default": 198,
+            "min_value": 3,
+            "max_value": 1350,
+        },
+        "ip6-link-mtu": {
+            "type": "integer",
+            "help": "IPv6 link MTU.",
+            "default": 0,
+            "min_value": 1280,
+            "max_value": 16000,
+        },
+        "ra-send-mtu": {
+            "type": "option",
+            "help": "Enable/disable sending link MTU in RA packet.",
+            "default": "enable",
+            "options": ["enable", "disable"],
+        },
+        "ip6-reachable-time": {
+            "type": "integer",
+            "help": "IPv6 reachable time (milliseconds; 0 means unspecified).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 3600000,
+        },
+        "ip6-retrans-time": {
+            "type": "integer",
+            "help": "IPv6 retransmit time (milliseconds; 0 means unspecified).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "ip6-default-life": {
+            "type": "integer",
+            "help": "Default life (sec).",
+            "default": 1800,
+            "min_value": 0,
+            "max_value": 9000,
+        },
+        "ip6-hop-limit": {
+            "type": "integer",
+            "help": "Hop limit (0 means unspecified).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 255,
+        },
+        "ip6-adv-rio": {
+            "type": "option",
+            "help": "Enable/disable sending advertisements with route information option.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "ip6-route-pref": {
+            "type": "option",
+            "help": "Set route preference to the interface (default = medium).",
+            "default": "medium",
+            "options": ["medium", "high", "low"],
+        },
+        "ip6-route-list": {
+            "type": "string",
+            "help": "Advertised route list.",
+        },
+        "autoconf": {
+            "type": "option",
+            "help": "Enable/disable address auto config.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "unique-autoconf-addr": {
+            "type": "option",
+            "help": "Enable/disable unique auto config address.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "interface-identifier": {
+            "type": "ipv6-address",
+            "help": "IPv6 interface identifier.",
+            "default": "::",
+        },
+        "ip6-prefix-mode": {
+            "type": "option",
+            "help": "Assigning a prefix from DHCP or RA.",
+            "default": "dhcp6",
+            "options": ["dhcp6", "ra"],
+        },
+        "ip6-delegated-prefix-iaid": {
+            "type": "integer",
+            "help": "IAID of obtained delegated-prefix from the upstream interface.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "ip6-upstream-interface": {
+            "type": "string",
+            "help": "Interface name providing delegated information.",
+            "required": True,
+            "default": "",
+            "max_length": 15,
+        },
+        "ip6-subnet": {
+            "type": "ipv6-prefix",
+            "help": "Subnet to routing prefix. Syntax: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx.",
+            "default": "::/0",
+        },
+        "ip6-prefix-list": {
+            "type": "string",
+            "help": "Advertised prefix list.",
+        },
+        "ip6-rdnss-list": {
+            "type": "string",
+            "help": "Advertised IPv6 RDNSS list.",
+        },
+        "ip6-dnssl-list": {
+            "type": "string",
+            "help": "Advertised IPv6 DNSS list.",
+        },
+        "ip6-delegated-prefix-list": {
+            "type": "string",
+            "help": "Advertised IPv6 delegated prefix list.",
+        },
+        "dhcp6-relay-service": {
+            "type": "option",
+            "help": "Enable/disable DHCPv6 relay.",
+            "default": "disable",
+            "options": ["disable", "enable"],
+        },
+        "dhcp6-relay-type": {
+            "type": "option",
+            "help": "DHCPv6 relay type.",
+            "default": "regular",
+            "options": ["regular"],
+        },
+        "dhcp6-relay-source-interface": {
+            "type": "option",
+            "help": "Enable/disable use of address on this interface as the source address of the relay message.",
+            "default": "disable",
+            "options": ["disable", "enable"],
+        },
+        "dhcp6-relay-ip": {
+            "type": "user",
+            "help": "DHCPv6 relay IP address.",
+            "default": "",
+        },
+        "dhcp6-relay-source-ip": {
+            "type": "ipv6-address",
+            "help": "IPv6 address used by the DHCP6 relay as its source IP.",
+            "default": "::",
+        },
+        "dhcp6-relay-interface-id": {
+            "type": "string",
+            "help": "DHCP6 relay interface ID.",
+            "default": "",
+            "max_length": 64,
+        },
+        "dhcp6-client-options": {
+            "type": "option",
+            "help": "DHCPv6 client options.",
+            "default": "",
+            "options": ["rapid", "iapd", "iana"],
+        },
+        "dhcp6-prefix-delegation": {
+            "type": "option",
+            "help": "Enable/disable DHCPv6 prefix delegation.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "dhcp6-information-request": {
+            "type": "option",
+            "help": "Enable/disable DHCPv6 information request.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "dhcp6-iapd-list": {
+            "type": "string",
+            "help": "DHCPv6 IA-PD list.",
+        },
+        "cli-conn6-status": {
+            "type": "integer",
+            "help": "CLI IPv6 connection status.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "vrrp-virtual-mac6": {
+            "type": "option",
+            "help": "Enable/disable virtual MAC for VRRP.",
+            "default": "disable",
+            "options": ["enable", "disable"],
+        },
+        "vrip6_link_local": {
+            "type": "ipv6-address",
+            "help": "Link-local IPv6 address of virtual router.",
+            "default": "::",
+        },
+        "vrrp6": {
+            "type": "string",
+            "help": "IPv6 VRRP configuration.",
+        },
+    },
+    "physical": {
+        "<interface>": {
+            "type": "value",
+            "help": "Interface name.",
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_FORTILINK = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP = ["outbound", "fixed"]
-VALID_BODY_MODE = ["static", "dhcp", "pppoe"]
-VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD = ["auto", "sdwan", "specify"]
-VALID_BODY_DHCP_BROADCAST_FLAG = ["disable", "enable"]
-VALID_BODY_DHCP_RELAY_SERVICE = ["disable", "enable"]
-VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER = ["disable", "enable"]
-VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION = ["disable", "enable"]
-VALID_BODY_DHCP_RELAY_TYPE = ["regular", "ipsec"]
-VALID_BODY_DHCP_SMART_RELAY = ["disable", "enable"]
-VALID_BODY_DHCP_RELAY_AGENT_OPTION = ["enable", "disable"]
-VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION = ["enable", "disable"]
+VALID_BODY_FORTILINK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP = [
+    "outbound",
+    "fixed",
+]
+VALID_BODY_MODE = [
+    "static",
+    "dhcp",
+    "pppoe",
+]
+VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD = [
+    "auto",
+    "sdwan",
+    "specify",
+]
+VALID_BODY_DHCP_BROADCAST_FLAG = [
+    "disable",
+    "enable",
+]
+VALID_BODY_DHCP_RELAY_SERVICE = [
+    "disable",
+    "enable",
+]
+VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER = [
+    "disable",
+    "enable",
+]
+VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION = [
+    "disable",
+    "enable",
+]
+VALID_BODY_DHCP_RELAY_TYPE = [
+    "regular",
+    "ipsec",
+]
+VALID_BODY_DHCP_SMART_RELAY = [
+    "disable",
+    "enable",
+]
+VALID_BODY_DHCP_RELAY_AGENT_OPTION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION = [
+    "enable",
+    "disable",
+]
 VALID_BODY_ALLOWACCESS = [
     "ping",
     "https",
@@ -203,12 +1422,32 @@ VALID_BODY_ALLOWACCESS = [
     "speed-test",
     "scim",
 ]
-VALID_BODY_GWDETECT = ["enable", "disable"]
-VALID_BODY_DETECTPROTOCOL = ["ping", "tcp-echo", "udp-echo"]
-VALID_BODY_FAIL_DETECT = ["enable", "disable"]
-VALID_BODY_FAIL_DETECT_OPTION = ["detectserver", "link-down"]
-VALID_BODY_FAIL_ALERT_METHOD = ["link-failed-signal", "link-down"]
-VALID_BODY_FAIL_ACTION_ON_EXTENDER = ["soft-restart", "hard-restart", "reboot"]
+VALID_BODY_GWDETECT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DETECTPROTOCOL = [
+    "ping",
+    "tcp-echo",
+    "udp-echo",
+]
+VALID_BODY_FAIL_DETECT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_FAIL_DETECT_OPTION = [
+    "detectserver",
+    "link-down",
+]
+VALID_BODY_FAIL_ALERT_METHOD = [
+    "link-failed-signal",
+    "link-down",
+]
+VALID_BODY_FAIL_ACTION_ON_EXTENDER = [
+    "soft-restart",
+    "hard-restart",
+    "reboot",
+]
 VALID_BODY_PPPOE_EGRESS_COS = [
     "cos0",
     "cos1",
@@ -219,44 +1458,117 @@ VALID_BODY_PPPOE_EGRESS_COS = [
     "cos6",
     "cos7",
 ]
-VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE = ["enable", "disable"]
-VALID_BODY_MULTILINK = ["enable", "disable"]
-VALID_BODY_DEFAULTGW = ["enable", "disable"]
-VALID_BODY_DNS_SERVER_OVERRIDE = ["enable", "disable"]
-VALID_BODY_DNS_SERVER_PROTOCOL = ["cleartext", "dot", "doh"]
-VALID_BODY_AUTH_TYPE = ["auto", "pap", "chap", "mschapv1", "mschapv2"]
-VALID_BODY_PPTP_CLIENT = ["enable", "disable"]
-VALID_BODY_PPTP_AUTH_TYPE = ["auto", "pap", "chap", "mschapv1", "mschapv2"]
-VALID_BODY_ARPFORWARD = ["enable", "disable"]
-VALID_BODY_NDISCFORWARD = ["enable", "disable"]
-VALID_BODY_BROADCAST_FORWARD = ["enable", "disable"]
-VALID_BODY_BFD = ["global", "enable", "disable"]
-VALID_BODY_L2FORWARD = ["enable", "disable"]
-VALID_BODY_ICMP_SEND_REDIRECT = ["enable", "disable"]
-VALID_BODY_ICMP_ACCEPT_REDIRECT = ["enable", "disable"]
-VALID_BODY_VLANFORWARD = ["enable", "disable"]
-VALID_BODY_STPFORWARD = ["enable", "disable"]
+VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DEFAULTGW = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DNS_SERVER_OVERRIDE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DNS_SERVER_PROTOCOL = [
+    "cleartext",
+    "dot",
+    "doh",
+]
+VALID_BODY_AUTH_TYPE = [
+    "auto",
+    "pap",
+    "chap",
+    "mschapv1",
+    "mschapv2",
+]
+VALID_BODY_PPTP_CLIENT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PPTP_AUTH_TYPE = [
+    "auto",
+    "pap",
+    "chap",
+    "mschapv1",
+    "mschapv2",
+]
+VALID_BODY_ARPFORWARD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NDISCFORWARD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BROADCAST_FORWARD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BFD = [
+    "global",
+    "enable",
+    "disable",
+]
+VALID_BODY_L2FORWARD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ICMP_SEND_REDIRECT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ICMP_ACCEPT_REDIRECT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_VLANFORWARD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_STPFORWARD = [
+    "enable",
+    "disable",
+]
 VALID_BODY_STPFORWARD_MODE = [
     "rpl-all-ext-id",
     "rpl-bridge-ext-id",
     "rpl-nothing",
 ]
-VALID_BODY_IPS_SNIFFER_MODE = ["enable", "disable"]
-VALID_BODY_IDENT_ACCEPT = ["enable", "disable"]
-VALID_BODY_IPMAC = ["enable", "disable"]
-VALID_BODY_SUBST = ["enable", "disable"]
+VALID_BODY_IPS_SNIFFER_MODE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_IDENT_ACCEPT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_IPMAC = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SUBST = [
+    "enable",
+    "disable",
+]
 VALID_BODY_SPEED = [
     "auto",
     "10full",
-    "10hal",
+    "10half",
     "100full",
-    "100hal",
+    "100half",
     "100auto",
     "1000full",
     "1000auto",
 ]
-VALID_BODY_STATUS = ["up", "down"]
-VALID_BODY_NETBIOS_FORWARD = ["disable", "enable"]
+VALID_BODY_STATUS = [
+    "up",
+    "down",
+]
+VALID_BODY_NETBIOS_FORWARD = [
+    "disable",
+    "enable",
+]
 VALID_BODY_TYPE = [
     "physical",
     "vlan",
@@ -266,7 +1578,6 @@ VALID_BODY_TYPE = [
     "vdom-link",
     "loopback",
     "switch",
-    "hard-switch",
     "vap-switch",
     "wl-mesh",
     "fext-wan",
@@ -276,56 +1587,172 @@ VALID_BODY_TYPE = [
     "emac-vlan",
     "lan-extension",
 ]
-VALID_BODY_DEDICATED_TO = ["none", "management"]
-VALID_BODY_WCCP = ["enable", "disable"]
-VALID_BODY_NETFLOW_SAMPLER = ["disable", "tx", "rx", "both"]
-VALID_BODY_SFLOW_SAMPLER = ["enable", "disable"]
-VALID_BODY_DROP_FRAGMENT = ["enable", "disable"]
-VALID_BODY_SRC_CHECK = ["enable", "disable"]
-VALID_BODY_SAMPLE_DIRECTION = ["tx", "rx", "both"]
-VALID_BODY_EXPLICIT_WEB_PROXY = ["enable", "disable"]
-VALID_BODY_EXPLICIT_FTP_PROXY = ["enable", "disable"]
-VALID_BODY_PROXY_CAPTIVE_PORTAL = ["enable", "disable"]
-VALID_BODY_EXTERNAL = ["enable", "disable"]
-VALID_BODY_MTU_OVERRIDE = ["enable", "disable"]
-VALID_BODY_VLAN_PROTOCOL = ["8021q", "8021ad"]
-VALID_BODY_TRUNK = ["enable", "disable"]
-VALID_BODY_LACP_MODE = ["static", "passive", "active"]
-VALID_BODY_LACP_HA_SECONDARY = ["enable", "disable"]
-VALID_BODY_SYSTEM_ID_TYPE = ["auto", "user"]
-VALID_BODY_LACP_SPEED = ["slow", "fast"]
-VALID_BODY_MIN_LINKS_DOWN = ["operational", "administrative"]
-VALID_BODY_ALGORITHM = ["L2", "L3", "L4", "NPU-GRE", "Source-MAC"]
-VALID_BODY_AGGREGATE_TYPE = ["physical", "vxlan"]
-VALID_BODY_PRIORITY_OVERRIDE = ["enable", "disable"]
-VALID_BODY_L2TP_CLIENT = ["enable", "disable"]
-VALID_BODY_SECURITY_MODE = ["none", "captive-portal", "802.1X"]
-VALID_BODY_SECURITY_MAC_AUTH_BYPASS = ["mac-auth-only", "enable", "disable"]
-VALID_BODY_SECURITY_IP_AUTH_BYPASS = ["enable", "disable"]
-VALID_BODY_SECURITY_8021X_MODE = [
-    "default",
-    "dynamic-vlan",
-    "fallback",
-    "slave",
+VALID_BODY_DEDICATED_TO = [
+    "none",
+    "management",
 ]
-VALID_BODY_SECURITY_8021X_MEMBER_MODE = ["switch", "disable"]
-VALID_BODY_STP = ["disable", "enable"]
-VALID_BODY_STP_HA_SECONDARY = ["disable", "enable", "priority-adjust"]
-VALID_BODY_STP_EDGE = ["disable", "enable"]
-VALID_BODY_DEVICE_IDENTIFICATION = ["enable", "disable"]
-VALID_BODY_EXCLUDE_SIGNATURES = ["iot", "ot"]
-VALID_BODY_DEVICE_USER_IDENTIFICATION = ["enable", "disable"]
-VALID_BODY_LLDP_RECEPTION = ["enable", "disable", "vdom"]
-VALID_BODY_LLDP_TRANSMISSION = ["enable", "disable", "vdom"]
-VALID_BODY_MONITOR_BANDWIDTH = ["enable", "disable"]
-VALID_BODY_VRRP_VIRTUAL_MAC = ["enable", "disable"]
-VALID_BODY_ROLE = ["lan", "wan", "dmz", "undefined"]
-VALID_BODY_SECONDARY_IP = ["enable", "disable"]
-VALID_BODY_PRESERVE_SESSION_ROUTE = ["enable", "disable"]
-VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE = ["enable", "disable"]
-VALID_BODY_AP_DISCOVER = ["enable", "disable"]
-VALID_BODY_FORTILINK_NEIGHBOR_DETECT = ["lldp", "fortilink"]
-VALID_BODY_IP_MANAGED_BY_FORTIIPAM = ["inherit-global", "enable", "disable"]
+VALID_BODY_WCCP = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NETFLOW_SAMPLER = [
+    "disable",
+    "tx",
+    "rx",
+    "both",
+]
+VALID_BODY_SFLOW_SAMPLER = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DROP_FRAGMENT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SRC_CHECK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SAMPLE_DIRECTION = [
+    "tx",
+    "rx",
+    "both",
+]
+VALID_BODY_EXPLICIT_WEB_PROXY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EXPLICIT_FTP_PROXY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PROXY_CAPTIVE_PORTAL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EXTERNAL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_MTU_OVERRIDE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_VLAN_PROTOCOL = [
+    "8021q",
+    "8021ad",
+]
+VALID_BODY_LACP_MODE = [
+    "static",
+    "passive",
+    "active",
+]
+VALID_BODY_LACP_HA_SECONDARY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SYSTEM_ID_TYPE = [
+    "auto",
+    "user",
+]
+VALID_BODY_LACP_SPEED = [
+    "slow",
+    "fast",
+]
+VALID_BODY_MIN_LINKS_DOWN = [
+    "operational",
+    "administrative",
+]
+VALID_BODY_ALGORITHM = [
+    "L2",
+    "L3",
+    "L4",
+    "NPU-GRE",
+    "Source-MAC",
+]
+VALID_BODY_AGGREGATE_TYPE = [
+    "physical",
+    "vxlan",
+]
+VALID_BODY_PRIORITY_OVERRIDE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SECURITY_MODE = [
+    "none",
+    "captive-portal",
+    "802.1X",
+]
+VALID_BODY_SECURITY_MAC_AUTH_BYPASS = [
+    "mac-auth-only",
+    "enable",
+    "disable",
+]
+VALID_BODY_SECURITY_IP_AUTH_BYPASS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DEVICE_IDENTIFICATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EXCLUDE_SIGNATURES = [
+    "iot",
+    "ot",
+]
+VALID_BODY_DEVICE_USER_IDENTIFICATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LLDP_RECEPTION = [
+    "enable",
+    "disable",
+    "vdom",
+]
+VALID_BODY_LLDP_TRANSMISSION = [
+    "enable",
+    "disable",
+    "vdom",
+]
+VALID_BODY_MONITOR_BANDWIDTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_VRRP_VIRTUAL_MAC = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ROLE = [
+    "lan",
+    "wan",
+    "dmz",
+    "undefined",
+]
+VALID_BODY_SECONDARY_IP = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PRESERVE_SESSION_ROUTE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AP_DISCOVER = [
+    "enable",
+    "disable",
+]
+VALID_BODY_FORTILINK_NEIGHBOR_DETECT = [
+    "lldp",
+    "fortilink",
+]
+VALID_BODY_IP_MANAGED_BY_FORTIIPAM = [
+    "inherit-global",
+    "enable",
+    "disable",
+]
 VALID_BODY_MANAGED_SUBNETWORK_SIZE = [
     "4",
     "8",
@@ -351,17 +1778,51 @@ VALID_BODY_MANAGED_SUBNETWORK_SIZE = [
     "8388608",
     "16777216",
 ]
-VALID_BODY_FORTILINK_SPLIT_INTERFACE = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE = ["disable", "enable"]
-VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT = ["disable", "enable"]
-VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82 = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION = ["enable", "disable", "monitor"]
+VALID_BODY_FORTILINK_SPLIT_INTERFACE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE = [
+    "disable",
+    "enable",
+]
+VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT = [
+    "disable",
+    "enable",
+]
+VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82 = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION = [
+    "enable",
+    "disable",
+    "monitor",
+]
 VALID_BODY_SWITCH_CONTROLLER_FEATURE = [
     "none",
     "default-vlan",
@@ -372,11 +1833,26 @@ VALID_BODY_SWITCH_CONTROLLER_FEATURE = [
     "nac",
     "nac-segment",
 ]
-VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_OFFLOAD = ["enable", "disable"]
-VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW = ["enable", "disable"]
-VALID_BODY_EAP_SUPPLICANT = ["enable", "disable"]
-VALID_BODY_EAP_METHOD = ["tls", "peap"]
+VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_OFFLOAD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAP_SUPPLICANT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAP_METHOD = [
+    "tls",
+    "peap",
+]
 VALID_BODY_DEFAULT_PURDUE_LEVEL = [
     "1",
     "1.5",
@@ -395,13 +1871,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_interface_get(
+def validate_system_interface_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for system/interface.
 
     Args:
         attr: Attribute filter (optional)
@@ -411,9 +1887,20 @@ def validate_interface_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_system_interface_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_system_interface_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_system_interface_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -434,7 +1921,7 @@ def validate_interface_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for system_interface.
+    Validate required fields for system/interface.
 
     This validator checks:
     1. Always-required fields are present
@@ -447,2061 +1934,1108 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "dhcp-relay-interface": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_interface_post(
-    payload: dict[str, Any],
+def validate_system_interface_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new system/interface object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - dhcp-relay-interface: Specify outgoing interface to reach server.
-      - interface: Interface name.
-      - name: Name.
-      - system-id: Define a system ID for the aggregate interface.
-      - vdom: Interface is in this virtual domain (VDOM).
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "vdom": True,  # Interface is in this virtual domain (VDOM).
+        ...     "dhcp-relay-interface": True,  # Specify outgoing interface to reach server.
+        ... }
+        >>> is_valid, error = validate_system_interface_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "vdom": True,
+        ...     "fortilink": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_system_interface_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["fortilink"] = "invalid-value"
+        >>> is_valid, error = validate_system_interface_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_system_interface_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "name cannot exceed 15 characters")
-
-    # Validate vdom if present
-    if "vdom" in payload:
-        value = payload.get("vdom")
-        if value and isinstance(value, str) and len(value) > 31:
-            return (False, "vdom cannot exceed 31 characters")
-
-    # Validate vrf if present
-    if "vr" in payload:
-        value = payload.get("vr")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 511:
-                    return (False, "vrf must be between 0 and 511")
-            except (ValueError, TypeError):
-                return (False, f"vrf must be numeric, got: {value}")
-
-    # Validate cli-conn-status if present
-    if "cli-conn-status" in payload:
-        value = payload.get("cli-conn-status")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "cli-conn-status must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"cli-conn-status must be numeric, got: {value}",
-                )
-
-    # Validate fortilink if present
+    # Step 2: Validate enum values
     if "fortilink" in payload:
-        value = payload.get("fortilink")
-        if value and value not in VALID_BODY_FORTILINK:
-            return (
-                False,
-                f"Invalid fortilink '{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK)}",
-            )
-
-    # Validate switch-controller-source-ip if present
+        value = payload["fortilink"]
+        if value not in VALID_BODY_FORTILINK:
+            desc = FIELD_DESCRIPTIONS.get("fortilink", "")
+            error_msg = f"Invalid value for 'fortilink': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FORTILINK)}"
+            error_msg += f"\n  → Example: fortilink='{{ VALID_BODY_FORTILINK[0] }}'"
+            return (False, error_msg)
     if "switch-controller-source-ip" in payload:
-        value = payload.get("switch-controller-source-ip")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP:
-            return (
-                False,
-                f"Invalid switch-controller-source-ip '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP)}",
-            )
-
-    # Validate mode if present
+        value = payload["switch-controller-source-ip"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-source-ip", "")
+            error_msg = f"Invalid value for 'switch-controller-source-ip': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP)}"
+            error_msg += f"\n  → Example: switch-controller-source-ip='{{ VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP[0] }}'"
+            return (False, error_msg)
     if "mode" in payload:
-        value = payload.get("mode")
-        if value and value not in VALID_BODY_MODE:
-            return (
-                False,
-                f"Invalid mode '{value}'. Must be one of: {', '.join(VALID_BODY_MODE)}",
-            )
-
-    # Validate distance if present
-    if "distance" in payload:
-        value = payload.get("distance")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (False, "distance must be between 1 and 255")
-            except (ValueError, TypeError):
-                return (False, f"distance must be numeric, got: {value}")
-
-    # Validate priority if present
-    if "priority" in payload:
-        value = payload.get("priority")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "priority must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"priority must be numeric, got: {value}")
-
-    # Validate dhcp-relay-interface-select-method if present
+        value = payload["mode"]
+        if value not in VALID_BODY_MODE:
+            desc = FIELD_DESCRIPTIONS.get("mode", "")
+            error_msg = f"Invalid value for 'mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MODE)}"
+            error_msg += f"\n  → Example: mode='{{ VALID_BODY_MODE[0] }}'"
+            return (False, error_msg)
     if "dhcp-relay-interface-select-method" in payload:
-        value = payload.get("dhcp-relay-interface-select-method")
-        if (
-            value
-            and value not in VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD
-        ):
-            return (
-                False,
-                f"Invalid dhcp-relay-interface-select-method '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD)}",
-            )
-
-    # Validate dhcp-relay-interface if present
-    if "dhcp-relay-interface" in payload:
-        value = payload.get("dhcp-relay-interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "dhcp-relay-interface cannot exceed 15 characters")
-
-    # Validate dhcp-relay-vrf-select if present
-    if "dhcp-relay-vrf-select" in payload:
-        value = payload.get("dhcp-relay-vrf-select")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 511:
-                    return (
-                        False,
-                        "dhcp-relay-vrf-select must be between 0 and 511",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dhcp-relay-vrf-select must be numeric, got: {value}",
-                )
-
-    # Validate dhcp-broadcast-flag if present
+        value = payload["dhcp-relay-interface-select-method"]
+        if value not in VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-relay-interface-select-method", "")
+            error_msg = f"Invalid value for 'dhcp-relay-interface-select-method': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD)}"
+            error_msg += f"\n  → Example: dhcp-relay-interface-select-method='{{ VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD[0] }}'"
+            return (False, error_msg)
     if "dhcp-broadcast-flag" in payload:
-        value = payload.get("dhcp-broadcast-flag")
-        if value and value not in VALID_BODY_DHCP_BROADCAST_FLAG:
-            return (
-                False,
-                f"Invalid dhcp-broadcast-flag '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_BROADCAST_FLAG)}",
-            )
-
-    # Validate dhcp-relay-service if present
+        value = payload["dhcp-broadcast-flag"]
+        if value not in VALID_BODY_DHCP_BROADCAST_FLAG:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-broadcast-flag", "")
+            error_msg = f"Invalid value for 'dhcp-broadcast-flag': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_BROADCAST_FLAG)}"
+            error_msg += f"\n  → Example: dhcp-broadcast-flag='{{ VALID_BODY_DHCP_BROADCAST_FLAG[0] }}'"
+            return (False, error_msg)
     if "dhcp-relay-service" in payload:
-        value = payload.get("dhcp-relay-service")
-        if value and value not in VALID_BODY_DHCP_RELAY_SERVICE:
-            return (
-                False,
-                f"Invalid dhcp-relay-service '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_SERVICE)}",
-            )
-
-    # Validate dhcp-relay-circuit-id if present
-    if "dhcp-relay-circuit-id" in payload:
-        value = payload.get("dhcp-relay-circuit-id")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (
-                False,
-                "dhcp-relay-circuit-id cannot exceed 64 characters",
-            )
-
-    # Validate dhcp-relay-request-all-server if present
+        value = payload["dhcp-relay-service"]
+        if value not in VALID_BODY_DHCP_RELAY_SERVICE:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-relay-service", "")
+            error_msg = f"Invalid value for 'dhcp-relay-service': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_RELAY_SERVICE)}"
+            error_msg += f"\n  → Example: dhcp-relay-service='{{ VALID_BODY_DHCP_RELAY_SERVICE[0] }}'"
+            return (False, error_msg)
     if "dhcp-relay-request-all-server" in payload:
-        value = payload.get("dhcp-relay-request-all-server")
-        if value and value not in VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER:
-            return (
-                False,
-                f"Invalid dhcp-relay-request-all-server '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER)}",
-            )
-
-    # Validate dhcp-relay-allow-no-end-option if present
+        value = payload["dhcp-relay-request-all-server"]
+        if value not in VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-relay-request-all-server", "")
+            error_msg = f"Invalid value for 'dhcp-relay-request-all-server': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER)}"
+            error_msg += f"\n  → Example: dhcp-relay-request-all-server='{{ VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER[0] }}'"
+            return (False, error_msg)
     if "dhcp-relay-allow-no-end-option" in payload:
-        value = payload.get("dhcp-relay-allow-no-end-option")
-        if value and value not in VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION:
-            return (
-                False,
-                f"Invalid dhcp-relay-allow-no-end-option '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION)}",
-            )
-
-    # Validate dhcp-relay-type if present
+        value = payload["dhcp-relay-allow-no-end-option"]
+        if value not in VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-relay-allow-no-end-option", "")
+            error_msg = f"Invalid value for 'dhcp-relay-allow-no-end-option': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION)}"
+            error_msg += f"\n  → Example: dhcp-relay-allow-no-end-option='{{ VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION[0] }}'"
+            return (False, error_msg)
     if "dhcp-relay-type" in payload:
-        value = payload.get("dhcp-relay-type")
-        if value and value not in VALID_BODY_DHCP_RELAY_TYPE:
-            return (
-                False,
-                f"Invalid dhcp-relay-type '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_TYPE)}",
-            )
-
-    # Validate dhcp-smart-relay if present
+        value = payload["dhcp-relay-type"]
+        if value not in VALID_BODY_DHCP_RELAY_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-relay-type", "")
+            error_msg = f"Invalid value for 'dhcp-relay-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_RELAY_TYPE)}"
+            error_msg += f"\n  → Example: dhcp-relay-type='{{ VALID_BODY_DHCP_RELAY_TYPE[0] }}'"
+            return (False, error_msg)
     if "dhcp-smart-relay" in payload:
-        value = payload.get("dhcp-smart-relay")
-        if value and value not in VALID_BODY_DHCP_SMART_RELAY:
-            return (
-                False,
-                f"Invalid dhcp-smart-relay '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_SMART_RELAY)}",
-            )
-
-    # Validate dhcp-relay-agent-option if present
+        value = payload["dhcp-smart-relay"]
+        if value not in VALID_BODY_DHCP_SMART_RELAY:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-smart-relay", "")
+            error_msg = f"Invalid value for 'dhcp-smart-relay': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_SMART_RELAY)}"
+            error_msg += f"\n  → Example: dhcp-smart-relay='{{ VALID_BODY_DHCP_SMART_RELAY[0] }}'"
+            return (False, error_msg)
     if "dhcp-relay-agent-option" in payload:
-        value = payload.get("dhcp-relay-agent-option")
-        if value and value not in VALID_BODY_DHCP_RELAY_AGENT_OPTION:
-            return (
-                False,
-                f"Invalid dhcp-relay-agent-option '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_AGENT_OPTION)}",
-            )
-
-    # Validate dhcp-classless-route-addition if present
+        value = payload["dhcp-relay-agent-option"]
+        if value not in VALID_BODY_DHCP_RELAY_AGENT_OPTION:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-relay-agent-option", "")
+            error_msg = f"Invalid value for 'dhcp-relay-agent-option': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_RELAY_AGENT_OPTION)}"
+            error_msg += f"\n  → Example: dhcp-relay-agent-option='{{ VALID_BODY_DHCP_RELAY_AGENT_OPTION[0] }}'"
+            return (False, error_msg)
     if "dhcp-classless-route-addition" in payload:
-        value = payload.get("dhcp-classless-route-addition")
-        if value and value not in VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION:
-            return (
-                False,
-                f"Invalid dhcp-classless-route-addition '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION)}",
-            )
-
-    # Validate allowaccess if present
+        value = payload["dhcp-classless-route-addition"]
+        if value not in VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-classless-route-addition", "")
+            error_msg = f"Invalid value for 'dhcp-classless-route-addition': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION)}"
+            error_msg += f"\n  → Example: dhcp-classless-route-addition='{{ VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION[0] }}'"
+            return (False, error_msg)
     if "allowaccess" in payload:
-        value = payload.get("allowaccess")
-        if value and value not in VALID_BODY_ALLOWACCESS:
-            return (
-                False,
-                f"Invalid allowaccess '{value}'. Must be one of: {', '.join(VALID_BODY_ALLOWACCESS)}",
-            )
-
-    # Validate gwdetect if present
+        value = payload["allowaccess"]
+        if value not in VALID_BODY_ALLOWACCESS:
+            desc = FIELD_DESCRIPTIONS.get("allowaccess", "")
+            error_msg = f"Invalid value for 'allowaccess': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ALLOWACCESS)}"
+            error_msg += f"\n  → Example: allowaccess='{{ VALID_BODY_ALLOWACCESS[0] }}'"
+            return (False, error_msg)
     if "gwdetect" in payload:
-        value = payload.get("gwdetect")
-        if value and value not in VALID_BODY_GWDETECT:
-            return (
-                False,
-                f"Invalid gwdetect '{value}'. Must be one of: {', '.join(VALID_BODY_GWDETECT)}",
-            )
-
-    # Validate ping-serv-status if present
-    if "ping-serv-status" in payload:
-        value = payload.get("ping-serv-status")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (
-                        False,
-                        "ping-serv-status must be between 0 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ping-serv-status must be numeric, got: {value}",
-                )
-
-    # Validate detectprotocol if present
+        value = payload["gwdetect"]
+        if value not in VALID_BODY_GWDETECT:
+            desc = FIELD_DESCRIPTIONS.get("gwdetect", "")
+            error_msg = f"Invalid value for 'gwdetect': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_GWDETECT)}"
+            error_msg += f"\n  → Example: gwdetect='{{ VALID_BODY_GWDETECT[0] }}'"
+            return (False, error_msg)
     if "detectprotocol" in payload:
-        value = payload.get("detectprotocol")
-        if value and value not in VALID_BODY_DETECTPROTOCOL:
-            return (
-                False,
-                f"Invalid detectprotocol '{value}'. Must be one of: {', '.join(VALID_BODY_DETECTPROTOCOL)}",
-            )
-
-    # Validate ha-priority if present
-    if "ha-priority" in payload:
-        value = payload.get("ha-priority")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 50:
-                    return (False, "ha-priority must be between 1 and 50")
-            except (ValueError, TypeError):
-                return (False, f"ha-priority must be numeric, got: {value}")
-
-    # Validate fail-detect if present
+        value = payload["detectprotocol"]
+        if value not in VALID_BODY_DETECTPROTOCOL:
+            desc = FIELD_DESCRIPTIONS.get("detectprotocol", "")
+            error_msg = f"Invalid value for 'detectprotocol': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DETECTPROTOCOL)}"
+            error_msg += f"\n  → Example: detectprotocol='{{ VALID_BODY_DETECTPROTOCOL[0] }}'"
+            return (False, error_msg)
     if "fail-detect" in payload:
-        value = payload.get("fail-detect")
-        if value and value not in VALID_BODY_FAIL_DETECT:
-            return (
-                False,
-                f"Invalid fail-detect '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_DETECT)}",
-            )
-
-    # Validate fail-detect-option if present
+        value = payload["fail-detect"]
+        if value not in VALID_BODY_FAIL_DETECT:
+            desc = FIELD_DESCRIPTIONS.get("fail-detect", "")
+            error_msg = f"Invalid value for 'fail-detect': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FAIL_DETECT)}"
+            error_msg += f"\n  → Example: fail-detect='{{ VALID_BODY_FAIL_DETECT[0] }}'"
+            return (False, error_msg)
     if "fail-detect-option" in payload:
-        value = payload.get("fail-detect-option")
-        if value and value not in VALID_BODY_FAIL_DETECT_OPTION:
-            return (
-                False,
-                f"Invalid fail-detect-option '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_DETECT_OPTION)}",
-            )
-
-    # Validate fail-alert-method if present
+        value = payload["fail-detect-option"]
+        if value not in VALID_BODY_FAIL_DETECT_OPTION:
+            desc = FIELD_DESCRIPTIONS.get("fail-detect-option", "")
+            error_msg = f"Invalid value for 'fail-detect-option': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FAIL_DETECT_OPTION)}"
+            error_msg += f"\n  → Example: fail-detect-option='{{ VALID_BODY_FAIL_DETECT_OPTION[0] }}'"
+            return (False, error_msg)
     if "fail-alert-method" in payload:
-        value = payload.get("fail-alert-method")
-        if value and value not in VALID_BODY_FAIL_ALERT_METHOD:
-            return (
-                False,
-                f"Invalid fail-alert-method '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_ALERT_METHOD)}",
-            )
-
-    # Validate fail-action-on-extender if present
+        value = payload["fail-alert-method"]
+        if value not in VALID_BODY_FAIL_ALERT_METHOD:
+            desc = FIELD_DESCRIPTIONS.get("fail-alert-method", "")
+            error_msg = f"Invalid value for 'fail-alert-method': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FAIL_ALERT_METHOD)}"
+            error_msg += f"\n  → Example: fail-alert-method='{{ VALID_BODY_FAIL_ALERT_METHOD[0] }}'"
+            return (False, error_msg)
     if "fail-action-on-extender" in payload:
-        value = payload.get("fail-action-on-extender")
-        if value and value not in VALID_BODY_FAIL_ACTION_ON_EXTENDER:
-            return (
-                False,
-                f"Invalid fail-action-on-extender '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_ACTION_ON_EXTENDER)}",
-            )
-
-    # Validate dhcp-client-identifier if present
-    if "dhcp-client-identifier" in payload:
-        value = payload.get("dhcp-client-identifier")
-        if value and isinstance(value, str) and len(value) > 48:
-            return (
-                False,
-                "dhcp-client-identifier cannot exceed 48 characters",
-            )
-
-    # Validate dhcp-renew-time if present
-    if "dhcp-renew-time" in payload:
-        value = payload.get("dhcp-renew-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 604800:
-                    return (
-                        False,
-                        "dhcp-renew-time must be between 300 and 604800",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dhcp-renew-time must be numeric, got: {value}",
-                )
-
-    # Validate username if present
-    if "username" in payload:
-        value = payload.get("username")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (False, "username cannot exceed 64 characters")
-
-    # Validate pppoe-egress-cos if present
+        value = payload["fail-action-on-extender"]
+        if value not in VALID_BODY_FAIL_ACTION_ON_EXTENDER:
+            desc = FIELD_DESCRIPTIONS.get("fail-action-on-extender", "")
+            error_msg = f"Invalid value for 'fail-action-on-extender': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FAIL_ACTION_ON_EXTENDER)}"
+            error_msg += f"\n  → Example: fail-action-on-extender='{{ VALID_BODY_FAIL_ACTION_ON_EXTENDER[0] }}'"
+            return (False, error_msg)
     if "pppoe-egress-cos" in payload:
-        value = payload.get("pppoe-egress-cos")
-        if value and value not in VALID_BODY_PPPOE_EGRESS_COS:
-            return (
-                False,
-                f"Invalid pppoe-egress-cos '{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_EGRESS_COS)}",
-            )
-
-    # Validate pppoe-unnumbered-negotiate if present
+        value = payload["pppoe-egress-cos"]
+        if value not in VALID_BODY_PPPOE_EGRESS_COS:
+            desc = FIELD_DESCRIPTIONS.get("pppoe-egress-cos", "")
+            error_msg = f"Invalid value for 'pppoe-egress-cos': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PPPOE_EGRESS_COS)}"
+            error_msg += f"\n  → Example: pppoe-egress-cos='{{ VALID_BODY_PPPOE_EGRESS_COS[0] }}'"
+            return (False, error_msg)
     if "pppoe-unnumbered-negotiate" in payload:
-        value = payload.get("pppoe-unnumbered-negotiate")
-        if value and value not in VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE:
-            return (
-                False,
-                f"Invalid pppoe-unnumbered-negotiate '{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}",
-            )
-
-    # Validate idle-timeout if present
-    if "idle-timeout" in payload:
-        value = payload.get("idle-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32767:
-                    return (False, "idle-timeout must be between 0 and 32767")
-            except (ValueError, TypeError):
-                return (False, f"idle-timeout must be numeric, got: {value}")
-
-    # Validate multilink if present
-    if "multilink" in payload:
-        value = payload.get("multilink")
-        if value and value not in VALID_BODY_MULTILINK:
-            return (
-                False,
-                f"Invalid multilink '{value}'. Must be one of: {', '.join(VALID_BODY_MULTILINK)}",
-            )
-
-    # Validate mrru if present
-    if "mrru" in payload:
-        value = payload.get("mrru")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 296 or int_val > 65535:
-                    return (False, "mrru must be between 296 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"mrru must be numeric, got: {value}")
-
-    # Validate detected-peer-mtu if present
-    if "detected-peer-mtu" in payload:
-        value = payload.get("detected-peer-mtu")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "detected-peer-mtu must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"detected-peer-mtu must be numeric, got: {value}",
-                )
-
-    # Validate disc-retry-timeout if present
-    if "disc-retry-timeout" in payload:
-        value = payload.get("disc-retry-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "disc-retry-timeout must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"disc-retry-timeout must be numeric, got: {value}",
-                )
-
-    # Validate padt-retry-timeout if present
-    if "padt-retry-timeout" in payload:
-        value = payload.get("padt-retry-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "padt-retry-timeout must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"padt-retry-timeout must be numeric, got: {value}",
-                )
-
-    # Validate service-name if present
-    if "service-name" in payload:
-        value = payload.get("service-name")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "service-name cannot exceed 63 characters")
-
-    # Validate ac-name if present
-    if "ac-name" in payload:
-        value = payload.get("ac-name")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "ac-name cannot exceed 63 characters")
-
-    # Validate lcp-echo-interval if present
-    if "lcp-echo-interval" in payload:
-        value = payload.get("lcp-echo-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32767:
-                    return (
-                        False,
-                        "lcp-echo-interval must be between 0 and 32767",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"lcp-echo-interval must be numeric, got: {value}",
-                )
-
-    # Validate lcp-max-echo-fails if present
-    if "lcp-max-echo-fails" in payload:
-        value = payload.get("lcp-max-echo-fails")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32767:
-                    return (
-                        False,
-                        "lcp-max-echo-fails must be between 0 and 32767",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"lcp-max-echo-fails must be numeric, got: {value}",
-                )
-
-    # Validate defaultgw if present
+        value = payload["pppoe-unnumbered-negotiate"]
+        if value not in VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE:
+            desc = FIELD_DESCRIPTIONS.get("pppoe-unnumbered-negotiate", "")
+            error_msg = f"Invalid value for 'pppoe-unnumbered-negotiate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}"
+            error_msg += f"\n  → Example: pppoe-unnumbered-negotiate='{{ VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE[0] }}'"
+            return (False, error_msg)
     if "defaultgw" in payload:
-        value = payload.get("defaultgw")
-        if value and value not in VALID_BODY_DEFAULTGW:
-            return (
-                False,
-                f"Invalid defaultgw '{value}'. Must be one of: {', '.join(VALID_BODY_DEFAULTGW)}",
-            )
-
-    # Validate dns-server-override if present
+        value = payload["defaultgw"]
+        if value not in VALID_BODY_DEFAULTGW:
+            desc = FIELD_DESCRIPTIONS.get("defaultgw", "")
+            error_msg = f"Invalid value for 'defaultgw': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DEFAULTGW)}"
+            error_msg += f"\n  → Example: defaultgw='{{ VALID_BODY_DEFAULTGW[0] }}'"
+            return (False, error_msg)
     if "dns-server-override" in payload:
-        value = payload.get("dns-server-override")
-        if value and value not in VALID_BODY_DNS_SERVER_OVERRIDE:
-            return (
-                False,
-                f"Invalid dns-server-override '{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SERVER_OVERRIDE)}",
-            )
-
-    # Validate dns-server-protocol if present
+        value = payload["dns-server-override"]
+        if value not in VALID_BODY_DNS_SERVER_OVERRIDE:
+            desc = FIELD_DESCRIPTIONS.get("dns-server-override", "")
+            error_msg = f"Invalid value for 'dns-server-override': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DNS_SERVER_OVERRIDE)}"
+            error_msg += f"\n  → Example: dns-server-override='{{ VALID_BODY_DNS_SERVER_OVERRIDE[0] }}'"
+            return (False, error_msg)
     if "dns-server-protocol" in payload:
-        value = payload.get("dns-server-protocol")
-        if value and value not in VALID_BODY_DNS_SERVER_PROTOCOL:
-            return (
-                False,
-                f"Invalid dns-server-protocol '{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SERVER_PROTOCOL)}",
-            )
-
-    # Validate auth-type if present
+        value = payload["dns-server-protocol"]
+        if value not in VALID_BODY_DNS_SERVER_PROTOCOL:
+            desc = FIELD_DESCRIPTIONS.get("dns-server-protocol", "")
+            error_msg = f"Invalid value for 'dns-server-protocol': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DNS_SERVER_PROTOCOL)}"
+            error_msg += f"\n  → Example: dns-server-protocol='{{ VALID_BODY_DNS_SERVER_PROTOCOL[0] }}'"
+            return (False, error_msg)
     if "auth-type" in payload:
-        value = payload.get("auth-type")
-        if value and value not in VALID_BODY_AUTH_TYPE:
-            return (
-                False,
-                f"Invalid auth-type '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_TYPE)}",
-            )
-
-    # Validate pptp-client if present
+        value = payload["auth-type"]
+        if value not in VALID_BODY_AUTH_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("auth-type", "")
+            error_msg = f"Invalid value for 'auth-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AUTH_TYPE)}"
+            error_msg += f"\n  → Example: auth-type='{{ VALID_BODY_AUTH_TYPE[0] }}'"
+            return (False, error_msg)
     if "pptp-client" in payload:
-        value = payload.get("pptp-client")
-        if value and value not in VALID_BODY_PPTP_CLIENT:
-            return (
-                False,
-                f"Invalid pptp-client '{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_CLIENT)}",
-            )
-
-    # Validate pptp-user if present
-    if "pptp-user" in payload:
-        value = payload.get("pptp-user")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (False, "pptp-user cannot exceed 64 characters")
-
-    # Validate pptp-auth-type if present
+        value = payload["pptp-client"]
+        if value not in VALID_BODY_PPTP_CLIENT:
+            desc = FIELD_DESCRIPTIONS.get("pptp-client", "")
+            error_msg = f"Invalid value for 'pptp-client': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PPTP_CLIENT)}"
+            error_msg += f"\n  → Example: pptp-client='{{ VALID_BODY_PPTP_CLIENT[0] }}'"
+            return (False, error_msg)
     if "pptp-auth-type" in payload:
-        value = payload.get("pptp-auth-type")
-        if value and value not in VALID_BODY_PPTP_AUTH_TYPE:
-            return (
-                False,
-                f"Invalid pptp-auth-type '{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_AUTH_TYPE)}",
-            )
-
-    # Validate pptp-timeout if present
-    if "pptp-timeout" in payload:
-        value = payload.get("pptp-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "pptp-timeout must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"pptp-timeout must be numeric, got: {value}")
-
-    # Validate arpforward if present
+        value = payload["pptp-auth-type"]
+        if value not in VALID_BODY_PPTP_AUTH_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("pptp-auth-type", "")
+            error_msg = f"Invalid value for 'pptp-auth-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PPTP_AUTH_TYPE)}"
+            error_msg += f"\n  → Example: pptp-auth-type='{{ VALID_BODY_PPTP_AUTH_TYPE[0] }}'"
+            return (False, error_msg)
     if "arpforward" in payload:
-        value = payload.get("arpforward")
-        if value and value not in VALID_BODY_ARPFORWARD:
-            return (
-                False,
-                f"Invalid arpforward '{value}'. Must be one of: {', '.join(VALID_BODY_ARPFORWARD)}",
-            )
-
-    # Validate ndiscforward if present
+        value = payload["arpforward"]
+        if value not in VALID_BODY_ARPFORWARD:
+            desc = FIELD_DESCRIPTIONS.get("arpforward", "")
+            error_msg = f"Invalid value for 'arpforward': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ARPFORWARD)}"
+            error_msg += f"\n  → Example: arpforward='{{ VALID_BODY_ARPFORWARD[0] }}'"
+            return (False, error_msg)
     if "ndiscforward" in payload:
-        value = payload.get("ndiscforward")
-        if value and value not in VALID_BODY_NDISCFORWARD:
-            return (
-                False,
-                f"Invalid ndiscforward '{value}'. Must be one of: {', '.join(VALID_BODY_NDISCFORWARD)}",
-            )
-
-    # Validate broadcast-forward if present
+        value = payload["ndiscforward"]
+        if value not in VALID_BODY_NDISCFORWARD:
+            desc = FIELD_DESCRIPTIONS.get("ndiscforward", "")
+            error_msg = f"Invalid value for 'ndiscforward': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NDISCFORWARD)}"
+            error_msg += f"\n  → Example: ndiscforward='{{ VALID_BODY_NDISCFORWARD[0] }}'"
+            return (False, error_msg)
     if "broadcast-forward" in payload:
-        value = payload.get("broadcast-forward")
-        if value and value not in VALID_BODY_BROADCAST_FORWARD:
-            return (
-                False,
-                f"Invalid broadcast-forward '{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_FORWARD)}",
-            )
-
-    # Validate bfd if present
+        value = payload["broadcast-forward"]
+        if value not in VALID_BODY_BROADCAST_FORWARD:
+            desc = FIELD_DESCRIPTIONS.get("broadcast-forward", "")
+            error_msg = f"Invalid value for 'broadcast-forward': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BROADCAST_FORWARD)}"
+            error_msg += f"\n  → Example: broadcast-forward='{{ VALID_BODY_BROADCAST_FORWARD[0] }}'"
+            return (False, error_msg)
     if "bfd" in payload:
-        value = payload.get("bfd")
-        if value and value not in VALID_BODY_BFD:
-            return (
-                False,
-                f"Invalid bfd '{value}'. Must be one of: {', '.join(VALID_BODY_BFD)}",
-            )
-
-    # Validate bfd-desired-min-tx if present
-    if "bfd-desired-min-tx" in payload:
-        value = payload.get("bfd-desired-min-tx")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100000:
-                    return (
-                        False,
-                        "bfd-desired-min-tx must be between 1 and 100000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bfd-desired-min-tx must be numeric, got: {value}",
-                )
-
-    # Validate bfd-detect-mult if present
-    if "bfd-detect-mult" in payload:
-        value = payload.get("bfd-detect-mult")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 50:
-                    return (False, "bfd-detect-mult must be between 1 and 50")
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bfd-detect-mult must be numeric, got: {value}",
-                )
-
-    # Validate bfd-required-min-rx if present
-    if "bfd-required-min-rx" in payload:
-        value = payload.get("bfd-required-min-rx")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100000:
-                    return (
-                        False,
-                        "bfd-required-min-rx must be between 1 and 100000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bfd-required-min-rx must be numeric, got: {value}",
-                )
-
-    # Validate l2forward if present
+        value = payload["bfd"]
+        if value not in VALID_BODY_BFD:
+            desc = FIELD_DESCRIPTIONS.get("bfd", "")
+            error_msg = f"Invalid value for 'bfd': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BFD)}"
+            error_msg += f"\n  → Example: bfd='{{ VALID_BODY_BFD[0] }}'"
+            return (False, error_msg)
     if "l2forward" in payload:
-        value = payload.get("l2forward")
-        if value and value not in VALID_BODY_L2FORWARD:
-            return (
-                False,
-                f"Invalid l2forward '{value}'. Must be one of: {', '.join(VALID_BODY_L2FORWARD)}",
-            )
-
-    # Validate icmp-send-redirect if present
+        value = payload["l2forward"]
+        if value not in VALID_BODY_L2FORWARD:
+            desc = FIELD_DESCRIPTIONS.get("l2forward", "")
+            error_msg = f"Invalid value for 'l2forward': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_L2FORWARD)}"
+            error_msg += f"\n  → Example: l2forward='{{ VALID_BODY_L2FORWARD[0] }}'"
+            return (False, error_msg)
     if "icmp-send-redirect" in payload:
-        value = payload.get("icmp-send-redirect")
-        if value and value not in VALID_BODY_ICMP_SEND_REDIRECT:
-            return (
-                False,
-                f"Invalid icmp-send-redirect '{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_SEND_REDIRECT)}",
-            )
-
-    # Validate icmp-accept-redirect if present
+        value = payload["icmp-send-redirect"]
+        if value not in VALID_BODY_ICMP_SEND_REDIRECT:
+            desc = FIELD_DESCRIPTIONS.get("icmp-send-redirect", "")
+            error_msg = f"Invalid value for 'icmp-send-redirect': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ICMP_SEND_REDIRECT)}"
+            error_msg += f"\n  → Example: icmp-send-redirect='{{ VALID_BODY_ICMP_SEND_REDIRECT[0] }}'"
+            return (False, error_msg)
     if "icmp-accept-redirect" in payload:
-        value = payload.get("icmp-accept-redirect")
-        if value and value not in VALID_BODY_ICMP_ACCEPT_REDIRECT:
-            return (
-                False,
-                f"Invalid icmp-accept-redirect '{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_ACCEPT_REDIRECT)}",
-            )
-
-    # Validate reachable-time if present
-    if "reachable-time" in payload:
-        value = payload.get("reachable-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30000 or int_val > 3600000:
-                    return (
-                        False,
-                        "reachable-time must be between 30000 and 3600000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"reachable-time must be numeric, got: {value}")
-
-    # Validate vlanforward if present
+        value = payload["icmp-accept-redirect"]
+        if value not in VALID_BODY_ICMP_ACCEPT_REDIRECT:
+            desc = FIELD_DESCRIPTIONS.get("icmp-accept-redirect", "")
+            error_msg = f"Invalid value for 'icmp-accept-redirect': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ICMP_ACCEPT_REDIRECT)}"
+            error_msg += f"\n  → Example: icmp-accept-redirect='{{ VALID_BODY_ICMP_ACCEPT_REDIRECT[0] }}'"
+            return (False, error_msg)
     if "vlanforward" in payload:
-        value = payload.get("vlanforward")
-        if value and value not in VALID_BODY_VLANFORWARD:
-            return (
-                False,
-                f"Invalid vlanforward '{value}'. Must be one of: {', '.join(VALID_BODY_VLANFORWARD)}",
-            )
-
-    # Validate stpforward if present
+        value = payload["vlanforward"]
+        if value not in VALID_BODY_VLANFORWARD:
+            desc = FIELD_DESCRIPTIONS.get("vlanforward", "")
+            error_msg = f"Invalid value for 'vlanforward': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VLANFORWARD)}"
+            error_msg += f"\n  → Example: vlanforward='{{ VALID_BODY_VLANFORWARD[0] }}'"
+            return (False, error_msg)
     if "stpforward" in payload:
-        value = payload.get("stpforward")
-        if value and value not in VALID_BODY_STPFORWARD:
-            return (
-                False,
-                f"Invalid stpforward '{value}'. Must be one of: {', '.join(VALID_BODY_STPFORWARD)}",
-            )
-
-    # Validate stpforward-mode if present
+        value = payload["stpforward"]
+        if value not in VALID_BODY_STPFORWARD:
+            desc = FIELD_DESCRIPTIONS.get("stpforward", "")
+            error_msg = f"Invalid value for 'stpforward': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STPFORWARD)}"
+            error_msg += f"\n  → Example: stpforward='{{ VALID_BODY_STPFORWARD[0] }}'"
+            return (False, error_msg)
     if "stpforward-mode" in payload:
-        value = payload.get("stpforward-mode")
-        if value and value not in VALID_BODY_STPFORWARD_MODE:
-            return (
-                False,
-                f"Invalid stpforward-mode '{value}'. Must be one of: {', '.join(VALID_BODY_STPFORWARD_MODE)}",
-            )
-
-    # Validate ips-sniffer-mode if present
+        value = payload["stpforward-mode"]
+        if value not in VALID_BODY_STPFORWARD_MODE:
+            desc = FIELD_DESCRIPTIONS.get("stpforward-mode", "")
+            error_msg = f"Invalid value for 'stpforward-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STPFORWARD_MODE)}"
+            error_msg += f"\n  → Example: stpforward-mode='{{ VALID_BODY_STPFORWARD_MODE[0] }}'"
+            return (False, error_msg)
     if "ips-sniffer-mode" in payload:
-        value = payload.get("ips-sniffer-mode")
-        if value and value not in VALID_BODY_IPS_SNIFFER_MODE:
-            return (
-                False,
-                f"Invalid ips-sniffer-mode '{value}'. Must be one of: {', '.join(VALID_BODY_IPS_SNIFFER_MODE)}",
-            )
-
-    # Validate ident-accept if present
+        value = payload["ips-sniffer-mode"]
+        if value not in VALID_BODY_IPS_SNIFFER_MODE:
+            desc = FIELD_DESCRIPTIONS.get("ips-sniffer-mode", "")
+            error_msg = f"Invalid value for 'ips-sniffer-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IPS_SNIFFER_MODE)}"
+            error_msg += f"\n  → Example: ips-sniffer-mode='{{ VALID_BODY_IPS_SNIFFER_MODE[0] }}'"
+            return (False, error_msg)
     if "ident-accept" in payload:
-        value = payload.get("ident-accept")
-        if value and value not in VALID_BODY_IDENT_ACCEPT:
-            return (
-                False,
-                f"Invalid ident-accept '{value}'. Must be one of: {', '.join(VALID_BODY_IDENT_ACCEPT)}",
-            )
-
-    # Validate ipmac if present
+        value = payload["ident-accept"]
+        if value not in VALID_BODY_IDENT_ACCEPT:
+            desc = FIELD_DESCRIPTIONS.get("ident-accept", "")
+            error_msg = f"Invalid value for 'ident-accept': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IDENT_ACCEPT)}"
+            error_msg += f"\n  → Example: ident-accept='{{ VALID_BODY_IDENT_ACCEPT[0] }}'"
+            return (False, error_msg)
     if "ipmac" in payload:
-        value = payload.get("ipmac")
-        if value and value not in VALID_BODY_IPMAC:
-            return (
-                False,
-                f"Invalid ipmac '{value}'. Must be one of: {', '.join(VALID_BODY_IPMAC)}",
-            )
-
-    # Validate subst if present
+        value = payload["ipmac"]
+        if value not in VALID_BODY_IPMAC:
+            desc = FIELD_DESCRIPTIONS.get("ipmac", "")
+            error_msg = f"Invalid value for 'ipmac': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IPMAC)}"
+            error_msg += f"\n  → Example: ipmac='{{ VALID_BODY_IPMAC[0] }}'"
+            return (False, error_msg)
     if "subst" in payload:
-        value = payload.get("subst")
-        if value and value not in VALID_BODY_SUBST:
-            return (
-                False,
-                f"Invalid subst '{value}'. Must be one of: {', '.join(VALID_BODY_SUBST)}",
-            )
-
-    # Validate speed if present
+        value = payload["subst"]
+        if value not in VALID_BODY_SUBST:
+            desc = FIELD_DESCRIPTIONS.get("subst", "")
+            error_msg = f"Invalid value for 'subst': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SUBST)}"
+            error_msg += f"\n  → Example: subst='{{ VALID_BODY_SUBST[0] }}'"
+            return (False, error_msg)
     if "speed" in payload:
-        value = payload.get("speed")
-        if value and value not in VALID_BODY_SPEED:
-            return (
-                False,
-                f"Invalid speed '{value}'. Must be one of: {', '.join(VALID_BODY_SPEED)}",
-            )
-
-    # Validate status if present
+        value = payload["speed"]
+        if value not in VALID_BODY_SPEED:
+            desc = FIELD_DESCRIPTIONS.get("speed", "")
+            error_msg = f"Invalid value for 'speed': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SPEED)}"
+            error_msg += f"\n  → Example: speed='{{ VALID_BODY_SPEED[0] }}'"
+            return (False, error_msg)
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
-            return (
-                False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
-            )
-
-    # Validate netbios-forward if present
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
     if "netbios-forward" in payload:
-        value = payload.get("netbios-forward")
-        if value and value not in VALID_BODY_NETBIOS_FORWARD:
-            return (
-                False,
-                f"Invalid netbios-forward '{value}'. Must be one of: {', '.join(VALID_BODY_NETBIOS_FORWARD)}",
-            )
-
-    # Validate type if present
+        value = payload["netbios-forward"]
+        if value not in VALID_BODY_NETBIOS_FORWARD:
+            desc = FIELD_DESCRIPTIONS.get("netbios-forward", "")
+            error_msg = f"Invalid value for 'netbios-forward': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NETBIOS_FORWARD)}"
+            error_msg += f"\n  → Example: netbios-forward='{{ VALID_BODY_NETBIOS_FORWARD[0] }}'"
+            return (False, error_msg)
     if "type" in payload:
-        value = payload.get("type")
-        if value and value not in VALID_BODY_TYPE:
-            return (
-                False,
-                f"Invalid type '{value}'. Must be one of: {', '.join(VALID_BODY_TYPE)}",
-            )
-
-    # Validate dedicated-to if present
+        value = payload["type"]
+        if value not in VALID_BODY_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("type", "")
+            error_msg = f"Invalid value for 'type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TYPE)}"
+            error_msg += f"\n  → Example: type='{{ VALID_BODY_TYPE[0] }}'"
+            return (False, error_msg)
     if "dedicated-to" in payload:
-        value = payload.get("dedicated-to")
-        if value and value not in VALID_BODY_DEDICATED_TO:
-            return (
-                False,
-                f"Invalid dedicated-to '{value}'. Must be one of: {', '.join(VALID_BODY_DEDICATED_TO)}",
-            )
-
-    # Validate wccp if present
+        value = payload["dedicated-to"]
+        if value not in VALID_BODY_DEDICATED_TO:
+            desc = FIELD_DESCRIPTIONS.get("dedicated-to", "")
+            error_msg = f"Invalid value for 'dedicated-to': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DEDICATED_TO)}"
+            error_msg += f"\n  → Example: dedicated-to='{{ VALID_BODY_DEDICATED_TO[0] }}'"
+            return (False, error_msg)
     if "wccp" in payload:
-        value = payload.get("wccp")
-        if value and value not in VALID_BODY_WCCP:
-            return (
-                False,
-                f"Invalid wccp '{value}'. Must be one of: {', '.join(VALID_BODY_WCCP)}",
-            )
-
-    # Validate netflow-sampler if present
+        value = payload["wccp"]
+        if value not in VALID_BODY_WCCP:
+            desc = FIELD_DESCRIPTIONS.get("wccp", "")
+            error_msg = f"Invalid value for 'wccp': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WCCP)}"
+            error_msg += f"\n  → Example: wccp='{{ VALID_BODY_WCCP[0] }}'"
+            return (False, error_msg)
     if "netflow-sampler" in payload:
-        value = payload.get("netflow-sampler")
-        if value and value not in VALID_BODY_NETFLOW_SAMPLER:
-            return (
-                False,
-                f"Invalid netflow-sampler '{value}'. Must be one of: {', '.join(VALID_BODY_NETFLOW_SAMPLER)}",
-            )
-
-    # Validate netflow-sample-rate if present
-    if "netflow-sample-rate" in payload:
-        value = payload.get("netflow-sample-rate")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "netflow-sample-rate must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netflow-sample-rate must be numeric, got: {value}",
-                )
-
-    # Validate netflow-sampler-id if present
-    if "netflow-sampler-id" in payload:
-        value = payload.get("netflow-sampler-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 254:
-                    return (
-                        False,
-                        "netflow-sampler-id must be between 1 and 254",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netflow-sampler-id must be numeric, got: {value}",
-                )
-
-    # Validate sflow-sampler if present
+        value = payload["netflow-sampler"]
+        if value not in VALID_BODY_NETFLOW_SAMPLER:
+            desc = FIELD_DESCRIPTIONS.get("netflow-sampler", "")
+            error_msg = f"Invalid value for 'netflow-sampler': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NETFLOW_SAMPLER)}"
+            error_msg += f"\n  → Example: netflow-sampler='{{ VALID_BODY_NETFLOW_SAMPLER[0] }}'"
+            return (False, error_msg)
     if "sflow-sampler" in payload:
-        value = payload.get("sflow-sampler")
-        if value and value not in VALID_BODY_SFLOW_SAMPLER:
-            return (
-                False,
-                f"Invalid sflow-sampler '{value}'. Must be one of: {', '.join(VALID_BODY_SFLOW_SAMPLER)}",
-            )
-
-    # Validate drop-fragment if present
+        value = payload["sflow-sampler"]
+        if value not in VALID_BODY_SFLOW_SAMPLER:
+            desc = FIELD_DESCRIPTIONS.get("sflow-sampler", "")
+            error_msg = f"Invalid value for 'sflow-sampler': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SFLOW_SAMPLER)}"
+            error_msg += f"\n  → Example: sflow-sampler='{{ VALID_BODY_SFLOW_SAMPLER[0] }}'"
+            return (False, error_msg)
     if "drop-fragment" in payload:
-        value = payload.get("drop-fragment")
-        if value and value not in VALID_BODY_DROP_FRAGMENT:
-            return (
-                False,
-                f"Invalid drop-fragment '{value}'. Must be one of: {', '.join(VALID_BODY_DROP_FRAGMENT)}",
-            )
-
-    # Validate src-check if present
+        value = payload["drop-fragment"]
+        if value not in VALID_BODY_DROP_FRAGMENT:
+            desc = FIELD_DESCRIPTIONS.get("drop-fragment", "")
+            error_msg = f"Invalid value for 'drop-fragment': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DROP_FRAGMENT)}"
+            error_msg += f"\n  → Example: drop-fragment='{{ VALID_BODY_DROP_FRAGMENT[0] }}'"
+            return (False, error_msg)
     if "src-check" in payload:
-        value = payload.get("src-check")
-        if value and value not in VALID_BODY_SRC_CHECK:
-            return (
-                False,
-                f"Invalid src-check '{value}'. Must be one of: {', '.join(VALID_BODY_SRC_CHECK)}",
-            )
-
-    # Validate sample-rate if present
-    if "sample-rate" in payload:
-        value = payload.get("sample-rate")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 99999:
-                    return (False, "sample-rate must be between 10 and 99999")
-            except (ValueError, TypeError):
-                return (False, f"sample-rate must be numeric, got: {value}")
-
-    # Validate polling-interval if present
-    if "polling-interval" in payload:
-        value = payload.get("polling-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (
-                        False,
-                        "polling-interval must be between 1 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"polling-interval must be numeric, got: {value}",
-                )
-
-    # Validate sample-direction if present
+        value = payload["src-check"]
+        if value not in VALID_BODY_SRC_CHECK:
+            desc = FIELD_DESCRIPTIONS.get("src-check", "")
+            error_msg = f"Invalid value for 'src-check': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SRC_CHECK)}"
+            error_msg += f"\n  → Example: src-check='{{ VALID_BODY_SRC_CHECK[0] }}'"
+            return (False, error_msg)
     if "sample-direction" in payload:
-        value = payload.get("sample-direction")
-        if value and value not in VALID_BODY_SAMPLE_DIRECTION:
-            return (
-                False,
-                f"Invalid sample-direction '{value}'. Must be one of: {', '.join(VALID_BODY_SAMPLE_DIRECTION)}",
-            )
-
-    # Validate explicit-web-proxy if present
+        value = payload["sample-direction"]
+        if value not in VALID_BODY_SAMPLE_DIRECTION:
+            desc = FIELD_DESCRIPTIONS.get("sample-direction", "")
+            error_msg = f"Invalid value for 'sample-direction': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SAMPLE_DIRECTION)}"
+            error_msg += f"\n  → Example: sample-direction='{{ VALID_BODY_SAMPLE_DIRECTION[0] }}'"
+            return (False, error_msg)
     if "explicit-web-proxy" in payload:
-        value = payload.get("explicit-web-proxy")
-        if value and value not in VALID_BODY_EXPLICIT_WEB_PROXY:
-            return (
-                False,
-                f"Invalid explicit-web-proxy '{value}'. Must be one of: {', '.join(VALID_BODY_EXPLICIT_WEB_PROXY)}",
-            )
-
-    # Validate explicit-ftp-proxy if present
+        value = payload["explicit-web-proxy"]
+        if value not in VALID_BODY_EXPLICIT_WEB_PROXY:
+            desc = FIELD_DESCRIPTIONS.get("explicit-web-proxy", "")
+            error_msg = f"Invalid value for 'explicit-web-proxy': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EXPLICIT_WEB_PROXY)}"
+            error_msg += f"\n  → Example: explicit-web-proxy='{{ VALID_BODY_EXPLICIT_WEB_PROXY[0] }}'"
+            return (False, error_msg)
     if "explicit-ftp-proxy" in payload:
-        value = payload.get("explicit-ftp-proxy")
-        if value and value not in VALID_BODY_EXPLICIT_FTP_PROXY:
-            return (
-                False,
-                f"Invalid explicit-ftp-proxy '{value}'. Must be one of: {', '.join(VALID_BODY_EXPLICIT_FTP_PROXY)}",
-            )
-
-    # Validate proxy-captive-portal if present
+        value = payload["explicit-ftp-proxy"]
+        if value not in VALID_BODY_EXPLICIT_FTP_PROXY:
+            desc = FIELD_DESCRIPTIONS.get("explicit-ftp-proxy", "")
+            error_msg = f"Invalid value for 'explicit-ftp-proxy': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EXPLICIT_FTP_PROXY)}"
+            error_msg += f"\n  → Example: explicit-ftp-proxy='{{ VALID_BODY_EXPLICIT_FTP_PROXY[0] }}'"
+            return (False, error_msg)
     if "proxy-captive-portal" in payload:
-        value = payload.get("proxy-captive-portal")
-        if value and value not in VALID_BODY_PROXY_CAPTIVE_PORTAL:
-            return (
-                False,
-                f"Invalid proxy-captive-portal '{value}'. Must be one of: {', '.join(VALID_BODY_PROXY_CAPTIVE_PORTAL)}",
-            )
-
-    # Validate tcp-mss if present
-    if "tcp-mss" in payload:
-        value = payload.get("tcp-mss")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 48 or int_val > 65535:
-                    return (False, "tcp-mss must be between 48 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"tcp-mss must be numeric, got: {value}")
-
-    # Validate inbandwidth if present
-    if "inbandwidth" in payload:
-        value = payload.get("inbandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 80000000:
-                    return (
-                        False,
-                        "inbandwidth must be between 0 and 80000000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"inbandwidth must be numeric, got: {value}")
-
-    # Validate outbandwidth if present
-    if "outbandwidth" in payload:
-        value = payload.get("outbandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 80000000:
-                    return (
-                        False,
-                        "outbandwidth must be between 0 and 80000000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"outbandwidth must be numeric, got: {value}")
-
-    # Validate egress-shaping-profile if present
-    if "egress-shaping-profile" in payload:
-        value = payload.get("egress-shaping-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "egress-shaping-profile cannot exceed 35 characters",
-            )
-
-    # Validate ingress-shaping-profile if present
-    if "ingress-shaping-profile" in payload:
-        value = payload.get("ingress-shaping-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "ingress-shaping-profile cannot exceed 35 characters",
-            )
-
-    # Validate spillover-threshold if present
-    if "spillover-threshold" in payload:
-        value = payload.get("spillover-threshold")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "spillover-threshold must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"spillover-threshold must be numeric, got: {value}",
-                )
-
-    # Validate ingress-spillover-threshold if present
-    if "ingress-spillover-threshold" in payload:
-        value = payload.get("ingress-spillover-threshold")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "ingress-spillover-threshold must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ingress-spillover-threshold must be numeric, got: {value}",
-                )
-
-    # Validate weight if present
-    if "weight" in payload:
-        value = payload.get("weight")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (False, "weight must be between 0 and 255")
-            except (ValueError, TypeError):
-                return (False, f"weight must be numeric, got: {value}")
-
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "interface cannot exceed 15 characters")
-
-    # Validate external if present
+        value = payload["proxy-captive-portal"]
+        if value not in VALID_BODY_PROXY_CAPTIVE_PORTAL:
+            desc = FIELD_DESCRIPTIONS.get("proxy-captive-portal", "")
+            error_msg = f"Invalid value for 'proxy-captive-portal': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROXY_CAPTIVE_PORTAL)}"
+            error_msg += f"\n  → Example: proxy-captive-portal='{{ VALID_BODY_PROXY_CAPTIVE_PORTAL[0] }}'"
+            return (False, error_msg)
     if "external" in payload:
-        value = payload.get("external")
-        if value and value not in VALID_BODY_EXTERNAL:
-            return (
-                False,
-                f"Invalid external '{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL)}",
-            )
-
-    # Validate mtu-override if present
+        value = payload["external"]
+        if value not in VALID_BODY_EXTERNAL:
+            desc = FIELD_DESCRIPTIONS.get("external", "")
+            error_msg = f"Invalid value for 'external': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EXTERNAL)}"
+            error_msg += f"\n  → Example: external='{{ VALID_BODY_EXTERNAL[0] }}'"
+            return (False, error_msg)
     if "mtu-override" in payload:
-        value = payload.get("mtu-override")
-        if value and value not in VALID_BODY_MTU_OVERRIDE:
-            return (
-                False,
-                f"Invalid mtu-override '{value}'. Must be one of: {', '.join(VALID_BODY_MTU_OVERRIDE)}",
-            )
-
-    # Validate mtu if present
-    if "mtu" in payload:
-        value = payload.get("mtu")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (False, "mtu must be between 0 and 4294967295")
-            except (ValueError, TypeError):
-                return (False, f"mtu must be numeric, got: {value}")
-
-    # Validate vlan-protocol if present
+        value = payload["mtu-override"]
+        if value not in VALID_BODY_MTU_OVERRIDE:
+            desc = FIELD_DESCRIPTIONS.get("mtu-override", "")
+            error_msg = f"Invalid value for 'mtu-override': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MTU_OVERRIDE)}"
+            error_msg += f"\n  → Example: mtu-override='{{ VALID_BODY_MTU_OVERRIDE[0] }}'"
+            return (False, error_msg)
     if "vlan-protocol" in payload:
-        value = payload.get("vlan-protocol")
-        if value and value not in VALID_BODY_VLAN_PROTOCOL:
-            return (
-                False,
-                f"Invalid vlan-protocol '{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_PROTOCOL)}",
-            )
-
-    # Validate vlanid if present
-    if "vlanid" in payload:
-        value = payload.get("vlanid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 4094:
-                    return (False, "vlanid must be between 1 and 4094")
-            except (ValueError, TypeError):
-                return (False, f"vlanid must be numeric, got: {value}")
-
-    # Validate trunk if present
-    if "trunk" in payload:
-        value = payload.get("trunk")
-        if value and value not in VALID_BODY_TRUNK:
-            return (
-                False,
-                f"Invalid trunk '{value}'. Must be one of: {', '.join(VALID_BODY_TRUNK)}",
-            )
-
-    # Validate forward-domain if present
-    if "forward-domain" in payload:
-        value = payload.get("forward-domain")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2147483647:
-                    return (
-                        False,
-                        "forward-domain must be between 0 and 2147483647",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"forward-domain must be numeric, got: {value}")
-
-    # Validate lacp-mode if present
+        value = payload["vlan-protocol"]
+        if value not in VALID_BODY_VLAN_PROTOCOL:
+            desc = FIELD_DESCRIPTIONS.get("vlan-protocol", "")
+            error_msg = f"Invalid value for 'vlan-protocol': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VLAN_PROTOCOL)}"
+            error_msg += f"\n  → Example: vlan-protocol='{{ VALID_BODY_VLAN_PROTOCOL[0] }}'"
+            return (False, error_msg)
     if "lacp-mode" in payload:
-        value = payload.get("lacp-mode")
-        if value and value not in VALID_BODY_LACP_MODE:
-            return (
-                False,
-                f"Invalid lacp-mode '{value}'. Must be one of: {', '.join(VALID_BODY_LACP_MODE)}",
-            )
-
-    # Validate lacp-ha-secondary if present
+        value = payload["lacp-mode"]
+        if value not in VALID_BODY_LACP_MODE:
+            desc = FIELD_DESCRIPTIONS.get("lacp-mode", "")
+            error_msg = f"Invalid value for 'lacp-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LACP_MODE)}"
+            error_msg += f"\n  → Example: lacp-mode='{{ VALID_BODY_LACP_MODE[0] }}'"
+            return (False, error_msg)
     if "lacp-ha-secondary" in payload:
-        value = payload.get("lacp-ha-secondary")
-        if value and value not in VALID_BODY_LACP_HA_SECONDARY:
-            return (
-                False,
-                f"Invalid lacp-ha-secondary '{value}'. Must be one of: {', '.join(VALID_BODY_LACP_HA_SECONDARY)}",
-            )
-
-    # Validate system-id-type if present
+        value = payload["lacp-ha-secondary"]
+        if value not in VALID_BODY_LACP_HA_SECONDARY:
+            desc = FIELD_DESCRIPTIONS.get("lacp-ha-secondary", "")
+            error_msg = f"Invalid value for 'lacp-ha-secondary': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LACP_HA_SECONDARY)}"
+            error_msg += f"\n  → Example: lacp-ha-secondary='{{ VALID_BODY_LACP_HA_SECONDARY[0] }}'"
+            return (False, error_msg)
     if "system-id-type" in payload:
-        value = payload.get("system-id-type")
-        if value and value not in VALID_BODY_SYSTEM_ID_TYPE:
-            return (
-                False,
-                f"Invalid system-id-type '{value}'. Must be one of: {', '.join(VALID_BODY_SYSTEM_ID_TYPE)}",
-            )
-
-    # Validate lacp-speed if present
+        value = payload["system-id-type"]
+        if value not in VALID_BODY_SYSTEM_ID_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("system-id-type", "")
+            error_msg = f"Invalid value for 'system-id-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SYSTEM_ID_TYPE)}"
+            error_msg += f"\n  → Example: system-id-type='{{ VALID_BODY_SYSTEM_ID_TYPE[0] }}'"
+            return (False, error_msg)
     if "lacp-speed" in payload:
-        value = payload.get("lacp-speed")
-        if value and value not in VALID_BODY_LACP_SPEED:
-            return (
-                False,
-                f"Invalid lacp-speed '{value}'. Must be one of: {', '.join(VALID_BODY_LACP_SPEED)}",
-            )
-
-    # Validate min-links if present
-    if "min-links" in payload:
-        value = payload.get("min-links")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 32:
-                    return (False, "min-links must be between 1 and 32")
-            except (ValueError, TypeError):
-                return (False, f"min-links must be numeric, got: {value}")
-
-    # Validate min-links-down if present
+        value = payload["lacp-speed"]
+        if value not in VALID_BODY_LACP_SPEED:
+            desc = FIELD_DESCRIPTIONS.get("lacp-speed", "")
+            error_msg = f"Invalid value for 'lacp-speed': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LACP_SPEED)}"
+            error_msg += f"\n  → Example: lacp-speed='{{ VALID_BODY_LACP_SPEED[0] }}'"
+            return (False, error_msg)
     if "min-links-down" in payload:
-        value = payload.get("min-links-down")
-        if value and value not in VALID_BODY_MIN_LINKS_DOWN:
-            return (
-                False,
-                f"Invalid min-links-down '{value}'. Must be one of: {', '.join(VALID_BODY_MIN_LINKS_DOWN)}",
-            )
-
-    # Validate algorithm if present
+        value = payload["min-links-down"]
+        if value not in VALID_BODY_MIN_LINKS_DOWN:
+            desc = FIELD_DESCRIPTIONS.get("min-links-down", "")
+            error_msg = f"Invalid value for 'min-links-down': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MIN_LINKS_DOWN)}"
+            error_msg += f"\n  → Example: min-links-down='{{ VALID_BODY_MIN_LINKS_DOWN[0] }}'"
+            return (False, error_msg)
     if "algorithm" in payload:
-        value = payload.get("algorithm")
-        if value and value not in VALID_BODY_ALGORITHM:
-            return (
-                False,
-                f"Invalid algorithm '{value}'. Must be one of: {', '.join(VALID_BODY_ALGORITHM)}",
-            )
-
-    # Validate link-up-delay if present
-    if "link-up-delay" in payload:
-        value = payload.get("link-up-delay")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 50 or int_val > 3600000:
-                    return (
-                        False,
-                        "link-up-delay must be between 50 and 3600000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"link-up-delay must be numeric, got: {value}")
-
-    # Validate aggregate-type if present
+        value = payload["algorithm"]
+        if value not in VALID_BODY_ALGORITHM:
+            desc = FIELD_DESCRIPTIONS.get("algorithm", "")
+            error_msg = f"Invalid value for 'algorithm': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ALGORITHM)}"
+            error_msg += f"\n  → Example: algorithm='{{ VALID_BODY_ALGORITHM[0] }}'"
+            return (False, error_msg)
     if "aggregate-type" in payload:
-        value = payload.get("aggregate-type")
-        if value and value not in VALID_BODY_AGGREGATE_TYPE:
-            return (
-                False,
-                f"Invalid aggregate-type '{value}'. Must be one of: {', '.join(VALID_BODY_AGGREGATE_TYPE)}",
-            )
-
-    # Validate priority-override if present
+        value = payload["aggregate-type"]
+        if value not in VALID_BODY_AGGREGATE_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("aggregate-type", "")
+            error_msg = f"Invalid value for 'aggregate-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AGGREGATE_TYPE)}"
+            error_msg += f"\n  → Example: aggregate-type='{{ VALID_BODY_AGGREGATE_TYPE[0] }}'"
+            return (False, error_msg)
     if "priority-override" in payload:
-        value = payload.get("priority-override")
-        if value and value not in VALID_BODY_PRIORITY_OVERRIDE:
-            return (
-                False,
-                f"Invalid priority-override '{value}'. Must be one of: {', '.join(VALID_BODY_PRIORITY_OVERRIDE)}",
-            )
-
-    # Validate aggregate if present
-    if "aggregate" in payload:
-        value = payload.get("aggregate")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "aggregate cannot exceed 15 characters")
-
-    # Validate redundant-interface if present
-    if "redundant-interface" in payload:
-        value = payload.get("redundant-interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "redundant-interface cannot exceed 15 characters")
-
-    # Validate devindex if present
-    if "devindex" in payload:
-        value = payload.get("devindex")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "devindex must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"devindex must be numeric, got: {value}")
-
-    # Validate vindex if present
-    if "vindex" in payload:
-        value = payload.get("vindex")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "vindex must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"vindex must be numeric, got: {value}")
-
-    # Validate switch if present
-    if "switch" in payload:
-        value = payload.get("switch")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "switch cannot exceed 15 characters")
-
-    # Validate description if present
-    if "description" in payload:
-        value = payload.get("description")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "description cannot exceed 255 characters")
-
-    # Validate alias if present
-    if "alias" in payload:
-        value = payload.get("alias")
-        if value and isinstance(value, str) and len(value) > 25:
-            return (False, "alias cannot exceed 25 characters")
-
-    # Validate l2tp-client if present
-    if "l2tp-client" in payload:
-        value = payload.get("l2tp-client")
-        if value and value not in VALID_BODY_L2TP_CLIENT:
-            return (
-                False,
-                f"Invalid l2tp-client '{value}'. Must be one of: {', '.join(VALID_BODY_L2TP_CLIENT)}",
-            )
-
-    # Validate security-mode if present
+        value = payload["priority-override"]
+        if value not in VALID_BODY_PRIORITY_OVERRIDE:
+            desc = FIELD_DESCRIPTIONS.get("priority-override", "")
+            error_msg = f"Invalid value for 'priority-override': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PRIORITY_OVERRIDE)}"
+            error_msg += f"\n  → Example: priority-override='{{ VALID_BODY_PRIORITY_OVERRIDE[0] }}'"
+            return (False, error_msg)
     if "security-mode" in payload:
-        value = payload.get("security-mode")
-        if value and value not in VALID_BODY_SECURITY_MODE:
-            return (
-                False,
-                f"Invalid security-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_MODE)}",
-            )
-
-    # Validate security-mac-auth-bypass if present
+        value = payload["security-mode"]
+        if value not in VALID_BODY_SECURITY_MODE:
+            desc = FIELD_DESCRIPTIONS.get("security-mode", "")
+            error_msg = f"Invalid value for 'security-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SECURITY_MODE)}"
+            error_msg += f"\n  → Example: security-mode='{{ VALID_BODY_SECURITY_MODE[0] }}'"
+            return (False, error_msg)
     if "security-mac-auth-bypass" in payload:
-        value = payload.get("security-mac-auth-bypass")
-        if value and value not in VALID_BODY_SECURITY_MAC_AUTH_BYPASS:
-            return (
-                False,
-                f"Invalid security-mac-auth-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_MAC_AUTH_BYPASS)}",
-            )
-
-    # Validate security-ip-auth-bypass if present
+        value = payload["security-mac-auth-bypass"]
+        if value not in VALID_BODY_SECURITY_MAC_AUTH_BYPASS:
+            desc = FIELD_DESCRIPTIONS.get("security-mac-auth-bypass", "")
+            error_msg = f"Invalid value for 'security-mac-auth-bypass': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SECURITY_MAC_AUTH_BYPASS)}"
+            error_msg += f"\n  → Example: security-mac-auth-bypass='{{ VALID_BODY_SECURITY_MAC_AUTH_BYPASS[0] }}'"
+            return (False, error_msg)
     if "security-ip-auth-bypass" in payload:
-        value = payload.get("security-ip-auth-bypass")
-        if value and value not in VALID_BODY_SECURITY_IP_AUTH_BYPASS:
-            return (
-                False,
-                f"Invalid security-ip-auth-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_IP_AUTH_BYPASS)}",
-            )
-
-    # Validate security-8021x-mode if present
-    if "security-8021x-mode" in payload:
-        value = payload.get("security-8021x-mode")
-        if value and value not in VALID_BODY_SECURITY_8021X_MODE:
-            return (
-                False,
-                f"Invalid security-8021x-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_8021X_MODE)}",
-            )
-
-    # Validate security-8021x-master if present
-    if "security-8021x-master" in payload:
-        value = payload.get("security-8021x-master")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (
-                False,
-                "security-8021x-master cannot exceed 15 characters",
-            )
-
-    # Validate security-8021x-dynamic-vlan-id if present
-    if "security-8021x-dynamic-vlan-id" in payload:
-        value = payload.get("security-8021x-dynamic-vlan-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4094:
-                    return (
-                        False,
-                        "security-8021x-dynamic-vlan-id must be between 0 and 4094",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"security-8021x-dynamic-vlan-id must be numeric, got: {value}",
-                )
-
-    # Validate security-8021x-member-mode if present
-    if "security-8021x-member-mode" in payload:
-        value = payload.get("security-8021x-member-mode")
-        if value and value not in VALID_BODY_SECURITY_8021X_MEMBER_MODE:
-            return (
-                False,
-                f"Invalid security-8021x-member-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_8021X_MEMBER_MODE)}",
-            )
-
-    # Validate security-external-web if present
-    if "security-external-web" in payload:
-        value = payload.get("security-external-web")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (
-                False,
-                "security-external-web cannot exceed 1023 characters",
-            )
-
-    # Validate security-external-logout if present
-    if "security-external-logout" in payload:
-        value = payload.get("security-external-logout")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (
-                False,
-                "security-external-logout cannot exceed 127 characters",
-            )
-
-    # Validate replacemsg-override-group if present
-    if "replacemsg-override-group" in payload:
-        value = payload.get("replacemsg-override-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "replacemsg-override-group cannot exceed 35 characters",
-            )
-
-    # Validate security-redirect-url if present
-    if "security-redirect-url" in payload:
-        value = payload.get("security-redirect-url")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (
-                False,
-                "security-redirect-url cannot exceed 1023 characters",
-            )
-
-    # Validate auth-cert if present
-    if "auth-cert" in payload:
-        value = payload.get("auth-cert")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "auth-cert cannot exceed 35 characters")
-
-    # Validate auth-portal-addr if present
-    if "auth-portal-addr" in payload:
-        value = payload.get("auth-portal-addr")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "auth-portal-addr cannot exceed 63 characters")
-
-    # Validate security-exempt-list if present
-    if "security-exempt-list" in payload:
-        value = payload.get("security-exempt-list")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "security-exempt-list cannot exceed 35 characters")
-
-    # Validate ike-saml-server if present
-    if "ike-saml-server" in payload:
-        value = payload.get("ike-saml-server")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "ike-saml-server cannot exceed 35 characters")
-
-    # Validate stp if present
-    if "stp" in payload:
-        value = payload.get("stp")
-        if value and value not in VALID_BODY_STP:
-            return (
-                False,
-                f"Invalid stp '{value}'. Must be one of: {', '.join(VALID_BODY_STP)}",
-            )
-
-    # Validate stp-ha-secondary if present
-    if "stp-ha-secondary" in payload:
-        value = payload.get("stp-ha-secondary")
-        if value and value not in VALID_BODY_STP_HA_SECONDARY:
-            return (
-                False,
-                f"Invalid stp-ha-secondary '{value}'. Must be one of: {', '.join(VALID_BODY_STP_HA_SECONDARY)}",
-            )
-
-    # Validate stp-edge if present
-    if "stp-edge" in payload:
-        value = payload.get("stp-edge")
-        if value and value not in VALID_BODY_STP_EDGE:
-            return (
-                False,
-                f"Invalid stp-edge '{value}'. Must be one of: {', '.join(VALID_BODY_STP_EDGE)}",
-            )
-
-    # Validate device-identification if present
+        value = payload["security-ip-auth-bypass"]
+        if value not in VALID_BODY_SECURITY_IP_AUTH_BYPASS:
+            desc = FIELD_DESCRIPTIONS.get("security-ip-auth-bypass", "")
+            error_msg = f"Invalid value for 'security-ip-auth-bypass': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SECURITY_IP_AUTH_BYPASS)}"
+            error_msg += f"\n  → Example: security-ip-auth-bypass='{{ VALID_BODY_SECURITY_IP_AUTH_BYPASS[0] }}'"
+            return (False, error_msg)
     if "device-identification" in payload:
-        value = payload.get("device-identification")
-        if value and value not in VALID_BODY_DEVICE_IDENTIFICATION:
-            return (
-                False,
-                f"Invalid device-identification '{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_IDENTIFICATION)}",
-            )
-
-    # Validate exclude-signatures if present
+        value = payload["device-identification"]
+        if value not in VALID_BODY_DEVICE_IDENTIFICATION:
+            desc = FIELD_DESCRIPTIONS.get("device-identification", "")
+            error_msg = f"Invalid value for 'device-identification': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DEVICE_IDENTIFICATION)}"
+            error_msg += f"\n  → Example: device-identification='{{ VALID_BODY_DEVICE_IDENTIFICATION[0] }}'"
+            return (False, error_msg)
     if "exclude-signatures" in payload:
-        value = payload.get("exclude-signatures")
-        if value and value not in VALID_BODY_EXCLUDE_SIGNATURES:
-            return (
-                False,
-                f"Invalid exclude-signatures '{value}'. Must be one of: {', '.join(VALID_BODY_EXCLUDE_SIGNATURES)}",
-            )
-
-    # Validate device-user-identification if present
+        value = payload["exclude-signatures"]
+        if value not in VALID_BODY_EXCLUDE_SIGNATURES:
+            desc = FIELD_DESCRIPTIONS.get("exclude-signatures", "")
+            error_msg = f"Invalid value for 'exclude-signatures': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EXCLUDE_SIGNATURES)}"
+            error_msg += f"\n  → Example: exclude-signatures='{{ VALID_BODY_EXCLUDE_SIGNATURES[0] }}'"
+            return (False, error_msg)
     if "device-user-identification" in payload:
-        value = payload.get("device-user-identification")
-        if value and value not in VALID_BODY_DEVICE_USER_IDENTIFICATION:
-            return (
-                False,
-                f"Invalid device-user-identification '{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_USER_IDENTIFICATION)}",
-            )
-
-    # Validate lldp-reception if present
+        value = payload["device-user-identification"]
+        if value not in VALID_BODY_DEVICE_USER_IDENTIFICATION:
+            desc = FIELD_DESCRIPTIONS.get("device-user-identification", "")
+            error_msg = f"Invalid value for 'device-user-identification': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DEVICE_USER_IDENTIFICATION)}"
+            error_msg += f"\n  → Example: device-user-identification='{{ VALID_BODY_DEVICE_USER_IDENTIFICATION[0] }}'"
+            return (False, error_msg)
     if "lldp-reception" in payload:
-        value = payload.get("lldp-reception")
-        if value and value not in VALID_BODY_LLDP_RECEPTION:
-            return (
-                False,
-                f"Invalid lldp-reception '{value}'. Must be one of: {', '.join(VALID_BODY_LLDP_RECEPTION)}",
-            )
-
-    # Validate lldp-transmission if present
+        value = payload["lldp-reception"]
+        if value not in VALID_BODY_LLDP_RECEPTION:
+            desc = FIELD_DESCRIPTIONS.get("lldp-reception", "")
+            error_msg = f"Invalid value for 'lldp-reception': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LLDP_RECEPTION)}"
+            error_msg += f"\n  → Example: lldp-reception='{{ VALID_BODY_LLDP_RECEPTION[0] }}'"
+            return (False, error_msg)
     if "lldp-transmission" in payload:
-        value = payload.get("lldp-transmission")
-        if value and value not in VALID_BODY_LLDP_TRANSMISSION:
-            return (
-                False,
-                f"Invalid lldp-transmission '{value}'. Must be one of: {', '.join(VALID_BODY_LLDP_TRANSMISSION)}",
-            )
-
-    # Validate lldp-network-policy if present
-    if "lldp-network-policy" in payload:
-        value = payload.get("lldp-network-policy")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "lldp-network-policy cannot exceed 35 characters")
-
-    # Validate estimated-upstream-bandwidth if present
-    if "estimated-upstream-bandwidth" in payload:
-        value = payload.get("estimated-upstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "estimated-upstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"estimated-upstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate estimated-downstream-bandwidth if present
-    if "estimated-downstream-bandwidth" in payload:
-        value = payload.get("estimated-downstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "estimated-downstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"estimated-downstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate measured-upstream-bandwidth if present
-    if "measured-upstream-bandwidth" in payload:
-        value = payload.get("measured-upstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "measured-upstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"measured-upstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate measured-downstream-bandwidth if present
-    if "measured-downstream-bandwidth" in payload:
-        value = payload.get("measured-downstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "measured-downstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"measured-downstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate bandwidth-measure-time if present
-    if "bandwidth-measure-time" in payload:
-        value = payload.get("bandwidth-measure-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "bandwidth-measure-time must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bandwidth-measure-time must be numeric, got: {value}",
-                )
-
-    # Validate monitor-bandwidth if present
+        value = payload["lldp-transmission"]
+        if value not in VALID_BODY_LLDP_TRANSMISSION:
+            desc = FIELD_DESCRIPTIONS.get("lldp-transmission", "")
+            error_msg = f"Invalid value for 'lldp-transmission': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LLDP_TRANSMISSION)}"
+            error_msg += f"\n  → Example: lldp-transmission='{{ VALID_BODY_LLDP_TRANSMISSION[0] }}'"
+            return (False, error_msg)
     if "monitor-bandwidth" in payload:
-        value = payload.get("monitor-bandwidth")
-        if value and value not in VALID_BODY_MONITOR_BANDWIDTH:
-            return (
-                False,
-                f"Invalid monitor-bandwidth '{value}'. Must be one of: {', '.join(VALID_BODY_MONITOR_BANDWIDTH)}",
-            )
-
-    # Validate vrrp-virtual-mac if present
+        value = payload["monitor-bandwidth"]
+        if value not in VALID_BODY_MONITOR_BANDWIDTH:
+            desc = FIELD_DESCRIPTIONS.get("monitor-bandwidth", "")
+            error_msg = f"Invalid value for 'monitor-bandwidth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MONITOR_BANDWIDTH)}"
+            error_msg += f"\n  → Example: monitor-bandwidth='{{ VALID_BODY_MONITOR_BANDWIDTH[0] }}'"
+            return (False, error_msg)
     if "vrrp-virtual-mac" in payload:
-        value = payload.get("vrrp-virtual-mac")
-        if value and value not in VALID_BODY_VRRP_VIRTUAL_MAC:
-            return (
-                False,
-                f"Invalid vrrp-virtual-mac '{value}'. Must be one of: {', '.join(VALID_BODY_VRRP_VIRTUAL_MAC)}",
-            )
-
-    # Validate role if present
+        value = payload["vrrp-virtual-mac"]
+        if value not in VALID_BODY_VRRP_VIRTUAL_MAC:
+            desc = FIELD_DESCRIPTIONS.get("vrrp-virtual-mac", "")
+            error_msg = f"Invalid value for 'vrrp-virtual-mac': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VRRP_VIRTUAL_MAC)}"
+            error_msg += f"\n  → Example: vrrp-virtual-mac='{{ VALID_BODY_VRRP_VIRTUAL_MAC[0] }}'"
+            return (False, error_msg)
     if "role" in payload:
-        value = payload.get("role")
-        if value and value not in VALID_BODY_ROLE:
-            return (
-                False,
-                f"Invalid role '{value}'. Must be one of: {', '.join(VALID_BODY_ROLE)}",
-            )
-
-    # Validate snmp-index if present
-    if "snmp-index" in payload:
-        value = payload.get("snmp-index")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2147483647:
-                    return (
-                        False,
-                        "snmp-index must be between 0 and 2147483647",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"snmp-index must be numeric, got: {value}")
-
-    # Validate secondary-IP if present
+        value = payload["role"]
+        if value not in VALID_BODY_ROLE:
+            desc = FIELD_DESCRIPTIONS.get("role", "")
+            error_msg = f"Invalid value for 'role': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ROLE)}"
+            error_msg += f"\n  → Example: role='{{ VALID_BODY_ROLE[0] }}'"
+            return (False, error_msg)
     if "secondary-IP" in payload:
-        value = payload.get("secondary-IP")
-        if value and value not in VALID_BODY_SECONDARY_IP:
-            return (
-                False,
-                f"Invalid secondary-IP '{value}'. Must be one of: {', '.join(VALID_BODY_SECONDARY_IP)}",
-            )
-
-    # Validate preserve-session-route if present
+        value = payload["secondary-IP"]
+        if value not in VALID_BODY_SECONDARY_IP:
+            desc = FIELD_DESCRIPTIONS.get("secondary-IP", "")
+            error_msg = f"Invalid value for 'secondary-IP': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SECONDARY_IP)}"
+            error_msg += f"\n  → Example: secondary-IP='{{ VALID_BODY_SECONDARY_IP[0] }}'"
+            return (False, error_msg)
     if "preserve-session-route" in payload:
-        value = payload.get("preserve-session-route")
-        if value and value not in VALID_BODY_PRESERVE_SESSION_ROUTE:
-            return (
-                False,
-                f"Invalid preserve-session-route '{value}'. Must be one of: {', '.join(VALID_BODY_PRESERVE_SESSION_ROUTE)}",
-            )
-
-    # Validate auto-auth-extension-device if present
+        value = payload["preserve-session-route"]
+        if value not in VALID_BODY_PRESERVE_SESSION_ROUTE:
+            desc = FIELD_DESCRIPTIONS.get("preserve-session-route", "")
+            error_msg = f"Invalid value for 'preserve-session-route': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PRESERVE_SESSION_ROUTE)}"
+            error_msg += f"\n  → Example: preserve-session-route='{{ VALID_BODY_PRESERVE_SESSION_ROUTE[0] }}'"
+            return (False, error_msg)
     if "auto-auth-extension-device" in payload:
-        value = payload.get("auto-auth-extension-device")
-        if value and value not in VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE:
-            return (
-                False,
-                f"Invalid auto-auth-extension-device '{value}'. Must be one of: {', '.join(VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE)}",
-            )
-
-    # Validate ap-discover if present
+        value = payload["auto-auth-extension-device"]
+        if value not in VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE:
+            desc = FIELD_DESCRIPTIONS.get("auto-auth-extension-device", "")
+            error_msg = f"Invalid value for 'auto-auth-extension-device': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE)}"
+            error_msg += f"\n  → Example: auto-auth-extension-device='{{ VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE[0] }}'"
+            return (False, error_msg)
     if "ap-discover" in payload:
-        value = payload.get("ap-discover")
-        if value and value not in VALID_BODY_AP_DISCOVER:
-            return (
-                False,
-                f"Invalid ap-discover '{value}'. Must be one of: {', '.join(VALID_BODY_AP_DISCOVER)}",
-            )
-
-    # Validate fortilink-neighbor-detect if present
+        value = payload["ap-discover"]
+        if value not in VALID_BODY_AP_DISCOVER:
+            desc = FIELD_DESCRIPTIONS.get("ap-discover", "")
+            error_msg = f"Invalid value for 'ap-discover': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AP_DISCOVER)}"
+            error_msg += f"\n  → Example: ap-discover='{{ VALID_BODY_AP_DISCOVER[0] }}'"
+            return (False, error_msg)
     if "fortilink-neighbor-detect" in payload:
-        value = payload.get("fortilink-neighbor-detect")
-        if value and value not in VALID_BODY_FORTILINK_NEIGHBOR_DETECT:
-            return (
-                False,
-                f"Invalid fortilink-neighbor-detect '{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK_NEIGHBOR_DETECT)}",
-            )
-
-    # Validate ip-managed-by-fortiipam if present
+        value = payload["fortilink-neighbor-detect"]
+        if value not in VALID_BODY_FORTILINK_NEIGHBOR_DETECT:
+            desc = FIELD_DESCRIPTIONS.get("fortilink-neighbor-detect", "")
+            error_msg = f"Invalid value for 'fortilink-neighbor-detect': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FORTILINK_NEIGHBOR_DETECT)}"
+            error_msg += f"\n  → Example: fortilink-neighbor-detect='{{ VALID_BODY_FORTILINK_NEIGHBOR_DETECT[0] }}'"
+            return (False, error_msg)
     if "ip-managed-by-fortiipam" in payload:
-        value = payload.get("ip-managed-by-fortiipam")
-        if value and value not in VALID_BODY_IP_MANAGED_BY_FORTIIPAM:
-            return (
-                False,
-                f"Invalid ip-managed-by-fortiipam '{value}'. Must be one of: {', '.join(VALID_BODY_IP_MANAGED_BY_FORTIIPAM)}",
-            )
-
-    # Validate managed-subnetwork-size if present
+        value = payload["ip-managed-by-fortiipam"]
+        if value not in VALID_BODY_IP_MANAGED_BY_FORTIIPAM:
+            desc = FIELD_DESCRIPTIONS.get("ip-managed-by-fortiipam", "")
+            error_msg = f"Invalid value for 'ip-managed-by-fortiipam': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IP_MANAGED_BY_FORTIIPAM)}"
+            error_msg += f"\n  → Example: ip-managed-by-fortiipam='{{ VALID_BODY_IP_MANAGED_BY_FORTIIPAM[0] }}'"
+            return (False, error_msg)
     if "managed-subnetwork-size" in payload:
-        value = payload.get("managed-subnetwork-size")
-        if value and value not in VALID_BODY_MANAGED_SUBNETWORK_SIZE:
-            return (
-                False,
-                f"Invalid managed-subnetwork-size '{value}'. Must be one of: {', '.join(VALID_BODY_MANAGED_SUBNETWORK_SIZE)}",
-            )
-
-    # Validate fortilink-split-interface if present
+        value = payload["managed-subnetwork-size"]
+        if value not in VALID_BODY_MANAGED_SUBNETWORK_SIZE:
+            desc = FIELD_DESCRIPTIONS.get("managed-subnetwork-size", "")
+            error_msg = f"Invalid value for 'managed-subnetwork-size': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MANAGED_SUBNETWORK_SIZE)}"
+            error_msg += f"\n  → Example: managed-subnetwork-size='{{ VALID_BODY_MANAGED_SUBNETWORK_SIZE[0] }}'"
+            return (False, error_msg)
     if "fortilink-split-interface" in payload:
-        value = payload.get("fortilink-split-interface")
-        if value and value not in VALID_BODY_FORTILINK_SPLIT_INTERFACE:
-            return (
-                False,
-                f"Invalid fortilink-split-interface '{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK_SPLIT_INTERFACE)}",
-            )
-
-    # Validate internal if present
-    if "internal" in payload:
-        value = payload.get("internal")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (False, "internal must be between 0 and 255")
-            except (ValueError, TypeError):
-                return (False, f"internal must be numeric, got: {value}")
-
-    # Validate fortilink-backup-link if present
-    if "fortilink-backup-link" in payload:
-        value = payload.get("fortilink-backup-link")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (
-                        False,
-                        "fortilink-backup-link must be between 0 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"fortilink-backup-link must be numeric, got: {value}",
-                )
-
-    # Validate switch-controller-access-vlan if present
+        value = payload["fortilink-split-interface"]
+        if value not in VALID_BODY_FORTILINK_SPLIT_INTERFACE:
+            desc = FIELD_DESCRIPTIONS.get("fortilink-split-interface", "")
+            error_msg = f"Invalid value for 'fortilink-split-interface': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FORTILINK_SPLIT_INTERFACE)}"
+            error_msg += f"\n  → Example: fortilink-split-interface='{{ VALID_BODY_FORTILINK_SPLIT_INTERFACE[0] }}'"
+            return (False, error_msg)
     if "switch-controller-access-vlan" in payload:
-        value = payload.get("switch-controller-access-vlan")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN:
-            return (
-                False,
-                f"Invalid switch-controller-access-vlan '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN)}",
-            )
-
-    # Validate switch-controller-traffic-policy if present
-    if "switch-controller-traffic-policy" in payload:
-        value = payload.get("switch-controller-traffic-policy")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (
-                False,
-                "switch-controller-traffic-policy cannot exceed 63 characters",
-            )
-
-    # Validate switch-controller-rspan-mode if present
+        value = payload["switch-controller-access-vlan"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-access-vlan", "")
+            error_msg = f"Invalid value for 'switch-controller-access-vlan': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN)}"
+            error_msg += f"\n  → Example: switch-controller-access-vlan='{{ VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN[0] }}'"
+            return (False, error_msg)
     if "switch-controller-rspan-mode" in payload:
-        value = payload.get("switch-controller-rspan-mode")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE:
-            return (
-                False,
-                f"Invalid switch-controller-rspan-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE)}",
-            )
-
-    # Validate switch-controller-netflow-collect if present
+        value = payload["switch-controller-rspan-mode"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-rspan-mode", "")
+            error_msg = f"Invalid value for 'switch-controller-rspan-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE)}"
+            error_msg += f"\n  → Example: switch-controller-rspan-mode='{{ VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE[0] }}'"
+            return (False, error_msg)
     if "switch-controller-netflow-collect" in payload:
-        value = payload.get("switch-controller-netflow-collect")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT:
-            return (
-                False,
-                f"Invalid switch-controller-netflow-collect '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT)}",
-            )
-
-    # Validate switch-controller-mgmt-vlan if present
-    if "switch-controller-mgmt-vlan" in payload:
-        value = payload.get("switch-controller-mgmt-vlan")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 4094:
-                    return (
-                        False,
-                        "switch-controller-mgmt-vlan must be between 1 and 4094",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"switch-controller-mgmt-vlan must be numeric, got: {value}",
-                )
-
-    # Validate switch-controller-igmp-snooping if present
+        value = payload["switch-controller-netflow-collect"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-netflow-collect", "")
+            error_msg = f"Invalid value for 'switch-controller-netflow-collect': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT)}"
+            error_msg += f"\n  → Example: switch-controller-netflow-collect='{{ VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT[0] }}'"
+            return (False, error_msg)
     if "switch-controller-igmp-snooping" in payload:
-        value = payload.get("switch-controller-igmp-snooping")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING:
-            return (
-                False,
-                f"Invalid switch-controller-igmp-snooping '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING)}",
-            )
-
-    # Validate switch-controller-igmp-snooping-proxy if present
+        value = payload["switch-controller-igmp-snooping"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-igmp-snooping", "")
+            error_msg = f"Invalid value for 'switch-controller-igmp-snooping': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING)}"
+            error_msg += f"\n  → Example: switch-controller-igmp-snooping='{{ VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING[0] }}'"
+            return (False, error_msg)
     if "switch-controller-igmp-snooping-proxy" in payload:
-        value = payload.get("switch-controller-igmp-snooping-proxy")
-        if (
-            value
-            and value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY
-        ):
-            return (
-                False,
-                f"Invalid switch-controller-igmp-snooping-proxy '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY)}",
-            )
-
-    # Validate switch-controller-igmp-snooping-fast-leave if present
+        value = payload["switch-controller-igmp-snooping-proxy"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-igmp-snooping-proxy", "")
+            error_msg = f"Invalid value for 'switch-controller-igmp-snooping-proxy': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY)}"
+            error_msg += f"\n  → Example: switch-controller-igmp-snooping-proxy='{{ VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY[0] }}'"
+            return (False, error_msg)
     if "switch-controller-igmp-snooping-fast-leave" in payload:
-        value = payload.get("switch-controller-igmp-snooping-fast-leave")
-        if (
-            value
-            and value
-            not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE
-        ):
-            return (
-                False,
-                f"Invalid switch-controller-igmp-snooping-fast-leave '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE)}",
-            )
-
-    # Validate switch-controller-dhcp-snooping if present
+        value = payload["switch-controller-igmp-snooping-fast-leave"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-igmp-snooping-fast-leave", "")
+            error_msg = f"Invalid value for 'switch-controller-igmp-snooping-fast-leave': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE)}"
+            error_msg += f"\n  → Example: switch-controller-igmp-snooping-fast-leave='{{ VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE[0] }}'"
+            return (False, error_msg)
     if "switch-controller-dhcp-snooping" in payload:
-        value = payload.get("switch-controller-dhcp-snooping")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING:
-            return (
-                False,
-                f"Invalid switch-controller-dhcp-snooping '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING)}",
-            )
-
-    # Validate switch-controller-dhcp-snooping-verify-mac if present
+        value = payload["switch-controller-dhcp-snooping"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-dhcp-snooping", "")
+            error_msg = f"Invalid value for 'switch-controller-dhcp-snooping': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING)}"
+            error_msg += f"\n  → Example: switch-controller-dhcp-snooping='{{ VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING[0] }}'"
+            return (False, error_msg)
     if "switch-controller-dhcp-snooping-verify-mac" in payload:
-        value = payload.get("switch-controller-dhcp-snooping-verify-mac")
-        if (
-            value
-            and value
-            not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC
-        ):
-            return (
-                False,
-                f"Invalid switch-controller-dhcp-snooping-verify-mac '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC)}",
-            )
-
-    # Validate switch-controller-dhcp-snooping-option82 if present
+        value = payload["switch-controller-dhcp-snooping-verify-mac"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-dhcp-snooping-verify-mac", "")
+            error_msg = f"Invalid value for 'switch-controller-dhcp-snooping-verify-mac': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC)}"
+            error_msg += f"\n  → Example: switch-controller-dhcp-snooping-verify-mac='{{ VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC[0] }}'"
+            return (False, error_msg)
     if "switch-controller-dhcp-snooping-option82" in payload:
-        value = payload.get("switch-controller-dhcp-snooping-option82")
-        if (
-            value
-            and value
-            not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82
-        ):
-            return (
-                False,
-                f"Invalid switch-controller-dhcp-snooping-option82 '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82)}",
-            )
-
-    # Validate switch-controller-arp-inspection if present
+        value = payload["switch-controller-dhcp-snooping-option82"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-dhcp-snooping-option82", "")
+            error_msg = f"Invalid value for 'switch-controller-dhcp-snooping-option82': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82)}"
+            error_msg += f"\n  → Example: switch-controller-dhcp-snooping-option82='{{ VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82[0] }}'"
+            return (False, error_msg)
     if "switch-controller-arp-inspection" in payload:
-        value = payload.get("switch-controller-arp-inspection")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION:
-            return (
-                False,
-                f"Invalid switch-controller-arp-inspection '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION)}",
-            )
-
-    # Validate switch-controller-learning-limit if present
-    if "switch-controller-learning-limit" in payload:
-        value = payload.get("switch-controller-learning-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 128:
-                    return (
-                        False,
-                        "switch-controller-learning-limit must be between 0 and 128",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"switch-controller-learning-limit must be numeric, got: {value}",
-                )
-
-    # Validate switch-controller-nac if present
-    if "switch-controller-nac" in payload:
-        value = payload.get("switch-controller-nac")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "switch-controller-nac cannot exceed 35 characters",
-            )
-
-    # Validate switch-controller-dynamic if present
-    if "switch-controller-dynamic" in payload:
-        value = payload.get("switch-controller-dynamic")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "switch-controller-dynamic cannot exceed 35 characters",
-            )
-
-    # Validate switch-controller-feature if present
+        value = payload["switch-controller-arp-inspection"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-arp-inspection", "")
+            error_msg = f"Invalid value for 'switch-controller-arp-inspection': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION)}"
+            error_msg += f"\n  → Example: switch-controller-arp-inspection='{{ VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION[0] }}'"
+            return (False, error_msg)
     if "switch-controller-feature" in payload:
-        value = payload.get("switch-controller-feature")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_FEATURE:
-            return (
-                False,
-                f"Invalid switch-controller-feature '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_FEATURE)}",
-            )
-
-    # Validate switch-controller-iot-scanning if present
+        value = payload["switch-controller-feature"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_FEATURE:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-feature", "")
+            error_msg = f"Invalid value for 'switch-controller-feature': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_FEATURE)}"
+            error_msg += f"\n  → Example: switch-controller-feature='{{ VALID_BODY_SWITCH_CONTROLLER_FEATURE[0] }}'"
+            return (False, error_msg)
     if "switch-controller-iot-scanning" in payload:
-        value = payload.get("switch-controller-iot-scanning")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING:
-            return (
-                False,
-                f"Invalid switch-controller-iot-scanning '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING)}",
-            )
-
-    # Validate switch-controller-offload if present
+        value = payload["switch-controller-iot-scanning"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-iot-scanning", "")
+            error_msg = f"Invalid value for 'switch-controller-iot-scanning': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING)}"
+            error_msg += f"\n  → Example: switch-controller-iot-scanning='{{ VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING[0] }}'"
+            return (False, error_msg)
     if "switch-controller-offload" in payload:
-        value = payload.get("switch-controller-offload")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD:
-            return (
-                False,
-                f"Invalid switch-controller-offload '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_OFFLOAD)}",
-            )
-
-    # Validate switch-controller-offload-gw if present
+        value = payload["switch-controller-offload"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-offload", "")
+            error_msg = f"Invalid value for 'switch-controller-offload': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD)}"
+            error_msg += f"\n  → Example: switch-controller-offload='{{ VALID_BODY_SWITCH_CONTROLLER_OFFLOAD[0] }}'"
+            return (False, error_msg)
     if "switch-controller-offload-gw" in payload:
-        value = payload.get("switch-controller-offload-gw")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW:
-            return (
-                False,
-                f"Invalid switch-controller-offload-gw '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW)}",
-            )
-
-    # Validate swc-vlan if present
-    if "swc-vlan" in payload:
-        value = payload.get("swc-vlan")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "swc-vlan must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"swc-vlan must be numeric, got: {value}")
-
-    # Validate swc-first-create if present
-    if "swc-first-create" in payload:
-        value = payload.get("swc-first-create")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "swc-first-create must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"swc-first-create must be numeric, got: {value}",
-                )
-
-    # Validate color if present
-    if "color" in payload:
-        value = payload.get("color")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32:
-                    return (False, "color must be between 0 and 32")
-            except (ValueError, TypeError):
-                return (False, f"color must be numeric, got: {value}")
-
-    # Validate eap-supplicant if present
+        value = payload["switch-controller-offload-gw"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW:
+            desc = FIELD_DESCRIPTIONS.get("switch-controller-offload-gw", "")
+            error_msg = f"Invalid value for 'switch-controller-offload-gw': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW)}"
+            error_msg += f"\n  → Example: switch-controller-offload-gw='{{ VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW[0] }}'"
+            return (False, error_msg)
     if "eap-supplicant" in payload:
-        value = payload.get("eap-supplicant")
-        if value and value not in VALID_BODY_EAP_SUPPLICANT:
-            return (
-                False,
-                f"Invalid eap-supplicant '{value}'. Must be one of: {', '.join(VALID_BODY_EAP_SUPPLICANT)}",
-            )
-
-    # Validate eap-method if present
+        value = payload["eap-supplicant"]
+        if value not in VALID_BODY_EAP_SUPPLICANT:
+            desc = FIELD_DESCRIPTIONS.get("eap-supplicant", "")
+            error_msg = f"Invalid value for 'eap-supplicant': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAP_SUPPLICANT)}"
+            error_msg += f"\n  → Example: eap-supplicant='{{ VALID_BODY_EAP_SUPPLICANT[0] }}'"
+            return (False, error_msg)
     if "eap-method" in payload:
-        value = payload.get("eap-method")
-        if value and value not in VALID_BODY_EAP_METHOD:
-            return (
-                False,
-                f"Invalid eap-method '{value}'. Must be one of: {', '.join(VALID_BODY_EAP_METHOD)}",
-            )
-
-    # Validate eap-identity if present
-    if "eap-identity" in payload:
-        value = payload.get("eap-identity")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "eap-identity cannot exceed 35 characters")
-
-    # Validate eap-ca-cert if present
-    if "eap-ca-cert" in payload:
-        value = payload.get("eap-ca-cert")
-        if value and isinstance(value, str) and len(value) > 79:
-            return (False, "eap-ca-cert cannot exceed 79 characters")
-
-    # Validate eap-user-cert if present
-    if "eap-user-cert" in payload:
-        value = payload.get("eap-user-cert")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "eap-user-cert cannot exceed 35 characters")
-
-    # Validate default-purdue-level if present
+        value = payload["eap-method"]
+        if value not in VALID_BODY_EAP_METHOD:
+            desc = FIELD_DESCRIPTIONS.get("eap-method", "")
+            error_msg = f"Invalid value for 'eap-method': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAP_METHOD)}"
+            error_msg += f"\n  → Example: eap-method='{{ VALID_BODY_EAP_METHOD[0] }}'"
+            return (False, error_msg)
     if "default-purdue-level" in payload:
-        value = payload.get("default-purdue-level")
-        if value and value not in VALID_BODY_DEFAULT_PURDUE_LEVEL:
-            return (
-                False,
-                f"Invalid default-purdue-level '{value}'. Must be one of: {', '.join(VALID_BODY_DEFAULT_PURDUE_LEVEL)}",
-            )
+        value = payload["default-purdue-level"]
+        if value not in VALID_BODY_DEFAULT_PURDUE_LEVEL:
+            desc = FIELD_DESCRIPTIONS.get("default-purdue-level", "")
+            error_msg = f"Invalid value for 'default-purdue-level': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DEFAULT_PURDUE_LEVEL)}"
+            error_msg += f"\n  → Example: default-purdue-level='{{ VALID_BODY_DEFAULT_PURDUE_LEVEL[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -2511,2034 +3045,1043 @@ def validate_interface_post(
 # ============================================================================
 
 
-def validate_interface_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_system_interface_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update system/interface.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_system_interface_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "name cannot exceed 15 characters")
-
-    # Validate vdom if present
-    if "vdom" in payload:
-        value = payload.get("vdom")
-        if value and isinstance(value, str) and len(value) > 31:
-            return (False, "vdom cannot exceed 31 characters")
-
-    # Validate vrf if present
-    if "vr" in payload:
-        value = payload.get("vr")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 511:
-                    return (False, "vrf must be between 0 and 511")
-            except (ValueError, TypeError):
-                return (False, f"vrf must be numeric, got: {value}")
-
-    # Validate cli-conn-status if present
-    if "cli-conn-status" in payload:
-        value = payload.get("cli-conn-status")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "cli-conn-status must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"cli-conn-status must be numeric, got: {value}",
-                )
-
-    # Validate fortilink if present
+    # Step 1: Validate enum values
     if "fortilink" in payload:
-        value = payload.get("fortilink")
-        if value and value not in VALID_BODY_FORTILINK:
+        value = payload["fortilink"]
+        if value not in VALID_BODY_FORTILINK:
             return (
                 False,
-                f"Invalid fortilink '{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK)}",
+                f"Invalid value for 'fortilink'='{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK)}",
             )
-
-    # Validate switch-controller-source-ip if present
     if "switch-controller-source-ip" in payload:
-        value = payload.get("switch-controller-source-ip")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP:
+        value = payload["switch-controller-source-ip"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP:
             return (
                 False,
-                f"Invalid switch-controller-source-ip '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP)}",
+                f"Invalid value for 'switch-controller-source-ip'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP)}",
             )
-
-    # Validate mode if present
     if "mode" in payload:
-        value = payload.get("mode")
-        if value and value not in VALID_BODY_MODE:
+        value = payload["mode"]
+        if value not in VALID_BODY_MODE:
             return (
                 False,
-                f"Invalid mode '{value}'. Must be one of: {', '.join(VALID_BODY_MODE)}",
+                f"Invalid value for 'mode'='{value}'. Must be one of: {', '.join(VALID_BODY_MODE)}",
             )
-
-    # Validate distance if present
-    if "distance" in payload:
-        value = payload.get("distance")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (False, "distance must be between 1 and 255")
-            except (ValueError, TypeError):
-                return (False, f"distance must be numeric, got: {value}")
-
-    # Validate priority if present
-    if "priority" in payload:
-        value = payload.get("priority")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (False, "priority must be between 1 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"priority must be numeric, got: {value}")
-
-    # Validate dhcp-relay-interface-select-method if present
     if "dhcp-relay-interface-select-method" in payload:
-        value = payload.get("dhcp-relay-interface-select-method")
-        if (
-            value
-            and value not in VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD
-        ):
+        value = payload["dhcp-relay-interface-select-method"]
+        if value not in VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD:
             return (
                 False,
-                f"Invalid dhcp-relay-interface-select-method '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD)}",
+                f"Invalid value for 'dhcp-relay-interface-select-method'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD)}",
             )
-
-    # Validate dhcp-relay-interface if present
-    if "dhcp-relay-interface" in payload:
-        value = payload.get("dhcp-relay-interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "dhcp-relay-interface cannot exceed 15 characters")
-
-    # Validate dhcp-relay-vrf-select if present
-    if "dhcp-relay-vrf-select" in payload:
-        value = payload.get("dhcp-relay-vrf-select")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 511:
-                    return (
-                        False,
-                        "dhcp-relay-vrf-select must be between 0 and 511",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dhcp-relay-vrf-select must be numeric, got: {value}",
-                )
-
-    # Validate dhcp-broadcast-flag if present
     if "dhcp-broadcast-flag" in payload:
-        value = payload.get("dhcp-broadcast-flag")
-        if value and value not in VALID_BODY_DHCP_BROADCAST_FLAG:
+        value = payload["dhcp-broadcast-flag"]
+        if value not in VALID_BODY_DHCP_BROADCAST_FLAG:
             return (
                 False,
-                f"Invalid dhcp-broadcast-flag '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_BROADCAST_FLAG)}",
+                f"Invalid value for 'dhcp-broadcast-flag'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_BROADCAST_FLAG)}",
             )
-
-    # Validate dhcp-relay-service if present
     if "dhcp-relay-service" in payload:
-        value = payload.get("dhcp-relay-service")
-        if value and value not in VALID_BODY_DHCP_RELAY_SERVICE:
+        value = payload["dhcp-relay-service"]
+        if value not in VALID_BODY_DHCP_RELAY_SERVICE:
             return (
                 False,
-                f"Invalid dhcp-relay-service '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_SERVICE)}",
+                f"Invalid value for 'dhcp-relay-service'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_SERVICE)}",
             )
-
-    # Validate dhcp-relay-circuit-id if present
-    if "dhcp-relay-circuit-id" in payload:
-        value = payload.get("dhcp-relay-circuit-id")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (
-                False,
-                "dhcp-relay-circuit-id cannot exceed 64 characters",
-            )
-
-    # Validate dhcp-relay-request-all-server if present
     if "dhcp-relay-request-all-server" in payload:
-        value = payload.get("dhcp-relay-request-all-server")
-        if value and value not in VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER:
+        value = payload["dhcp-relay-request-all-server"]
+        if value not in VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER:
             return (
                 False,
-                f"Invalid dhcp-relay-request-all-server '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER)}",
+                f"Invalid value for 'dhcp-relay-request-all-server'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER)}",
             )
-
-    # Validate dhcp-relay-allow-no-end-option if present
     if "dhcp-relay-allow-no-end-option" in payload:
-        value = payload.get("dhcp-relay-allow-no-end-option")
-        if value and value not in VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION:
+        value = payload["dhcp-relay-allow-no-end-option"]
+        if value not in VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION:
             return (
                 False,
-                f"Invalid dhcp-relay-allow-no-end-option '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION)}",
+                f"Invalid value for 'dhcp-relay-allow-no-end-option'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION)}",
             )
-
-    # Validate dhcp-relay-type if present
     if "dhcp-relay-type" in payload:
-        value = payload.get("dhcp-relay-type")
-        if value and value not in VALID_BODY_DHCP_RELAY_TYPE:
+        value = payload["dhcp-relay-type"]
+        if value not in VALID_BODY_DHCP_RELAY_TYPE:
             return (
                 False,
-                f"Invalid dhcp-relay-type '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_TYPE)}",
+                f"Invalid value for 'dhcp-relay-type'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_TYPE)}",
             )
-
-    # Validate dhcp-smart-relay if present
     if "dhcp-smart-relay" in payload:
-        value = payload.get("dhcp-smart-relay")
-        if value and value not in VALID_BODY_DHCP_SMART_RELAY:
+        value = payload["dhcp-smart-relay"]
+        if value not in VALID_BODY_DHCP_SMART_RELAY:
             return (
                 False,
-                f"Invalid dhcp-smart-relay '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_SMART_RELAY)}",
+                f"Invalid value for 'dhcp-smart-relay'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_SMART_RELAY)}",
             )
-
-    # Validate dhcp-relay-agent-option if present
     if "dhcp-relay-agent-option" in payload:
-        value = payload.get("dhcp-relay-agent-option")
-        if value and value not in VALID_BODY_DHCP_RELAY_AGENT_OPTION:
+        value = payload["dhcp-relay-agent-option"]
+        if value not in VALID_BODY_DHCP_RELAY_AGENT_OPTION:
             return (
                 False,
-                f"Invalid dhcp-relay-agent-option '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_AGENT_OPTION)}",
+                f"Invalid value for 'dhcp-relay-agent-option'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_RELAY_AGENT_OPTION)}",
             )
-
-    # Validate dhcp-classless-route-addition if present
     if "dhcp-classless-route-addition" in payload:
-        value = payload.get("dhcp-classless-route-addition")
-        if value and value not in VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION:
+        value = payload["dhcp-classless-route-addition"]
+        if value not in VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION:
             return (
                 False,
-                f"Invalid dhcp-classless-route-addition '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION)}",
+                f"Invalid value for 'dhcp-classless-route-addition'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION)}",
             )
-
-    # Validate allowaccess if present
     if "allowaccess" in payload:
-        value = payload.get("allowaccess")
-        if value and value not in VALID_BODY_ALLOWACCESS:
+        value = payload["allowaccess"]
+        if value not in VALID_BODY_ALLOWACCESS:
             return (
                 False,
-                f"Invalid allowaccess '{value}'. Must be one of: {', '.join(VALID_BODY_ALLOWACCESS)}",
+                f"Invalid value for 'allowaccess'='{value}'. Must be one of: {', '.join(VALID_BODY_ALLOWACCESS)}",
             )
-
-    # Validate gwdetect if present
     if "gwdetect" in payload:
-        value = payload.get("gwdetect")
-        if value and value not in VALID_BODY_GWDETECT:
+        value = payload["gwdetect"]
+        if value not in VALID_BODY_GWDETECT:
             return (
                 False,
-                f"Invalid gwdetect '{value}'. Must be one of: {', '.join(VALID_BODY_GWDETECT)}",
+                f"Invalid value for 'gwdetect'='{value}'. Must be one of: {', '.join(VALID_BODY_GWDETECT)}",
             )
-
-    # Validate ping-serv-status if present
-    if "ping-serv-status" in payload:
-        value = payload.get("ping-serv-status")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (
-                        False,
-                        "ping-serv-status must be between 0 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ping-serv-status must be numeric, got: {value}",
-                )
-
-    # Validate detectprotocol if present
     if "detectprotocol" in payload:
-        value = payload.get("detectprotocol")
-        if value and value not in VALID_BODY_DETECTPROTOCOL:
+        value = payload["detectprotocol"]
+        if value not in VALID_BODY_DETECTPROTOCOL:
             return (
                 False,
-                f"Invalid detectprotocol '{value}'. Must be one of: {', '.join(VALID_BODY_DETECTPROTOCOL)}",
+                f"Invalid value for 'detectprotocol'='{value}'. Must be one of: {', '.join(VALID_BODY_DETECTPROTOCOL)}",
             )
-
-    # Validate ha-priority if present
-    if "ha-priority" in payload:
-        value = payload.get("ha-priority")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 50:
-                    return (False, "ha-priority must be between 1 and 50")
-            except (ValueError, TypeError):
-                return (False, f"ha-priority must be numeric, got: {value}")
-
-    # Validate fail-detect if present
     if "fail-detect" in payload:
-        value = payload.get("fail-detect")
-        if value and value not in VALID_BODY_FAIL_DETECT:
+        value = payload["fail-detect"]
+        if value not in VALID_BODY_FAIL_DETECT:
             return (
                 False,
-                f"Invalid fail-detect '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_DETECT)}",
+                f"Invalid value for 'fail-detect'='{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_DETECT)}",
             )
-
-    # Validate fail-detect-option if present
     if "fail-detect-option" in payload:
-        value = payload.get("fail-detect-option")
-        if value and value not in VALID_BODY_FAIL_DETECT_OPTION:
+        value = payload["fail-detect-option"]
+        if value not in VALID_BODY_FAIL_DETECT_OPTION:
             return (
                 False,
-                f"Invalid fail-detect-option '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_DETECT_OPTION)}",
+                f"Invalid value for 'fail-detect-option'='{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_DETECT_OPTION)}",
             )
-
-    # Validate fail-alert-method if present
     if "fail-alert-method" in payload:
-        value = payload.get("fail-alert-method")
-        if value and value not in VALID_BODY_FAIL_ALERT_METHOD:
+        value = payload["fail-alert-method"]
+        if value not in VALID_BODY_FAIL_ALERT_METHOD:
             return (
                 False,
-                f"Invalid fail-alert-method '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_ALERT_METHOD)}",
+                f"Invalid value for 'fail-alert-method'='{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_ALERT_METHOD)}",
             )
-
-    # Validate fail-action-on-extender if present
     if "fail-action-on-extender" in payload:
-        value = payload.get("fail-action-on-extender")
-        if value and value not in VALID_BODY_FAIL_ACTION_ON_EXTENDER:
+        value = payload["fail-action-on-extender"]
+        if value not in VALID_BODY_FAIL_ACTION_ON_EXTENDER:
             return (
                 False,
-                f"Invalid fail-action-on-extender '{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_ACTION_ON_EXTENDER)}",
+                f"Invalid value for 'fail-action-on-extender'='{value}'. Must be one of: {', '.join(VALID_BODY_FAIL_ACTION_ON_EXTENDER)}",
             )
-
-    # Validate dhcp-client-identifier if present
-    if "dhcp-client-identifier" in payload:
-        value = payload.get("dhcp-client-identifier")
-        if value and isinstance(value, str) and len(value) > 48:
-            return (
-                False,
-                "dhcp-client-identifier cannot exceed 48 characters",
-            )
-
-    # Validate dhcp-renew-time if present
-    if "dhcp-renew-time" in payload:
-        value = payload.get("dhcp-renew-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 604800:
-                    return (
-                        False,
-                        "dhcp-renew-time must be between 300 and 604800",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dhcp-renew-time must be numeric, got: {value}",
-                )
-
-    # Validate username if present
-    if "username" in payload:
-        value = payload.get("username")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (False, "username cannot exceed 64 characters")
-
-    # Validate pppoe-egress-cos if present
     if "pppoe-egress-cos" in payload:
-        value = payload.get("pppoe-egress-cos")
-        if value and value not in VALID_BODY_PPPOE_EGRESS_COS:
+        value = payload["pppoe-egress-cos"]
+        if value not in VALID_BODY_PPPOE_EGRESS_COS:
             return (
                 False,
-                f"Invalid pppoe-egress-cos '{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_EGRESS_COS)}",
+                f"Invalid value for 'pppoe-egress-cos'='{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_EGRESS_COS)}",
             )
-
-    # Validate pppoe-unnumbered-negotiate if present
     if "pppoe-unnumbered-negotiate" in payload:
-        value = payload.get("pppoe-unnumbered-negotiate")
-        if value and value not in VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE:
+        value = payload["pppoe-unnumbered-negotiate"]
+        if value not in VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE:
             return (
                 False,
-                f"Invalid pppoe-unnumbered-negotiate '{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}",
+                f"Invalid value for 'pppoe-unnumbered-negotiate'='{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}",
             )
-
-    # Validate idle-timeout if present
-    if "idle-timeout" in payload:
-        value = payload.get("idle-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32767:
-                    return (False, "idle-timeout must be between 0 and 32767")
-            except (ValueError, TypeError):
-                return (False, f"idle-timeout must be numeric, got: {value}")
-
-    # Validate multilink if present
-    if "multilink" in payload:
-        value = payload.get("multilink")
-        if value and value not in VALID_BODY_MULTILINK:
-            return (
-                False,
-                f"Invalid multilink '{value}'. Must be one of: {', '.join(VALID_BODY_MULTILINK)}",
-            )
-
-    # Validate mrru if present
-    if "mrru" in payload:
-        value = payload.get("mrru")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 296 or int_val > 65535:
-                    return (False, "mrru must be between 296 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"mrru must be numeric, got: {value}")
-
-    # Validate detected-peer-mtu if present
-    if "detected-peer-mtu" in payload:
-        value = payload.get("detected-peer-mtu")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "detected-peer-mtu must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"detected-peer-mtu must be numeric, got: {value}",
-                )
-
-    # Validate disc-retry-timeout if present
-    if "disc-retry-timeout" in payload:
-        value = payload.get("disc-retry-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "disc-retry-timeout must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"disc-retry-timeout must be numeric, got: {value}",
-                )
-
-    # Validate padt-retry-timeout if present
-    if "padt-retry-timeout" in payload:
-        value = payload.get("padt-retry-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "padt-retry-timeout must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"padt-retry-timeout must be numeric, got: {value}",
-                )
-
-    # Validate service-name if present
-    if "service-name" in payload:
-        value = payload.get("service-name")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "service-name cannot exceed 63 characters")
-
-    # Validate ac-name if present
-    if "ac-name" in payload:
-        value = payload.get("ac-name")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "ac-name cannot exceed 63 characters")
-
-    # Validate lcp-echo-interval if present
-    if "lcp-echo-interval" in payload:
-        value = payload.get("lcp-echo-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32767:
-                    return (
-                        False,
-                        "lcp-echo-interval must be between 0 and 32767",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"lcp-echo-interval must be numeric, got: {value}",
-                )
-
-    # Validate lcp-max-echo-fails if present
-    if "lcp-max-echo-fails" in payload:
-        value = payload.get("lcp-max-echo-fails")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32767:
-                    return (
-                        False,
-                        "lcp-max-echo-fails must be between 0 and 32767",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"lcp-max-echo-fails must be numeric, got: {value}",
-                )
-
-    # Validate defaultgw if present
     if "defaultgw" in payload:
-        value = payload.get("defaultgw")
-        if value and value not in VALID_BODY_DEFAULTGW:
+        value = payload["defaultgw"]
+        if value not in VALID_BODY_DEFAULTGW:
             return (
                 False,
-                f"Invalid defaultgw '{value}'. Must be one of: {', '.join(VALID_BODY_DEFAULTGW)}",
+                f"Invalid value for 'defaultgw'='{value}'. Must be one of: {', '.join(VALID_BODY_DEFAULTGW)}",
             )
-
-    # Validate dns-server-override if present
     if "dns-server-override" in payload:
-        value = payload.get("dns-server-override")
-        if value and value not in VALID_BODY_DNS_SERVER_OVERRIDE:
+        value = payload["dns-server-override"]
+        if value not in VALID_BODY_DNS_SERVER_OVERRIDE:
             return (
                 False,
-                f"Invalid dns-server-override '{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SERVER_OVERRIDE)}",
+                f"Invalid value for 'dns-server-override'='{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SERVER_OVERRIDE)}",
             )
-
-    # Validate dns-server-protocol if present
     if "dns-server-protocol" in payload:
-        value = payload.get("dns-server-protocol")
-        if value and value not in VALID_BODY_DNS_SERVER_PROTOCOL:
+        value = payload["dns-server-protocol"]
+        if value not in VALID_BODY_DNS_SERVER_PROTOCOL:
             return (
                 False,
-                f"Invalid dns-server-protocol '{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SERVER_PROTOCOL)}",
+                f"Invalid value for 'dns-server-protocol'='{value}'. Must be one of: {', '.join(VALID_BODY_DNS_SERVER_PROTOCOL)}",
             )
-
-    # Validate auth-type if present
     if "auth-type" in payload:
-        value = payload.get("auth-type")
-        if value and value not in VALID_BODY_AUTH_TYPE:
+        value = payload["auth-type"]
+        if value not in VALID_BODY_AUTH_TYPE:
             return (
                 False,
-                f"Invalid auth-type '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_TYPE)}",
+                f"Invalid value for 'auth-type'='{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_TYPE)}",
             )
-
-    # Validate pptp-client if present
     if "pptp-client" in payload:
-        value = payload.get("pptp-client")
-        if value and value not in VALID_BODY_PPTP_CLIENT:
+        value = payload["pptp-client"]
+        if value not in VALID_BODY_PPTP_CLIENT:
             return (
                 False,
-                f"Invalid pptp-client '{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_CLIENT)}",
+                f"Invalid value for 'pptp-client'='{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_CLIENT)}",
             )
-
-    # Validate pptp-user if present
-    if "pptp-user" in payload:
-        value = payload.get("pptp-user")
-        if value and isinstance(value, str) and len(value) > 64:
-            return (False, "pptp-user cannot exceed 64 characters")
-
-    # Validate pptp-auth-type if present
     if "pptp-auth-type" in payload:
-        value = payload.get("pptp-auth-type")
-        if value and value not in VALID_BODY_PPTP_AUTH_TYPE:
+        value = payload["pptp-auth-type"]
+        if value not in VALID_BODY_PPTP_AUTH_TYPE:
             return (
                 False,
-                f"Invalid pptp-auth-type '{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_AUTH_TYPE)}",
+                f"Invalid value for 'pptp-auth-type'='{value}'. Must be one of: {', '.join(VALID_BODY_PPTP_AUTH_TYPE)}",
             )
-
-    # Validate pptp-timeout if present
-    if "pptp-timeout" in payload:
-        value = payload.get("pptp-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "pptp-timeout must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"pptp-timeout must be numeric, got: {value}")
-
-    # Validate arpforward if present
     if "arpforward" in payload:
-        value = payload.get("arpforward")
-        if value and value not in VALID_BODY_ARPFORWARD:
+        value = payload["arpforward"]
+        if value not in VALID_BODY_ARPFORWARD:
             return (
                 False,
-                f"Invalid arpforward '{value}'. Must be one of: {', '.join(VALID_BODY_ARPFORWARD)}",
+                f"Invalid value for 'arpforward'='{value}'. Must be one of: {', '.join(VALID_BODY_ARPFORWARD)}",
             )
-
-    # Validate ndiscforward if present
     if "ndiscforward" in payload:
-        value = payload.get("ndiscforward")
-        if value and value not in VALID_BODY_NDISCFORWARD:
+        value = payload["ndiscforward"]
+        if value not in VALID_BODY_NDISCFORWARD:
             return (
                 False,
-                f"Invalid ndiscforward '{value}'. Must be one of: {', '.join(VALID_BODY_NDISCFORWARD)}",
+                f"Invalid value for 'ndiscforward'='{value}'. Must be one of: {', '.join(VALID_BODY_NDISCFORWARD)}",
             )
-
-    # Validate broadcast-forward if present
     if "broadcast-forward" in payload:
-        value = payload.get("broadcast-forward")
-        if value and value not in VALID_BODY_BROADCAST_FORWARD:
+        value = payload["broadcast-forward"]
+        if value not in VALID_BODY_BROADCAST_FORWARD:
             return (
                 False,
-                f"Invalid broadcast-forward '{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_FORWARD)}",
+                f"Invalid value for 'broadcast-forward'='{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_FORWARD)}",
             )
-
-    # Validate bfd if present
     if "bfd" in payload:
-        value = payload.get("bfd")
-        if value and value not in VALID_BODY_BFD:
+        value = payload["bfd"]
+        if value not in VALID_BODY_BFD:
             return (
                 False,
-                f"Invalid bfd '{value}'. Must be one of: {', '.join(VALID_BODY_BFD)}",
+                f"Invalid value for 'bfd'='{value}'. Must be one of: {', '.join(VALID_BODY_BFD)}",
             )
-
-    # Validate bfd-desired-min-tx if present
-    if "bfd-desired-min-tx" in payload:
-        value = payload.get("bfd-desired-min-tx")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100000:
-                    return (
-                        False,
-                        "bfd-desired-min-tx must be between 1 and 100000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bfd-desired-min-tx must be numeric, got: {value}",
-                )
-
-    # Validate bfd-detect-mult if present
-    if "bfd-detect-mult" in payload:
-        value = payload.get("bfd-detect-mult")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 50:
-                    return (False, "bfd-detect-mult must be between 1 and 50")
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bfd-detect-mult must be numeric, got: {value}",
-                )
-
-    # Validate bfd-required-min-rx if present
-    if "bfd-required-min-rx" in payload:
-        value = payload.get("bfd-required-min-rx")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100000:
-                    return (
-                        False,
-                        "bfd-required-min-rx must be between 1 and 100000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bfd-required-min-rx must be numeric, got: {value}",
-                )
-
-    # Validate l2forward if present
     if "l2forward" in payload:
-        value = payload.get("l2forward")
-        if value and value not in VALID_BODY_L2FORWARD:
+        value = payload["l2forward"]
+        if value not in VALID_BODY_L2FORWARD:
             return (
                 False,
-                f"Invalid l2forward '{value}'. Must be one of: {', '.join(VALID_BODY_L2FORWARD)}",
+                f"Invalid value for 'l2forward'='{value}'. Must be one of: {', '.join(VALID_BODY_L2FORWARD)}",
             )
-
-    # Validate icmp-send-redirect if present
     if "icmp-send-redirect" in payload:
-        value = payload.get("icmp-send-redirect")
-        if value and value not in VALID_BODY_ICMP_SEND_REDIRECT:
+        value = payload["icmp-send-redirect"]
+        if value not in VALID_BODY_ICMP_SEND_REDIRECT:
             return (
                 False,
-                f"Invalid icmp-send-redirect '{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_SEND_REDIRECT)}",
+                f"Invalid value for 'icmp-send-redirect'='{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_SEND_REDIRECT)}",
             )
-
-    # Validate icmp-accept-redirect if present
     if "icmp-accept-redirect" in payload:
-        value = payload.get("icmp-accept-redirect")
-        if value and value not in VALID_BODY_ICMP_ACCEPT_REDIRECT:
+        value = payload["icmp-accept-redirect"]
+        if value not in VALID_BODY_ICMP_ACCEPT_REDIRECT:
             return (
                 False,
-                f"Invalid icmp-accept-redirect '{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_ACCEPT_REDIRECT)}",
+                f"Invalid value for 'icmp-accept-redirect'='{value}'. Must be one of: {', '.join(VALID_BODY_ICMP_ACCEPT_REDIRECT)}",
             )
-
-    # Validate reachable-time if present
-    if "reachable-time" in payload:
-        value = payload.get("reachable-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30000 or int_val > 3600000:
-                    return (
-                        False,
-                        "reachable-time must be between 30000 and 3600000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"reachable-time must be numeric, got: {value}")
-
-    # Validate vlanforward if present
     if "vlanforward" in payload:
-        value = payload.get("vlanforward")
-        if value and value not in VALID_BODY_VLANFORWARD:
+        value = payload["vlanforward"]
+        if value not in VALID_BODY_VLANFORWARD:
             return (
                 False,
-                f"Invalid vlanforward '{value}'. Must be one of: {', '.join(VALID_BODY_VLANFORWARD)}",
+                f"Invalid value for 'vlanforward'='{value}'. Must be one of: {', '.join(VALID_BODY_VLANFORWARD)}",
             )
-
-    # Validate stpforward if present
     if "stpforward" in payload:
-        value = payload.get("stpforward")
-        if value and value not in VALID_BODY_STPFORWARD:
+        value = payload["stpforward"]
+        if value not in VALID_BODY_STPFORWARD:
             return (
                 False,
-                f"Invalid stpforward '{value}'. Must be one of: {', '.join(VALID_BODY_STPFORWARD)}",
+                f"Invalid value for 'stpforward'='{value}'. Must be one of: {', '.join(VALID_BODY_STPFORWARD)}",
             )
-
-    # Validate stpforward-mode if present
     if "stpforward-mode" in payload:
-        value = payload.get("stpforward-mode")
-        if value and value not in VALID_BODY_STPFORWARD_MODE:
+        value = payload["stpforward-mode"]
+        if value not in VALID_BODY_STPFORWARD_MODE:
             return (
                 False,
-                f"Invalid stpforward-mode '{value}'. Must be one of: {', '.join(VALID_BODY_STPFORWARD_MODE)}",
+                f"Invalid value for 'stpforward-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_STPFORWARD_MODE)}",
             )
-
-    # Validate ips-sniffer-mode if present
     if "ips-sniffer-mode" in payload:
-        value = payload.get("ips-sniffer-mode")
-        if value and value not in VALID_BODY_IPS_SNIFFER_MODE:
+        value = payload["ips-sniffer-mode"]
+        if value not in VALID_BODY_IPS_SNIFFER_MODE:
             return (
                 False,
-                f"Invalid ips-sniffer-mode '{value}'. Must be one of: {', '.join(VALID_BODY_IPS_SNIFFER_MODE)}",
+                f"Invalid value for 'ips-sniffer-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_IPS_SNIFFER_MODE)}",
             )
-
-    # Validate ident-accept if present
     if "ident-accept" in payload:
-        value = payload.get("ident-accept")
-        if value and value not in VALID_BODY_IDENT_ACCEPT:
+        value = payload["ident-accept"]
+        if value not in VALID_BODY_IDENT_ACCEPT:
             return (
                 False,
-                f"Invalid ident-accept '{value}'. Must be one of: {', '.join(VALID_BODY_IDENT_ACCEPT)}",
+                f"Invalid value for 'ident-accept'='{value}'. Must be one of: {', '.join(VALID_BODY_IDENT_ACCEPT)}",
             )
-
-    # Validate ipmac if present
     if "ipmac" in payload:
-        value = payload.get("ipmac")
-        if value and value not in VALID_BODY_IPMAC:
+        value = payload["ipmac"]
+        if value not in VALID_BODY_IPMAC:
             return (
                 False,
-                f"Invalid ipmac '{value}'. Must be one of: {', '.join(VALID_BODY_IPMAC)}",
+                f"Invalid value for 'ipmac'='{value}'. Must be one of: {', '.join(VALID_BODY_IPMAC)}",
             )
-
-    # Validate subst if present
     if "subst" in payload:
-        value = payload.get("subst")
-        if value and value not in VALID_BODY_SUBST:
+        value = payload["subst"]
+        if value not in VALID_BODY_SUBST:
             return (
                 False,
-                f"Invalid subst '{value}'. Must be one of: {', '.join(VALID_BODY_SUBST)}",
+                f"Invalid value for 'subst'='{value}'. Must be one of: {', '.join(VALID_BODY_SUBST)}",
             )
-
-    # Validate speed if present
     if "speed" in payload:
-        value = payload.get("speed")
-        if value and value not in VALID_BODY_SPEED:
+        value = payload["speed"]
+        if value not in VALID_BODY_SPEED:
             return (
                 False,
-                f"Invalid speed '{value}'. Must be one of: {', '.join(VALID_BODY_SPEED)}",
+                f"Invalid value for 'speed'='{value}'. Must be one of: {', '.join(VALID_BODY_SPEED)}",
             )
-
-    # Validate status if present
     if "status" in payload:
-        value = payload.get("status")
-        if value and value not in VALID_BODY_STATUS:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
             return (
                 False,
-                f"Invalid status '{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
             )
-
-    # Validate netbios-forward if present
     if "netbios-forward" in payload:
-        value = payload.get("netbios-forward")
-        if value and value not in VALID_BODY_NETBIOS_FORWARD:
+        value = payload["netbios-forward"]
+        if value not in VALID_BODY_NETBIOS_FORWARD:
             return (
                 False,
-                f"Invalid netbios-forward '{value}'. Must be one of: {', '.join(VALID_BODY_NETBIOS_FORWARD)}",
+                f"Invalid value for 'netbios-forward'='{value}'. Must be one of: {', '.join(VALID_BODY_NETBIOS_FORWARD)}",
             )
-
-    # Validate type if present
     if "type" in payload:
-        value = payload.get("type")
-        if value and value not in VALID_BODY_TYPE:
+        value = payload["type"]
+        if value not in VALID_BODY_TYPE:
             return (
                 False,
-                f"Invalid type '{value}'. Must be one of: {', '.join(VALID_BODY_TYPE)}",
+                f"Invalid value for 'type'='{value}'. Must be one of: {', '.join(VALID_BODY_TYPE)}",
             )
-
-    # Validate dedicated-to if present
     if "dedicated-to" in payload:
-        value = payload.get("dedicated-to")
-        if value and value not in VALID_BODY_DEDICATED_TO:
+        value = payload["dedicated-to"]
+        if value not in VALID_BODY_DEDICATED_TO:
             return (
                 False,
-                f"Invalid dedicated-to '{value}'. Must be one of: {', '.join(VALID_BODY_DEDICATED_TO)}",
+                f"Invalid value for 'dedicated-to'='{value}'. Must be one of: {', '.join(VALID_BODY_DEDICATED_TO)}",
             )
-
-    # Validate wccp if present
     if "wccp" in payload:
-        value = payload.get("wccp")
-        if value and value not in VALID_BODY_WCCP:
+        value = payload["wccp"]
+        if value not in VALID_BODY_WCCP:
             return (
                 False,
-                f"Invalid wccp '{value}'. Must be one of: {', '.join(VALID_BODY_WCCP)}",
+                f"Invalid value for 'wccp'='{value}'. Must be one of: {', '.join(VALID_BODY_WCCP)}",
             )
-
-    # Validate netflow-sampler if present
     if "netflow-sampler" in payload:
-        value = payload.get("netflow-sampler")
-        if value and value not in VALID_BODY_NETFLOW_SAMPLER:
+        value = payload["netflow-sampler"]
+        if value not in VALID_BODY_NETFLOW_SAMPLER:
             return (
                 False,
-                f"Invalid netflow-sampler '{value}'. Must be one of: {', '.join(VALID_BODY_NETFLOW_SAMPLER)}",
+                f"Invalid value for 'netflow-sampler'='{value}'. Must be one of: {', '.join(VALID_BODY_NETFLOW_SAMPLER)}",
             )
-
-    # Validate netflow-sample-rate if present
-    if "netflow-sample-rate" in payload:
-        value = payload.get("netflow-sample-rate")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "netflow-sample-rate must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netflow-sample-rate must be numeric, got: {value}",
-                )
-
-    # Validate netflow-sampler-id if present
-    if "netflow-sampler-id" in payload:
-        value = payload.get("netflow-sampler-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 254:
-                    return (
-                        False,
-                        "netflow-sampler-id must be between 1 and 254",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netflow-sampler-id must be numeric, got: {value}",
-                )
-
-    # Validate sflow-sampler if present
     if "sflow-sampler" in payload:
-        value = payload.get("sflow-sampler")
-        if value and value not in VALID_BODY_SFLOW_SAMPLER:
+        value = payload["sflow-sampler"]
+        if value not in VALID_BODY_SFLOW_SAMPLER:
             return (
                 False,
-                f"Invalid sflow-sampler '{value}'. Must be one of: {', '.join(VALID_BODY_SFLOW_SAMPLER)}",
+                f"Invalid value for 'sflow-sampler'='{value}'. Must be one of: {', '.join(VALID_BODY_SFLOW_SAMPLER)}",
             )
-
-    # Validate drop-fragment if present
     if "drop-fragment" in payload:
-        value = payload.get("drop-fragment")
-        if value and value not in VALID_BODY_DROP_FRAGMENT:
+        value = payload["drop-fragment"]
+        if value not in VALID_BODY_DROP_FRAGMENT:
             return (
                 False,
-                f"Invalid drop-fragment '{value}'. Must be one of: {', '.join(VALID_BODY_DROP_FRAGMENT)}",
+                f"Invalid value for 'drop-fragment'='{value}'. Must be one of: {', '.join(VALID_BODY_DROP_FRAGMENT)}",
             )
-
-    # Validate src-check if present
     if "src-check" in payload:
-        value = payload.get("src-check")
-        if value and value not in VALID_BODY_SRC_CHECK:
+        value = payload["src-check"]
+        if value not in VALID_BODY_SRC_CHECK:
             return (
                 False,
-                f"Invalid src-check '{value}'. Must be one of: {', '.join(VALID_BODY_SRC_CHECK)}",
+                f"Invalid value for 'src-check'='{value}'. Must be one of: {', '.join(VALID_BODY_SRC_CHECK)}",
             )
-
-    # Validate sample-rate if present
-    if "sample-rate" in payload:
-        value = payload.get("sample-rate")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 99999:
-                    return (False, "sample-rate must be between 10 and 99999")
-            except (ValueError, TypeError):
-                return (False, f"sample-rate must be numeric, got: {value}")
-
-    # Validate polling-interval if present
-    if "polling-interval" in payload:
-        value = payload.get("polling-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 255:
-                    return (
-                        False,
-                        "polling-interval must be between 1 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"polling-interval must be numeric, got: {value}",
-                )
-
-    # Validate sample-direction if present
     if "sample-direction" in payload:
-        value = payload.get("sample-direction")
-        if value and value not in VALID_BODY_SAMPLE_DIRECTION:
+        value = payload["sample-direction"]
+        if value not in VALID_BODY_SAMPLE_DIRECTION:
             return (
                 False,
-                f"Invalid sample-direction '{value}'. Must be one of: {', '.join(VALID_BODY_SAMPLE_DIRECTION)}",
+                f"Invalid value for 'sample-direction'='{value}'. Must be one of: {', '.join(VALID_BODY_SAMPLE_DIRECTION)}",
             )
-
-    # Validate explicit-web-proxy if present
     if "explicit-web-proxy" in payload:
-        value = payload.get("explicit-web-proxy")
-        if value and value not in VALID_BODY_EXPLICIT_WEB_PROXY:
+        value = payload["explicit-web-proxy"]
+        if value not in VALID_BODY_EXPLICIT_WEB_PROXY:
             return (
                 False,
-                f"Invalid explicit-web-proxy '{value}'. Must be one of: {', '.join(VALID_BODY_EXPLICIT_WEB_PROXY)}",
+                f"Invalid value for 'explicit-web-proxy'='{value}'. Must be one of: {', '.join(VALID_BODY_EXPLICIT_WEB_PROXY)}",
             )
-
-    # Validate explicit-ftp-proxy if present
     if "explicit-ftp-proxy" in payload:
-        value = payload.get("explicit-ftp-proxy")
-        if value and value not in VALID_BODY_EXPLICIT_FTP_PROXY:
+        value = payload["explicit-ftp-proxy"]
+        if value not in VALID_BODY_EXPLICIT_FTP_PROXY:
             return (
                 False,
-                f"Invalid explicit-ftp-proxy '{value}'. Must be one of: {', '.join(VALID_BODY_EXPLICIT_FTP_PROXY)}",
+                f"Invalid value for 'explicit-ftp-proxy'='{value}'. Must be one of: {', '.join(VALID_BODY_EXPLICIT_FTP_PROXY)}",
             )
-
-    # Validate proxy-captive-portal if present
     if "proxy-captive-portal" in payload:
-        value = payload.get("proxy-captive-portal")
-        if value and value not in VALID_BODY_PROXY_CAPTIVE_PORTAL:
+        value = payload["proxy-captive-portal"]
+        if value not in VALID_BODY_PROXY_CAPTIVE_PORTAL:
             return (
                 False,
-                f"Invalid proxy-captive-portal '{value}'. Must be one of: {', '.join(VALID_BODY_PROXY_CAPTIVE_PORTAL)}",
+                f"Invalid value for 'proxy-captive-portal'='{value}'. Must be one of: {', '.join(VALID_BODY_PROXY_CAPTIVE_PORTAL)}",
             )
-
-    # Validate tcp-mss if present
-    if "tcp-mss" in payload:
-        value = payload.get("tcp-mss")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 48 or int_val > 65535:
-                    return (False, "tcp-mss must be between 48 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"tcp-mss must be numeric, got: {value}")
-
-    # Validate inbandwidth if present
-    if "inbandwidth" in payload:
-        value = payload.get("inbandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 80000000:
-                    return (
-                        False,
-                        "inbandwidth must be between 0 and 80000000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"inbandwidth must be numeric, got: {value}")
-
-    # Validate outbandwidth if present
-    if "outbandwidth" in payload:
-        value = payload.get("outbandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 80000000:
-                    return (
-                        False,
-                        "outbandwidth must be between 0 and 80000000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"outbandwidth must be numeric, got: {value}")
-
-    # Validate egress-shaping-profile if present
-    if "egress-shaping-profile" in payload:
-        value = payload.get("egress-shaping-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "egress-shaping-profile cannot exceed 35 characters",
-            )
-
-    # Validate ingress-shaping-profile if present
-    if "ingress-shaping-profile" in payload:
-        value = payload.get("ingress-shaping-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "ingress-shaping-profile cannot exceed 35 characters",
-            )
-
-    # Validate spillover-threshold if present
-    if "spillover-threshold" in payload:
-        value = payload.get("spillover-threshold")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "spillover-threshold must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"spillover-threshold must be numeric, got: {value}",
-                )
-
-    # Validate ingress-spillover-threshold if present
-    if "ingress-spillover-threshold" in payload:
-        value = payload.get("ingress-spillover-threshold")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 16776000:
-                    return (
-                        False,
-                        "ingress-spillover-threshold must be between 0 and 16776000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ingress-spillover-threshold must be numeric, got: {value}",
-                )
-
-    # Validate weight if present
-    if "weight" in payload:
-        value = payload.get("weight")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (False, "weight must be between 0 and 255")
-            except (ValueError, TypeError):
-                return (False, f"weight must be numeric, got: {value}")
-
-    # Validate interface if present
-    if "interface" in payload:
-        value = payload.get("interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "interface cannot exceed 15 characters")
-
-    # Validate external if present
     if "external" in payload:
-        value = payload.get("external")
-        if value and value not in VALID_BODY_EXTERNAL:
+        value = payload["external"]
+        if value not in VALID_BODY_EXTERNAL:
             return (
                 False,
-                f"Invalid external '{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL)}",
+                f"Invalid value for 'external'='{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL)}",
             )
-
-    # Validate mtu-override if present
     if "mtu-override" in payload:
-        value = payload.get("mtu-override")
-        if value and value not in VALID_BODY_MTU_OVERRIDE:
+        value = payload["mtu-override"]
+        if value not in VALID_BODY_MTU_OVERRIDE:
             return (
                 False,
-                f"Invalid mtu-override '{value}'. Must be one of: {', '.join(VALID_BODY_MTU_OVERRIDE)}",
+                f"Invalid value for 'mtu-override'='{value}'. Must be one of: {', '.join(VALID_BODY_MTU_OVERRIDE)}",
             )
-
-    # Validate mtu if present
-    if "mtu" in payload:
-        value = payload.get("mtu")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (False, "mtu must be between 0 and 4294967295")
-            except (ValueError, TypeError):
-                return (False, f"mtu must be numeric, got: {value}")
-
-    # Validate vlan-protocol if present
     if "vlan-protocol" in payload:
-        value = payload.get("vlan-protocol")
-        if value and value not in VALID_BODY_VLAN_PROTOCOL:
+        value = payload["vlan-protocol"]
+        if value not in VALID_BODY_VLAN_PROTOCOL:
             return (
                 False,
-                f"Invalid vlan-protocol '{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_PROTOCOL)}",
+                f"Invalid value for 'vlan-protocol'='{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_PROTOCOL)}",
             )
-
-    # Validate vlanid if present
-    if "vlanid" in payload:
-        value = payload.get("vlanid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 4094:
-                    return (False, "vlanid must be between 1 and 4094")
-            except (ValueError, TypeError):
-                return (False, f"vlanid must be numeric, got: {value}")
-
-    # Validate trunk if present
-    if "trunk" in payload:
-        value = payload.get("trunk")
-        if value and value not in VALID_BODY_TRUNK:
-            return (
-                False,
-                f"Invalid trunk '{value}'. Must be one of: {', '.join(VALID_BODY_TRUNK)}",
-            )
-
-    # Validate forward-domain if present
-    if "forward-domain" in payload:
-        value = payload.get("forward-domain")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2147483647:
-                    return (
-                        False,
-                        "forward-domain must be between 0 and 2147483647",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"forward-domain must be numeric, got: {value}")
-
-    # Validate lacp-mode if present
     if "lacp-mode" in payload:
-        value = payload.get("lacp-mode")
-        if value and value not in VALID_BODY_LACP_MODE:
+        value = payload["lacp-mode"]
+        if value not in VALID_BODY_LACP_MODE:
             return (
                 False,
-                f"Invalid lacp-mode '{value}'. Must be one of: {', '.join(VALID_BODY_LACP_MODE)}",
+                f"Invalid value for 'lacp-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_LACP_MODE)}",
             )
-
-    # Validate lacp-ha-secondary if present
     if "lacp-ha-secondary" in payload:
-        value = payload.get("lacp-ha-secondary")
-        if value and value not in VALID_BODY_LACP_HA_SECONDARY:
+        value = payload["lacp-ha-secondary"]
+        if value not in VALID_BODY_LACP_HA_SECONDARY:
             return (
                 False,
-                f"Invalid lacp-ha-secondary '{value}'. Must be one of: {', '.join(VALID_BODY_LACP_HA_SECONDARY)}",
+                f"Invalid value for 'lacp-ha-secondary'='{value}'. Must be one of: {', '.join(VALID_BODY_LACP_HA_SECONDARY)}",
             )
-
-    # Validate system-id-type if present
     if "system-id-type" in payload:
-        value = payload.get("system-id-type")
-        if value and value not in VALID_BODY_SYSTEM_ID_TYPE:
+        value = payload["system-id-type"]
+        if value not in VALID_BODY_SYSTEM_ID_TYPE:
             return (
                 False,
-                f"Invalid system-id-type '{value}'. Must be one of: {', '.join(VALID_BODY_SYSTEM_ID_TYPE)}",
+                f"Invalid value for 'system-id-type'='{value}'. Must be one of: {', '.join(VALID_BODY_SYSTEM_ID_TYPE)}",
             )
-
-    # Validate lacp-speed if present
     if "lacp-speed" in payload:
-        value = payload.get("lacp-speed")
-        if value and value not in VALID_BODY_LACP_SPEED:
+        value = payload["lacp-speed"]
+        if value not in VALID_BODY_LACP_SPEED:
             return (
                 False,
-                f"Invalid lacp-speed '{value}'. Must be one of: {', '.join(VALID_BODY_LACP_SPEED)}",
+                f"Invalid value for 'lacp-speed'='{value}'. Must be one of: {', '.join(VALID_BODY_LACP_SPEED)}",
             )
-
-    # Validate min-links if present
-    if "min-links" in payload:
-        value = payload.get("min-links")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 32:
-                    return (False, "min-links must be between 1 and 32")
-            except (ValueError, TypeError):
-                return (False, f"min-links must be numeric, got: {value}")
-
-    # Validate min-links-down if present
     if "min-links-down" in payload:
-        value = payload.get("min-links-down")
-        if value and value not in VALID_BODY_MIN_LINKS_DOWN:
+        value = payload["min-links-down"]
+        if value not in VALID_BODY_MIN_LINKS_DOWN:
             return (
                 False,
-                f"Invalid min-links-down '{value}'. Must be one of: {', '.join(VALID_BODY_MIN_LINKS_DOWN)}",
+                f"Invalid value for 'min-links-down'='{value}'. Must be one of: {', '.join(VALID_BODY_MIN_LINKS_DOWN)}",
             )
-
-    # Validate algorithm if present
     if "algorithm" in payload:
-        value = payload.get("algorithm")
-        if value and value not in VALID_BODY_ALGORITHM:
+        value = payload["algorithm"]
+        if value not in VALID_BODY_ALGORITHM:
             return (
                 False,
-                f"Invalid algorithm '{value}'. Must be one of: {', '.join(VALID_BODY_ALGORITHM)}",
+                f"Invalid value for 'algorithm'='{value}'. Must be one of: {', '.join(VALID_BODY_ALGORITHM)}",
             )
-
-    # Validate link-up-delay if present
-    if "link-up-delay" in payload:
-        value = payload.get("link-up-delay")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 50 or int_val > 3600000:
-                    return (
-                        False,
-                        "link-up-delay must be between 50 and 3600000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"link-up-delay must be numeric, got: {value}")
-
-    # Validate aggregate-type if present
     if "aggregate-type" in payload:
-        value = payload.get("aggregate-type")
-        if value and value not in VALID_BODY_AGGREGATE_TYPE:
+        value = payload["aggregate-type"]
+        if value not in VALID_BODY_AGGREGATE_TYPE:
             return (
                 False,
-                f"Invalid aggregate-type '{value}'. Must be one of: {', '.join(VALID_BODY_AGGREGATE_TYPE)}",
+                f"Invalid value for 'aggregate-type'='{value}'. Must be one of: {', '.join(VALID_BODY_AGGREGATE_TYPE)}",
             )
-
-    # Validate priority-override if present
     if "priority-override" in payload:
-        value = payload.get("priority-override")
-        if value and value not in VALID_BODY_PRIORITY_OVERRIDE:
+        value = payload["priority-override"]
+        if value not in VALID_BODY_PRIORITY_OVERRIDE:
             return (
                 False,
-                f"Invalid priority-override '{value}'. Must be one of: {', '.join(VALID_BODY_PRIORITY_OVERRIDE)}",
+                f"Invalid value for 'priority-override'='{value}'. Must be one of: {', '.join(VALID_BODY_PRIORITY_OVERRIDE)}",
             )
-
-    # Validate aggregate if present
-    if "aggregate" in payload:
-        value = payload.get("aggregate")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "aggregate cannot exceed 15 characters")
-
-    # Validate redundant-interface if present
-    if "redundant-interface" in payload:
-        value = payload.get("redundant-interface")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "redundant-interface cannot exceed 15 characters")
-
-    # Validate devindex if present
-    if "devindex" in payload:
-        value = payload.get("devindex")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "devindex must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"devindex must be numeric, got: {value}")
-
-    # Validate vindex if present
-    if "vindex" in payload:
-        value = payload.get("vindex")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "vindex must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"vindex must be numeric, got: {value}")
-
-    # Validate switch if present
-    if "switch" in payload:
-        value = payload.get("switch")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "switch cannot exceed 15 characters")
-
-    # Validate description if present
-    if "description" in payload:
-        value = payload.get("description")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "description cannot exceed 255 characters")
-
-    # Validate alias if present
-    if "alias" in payload:
-        value = payload.get("alias")
-        if value and isinstance(value, str) and len(value) > 25:
-            return (False, "alias cannot exceed 25 characters")
-
-    # Validate l2tp-client if present
-    if "l2tp-client" in payload:
-        value = payload.get("l2tp-client")
-        if value and value not in VALID_BODY_L2TP_CLIENT:
-            return (
-                False,
-                f"Invalid l2tp-client '{value}'. Must be one of: {', '.join(VALID_BODY_L2TP_CLIENT)}",
-            )
-
-    # Validate security-mode if present
     if "security-mode" in payload:
-        value = payload.get("security-mode")
-        if value and value not in VALID_BODY_SECURITY_MODE:
+        value = payload["security-mode"]
+        if value not in VALID_BODY_SECURITY_MODE:
             return (
                 False,
-                f"Invalid security-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_MODE)}",
+                f"Invalid value for 'security-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_MODE)}",
             )
-
-    # Validate security-mac-auth-bypass if present
     if "security-mac-auth-bypass" in payload:
-        value = payload.get("security-mac-auth-bypass")
-        if value and value not in VALID_BODY_SECURITY_MAC_AUTH_BYPASS:
+        value = payload["security-mac-auth-bypass"]
+        if value not in VALID_BODY_SECURITY_MAC_AUTH_BYPASS:
             return (
                 False,
-                f"Invalid security-mac-auth-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_MAC_AUTH_BYPASS)}",
+                f"Invalid value for 'security-mac-auth-bypass'='{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_MAC_AUTH_BYPASS)}",
             )
-
-    # Validate security-ip-auth-bypass if present
     if "security-ip-auth-bypass" in payload:
-        value = payload.get("security-ip-auth-bypass")
-        if value and value not in VALID_BODY_SECURITY_IP_AUTH_BYPASS:
+        value = payload["security-ip-auth-bypass"]
+        if value not in VALID_BODY_SECURITY_IP_AUTH_BYPASS:
             return (
                 False,
-                f"Invalid security-ip-auth-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_IP_AUTH_BYPASS)}",
+                f"Invalid value for 'security-ip-auth-bypass'='{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_IP_AUTH_BYPASS)}",
             )
-
-    # Validate security-8021x-mode if present
-    if "security-8021x-mode" in payload:
-        value = payload.get("security-8021x-mode")
-        if value and value not in VALID_BODY_SECURITY_8021X_MODE:
-            return (
-                False,
-                f"Invalid security-8021x-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_8021X_MODE)}",
-            )
-
-    # Validate security-8021x-master if present
-    if "security-8021x-master" in payload:
-        value = payload.get("security-8021x-master")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (
-                False,
-                "security-8021x-master cannot exceed 15 characters",
-            )
-
-    # Validate security-8021x-dynamic-vlan-id if present
-    if "security-8021x-dynamic-vlan-id" in payload:
-        value = payload.get("security-8021x-dynamic-vlan-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4094:
-                    return (
-                        False,
-                        "security-8021x-dynamic-vlan-id must be between 0 and 4094",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"security-8021x-dynamic-vlan-id must be numeric, got: {value}",
-                )
-
-    # Validate security-8021x-member-mode if present
-    if "security-8021x-member-mode" in payload:
-        value = payload.get("security-8021x-member-mode")
-        if value and value not in VALID_BODY_SECURITY_8021X_MEMBER_MODE:
-            return (
-                False,
-                f"Invalid security-8021x-member-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY_8021X_MEMBER_MODE)}",
-            )
-
-    # Validate security-external-web if present
-    if "security-external-web" in payload:
-        value = payload.get("security-external-web")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (
-                False,
-                "security-external-web cannot exceed 1023 characters",
-            )
-
-    # Validate security-external-logout if present
-    if "security-external-logout" in payload:
-        value = payload.get("security-external-logout")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (
-                False,
-                "security-external-logout cannot exceed 127 characters",
-            )
-
-    # Validate replacemsg-override-group if present
-    if "replacemsg-override-group" in payload:
-        value = payload.get("replacemsg-override-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "replacemsg-override-group cannot exceed 35 characters",
-            )
-
-    # Validate security-redirect-url if present
-    if "security-redirect-url" in payload:
-        value = payload.get("security-redirect-url")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (
-                False,
-                "security-redirect-url cannot exceed 1023 characters",
-            )
-
-    # Validate auth-cert if present
-    if "auth-cert" in payload:
-        value = payload.get("auth-cert")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "auth-cert cannot exceed 35 characters")
-
-    # Validate auth-portal-addr if present
-    if "auth-portal-addr" in payload:
-        value = payload.get("auth-portal-addr")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "auth-portal-addr cannot exceed 63 characters")
-
-    # Validate security-exempt-list if present
-    if "security-exempt-list" in payload:
-        value = payload.get("security-exempt-list")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "security-exempt-list cannot exceed 35 characters")
-
-    # Validate ike-saml-server if present
-    if "ike-saml-server" in payload:
-        value = payload.get("ike-saml-server")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "ike-saml-server cannot exceed 35 characters")
-
-    # Validate stp if present
-    if "stp" in payload:
-        value = payload.get("stp")
-        if value and value not in VALID_BODY_STP:
-            return (
-                False,
-                f"Invalid stp '{value}'. Must be one of: {', '.join(VALID_BODY_STP)}",
-            )
-
-    # Validate stp-ha-secondary if present
-    if "stp-ha-secondary" in payload:
-        value = payload.get("stp-ha-secondary")
-        if value and value not in VALID_BODY_STP_HA_SECONDARY:
-            return (
-                False,
-                f"Invalid stp-ha-secondary '{value}'. Must be one of: {', '.join(VALID_BODY_STP_HA_SECONDARY)}",
-            )
-
-    # Validate stp-edge if present
-    if "stp-edge" in payload:
-        value = payload.get("stp-edge")
-        if value and value not in VALID_BODY_STP_EDGE:
-            return (
-                False,
-                f"Invalid stp-edge '{value}'. Must be one of: {', '.join(VALID_BODY_STP_EDGE)}",
-            )
-
-    # Validate device-identification if present
     if "device-identification" in payload:
-        value = payload.get("device-identification")
-        if value and value not in VALID_BODY_DEVICE_IDENTIFICATION:
+        value = payload["device-identification"]
+        if value not in VALID_BODY_DEVICE_IDENTIFICATION:
             return (
                 False,
-                f"Invalid device-identification '{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_IDENTIFICATION)}",
+                f"Invalid value for 'device-identification'='{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_IDENTIFICATION)}",
             )
-
-    # Validate exclude-signatures if present
     if "exclude-signatures" in payload:
-        value = payload.get("exclude-signatures")
-        if value and value not in VALID_BODY_EXCLUDE_SIGNATURES:
+        value = payload["exclude-signatures"]
+        if value not in VALID_BODY_EXCLUDE_SIGNATURES:
             return (
                 False,
-                f"Invalid exclude-signatures '{value}'. Must be one of: {', '.join(VALID_BODY_EXCLUDE_SIGNATURES)}",
+                f"Invalid value for 'exclude-signatures'='{value}'. Must be one of: {', '.join(VALID_BODY_EXCLUDE_SIGNATURES)}",
             )
-
-    # Validate device-user-identification if present
     if "device-user-identification" in payload:
-        value = payload.get("device-user-identification")
-        if value and value not in VALID_BODY_DEVICE_USER_IDENTIFICATION:
+        value = payload["device-user-identification"]
+        if value not in VALID_BODY_DEVICE_USER_IDENTIFICATION:
             return (
                 False,
-                f"Invalid device-user-identification '{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_USER_IDENTIFICATION)}",
+                f"Invalid value for 'device-user-identification'='{value}'. Must be one of: {', '.join(VALID_BODY_DEVICE_USER_IDENTIFICATION)}",
             )
-
-    # Validate lldp-reception if present
     if "lldp-reception" in payload:
-        value = payload.get("lldp-reception")
-        if value and value not in VALID_BODY_LLDP_RECEPTION:
+        value = payload["lldp-reception"]
+        if value not in VALID_BODY_LLDP_RECEPTION:
             return (
                 False,
-                f"Invalid lldp-reception '{value}'. Must be one of: {', '.join(VALID_BODY_LLDP_RECEPTION)}",
+                f"Invalid value for 'lldp-reception'='{value}'. Must be one of: {', '.join(VALID_BODY_LLDP_RECEPTION)}",
             )
-
-    # Validate lldp-transmission if present
     if "lldp-transmission" in payload:
-        value = payload.get("lldp-transmission")
-        if value and value not in VALID_BODY_LLDP_TRANSMISSION:
+        value = payload["lldp-transmission"]
+        if value not in VALID_BODY_LLDP_TRANSMISSION:
             return (
                 False,
-                f"Invalid lldp-transmission '{value}'. Must be one of: {', '.join(VALID_BODY_LLDP_TRANSMISSION)}",
+                f"Invalid value for 'lldp-transmission'='{value}'. Must be one of: {', '.join(VALID_BODY_LLDP_TRANSMISSION)}",
             )
-
-    # Validate lldp-network-policy if present
-    if "lldp-network-policy" in payload:
-        value = payload.get("lldp-network-policy")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "lldp-network-policy cannot exceed 35 characters")
-
-    # Validate estimated-upstream-bandwidth if present
-    if "estimated-upstream-bandwidth" in payload:
-        value = payload.get("estimated-upstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "estimated-upstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"estimated-upstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate estimated-downstream-bandwidth if present
-    if "estimated-downstream-bandwidth" in payload:
-        value = payload.get("estimated-downstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "estimated-downstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"estimated-downstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate measured-upstream-bandwidth if present
-    if "measured-upstream-bandwidth" in payload:
-        value = payload.get("measured-upstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "measured-upstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"measured-upstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate measured-downstream-bandwidth if present
-    if "measured-downstream-bandwidth" in payload:
-        value = payload.get("measured-downstream-bandwidth")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "measured-downstream-bandwidth must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"measured-downstream-bandwidth must be numeric, got: {value}",
-                )
-
-    # Validate bandwidth-measure-time if present
-    if "bandwidth-measure-time" in payload:
-        value = payload.get("bandwidth-measure-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "bandwidth-measure-time must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bandwidth-measure-time must be numeric, got: {value}",
-                )
-
-    # Validate monitor-bandwidth if present
     if "monitor-bandwidth" in payload:
-        value = payload.get("monitor-bandwidth")
-        if value and value not in VALID_BODY_MONITOR_BANDWIDTH:
+        value = payload["monitor-bandwidth"]
+        if value not in VALID_BODY_MONITOR_BANDWIDTH:
             return (
                 False,
-                f"Invalid monitor-bandwidth '{value}'. Must be one of: {', '.join(VALID_BODY_MONITOR_BANDWIDTH)}",
+                f"Invalid value for 'monitor-bandwidth'='{value}'. Must be one of: {', '.join(VALID_BODY_MONITOR_BANDWIDTH)}",
             )
-
-    # Validate vrrp-virtual-mac if present
     if "vrrp-virtual-mac" in payload:
-        value = payload.get("vrrp-virtual-mac")
-        if value and value not in VALID_BODY_VRRP_VIRTUAL_MAC:
+        value = payload["vrrp-virtual-mac"]
+        if value not in VALID_BODY_VRRP_VIRTUAL_MAC:
             return (
                 False,
-                f"Invalid vrrp-virtual-mac '{value}'. Must be one of: {', '.join(VALID_BODY_VRRP_VIRTUAL_MAC)}",
+                f"Invalid value for 'vrrp-virtual-mac'='{value}'. Must be one of: {', '.join(VALID_BODY_VRRP_VIRTUAL_MAC)}",
             )
-
-    # Validate role if present
     if "role" in payload:
-        value = payload.get("role")
-        if value and value not in VALID_BODY_ROLE:
+        value = payload["role"]
+        if value not in VALID_BODY_ROLE:
             return (
                 False,
-                f"Invalid role '{value}'. Must be one of: {', '.join(VALID_BODY_ROLE)}",
+                f"Invalid value for 'role'='{value}'. Must be one of: {', '.join(VALID_BODY_ROLE)}",
             )
-
-    # Validate snmp-index if present
-    if "snmp-index" in payload:
-        value = payload.get("snmp-index")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2147483647:
-                    return (
-                        False,
-                        "snmp-index must be between 0 and 2147483647",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"snmp-index must be numeric, got: {value}")
-
-    # Validate secondary-IP if present
     if "secondary-IP" in payload:
-        value = payload.get("secondary-IP")
-        if value and value not in VALID_BODY_SECONDARY_IP:
+        value = payload["secondary-IP"]
+        if value not in VALID_BODY_SECONDARY_IP:
             return (
                 False,
-                f"Invalid secondary-IP '{value}'. Must be one of: {', '.join(VALID_BODY_SECONDARY_IP)}",
+                f"Invalid value for 'secondary-IP'='{value}'. Must be one of: {', '.join(VALID_BODY_SECONDARY_IP)}",
             )
-
-    # Validate preserve-session-route if present
     if "preserve-session-route" in payload:
-        value = payload.get("preserve-session-route")
-        if value and value not in VALID_BODY_PRESERVE_SESSION_ROUTE:
+        value = payload["preserve-session-route"]
+        if value not in VALID_BODY_PRESERVE_SESSION_ROUTE:
             return (
                 False,
-                f"Invalid preserve-session-route '{value}'. Must be one of: {', '.join(VALID_BODY_PRESERVE_SESSION_ROUTE)}",
+                f"Invalid value for 'preserve-session-route'='{value}'. Must be one of: {', '.join(VALID_BODY_PRESERVE_SESSION_ROUTE)}",
             )
-
-    # Validate auto-auth-extension-device if present
     if "auto-auth-extension-device" in payload:
-        value = payload.get("auto-auth-extension-device")
-        if value and value not in VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE:
+        value = payload["auto-auth-extension-device"]
+        if value not in VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE:
             return (
                 False,
-                f"Invalid auto-auth-extension-device '{value}'. Must be one of: {', '.join(VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE)}",
+                f"Invalid value for 'auto-auth-extension-device'='{value}'. Must be one of: {', '.join(VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE)}",
             )
-
-    # Validate ap-discover if present
     if "ap-discover" in payload:
-        value = payload.get("ap-discover")
-        if value and value not in VALID_BODY_AP_DISCOVER:
+        value = payload["ap-discover"]
+        if value not in VALID_BODY_AP_DISCOVER:
             return (
                 False,
-                f"Invalid ap-discover '{value}'. Must be one of: {', '.join(VALID_BODY_AP_DISCOVER)}",
+                f"Invalid value for 'ap-discover'='{value}'. Must be one of: {', '.join(VALID_BODY_AP_DISCOVER)}",
             )
-
-    # Validate fortilink-neighbor-detect if present
     if "fortilink-neighbor-detect" in payload:
-        value = payload.get("fortilink-neighbor-detect")
-        if value and value not in VALID_BODY_FORTILINK_NEIGHBOR_DETECT:
+        value = payload["fortilink-neighbor-detect"]
+        if value not in VALID_BODY_FORTILINK_NEIGHBOR_DETECT:
             return (
                 False,
-                f"Invalid fortilink-neighbor-detect '{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK_NEIGHBOR_DETECT)}",
+                f"Invalid value for 'fortilink-neighbor-detect'='{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK_NEIGHBOR_DETECT)}",
             )
-
-    # Validate ip-managed-by-fortiipam if present
     if "ip-managed-by-fortiipam" in payload:
-        value = payload.get("ip-managed-by-fortiipam")
-        if value and value not in VALID_BODY_IP_MANAGED_BY_FORTIIPAM:
+        value = payload["ip-managed-by-fortiipam"]
+        if value not in VALID_BODY_IP_MANAGED_BY_FORTIIPAM:
             return (
                 False,
-                f"Invalid ip-managed-by-fortiipam '{value}'. Must be one of: {', '.join(VALID_BODY_IP_MANAGED_BY_FORTIIPAM)}",
+                f"Invalid value for 'ip-managed-by-fortiipam'='{value}'. Must be one of: {', '.join(VALID_BODY_IP_MANAGED_BY_FORTIIPAM)}",
             )
-
-    # Validate managed-subnetwork-size if present
     if "managed-subnetwork-size" in payload:
-        value = payload.get("managed-subnetwork-size")
-        if value and value not in VALID_BODY_MANAGED_SUBNETWORK_SIZE:
+        value = payload["managed-subnetwork-size"]
+        if value not in VALID_BODY_MANAGED_SUBNETWORK_SIZE:
             return (
                 False,
-                f"Invalid managed-subnetwork-size '{value}'. Must be one of: {', '.join(VALID_BODY_MANAGED_SUBNETWORK_SIZE)}",
+                f"Invalid value for 'managed-subnetwork-size'='{value}'. Must be one of: {', '.join(VALID_BODY_MANAGED_SUBNETWORK_SIZE)}",
             )
-
-    # Validate fortilink-split-interface if present
     if "fortilink-split-interface" in payload:
-        value = payload.get("fortilink-split-interface")
-        if value and value not in VALID_BODY_FORTILINK_SPLIT_INTERFACE:
+        value = payload["fortilink-split-interface"]
+        if value not in VALID_BODY_FORTILINK_SPLIT_INTERFACE:
             return (
                 False,
-                f"Invalid fortilink-split-interface '{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK_SPLIT_INTERFACE)}",
+                f"Invalid value for 'fortilink-split-interface'='{value}'. Must be one of: {', '.join(VALID_BODY_FORTILINK_SPLIT_INTERFACE)}",
             )
-
-    # Validate internal if present
-    if "internal" in payload:
-        value = payload.get("internal")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (False, "internal must be between 0 and 255")
-            except (ValueError, TypeError):
-                return (False, f"internal must be numeric, got: {value}")
-
-    # Validate fortilink-backup-link if present
-    if "fortilink-backup-link" in payload:
-        value = payload.get("fortilink-backup-link")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 255:
-                    return (
-                        False,
-                        "fortilink-backup-link must be between 0 and 255",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"fortilink-backup-link must be numeric, got: {value}",
-                )
-
-    # Validate switch-controller-access-vlan if present
     if "switch-controller-access-vlan" in payload:
-        value = payload.get("switch-controller-access-vlan")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN:
+        value = payload["switch-controller-access-vlan"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN:
             return (
                 False,
-                f"Invalid switch-controller-access-vlan '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN)}",
+                f"Invalid value for 'switch-controller-access-vlan'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN)}",
             )
-
-    # Validate switch-controller-traffic-policy if present
-    if "switch-controller-traffic-policy" in payload:
-        value = payload.get("switch-controller-traffic-policy")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (
-                False,
-                "switch-controller-traffic-policy cannot exceed 63 characters",
-            )
-
-    # Validate switch-controller-rspan-mode if present
     if "switch-controller-rspan-mode" in payload:
-        value = payload.get("switch-controller-rspan-mode")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE:
+        value = payload["switch-controller-rspan-mode"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE:
             return (
                 False,
-                f"Invalid switch-controller-rspan-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE)}",
+                f"Invalid value for 'switch-controller-rspan-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE)}",
             )
-
-    # Validate switch-controller-netflow-collect if present
     if "switch-controller-netflow-collect" in payload:
-        value = payload.get("switch-controller-netflow-collect")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT:
+        value = payload["switch-controller-netflow-collect"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT:
             return (
                 False,
-                f"Invalid switch-controller-netflow-collect '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT)}",
+                f"Invalid value for 'switch-controller-netflow-collect'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT)}",
             )
-
-    # Validate switch-controller-mgmt-vlan if present
-    if "switch-controller-mgmt-vlan" in payload:
-        value = payload.get("switch-controller-mgmt-vlan")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 4094:
-                    return (
-                        False,
-                        "switch-controller-mgmt-vlan must be between 1 and 4094",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"switch-controller-mgmt-vlan must be numeric, got: {value}",
-                )
-
-    # Validate switch-controller-igmp-snooping if present
     if "switch-controller-igmp-snooping" in payload:
-        value = payload.get("switch-controller-igmp-snooping")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING:
+        value = payload["switch-controller-igmp-snooping"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING:
             return (
                 False,
-                f"Invalid switch-controller-igmp-snooping '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING)}",
+                f"Invalid value for 'switch-controller-igmp-snooping'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING)}",
             )
-
-    # Validate switch-controller-igmp-snooping-proxy if present
     if "switch-controller-igmp-snooping-proxy" in payload:
-        value = payload.get("switch-controller-igmp-snooping-proxy")
-        if (
-            value
-            and value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY
-        ):
+        value = payload["switch-controller-igmp-snooping-proxy"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY:
             return (
                 False,
-                f"Invalid switch-controller-igmp-snooping-proxy '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY)}",
+                f"Invalid value for 'switch-controller-igmp-snooping-proxy'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY)}",
             )
-
-    # Validate switch-controller-igmp-snooping-fast-leave if present
     if "switch-controller-igmp-snooping-fast-leave" in payload:
-        value = payload.get("switch-controller-igmp-snooping-fast-leave")
-        if (
-            value
-            and value
-            not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE
-        ):
+        value = payload["switch-controller-igmp-snooping-fast-leave"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE:
             return (
                 False,
-                f"Invalid switch-controller-igmp-snooping-fast-leave '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE)}",
+                f"Invalid value for 'switch-controller-igmp-snooping-fast-leave'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE)}",
             )
-
-    # Validate switch-controller-dhcp-snooping if present
     if "switch-controller-dhcp-snooping" in payload:
-        value = payload.get("switch-controller-dhcp-snooping")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING:
+        value = payload["switch-controller-dhcp-snooping"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING:
             return (
                 False,
-                f"Invalid switch-controller-dhcp-snooping '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING)}",
+                f"Invalid value for 'switch-controller-dhcp-snooping'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING)}",
             )
-
-    # Validate switch-controller-dhcp-snooping-verify-mac if present
     if "switch-controller-dhcp-snooping-verify-mac" in payload:
-        value = payload.get("switch-controller-dhcp-snooping-verify-mac")
-        if (
-            value
-            and value
-            not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC
-        ):
+        value = payload["switch-controller-dhcp-snooping-verify-mac"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC:
             return (
                 False,
-                f"Invalid switch-controller-dhcp-snooping-verify-mac '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC)}",
+                f"Invalid value for 'switch-controller-dhcp-snooping-verify-mac'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC)}",
             )
-
-    # Validate switch-controller-dhcp-snooping-option82 if present
     if "switch-controller-dhcp-snooping-option82" in payload:
-        value = payload.get("switch-controller-dhcp-snooping-option82")
-        if (
-            value
-            and value
-            not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82
-        ):
+        value = payload["switch-controller-dhcp-snooping-option82"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82:
             return (
                 False,
-                f"Invalid switch-controller-dhcp-snooping-option82 '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82)}",
+                f"Invalid value for 'switch-controller-dhcp-snooping-option82'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82)}",
             )
-
-    # Validate switch-controller-arp-inspection if present
     if "switch-controller-arp-inspection" in payload:
-        value = payload.get("switch-controller-arp-inspection")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION:
+        value = payload["switch-controller-arp-inspection"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION:
             return (
                 False,
-                f"Invalid switch-controller-arp-inspection '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION)}",
+                f"Invalid value for 'switch-controller-arp-inspection'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION)}",
             )
-
-    # Validate switch-controller-learning-limit if present
-    if "switch-controller-learning-limit" in payload:
-        value = payload.get("switch-controller-learning-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 128:
-                    return (
-                        False,
-                        "switch-controller-learning-limit must be between 0 and 128",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"switch-controller-learning-limit must be numeric, got: {value}",
-                )
-
-    # Validate switch-controller-nac if present
-    if "switch-controller-nac" in payload:
-        value = payload.get("switch-controller-nac")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "switch-controller-nac cannot exceed 35 characters",
-            )
-
-    # Validate switch-controller-dynamic if present
-    if "switch-controller-dynamic" in payload:
-        value = payload.get("switch-controller-dynamic")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "switch-controller-dynamic cannot exceed 35 characters",
-            )
-
-    # Validate switch-controller-feature if present
     if "switch-controller-feature" in payload:
-        value = payload.get("switch-controller-feature")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_FEATURE:
+        value = payload["switch-controller-feature"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_FEATURE:
             return (
                 False,
-                f"Invalid switch-controller-feature '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_FEATURE)}",
+                f"Invalid value for 'switch-controller-feature'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_FEATURE)}",
             )
-
-    # Validate switch-controller-iot-scanning if present
     if "switch-controller-iot-scanning" in payload:
-        value = payload.get("switch-controller-iot-scanning")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING:
+        value = payload["switch-controller-iot-scanning"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING:
             return (
                 False,
-                f"Invalid switch-controller-iot-scanning '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING)}",
+                f"Invalid value for 'switch-controller-iot-scanning'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING)}",
             )
-
-    # Validate switch-controller-offload if present
     if "switch-controller-offload" in payload:
-        value = payload.get("switch-controller-offload")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD:
+        value = payload["switch-controller-offload"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD:
             return (
                 False,
-                f"Invalid switch-controller-offload '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_OFFLOAD)}",
+                f"Invalid value for 'switch-controller-offload'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_OFFLOAD)}",
             )
-
-    # Validate switch-controller-offload-gw if present
     if "switch-controller-offload-gw" in payload:
-        value = payload.get("switch-controller-offload-gw")
-        if value and value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW:
+        value = payload["switch-controller-offload-gw"]
+        if value not in VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW:
             return (
                 False,
-                f"Invalid switch-controller-offload-gw '{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW)}",
+                f"Invalid value for 'switch-controller-offload-gw'='{value}'. Must be one of: {', '.join(VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW)}",
             )
-
-    # Validate swc-vlan if present
-    if "swc-vlan" in payload:
-        value = payload.get("swc-vlan")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "swc-vlan must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"swc-vlan must be numeric, got: {value}")
-
-    # Validate swc-first-create if present
-    if "swc-first-create" in payload:
-        value = payload.get("swc-first-create")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "swc-first-create must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"swc-first-create must be numeric, got: {value}",
-                )
-
-    # Validate color if present
-    if "color" in payload:
-        value = payload.get("color")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 32:
-                    return (False, "color must be between 0 and 32")
-            except (ValueError, TypeError):
-                return (False, f"color must be numeric, got: {value}")
-
-    # Validate eap-supplicant if present
     if "eap-supplicant" in payload:
-        value = payload.get("eap-supplicant")
-        if value and value not in VALID_BODY_EAP_SUPPLICANT:
+        value = payload["eap-supplicant"]
+        if value not in VALID_BODY_EAP_SUPPLICANT:
             return (
                 False,
-                f"Invalid eap-supplicant '{value}'. Must be one of: {', '.join(VALID_BODY_EAP_SUPPLICANT)}",
+                f"Invalid value for 'eap-supplicant'='{value}'. Must be one of: {', '.join(VALID_BODY_EAP_SUPPLICANT)}",
             )
-
-    # Validate eap-method if present
     if "eap-method" in payload:
-        value = payload.get("eap-method")
-        if value and value not in VALID_BODY_EAP_METHOD:
+        value = payload["eap-method"]
+        if value not in VALID_BODY_EAP_METHOD:
             return (
                 False,
-                f"Invalid eap-method '{value}'. Must be one of: {', '.join(VALID_BODY_EAP_METHOD)}",
+                f"Invalid value for 'eap-method'='{value}'. Must be one of: {', '.join(VALID_BODY_EAP_METHOD)}",
             )
-
-    # Validate eap-identity if present
-    if "eap-identity" in payload:
-        value = payload.get("eap-identity")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "eap-identity cannot exceed 35 characters")
-
-    # Validate eap-ca-cert if present
-    if "eap-ca-cert" in payload:
-        value = payload.get("eap-ca-cert")
-        if value and isinstance(value, str) and len(value) > 79:
-            return (False, "eap-ca-cert cannot exceed 79 characters")
-
-    # Validate eap-user-cert if present
-    if "eap-user-cert" in payload:
-        value = payload.get("eap-user-cert")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "eap-user-cert cannot exceed 35 characters")
-
-    # Validate default-purdue-level if present
     if "default-purdue-level" in payload:
-        value = payload.get("default-purdue-level")
-        if value and value not in VALID_BODY_DEFAULT_PURDUE_LEVEL:
+        value = payload["default-purdue-level"]
+        if value not in VALID_BODY_DEFAULT_PURDUE_LEVEL:
             return (
                 False,
-                f"Invalid default-purdue-level '{value}'. Must be one of: {', '.join(VALID_BODY_DEFAULT_PURDUE_LEVEL)}",
+                f"Invalid value for 'default-purdue-level'='{value}'. Must be one of: {', '.join(VALID_BODY_DEFAULT_PURDUE_LEVEL)}",
             )
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_interface_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    # Replace all non-alphanumeric characters with underscores for valid Python identifiers
+    import re
+    safe_name = re.sub(r'[^a-zA-Z0-9]', '_', field_name)
+    constant_name = f"VALID_BODY_{safe_name.upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "system/interface",
+    "category": "cmdb",
+    "api_path": "system/interface",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure interfaces.",
+    "total_fields": 219,
+    "required_fields_count": 3,
+    "fields_with_defaults_count": 203,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

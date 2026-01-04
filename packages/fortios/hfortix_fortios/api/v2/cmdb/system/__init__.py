@@ -46,7 +46,7 @@ from .ftm_push import FtmPush
 from .geneve import Geneve
 from .geoip_country import GeoipCountry
 from .geoip_override import GeoipOverride
-from .global_ import Global
+from .global_setting import GlobalSetting
 from .gre_tunnel import GreTunnel
 from .ha import Ha
 from .ha_monitor import HaMonitor
@@ -63,22 +63,17 @@ from .ipv6_neighbor_cache import Ipv6NeighborCache
 from .ipv6_tunnel import Ipv6Tunnel
 from .link_monitor import LinkMonitor
 from .lldp_network_policy import LldpNetworkPolicy
-from .lte_modem import LteModem
 from .mac_address_table import MacAddressTable
 from .mobile_tunnel import MobileTunnel
-from .modem import Modem
 from .nd_proxy import NdProxy
 from .netflow import Netflow
 from .network_visibility import NetworkVisibility
 from .ngfw_settings import NgfwSettings
-from .np6xlite import Np6xlite
-from .npu import Npu
 from .ntp import Ntp
 from .object_tagging import ObjectTagging
 from .password_policy import PasswordPolicy
 from .password_policy_guest_admin import PasswordPolicyGuestAdmin
 from .pcp_server import PcpServer
-from .physical_switch import PhysicalSwitch
 from .pppoe_interface import PppoeInterface
 from .probe_response import ProbeResponse
 from .proxy_arp import ProxyArp
@@ -116,7 +111,6 @@ from .snmp_mib_view import SnmpMibView
 from .snmp_rmon_stat import SnmpRmonStat
 from .snmp_sysinfo import SnmpSysinfo
 from .snmp_user import SnmpUser
-from .sov_sase import SovSase
 from .speed_test_schedule import SpeedTestSchedule
 from .speed_test_server import SpeedTestServer
 from .speed_test_setting import SpeedTestSetting
@@ -126,7 +120,6 @@ from .sso_forticloud_admin import SsoForticloudAdmin
 from .sso_fortigate_cloud_admin import SsoFortigateCloudAdmin
 from .standalone_cluster import StandaloneCluster
 from .storage import Storage
-from .stp import Stp
 from .switch_interface import SwitchInterface
 from .timezone import Timezone
 from .tos_based_priority import TosBasedPriority
@@ -138,7 +131,6 @@ from .vdom_netflow import VdomNetflow
 from .vdom_property import VdomProperty
 from .vdom_radius_server import VdomRadiusServer
 from .vdom_sflow import VdomSflow
-from .virtual_switch import VirtualSwitch
 from .virtual_wire_pair import VirtualWirePair
 from .vne_interface import VneInterface
 from .vxlan import Vxlan
@@ -166,7 +158,7 @@ __all__ = [
     "CentralManagement",
     "CloudService",
     "Console",
-    "Cs",
+    "Csf",
     "CustomLanguage",
     "Ddns",
     "DedicatedMgmt",
@@ -192,7 +184,7 @@ __all__ = [
     "Geneve",
     "GeoipCountry",
     "GeoipOverride",
-    "Global",
+    "GlobalSetting",
     "GreTunnel",
     "Ha",
     "HaMonitor",
@@ -209,22 +201,17 @@ __all__ = [
     "Ipv6Tunnel",
     "LinkMonitor",
     "LldpNetworkPolicy",
-    "LteModem",
     "MacAddressTable",
     "MobileTunnel",
-    "Modem",
     "NdProxy",
     "Netflow",
     "NetworkVisibility",
     "NgfwSettings",
-    "Np6xlite",
-    "Npu",
     "Ntp",
     "ObjectTagging",
     "PasswordPolicy",
     "PasswordPolicyGuestAdmin",
     "PcpServer",
-    "PhysicalSwitch",
     "PppoeInterface",
     "ProbeResponse",
     "ProxyArp",
@@ -233,7 +220,7 @@ __all__ = [
     "ReplacemsgAlertmail",
     "ReplacemsgAuth",
     "ReplacemsgAutomation",
-    "ReplacemsgFortiguardW",
+    "ReplacemsgFortiguardWf",
     "ReplacemsgGroup",
     "ReplacemsgHttp",
     "ReplacemsgImage",
@@ -262,7 +249,6 @@ __all__ = [
     "SnmpRmonStat",
     "SnmpSysinfo",
     "SnmpUser",
-    "SovSase",
     "SpeedTestSchedule",
     "SpeedTestServer",
     "SpeedTestSetting",
@@ -272,8 +258,8 @@ __all__ = [
     "SsoFortigateCloudAdmin",
     "StandaloneCluster",
     "Storage",
-    "Stp",
     "SwitchInterface",
+    "System",
     "Timezone",
     "TosBasedPriority",
     "Vdom",
@@ -284,7 +270,6 @@ __all__ = [
     "VdomProperty",
     "VdomRadiusServer",
     "VdomSflow",
-    "VirtualSwitch",
     "VirtualWirePair",
     "VneInterface",
     "Vxlan",
@@ -294,26 +279,19 @@ __all__ = [
 
 
 class System:
-    """
-    System category wrapper.
-
-    This class provides access to all system CMDB endpoints.
-    """
+    """System endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize System with all endpoint classes.
-
+        """System endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.accprofile = Accprofile(client)
         self.acme = Acme(client)
         self.admin = Admin(client)
         self.affinity_interrupt = AffinityInterrupt(client)
-        self.affinity_packet_redistribution = AffinityPacketRedistribution(
-            client
-        )
+        self.affinity_packet_redistribution = AffinityPacketRedistribution(client)
         self.alarm = Alarm(client)
         self.alias = Alias(client)
         self.api_user = ApiUser(client)
@@ -355,7 +333,7 @@ class System:
         self.geneve = Geneve(client)
         self.geoip_country = GeoipCountry(client)
         self.geoip_override = GeoipOverride(client)
-        self.global_ = Global(client)
+        self.global_setting = GlobalSetting(client)
         self.gre_tunnel = GreTunnel(client)
         self.ha = Ha(client)
         self.ha_monitor = HaMonitor(client)
@@ -372,22 +350,17 @@ class System:
         self.ipv6_tunnel = Ipv6Tunnel(client)
         self.link_monitor = LinkMonitor(client)
         self.lldp_network_policy = LldpNetworkPolicy(client)
-        self.lte_modem = LteModem(client)
         self.mac_address_table = MacAddressTable(client)
         self.mobile_tunnel = MobileTunnel(client)
-        self.modem = Modem(client)
         self.nd_proxy = NdProxy(client)
         self.netflow = Netflow(client)
         self.network_visibility = NetworkVisibility(client)
         self.ngfw_settings = NgfwSettings(client)
-        self.np6xlite = Np6xlite(client)
-        self.npu = Npu(client)
         self.ntp = Ntp(client)
         self.object_tagging = ObjectTagging(client)
         self.password_policy = PasswordPolicy(client)
         self.password_policy_guest_admin = PasswordPolicyGuestAdmin(client)
         self.pcp_server = PcpServer(client)
-        self.physical_switch = PhysicalSwitch(client)
         self.pppoe_interface = PppoeInterface(client)
         self.probe_response = ProbeResponse(client)
         self.proxy_arp = ProxyArp(client)
@@ -425,7 +398,6 @@ class System:
         self.snmp_rmon_stat = SnmpRmonStat(client)
         self.snmp_sysinfo = SnmpSysinfo(client)
         self.snmp_user = SnmpUser(client)
-        self.sov_sase = SovSase(client)
         self.speed_test_schedule = SpeedTestSchedule(client)
         self.speed_test_server = SpeedTestServer(client)
         self.speed_test_setting = SpeedTestSetting(client)
@@ -435,7 +407,6 @@ class System:
         self.sso_fortigate_cloud_admin = SsoFortigateCloudAdmin(client)
         self.standalone_cluster = StandaloneCluster(client)
         self.storage = Storage(client)
-        self.stp = Stp(client)
         self.switch_interface = SwitchInterface(client)
         self.timezone = Timezone(client)
         self.tos_based_priority = TosBasedPriority(client)
@@ -447,7 +418,6 @@ class System:
         self.vdom_property = VdomProperty(client)
         self.vdom_radius_server = VdomRadiusServer(client)
         self.vdom_sflow = VdomSflow(client)
-        self.virtual_switch = VirtualSwitch(client)
         self.virtual_wire_pair = VirtualWirePair(client)
         self.vne_interface = VneInterface(client)
         self.vxlan = Vxlan(client)

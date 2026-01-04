@@ -1,202 +1,732 @@
 """
-Validation helpers for wireless-controller wids_profile endpoint.
+Validation helpers for wireless_controller/wids_profile endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "name",  # WIDS profile name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "adhoc-network": "disable",
-    "adhoc-valid-ssid": "disable",
-    "air-jack": "disable",
-    "ap-auto-suppress": "disable",
+    "name": "",
+    "comment": "",
+    "sensor-mode": "disable",
+    "ap-scan": "disable",
+    "ap-bgscan-period": 600,
+    "ap-bgscan-intv": 3,
     "ap-bgscan-duration": 30,
     "ap-bgscan-idle": 20,
-    "ap-bgscan-intv": 3,
-    "ap-bgscan-period": 600,
     "ap-bgscan-report-intv": 30,
     "ap-fgscan-report-intv": 15,
-    "ap-impersonation": "disable",
-    "ap-scan": "disable",
     "ap-scan-passive": "disable",
     "ap-scan-threshold": "-90",
-    "ap-spoofing": "disable",
-    "asleap-attack": "disable",
-    "assoc-flood-thresh": 30,
-    "assoc-flood-time": 10,
-    "assoc-frame-flood": "disable",
-    "auth-flood-thresh": 30,
-    "auth-flood-time": 10,
-    "auth-frame-flood": "disable",
-    "bcn-flood": "disable",
-    "bcn-flood-thresh": 15,
-    "bcn-flood-time": 1,
-    "beacon-wrong-channel": "disable",
-    "block-ack-flood": "disable",
-    "block-ack-flood-thresh": 50,
-    "block-ack-flood-time": 1,
-    "chan-based-mitm": "disable",
-    "client-flood": "disable",
-    "client-flood-thresh": 30,
-    "client-flood-time": 10,
-    "cts-flood": "disable",
-    "cts-flood-thresh": 30,
-    "cts-flood-time": 10,
+    "ap-auto-suppress": "disable",
+    "wireless-bridge": "disable",
     "deauth-broadcast": "disable",
-    "deauth-unknown-src-thresh": 10,
-    "disassoc-broadcast": "disable",
-    "disconnect-station": "disable",
-    "eapol-fail-flood": "disable",
-    "eapol-fail-intv": 1,
-    "eapol-fail-thresh": 10,
-    "eapol-key-overflow": "disable",
-    "eapol-logoff-flood": "disable",
-    "eapol-logoff-intv": 1,
-    "eapol-logoff-thresh": 10,
-    "eapol-pre-fail-flood": "disable",
-    "eapol-pre-fail-intv": 1,
-    "eapol-pre-fail-thresh": 10,
-    "eapol-pre-succ-flood": "disable",
-    "eapol-pre-succ-intv": 1,
-    "eapol-pre-succ-thresh": 10,
+    "null-ssid-probe-resp": "disable",
+    "long-duration-attack": "disable",
+    "long-duration-thresh": 8200,
+    "invalid-mac-oui": "disable",
+    "weak-wep-iv": "disable",
+    "auth-frame-flood": "disable",
+    "auth-flood-time": 10,
+    "auth-flood-thresh": 30,
+    "assoc-frame-flood": "disable",
+    "assoc-flood-time": 10,
+    "assoc-flood-thresh": 30,
+    "reassoc-flood": "disable",
+    "reassoc-flood-time": 10,
+    "reassoc-flood-thresh": 30,
+    "probe-flood": "disable",
+    "probe-flood-time": 1,
+    "probe-flood-thresh": 30,
+    "bcn-flood": "disable",
+    "bcn-flood-time": 1,
+    "bcn-flood-thresh": 15,
+    "rts-flood": "disable",
+    "rts-flood-time": 10,
+    "rts-flood-thresh": 30,
+    "cts-flood": "disable",
+    "cts-flood-time": 10,
+    "cts-flood-thresh": 30,
+    "client-flood": "disable",
+    "client-flood-time": 10,
+    "client-flood-thresh": 30,
+    "block_ack-flood": "disable",
+    "block_ack-flood-time": 1,
+    "block_ack-flood-thresh": 50,
+    "pspoll-flood": "disable",
+    "pspoll-flood-time": 1,
+    "pspoll-flood-thresh": 30,
+    "netstumbler": "disable",
+    "netstumbler-time": 30,
+    "netstumbler-thresh": 5,
+    "wellenreiter": "disable",
+    "wellenreiter-time": 30,
+    "wellenreiter-thresh": 5,
+    "spoofed-deauth": "disable",
+    "asleap-attack": "disable",
     "eapol-start-flood": "disable",
-    "eapol-start-intv": 1,
     "eapol-start-thresh": 10,
+    "eapol-start-intv": 1,
+    "eapol-logoff-flood": "disable",
+    "eapol-logoff-thresh": 10,
+    "eapol-logoff-intv": 1,
     "eapol-succ-flood": "disable",
-    "eapol-succ-intv": 1,
     "eapol-succ-thresh": 10,
+    "eapol-succ-intv": 1,
+    "eapol-fail-flood": "disable",
+    "eapol-fail-thresh": 10,
+    "eapol-fail-intv": 1,
+    "eapol-pre-succ-flood": "disable",
+    "eapol-pre-succ-thresh": 10,
+    "eapol-pre-succ-intv": 1,
+    "eapol-pre-fail-flood": "disable",
+    "eapol-pre-fail-thresh": 10,
+    "eapol-pre-fail-intv": 1,
+    "deauth-unknown-src-thresh": 10,
+    "windows-bridge": "disable",
+    "disassoc-broadcast": "disable",
+    "ap-spoofing": "disable",
+    "chan-based-mitm": "disable",
+    "adhoc-valid-ssid": "disable",
+    "adhoc-network": "disable",
+    "eapol-key-overflow": "disable",
+    "ap-impersonation": "disable",
+    "invalid-addr-combination": "disable",
+    "beacon-wrong-channel": "disable",
+    "ht-greenfield": "disable",
+    "overflow-ie": "disable",
+    "malformed-ht-ie": "disable",
+    "malformed-auth": "disable",
+    "malformed-association": "disable",
+    "ht-40mhz-intolerance": "disable",
+    "valid-ssid-misuse": "disable",
+    "valid-client-misassociation": "disable",
+    "hotspotter-attack": "disable",
+    "pwsave-dos-attack": "disable",
+    "omerta-attack": "disable",
+    "disconnect-station": "disable",
+    "unencrypted-valid": "disable",
     "fata-jack": "disable",
+    "risky-encryption": "disable",
     "fuzzed-beacon": "disable",
     "fuzzed-probe-request": "disable",
     "fuzzed-probe-response": "disable",
-    "hotspotter-attack": "disable",
-    "ht-40mhz-intolerance": "disable",
-    "ht-greenfield": "disable",
-    "invalid-addr-combination": "disable",
-    "invalid-mac-oui": "disable",
-    "long-duration-attack": "disable",
-    "long-duration-thresh": 8200,
-    "malformed-association": "disable",
-    "malformed-auth": "disable",
-    "malformed-ht-ie": "disable",
-    "netstumbler": "disable",
-    "netstumbler-thresh": 5,
-    "netstumbler-time": 30,
-    "null-ssid-probe-resp": "disable",
-    "omerta-attack": "disable",
-    "overflow-ie": "disable",
-    "probe-flood": "disable",
-    "probe-flood-thresh": 30,
-    "probe-flood-time": 1,
-    "pspoll-flood": "disable",
-    "pspoll-flood-thresh": 30,
-    "pspoll-flood-time": 1,
-    "pwsave-dos-attack": "disable",
-    "reassoc-flood": "disable",
-    "reassoc-flood-thresh": 30,
-    "reassoc-flood-time": 10,
-    "risky-encryption": "disable",
-    "rts-flood": "disable",
-    "rts-flood-thresh": 30,
-    "rts-flood-time": 10,
-    "sensor-mode": "disable",
-    "spoofed-deauth": "disable",
-    "unencrypted-valid": "disable",
-    "valid-client-misassociation": "disable",
-    "valid-ssid-misuse": "disable",
-    "weak-wep-iv": "disable",
-    "wellenreiter": "disable",
-    "wellenreiter-thresh": 5,
-    "wellenreiter-time": 30,
-    "windows-bridge": "disable",
-    "wireless-bridge": "disable",
+    "air-jack": "disable",
     "wpa-ft-attack": "disable",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # WIDS profile name.
+    "comment": "string",  # Comment.
+    "sensor-mode": "option",  # Scan nearby WiFi stations (default = disable).
+    "ap-scan": "option",  # Enable/disable rogue AP detection.
+    "ap-scan-channel-list-2G-5G": "string",  # Selected ap scan channel list for 2.4G and 5G bands.
+    "ap-scan-channel-list-6G": "string",  # Selected ap scan channel list for 6G band.
+    "ap-bgscan-period": "integer",  # Period between background scans (10 - 3600 sec, default = 60
+    "ap-bgscan-intv": "integer",  # Period between successive channel scans (1 - 600 sec, defaul
+    "ap-bgscan-duration": "integer",  # Listen time on scanning a channel (10 - 1000 msec, default =
+    "ap-bgscan-idle": "integer",  # Wait time for channel inactivity before scanning this channe
+    "ap-bgscan-report-intv": "integer",  # Period between background scan reports (15 - 600 sec, defaul
+    "ap-bgscan-disable-schedules": "string",  # Firewall schedules for turning off FortiAP radio background 
+    "ap-fgscan-report-intv": "integer",  # Period between foreground scan reports (15 - 600 sec, defaul
+    "ap-scan-passive": "option",  # Enable/disable passive scanning. Enable means do not send pr
+    "ap-scan-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP to
+    "ap-auto-suppress": "option",  # Enable/disable on-wire rogue AP auto-suppression (default = 
+    "wireless-bridge": "option",  # Enable/disable wireless bridge detection (default = disable)
+    "deauth-broadcast": "option",  # Enable/disable broadcasting de-authentication detection (def
+    "null-ssid-probe-resp": "option",  # Enable/disable null SSID probe response detection (default =
+    "long-duration-attack": "option",  # Enable/disable long duration attack detection based on user 
+    "long-duration-thresh": "integer",  # Threshold value for long duration attack detection (1000 - 3
+    "invalid-mac-oui": "option",  # Enable/disable invalid MAC OUI detection.
+    "weak-wep-iv": "option",  # Enable/disable weak WEP IV (Initialization Vector) detection
+    "auth-frame-flood": "option",  # Enable/disable authentication frame flooding detection (defa
+    "auth-flood-time": "integer",  # Number of seconds after which a station is considered not co
+    "auth-flood-thresh": "integer",  # The threshold value for authentication frame flooding.
+    "assoc-frame-flood": "option",  # Enable/disable association frame flooding detection (default
+    "assoc-flood-time": "integer",  # Number of seconds after which a station is considered not co
+    "assoc-flood-thresh": "integer",  # The threshold value for association frame flooding.
+    "reassoc-flood": "option",  # Enable/disable reassociation flood detection (default = disa
+    "reassoc-flood-time": "integer",  # Detection Window Period.
+    "reassoc-flood-thresh": "integer",  # The threshold value for reassociation flood.
+    "probe-flood": "option",  # Enable/disable probe flood detection (default = disable).
+    "probe-flood-time": "integer",  # Detection Window Period.
+    "probe-flood-thresh": "integer",  # The threshold value for probe flood.
+    "bcn-flood": "option",  # Enable/disable bcn flood detection (default = disable).
+    "bcn-flood-time": "integer",  # Detection Window Period.
+    "bcn-flood-thresh": "integer",  # The threshold value for bcn flood.
+    "rts-flood": "option",  # Enable/disable rts flood detection (default = disable).
+    "rts-flood-time": "integer",  # Detection Window Period.
+    "rts-flood-thresh": "integer",  # The threshold value for rts flood.
+    "cts-flood": "option",  # Enable/disable cts flood detection (default = disable).
+    "cts-flood-time": "integer",  # Detection Window Period.
+    "cts-flood-thresh": "integer",  # The threshold value for cts flood.
+    "client-flood": "option",  # Enable/disable client flood detection (default = disable).
+    "client-flood-time": "integer",  # Detection Window Period.
+    "client-flood-thresh": "integer",  # The threshold value for client flood.
+    "block_ack-flood": "option",  # Enable/disable block_ack flood detection (default = disable)
+    "block_ack-flood-time": "integer",  # Detection Window Period.
+    "block_ack-flood-thresh": "integer",  # The threshold value for block_ack flood.
+    "pspoll-flood": "option",  # Enable/disable pspoll flood detection (default = disable).
+    "pspoll-flood-time": "integer",  # Detection Window Period.
+    "pspoll-flood-thresh": "integer",  # The threshold value for pspoll flood.
+    "netstumbler": "option",  # Enable/disable netstumbler detection (default = disable).
+    "netstumbler-time": "integer",  # Detection Window Period.
+    "netstumbler-thresh": "integer",  # The threshold value for netstumbler.
+    "wellenreiter": "option",  # Enable/disable wellenreiter detection (default = disable).
+    "wellenreiter-time": "integer",  # Detection Window Period.
+    "wellenreiter-thresh": "integer",  # The threshold value for wellenreiter.
+    "spoofed-deauth": "option",  # Enable/disable spoofed de-authentication attack detection (d
+    "asleap-attack": "option",  # Enable/disable asleap attack detection (default = disable).
+    "eapol-start-flood": "option",  # Enable/disable EAPOL-Start flooding (to AP) detection (defau
+    "eapol-start-thresh": "integer",  # The threshold value for EAPOL-Start flooding in specified in
+    "eapol-start-intv": "integer",  # The detection interval for EAPOL-Start flooding (1 - 3600 se
+    "eapol-logoff-flood": "option",  # Enable/disable EAPOL-Logoff flooding (to AP) detection (defa
+    "eapol-logoff-thresh": "integer",  # The threshold value for EAPOL-Logoff flooding in specified i
+    "eapol-logoff-intv": "integer",  # The detection interval for EAPOL-Logoff flooding (1 - 3600 s
+    "eapol-succ-flood": "option",  # Enable/disable EAPOL-Success flooding (to AP) detection (def
+    "eapol-succ-thresh": "integer",  # The threshold value for EAPOL-Success flooding in specified 
+    "eapol-succ-intv": "integer",  # The detection interval for EAPOL-Success flooding (1 - 3600 
+    "eapol-fail-flood": "option",  # Enable/disable EAPOL-Failure flooding (to AP) detection (def
+    "eapol-fail-thresh": "integer",  # The threshold value for EAPOL-Failure flooding in specified 
+    "eapol-fail-intv": "integer",  # The detection interval for EAPOL-Failure flooding (1 - 3600 
+    "eapol-pre-succ-flood": "option",  # Enable/disable premature EAPOL-Success flooding (to STA) det
+    "eapol-pre-succ-thresh": "integer",  # The threshold value for premature EAPOL-Success flooding in 
+    "eapol-pre-succ-intv": "integer",  # The detection interval for premature EAPOL-Success flooding 
+    "eapol-pre-fail-flood": "option",  # Enable/disable premature EAPOL-Failure flooding (to STA) det
+    "eapol-pre-fail-thresh": "integer",  # The threshold value for premature EAPOL-Failure flooding in 
+    "eapol-pre-fail-intv": "integer",  # The detection interval for premature EAPOL-Failure flooding 
+    "deauth-unknown-src-thresh": "integer",  # Threshold value per second to deauth unknown src for DoS att
+    "windows-bridge": "option",  # Enable/disable windows bridge detection (default = disable).
+    "disassoc-broadcast": "option",  # Enable/disable broadcast dis-association detection (default 
+    "ap-spoofing": "option",  # Enable/disable AP spoofing detection (default = disable).
+    "chan-based-mitm": "option",  # Enable/disable channel based mitm detection (default = disab
+    "adhoc-valid-ssid": "option",  # Enable/disable adhoc using valid SSID detection (default = d
+    "adhoc-network": "option",  # Enable/disable adhoc network detection (default = disable).
+    "eapol-key-overflow": "option",  # Enable/disable overflow EAPOL key detection (default = disab
+    "ap-impersonation": "option",  # Enable/disable AP impersonation detection (default = disable
+    "invalid-addr-combination": "option",  # Enable/disable invalid address combination detection (defaul
+    "beacon-wrong-channel": "option",  # Enable/disable beacon wrong channel detection (default = dis
+    "ht-greenfield": "option",  # Enable/disable HT greenfield detection (default = disable).
+    "overflow-ie": "option",  # Enable/disable overflow IE detection (default = disable).
+    "malformed-ht-ie": "option",  # Enable/disable malformed HT IE detection (default = disable)
+    "malformed-auth": "option",  # Enable/disable malformed auth frame detection (default = dis
+    "malformed-association": "option",  # Enable/disable malformed association request detection (defa
+    "ht-40mhz-intolerance": "option",  # Enable/disable HT 40 MHz intolerance detection (default = di
+    "valid-ssid-misuse": "option",  # Enable/disable valid SSID misuse detection (default = disabl
+    "valid-client-misassociation": "option",  # Enable/disable valid client misassociation detection (defaul
+    "hotspotter-attack": "option",  # Enable/disable hotspotter attack detection (default = disabl
+    "pwsave-dos-attack": "option",  # Enable/disable power save DOS attack detection (default = di
+    "omerta-attack": "option",  # Enable/disable omerta attack detection (default = disable).
+    "disconnect-station": "option",  # Enable/disable disconnect station detection (default = disab
+    "unencrypted-valid": "option",  # Enable/disable unencrypted valid detection (default = disabl
+    "fata-jack": "option",  # Enable/disable FATA-Jack detection (default = disable).
+    "risky-encryption": "option",  # Enable/disable Risky Encryption detection (default = disable
+    "fuzzed-beacon": "option",  # Enable/disable fuzzed beacon detection (default = disable).
+    "fuzzed-probe-request": "option",  # Enable/disable fuzzed probe request detection (default = dis
+    "fuzzed-probe-response": "option",  # Enable/disable fuzzed probe response detection (default = di
+    "air-jack": "option",  # Enable/disable AirJack detection (default = disable).
+    "wpa-ft-attack": "option",  # Enable/disable WPA FT attack detection (default = disable).
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "WIDS profile name.",
+    "comment": "Comment.",
+    "sensor-mode": "Scan nearby WiFi stations (default = disable).",
+    "ap-scan": "Enable/disable rogue AP detection.",
+    "ap-scan-channel-list-2G-5G": "Selected ap scan channel list for 2.4G and 5G bands.",
+    "ap-scan-channel-list-6G": "Selected ap scan channel list for 6G band.",
+    "ap-bgscan-period": "Period between background scans (10 - 3600 sec, default = 600).",
+    "ap-bgscan-intv": "Period between successive channel scans (1 - 600 sec, default = 3).",
+    "ap-bgscan-duration": "Listen time on scanning a channel (10 - 1000 msec, default = 30).",
+    "ap-bgscan-idle": "Wait time for channel inactivity before scanning this channel (0 - 1000 msec, default = 20).",
+    "ap-bgscan-report-intv": "Period between background scan reports (15 - 600 sec, default = 30).",
+    "ap-bgscan-disable-schedules": "Firewall schedules for turning off FortiAP radio background scan. Background scan will be disabled when at least one of the schedules is valid. Separate multiple schedule names with a space.",
+    "ap-fgscan-report-intv": "Period between foreground scan reports (15 - 600 sec, default = 15).",
+    "ap-scan-passive": "Enable/disable passive scanning. Enable means do not send probe request on any channels (default = disable).",
+    "ap-scan-threshold": "Minimum signal level/threshold in dBm required for the AP to report detected rogue AP (-95 to -20, default = -90).",
+    "ap-auto-suppress": "Enable/disable on-wire rogue AP auto-suppression (default = disable).",
+    "wireless-bridge": "Enable/disable wireless bridge detection (default = disable).",
+    "deauth-broadcast": "Enable/disable broadcasting de-authentication detection (default = disable).",
+    "null-ssid-probe-resp": "Enable/disable null SSID probe response detection (default = disable).",
+    "long-duration-attack": "Enable/disable long duration attack detection based on user configured threshold (default = disable).",
+    "long-duration-thresh": "Threshold value for long duration attack detection (1000 - 32767 usec, default = 8200).",
+    "invalid-mac-oui": "Enable/disable invalid MAC OUI detection.",
+    "weak-wep-iv": "Enable/disable weak WEP IV (Initialization Vector) detection (default = disable).",
+    "auth-frame-flood": "Enable/disable authentication frame flooding detection (default = disable).",
+    "auth-flood-time": "Number of seconds after which a station is considered not connected.",
+    "auth-flood-thresh": "The threshold value for authentication frame flooding.",
+    "assoc-frame-flood": "Enable/disable association frame flooding detection (default = disable).",
+    "assoc-flood-time": "Number of seconds after which a station is considered not connected.",
+    "assoc-flood-thresh": "The threshold value for association frame flooding.",
+    "reassoc-flood": "Enable/disable reassociation flood detection (default = disable).",
+    "reassoc-flood-time": "Detection Window Period.",
+    "reassoc-flood-thresh": "The threshold value for reassociation flood.",
+    "probe-flood": "Enable/disable probe flood detection (default = disable).",
+    "probe-flood-time": "Detection Window Period.",
+    "probe-flood-thresh": "The threshold value for probe flood.",
+    "bcn-flood": "Enable/disable bcn flood detection (default = disable).",
+    "bcn-flood-time": "Detection Window Period.",
+    "bcn-flood-thresh": "The threshold value for bcn flood.",
+    "rts-flood": "Enable/disable rts flood detection (default = disable).",
+    "rts-flood-time": "Detection Window Period.",
+    "rts-flood-thresh": "The threshold value for rts flood.",
+    "cts-flood": "Enable/disable cts flood detection (default = disable).",
+    "cts-flood-time": "Detection Window Period.",
+    "cts-flood-thresh": "The threshold value for cts flood.",
+    "client-flood": "Enable/disable client flood detection (default = disable).",
+    "client-flood-time": "Detection Window Period.",
+    "client-flood-thresh": "The threshold value for client flood.",
+    "block_ack-flood": "Enable/disable block_ack flood detection (default = disable).",
+    "block_ack-flood-time": "Detection Window Period.",
+    "block_ack-flood-thresh": "The threshold value for block_ack flood.",
+    "pspoll-flood": "Enable/disable pspoll flood detection (default = disable).",
+    "pspoll-flood-time": "Detection Window Period.",
+    "pspoll-flood-thresh": "The threshold value for pspoll flood.",
+    "netstumbler": "Enable/disable netstumbler detection (default = disable).",
+    "netstumbler-time": "Detection Window Period.",
+    "netstumbler-thresh": "The threshold value for netstumbler.",
+    "wellenreiter": "Enable/disable wellenreiter detection (default = disable).",
+    "wellenreiter-time": "Detection Window Period.",
+    "wellenreiter-thresh": "The threshold value for wellenreiter.",
+    "spoofed-deauth": "Enable/disable spoofed de-authentication attack detection (default = disable).",
+    "asleap-attack": "Enable/disable asleap attack detection (default = disable).",
+    "eapol-start-flood": "Enable/disable EAPOL-Start flooding (to AP) detection (default = disable).",
+    "eapol-start-thresh": "The threshold value for EAPOL-Start flooding in specified interval.",
+    "eapol-start-intv": "The detection interval for EAPOL-Start flooding (1 - 3600 sec).",
+    "eapol-logoff-flood": "Enable/disable EAPOL-Logoff flooding (to AP) detection (default = disable).",
+    "eapol-logoff-thresh": "The threshold value for EAPOL-Logoff flooding in specified interval.",
+    "eapol-logoff-intv": "The detection interval for EAPOL-Logoff flooding (1 - 3600 sec).",
+    "eapol-succ-flood": "Enable/disable EAPOL-Success flooding (to AP) detection (default = disable).",
+    "eapol-succ-thresh": "The threshold value for EAPOL-Success flooding in specified interval.",
+    "eapol-succ-intv": "The detection interval for EAPOL-Success flooding (1 - 3600 sec).",
+    "eapol-fail-flood": "Enable/disable EAPOL-Failure flooding (to AP) detection (default = disable).",
+    "eapol-fail-thresh": "The threshold value for EAPOL-Failure flooding in specified interval.",
+    "eapol-fail-intv": "The detection interval for EAPOL-Failure flooding (1 - 3600 sec).",
+    "eapol-pre-succ-flood": "Enable/disable premature EAPOL-Success flooding (to STA) detection (default = disable).",
+    "eapol-pre-succ-thresh": "The threshold value for premature EAPOL-Success flooding in specified interval.",
+    "eapol-pre-succ-intv": "The detection interval for premature EAPOL-Success flooding (1 - 3600 sec).",
+    "eapol-pre-fail-flood": "Enable/disable premature EAPOL-Failure flooding (to STA) detection (default = disable).",
+    "eapol-pre-fail-thresh": "The threshold value for premature EAPOL-Failure flooding in specified interval.",
+    "eapol-pre-fail-intv": "The detection interval for premature EAPOL-Failure flooding (1 - 3600 sec).",
+    "deauth-unknown-src-thresh": "Threshold value per second to deauth unknown src for DoS attack (0: no limit).",
+    "windows-bridge": "Enable/disable windows bridge detection (default = disable).",
+    "disassoc-broadcast": "Enable/disable broadcast dis-association detection (default = disable).",
+    "ap-spoofing": "Enable/disable AP spoofing detection (default = disable).",
+    "chan-based-mitm": "Enable/disable channel based mitm detection (default = disable).",
+    "adhoc-valid-ssid": "Enable/disable adhoc using valid SSID detection (default = disable).",
+    "adhoc-network": "Enable/disable adhoc network detection (default = disable).",
+    "eapol-key-overflow": "Enable/disable overflow EAPOL key detection (default = disable).",
+    "ap-impersonation": "Enable/disable AP impersonation detection (default = disable).",
+    "invalid-addr-combination": "Enable/disable invalid address combination detection (default = disable).",
+    "beacon-wrong-channel": "Enable/disable beacon wrong channel detection (default = disable).",
+    "ht-greenfield": "Enable/disable HT greenfield detection (default = disable).",
+    "overflow-ie": "Enable/disable overflow IE detection (default = disable).",
+    "malformed-ht-ie": "Enable/disable malformed HT IE detection (default = disable).",
+    "malformed-auth": "Enable/disable malformed auth frame detection (default = disable).",
+    "malformed-association": "Enable/disable malformed association request detection (default = disable).",
+    "ht-40mhz-intolerance": "Enable/disable HT 40 MHz intolerance detection (default = disable).",
+    "valid-ssid-misuse": "Enable/disable valid SSID misuse detection (default = disable).",
+    "valid-client-misassociation": "Enable/disable valid client misassociation detection (default = disable).",
+    "hotspotter-attack": "Enable/disable hotspotter attack detection (default = disable).",
+    "pwsave-dos-attack": "Enable/disable power save DOS attack detection (default = disable).",
+    "omerta-attack": "Enable/disable omerta attack detection (default = disable).",
+    "disconnect-station": "Enable/disable disconnect station detection (default = disable).",
+    "unencrypted-valid": "Enable/disable unencrypted valid detection (default = disable).",
+    "fata-jack": "Enable/disable FATA-Jack detection (default = disable).",
+    "risky-encryption": "Enable/disable Risky Encryption detection (default = disable).",
+    "fuzzed-beacon": "Enable/disable fuzzed beacon detection (default = disable).",
+    "fuzzed-probe-request": "Enable/disable fuzzed probe request detection (default = disable).",
+    "fuzzed-probe-response": "Enable/disable fuzzed probe response detection (default = disable).",
+    "air-jack": "Enable/disable AirJack detection (default = disable).",
+    "wpa-ft-attack": "Enable/disable WPA FT attack detection (default = disable).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 35},
+    "comment": {"type": "string", "max_length": 63},
+    "ap-bgscan-period": {"type": "integer", "min": 10, "max": 3600},
+    "ap-bgscan-intv": {"type": "integer", "min": 1, "max": 600},
+    "ap-bgscan-duration": {"type": "integer", "min": 10, "max": 1000},
+    "ap-bgscan-idle": {"type": "integer", "min": 0, "max": 1000},
+    "ap-bgscan-report-intv": {"type": "integer", "min": 15, "max": 600},
+    "ap-fgscan-report-intv": {"type": "integer", "min": 15, "max": 600},
+    "ap-scan-threshold": {"type": "string", "max_length": 7},
+    "long-duration-thresh": {"type": "integer", "min": 1000, "max": 32767},
+    "auth-flood-time": {"type": "integer", "min": 5, "max": 120},
+    "auth-flood-thresh": {"type": "integer", "min": 1, "max": 100},
+    "assoc-flood-time": {"type": "integer", "min": 5, "max": 120},
+    "assoc-flood-thresh": {"type": "integer", "min": 1, "max": 100},
+    "reassoc-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "reassoc-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "probe-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "probe-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "bcn-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "bcn-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "rts-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "rts-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "cts-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "cts-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "client-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "client-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "block_ack-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "block_ack-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "pspoll-flood-time": {"type": "integer", "min": 1, "max": 120},
+    "pspoll-flood-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "netstumbler-time": {"type": "integer", "min": 1, "max": 120},
+    "netstumbler-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "wellenreiter-time": {"type": "integer", "min": 1, "max": 120},
+    "wellenreiter-thresh": {"type": "integer", "min": 1, "max": 65100},
+    "eapol-start-thresh": {"type": "integer", "min": 2, "max": 100},
+    "eapol-start-intv": {"type": "integer", "min": 1, "max": 3600},
+    "eapol-logoff-thresh": {"type": "integer", "min": 2, "max": 100},
+    "eapol-logoff-intv": {"type": "integer", "min": 1, "max": 3600},
+    "eapol-succ-thresh": {"type": "integer", "min": 2, "max": 100},
+    "eapol-succ-intv": {"type": "integer", "min": 1, "max": 3600},
+    "eapol-fail-thresh": {"type": "integer", "min": 2, "max": 100},
+    "eapol-fail-intv": {"type": "integer", "min": 1, "max": 3600},
+    "eapol-pre-succ-thresh": {"type": "integer", "min": 2, "max": 100},
+    "eapol-pre-succ-intv": {"type": "integer", "min": 1, "max": 3600},
+    "eapol-pre-fail-thresh": {"type": "integer", "min": 2, "max": 100},
+    "eapol-pre-fail-intv": {"type": "integer", "min": 1, "max": 3600},
+    "deauth-unknown-src-thresh": {"type": "integer", "min": 0, "max": 65535},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "ap-scan-channel-list-2G-5G": {
+        "chan": {
+            "type": "string",
+            "help": "Channel number.",
+            "required": True,
+            "default": "",
+            "max_length": 3,
+        },
+    },
+    "ap-scan-channel-list-6G": {
+        "chan": {
+            "type": "string",
+            "help": "Channel 6g number.",
+            "required": True,
+            "default": "",
+            "max_length": 3,
+        },
+    },
+    "ap-bgscan-disable-schedules": {
+        "name": {
+            "type": "string",
+            "help": "Schedule name.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_SENSOR_MODE = ["disable", "foreign", "both"]
-VALID_BODY_AP_SCAN = ["disable", "enable"]
-VALID_BODY_AP_SCAN_PASSIVE = ["enable", "disable"]
-VALID_BODY_AP_AUTO_SUPPRESS = ["enable", "disable"]
-VALID_BODY_WIRELESS_BRIDGE = ["enable", "disable"]
-VALID_BODY_DEAUTH_BROADCAST = ["enable", "disable"]
-VALID_BODY_NULL_SSID_PROBE_RESP = ["enable", "disable"]
-VALID_BODY_LONG_DURATION_ATTACK = ["enable", "disable"]
-VALID_BODY_INVALID_MAC_OUI = ["enable", "disable"]
-VALID_BODY_WEAK_WEP_IV = ["enable", "disable"]
-VALID_BODY_AUTH_FRAME_FLOOD = ["enable", "disable"]
-VALID_BODY_ASSOC_FRAME_FLOOD = ["enable", "disable"]
-VALID_BODY_REASSOC_FLOOD = ["enable", "disable"]
-VALID_BODY_PROBE_FLOOD = ["enable", "disable"]
-VALID_BODY_BCN_FLOOD = ["enable", "disable"]
-VALID_BODY_RTS_FLOOD = ["enable", "disable"]
-VALID_BODY_CTS_FLOOD = ["enable", "disable"]
-VALID_BODY_CLIENT_FLOOD = ["enable", "disable"]
-VALID_BODY_BLOCK_ACK_FLOOD = ["enable", "disable"]
-VALID_BODY_PSPOLL_FLOOD = ["enable", "disable"]
-VALID_BODY_NETSTUMBLER = ["enable", "disable"]
-VALID_BODY_WELLENREITER = ["enable", "disable"]
-VALID_BODY_SPOOFED_DEAUTH = ["enable", "disable"]
-VALID_BODY_ASLEAP_ATTACK = ["enable", "disable"]
-VALID_BODY_EAPOL_START_FLOOD = ["enable", "disable"]
-VALID_BODY_EAPOL_LOGOFF_FLOOD = ["enable", "disable"]
-VALID_BODY_EAPOL_SUCC_FLOOD = ["enable", "disable"]
-VALID_BODY_EAPOL_FAIL_FLOOD = ["enable", "disable"]
-VALID_BODY_EAPOL_PRE_SUCC_FLOOD = ["enable", "disable"]
-VALID_BODY_EAPOL_PRE_FAIL_FLOOD = ["enable", "disable"]
-VALID_BODY_WINDOWS_BRIDGE = ["enable", "disable"]
-VALID_BODY_DISASSOC_BROADCAST = ["enable", "disable"]
-VALID_BODY_AP_SPOOFING = ["enable", "disable"]
-VALID_BODY_CHAN_BASED_MITM = ["enable", "disable"]
-VALID_BODY_ADHOC_VALID_SSID = ["enable", "disable"]
-VALID_BODY_ADHOC_NETWORK = ["enable", "disable"]
-VALID_BODY_EAPOL_KEY_OVERFLOW = ["enable", "disable"]
-VALID_BODY_AP_IMPERSONATION = ["enable", "disable"]
-VALID_BODY_INVALID_ADDR_COMBINATION = ["enable", "disable"]
-VALID_BODY_BEACON_WRONG_CHANNEL = ["enable", "disable"]
-VALID_BODY_HT_GREENFIELD = ["enable", "disable"]
-VALID_BODY_OVERFLOW_IE = ["enable", "disable"]
-VALID_BODY_MALFORMED_HT_IE = ["enable", "disable"]
-VALID_BODY_MALFORMED_AUTH = ["enable", "disable"]
-VALID_BODY_MALFORMED_ASSOCIATION = ["enable", "disable"]
-VALID_BODY_HT_40MHZ_INTOLERANCE = ["enable", "disable"]
-VALID_BODY_VALID_SSID_MISUSE = ["enable", "disable"]
-VALID_BODY_VALID_CLIENT_MISASSOCIATION = ["enable", "disable"]
-VALID_BODY_HOTSPOTTER_ATTACK = ["enable", "disable"]
-VALID_BODY_PWSAVE_DOS_ATTACK = ["enable", "disable"]
-VALID_BODY_OMERTA_ATTACK = ["enable", "disable"]
-VALID_BODY_DISCONNECT_STATION = ["enable", "disable"]
-VALID_BODY_UNENCRYPTED_VALID = ["enable", "disable"]
-VALID_BODY_FATA_JACK = ["enable", "disable"]
-VALID_BODY_RISKY_ENCRYPTION = ["enable", "disable"]
-VALID_BODY_FUZZED_BEACON = ["enable", "disable"]
-VALID_BODY_FUZZED_PROBE_REQUEST = ["enable", "disable"]
-VALID_BODY_FUZZED_PROBE_RESPONSE = ["enable", "disable"]
-VALID_BODY_AIR_JACK = ["enable", "disable"]
-VALID_BODY_WPA_FT_ATTACK = ["enable", "disable"]
+VALID_BODY_SENSOR_MODE = [
+    "disable",
+    "foreign",
+    "both",
+]
+VALID_BODY_AP_SCAN = [
+    "disable",
+    "enable",
+]
+VALID_BODY_AP_SCAN_PASSIVE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AP_AUTO_SUPPRESS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WIRELESS_BRIDGE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DEAUTH_BROADCAST = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NULL_SSID_PROBE_RESP = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LONG_DURATION_ATTACK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INVALID_MAC_OUI = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WEAK_WEP_IV = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AUTH_FRAME_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ASSOC_FRAME_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_REASSOC_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PROBE_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BCN_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_RTS_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CTS_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CLIENT_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BLOCK_ACK_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PSPOLL_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NETSTUMBLER = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WELLENREITER = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SPOOFED_DEAUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ASLEAP_ATTACK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAPOL_START_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAPOL_LOGOFF_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAPOL_SUCC_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAPOL_FAIL_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAPOL_PRE_SUCC_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAPOL_PRE_FAIL_FLOOD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WINDOWS_BRIDGE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DISASSOC_BROADCAST = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AP_SPOOFING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CHAN_BASED_MITM = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ADHOC_VALID_SSID = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ADHOC_NETWORK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAPOL_KEY_OVERFLOW = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AP_IMPERSONATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_INVALID_ADDR_COMBINATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BEACON_WRONG_CHANNEL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_HT_GREENFIELD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_OVERFLOW_IE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_MALFORMED_HT_IE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_MALFORMED_AUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_MALFORMED_ASSOCIATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_HT_40MHZ_INTOLERANCE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_VALID_SSID_MISUSE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_VALID_CLIENT_MISASSOCIATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_HOTSPOTTER_ATTACK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PWSAVE_DOS_ATTACK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_OMERTA_ATTACK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DISCONNECT_STATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_UNENCRYPTED_VALID = [
+    "enable",
+    "disable",
+]
+VALID_BODY_FATA_JACK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_RISKY_ENCRYPTION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_FUZZED_BEACON = [
+    "enable",
+    "disable",
+]
+VALID_BODY_FUZZED_PROBE_REQUEST = [
+    "enable",
+    "disable",
+]
+VALID_BODY_FUZZED_PROBE_RESPONSE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AIR_JACK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WPA_FT_ATTACK = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -204,13 +734,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_wids_profile_get(
+def validate_wireless_controller_wids_profile_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for wireless_controller/wids_profile.
 
     Args:
         attr: Attribute filter (optional)
@@ -220,9 +750,20 @@ def validate_wids_profile_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_wireless_controller_wids_profile_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_wireless_controller_wids_profile_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_wireless_controller_wids_profile_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -243,7 +784,7 @@ def validate_wids_profile_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for wireless-controller_wids-profile.
+    Validate required fields for wireless_controller/wids_profile.
 
     This validator checks:
     1. Always-required fields are present
@@ -256,1350 +797,685 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "name": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_wids_profile_post(
-    payload: dict[str, Any],
+def validate_wireless_controller_wids_profile_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new wireless_controller/wids_profile object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - name: WIDS profile name.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_wireless_controller_wids_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "sensor-mode": "disable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_wireless_controller_wids_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["sensor-mode"] = "invalid-value"
+        >>> is_valid, error = validate_wireless_controller_wids_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_wireless_controller_wids_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "comment cannot exceed 63 characters")
-
-    # Validate sensor-mode if present
+    # Step 2: Validate enum values
     if "sensor-mode" in payload:
-        value = payload.get("sensor-mode")
-        if value and value not in VALID_BODY_SENSOR_MODE:
-            return (
-                False,
-                f"Invalid sensor-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SENSOR_MODE)}",
-            )
-
-    # Validate ap-scan if present
+        value = payload["sensor-mode"]
+        if value not in VALID_BODY_SENSOR_MODE:
+            desc = FIELD_DESCRIPTIONS.get("sensor-mode", "")
+            error_msg = f"Invalid value for 'sensor-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SENSOR_MODE)}"
+            error_msg += f"\n  → Example: sensor-mode='{{ VALID_BODY_SENSOR_MODE[0] }}'"
+            return (False, error_msg)
     if "ap-scan" in payload:
-        value = payload.get("ap-scan")
-        if value and value not in VALID_BODY_AP_SCAN:
-            return (
-                False,
-                f"Invalid ap-scan '{value}'. Must be one of: {', '.join(VALID_BODY_AP_SCAN)}",
-            )
-
-    # Validate ap-bgscan-period if present
-    if "ap-bgscan-period" in payload:
-        value = payload.get("ap-bgscan-period")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 3600:
-                    return (
-                        False,
-                        "ap-bgscan-period must be between 10 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-bgscan-period must be numeric, got: {value}",
-                )
-
-    # Validate ap-bgscan-intv if present
-    if "ap-bgscan-intv" in payload:
-        value = payload.get("ap-bgscan-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 600:
-                    return (False, "ap-bgscan-intv must be between 1 and 600")
-            except (ValueError, TypeError):
-                return (False, f"ap-bgscan-intv must be numeric, got: {value}")
-
-    # Validate ap-bgscan-duration if present
-    if "ap-bgscan-duration" in payload:
-        value = payload.get("ap-bgscan-duration")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 1000:
-                    return (
-                        False,
-                        "ap-bgscan-duration must be between 10 and 1000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-bgscan-duration must be numeric, got: {value}",
-                )
-
-    # Validate ap-bgscan-idle if present
-    if "ap-bgscan-idle" in payload:
-        value = payload.get("ap-bgscan-idle")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 1000:
-                    return (
-                        False,
-                        "ap-bgscan-idle must be between 0 and 1000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"ap-bgscan-idle must be numeric, got: {value}")
-
-    # Validate ap-bgscan-report-intv if present
-    if "ap-bgscan-report-intv" in payload:
-        value = payload.get("ap-bgscan-report-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 15 or int_val > 600:
-                    return (
-                        False,
-                        "ap-bgscan-report-intv must be between 15 and 600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-bgscan-report-intv must be numeric, got: {value}",
-                )
-
-    # Validate ap-fgscan-report-intv if present
-    if "ap-fgscan-report-intv" in payload:
-        value = payload.get("ap-fgscan-report-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 15 or int_val > 600:
-                    return (
-                        False,
-                        "ap-fgscan-report-intv must be between 15 and 600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-fgscan-report-intv must be numeric, got: {value}",
-                )
-
-    # Validate ap-scan-passive if present
+        value = payload["ap-scan"]
+        if value not in VALID_BODY_AP_SCAN:
+            desc = FIELD_DESCRIPTIONS.get("ap-scan", "")
+            error_msg = f"Invalid value for 'ap-scan': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AP_SCAN)}"
+            error_msg += f"\n  → Example: ap-scan='{{ VALID_BODY_AP_SCAN[0] }}'"
+            return (False, error_msg)
     if "ap-scan-passive" in payload:
-        value = payload.get("ap-scan-passive")
-        if value and value not in VALID_BODY_AP_SCAN_PASSIVE:
-            return (
-                False,
-                f"Invalid ap-scan-passive '{value}'. Must be one of: {', '.join(VALID_BODY_AP_SCAN_PASSIVE)}",
-            )
-
-    # Validate ap-scan-threshold if present
-    if "ap-scan-threshold" in payload:
-        value = payload.get("ap-scan-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "ap-scan-threshold cannot exceed 7 characters")
-
-    # Validate ap-auto-suppress if present
+        value = payload["ap-scan-passive"]
+        if value not in VALID_BODY_AP_SCAN_PASSIVE:
+            desc = FIELD_DESCRIPTIONS.get("ap-scan-passive", "")
+            error_msg = f"Invalid value for 'ap-scan-passive': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AP_SCAN_PASSIVE)}"
+            error_msg += f"\n  → Example: ap-scan-passive='{{ VALID_BODY_AP_SCAN_PASSIVE[0] }}'"
+            return (False, error_msg)
     if "ap-auto-suppress" in payload:
-        value = payload.get("ap-auto-suppress")
-        if value and value not in VALID_BODY_AP_AUTO_SUPPRESS:
-            return (
-                False,
-                f"Invalid ap-auto-suppress '{value}'. Must be one of: {', '.join(VALID_BODY_AP_AUTO_SUPPRESS)}",
-            )
-
-    # Validate wireless-bridge if present
+        value = payload["ap-auto-suppress"]
+        if value not in VALID_BODY_AP_AUTO_SUPPRESS:
+            desc = FIELD_DESCRIPTIONS.get("ap-auto-suppress", "")
+            error_msg = f"Invalid value for 'ap-auto-suppress': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AP_AUTO_SUPPRESS)}"
+            error_msg += f"\n  → Example: ap-auto-suppress='{{ VALID_BODY_AP_AUTO_SUPPRESS[0] }}'"
+            return (False, error_msg)
     if "wireless-bridge" in payload:
-        value = payload.get("wireless-bridge")
-        if value and value not in VALID_BODY_WIRELESS_BRIDGE:
-            return (
-                False,
-                f"Invalid wireless-bridge '{value}'. Must be one of: {', '.join(VALID_BODY_WIRELESS_BRIDGE)}",
-            )
-
-    # Validate deauth-broadcast if present
+        value = payload["wireless-bridge"]
+        if value not in VALID_BODY_WIRELESS_BRIDGE:
+            desc = FIELD_DESCRIPTIONS.get("wireless-bridge", "")
+            error_msg = f"Invalid value for 'wireless-bridge': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WIRELESS_BRIDGE)}"
+            error_msg += f"\n  → Example: wireless-bridge='{{ VALID_BODY_WIRELESS_BRIDGE[0] }}'"
+            return (False, error_msg)
     if "deauth-broadcast" in payload:
-        value = payload.get("deauth-broadcast")
-        if value and value not in VALID_BODY_DEAUTH_BROADCAST:
-            return (
-                False,
-                f"Invalid deauth-broadcast '{value}'. Must be one of: {', '.join(VALID_BODY_DEAUTH_BROADCAST)}",
-            )
-
-    # Validate null-ssid-probe-resp if present
+        value = payload["deauth-broadcast"]
+        if value not in VALID_BODY_DEAUTH_BROADCAST:
+            desc = FIELD_DESCRIPTIONS.get("deauth-broadcast", "")
+            error_msg = f"Invalid value for 'deauth-broadcast': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DEAUTH_BROADCAST)}"
+            error_msg += f"\n  → Example: deauth-broadcast='{{ VALID_BODY_DEAUTH_BROADCAST[0] }}'"
+            return (False, error_msg)
     if "null-ssid-probe-resp" in payload:
-        value = payload.get("null-ssid-probe-resp")
-        if value and value not in VALID_BODY_NULL_SSID_PROBE_RESP:
-            return (
-                False,
-                f"Invalid null-ssid-probe-resp '{value}'. Must be one of: {', '.join(VALID_BODY_NULL_SSID_PROBE_RESP)}",
-            )
-
-    # Validate long-duration-attack if present
+        value = payload["null-ssid-probe-resp"]
+        if value not in VALID_BODY_NULL_SSID_PROBE_RESP:
+            desc = FIELD_DESCRIPTIONS.get("null-ssid-probe-resp", "")
+            error_msg = f"Invalid value for 'null-ssid-probe-resp': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NULL_SSID_PROBE_RESP)}"
+            error_msg += f"\n  → Example: null-ssid-probe-resp='{{ VALID_BODY_NULL_SSID_PROBE_RESP[0] }}'"
+            return (False, error_msg)
     if "long-duration-attack" in payload:
-        value = payload.get("long-duration-attack")
-        if value and value not in VALID_BODY_LONG_DURATION_ATTACK:
-            return (
-                False,
-                f"Invalid long-duration-attack '{value}'. Must be one of: {', '.join(VALID_BODY_LONG_DURATION_ATTACK)}",
-            )
-
-    # Validate long-duration-thresh if present
-    if "long-duration-thresh" in payload:
-        value = payload.get("long-duration-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1000 or int_val > 32767:
-                    return (
-                        False,
-                        "long-duration-thresh must be between 1000 and 32767",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"long-duration-thresh must be numeric, got: {value}",
-                )
-
-    # Validate invalid-mac-oui if present
+        value = payload["long-duration-attack"]
+        if value not in VALID_BODY_LONG_DURATION_ATTACK:
+            desc = FIELD_DESCRIPTIONS.get("long-duration-attack", "")
+            error_msg = f"Invalid value for 'long-duration-attack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LONG_DURATION_ATTACK)}"
+            error_msg += f"\n  → Example: long-duration-attack='{{ VALID_BODY_LONG_DURATION_ATTACK[0] }}'"
+            return (False, error_msg)
     if "invalid-mac-oui" in payload:
-        value = payload.get("invalid-mac-oui")
-        if value and value not in VALID_BODY_INVALID_MAC_OUI:
-            return (
-                False,
-                f"Invalid invalid-mac-oui '{value}'. Must be one of: {', '.join(VALID_BODY_INVALID_MAC_OUI)}",
-            )
-
-    # Validate weak-wep-iv if present
+        value = payload["invalid-mac-oui"]
+        if value not in VALID_BODY_INVALID_MAC_OUI:
+            desc = FIELD_DESCRIPTIONS.get("invalid-mac-oui", "")
+            error_msg = f"Invalid value for 'invalid-mac-oui': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INVALID_MAC_OUI)}"
+            error_msg += f"\n  → Example: invalid-mac-oui='{{ VALID_BODY_INVALID_MAC_OUI[0] }}'"
+            return (False, error_msg)
     if "weak-wep-iv" in payload:
-        value = payload.get("weak-wep-iv")
-        if value and value not in VALID_BODY_WEAK_WEP_IV:
-            return (
-                False,
-                f"Invalid weak-wep-iv '{value}'. Must be one of: {', '.join(VALID_BODY_WEAK_WEP_IV)}",
-            )
-
-    # Validate auth-frame-flood if present
+        value = payload["weak-wep-iv"]
+        if value not in VALID_BODY_WEAK_WEP_IV:
+            desc = FIELD_DESCRIPTIONS.get("weak-wep-iv", "")
+            error_msg = f"Invalid value for 'weak-wep-iv': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WEAK_WEP_IV)}"
+            error_msg += f"\n  → Example: weak-wep-iv='{{ VALID_BODY_WEAK_WEP_IV[0] }}'"
+            return (False, error_msg)
     if "auth-frame-flood" in payload:
-        value = payload.get("auth-frame-flood")
-        if value and value not in VALID_BODY_AUTH_FRAME_FLOOD:
-            return (
-                False,
-                f"Invalid auth-frame-flood '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_FRAME_FLOOD)}",
-            )
-
-    # Validate auth-flood-time if present
-    if "auth-flood-time" in payload:
-        value = payload.get("auth-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 120:
-                    return (
-                        False,
-                        "auth-flood-time must be between 5 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"auth-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate auth-flood-thresh if present
-    if "auth-flood-thresh" in payload:
-        value = payload.get("auth-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100:
-                    return (
-                        False,
-                        "auth-flood-thresh must be between 1 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"auth-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate assoc-frame-flood if present
+        value = payload["auth-frame-flood"]
+        if value not in VALID_BODY_AUTH_FRAME_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("auth-frame-flood", "")
+            error_msg = f"Invalid value for 'auth-frame-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AUTH_FRAME_FLOOD)}"
+            error_msg += f"\n  → Example: auth-frame-flood='{{ VALID_BODY_AUTH_FRAME_FLOOD[0] }}'"
+            return (False, error_msg)
     if "assoc-frame-flood" in payload:
-        value = payload.get("assoc-frame-flood")
-        if value and value not in VALID_BODY_ASSOC_FRAME_FLOOD:
-            return (
-                False,
-                f"Invalid assoc-frame-flood '{value}'. Must be one of: {', '.join(VALID_BODY_ASSOC_FRAME_FLOOD)}",
-            )
-
-    # Validate assoc-flood-time if present
-    if "assoc-flood-time" in payload:
-        value = payload.get("assoc-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 120:
-                    return (
-                        False,
-                        "assoc-flood-time must be between 5 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"assoc-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate assoc-flood-thresh if present
-    if "assoc-flood-thresh" in payload:
-        value = payload.get("assoc-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100:
-                    return (
-                        False,
-                        "assoc-flood-thresh must be between 1 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"assoc-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate reassoc-flood if present
+        value = payload["assoc-frame-flood"]
+        if value not in VALID_BODY_ASSOC_FRAME_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("assoc-frame-flood", "")
+            error_msg = f"Invalid value for 'assoc-frame-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ASSOC_FRAME_FLOOD)}"
+            error_msg += f"\n  → Example: assoc-frame-flood='{{ VALID_BODY_ASSOC_FRAME_FLOOD[0] }}'"
+            return (False, error_msg)
     if "reassoc-flood" in payload:
-        value = payload.get("reassoc-flood")
-        if value and value not in VALID_BODY_REASSOC_FLOOD:
-            return (
-                False,
-                f"Invalid reassoc-flood '{value}'. Must be one of: {', '.join(VALID_BODY_REASSOC_FLOOD)}",
-            )
-
-    # Validate reassoc-flood-time if present
-    if "reassoc-flood-time" in payload:
-        value = payload.get("reassoc-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "reassoc-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"reassoc-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate reassoc-flood-thresh if present
-    if "reassoc-flood-thresh" in payload:
-        value = payload.get("reassoc-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "reassoc-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"reassoc-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate probe-flood if present
+        value = payload["reassoc-flood"]
+        if value not in VALID_BODY_REASSOC_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("reassoc-flood", "")
+            error_msg = f"Invalid value for 'reassoc-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REASSOC_FLOOD)}"
+            error_msg += f"\n  → Example: reassoc-flood='{{ VALID_BODY_REASSOC_FLOOD[0] }}'"
+            return (False, error_msg)
     if "probe-flood" in payload:
-        value = payload.get("probe-flood")
-        if value and value not in VALID_BODY_PROBE_FLOOD:
-            return (
-                False,
-                f"Invalid probe-flood '{value}'. Must be one of: {', '.join(VALID_BODY_PROBE_FLOOD)}",
-            )
-
-    # Validate probe-flood-time if present
-    if "probe-flood-time" in payload:
-        value = payload.get("probe-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "probe-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"probe-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate probe-flood-thresh if present
-    if "probe-flood-thresh" in payload:
-        value = payload.get("probe-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "probe-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"probe-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate bcn-flood if present
+        value = payload["probe-flood"]
+        if value not in VALID_BODY_PROBE_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("probe-flood", "")
+            error_msg = f"Invalid value for 'probe-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROBE_FLOOD)}"
+            error_msg += f"\n  → Example: probe-flood='{{ VALID_BODY_PROBE_FLOOD[0] }}'"
+            return (False, error_msg)
     if "bcn-flood" in payload:
-        value = payload.get("bcn-flood")
-        if value and value not in VALID_BODY_BCN_FLOOD:
-            return (
-                False,
-                f"Invalid bcn-flood '{value}'. Must be one of: {', '.join(VALID_BODY_BCN_FLOOD)}",
-            )
-
-    # Validate bcn-flood-time if present
-    if "bcn-flood-time" in payload:
-        value = payload.get("bcn-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (False, "bcn-flood-time must be between 1 and 120")
-            except (ValueError, TypeError):
-                return (False, f"bcn-flood-time must be numeric, got: {value}")
-
-    # Validate bcn-flood-thresh if present
-    if "bcn-flood-thresh" in payload:
-        value = payload.get("bcn-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "bcn-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bcn-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate rts-flood if present
+        value = payload["bcn-flood"]
+        if value not in VALID_BODY_BCN_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("bcn-flood", "")
+            error_msg = f"Invalid value for 'bcn-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BCN_FLOOD)}"
+            error_msg += f"\n  → Example: bcn-flood='{{ VALID_BODY_BCN_FLOOD[0] }}'"
+            return (False, error_msg)
     if "rts-flood" in payload:
-        value = payload.get("rts-flood")
-        if value and value not in VALID_BODY_RTS_FLOOD:
-            return (
-                False,
-                f"Invalid rts-flood '{value}'. Must be one of: {', '.join(VALID_BODY_RTS_FLOOD)}",
-            )
-
-    # Validate rts-flood-time if present
-    if "rts-flood-time" in payload:
-        value = payload.get("rts-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (False, "rts-flood-time must be between 1 and 120")
-            except (ValueError, TypeError):
-                return (False, f"rts-flood-time must be numeric, got: {value}")
-
-    # Validate rts-flood-thresh if present
-    if "rts-flood-thresh" in payload:
-        value = payload.get("rts-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "rts-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"rts-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate cts-flood if present
+        value = payload["rts-flood"]
+        if value not in VALID_BODY_RTS_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("rts-flood", "")
+            error_msg = f"Invalid value for 'rts-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RTS_FLOOD)}"
+            error_msg += f"\n  → Example: rts-flood='{{ VALID_BODY_RTS_FLOOD[0] }}'"
+            return (False, error_msg)
     if "cts-flood" in payload:
-        value = payload.get("cts-flood")
-        if value and value not in VALID_BODY_CTS_FLOOD:
-            return (
-                False,
-                f"Invalid cts-flood '{value}'. Must be one of: {', '.join(VALID_BODY_CTS_FLOOD)}",
-            )
-
-    # Validate cts-flood-time if present
-    if "cts-flood-time" in payload:
-        value = payload.get("cts-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (False, "cts-flood-time must be between 1 and 120")
-            except (ValueError, TypeError):
-                return (False, f"cts-flood-time must be numeric, got: {value}")
-
-    # Validate cts-flood-thresh if present
-    if "cts-flood-thresh" in payload:
-        value = payload.get("cts-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "cts-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"cts-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate client-flood if present
+        value = payload["cts-flood"]
+        if value not in VALID_BODY_CTS_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("cts-flood", "")
+            error_msg = f"Invalid value for 'cts-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CTS_FLOOD)}"
+            error_msg += f"\n  → Example: cts-flood='{{ VALID_BODY_CTS_FLOOD[0] }}'"
+            return (False, error_msg)
     if "client-flood" in payload:
-        value = payload.get("client-flood")
-        if value and value not in VALID_BODY_CLIENT_FLOOD:
-            return (
-                False,
-                f"Invalid client-flood '{value}'. Must be one of: {', '.join(VALID_BODY_CLIENT_FLOOD)}",
-            )
-
-    # Validate client-flood-time if present
-    if "client-flood-time" in payload:
-        value = payload.get("client-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "client-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"client-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate client-flood-thresh if present
-    if "client-flood-thresh" in payload:
-        value = payload.get("client-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "client-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"client-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate block_ack-flood if present
+        value = payload["client-flood"]
+        if value not in VALID_BODY_CLIENT_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("client-flood", "")
+            error_msg = f"Invalid value for 'client-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CLIENT_FLOOD)}"
+            error_msg += f"\n  → Example: client-flood='{{ VALID_BODY_CLIENT_FLOOD[0] }}'"
+            return (False, error_msg)
     if "block_ack-flood" in payload:
-        value = payload.get("block_ack-flood")
-        if value and value not in VALID_BODY_BLOCK_ACK_FLOOD:
-            return (
-                False,
-                f"Invalid block_ack-flood '{value}'. Must be one of: {', '.join(VALID_BODY_BLOCK_ACK_FLOOD)}",
-            )
-
-    # Validate block_ack-flood-time if present
-    if "block_ack-flood-time" in payload:
-        value = payload.get("block_ack-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "block_ack-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"block_ack-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate block_ack-flood-thresh if present
-    if "block_ack-flood-thresh" in payload:
-        value = payload.get("block_ack-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "block_ack-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"block_ack-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate pspoll-flood if present
+        value = payload["block_ack-flood"]
+        if value not in VALID_BODY_BLOCK_ACK_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("block_ack-flood", "")
+            error_msg = f"Invalid value for 'block_ack-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BLOCK_ACK_FLOOD)}"
+            error_msg += f"\n  → Example: block_ack-flood='{{ VALID_BODY_BLOCK_ACK_FLOOD[0] }}'"
+            return (False, error_msg)
     if "pspoll-flood" in payload:
-        value = payload.get("pspoll-flood")
-        if value and value not in VALID_BODY_PSPOLL_FLOOD:
-            return (
-                False,
-                f"Invalid pspoll-flood '{value}'. Must be one of: {', '.join(VALID_BODY_PSPOLL_FLOOD)}",
-            )
-
-    # Validate pspoll-flood-time if present
-    if "pspoll-flood-time" in payload:
-        value = payload.get("pspoll-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "pspoll-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pspoll-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate pspoll-flood-thresh if present
-    if "pspoll-flood-thresh" in payload:
-        value = payload.get("pspoll-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "pspoll-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pspoll-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate netstumbler if present
+        value = payload["pspoll-flood"]
+        if value not in VALID_BODY_PSPOLL_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("pspoll-flood", "")
+            error_msg = f"Invalid value for 'pspoll-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PSPOLL_FLOOD)}"
+            error_msg += f"\n  → Example: pspoll-flood='{{ VALID_BODY_PSPOLL_FLOOD[0] }}'"
+            return (False, error_msg)
     if "netstumbler" in payload:
-        value = payload.get("netstumbler")
-        if value and value not in VALID_BODY_NETSTUMBLER:
-            return (
-                False,
-                f"Invalid netstumbler '{value}'. Must be one of: {', '.join(VALID_BODY_NETSTUMBLER)}",
-            )
-
-    # Validate netstumbler-time if present
-    if "netstumbler-time" in payload:
-        value = payload.get("netstumbler-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "netstumbler-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netstumbler-time must be numeric, got: {value}",
-                )
-
-    # Validate netstumbler-thresh if present
-    if "netstumbler-thresh" in payload:
-        value = payload.get("netstumbler-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "netstumbler-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netstumbler-thresh must be numeric, got: {value}",
-                )
-
-    # Validate wellenreiter if present
+        value = payload["netstumbler"]
+        if value not in VALID_BODY_NETSTUMBLER:
+            desc = FIELD_DESCRIPTIONS.get("netstumbler", "")
+            error_msg = f"Invalid value for 'netstumbler': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NETSTUMBLER)}"
+            error_msg += f"\n  → Example: netstumbler='{{ VALID_BODY_NETSTUMBLER[0] }}'"
+            return (False, error_msg)
     if "wellenreiter" in payload:
-        value = payload.get("wellenreiter")
-        if value and value not in VALID_BODY_WELLENREITER:
-            return (
-                False,
-                f"Invalid wellenreiter '{value}'. Must be one of: {', '.join(VALID_BODY_WELLENREITER)}",
-            )
-
-    # Validate wellenreiter-time if present
-    if "wellenreiter-time" in payload:
-        value = payload.get("wellenreiter-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "wellenreiter-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"wellenreiter-time must be numeric, got: {value}",
-                )
-
-    # Validate wellenreiter-thresh if present
-    if "wellenreiter-thresh" in payload:
-        value = payload.get("wellenreiter-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "wellenreiter-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"wellenreiter-thresh must be numeric, got: {value}",
-                )
-
-    # Validate spoofed-deauth if present
+        value = payload["wellenreiter"]
+        if value not in VALID_BODY_WELLENREITER:
+            desc = FIELD_DESCRIPTIONS.get("wellenreiter", "")
+            error_msg = f"Invalid value for 'wellenreiter': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WELLENREITER)}"
+            error_msg += f"\n  → Example: wellenreiter='{{ VALID_BODY_WELLENREITER[0] }}'"
+            return (False, error_msg)
     if "spoofed-deauth" in payload:
-        value = payload.get("spoofed-deauth")
-        if value and value not in VALID_BODY_SPOOFED_DEAUTH:
-            return (
-                False,
-                f"Invalid spoofed-deauth '{value}'. Must be one of: {', '.join(VALID_BODY_SPOOFED_DEAUTH)}",
-            )
-
-    # Validate asleap-attack if present
+        value = payload["spoofed-deauth"]
+        if value not in VALID_BODY_SPOOFED_DEAUTH:
+            desc = FIELD_DESCRIPTIONS.get("spoofed-deauth", "")
+            error_msg = f"Invalid value for 'spoofed-deauth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SPOOFED_DEAUTH)}"
+            error_msg += f"\n  → Example: spoofed-deauth='{{ VALID_BODY_SPOOFED_DEAUTH[0] }}'"
+            return (False, error_msg)
     if "asleap-attack" in payload:
-        value = payload.get("asleap-attack")
-        if value and value not in VALID_BODY_ASLEAP_ATTACK:
-            return (
-                False,
-                f"Invalid asleap-attack '{value}'. Must be one of: {', '.join(VALID_BODY_ASLEAP_ATTACK)}",
-            )
-
-    # Validate eapol-start-flood if present
+        value = payload["asleap-attack"]
+        if value not in VALID_BODY_ASLEAP_ATTACK:
+            desc = FIELD_DESCRIPTIONS.get("asleap-attack", "")
+            error_msg = f"Invalid value for 'asleap-attack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ASLEAP_ATTACK)}"
+            error_msg += f"\n  → Example: asleap-attack='{{ VALID_BODY_ASLEAP_ATTACK[0] }}'"
+            return (False, error_msg)
     if "eapol-start-flood" in payload:
-        value = payload.get("eapol-start-flood")
-        if value and value not in VALID_BODY_EAPOL_START_FLOOD:
-            return (
-                False,
-                f"Invalid eapol-start-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_START_FLOOD)}",
-            )
-
-    # Validate eapol-start-thresh if present
-    if "eapol-start-thresh" in payload:
-        value = payload.get("eapol-start-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-start-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-start-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-start-intv if present
-    if "eapol-start-intv" in payload:
-        value = payload.get("eapol-start-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-start-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-start-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-logoff-flood if present
+        value = payload["eapol-start-flood"]
+        if value not in VALID_BODY_EAPOL_START_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("eapol-start-flood", "")
+            error_msg = f"Invalid value for 'eapol-start-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_START_FLOOD)}"
+            error_msg += f"\n  → Example: eapol-start-flood='{{ VALID_BODY_EAPOL_START_FLOOD[0] }}'"
+            return (False, error_msg)
     if "eapol-logoff-flood" in payload:
-        value = payload.get("eapol-logoff-flood")
-        if value and value not in VALID_BODY_EAPOL_LOGOFF_FLOOD:
-            return (
-                False,
-                f"Invalid eapol-logoff-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_LOGOFF_FLOOD)}",
-            )
-
-    # Validate eapol-logoff-thresh if present
-    if "eapol-logoff-thresh" in payload:
-        value = payload.get("eapol-logoff-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-logoff-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-logoff-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-logoff-intv if present
-    if "eapol-logoff-intv" in payload:
-        value = payload.get("eapol-logoff-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-logoff-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-logoff-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-succ-flood if present
+        value = payload["eapol-logoff-flood"]
+        if value not in VALID_BODY_EAPOL_LOGOFF_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("eapol-logoff-flood", "")
+            error_msg = f"Invalid value for 'eapol-logoff-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_LOGOFF_FLOOD)}"
+            error_msg += f"\n  → Example: eapol-logoff-flood='{{ VALID_BODY_EAPOL_LOGOFF_FLOOD[0] }}'"
+            return (False, error_msg)
     if "eapol-succ-flood" in payload:
-        value = payload.get("eapol-succ-flood")
-        if value and value not in VALID_BODY_EAPOL_SUCC_FLOOD:
-            return (
-                False,
-                f"Invalid eapol-succ-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_SUCC_FLOOD)}",
-            )
-
-    # Validate eapol-succ-thresh if present
-    if "eapol-succ-thresh" in payload:
-        value = payload.get("eapol-succ-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-succ-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-succ-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-succ-intv if present
-    if "eapol-succ-intv" in payload:
-        value = payload.get("eapol-succ-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-succ-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-succ-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-fail-flood if present
+        value = payload["eapol-succ-flood"]
+        if value not in VALID_BODY_EAPOL_SUCC_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("eapol-succ-flood", "")
+            error_msg = f"Invalid value for 'eapol-succ-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_SUCC_FLOOD)}"
+            error_msg += f"\n  → Example: eapol-succ-flood='{{ VALID_BODY_EAPOL_SUCC_FLOOD[0] }}'"
+            return (False, error_msg)
     if "eapol-fail-flood" in payload:
-        value = payload.get("eapol-fail-flood")
-        if value and value not in VALID_BODY_EAPOL_FAIL_FLOOD:
-            return (
-                False,
-                f"Invalid eapol-fail-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_FAIL_FLOOD)}",
-            )
-
-    # Validate eapol-fail-thresh if present
-    if "eapol-fail-thresh" in payload:
-        value = payload.get("eapol-fail-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-fail-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-fail-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-fail-intv if present
-    if "eapol-fail-intv" in payload:
-        value = payload.get("eapol-fail-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-fail-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-fail-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-succ-flood if present
+        value = payload["eapol-fail-flood"]
+        if value not in VALID_BODY_EAPOL_FAIL_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("eapol-fail-flood", "")
+            error_msg = f"Invalid value for 'eapol-fail-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_FAIL_FLOOD)}"
+            error_msg += f"\n  → Example: eapol-fail-flood='{{ VALID_BODY_EAPOL_FAIL_FLOOD[0] }}'"
+            return (False, error_msg)
     if "eapol-pre-succ-flood" in payload:
-        value = payload.get("eapol-pre-succ-flood")
-        if value and value not in VALID_BODY_EAPOL_PRE_SUCC_FLOOD:
-            return (
-                False,
-                f"Invalid eapol-pre-succ-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_PRE_SUCC_FLOOD)}",
-            )
-
-    # Validate eapol-pre-succ-thresh if present
-    if "eapol-pre-succ-thresh" in payload:
-        value = payload.get("eapol-pre-succ-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-pre-succ-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-succ-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-succ-intv if present
-    if "eapol-pre-succ-intv" in payload:
-        value = payload.get("eapol-pre-succ-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-pre-succ-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-succ-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-fail-flood if present
+        value = payload["eapol-pre-succ-flood"]
+        if value not in VALID_BODY_EAPOL_PRE_SUCC_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("eapol-pre-succ-flood", "")
+            error_msg = f"Invalid value for 'eapol-pre-succ-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_PRE_SUCC_FLOOD)}"
+            error_msg += f"\n  → Example: eapol-pre-succ-flood='{{ VALID_BODY_EAPOL_PRE_SUCC_FLOOD[0] }}'"
+            return (False, error_msg)
     if "eapol-pre-fail-flood" in payload:
-        value = payload.get("eapol-pre-fail-flood")
-        if value and value not in VALID_BODY_EAPOL_PRE_FAIL_FLOOD:
-            return (
-                False,
-                f"Invalid eapol-pre-fail-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_PRE_FAIL_FLOOD)}",
-            )
-
-    # Validate eapol-pre-fail-thresh if present
-    if "eapol-pre-fail-thresh" in payload:
-        value = payload.get("eapol-pre-fail-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-pre-fail-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-fail-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-fail-intv if present
-    if "eapol-pre-fail-intv" in payload:
-        value = payload.get("eapol-pre-fail-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-pre-fail-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-fail-intv must be numeric, got: {value}",
-                )
-
-    # Validate deauth-unknown-src-thresh if present
-    if "deauth-unknown-src-thresh" in payload:
-        value = payload.get("deauth-unknown-src-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "deauth-unknown-src-thresh must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"deauth-unknown-src-thresh must be numeric, got: {value}",
-                )
-
-    # Validate windows-bridge if present
+        value = payload["eapol-pre-fail-flood"]
+        if value not in VALID_BODY_EAPOL_PRE_FAIL_FLOOD:
+            desc = FIELD_DESCRIPTIONS.get("eapol-pre-fail-flood", "")
+            error_msg = f"Invalid value for 'eapol-pre-fail-flood': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_PRE_FAIL_FLOOD)}"
+            error_msg += f"\n  → Example: eapol-pre-fail-flood='{{ VALID_BODY_EAPOL_PRE_FAIL_FLOOD[0] }}'"
+            return (False, error_msg)
     if "windows-bridge" in payload:
-        value = payload.get("windows-bridge")
-        if value and value not in VALID_BODY_WINDOWS_BRIDGE:
-            return (
-                False,
-                f"Invalid windows-bridge '{value}'. Must be one of: {', '.join(VALID_BODY_WINDOWS_BRIDGE)}",
-            )
-
-    # Validate disassoc-broadcast if present
+        value = payload["windows-bridge"]
+        if value not in VALID_BODY_WINDOWS_BRIDGE:
+            desc = FIELD_DESCRIPTIONS.get("windows-bridge", "")
+            error_msg = f"Invalid value for 'windows-bridge': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WINDOWS_BRIDGE)}"
+            error_msg += f"\n  → Example: windows-bridge='{{ VALID_BODY_WINDOWS_BRIDGE[0] }}'"
+            return (False, error_msg)
     if "disassoc-broadcast" in payload:
-        value = payload.get("disassoc-broadcast")
-        if value and value not in VALID_BODY_DISASSOC_BROADCAST:
-            return (
-                False,
-                f"Invalid disassoc-broadcast '{value}'. Must be one of: {', '.join(VALID_BODY_DISASSOC_BROADCAST)}",
-            )
-
-    # Validate ap-spoofing if present
+        value = payload["disassoc-broadcast"]
+        if value not in VALID_BODY_DISASSOC_BROADCAST:
+            desc = FIELD_DESCRIPTIONS.get("disassoc-broadcast", "")
+            error_msg = f"Invalid value for 'disassoc-broadcast': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DISASSOC_BROADCAST)}"
+            error_msg += f"\n  → Example: disassoc-broadcast='{{ VALID_BODY_DISASSOC_BROADCAST[0] }}'"
+            return (False, error_msg)
     if "ap-spoofing" in payload:
-        value = payload.get("ap-spoofing")
-        if value and value not in VALID_BODY_AP_SPOOFING:
-            return (
-                False,
-                f"Invalid ap-spoofing '{value}'. Must be one of: {', '.join(VALID_BODY_AP_SPOOFING)}",
-            )
-
-    # Validate chan-based-mitm if present
+        value = payload["ap-spoofing"]
+        if value not in VALID_BODY_AP_SPOOFING:
+            desc = FIELD_DESCRIPTIONS.get("ap-spoofing", "")
+            error_msg = f"Invalid value for 'ap-spoofing': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AP_SPOOFING)}"
+            error_msg += f"\n  → Example: ap-spoofing='{{ VALID_BODY_AP_SPOOFING[0] }}'"
+            return (False, error_msg)
     if "chan-based-mitm" in payload:
-        value = payload.get("chan-based-mitm")
-        if value and value not in VALID_BODY_CHAN_BASED_MITM:
-            return (
-                False,
-                f"Invalid chan-based-mitm '{value}'. Must be one of: {', '.join(VALID_BODY_CHAN_BASED_MITM)}",
-            )
-
-    # Validate adhoc-valid-ssid if present
+        value = payload["chan-based-mitm"]
+        if value not in VALID_BODY_CHAN_BASED_MITM:
+            desc = FIELD_DESCRIPTIONS.get("chan-based-mitm", "")
+            error_msg = f"Invalid value for 'chan-based-mitm': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CHAN_BASED_MITM)}"
+            error_msg += f"\n  → Example: chan-based-mitm='{{ VALID_BODY_CHAN_BASED_MITM[0] }}'"
+            return (False, error_msg)
     if "adhoc-valid-ssid" in payload:
-        value = payload.get("adhoc-valid-ssid")
-        if value and value not in VALID_BODY_ADHOC_VALID_SSID:
-            return (
-                False,
-                f"Invalid adhoc-valid-ssid '{value}'. Must be one of: {', '.join(VALID_BODY_ADHOC_VALID_SSID)}",
-            )
-
-    # Validate adhoc-network if present
+        value = payload["adhoc-valid-ssid"]
+        if value not in VALID_BODY_ADHOC_VALID_SSID:
+            desc = FIELD_DESCRIPTIONS.get("adhoc-valid-ssid", "")
+            error_msg = f"Invalid value for 'adhoc-valid-ssid': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADHOC_VALID_SSID)}"
+            error_msg += f"\n  → Example: adhoc-valid-ssid='{{ VALID_BODY_ADHOC_VALID_SSID[0] }}'"
+            return (False, error_msg)
     if "adhoc-network" in payload:
-        value = payload.get("adhoc-network")
-        if value and value not in VALID_BODY_ADHOC_NETWORK:
-            return (
-                False,
-                f"Invalid adhoc-network '{value}'. Must be one of: {', '.join(VALID_BODY_ADHOC_NETWORK)}",
-            )
-
-    # Validate eapol-key-overflow if present
+        value = payload["adhoc-network"]
+        if value not in VALID_BODY_ADHOC_NETWORK:
+            desc = FIELD_DESCRIPTIONS.get("adhoc-network", "")
+            error_msg = f"Invalid value for 'adhoc-network': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADHOC_NETWORK)}"
+            error_msg += f"\n  → Example: adhoc-network='{{ VALID_BODY_ADHOC_NETWORK[0] }}'"
+            return (False, error_msg)
     if "eapol-key-overflow" in payload:
-        value = payload.get("eapol-key-overflow")
-        if value and value not in VALID_BODY_EAPOL_KEY_OVERFLOW:
-            return (
-                False,
-                f"Invalid eapol-key-overflow '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_KEY_OVERFLOW)}",
-            )
-
-    # Validate ap-impersonation if present
+        value = payload["eapol-key-overflow"]
+        if value not in VALID_BODY_EAPOL_KEY_OVERFLOW:
+            desc = FIELD_DESCRIPTIONS.get("eapol-key-overflow", "")
+            error_msg = f"Invalid value for 'eapol-key-overflow': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_KEY_OVERFLOW)}"
+            error_msg += f"\n  → Example: eapol-key-overflow='{{ VALID_BODY_EAPOL_KEY_OVERFLOW[0] }}'"
+            return (False, error_msg)
     if "ap-impersonation" in payload:
-        value = payload.get("ap-impersonation")
-        if value and value not in VALID_BODY_AP_IMPERSONATION:
-            return (
-                False,
-                f"Invalid ap-impersonation '{value}'. Must be one of: {', '.join(VALID_BODY_AP_IMPERSONATION)}",
-            )
-
-    # Validate invalid-addr-combination if present
+        value = payload["ap-impersonation"]
+        if value not in VALID_BODY_AP_IMPERSONATION:
+            desc = FIELD_DESCRIPTIONS.get("ap-impersonation", "")
+            error_msg = f"Invalid value for 'ap-impersonation': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AP_IMPERSONATION)}"
+            error_msg += f"\n  → Example: ap-impersonation='{{ VALID_BODY_AP_IMPERSONATION[0] }}'"
+            return (False, error_msg)
     if "invalid-addr-combination" in payload:
-        value = payload.get("invalid-addr-combination")
-        if value and value not in VALID_BODY_INVALID_ADDR_COMBINATION:
-            return (
-                False,
-                f"Invalid invalid-addr-combination '{value}'. Must be one of: {', '.join(VALID_BODY_INVALID_ADDR_COMBINATION)}",
-            )
-
-    # Validate beacon-wrong-channel if present
+        value = payload["invalid-addr-combination"]
+        if value not in VALID_BODY_INVALID_ADDR_COMBINATION:
+            desc = FIELD_DESCRIPTIONS.get("invalid-addr-combination", "")
+            error_msg = f"Invalid value for 'invalid-addr-combination': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INVALID_ADDR_COMBINATION)}"
+            error_msg += f"\n  → Example: invalid-addr-combination='{{ VALID_BODY_INVALID_ADDR_COMBINATION[0] }}'"
+            return (False, error_msg)
     if "beacon-wrong-channel" in payload:
-        value = payload.get("beacon-wrong-channel")
-        if value and value not in VALID_BODY_BEACON_WRONG_CHANNEL:
-            return (
-                False,
-                f"Invalid beacon-wrong-channel '{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_WRONG_CHANNEL)}",
-            )
-
-    # Validate ht-greenfield if present
+        value = payload["beacon-wrong-channel"]
+        if value not in VALID_BODY_BEACON_WRONG_CHANNEL:
+            desc = FIELD_DESCRIPTIONS.get("beacon-wrong-channel", "")
+            error_msg = f"Invalid value for 'beacon-wrong-channel': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BEACON_WRONG_CHANNEL)}"
+            error_msg += f"\n  → Example: beacon-wrong-channel='{{ VALID_BODY_BEACON_WRONG_CHANNEL[0] }}'"
+            return (False, error_msg)
     if "ht-greenfield" in payload:
-        value = payload.get("ht-greenfield")
-        if value and value not in VALID_BODY_HT_GREENFIELD:
-            return (
-                False,
-                f"Invalid ht-greenfield '{value}'. Must be one of: {', '.join(VALID_BODY_HT_GREENFIELD)}",
-            )
-
-    # Validate overflow-ie if present
+        value = payload["ht-greenfield"]
+        if value not in VALID_BODY_HT_GREENFIELD:
+            desc = FIELD_DESCRIPTIONS.get("ht-greenfield", "")
+            error_msg = f"Invalid value for 'ht-greenfield': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HT_GREENFIELD)}"
+            error_msg += f"\n  → Example: ht-greenfield='{{ VALID_BODY_HT_GREENFIELD[0] }}'"
+            return (False, error_msg)
     if "overflow-ie" in payload:
-        value = payload.get("overflow-ie")
-        if value and value not in VALID_BODY_OVERFLOW_IE:
-            return (
-                False,
-                f"Invalid overflow-ie '{value}'. Must be one of: {', '.join(VALID_BODY_OVERFLOW_IE)}",
-            )
-
-    # Validate malformed-ht-ie if present
+        value = payload["overflow-ie"]
+        if value not in VALID_BODY_OVERFLOW_IE:
+            desc = FIELD_DESCRIPTIONS.get("overflow-ie", "")
+            error_msg = f"Invalid value for 'overflow-ie': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_OVERFLOW_IE)}"
+            error_msg += f"\n  → Example: overflow-ie='{{ VALID_BODY_OVERFLOW_IE[0] }}'"
+            return (False, error_msg)
     if "malformed-ht-ie" in payload:
-        value = payload.get("malformed-ht-ie")
-        if value and value not in VALID_BODY_MALFORMED_HT_IE:
-            return (
-                False,
-                f"Invalid malformed-ht-ie '{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_HT_IE)}",
-            )
-
-    # Validate malformed-auth if present
+        value = payload["malformed-ht-ie"]
+        if value not in VALID_BODY_MALFORMED_HT_IE:
+            desc = FIELD_DESCRIPTIONS.get("malformed-ht-ie", "")
+            error_msg = f"Invalid value for 'malformed-ht-ie': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MALFORMED_HT_IE)}"
+            error_msg += f"\n  → Example: malformed-ht-ie='{{ VALID_BODY_MALFORMED_HT_IE[0] }}'"
+            return (False, error_msg)
     if "malformed-auth" in payload:
-        value = payload.get("malformed-auth")
-        if value and value not in VALID_BODY_MALFORMED_AUTH:
-            return (
-                False,
-                f"Invalid malformed-auth '{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_AUTH)}",
-            )
-
-    # Validate malformed-association if present
+        value = payload["malformed-auth"]
+        if value not in VALID_BODY_MALFORMED_AUTH:
+            desc = FIELD_DESCRIPTIONS.get("malformed-auth", "")
+            error_msg = f"Invalid value for 'malformed-auth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MALFORMED_AUTH)}"
+            error_msg += f"\n  → Example: malformed-auth='{{ VALID_BODY_MALFORMED_AUTH[0] }}'"
+            return (False, error_msg)
     if "malformed-association" in payload:
-        value = payload.get("malformed-association")
-        if value and value not in VALID_BODY_MALFORMED_ASSOCIATION:
-            return (
-                False,
-                f"Invalid malformed-association '{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_ASSOCIATION)}",
-            )
-
-    # Validate ht-40mhz-intolerance if present
+        value = payload["malformed-association"]
+        if value not in VALID_BODY_MALFORMED_ASSOCIATION:
+            desc = FIELD_DESCRIPTIONS.get("malformed-association", "")
+            error_msg = f"Invalid value for 'malformed-association': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MALFORMED_ASSOCIATION)}"
+            error_msg += f"\n  → Example: malformed-association='{{ VALID_BODY_MALFORMED_ASSOCIATION[0] }}'"
+            return (False, error_msg)
     if "ht-40mhz-intolerance" in payload:
-        value = payload.get("ht-40mhz-intolerance")
-        if value and value not in VALID_BODY_HT_40MHZ_INTOLERANCE:
-            return (
-                False,
-                f"Invalid ht-40mhz-intolerance '{value}'. Must be one of: {', '.join(VALID_BODY_HT_40MHZ_INTOLERANCE)}",
-            )
-
-    # Validate valid-ssid-misuse if present
+        value = payload["ht-40mhz-intolerance"]
+        if value not in VALID_BODY_HT_40MHZ_INTOLERANCE:
+            desc = FIELD_DESCRIPTIONS.get("ht-40mhz-intolerance", "")
+            error_msg = f"Invalid value for 'ht-40mhz-intolerance': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HT_40MHZ_INTOLERANCE)}"
+            error_msg += f"\n  → Example: ht-40mhz-intolerance='{{ VALID_BODY_HT_40MHZ_INTOLERANCE[0] }}'"
+            return (False, error_msg)
     if "valid-ssid-misuse" in payload:
-        value = payload.get("valid-ssid-misuse")
-        if value and value not in VALID_BODY_VALID_SSID_MISUSE:
-            return (
-                False,
-                f"Invalid valid-ssid-misuse '{value}'. Must be one of: {', '.join(VALID_BODY_VALID_SSID_MISUSE)}",
-            )
-
-    # Validate valid-client-misassociation if present
+        value = payload["valid-ssid-misuse"]
+        if value not in VALID_BODY_VALID_SSID_MISUSE:
+            desc = FIELD_DESCRIPTIONS.get("valid-ssid-misuse", "")
+            error_msg = f"Invalid value for 'valid-ssid-misuse': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VALID_SSID_MISUSE)}"
+            error_msg += f"\n  → Example: valid-ssid-misuse='{{ VALID_BODY_VALID_SSID_MISUSE[0] }}'"
+            return (False, error_msg)
     if "valid-client-misassociation" in payload:
-        value = payload.get("valid-client-misassociation")
-        if value and value not in VALID_BODY_VALID_CLIENT_MISASSOCIATION:
-            return (
-                False,
-                f"Invalid valid-client-misassociation '{value}'. Must be one of: {', '.join(VALID_BODY_VALID_CLIENT_MISASSOCIATION)}",
-            )
-
-    # Validate hotspotter-attack if present
+        value = payload["valid-client-misassociation"]
+        if value not in VALID_BODY_VALID_CLIENT_MISASSOCIATION:
+            desc = FIELD_DESCRIPTIONS.get("valid-client-misassociation", "")
+            error_msg = f"Invalid value for 'valid-client-misassociation': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VALID_CLIENT_MISASSOCIATION)}"
+            error_msg += f"\n  → Example: valid-client-misassociation='{{ VALID_BODY_VALID_CLIENT_MISASSOCIATION[0] }}'"
+            return (False, error_msg)
     if "hotspotter-attack" in payload:
-        value = payload.get("hotspotter-attack")
-        if value and value not in VALID_BODY_HOTSPOTTER_ATTACK:
-            return (
-                False,
-                f"Invalid hotspotter-attack '{value}'. Must be one of: {', '.join(VALID_BODY_HOTSPOTTER_ATTACK)}",
-            )
-
-    # Validate pwsave-dos-attack if present
+        value = payload["hotspotter-attack"]
+        if value not in VALID_BODY_HOTSPOTTER_ATTACK:
+            desc = FIELD_DESCRIPTIONS.get("hotspotter-attack", "")
+            error_msg = f"Invalid value for 'hotspotter-attack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HOTSPOTTER_ATTACK)}"
+            error_msg += f"\n  → Example: hotspotter-attack='{{ VALID_BODY_HOTSPOTTER_ATTACK[0] }}'"
+            return (False, error_msg)
     if "pwsave-dos-attack" in payload:
-        value = payload.get("pwsave-dos-attack")
-        if value and value not in VALID_BODY_PWSAVE_DOS_ATTACK:
-            return (
-                False,
-                f"Invalid pwsave-dos-attack '{value}'. Must be one of: {', '.join(VALID_BODY_PWSAVE_DOS_ATTACK)}",
-            )
-
-    # Validate omerta-attack if present
+        value = payload["pwsave-dos-attack"]
+        if value not in VALID_BODY_PWSAVE_DOS_ATTACK:
+            desc = FIELD_DESCRIPTIONS.get("pwsave-dos-attack", "")
+            error_msg = f"Invalid value for 'pwsave-dos-attack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PWSAVE_DOS_ATTACK)}"
+            error_msg += f"\n  → Example: pwsave-dos-attack='{{ VALID_BODY_PWSAVE_DOS_ATTACK[0] }}'"
+            return (False, error_msg)
     if "omerta-attack" in payload:
-        value = payload.get("omerta-attack")
-        if value and value not in VALID_BODY_OMERTA_ATTACK:
-            return (
-                False,
-                f"Invalid omerta-attack '{value}'. Must be one of: {', '.join(VALID_BODY_OMERTA_ATTACK)}",
-            )
-
-    # Validate disconnect-station if present
+        value = payload["omerta-attack"]
+        if value not in VALID_BODY_OMERTA_ATTACK:
+            desc = FIELD_DESCRIPTIONS.get("omerta-attack", "")
+            error_msg = f"Invalid value for 'omerta-attack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_OMERTA_ATTACK)}"
+            error_msg += f"\n  → Example: omerta-attack='{{ VALID_BODY_OMERTA_ATTACK[0] }}'"
+            return (False, error_msg)
     if "disconnect-station" in payload:
-        value = payload.get("disconnect-station")
-        if value and value not in VALID_BODY_DISCONNECT_STATION:
-            return (
-                False,
-                f"Invalid disconnect-station '{value}'. Must be one of: {', '.join(VALID_BODY_DISCONNECT_STATION)}",
-            )
-
-    # Validate unencrypted-valid if present
+        value = payload["disconnect-station"]
+        if value not in VALID_BODY_DISCONNECT_STATION:
+            desc = FIELD_DESCRIPTIONS.get("disconnect-station", "")
+            error_msg = f"Invalid value for 'disconnect-station': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DISCONNECT_STATION)}"
+            error_msg += f"\n  → Example: disconnect-station='{{ VALID_BODY_DISCONNECT_STATION[0] }}'"
+            return (False, error_msg)
     if "unencrypted-valid" in payload:
-        value = payload.get("unencrypted-valid")
-        if value and value not in VALID_BODY_UNENCRYPTED_VALID:
-            return (
-                False,
-                f"Invalid unencrypted-valid '{value}'. Must be one of: {', '.join(VALID_BODY_UNENCRYPTED_VALID)}",
-            )
-
-    # Validate fata-jack if present
+        value = payload["unencrypted-valid"]
+        if value not in VALID_BODY_UNENCRYPTED_VALID:
+            desc = FIELD_DESCRIPTIONS.get("unencrypted-valid", "")
+            error_msg = f"Invalid value for 'unencrypted-valid': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UNENCRYPTED_VALID)}"
+            error_msg += f"\n  → Example: unencrypted-valid='{{ VALID_BODY_UNENCRYPTED_VALID[0] }}'"
+            return (False, error_msg)
     if "fata-jack" in payload:
-        value = payload.get("fata-jack")
-        if value and value not in VALID_BODY_FATA_JACK:
-            return (
-                False,
-                f"Invalid fata-jack '{value}'. Must be one of: {', '.join(VALID_BODY_FATA_JACK)}",
-            )
-
-    # Validate risky-encryption if present
+        value = payload["fata-jack"]
+        if value not in VALID_BODY_FATA_JACK:
+            desc = FIELD_DESCRIPTIONS.get("fata-jack", "")
+            error_msg = f"Invalid value for 'fata-jack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FATA_JACK)}"
+            error_msg += f"\n  → Example: fata-jack='{{ VALID_BODY_FATA_JACK[0] }}'"
+            return (False, error_msg)
     if "risky-encryption" in payload:
-        value = payload.get("risky-encryption")
-        if value and value not in VALID_BODY_RISKY_ENCRYPTION:
-            return (
-                False,
-                f"Invalid risky-encryption '{value}'. Must be one of: {', '.join(VALID_BODY_RISKY_ENCRYPTION)}",
-            )
-
-    # Validate fuzzed-beacon if present
+        value = payload["risky-encryption"]
+        if value not in VALID_BODY_RISKY_ENCRYPTION:
+            desc = FIELD_DESCRIPTIONS.get("risky-encryption", "")
+            error_msg = f"Invalid value for 'risky-encryption': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RISKY_ENCRYPTION)}"
+            error_msg += f"\n  → Example: risky-encryption='{{ VALID_BODY_RISKY_ENCRYPTION[0] }}'"
+            return (False, error_msg)
     if "fuzzed-beacon" in payload:
-        value = payload.get("fuzzed-beacon")
-        if value and value not in VALID_BODY_FUZZED_BEACON:
-            return (
-                False,
-                f"Invalid fuzzed-beacon '{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_BEACON)}",
-            )
-
-    # Validate fuzzed-probe-request if present
+        value = payload["fuzzed-beacon"]
+        if value not in VALID_BODY_FUZZED_BEACON:
+            desc = FIELD_DESCRIPTIONS.get("fuzzed-beacon", "")
+            error_msg = f"Invalid value for 'fuzzed-beacon': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FUZZED_BEACON)}"
+            error_msg += f"\n  → Example: fuzzed-beacon='{{ VALID_BODY_FUZZED_BEACON[0] }}'"
+            return (False, error_msg)
     if "fuzzed-probe-request" in payload:
-        value = payload.get("fuzzed-probe-request")
-        if value and value not in VALID_BODY_FUZZED_PROBE_REQUEST:
-            return (
-                False,
-                f"Invalid fuzzed-probe-request '{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_PROBE_REQUEST)}",
-            )
-
-    # Validate fuzzed-probe-response if present
+        value = payload["fuzzed-probe-request"]
+        if value not in VALID_BODY_FUZZED_PROBE_REQUEST:
+            desc = FIELD_DESCRIPTIONS.get("fuzzed-probe-request", "")
+            error_msg = f"Invalid value for 'fuzzed-probe-request': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FUZZED_PROBE_REQUEST)}"
+            error_msg += f"\n  → Example: fuzzed-probe-request='{{ VALID_BODY_FUZZED_PROBE_REQUEST[0] }}'"
+            return (False, error_msg)
     if "fuzzed-probe-response" in payload:
-        value = payload.get("fuzzed-probe-response")
-        if value and value not in VALID_BODY_FUZZED_PROBE_RESPONSE:
-            return (
-                False,
-                f"Invalid fuzzed-probe-response '{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_PROBE_RESPONSE)}",
-            )
-
-    # Validate air-jack if present
+        value = payload["fuzzed-probe-response"]
+        if value not in VALID_BODY_FUZZED_PROBE_RESPONSE:
+            desc = FIELD_DESCRIPTIONS.get("fuzzed-probe-response", "")
+            error_msg = f"Invalid value for 'fuzzed-probe-response': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FUZZED_PROBE_RESPONSE)}"
+            error_msg += f"\n  → Example: fuzzed-probe-response='{{ VALID_BODY_FUZZED_PROBE_RESPONSE[0] }}'"
+            return (False, error_msg)
     if "air-jack" in payload:
-        value = payload.get("air-jack")
-        if value and value not in VALID_BODY_AIR_JACK:
-            return (
-                False,
-                f"Invalid air-jack '{value}'. Must be one of: {', '.join(VALID_BODY_AIR_JACK)}",
-            )
-
-    # Validate wpa-ft-attack if present
+        value = payload["air-jack"]
+        if value not in VALID_BODY_AIR_JACK:
+            desc = FIELD_DESCRIPTIONS.get("air-jack", "")
+            error_msg = f"Invalid value for 'air-jack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AIR_JACK)}"
+            error_msg += f"\n  → Example: air-jack='{{ VALID_BODY_AIR_JACK[0] }}'"
+            return (False, error_msg)
     if "wpa-ft-attack" in payload:
-        value = payload.get("wpa-ft-attack")
-        if value and value not in VALID_BODY_WPA_FT_ATTACK:
-            return (
-                False,
-                f"Invalid wpa-ft-attack '{value}'. Must be one of: {', '.join(VALID_BODY_WPA_FT_ATTACK)}",
-            )
+        value = payload["wpa-ft-attack"]
+        if value not in VALID_BODY_WPA_FT_ATTACK:
+            desc = FIELD_DESCRIPTIONS.get("wpa-ft-attack", "")
+            error_msg = f"Invalid value for 'wpa-ft-attack': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WPA_FT_ATTACK)}"
+            error_msg += f"\n  → Example: wpa-ft-attack='{{ VALID_BODY_WPA_FT_ATTACK[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -1609,1327 +1485,746 @@ def validate_wids_profile_post(
 # ============================================================================
 
 
-def validate_wids_profile_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_wireless_controller_wids_profile_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update wireless_controller/wids_profile.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_wireless_controller_wids_profile_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "comment cannot exceed 63 characters")
-
-    # Validate sensor-mode if present
+    # Step 1: Validate enum values
     if "sensor-mode" in payload:
-        value = payload.get("sensor-mode")
-        if value and value not in VALID_BODY_SENSOR_MODE:
+        value = payload["sensor-mode"]
+        if value not in VALID_BODY_SENSOR_MODE:
             return (
                 False,
-                f"Invalid sensor-mode '{value}'. Must be one of: {', '.join(VALID_BODY_SENSOR_MODE)}",
+                f"Invalid value for 'sensor-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_SENSOR_MODE)}",
             )
-
-    # Validate ap-scan if present
     if "ap-scan" in payload:
-        value = payload.get("ap-scan")
-        if value and value not in VALID_BODY_AP_SCAN:
+        value = payload["ap-scan"]
+        if value not in VALID_BODY_AP_SCAN:
             return (
                 False,
-                f"Invalid ap-scan '{value}'. Must be one of: {', '.join(VALID_BODY_AP_SCAN)}",
+                f"Invalid value for 'ap-scan'='{value}'. Must be one of: {', '.join(VALID_BODY_AP_SCAN)}",
             )
-
-    # Validate ap-bgscan-period if present
-    if "ap-bgscan-period" in payload:
-        value = payload.get("ap-bgscan-period")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 3600:
-                    return (
-                        False,
-                        "ap-bgscan-period must be between 10 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-bgscan-period must be numeric, got: {value}",
-                )
-
-    # Validate ap-bgscan-intv if present
-    if "ap-bgscan-intv" in payload:
-        value = payload.get("ap-bgscan-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 600:
-                    return (False, "ap-bgscan-intv must be between 1 and 600")
-            except (ValueError, TypeError):
-                return (False, f"ap-bgscan-intv must be numeric, got: {value}")
-
-    # Validate ap-bgscan-duration if present
-    if "ap-bgscan-duration" in payload:
-        value = payload.get("ap-bgscan-duration")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 1000:
-                    return (
-                        False,
-                        "ap-bgscan-duration must be between 10 and 1000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-bgscan-duration must be numeric, got: {value}",
-                )
-
-    # Validate ap-bgscan-idle if present
-    if "ap-bgscan-idle" in payload:
-        value = payload.get("ap-bgscan-idle")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 1000:
-                    return (
-                        False,
-                        "ap-bgscan-idle must be between 0 and 1000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"ap-bgscan-idle must be numeric, got: {value}")
-
-    # Validate ap-bgscan-report-intv if present
-    if "ap-bgscan-report-intv" in payload:
-        value = payload.get("ap-bgscan-report-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 15 or int_val > 600:
-                    return (
-                        False,
-                        "ap-bgscan-report-intv must be between 15 and 600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-bgscan-report-intv must be numeric, got: {value}",
-                )
-
-    # Validate ap-fgscan-report-intv if present
-    if "ap-fgscan-report-intv" in payload:
-        value = payload.get("ap-fgscan-report-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 15 or int_val > 600:
-                    return (
-                        False,
-                        "ap-fgscan-report-intv must be between 15 and 600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ap-fgscan-report-intv must be numeric, got: {value}",
-                )
-
-    # Validate ap-scan-passive if present
     if "ap-scan-passive" in payload:
-        value = payload.get("ap-scan-passive")
-        if value and value not in VALID_BODY_AP_SCAN_PASSIVE:
+        value = payload["ap-scan-passive"]
+        if value not in VALID_BODY_AP_SCAN_PASSIVE:
             return (
                 False,
-                f"Invalid ap-scan-passive '{value}'. Must be one of: {', '.join(VALID_BODY_AP_SCAN_PASSIVE)}",
+                f"Invalid value for 'ap-scan-passive'='{value}'. Must be one of: {', '.join(VALID_BODY_AP_SCAN_PASSIVE)}",
             )
-
-    # Validate ap-scan-threshold if present
-    if "ap-scan-threshold" in payload:
-        value = payload.get("ap-scan-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "ap-scan-threshold cannot exceed 7 characters")
-
-    # Validate ap-auto-suppress if present
     if "ap-auto-suppress" in payload:
-        value = payload.get("ap-auto-suppress")
-        if value and value not in VALID_BODY_AP_AUTO_SUPPRESS:
+        value = payload["ap-auto-suppress"]
+        if value not in VALID_BODY_AP_AUTO_SUPPRESS:
             return (
                 False,
-                f"Invalid ap-auto-suppress '{value}'. Must be one of: {', '.join(VALID_BODY_AP_AUTO_SUPPRESS)}",
+                f"Invalid value for 'ap-auto-suppress'='{value}'. Must be one of: {', '.join(VALID_BODY_AP_AUTO_SUPPRESS)}",
             )
-
-    # Validate wireless-bridge if present
     if "wireless-bridge" in payload:
-        value = payload.get("wireless-bridge")
-        if value and value not in VALID_BODY_WIRELESS_BRIDGE:
+        value = payload["wireless-bridge"]
+        if value not in VALID_BODY_WIRELESS_BRIDGE:
             return (
                 False,
-                f"Invalid wireless-bridge '{value}'. Must be one of: {', '.join(VALID_BODY_WIRELESS_BRIDGE)}",
+                f"Invalid value for 'wireless-bridge'='{value}'. Must be one of: {', '.join(VALID_BODY_WIRELESS_BRIDGE)}",
             )
-
-    # Validate deauth-broadcast if present
     if "deauth-broadcast" in payload:
-        value = payload.get("deauth-broadcast")
-        if value and value not in VALID_BODY_DEAUTH_BROADCAST:
+        value = payload["deauth-broadcast"]
+        if value not in VALID_BODY_DEAUTH_BROADCAST:
             return (
                 False,
-                f"Invalid deauth-broadcast '{value}'. Must be one of: {', '.join(VALID_BODY_DEAUTH_BROADCAST)}",
+                f"Invalid value for 'deauth-broadcast'='{value}'. Must be one of: {', '.join(VALID_BODY_DEAUTH_BROADCAST)}",
             )
-
-    # Validate null-ssid-probe-resp if present
     if "null-ssid-probe-resp" in payload:
-        value = payload.get("null-ssid-probe-resp")
-        if value and value not in VALID_BODY_NULL_SSID_PROBE_RESP:
+        value = payload["null-ssid-probe-resp"]
+        if value not in VALID_BODY_NULL_SSID_PROBE_RESP:
             return (
                 False,
-                f"Invalid null-ssid-probe-resp '{value}'. Must be one of: {', '.join(VALID_BODY_NULL_SSID_PROBE_RESP)}",
+                f"Invalid value for 'null-ssid-probe-resp'='{value}'. Must be one of: {', '.join(VALID_BODY_NULL_SSID_PROBE_RESP)}",
             )
-
-    # Validate long-duration-attack if present
     if "long-duration-attack" in payload:
-        value = payload.get("long-duration-attack")
-        if value and value not in VALID_BODY_LONG_DURATION_ATTACK:
+        value = payload["long-duration-attack"]
+        if value not in VALID_BODY_LONG_DURATION_ATTACK:
             return (
                 False,
-                f"Invalid long-duration-attack '{value}'. Must be one of: {', '.join(VALID_BODY_LONG_DURATION_ATTACK)}",
+                f"Invalid value for 'long-duration-attack'='{value}'. Must be one of: {', '.join(VALID_BODY_LONG_DURATION_ATTACK)}",
             )
-
-    # Validate long-duration-thresh if present
-    if "long-duration-thresh" in payload:
-        value = payload.get("long-duration-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1000 or int_val > 32767:
-                    return (
-                        False,
-                        "long-duration-thresh must be between 1000 and 32767",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"long-duration-thresh must be numeric, got: {value}",
-                )
-
-    # Validate invalid-mac-oui if present
     if "invalid-mac-oui" in payload:
-        value = payload.get("invalid-mac-oui")
-        if value and value not in VALID_BODY_INVALID_MAC_OUI:
+        value = payload["invalid-mac-oui"]
+        if value not in VALID_BODY_INVALID_MAC_OUI:
             return (
                 False,
-                f"Invalid invalid-mac-oui '{value}'. Must be one of: {', '.join(VALID_BODY_INVALID_MAC_OUI)}",
+                f"Invalid value for 'invalid-mac-oui'='{value}'. Must be one of: {', '.join(VALID_BODY_INVALID_MAC_OUI)}",
             )
-
-    # Validate weak-wep-iv if present
     if "weak-wep-iv" in payload:
-        value = payload.get("weak-wep-iv")
-        if value and value not in VALID_BODY_WEAK_WEP_IV:
+        value = payload["weak-wep-iv"]
+        if value not in VALID_BODY_WEAK_WEP_IV:
             return (
                 False,
-                f"Invalid weak-wep-iv '{value}'. Must be one of: {', '.join(VALID_BODY_WEAK_WEP_IV)}",
+                f"Invalid value for 'weak-wep-iv'='{value}'. Must be one of: {', '.join(VALID_BODY_WEAK_WEP_IV)}",
             )
-
-    # Validate auth-frame-flood if present
     if "auth-frame-flood" in payload:
-        value = payload.get("auth-frame-flood")
-        if value and value not in VALID_BODY_AUTH_FRAME_FLOOD:
+        value = payload["auth-frame-flood"]
+        if value not in VALID_BODY_AUTH_FRAME_FLOOD:
             return (
                 False,
-                f"Invalid auth-frame-flood '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_FRAME_FLOOD)}",
+                f"Invalid value for 'auth-frame-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_AUTH_FRAME_FLOOD)}",
             )
-
-    # Validate auth-flood-time if present
-    if "auth-flood-time" in payload:
-        value = payload.get("auth-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 120:
-                    return (
-                        False,
-                        "auth-flood-time must be between 5 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"auth-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate auth-flood-thresh if present
-    if "auth-flood-thresh" in payload:
-        value = payload.get("auth-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100:
-                    return (
-                        False,
-                        "auth-flood-thresh must be between 1 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"auth-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate assoc-frame-flood if present
     if "assoc-frame-flood" in payload:
-        value = payload.get("assoc-frame-flood")
-        if value and value not in VALID_BODY_ASSOC_FRAME_FLOOD:
+        value = payload["assoc-frame-flood"]
+        if value not in VALID_BODY_ASSOC_FRAME_FLOOD:
             return (
                 False,
-                f"Invalid assoc-frame-flood '{value}'. Must be one of: {', '.join(VALID_BODY_ASSOC_FRAME_FLOOD)}",
+                f"Invalid value for 'assoc-frame-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_ASSOC_FRAME_FLOOD)}",
             )
-
-    # Validate assoc-flood-time if present
-    if "assoc-flood-time" in payload:
-        value = payload.get("assoc-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 5 or int_val > 120:
-                    return (
-                        False,
-                        "assoc-flood-time must be between 5 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"assoc-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate assoc-flood-thresh if present
-    if "assoc-flood-thresh" in payload:
-        value = payload.get("assoc-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 100:
-                    return (
-                        False,
-                        "assoc-flood-thresh must be between 1 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"assoc-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate reassoc-flood if present
     if "reassoc-flood" in payload:
-        value = payload.get("reassoc-flood")
-        if value and value not in VALID_BODY_REASSOC_FLOOD:
+        value = payload["reassoc-flood"]
+        if value not in VALID_BODY_REASSOC_FLOOD:
             return (
                 False,
-                f"Invalid reassoc-flood '{value}'. Must be one of: {', '.join(VALID_BODY_REASSOC_FLOOD)}",
+                f"Invalid value for 'reassoc-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_REASSOC_FLOOD)}",
             )
-
-    # Validate reassoc-flood-time if present
-    if "reassoc-flood-time" in payload:
-        value = payload.get("reassoc-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "reassoc-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"reassoc-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate reassoc-flood-thresh if present
-    if "reassoc-flood-thresh" in payload:
-        value = payload.get("reassoc-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "reassoc-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"reassoc-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate probe-flood if present
     if "probe-flood" in payload:
-        value = payload.get("probe-flood")
-        if value and value not in VALID_BODY_PROBE_FLOOD:
+        value = payload["probe-flood"]
+        if value not in VALID_BODY_PROBE_FLOOD:
             return (
                 False,
-                f"Invalid probe-flood '{value}'. Must be one of: {', '.join(VALID_BODY_PROBE_FLOOD)}",
+                f"Invalid value for 'probe-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_PROBE_FLOOD)}",
             )
-
-    # Validate probe-flood-time if present
-    if "probe-flood-time" in payload:
-        value = payload.get("probe-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "probe-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"probe-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate probe-flood-thresh if present
-    if "probe-flood-thresh" in payload:
-        value = payload.get("probe-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "probe-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"probe-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate bcn-flood if present
     if "bcn-flood" in payload:
-        value = payload.get("bcn-flood")
-        if value and value not in VALID_BODY_BCN_FLOOD:
+        value = payload["bcn-flood"]
+        if value not in VALID_BODY_BCN_FLOOD:
             return (
                 False,
-                f"Invalid bcn-flood '{value}'. Must be one of: {', '.join(VALID_BODY_BCN_FLOOD)}",
+                f"Invalid value for 'bcn-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_BCN_FLOOD)}",
             )
-
-    # Validate bcn-flood-time if present
-    if "bcn-flood-time" in payload:
-        value = payload.get("bcn-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (False, "bcn-flood-time must be between 1 and 120")
-            except (ValueError, TypeError):
-                return (False, f"bcn-flood-time must be numeric, got: {value}")
-
-    # Validate bcn-flood-thresh if present
-    if "bcn-flood-thresh" in payload:
-        value = payload.get("bcn-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "bcn-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bcn-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate rts-flood if present
     if "rts-flood" in payload:
-        value = payload.get("rts-flood")
-        if value and value not in VALID_BODY_RTS_FLOOD:
+        value = payload["rts-flood"]
+        if value not in VALID_BODY_RTS_FLOOD:
             return (
                 False,
-                f"Invalid rts-flood '{value}'. Must be one of: {', '.join(VALID_BODY_RTS_FLOOD)}",
+                f"Invalid value for 'rts-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_RTS_FLOOD)}",
             )
-
-    # Validate rts-flood-time if present
-    if "rts-flood-time" in payload:
-        value = payload.get("rts-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (False, "rts-flood-time must be between 1 and 120")
-            except (ValueError, TypeError):
-                return (False, f"rts-flood-time must be numeric, got: {value}")
-
-    # Validate rts-flood-thresh if present
-    if "rts-flood-thresh" in payload:
-        value = payload.get("rts-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "rts-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"rts-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate cts-flood if present
     if "cts-flood" in payload:
-        value = payload.get("cts-flood")
-        if value and value not in VALID_BODY_CTS_FLOOD:
+        value = payload["cts-flood"]
+        if value not in VALID_BODY_CTS_FLOOD:
             return (
                 False,
-                f"Invalid cts-flood '{value}'. Must be one of: {', '.join(VALID_BODY_CTS_FLOOD)}",
+                f"Invalid value for 'cts-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_CTS_FLOOD)}",
             )
-
-    # Validate cts-flood-time if present
-    if "cts-flood-time" in payload:
-        value = payload.get("cts-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (False, "cts-flood-time must be between 1 and 120")
-            except (ValueError, TypeError):
-                return (False, f"cts-flood-time must be numeric, got: {value}")
-
-    # Validate cts-flood-thresh if present
-    if "cts-flood-thresh" in payload:
-        value = payload.get("cts-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "cts-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"cts-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate client-flood if present
     if "client-flood" in payload:
-        value = payload.get("client-flood")
-        if value and value not in VALID_BODY_CLIENT_FLOOD:
+        value = payload["client-flood"]
+        if value not in VALID_BODY_CLIENT_FLOOD:
             return (
                 False,
-                f"Invalid client-flood '{value}'. Must be one of: {', '.join(VALID_BODY_CLIENT_FLOOD)}",
+                f"Invalid value for 'client-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_CLIENT_FLOOD)}",
             )
-
-    # Validate client-flood-time if present
-    if "client-flood-time" in payload:
-        value = payload.get("client-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "client-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"client-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate client-flood-thresh if present
-    if "client-flood-thresh" in payload:
-        value = payload.get("client-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "client-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"client-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate block_ack-flood if present
     if "block_ack-flood" in payload:
-        value = payload.get("block_ack-flood")
-        if value and value not in VALID_BODY_BLOCK_ACK_FLOOD:
+        value = payload["block_ack-flood"]
+        if value not in VALID_BODY_BLOCK_ACK_FLOOD:
             return (
                 False,
-                f"Invalid block_ack-flood '{value}'. Must be one of: {', '.join(VALID_BODY_BLOCK_ACK_FLOOD)}",
+                f"Invalid value for 'block_ack-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_BLOCK_ACK_FLOOD)}",
             )
-
-    # Validate block_ack-flood-time if present
-    if "block_ack-flood-time" in payload:
-        value = payload.get("block_ack-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "block_ack-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"block_ack-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate block_ack-flood-thresh if present
-    if "block_ack-flood-thresh" in payload:
-        value = payload.get("block_ack-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "block_ack-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"block_ack-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate pspoll-flood if present
     if "pspoll-flood" in payload:
-        value = payload.get("pspoll-flood")
-        if value and value not in VALID_BODY_PSPOLL_FLOOD:
+        value = payload["pspoll-flood"]
+        if value not in VALID_BODY_PSPOLL_FLOOD:
             return (
                 False,
-                f"Invalid pspoll-flood '{value}'. Must be one of: {', '.join(VALID_BODY_PSPOLL_FLOOD)}",
+                f"Invalid value for 'pspoll-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_PSPOLL_FLOOD)}",
             )
-
-    # Validate pspoll-flood-time if present
-    if "pspoll-flood-time" in payload:
-        value = payload.get("pspoll-flood-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "pspoll-flood-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pspoll-flood-time must be numeric, got: {value}",
-                )
-
-    # Validate pspoll-flood-thresh if present
-    if "pspoll-flood-thresh" in payload:
-        value = payload.get("pspoll-flood-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "pspoll-flood-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pspoll-flood-thresh must be numeric, got: {value}",
-                )
-
-    # Validate netstumbler if present
     if "netstumbler" in payload:
-        value = payload.get("netstumbler")
-        if value and value not in VALID_BODY_NETSTUMBLER:
+        value = payload["netstumbler"]
+        if value not in VALID_BODY_NETSTUMBLER:
             return (
                 False,
-                f"Invalid netstumbler '{value}'. Must be one of: {', '.join(VALID_BODY_NETSTUMBLER)}",
+                f"Invalid value for 'netstumbler'='{value}'. Must be one of: {', '.join(VALID_BODY_NETSTUMBLER)}",
             )
-
-    # Validate netstumbler-time if present
-    if "netstumbler-time" in payload:
-        value = payload.get("netstumbler-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "netstumbler-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netstumbler-time must be numeric, got: {value}",
-                )
-
-    # Validate netstumbler-thresh if present
-    if "netstumbler-thresh" in payload:
-        value = payload.get("netstumbler-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "netstumbler-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"netstumbler-thresh must be numeric, got: {value}",
-                )
-
-    # Validate wellenreiter if present
     if "wellenreiter" in payload:
-        value = payload.get("wellenreiter")
-        if value and value not in VALID_BODY_WELLENREITER:
+        value = payload["wellenreiter"]
+        if value not in VALID_BODY_WELLENREITER:
             return (
                 False,
-                f"Invalid wellenreiter '{value}'. Must be one of: {', '.join(VALID_BODY_WELLENREITER)}",
+                f"Invalid value for 'wellenreiter'='{value}'. Must be one of: {', '.join(VALID_BODY_WELLENREITER)}",
             )
-
-    # Validate wellenreiter-time if present
-    if "wellenreiter-time" in payload:
-        value = payload.get("wellenreiter-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 120:
-                    return (
-                        False,
-                        "wellenreiter-time must be between 1 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"wellenreiter-time must be numeric, got: {value}",
-                )
-
-    # Validate wellenreiter-thresh if present
-    if "wellenreiter-thresh" in payload:
-        value = payload.get("wellenreiter-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65100:
-                    return (
-                        False,
-                        "wellenreiter-thresh must be between 1 and 65100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"wellenreiter-thresh must be numeric, got: {value}",
-                )
-
-    # Validate spoofed-deauth if present
     if "spoofed-deauth" in payload:
-        value = payload.get("spoofed-deauth")
-        if value and value not in VALID_BODY_SPOOFED_DEAUTH:
+        value = payload["spoofed-deauth"]
+        if value not in VALID_BODY_SPOOFED_DEAUTH:
             return (
                 False,
-                f"Invalid spoofed-deauth '{value}'. Must be one of: {', '.join(VALID_BODY_SPOOFED_DEAUTH)}",
+                f"Invalid value for 'spoofed-deauth'='{value}'. Must be one of: {', '.join(VALID_BODY_SPOOFED_DEAUTH)}",
             )
-
-    # Validate asleap-attack if present
     if "asleap-attack" in payload:
-        value = payload.get("asleap-attack")
-        if value and value not in VALID_BODY_ASLEAP_ATTACK:
+        value = payload["asleap-attack"]
+        if value not in VALID_BODY_ASLEAP_ATTACK:
             return (
                 False,
-                f"Invalid asleap-attack '{value}'. Must be one of: {', '.join(VALID_BODY_ASLEAP_ATTACK)}",
+                f"Invalid value for 'asleap-attack'='{value}'. Must be one of: {', '.join(VALID_BODY_ASLEAP_ATTACK)}",
             )
-
-    # Validate eapol-start-flood if present
     if "eapol-start-flood" in payload:
-        value = payload.get("eapol-start-flood")
-        if value and value not in VALID_BODY_EAPOL_START_FLOOD:
+        value = payload["eapol-start-flood"]
+        if value not in VALID_BODY_EAPOL_START_FLOOD:
             return (
                 False,
-                f"Invalid eapol-start-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_START_FLOOD)}",
+                f"Invalid value for 'eapol-start-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_START_FLOOD)}",
             )
-
-    # Validate eapol-start-thresh if present
-    if "eapol-start-thresh" in payload:
-        value = payload.get("eapol-start-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-start-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-start-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-start-intv if present
-    if "eapol-start-intv" in payload:
-        value = payload.get("eapol-start-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-start-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-start-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-logoff-flood if present
     if "eapol-logoff-flood" in payload:
-        value = payload.get("eapol-logoff-flood")
-        if value and value not in VALID_BODY_EAPOL_LOGOFF_FLOOD:
+        value = payload["eapol-logoff-flood"]
+        if value not in VALID_BODY_EAPOL_LOGOFF_FLOOD:
             return (
                 False,
-                f"Invalid eapol-logoff-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_LOGOFF_FLOOD)}",
+                f"Invalid value for 'eapol-logoff-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_LOGOFF_FLOOD)}",
             )
-
-    # Validate eapol-logoff-thresh if present
-    if "eapol-logoff-thresh" in payload:
-        value = payload.get("eapol-logoff-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-logoff-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-logoff-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-logoff-intv if present
-    if "eapol-logoff-intv" in payload:
-        value = payload.get("eapol-logoff-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-logoff-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-logoff-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-succ-flood if present
     if "eapol-succ-flood" in payload:
-        value = payload.get("eapol-succ-flood")
-        if value and value not in VALID_BODY_EAPOL_SUCC_FLOOD:
+        value = payload["eapol-succ-flood"]
+        if value not in VALID_BODY_EAPOL_SUCC_FLOOD:
             return (
                 False,
-                f"Invalid eapol-succ-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_SUCC_FLOOD)}",
+                f"Invalid value for 'eapol-succ-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_SUCC_FLOOD)}",
             )
-
-    # Validate eapol-succ-thresh if present
-    if "eapol-succ-thresh" in payload:
-        value = payload.get("eapol-succ-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-succ-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-succ-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-succ-intv if present
-    if "eapol-succ-intv" in payload:
-        value = payload.get("eapol-succ-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-succ-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-succ-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-fail-flood if present
     if "eapol-fail-flood" in payload:
-        value = payload.get("eapol-fail-flood")
-        if value and value not in VALID_BODY_EAPOL_FAIL_FLOOD:
+        value = payload["eapol-fail-flood"]
+        if value not in VALID_BODY_EAPOL_FAIL_FLOOD:
             return (
                 False,
-                f"Invalid eapol-fail-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_FAIL_FLOOD)}",
+                f"Invalid value for 'eapol-fail-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_FAIL_FLOOD)}",
             )
-
-    # Validate eapol-fail-thresh if present
-    if "eapol-fail-thresh" in payload:
-        value = payload.get("eapol-fail-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-fail-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-fail-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-fail-intv if present
-    if "eapol-fail-intv" in payload:
-        value = payload.get("eapol-fail-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-fail-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-fail-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-succ-flood if present
     if "eapol-pre-succ-flood" in payload:
-        value = payload.get("eapol-pre-succ-flood")
-        if value and value not in VALID_BODY_EAPOL_PRE_SUCC_FLOOD:
+        value = payload["eapol-pre-succ-flood"]
+        if value not in VALID_BODY_EAPOL_PRE_SUCC_FLOOD:
             return (
                 False,
-                f"Invalid eapol-pre-succ-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_PRE_SUCC_FLOOD)}",
+                f"Invalid value for 'eapol-pre-succ-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_PRE_SUCC_FLOOD)}",
             )
-
-    # Validate eapol-pre-succ-thresh if present
-    if "eapol-pre-succ-thresh" in payload:
-        value = payload.get("eapol-pre-succ-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-pre-succ-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-succ-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-succ-intv if present
-    if "eapol-pre-succ-intv" in payload:
-        value = payload.get("eapol-pre-succ-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-pre-succ-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-succ-intv must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-fail-flood if present
     if "eapol-pre-fail-flood" in payload:
-        value = payload.get("eapol-pre-fail-flood")
-        if value and value not in VALID_BODY_EAPOL_PRE_FAIL_FLOOD:
+        value = payload["eapol-pre-fail-flood"]
+        if value not in VALID_BODY_EAPOL_PRE_FAIL_FLOOD:
             return (
                 False,
-                f"Invalid eapol-pre-fail-flood '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_PRE_FAIL_FLOOD)}",
+                f"Invalid value for 'eapol-pre-fail-flood'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_PRE_FAIL_FLOOD)}",
             )
-
-    # Validate eapol-pre-fail-thresh if present
-    if "eapol-pre-fail-thresh" in payload:
-        value = payload.get("eapol-pre-fail-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 100:
-                    return (
-                        False,
-                        "eapol-pre-fail-thresh must be between 2 and 100",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-fail-thresh must be numeric, got: {value}",
-                )
-
-    # Validate eapol-pre-fail-intv if present
-    if "eapol-pre-fail-intv" in payload:
-        value = payload.get("eapol-pre-fail-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3600:
-                    return (
-                        False,
-                        "eapol-pre-fail-intv must be between 1 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eapol-pre-fail-intv must be numeric, got: {value}",
-                )
-
-    # Validate deauth-unknown-src-thresh if present
-    if "deauth-unknown-src-thresh" in payload:
-        value = payload.get("deauth-unknown-src-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "deauth-unknown-src-thresh must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"deauth-unknown-src-thresh must be numeric, got: {value}",
-                )
-
-    # Validate windows-bridge if present
     if "windows-bridge" in payload:
-        value = payload.get("windows-bridge")
-        if value and value not in VALID_BODY_WINDOWS_BRIDGE:
+        value = payload["windows-bridge"]
+        if value not in VALID_BODY_WINDOWS_BRIDGE:
             return (
                 False,
-                f"Invalid windows-bridge '{value}'. Must be one of: {', '.join(VALID_BODY_WINDOWS_BRIDGE)}",
+                f"Invalid value for 'windows-bridge'='{value}'. Must be one of: {', '.join(VALID_BODY_WINDOWS_BRIDGE)}",
             )
-
-    # Validate disassoc-broadcast if present
     if "disassoc-broadcast" in payload:
-        value = payload.get("disassoc-broadcast")
-        if value and value not in VALID_BODY_DISASSOC_BROADCAST:
+        value = payload["disassoc-broadcast"]
+        if value not in VALID_BODY_DISASSOC_BROADCAST:
             return (
                 False,
-                f"Invalid disassoc-broadcast '{value}'. Must be one of: {', '.join(VALID_BODY_DISASSOC_BROADCAST)}",
+                f"Invalid value for 'disassoc-broadcast'='{value}'. Must be one of: {', '.join(VALID_BODY_DISASSOC_BROADCAST)}",
             )
-
-    # Validate ap-spoofing if present
     if "ap-spoofing" in payload:
-        value = payload.get("ap-spoofing")
-        if value and value not in VALID_BODY_AP_SPOOFING:
+        value = payload["ap-spoofing"]
+        if value not in VALID_BODY_AP_SPOOFING:
             return (
                 False,
-                f"Invalid ap-spoofing '{value}'. Must be one of: {', '.join(VALID_BODY_AP_SPOOFING)}",
+                f"Invalid value for 'ap-spoofing'='{value}'. Must be one of: {', '.join(VALID_BODY_AP_SPOOFING)}",
             )
-
-    # Validate chan-based-mitm if present
     if "chan-based-mitm" in payload:
-        value = payload.get("chan-based-mitm")
-        if value and value not in VALID_BODY_CHAN_BASED_MITM:
+        value = payload["chan-based-mitm"]
+        if value not in VALID_BODY_CHAN_BASED_MITM:
             return (
                 False,
-                f"Invalid chan-based-mitm '{value}'. Must be one of: {', '.join(VALID_BODY_CHAN_BASED_MITM)}",
+                f"Invalid value for 'chan-based-mitm'='{value}'. Must be one of: {', '.join(VALID_BODY_CHAN_BASED_MITM)}",
             )
-
-    # Validate adhoc-valid-ssid if present
     if "adhoc-valid-ssid" in payload:
-        value = payload.get("adhoc-valid-ssid")
-        if value and value not in VALID_BODY_ADHOC_VALID_SSID:
+        value = payload["adhoc-valid-ssid"]
+        if value not in VALID_BODY_ADHOC_VALID_SSID:
             return (
                 False,
-                f"Invalid adhoc-valid-ssid '{value}'. Must be one of: {', '.join(VALID_BODY_ADHOC_VALID_SSID)}",
+                f"Invalid value for 'adhoc-valid-ssid'='{value}'. Must be one of: {', '.join(VALID_BODY_ADHOC_VALID_SSID)}",
             )
-
-    # Validate adhoc-network if present
     if "adhoc-network" in payload:
-        value = payload.get("adhoc-network")
-        if value and value not in VALID_BODY_ADHOC_NETWORK:
+        value = payload["adhoc-network"]
+        if value not in VALID_BODY_ADHOC_NETWORK:
             return (
                 False,
-                f"Invalid adhoc-network '{value}'. Must be one of: {', '.join(VALID_BODY_ADHOC_NETWORK)}",
+                f"Invalid value for 'adhoc-network'='{value}'. Must be one of: {', '.join(VALID_BODY_ADHOC_NETWORK)}",
             )
-
-    # Validate eapol-key-overflow if present
     if "eapol-key-overflow" in payload:
-        value = payload.get("eapol-key-overflow")
-        if value and value not in VALID_BODY_EAPOL_KEY_OVERFLOW:
+        value = payload["eapol-key-overflow"]
+        if value not in VALID_BODY_EAPOL_KEY_OVERFLOW:
             return (
                 False,
-                f"Invalid eapol-key-overflow '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_KEY_OVERFLOW)}",
+                f"Invalid value for 'eapol-key-overflow'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_KEY_OVERFLOW)}",
             )
-
-    # Validate ap-impersonation if present
     if "ap-impersonation" in payload:
-        value = payload.get("ap-impersonation")
-        if value and value not in VALID_BODY_AP_IMPERSONATION:
+        value = payload["ap-impersonation"]
+        if value not in VALID_BODY_AP_IMPERSONATION:
             return (
                 False,
-                f"Invalid ap-impersonation '{value}'. Must be one of: {', '.join(VALID_BODY_AP_IMPERSONATION)}",
+                f"Invalid value for 'ap-impersonation'='{value}'. Must be one of: {', '.join(VALID_BODY_AP_IMPERSONATION)}",
             )
-
-    # Validate invalid-addr-combination if present
     if "invalid-addr-combination" in payload:
-        value = payload.get("invalid-addr-combination")
-        if value and value not in VALID_BODY_INVALID_ADDR_COMBINATION:
+        value = payload["invalid-addr-combination"]
+        if value not in VALID_BODY_INVALID_ADDR_COMBINATION:
             return (
                 False,
-                f"Invalid invalid-addr-combination '{value}'. Must be one of: {', '.join(VALID_BODY_INVALID_ADDR_COMBINATION)}",
+                f"Invalid value for 'invalid-addr-combination'='{value}'. Must be one of: {', '.join(VALID_BODY_INVALID_ADDR_COMBINATION)}",
             )
-
-    # Validate beacon-wrong-channel if present
     if "beacon-wrong-channel" in payload:
-        value = payload.get("beacon-wrong-channel")
-        if value and value not in VALID_BODY_BEACON_WRONG_CHANNEL:
+        value = payload["beacon-wrong-channel"]
+        if value not in VALID_BODY_BEACON_WRONG_CHANNEL:
             return (
                 False,
-                f"Invalid beacon-wrong-channel '{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_WRONG_CHANNEL)}",
+                f"Invalid value for 'beacon-wrong-channel'='{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_WRONG_CHANNEL)}",
             )
-
-    # Validate ht-greenfield if present
     if "ht-greenfield" in payload:
-        value = payload.get("ht-greenfield")
-        if value and value not in VALID_BODY_HT_GREENFIELD:
+        value = payload["ht-greenfield"]
+        if value not in VALID_BODY_HT_GREENFIELD:
             return (
                 False,
-                f"Invalid ht-greenfield '{value}'. Must be one of: {', '.join(VALID_BODY_HT_GREENFIELD)}",
+                f"Invalid value for 'ht-greenfield'='{value}'. Must be one of: {', '.join(VALID_BODY_HT_GREENFIELD)}",
             )
-
-    # Validate overflow-ie if present
     if "overflow-ie" in payload:
-        value = payload.get("overflow-ie")
-        if value and value not in VALID_BODY_OVERFLOW_IE:
+        value = payload["overflow-ie"]
+        if value not in VALID_BODY_OVERFLOW_IE:
             return (
                 False,
-                f"Invalid overflow-ie '{value}'. Must be one of: {', '.join(VALID_BODY_OVERFLOW_IE)}",
+                f"Invalid value for 'overflow-ie'='{value}'. Must be one of: {', '.join(VALID_BODY_OVERFLOW_IE)}",
             )
-
-    # Validate malformed-ht-ie if present
     if "malformed-ht-ie" in payload:
-        value = payload.get("malformed-ht-ie")
-        if value and value not in VALID_BODY_MALFORMED_HT_IE:
+        value = payload["malformed-ht-ie"]
+        if value not in VALID_BODY_MALFORMED_HT_IE:
             return (
                 False,
-                f"Invalid malformed-ht-ie '{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_HT_IE)}",
+                f"Invalid value for 'malformed-ht-ie'='{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_HT_IE)}",
             )
-
-    # Validate malformed-auth if present
     if "malformed-auth" in payload:
-        value = payload.get("malformed-auth")
-        if value and value not in VALID_BODY_MALFORMED_AUTH:
+        value = payload["malformed-auth"]
+        if value not in VALID_BODY_MALFORMED_AUTH:
             return (
                 False,
-                f"Invalid malformed-auth '{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_AUTH)}",
+                f"Invalid value for 'malformed-auth'='{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_AUTH)}",
             )
-
-    # Validate malformed-association if present
     if "malformed-association" in payload:
-        value = payload.get("malformed-association")
-        if value and value not in VALID_BODY_MALFORMED_ASSOCIATION:
+        value = payload["malformed-association"]
+        if value not in VALID_BODY_MALFORMED_ASSOCIATION:
             return (
                 False,
-                f"Invalid malformed-association '{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_ASSOCIATION)}",
+                f"Invalid value for 'malformed-association'='{value}'. Must be one of: {', '.join(VALID_BODY_MALFORMED_ASSOCIATION)}",
             )
-
-    # Validate ht-40mhz-intolerance if present
     if "ht-40mhz-intolerance" in payload:
-        value = payload.get("ht-40mhz-intolerance")
-        if value and value not in VALID_BODY_HT_40MHZ_INTOLERANCE:
+        value = payload["ht-40mhz-intolerance"]
+        if value not in VALID_BODY_HT_40MHZ_INTOLERANCE:
             return (
                 False,
-                f"Invalid ht-40mhz-intolerance '{value}'. Must be one of: {', '.join(VALID_BODY_HT_40MHZ_INTOLERANCE)}",
+                f"Invalid value for 'ht-40mhz-intolerance'='{value}'. Must be one of: {', '.join(VALID_BODY_HT_40MHZ_INTOLERANCE)}",
             )
-
-    # Validate valid-ssid-misuse if present
     if "valid-ssid-misuse" in payload:
-        value = payload.get("valid-ssid-misuse")
-        if value and value not in VALID_BODY_VALID_SSID_MISUSE:
+        value = payload["valid-ssid-misuse"]
+        if value not in VALID_BODY_VALID_SSID_MISUSE:
             return (
                 False,
-                f"Invalid valid-ssid-misuse '{value}'. Must be one of: {', '.join(VALID_BODY_VALID_SSID_MISUSE)}",
+                f"Invalid value for 'valid-ssid-misuse'='{value}'. Must be one of: {', '.join(VALID_BODY_VALID_SSID_MISUSE)}",
             )
-
-    # Validate valid-client-misassociation if present
     if "valid-client-misassociation" in payload:
-        value = payload.get("valid-client-misassociation")
-        if value and value not in VALID_BODY_VALID_CLIENT_MISASSOCIATION:
+        value = payload["valid-client-misassociation"]
+        if value not in VALID_BODY_VALID_CLIENT_MISASSOCIATION:
             return (
                 False,
-                f"Invalid valid-client-misassociation '{value}'. Must be one of: {', '.join(VALID_BODY_VALID_CLIENT_MISASSOCIATION)}",
+                f"Invalid value for 'valid-client-misassociation'='{value}'. Must be one of: {', '.join(VALID_BODY_VALID_CLIENT_MISASSOCIATION)}",
             )
-
-    # Validate hotspotter-attack if present
     if "hotspotter-attack" in payload:
-        value = payload.get("hotspotter-attack")
-        if value and value not in VALID_BODY_HOTSPOTTER_ATTACK:
+        value = payload["hotspotter-attack"]
+        if value not in VALID_BODY_HOTSPOTTER_ATTACK:
             return (
                 False,
-                f"Invalid hotspotter-attack '{value}'. Must be one of: {', '.join(VALID_BODY_HOTSPOTTER_ATTACK)}",
+                f"Invalid value for 'hotspotter-attack'='{value}'. Must be one of: {', '.join(VALID_BODY_HOTSPOTTER_ATTACK)}",
             )
-
-    # Validate pwsave-dos-attack if present
     if "pwsave-dos-attack" in payload:
-        value = payload.get("pwsave-dos-attack")
-        if value and value not in VALID_BODY_PWSAVE_DOS_ATTACK:
+        value = payload["pwsave-dos-attack"]
+        if value not in VALID_BODY_PWSAVE_DOS_ATTACK:
             return (
                 False,
-                f"Invalid pwsave-dos-attack '{value}'. Must be one of: {', '.join(VALID_BODY_PWSAVE_DOS_ATTACK)}",
+                f"Invalid value for 'pwsave-dos-attack'='{value}'. Must be one of: {', '.join(VALID_BODY_PWSAVE_DOS_ATTACK)}",
             )
-
-    # Validate omerta-attack if present
     if "omerta-attack" in payload:
-        value = payload.get("omerta-attack")
-        if value and value not in VALID_BODY_OMERTA_ATTACK:
+        value = payload["omerta-attack"]
+        if value not in VALID_BODY_OMERTA_ATTACK:
             return (
                 False,
-                f"Invalid omerta-attack '{value}'. Must be one of: {', '.join(VALID_BODY_OMERTA_ATTACK)}",
+                f"Invalid value for 'omerta-attack'='{value}'. Must be one of: {', '.join(VALID_BODY_OMERTA_ATTACK)}",
             )
-
-    # Validate disconnect-station if present
     if "disconnect-station" in payload:
-        value = payload.get("disconnect-station")
-        if value and value not in VALID_BODY_DISCONNECT_STATION:
+        value = payload["disconnect-station"]
+        if value not in VALID_BODY_DISCONNECT_STATION:
             return (
                 False,
-                f"Invalid disconnect-station '{value}'. Must be one of: {', '.join(VALID_BODY_DISCONNECT_STATION)}",
+                f"Invalid value for 'disconnect-station'='{value}'. Must be one of: {', '.join(VALID_BODY_DISCONNECT_STATION)}",
             )
-
-    # Validate unencrypted-valid if present
     if "unencrypted-valid" in payload:
-        value = payload.get("unencrypted-valid")
-        if value and value not in VALID_BODY_UNENCRYPTED_VALID:
+        value = payload["unencrypted-valid"]
+        if value not in VALID_BODY_UNENCRYPTED_VALID:
             return (
                 False,
-                f"Invalid unencrypted-valid '{value}'. Must be one of: {', '.join(VALID_BODY_UNENCRYPTED_VALID)}",
+                f"Invalid value for 'unencrypted-valid'='{value}'. Must be one of: {', '.join(VALID_BODY_UNENCRYPTED_VALID)}",
             )
-
-    # Validate fata-jack if present
     if "fata-jack" in payload:
-        value = payload.get("fata-jack")
-        if value and value not in VALID_BODY_FATA_JACK:
+        value = payload["fata-jack"]
+        if value not in VALID_BODY_FATA_JACK:
             return (
                 False,
-                f"Invalid fata-jack '{value}'. Must be one of: {', '.join(VALID_BODY_FATA_JACK)}",
+                f"Invalid value for 'fata-jack'='{value}'. Must be one of: {', '.join(VALID_BODY_FATA_JACK)}",
             )
-
-    # Validate risky-encryption if present
     if "risky-encryption" in payload:
-        value = payload.get("risky-encryption")
-        if value and value not in VALID_BODY_RISKY_ENCRYPTION:
+        value = payload["risky-encryption"]
+        if value not in VALID_BODY_RISKY_ENCRYPTION:
             return (
                 False,
-                f"Invalid risky-encryption '{value}'. Must be one of: {', '.join(VALID_BODY_RISKY_ENCRYPTION)}",
+                f"Invalid value for 'risky-encryption'='{value}'. Must be one of: {', '.join(VALID_BODY_RISKY_ENCRYPTION)}",
             )
-
-    # Validate fuzzed-beacon if present
     if "fuzzed-beacon" in payload:
-        value = payload.get("fuzzed-beacon")
-        if value and value not in VALID_BODY_FUZZED_BEACON:
+        value = payload["fuzzed-beacon"]
+        if value not in VALID_BODY_FUZZED_BEACON:
             return (
                 False,
-                f"Invalid fuzzed-beacon '{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_BEACON)}",
+                f"Invalid value for 'fuzzed-beacon'='{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_BEACON)}",
             )
-
-    # Validate fuzzed-probe-request if present
     if "fuzzed-probe-request" in payload:
-        value = payload.get("fuzzed-probe-request")
-        if value and value not in VALID_BODY_FUZZED_PROBE_REQUEST:
+        value = payload["fuzzed-probe-request"]
+        if value not in VALID_BODY_FUZZED_PROBE_REQUEST:
             return (
                 False,
-                f"Invalid fuzzed-probe-request '{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_PROBE_REQUEST)}",
+                f"Invalid value for 'fuzzed-probe-request'='{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_PROBE_REQUEST)}",
             )
-
-    # Validate fuzzed-probe-response if present
     if "fuzzed-probe-response" in payload:
-        value = payload.get("fuzzed-probe-response")
-        if value and value not in VALID_BODY_FUZZED_PROBE_RESPONSE:
+        value = payload["fuzzed-probe-response"]
+        if value not in VALID_BODY_FUZZED_PROBE_RESPONSE:
             return (
                 False,
-                f"Invalid fuzzed-probe-response '{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_PROBE_RESPONSE)}",
+                f"Invalid value for 'fuzzed-probe-response'='{value}'. Must be one of: {', '.join(VALID_BODY_FUZZED_PROBE_RESPONSE)}",
             )
-
-    # Validate air-jack if present
     if "air-jack" in payload:
-        value = payload.get("air-jack")
-        if value and value not in VALID_BODY_AIR_JACK:
+        value = payload["air-jack"]
+        if value not in VALID_BODY_AIR_JACK:
             return (
                 False,
-                f"Invalid air-jack '{value}'. Must be one of: {', '.join(VALID_BODY_AIR_JACK)}",
+                f"Invalid value for 'air-jack'='{value}'. Must be one of: {', '.join(VALID_BODY_AIR_JACK)}",
             )
-
-    # Validate wpa-ft-attack if present
     if "wpa-ft-attack" in payload:
-        value = payload.get("wpa-ft-attack")
-        if value and value not in VALID_BODY_WPA_FT_ATTACK:
+        value = payload["wpa-ft-attack"]
+        if value not in VALID_BODY_WPA_FT_ATTACK:
             return (
                 False,
-                f"Invalid wpa-ft-attack '{value}'. Must be one of: {', '.join(VALID_BODY_WPA_FT_ATTACK)}",
+                f"Invalid value for 'wpa-ft-attack'='{value}'. Must be one of: {', '.join(VALID_BODY_WPA_FT_ATTACK)}",
             )
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_wids_profile_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "wireless_controller/wids_profile",
+    "category": "cmdb",
+    "api_path": "wireless-controller/wids-profile",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure wireless intrusion detection system (WIDS) profiles.",
+    "total_fields": 110,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 107,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

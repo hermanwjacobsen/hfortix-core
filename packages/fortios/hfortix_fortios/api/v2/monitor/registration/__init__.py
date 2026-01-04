@@ -1,37 +1,61 @@
-"""
-FortiOS Monitor - Registration
-Device registration operations
-"""
+"""FortiOS Monitor - Registration category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["Registration"]
+from .forticare.add_license import AddLicense
+from .forticare.create import Create
+from .forticare.deregister_device import DeregisterDevice
+from .forticare.login import Login
+from .forticare.transfer import Transfer
+from .forticloud.domains import Domains
+from .forticloud.login import Login
+from .forticloud.logout import Logout
+from .forticloud.migrate import Migrate
+from .forticloud.register_device import RegisterDevice
+from .vdom.add_license import AddLicense
 
-from .forticare import Forticare
-from .forticloud import Forticloud
-from .vdom import Vdom
+class ForticareEndpoints:
+    """Endpoints under forticare."""
+
+    def __init__(self, client):
+        self.add_license = AddLicense(client)
+        self.create = Create(client)
+        self.deregister_device = DeregisterDevice(client)
+        self.login = Login(client)
+        self.transfer = Transfer(client)
+
+
+class ForticloudEndpoints:
+    """Endpoints under forticloud."""
+
+    def __init__(self, client):
+        self.domains = Domains(client)
+        self.login = Login(client)
+        self.logout = Logout(client)
+        self.migrate = Migrate(client)
+        self.register_device = RegisterDevice(client)
+
+
+class VdomEndpoints:
+    """Endpoints under vdom."""
+
+    def __init__(self, client):
+        self.add_license = AddLicense(client)
 
 
 class Registration:
-    """Registration Monitor category class"""
+    """Registration endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Registration Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """Registration endpoints."""
+        self.forticare = ForticareEndpoints(client)
+        self.forticloud = ForticloudEndpoints(client)
+        self.vdom = VdomEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.forticare = Forticare(client)
-        self.forticloud = Forticloud(client)
-        self.vdom = Vdom(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["forticare", "forticloud", "vdom"]
+__all__ = ["Registration"]

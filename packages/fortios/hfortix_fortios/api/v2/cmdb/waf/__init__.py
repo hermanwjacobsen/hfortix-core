@@ -4,22 +4,22 @@ from .main_class import MainClass
 from .profile import Profile
 from .signature import Signature
 
-__all__ = ["MainClass", "Profile", "Signature"]
+__all__ = [
+    "MainClass",
+    "Profile",
+    "Signature",
+    "Waf",
+]
 
 
 class Waf:
-    """
-    Waf category wrapper.
-
-    This class provides access to all waf CMDB endpoints.
-    """
+    """Waf endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Waf with all endpoint classes.
-
+        """Waf endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.main_class = MainClass(client)
         self.profile = Profile(client)

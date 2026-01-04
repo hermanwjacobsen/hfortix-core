@@ -1,166 +1,763 @@
 """
-Validation helpers for wireless-controller vap endpoint.
+Validation helpers for wireless_controller/vap endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
     "name",  # Virtual AP name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "80211k": "enable",
-    "80211v": "enable",
-    "additional-akms": "akm6",
-    "address-group-policy": "disable",
-    "akm24-only": "disable",
-    "application-detection-engine": "disable",
-    "application-dscp-marking": "disable",
-    "application-report-intv": 120,
-    "atf-weight": 20,
-    "auth": "radius",
-    "beacon-advertising": "name",
-    "beacon-protection": "disable",
-    "broadcast-ssid": "enable",
-    "broadcast-suppression": "dhcp-up dhcp-ucast arp-known",
-    "bss-color-partial": "enable",
-    "bstm-disassociation-imminent": "enable",
-    "bstm-load-balancing-disassoc-timer": 10,
-    "bstm-rssi-disassoc-timer": 200,
-    "called-station-id-type": "mac",
-    "captive-network-assistant-bypass": "disable",
-    "captive-portal": "disable",
-    "captive-portal-fw-accounting": "disable",
-    "dhcp-address-enforcement": "disable",
-    "dhcp-lease-time": 2400,
-    "dhcp-option43-insertion": "enable",
-    "dhcp-option82-circuit-id-insertion": "disable",
-    "dhcp-option82-insertion": "disable",
-    "dhcp-option82-remote-id-insertion": "disable",
-    "domain-name-stripping": "disable",
-    "dynamic-vlan": "disable",
-    "eap-reauth": "disable",
-    "eap-reauth-intv": 86400,
-    "eapol-key-retries": "enable",
-    "encrypt": "AES",
+    "name": "",
+    "pre-auth": "enable",
     "external-pre-auth": "disable",
-    "external-web-format": "auto-detect",
-    "fast-bss-transition": "disable",
-    "ft-mobility-domain": 1000,
-    "ft-over-ds": "disable",
-    "ft-r0-key-lifetime": 480,
-    "gas-comeback-delay": 500,
-    "gas-fragmentation-limit": 1024,
-    "gtk-rekey": "disable",
-    "gtk-rekey-intv": 86400,
-    "high-efficiency": "enable",
-    "igmp-snooping": "disable",
-    "intra-vap-privacy": "disable",
-    "ip": "0.0.0.0 0.0.0.0",
-    "ipv6-rules": "drop-icmp6ra drop-icmp6rs drop-llmnr6 drop-icmp6mld2 drop-dhcp6s drop-dhcp6c ndp-proxy drop-ns-dad",
-    "keyindex": 1,
-    "l3-roaming": "disable",
-    "l3-roaming-mode": "direct",
-    "ldpc": "rxtx",
-    "local-authentication": "disable",
-    "local-bridging": "disable",
-    "local-lan": "allow",
-    "local-lan-partition": "disable",
-    "local-standalone": "disable",
-    "local-standalone-dns": "disable",
-    "local-standalone-nat": "disable",
-    "mac-auth-bypass": "disable",
-    "mac-called-station-delimiter": "hyphen",
-    "mac-calling-station-delimiter": "hyphen",
-    "mac-case": "uppercase",
-    "mac-password-delimiter": "hyphen",
-    "mac-username-delimiter": "hyphen",
-    "mbo": "disable",
-    "mbo-cell-data-conn-pref": "prefer-not",
-    "me-disable-thresh": 32,
     "mesh-backhaul": "disable",
-    "mu-mimo": "enable",
-    "multicast-enhance": "disable",
-    "multicast-rate": "0",
-    "nac": "disable",
-    "nas-filter-rule": "disable",
-    "neighbor-report-dual-band": "disable",
-    "okc": "enable",
-    "osen": "disable",
-    "owe-groups": "19",
-    "owe-transition": "disable",
+    "atf-weight": 20,
+    "max-clients": 0,
+    "max-clients-ap": 0,
+    "ssid": "fortinet",
+    "broadcast-ssid": "enable",
+    "security": "wpa2-only-personal",
     "pmf": "disable",
     "pmf-assoc-comeback-timeout": 1,
     "pmf-sa-query-retry-timeout": 2,
-    "port-macauth": "disable",
-    "port-macauth-reauth-timeout": 7200,
-    "port-macauth-timeout": 600,
-    "portal-type": "auth",
-    "pre-auth": "enable",
-    "probe-resp-suppression": "disable",
-    "probe-resp-threshold": "-80",
-    "ptk-rekey": "disable",
-    "ptk-rekey-intv": 86400,
-    "quarantine": "enable",
-    "radio-2g-threshold": "-79",
-    "radio-5g-threshold": "-76",
-    "radio-sensitivity": "disable",
+    "beacon-protection": "disable",
+    "okc": "enable",
+    "mbo": "disable",
+    "gas-comeback-delay": 500,
+    "gas-fragmentation-limit": 1024,
+    "mbo-cell-data-conn-pref": "prefer-not",
+    "80211k": "enable",
+    "80211v": "enable",
+    "neighbor-report-dual-band": "disable",
+    "fast-bss-transition": "disable",
+    "ft-mobility-domain": 1000,
+    "ft-r0-key-lifetime": 480,
+    "ft-over-ds": "disable",
+    "sae-groups": "",
+    "owe-groups": "",
+    "owe-transition": "disable",
+    "owe-transition-ssid": "",
+    "additional-akms": "",
+    "eapol-key-retries": "enable",
+    "tkip-counter-measure": "enable",
+    "external-web-format": "auto-detect",
+    "external-logout": "",
+    "mac-username-delimiter": "hyphen",
+    "mac-password-delimiter": "hyphen",
+    "mac-calling-station-delimiter": "hyphen",
+    "mac-called-station-delimiter": "hyphen",
+    "mac-case": "uppercase",
+    "called-station-id-type": "mac",
+    "mac-auth-bypass": "disable",
     "radius-mac-auth": "disable",
+    "radius-mac-auth-server": "",
+    "radius-mac-auth-block-interval": 0,
     "radius-mac-mpsk-auth": "disable",
     "radius-mac-mpsk-timeout": 86400,
-    "rates-11a": "6",
-    "rates-11bg": "1",
-    "rates-11n-ss12": "mcs0/1",
-    "rates-11n-ss34": "mcs16/3",
-    "roaming-acct-interim-update": "disable",
-    "sae-groups": "19",
+    "auth": "",
+    "encrypt": "AES",
+    "keyindex": 1,
     "sae-h2e-only": "disable",
     "sae-hnp-only": "disable",
     "sae-pk": "disable",
-    "scan-botnet-connections": "monitor",
-    "schedule": "always",
-    "security": "wpa2-only-personal",
-    "split-tunneling": "disable",
-    "ssid": "fortinet",
-    "sticky-client-remove": "disable",
-    "sticky-client-threshold-2g": "-79",
-    "sticky-client-threshold-5g": "-76",
-    "sticky-client-threshold-6g": "-76",
+    "sae-private-key": "",
+    "akm24-only": "disable",
+    "radius-server": "",
+    "nas-filter-rule": "disable",
+    "domain-name-stripping": "disable",
+    "local-standalone": "disable",
+    "local-standalone-nat": "disable",
+    "ip": "0.0.0.0 0.0.0.0",
+    "dhcp-lease-time": 2400,
+    "local-standalone-dns": "disable",
+    "local-standalone-dns-ip": "",
+    "local-lan-partition": "disable",
+    "local-bridging": "disable",
+    "local-lan": "allow",
+    "local-authentication": "disable",
+    "captive-portal": "disable",
+    "captive-network-assistant-bypass": "disable",
+    "portal-message-override-group": "",
+    "portal-type": "auth",
+    "security-exempt-list": "",
+    "auth-cert": "",
+    "auth-portal-addr": "",
+    "intra-vap-privacy": "disable",
+    "ldpc": "rxtx",
+    "high-efficiency": "enable",
     "target-wake-time": "enable",
-    "tkip-counter-measure": "enable",
+    "port-macauth": "disable",
+    "port-macauth-timeout": 600,
+    "port-macauth-reauth-timeout": 7200,
+    "bss-color-partial": "enable",
+    "mpsk-profile": "",
+    "split-tunneling": "disable",
+    "nac": "disable",
+    "nac-profile": "",
+    "vlanid": 0,
+    "vlan-auto": "disable",
+    "dynamic-vlan": "disable",
+    "captive-portal-fw-accounting": "disable",
+    "captive-portal-ac-name": "",
+    "captive-portal-auth-timeout": 0,
+    "multicast-rate": "0",
+    "multicast-enhance": "disable",
+    "igmp-snooping": "disable",
+    "dhcp-address-enforcement": "disable",
+    "broadcast-suppression": "dhcp-up dhcp-ucast arp-known",
+    "ipv6-rules": "drop-icmp6ra drop-icmp6rs drop-llmnr6 drop-icmp6mld2 drop-dhcp6s drop-dhcp6c ndp-proxy drop-ns-dad",
+    "me-disable-thresh": 32,
+    "mu-mimo": "enable",
+    "probe-resp-suppression": "disable",
+    "probe-resp-threshold": "-80",
+    "radio-sensitivity": "disable",
+    "quarantine": "enable",
+    "radio-5g-threshold": "-76",
+    "radio-2g-threshold": "-79",
+    "vlan-pooling": "disable",
+    "dhcp-option43-insertion": "enable",
+    "dhcp-option82-insertion": "disable",
+    "dhcp-option82-circuit-id-insertion": "disable",
+    "dhcp-option82-remote-id-insertion": "disable",
+    "ptk-rekey": "disable",
+    "ptk-rekey-intv": 86400,
+    "gtk-rekey": "disable",
+    "gtk-rekey-intv": 86400,
+    "eap-reauth": "disable",
+    "eap-reauth-intv": 86400,
+    "roaming-acct-interim-update": "disable",
+    "qos-profile": "",
+    "hotspot20-profile": "",
+    "access-control-list": "",
+    "primary-wag-profile": "",
+    "secondary-wag-profile": "",
     "tunnel-echo-interval": 300,
     "tunnel-fallback-interval": 7200,
-    "utm-log": "enable",
+    "rates-11a": "",
+    "rates-11bg": "",
+    "rates-11n-ss12": "",
+    "rates-11n-ss34": "",
+    "rates-11ac-mcs-map": "",
+    "rates-11ax-mcs-map": "",
+    "rates-11be-mcs-map": "",
+    "rates-11be-mcs-map-160": "",
+    "rates-11be-mcs-map-320": "",
+    "utm-profile": "",
     "utm-status": "disable",
-    "vlan-auto": "disable",
-    "vlan-pooling": "disable",
+    "utm-log": "enable",
+    "ips-sensor": "",
+    "application-list": "",
+    "antivirus-profile": "",
+    "webfilter-profile": "",
+    "scan-botnet-connections": "monitor",
+    "address-group": "",
+    "address-group-policy": "disable",
+    "sticky-client-remove": "disable",
+    "sticky-client-threshold-5g": "-76",
+    "sticky-client-threshold-2g": "-79",
+    "sticky-client-threshold-6g": "-76",
+    "bstm-rssi-disassoc-timer": 200,
+    "bstm-load-balancing-disassoc-timer": 10,
+    "bstm-disassociation-imminent": "enable",
+    "beacon-advertising": "",
+    "osen": "disable",
+    "application-detection-engine": "disable",
+    "application-dscp-marking": "disable",
+    "application-report-intv": 120,
+    "l3-roaming": "disable",
+    "l3-roaming-mode": "direct",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # Virtual AP name.
+    "pre-auth": "option",  # Enable/disable pre-authentication, where supported by client
+    "external-pre-auth": "option",  # Enable/disable pre-authentication with external APs not mana
+    "mesh-backhaul": "option",  # Enable/disable using this VAP as a WiFi mesh backhaul (defau
+    "atf-weight": "integer",  # Airtime weight in percentage (default = 20).
+    "max-clients": "integer",  # Maximum number of clients that can connect simultaneously to
+    "max-clients-ap": "integer",  # Maximum number of clients that can connect simultaneously to
+    "ssid": "string",  # IEEE 802.11 service set identifier (SSID) for the wireless i
+    "broadcast-ssid": "option",  # Enable/disable broadcasting the SSID (default = enable).
+    "security": "option",  # Security mode for the wireless interface (default = wpa2-onl
+    "pmf": "option",  # Protected Management Frames (PMF) support (default = disable
+    "pmf-assoc-comeback-timeout": "integer",  # Protected Management Frames (PMF) comeback maximum timeout (
+    "pmf-sa-query-retry-timeout": "integer",  # Protected Management Frames (PMF) SA query retry timeout int
+    "beacon-protection": "option",  # Enable/disable beacon protection support (default = disable)
+    "okc": "option",  # Enable/disable Opportunistic Key Caching (OKC) (default = en
+    "mbo": "option",  # Enable/disable Multiband Operation (default = disable).
+    "gas-comeback-delay": "integer",  # GAS comeback delay (0 or 100 - 10000 milliseconds, default =
+    "gas-fragmentation-limit": "integer",  # GAS fragmentation limit (512 - 4096, default = 1024).
+    "mbo-cell-data-conn-pref": "option",  # MBO cell data connection preference (0, 1, or 255, default =
+    "80211k": "option",  # Enable/disable 802.11k assisted roaming (default = enable).
+    "80211v": "option",  # Enable/disable 802.11v assisted roaming (default = enable).
+    "neighbor-report-dual-band": "option",  # Enable/disable dual-band neighbor report (default = disable)
+    "fast-bss-transition": "option",  # Enable/disable 802.11r Fast BSS Transition (FT) (default = d
+    "ft-mobility-domain": "integer",  # Mobility domain identifier in FT (1 - 65535, default = 1000)
+    "ft-r0-key-lifetime": "integer",  # Lifetime of the PMK-R0 key in FT, 1-65535 minutes.
+    "ft-over-ds": "option",  # Enable/disable FT over the Distribution System (DS).
+    "sae-groups": "option",  # SAE-Groups.
+    "owe-groups": "option",  # OWE-Groups.
+    "owe-transition": "option",  # Enable/disable OWE transition mode support.
+    "owe-transition-ssid": "string",  # OWE transition mode peer SSID.
+    "additional-akms": "option",  # Additional AKMs.
+    "eapol-key-retries": "option",  # Enable/disable retransmission of EAPOL-Key frames (message 3
+    "tkip-counter-measure": "option",  # Enable/disable TKIP counter measure.
+    "external-web": "var-string",  # URL of external authentication web server.
+    "external-web-format": "option",  # URL query parameter detection (default = auto-detect).
+    "external-logout": "string",  # URL of external authentication logout server.
+    "mac-username-delimiter": "option",  # MAC authentication username delimiter (default = hyphen).
+    "mac-password-delimiter": "option",  # MAC authentication password delimiter (default = hyphen).
+    "mac-calling-station-delimiter": "option",  # MAC calling station delimiter (default = hyphen).
+    "mac-called-station-delimiter": "option",  # MAC called station delimiter (default = hyphen).
+    "mac-case": "option",  # MAC case (default = uppercase).
+    "called-station-id-type": "option",  # The format type of RADIUS attribute Called-Station-Id (defau
+    "mac-auth-bypass": "option",  # Enable/disable MAC authentication bypass.
+    "radius-mac-auth": "option",  # Enable/disable RADIUS-based MAC authentication of clients (d
+    "radius-mac-auth-server": "string",  # RADIUS-based MAC authentication server.
+    "radius-mac-auth-block-interval": "integer",  # Don't send RADIUS MAC auth request again if the client has b
+    "radius-mac-mpsk-auth": "option",  # Enable/disable RADIUS-based MAC authentication of clients fo
+    "radius-mac-mpsk-timeout": "integer",  # RADIUS MAC MPSK cache timeout interval (0 or 300 - 864000, d
+    "radius-mac-auth-usergroups": "string",  # Selective user groups that are permitted for RADIUS mac auth
+    "auth": "option",  # Authentication protocol.
+    "encrypt": "option",  # Encryption protocol to use (only available when security is 
+    "keyindex": "integer",  # WEP key index (1 - 4).
+    "key": "password",  # WEP Key.
+    "passphrase": "password",  # WPA pre-shared key (PSK) to be used to authenticate WiFi use
+    "sae-password": "password",  # WPA3 SAE password to be used to authenticate WiFi users.
+    "sae-h2e-only": "option",  # Use hash-to-element-only mechanism for PWE derivation (defau
+    "sae-hnp-only": "option",  # Use hunting-and-pecking-only mechanism for PWE derivation (d
+    "sae-pk": "option",  # Enable/disable WPA3 SAE-PK (default = disable).
+    "sae-private-key": "string",  # Private key used for WPA3 SAE-PK authentication.
+    "akm24-only": "option",  # WPA3 SAE using group-dependent hash only (default = disable)
+    "radius-server": "string",  # RADIUS server to be used to authenticate WiFi users.
+    "nas-filter-rule": "option",  # Enable/disable NAS filter rule support (default = disable).
+    "domain-name-stripping": "option",  # Enable/disable stripping domain name from identity (default 
+    "local-standalone": "option",  # Enable/disable AP local standalone (default = disable).
+    "local-standalone-nat": "option",  # Enable/disable AP local standalone NAT mode.
+    "ip": "ipv4-classnet-host",  # IP address and subnet mask for the local standalone NAT subn
+    "dhcp-lease-time": "integer",  # DHCP lease time in seconds for NAT IP address.
+    "local-standalone-dns": "option",  # Enable/disable AP local standalone DNS.
+    "local-standalone-dns-ip": "ipv4-address",  # IPv4 addresses for the local standalone DNS.
+    "local-lan-partition": "option",  # Enable/disable segregating client traffic to local LAN side 
+    "local-bridging": "option",  # Enable/disable bridging of wireless and Ethernet interfaces 
+    "local-lan": "option",  # Allow/deny traffic destined for a Class A, B, or C private I
+    "local-authentication": "option",  # Enable/disable AP local authentication.
+    "usergroup": "string",  # Firewall user group to be used to authenticate WiFi users.
+    "captive-portal": "option",  # Enable/disable captive portal.
+    "captive-network-assistant-bypass": "option",  # Enable/disable Captive Network Assistant bypass.
+    "portal-message-override-group": "string",  # Replacement message group for this VAP (only available when 
+    "portal-message-overrides": "string",  # Individual message overrides.
+    "portal-type": "option",  # Captive portal functionality. Configure how the captive port
+    "selected-usergroups": "string",  # Selective user groups that are permitted to authenticate.
+    "security-exempt-list": "string",  # Optional security exempt list for captive portal authenticat
+    "security-redirect-url": "var-string",  # Optional URL for redirecting users after they pass captive p
+    "auth-cert": "string",  # HTTPS server certificate.
+    "auth-portal-addr": "string",  # Address of captive portal.
+    "intra-vap-privacy": "option",  # Enable/disable blocking communication between clients on the
+    "schedule": "string",  # Firewall schedules for enabling this VAP on the FortiAP. Thi
+    "ldpc": "option",  # VAP low-density parity-check (LDPC) coding configuration.
+    "high-efficiency": "option",  # Enable/disable 802.11ax high efficiency (default = enable).
+    "target-wake-time": "option",  # Enable/disable 802.11ax target wake time (default = enable).
+    "port-macauth": "option",  # Enable/disable LAN port MAC authentication (default = disabl
+    "port-macauth-timeout": "integer",  # LAN port MAC authentication idle timeout value (default = 60
+    "port-macauth-reauth-timeout": "integer",  # LAN port MAC authentication re-authentication timeout value 
+    "bss-color-partial": "option",  # Enable/disable 802.11ax partial BSS color (default = enable)
+    "mpsk-profile": "string",  # MPSK profile name.
+    "split-tunneling": "option",  # Enable/disable split tunneling (default = disable).
+    "nac": "option",  # Enable/disable network access control.
+    "nac-profile": "string",  # NAC profile name.
+    "vlanid": "integer",  # Optional VLAN ID.
+    "vlan-auto": "option",  # Enable/disable automatic management of SSID VLAN interface.
+    "dynamic-vlan": "option",  # Enable/disable dynamic VLAN assignment.
+    "captive-portal-fw-accounting": "option",  # Enable/disable RADIUS accounting for captive portal firewall
+    "captive-portal-ac-name": "string",  # Local-bridging captive portal ac-name.
+    "captive-portal-auth-timeout": "integer",  # Hard timeout - AP will always clear the session after timeou
+    "multicast-rate": "option",  # Multicast rate (0, 6000, 12000, or 24000 kbps, default = 0).
+    "multicast-enhance": "option",  # Enable/disable converting multicast to unicast to improve pe
+    "igmp-snooping": "option",  # Enable/disable IGMP snooping.
+    "dhcp-address-enforcement": "option",  # Enable/disable DHCP address enforcement (default = disable).
+    "broadcast-suppression": "option",  # Optional suppression of broadcast messages. For example, you
+    "ipv6-rules": "option",  # Optional rules of IPv6 packets. For example, you can keep RA
+    "me-disable-thresh": "integer",  # Disable multicast enhancement when this many clients are rec
+    "mu-mimo": "option",  # Enable/disable Multi-user MIMO (default = enable).
+    "probe-resp-suppression": "option",  # Enable/disable probe response suppression (to ignore weak si
+    "probe-resp-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP re
+    "radio-sensitivity": "option",  # Enable/disable software radio sensitivity (to ignore weak si
+    "quarantine": "option",  # Enable/disable station quarantine (default = enable).
+    "radio-5g-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP re
+    "radio-2g-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP re
+    "vlan-name": "string",  # Table for mapping VLAN name to VLAN ID.
+    "vlan-pooling": "option",  # Enable/disable VLAN pooling, to allow grouping of multiple w
+    "vlan-pool": "string",  # VLAN pool.
+    "dhcp-option43-insertion": "option",  # Enable/disable insertion of DHCP option 43 (default = enable
+    "dhcp-option82-insertion": "option",  # Enable/disable DHCP option 82 insert (default = disable).
+    "dhcp-option82-circuit-id-insertion": "option",  # Enable/disable DHCP option 82 circuit-id insert (default = d
+    "dhcp-option82-remote-id-insertion": "option",  # Enable/disable DHCP option 82 remote-id insert (default = di
+    "ptk-rekey": "option",  # Enable/disable PTK rekey for WPA-Enterprise security.
+    "ptk-rekey-intv": "integer",  # PTK rekey interval (600 - 864000 sec, default = 86400).
+    "gtk-rekey": "option",  # Enable/disable GTK rekey for WPA security.
+    "gtk-rekey-intv": "integer",  # GTK rekey interval (600 - 864000 sec, default = 86400).
+    "eap-reauth": "option",  # Enable/disable EAP re-authentication for WPA-Enterprise secu
+    "eap-reauth-intv": "integer",  # EAP re-authentication interval (1800 - 864000 sec, default =
+    "roaming-acct-interim-update": "option",  # Enable/disable using accounting interim update instead of ac
+    "qos-profile": "string",  # Quality of service profile name.
+    "hotspot20-profile": "string",  # Hotspot 2.0 profile name.
+    "access-control-list": "string",  # Profile name for access-control-list.
+    "primary-wag-profile": "string",  # Primary wireless access gateway profile name.
+    "secondary-wag-profile": "string",  # Secondary wireless access gateway profile name.
+    "tunnel-echo-interval": "integer",  # The time interval to send echo to both primary and secondary
+    "tunnel-fallback-interval": "integer",  # The time interval for secondary tunnel to fall back to prima
+    "rates-11a": "option",  # Allowed data rates for 802.11a.
+    "rates-11bg": "option",  # Allowed data rates for 802.11b/g.
+    "rates-11n-ss12": "option",  # Allowed data rates for 802.11n with 1 or 2 spatial streams.
+    "rates-11n-ss34": "option",  # Allowed data rates for 802.11n with 3 or 4 spatial streams.
+    "rates-11ac-mcs-map": "string",  # Comma separated list of max supported VHT MCS for spatial st
+    "rates-11ax-mcs-map": "string",  # Comma separated list of max supported HE MCS for spatial str
+    "rates-11be-mcs-map": "string",  # Comma separated list of max nss that supports EHT-MCS 0-9, 1
+    "rates-11be-mcs-map-160": "string",  # Comma separated list of max nss that supports EHT-MCS 0-9, 1
+    "rates-11be-mcs-map-320": "string",  # Comma separated list of max nss that supports EHT-MCS 0-9, 1
+    "utm-profile": "string",  # UTM profile name.
+    "utm-status": "option",  # Enable to add one or more security profiles (AV, IPS, etc.) 
+    "utm-log": "option",  # Enable/disable UTM logging.
+    "ips-sensor": "string",  # IPS sensor name.
+    "application-list": "string",  # Application control list name.
+    "antivirus-profile": "string",  # AntiVirus profile name.
+    "webfilter-profile": "string",  # WebFilter profile name.
+    "scan-botnet-connections": "option",  # Block or monitor connections to Botnet servers or disable Bo
+    "address-group": "string",  # Firewall Address Group Name.
+    "address-group-policy": "option",  # Configure MAC address filtering policy for MAC addresses tha
+    "sticky-client-remove": "option",  # Enable/disable sticky client remove to maintain good signal 
+    "sticky-client-threshold-5g": "string",  # Minimum signal level/threshold in dBm required for the 5G cl
+    "sticky-client-threshold-2g": "string",  # Minimum signal level/threshold in dBm required for the 2G cl
+    "sticky-client-threshold-6g": "string",  # Minimum signal level/threshold in dBm required for the 6G cl
+    "bstm-rssi-disassoc-timer": "integer",  # Time interval for client to voluntarily leave AP before forc
+    "bstm-load-balancing-disassoc-timer": "integer",  # Time interval for client to voluntarily leave AP before forc
+    "bstm-disassociation-imminent": "option",  # Enable/disable forcing of disassociation after the BSTM requ
+    "beacon-advertising": "option",  # Fortinet beacon advertising IE data   (default = empty).
+    "osen": "option",  # Enable/disable OSEN as part of key management (default = dis
+    "application-detection-engine": "option",  # Enable/disable application detection engine (default = disab
+    "application-dscp-marking": "option",  # Enable/disable application attribute based DSCP marking (def
+    "application-report-intv": "integer",  # Application report interval (30 - 864000 sec, default = 120)
+    "l3-roaming": "option",  # Enable/disable layer 3 roaming (default = disable).
+    "l3-roaming-mode": "option",  # Select the way that layer 3 roaming traffic is passed (defau
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "Virtual AP name.",
+    "pre-auth": "Enable/disable pre-authentication, where supported by clients (default = enable).",
+    "external-pre-auth": "Enable/disable pre-authentication with external APs not managed by the FortiGate (default = disable).",
+    "mesh-backhaul": "Enable/disable using this VAP as a WiFi mesh backhaul (default = disable). This entry is only available when security is set to a WPA type or open.",
+    "atf-weight": "Airtime weight in percentage (default = 20).",
+    "max-clients": "Maximum number of clients that can connect simultaneously to the VAP (default = 0, meaning no limitation).",
+    "max-clients-ap": "Maximum number of clients that can connect simultaneously to the VAP per AP radio (default = 0, meaning no limitation).",
+    "ssid": "IEEE 802.11 service set identifier (SSID) for the wireless interface. Users who wish to use the wireless network must configure their computers to access this SSID name.",
+    "broadcast-ssid": "Enable/disable broadcasting the SSID (default = enable).",
+    "security": "Security mode for the wireless interface (default = wpa2-only-personal).",
+    "pmf": "Protected Management Frames (PMF) support (default = disable).",
+    "pmf-assoc-comeback-timeout": "Protected Management Frames (PMF) comeback maximum timeout (1-20 sec).",
+    "pmf-sa-query-retry-timeout": "Protected Management Frames (PMF) SA query retry timeout interval (1 - 5 100s of msec).",
+    "beacon-protection": "Enable/disable beacon protection support (default = disable).",
+    "okc": "Enable/disable Opportunistic Key Caching (OKC) (default = enable).",
+    "mbo": "Enable/disable Multiband Operation (default = disable).",
+    "gas-comeback-delay": "GAS comeback delay (0 or 100 - 10000 milliseconds, default = 500).",
+    "gas-fragmentation-limit": "GAS fragmentation limit (512 - 4096, default = 1024).",
+    "mbo-cell-data-conn-pref": "MBO cell data connection preference (0, 1, or 255, default = 1).",
+    "80211k": "Enable/disable 802.11k assisted roaming (default = enable).",
+    "80211v": "Enable/disable 802.11v assisted roaming (default = enable).",
+    "neighbor-report-dual-band": "Enable/disable dual-band neighbor report (default = disable).",
+    "fast-bss-transition": "Enable/disable 802.11r Fast BSS Transition (FT) (default = disable).",
+    "ft-mobility-domain": "Mobility domain identifier in FT (1 - 65535, default = 1000).",
+    "ft-r0-key-lifetime": "Lifetime of the PMK-R0 key in FT, 1-65535 minutes.",
+    "ft-over-ds": "Enable/disable FT over the Distribution System (DS).",
+    "sae-groups": "SAE-Groups.",
+    "owe-groups": "OWE-Groups.",
+    "owe-transition": "Enable/disable OWE transition mode support.",
+    "owe-transition-ssid": "OWE transition mode peer SSID.",
+    "additional-akms": "Additional AKMs.",
+    "eapol-key-retries": "Enable/disable retransmission of EAPOL-Key frames (message 3/4 and group message 1/2) (default = enable).",
+    "tkip-counter-measure": "Enable/disable TKIP counter measure.",
+    "external-web": "URL of external authentication web server.",
+    "external-web-format": "URL query parameter detection (default = auto-detect).",
+    "external-logout": "URL of external authentication logout server.",
+    "mac-username-delimiter": "MAC authentication username delimiter (default = hyphen).",
+    "mac-password-delimiter": "MAC authentication password delimiter (default = hyphen).",
+    "mac-calling-station-delimiter": "MAC calling station delimiter (default = hyphen).",
+    "mac-called-station-delimiter": "MAC called station delimiter (default = hyphen).",
+    "mac-case": "MAC case (default = uppercase).",
+    "called-station-id-type": "The format type of RADIUS attribute Called-Station-Id (default = mac).",
+    "mac-auth-bypass": "Enable/disable MAC authentication bypass.",
+    "radius-mac-auth": "Enable/disable RADIUS-based MAC authentication of clients (default = disable).",
+    "radius-mac-auth-server": "RADIUS-based MAC authentication server.",
+    "radius-mac-auth-block-interval": "Don't send RADIUS MAC auth request again if the client has been rejected within specific interval (0 or 30 - 864000 seconds, default = 0, 0 to disable blocking).",
+    "radius-mac-mpsk-auth": "Enable/disable RADIUS-based MAC authentication of clients for MPSK authentication (default = disable).",
+    "radius-mac-mpsk-timeout": "RADIUS MAC MPSK cache timeout interval (0 or 300 - 864000, default = 86400, 0 to disable caching).",
+    "radius-mac-auth-usergroups": "Selective user groups that are permitted for RADIUS mac authentication.",
+    "auth": "Authentication protocol.",
+    "encrypt": "Encryption protocol to use (only available when security is set to a WPA type).",
+    "keyindex": "WEP key index (1 - 4).",
+    "key": "WEP Key.",
+    "passphrase": "WPA pre-shared key (PSK) to be used to authenticate WiFi users.",
+    "sae-password": "WPA3 SAE password to be used to authenticate WiFi users.",
+    "sae-h2e-only": "Use hash-to-element-only mechanism for PWE derivation (default = disable).",
+    "sae-hnp-only": "Use hunting-and-pecking-only mechanism for PWE derivation (default = disable).",
+    "sae-pk": "Enable/disable WPA3 SAE-PK (default = disable).",
+    "sae-private-key": "Private key used for WPA3 SAE-PK authentication.",
+    "akm24-only": "WPA3 SAE using group-dependent hash only (default = disable).",
+    "radius-server": "RADIUS server to be used to authenticate WiFi users.",
+    "nas-filter-rule": "Enable/disable NAS filter rule support (default = disable).",
+    "domain-name-stripping": "Enable/disable stripping domain name from identity (default = disable).",
+    "local-standalone": "Enable/disable AP local standalone (default = disable).",
+    "local-standalone-nat": "Enable/disable AP local standalone NAT mode.",
+    "ip": "IP address and subnet mask for the local standalone NAT subnet.",
+    "dhcp-lease-time": "DHCP lease time in seconds for NAT IP address.",
+    "local-standalone-dns": "Enable/disable AP local standalone DNS.",
+    "local-standalone-dns-ip": "IPv4 addresses for the local standalone DNS.",
+    "local-lan-partition": "Enable/disable segregating client traffic to local LAN side (default = disable).",
+    "local-bridging": "Enable/disable bridging of wireless and Ethernet interfaces on the FortiAP (default = disable).",
+    "local-lan": "Allow/deny traffic destined for a Class A, B, or C private IP address (default = allow).",
+    "local-authentication": "Enable/disable AP local authentication.",
+    "usergroup": "Firewall user group to be used to authenticate WiFi users.",
+    "captive-portal": "Enable/disable captive portal.",
+    "captive-network-assistant-bypass": "Enable/disable Captive Network Assistant bypass.",
+    "portal-message-override-group": "Replacement message group for this VAP (only available when security is set to a captive portal type).",
+    "portal-message-overrides": "Individual message overrides.",
+    "portal-type": "Captive portal functionality. Configure how the captive portal authenticates users and whether it includes a disclaimer.",
+    "selected-usergroups": "Selective user groups that are permitted to authenticate.",
+    "security-exempt-list": "Optional security exempt list for captive portal authentication.",
+    "security-redirect-url": "Optional URL for redirecting users after they pass captive portal authentication.",
+    "auth-cert": "HTTPS server certificate.",
+    "auth-portal-addr": "Address of captive portal.",
+    "intra-vap-privacy": "Enable/disable blocking communication between clients on the same SSID (called intra-SSID privacy) (default = disable).",
+    "schedule": "Firewall schedules for enabling this VAP on the FortiAP. This VAP will be enabled when at least one of the schedules is valid. Separate multiple schedule names with a space.",
+    "ldpc": "VAP low-density parity-check (LDPC) coding configuration.",
+    "high-efficiency": "Enable/disable 802.11ax high efficiency (default = enable).",
+    "target-wake-time": "Enable/disable 802.11ax target wake time (default = enable).",
+    "port-macauth": "Enable/disable LAN port MAC authentication (default = disable).",
+    "port-macauth-timeout": "LAN port MAC authentication idle timeout value (default = 600 sec).",
+    "port-macauth-reauth-timeout": "LAN port MAC authentication re-authentication timeout value (default = 7200 sec).",
+    "bss-color-partial": "Enable/disable 802.11ax partial BSS color (default = enable).",
+    "mpsk-profile": "MPSK profile name.",
+    "split-tunneling": "Enable/disable split tunneling (default = disable).",
+    "nac": "Enable/disable network access control.",
+    "nac-profile": "NAC profile name.",
+    "vlanid": "Optional VLAN ID.",
+    "vlan-auto": "Enable/disable automatic management of SSID VLAN interface.",
+    "dynamic-vlan": "Enable/disable dynamic VLAN assignment.",
+    "captive-portal-fw-accounting": "Enable/disable RADIUS accounting for captive portal firewall authentication session.",
+    "captive-portal-ac-name": "Local-bridging captive portal ac-name.",
+    "captive-portal-auth-timeout": "Hard timeout - AP will always clear the session after timeout regardless of traffic (0 - 864000 sec, default = 0).",
+    "multicast-rate": "Multicast rate (0, 6000, 12000, or 24000 kbps, default = 0).",
+    "multicast-enhance": "Enable/disable converting multicast to unicast to improve performance (default = disable).",
+    "igmp-snooping": "Enable/disable IGMP snooping.",
+    "dhcp-address-enforcement": "Enable/disable DHCP address enforcement (default = disable).",
+    "broadcast-suppression": "Optional suppression of broadcast messages. For example, you can keep DHCP messages, ARP broadcasts, and so on off of the wireless network.",
+    "ipv6-rules": "Optional rules of IPv6 packets. For example, you can keep RA, RS and so on off of the wireless network.",
+    "me-disable-thresh": "Disable multicast enhancement when this many clients are receiving multicast traffic.",
+    "mu-mimo": "Enable/disable Multi-user MIMO (default = enable).",
+    "probe-resp-suppression": "Enable/disable probe response suppression (to ignore weak signals) (default = disable).",
+    "probe-resp-threshold": "Minimum signal level/threshold in dBm required for the AP response to probe requests (-95 to -20, default = -80).",
+    "radio-sensitivity": "Enable/disable software radio sensitivity (to ignore weak signals) (default = disable).",
+    "quarantine": "Enable/disable station quarantine (default = enable).",
+    "radio-5g-threshold": "Minimum signal level/threshold in dBm required for the AP response to receive a packet in 5G band(-95 to -20, default = -76).",
+    "radio-2g-threshold": "Minimum signal level/threshold in dBm required for the AP response to receive a packet in 2.4G band (-95 to -20, default = -79).",
+    "vlan-name": "Table for mapping VLAN name to VLAN ID.",
+    "vlan-pooling": "Enable/disable VLAN pooling, to allow grouping of multiple wireless controller VLANs into VLAN pools (default = disable). When set to wtp-group, VLAN pooling occurs with VLAN assignment by wtp-group.",
+    "vlan-pool": "VLAN pool.",
+    "dhcp-option43-insertion": "Enable/disable insertion of DHCP option 43 (default = enable).",
+    "dhcp-option82-insertion": "Enable/disable DHCP option 82 insert (default = disable).",
+    "dhcp-option82-circuit-id-insertion": "Enable/disable DHCP option 82 circuit-id insert (default = disable).",
+    "dhcp-option82-remote-id-insertion": "Enable/disable DHCP option 82 remote-id insert (default = disable).",
+    "ptk-rekey": "Enable/disable PTK rekey for WPA-Enterprise security.",
+    "ptk-rekey-intv": "PTK rekey interval (600 - 864000 sec, default = 86400).",
+    "gtk-rekey": "Enable/disable GTK rekey for WPA security.",
+    "gtk-rekey-intv": "GTK rekey interval (600 - 864000 sec, default = 86400).",
+    "eap-reauth": "Enable/disable EAP re-authentication for WPA-Enterprise security.",
+    "eap-reauth-intv": "EAP re-authentication interval (1800 - 864000 sec, default = 86400).",
+    "roaming-acct-interim-update": "Enable/disable using accounting interim update instead of accounting start/stop on roaming for WPA-Enterprise security.",
+    "qos-profile": "Quality of service profile name.",
+    "hotspot20-profile": "Hotspot 2.0 profile name.",
+    "access-control-list": "Profile name for access-control-list.",
+    "primary-wag-profile": "Primary wireless access gateway profile name.",
+    "secondary-wag-profile": "Secondary wireless access gateway profile name.",
+    "tunnel-echo-interval": "The time interval to send echo to both primary and secondary tunnel peers (1 - 65535 sec, default = 300).",
+    "tunnel-fallback-interval": "The time interval for secondary tunnel to fall back to primary tunnel (0 - 65535 sec, default = 7200).",
+    "rates-11a": "Allowed data rates for 802.11a.",
+    "rates-11bg": "Allowed data rates for 802.11b/g.",
+    "rates-11n-ss12": "Allowed data rates for 802.11n with 1 or 2 spatial streams.",
+    "rates-11n-ss34": "Allowed data rates for 802.11n with 3 or 4 spatial streams.",
+    "rates-11ac-mcs-map": "Comma separated list of max supported VHT MCS for spatial streams 1 through 8.",
+    "rates-11ax-mcs-map": "Comma separated list of max supported HE MCS for spatial streams 1 through 8.",
+    "rates-11be-mcs-map": "Comma separated list of max nss that supports EHT-MCS 0-9, 10-11, 12-13 for 20MHz/40MHz/80MHz bandwidth.",
+    "rates-11be-mcs-map-160": "Comma separated list of max nss that supports EHT-MCS 0-9, 10-11, 12-13 for 160MHz bandwidth.",
+    "rates-11be-mcs-map-320": "Comma separated list of max nss that supports EHT-MCS 0-9, 10-11, 12-13 for 320MHz bandwidth.",
+    "utm-profile": "UTM profile name.",
+    "utm-status": "Enable to add one or more security profiles (AV, IPS, etc.) to the VAP.",
+    "utm-log": "Enable/disable UTM logging.",
+    "ips-sensor": "IPS sensor name.",
+    "application-list": "Application control list name.",
+    "antivirus-profile": "AntiVirus profile name.",
+    "webfilter-profile": "WebFilter profile name.",
+    "scan-botnet-connections": "Block or monitor connections to Botnet servers or disable Botnet scanning.",
+    "address-group": "Firewall Address Group Name.",
+    "address-group-policy": "Configure MAC address filtering policy for MAC addresses that are in the address-group.",
+    "sticky-client-remove": "Enable/disable sticky client remove to maintain good signal level clients in SSID (default = disable).",
+    "sticky-client-threshold-5g": "Minimum signal level/threshold in dBm required for the 5G client to be serviced by the AP (-95 to -20, default = -76).",
+    "sticky-client-threshold-2g": "Minimum signal level/threshold in dBm required for the 2G client to be serviced by the AP (-95 to -20, default = -79).",
+    "sticky-client-threshold-6g": "Minimum signal level/threshold in dBm required for the 6G client to be serviced by the AP (-95 to -20, default = -76).",
+    "bstm-rssi-disassoc-timer": "Time interval for client to voluntarily leave AP before forcing a disassociation due to low RSSI (0 to 2000, default = 200).",
+    "bstm-load-balancing-disassoc-timer": "Time interval for client to voluntarily leave AP before forcing a disassociation due to AP load-balancing (0 to 30, default = 10).",
+    "bstm-disassociation-imminent": "Enable/disable forcing of disassociation after the BSTM request timer has been reached (default = enable).",
+    "beacon-advertising": "Fortinet beacon advertising IE data   (default = empty).",
+    "osen": "Enable/disable OSEN as part of key management (default = disable).",
+    "application-detection-engine": "Enable/disable application detection engine (default = disable).",
+    "application-dscp-marking": "Enable/disable application attribute based DSCP marking (default = disable).",
+    "application-report-intv": "Application report interval (30 - 864000 sec, default = 120).",
+    "l3-roaming": "Enable/disable layer 3 roaming (default = disable).",
+    "l3-roaming-mode": "Select the way that layer 3 roaming traffic is passed (default = direct).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 15},
+    "atf-weight": {"type": "integer", "min": 0, "max": 100},
+    "max-clients": {"type": "integer", "min": 0, "max": 4294967295},
+    "max-clients-ap": {"type": "integer", "min": 0, "max": 4294967295},
+    "ssid": {"type": "string", "max_length": 32},
+    "pmf-assoc-comeback-timeout": {"type": "integer", "min": 1, "max": 20},
+    "pmf-sa-query-retry-timeout": {"type": "integer", "min": 1, "max": 5},
+    "gas-comeback-delay": {"type": "integer", "min": 100, "max": 10000},
+    "gas-fragmentation-limit": {"type": "integer", "min": 512, "max": 4096},
+    "ft-mobility-domain": {"type": "integer", "min": 1, "max": 65535},
+    "ft-r0-key-lifetime": {"type": "integer", "min": 1, "max": 65535},
+    "owe-transition-ssid": {"type": "string", "max_length": 32},
+    "external-logout": {"type": "string", "max_length": 127},
+    "radius-mac-auth-server": {"type": "string", "max_length": 35},
+    "radius-mac-auth-block-interval": {"type": "integer", "min": 30, "max": 864000},
+    "radius-mac-mpsk-timeout": {"type": "integer", "min": 300, "max": 864000},
+    "keyindex": {"type": "integer", "min": 1, "max": 4},
+    "sae-private-key": {"type": "string", "max_length": 359},
+    "radius-server": {"type": "string", "max_length": 35},
+    "dhcp-lease-time": {"type": "integer", "min": 300, "max": 8640000},
+    "portal-message-override-group": {"type": "string", "max_length": 35},
+    "security-exempt-list": {"type": "string", "max_length": 35},
+    "auth-cert": {"type": "string", "max_length": 35},
+    "auth-portal-addr": {"type": "string", "max_length": 63},
+    "port-macauth-timeout": {"type": "integer", "min": 60, "max": 65535},
+    "port-macauth-reauth-timeout": {"type": "integer", "min": 120, "max": 65535},
+    "mpsk-profile": {"type": "string", "max_length": 35},
+    "nac-profile": {"type": "string", "max_length": 35},
+    "vlanid": {"type": "integer", "min": 0, "max": 4094},
+    "captive-portal-ac-name": {"type": "string", "max_length": 35},
+    "captive-portal-auth-timeout": {"type": "integer", "min": 0, "max": 864000},
+    "me-disable-thresh": {"type": "integer", "min": 2, "max": 256},
+    "probe-resp-threshold": {"type": "string", "max_length": 7},
+    "radio-5g-threshold": {"type": "string", "max_length": 7},
+    "radio-2g-threshold": {"type": "string", "max_length": 7},
+    "ptk-rekey-intv": {"type": "integer", "min": 600, "max": 864000},
+    "gtk-rekey-intv": {"type": "integer", "min": 600, "max": 864000},
+    "eap-reauth-intv": {"type": "integer", "min": 1800, "max": 864000},
+    "qos-profile": {"type": "string", "max_length": 35},
+    "hotspot20-profile": {"type": "string", "max_length": 35},
+    "access-control-list": {"type": "string", "max_length": 35},
+    "primary-wag-profile": {"type": "string", "max_length": 35},
+    "secondary-wag-profile": {"type": "string", "max_length": 35},
+    "tunnel-echo-interval": {"type": "integer", "min": 1, "max": 65535},
+    "tunnel-fallback-interval": {"type": "integer", "min": 0, "max": 65535},
+    "rates-11ac-mcs-map": {"type": "string", "max_length": 63},
+    "rates-11ax-mcs-map": {"type": "string", "max_length": 63},
+    "rates-11be-mcs-map": {"type": "string", "max_length": 15},
+    "rates-11be-mcs-map-160": {"type": "string", "max_length": 15},
+    "rates-11be-mcs-map-320": {"type": "string", "max_length": 15},
+    "utm-profile": {"type": "string", "max_length": 35},
+    "ips-sensor": {"type": "string", "max_length": 47},
+    "application-list": {"type": "string", "max_length": 47},
+    "antivirus-profile": {"type": "string", "max_length": 47},
+    "webfilter-profile": {"type": "string", "max_length": 47},
+    "address-group": {"type": "string", "max_length": 79},
+    "sticky-client-threshold-5g": {"type": "string", "max_length": 7},
+    "sticky-client-threshold-2g": {"type": "string", "max_length": 7},
+    "sticky-client-threshold-6g": {"type": "string", "max_length": 7},
+    "bstm-rssi-disassoc-timer": {"type": "integer", "min": 1, "max": 2000},
+    "bstm-load-balancing-disassoc-timer": {"type": "integer", "min": 1, "max": 30},
+    "application-report-intv": {"type": "integer", "min": 30, "max": 864000},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "radius-mac-auth-usergroups": {
+        "name": {
+            "type": "string",
+            "help": "User group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "usergroup": {
+        "name": {
+            "type": "string",
+            "help": "User group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "portal-message-overrides": {
+        "auth-disclaimer-page": {
+            "type": "string",
+            "help": "Override auth-disclaimer-page message with message from portal-message-overrides group.",
+            "default": "",
+            "max_length": 35,
+        },
+        "auth-reject-page": {
+            "type": "string",
+            "help": "Override auth-reject-page message with message from portal-message-overrides group.",
+            "default": "",
+            "max_length": 35,
+        },
+        "auth-login-page": {
+            "type": "string",
+            "help": "Override auth-login-page message with message from portal-message-overrides group.",
+            "default": "",
+            "max_length": 35,
+        },
+        "auth-login-failed-page": {
+            "type": "string",
+            "help": "Override auth-login-failed-page message with message from portal-message-overrides group.",
+            "default": "",
+            "max_length": 35,
+        },
+    },
+    "selected-usergroups": {
+        "name": {
+            "type": "string",
+            "help": "User group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "schedule": {
+        "name": {
+            "type": "string",
+            "help": "Schedule name.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+    },
+    "vlan-name": {
+        "name": {
+            "type": "string",
+            "help": "VLAN name.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+        "vlan-id": {
+            "type": "integer",
+            "help": "VLAN IDs (maximum 8 VLAN IDs).",
+            "default": "",
+            "min_value": 0,
+            "max_value": 4094,
+        },
+    },
+    "vlan-pool": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4094,
+        },
+        "wtp-group": {
+            "type": "string",
+            "help": "WTP group name.",
+            "default": "",
+            "max_length": 35,
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_PRE_AUTH = ["enable", "disable"]
-VALID_BODY_EXTERNAL_PRE_AUTH = ["enable", "disable"]
-VALID_BODY_MESH_BACKHAUL = ["enable", "disable"]
-VALID_BODY_BROADCAST_SSID = ["enable", "disable"]
+VALID_BODY_PRE_AUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EXTERNAL_PRE_AUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_MESH_BACKHAUL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BROADCAST_SSID = [
+    "enable",
+    "disable",
+]
 VALID_BODY_SECURITY = [
     "open",
     "wep64",
@@ -179,22 +776,74 @@ VALID_BODY_SECURITY = [
     "owe",
     "osen",
 ]
-VALID_BODY_PMF = ["disable", "enable", "optional"]
-VALID_BODY_BEACON_PROTECTION = ["disable", "enable"]
-VALID_BODY_OKC = ["disable", "enable"]
-VALID_BODY_MBO = ["disable", "enable"]
-VALID_BODY_MBO_CELL_DATA_CONN_PREF = ["excluded", "prefer-not", "prefer-use"]
-VALID_BODY_80211K = ["disable", "enable"]
-VALID_BODY_80211V = ["disable", "enable"]
-VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND = ["disable", "enable"]
-VALID_BODY_FAST_BSS_TRANSITION = ["disable", "enable"]
-VALID_BODY_FT_OVER_DS = ["disable", "enable"]
-VALID_BODY_SAE_GROUPS = ["19", "20", "21"]
-VALID_BODY_OWE_GROUPS = ["19", "20", "21"]
-VALID_BODY_OWE_TRANSITION = ["disable", "enable"]
-VALID_BODY_ADDITIONAL_AKMS = ["akm6", "akm24"]
-VALID_BODY_EAPOL_KEY_RETRIES = ["disable", "enable"]
-VALID_BODY_TKIP_COUNTER_MEASURE = ["enable", "disable"]
+VALID_BODY_PMF = [
+    "disable",
+    "enable",
+    "optional",
+]
+VALID_BODY_BEACON_PROTECTION = [
+    "disable",
+    "enable",
+]
+VALID_BODY_OKC = [
+    "disable",
+    "enable",
+]
+VALID_BODY_MBO = [
+    "disable",
+    "enable",
+]
+VALID_BODY_MBO_CELL_DATA_CONN_PREF = [
+    "excluded",
+    "prefer-not",
+    "prefer-use",
+]
+VALID_BODY_80211K = [
+    "disable",
+    "enable",
+]
+VALID_BODY_80211V = [
+    "disable",
+    "enable",
+]
+VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND = [
+    "disable",
+    "enable",
+]
+VALID_BODY_FAST_BSS_TRANSITION = [
+    "disable",
+    "enable",
+]
+VALID_BODY_FT_OVER_DS = [
+    "disable",
+    "enable",
+]
+VALID_BODY_SAE_GROUPS = [
+    "19",
+    "20",
+    "21",
+]
+VALID_BODY_OWE_GROUPS = [
+    "19",
+    "20",
+    "21",
+]
+VALID_BODY_OWE_TRANSITION = [
+    "disable",
+    "enable",
+]
+VALID_BODY_ADDITIONAL_AKMS = [
+    "akm6",
+    "akm24",
+]
+VALID_BODY_EAPOL_KEY_RETRIES = [
+    "disable",
+    "enable",
+]
+VALID_BODY_TKIP_COUNTER_MEASURE = [
+    "enable",
+    "disable",
+]
 VALID_BODY_EXTERNAL_WEB_FORMAT = [
     "auto-detect",
     "no-query-string",
@@ -224,29 +873,96 @@ VALID_BODY_MAC_CALLED_STATION_DELIMITER = [
     "colon",
     "none",
 ]
-VALID_BODY_MAC_CASE = ["uppercase", "lowercase"]
-VALID_BODY_CALLED_STATION_ID_TYPE = ["mac", "ip", "apname"]
-VALID_BODY_MAC_AUTH_BYPASS = ["enable", "disable"]
-VALID_BODY_RADIUS_MAC_AUTH = ["enable", "disable"]
-VALID_BODY_RADIUS_MAC_MPSK_AUTH = ["enable", "disable"]
-VALID_BODY_AUTH = ["radius", "usergroup"]
-VALID_BODY_ENCRYPT = ["TKIP", "AES", "TKIP-AES"]
-VALID_BODY_SAE_H2E_ONLY = ["enable", "disable"]
-VALID_BODY_SAE_HNP_ONLY = ["enable", "disable"]
-VALID_BODY_SAE_PK = ["enable", "disable"]
-VALID_BODY_AKM24_ONLY = ["disable", "enable"]
-VALID_BODY_NAS_FILTER_RULE = ["enable", "disable"]
-VALID_BODY_DOMAIN_NAME_STRIPPING = ["disable", "enable"]
-VALID_BODY_MLO = ["disable", "enable"]
-VALID_BODY_LOCAL_STANDALONE = ["enable", "disable"]
-VALID_BODY_LOCAL_STANDALONE_NAT = ["enable", "disable"]
-VALID_BODY_LOCAL_STANDALONE_DNS = ["enable", "disable"]
-VALID_BODY_LOCAL_LAN_PARTITION = ["enable", "disable"]
-VALID_BODY_LOCAL_BRIDGING = ["enable", "disable"]
-VALID_BODY_LOCAL_LAN = ["allow", "deny"]
-VALID_BODY_LOCAL_AUTHENTICATION = ["enable", "disable"]
-VALID_BODY_CAPTIVE_PORTAL = ["enable", "disable"]
-VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS = ["enable", "disable"]
+VALID_BODY_MAC_CASE = [
+    "uppercase",
+    "lowercase",
+]
+VALID_BODY_CALLED_STATION_ID_TYPE = [
+    "mac",
+    "ip",
+    "apname",
+]
+VALID_BODY_MAC_AUTH_BYPASS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_RADIUS_MAC_AUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_RADIUS_MAC_MPSK_AUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AUTH = [
+    "radius",
+    "usergroup",
+]
+VALID_BODY_ENCRYPT = [
+    "TKIP",
+    "AES",
+    "TKIP-AES",
+]
+VALID_BODY_SAE_H2E_ONLY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SAE_HNP_ONLY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SAE_PK = [
+    "enable",
+    "disable",
+]
+VALID_BODY_AKM24_ONLY = [
+    "disable",
+    "enable",
+]
+VALID_BODY_NAS_FILTER_RULE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DOMAIN_NAME_STRIPPING = [
+    "disable",
+    "enable",
+]
+VALID_BODY_LOCAL_STANDALONE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOCAL_STANDALONE_NAT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOCAL_STANDALONE_DNS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOCAL_LAN_PARTITION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOCAL_BRIDGING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LOCAL_LAN = [
+    "allow",
+    "deny",
+]
+VALID_BODY_LOCAL_AUTHENTICATION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CAPTIVE_PORTAL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS = [
+    "enable",
+    "disable",
+]
 VALID_BODY_PORTAL_TYPE = [
     "auth",
     "auth+disclaimer",
@@ -258,21 +974,71 @@ VALID_BODY_PORTAL_TYPE = [
     "external-auth",
     "external-macauth",
 ]
-VALID_BODY_INTRA_VAP_PRIVACY = ["enable", "disable"]
-VALID_BODY_LDPC = ["disable", "rx", "tx", "rxtx"]
-VALID_BODY_HIGH_EFFICIENCY = ["enable", "disable"]
-VALID_BODY_TARGET_WAKE_TIME = ["enable", "disable"]
-VALID_BODY_PORT_MACAUTH = ["disable", "radius", "address-group"]
-VALID_BODY_BSS_COLOR_PARTIAL = ["enable", "disable"]
-VALID_BODY_SPLIT_TUNNELING = ["enable", "disable"]
-VALID_BODY_NAC = ["enable", "disable"]
-VALID_BODY_VLAN_AUTO = ["enable", "disable"]
-VALID_BODY_DYNAMIC_VLAN = ["enable", "disable"]
-VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING = ["enable", "disable"]
-VALID_BODY_MULTICAST_RATE = ["0", "6000", "12000", "24000"]
-VALID_BODY_MULTICAST_ENHANCE = ["enable", "disable"]
-VALID_BODY_IGMP_SNOOPING = ["enable", "disable"]
-VALID_BODY_DHCP_ADDRESS_ENFORCEMENT = ["enable", "disable"]
+VALID_BODY_INTRA_VAP_PRIVACY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_LDPC = [
+    "disable",
+    "rx",
+    "tx",
+    "rxtx",
+]
+VALID_BODY_HIGH_EFFICIENCY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_TARGET_WAKE_TIME = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PORT_MACAUTH = [
+    "disable",
+    "radius",
+    "address-group",
+]
+VALID_BODY_BSS_COLOR_PARTIAL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SPLIT_TUNNELING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_NAC = [
+    "enable",
+    "disable",
+]
+VALID_BODY_VLAN_AUTO = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DYNAMIC_VLAN = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_MULTICAST_RATE = [
+    "0",
+    "6000",
+    "12000",
+    "24000",
+]
+VALID_BODY_MULTICAST_ENHANCE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_IGMP_SNOOPING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DHCP_ADDRESS_ENFORCEMENT = [
+    "enable",
+    "disable",
+]
 VALID_BODY_BROADCAST_SUPPRESSION = [
     "dhcp-up",
     "dhcp-down",
@@ -300,24 +1066,62 @@ VALID_BODY_IPV6_RULES = [
     "drop-ns-dad",
     "drop-ns-nondad",
 ]
-VALID_BODY_MU_MIMO = ["enable", "disable"]
-VALID_BODY_PROBE_RESP_SUPPRESSION = ["enable", "disable"]
-VALID_BODY_RADIO_SENSITIVITY = ["enable", "disable"]
-VALID_BODY_QUARANTINE = ["enable", "disable"]
-VALID_BODY_VLAN_POOLING = ["wtp-group", "round-robin", "hash", "disable"]
-VALID_BODY_DHCP_OPTION43_INSERTION = ["enable", "disable"]
-VALID_BODY_DHCP_OPTION82_INSERTION = ["enable", "disable"]
+VALID_BODY_MU_MIMO = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PROBE_RESP_SUPPRESSION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_RADIO_SENSITIVITY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_QUARANTINE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_VLAN_POOLING = [
+    "wtp-group",
+    "round-robin",
+    "hash",
+    "disable",
+]
+VALID_BODY_DHCP_OPTION43_INSERTION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DHCP_OPTION82_INSERTION = [
+    "enable",
+    "disable",
+]
 VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION = [
     "style-1",
     "style-2",
     "style-3",
     "disable",
 ]
-VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION = ["style-1", "disable"]
-VALID_BODY_PTK_REKEY = ["enable", "disable"]
-VALID_BODY_GTK_REKEY = ["enable", "disable"]
-VALID_BODY_EAP_REAUTH = ["enable", "disable"]
-VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE = ["enable", "disable"]
+VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION = [
+    "style-1",
+    "disable",
+]
+VALID_BODY_PTK_REKEY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_GTK_REKEY = [
+    "enable",
+    "disable",
+]
+VALID_BODY_EAP_REAUTH = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE = [
+    "enable",
+    "disable",
+]
 VALID_BODY_RATES_11A = [
     "6",
     "6-basic",
@@ -398,18 +1202,57 @@ VALID_BODY_RATES_11N_SS34 = [
     "mcs30/4",
     "mcs31/4",
 ]
-VALID_BODY_UTM_STATUS = ["enable", "disable"]
-VALID_BODY_UTM_LOG = ["enable", "disable"]
-VALID_BODY_SCAN_BOTNET_CONNECTIONS = ["disable", "monitor", "block"]
-VALID_BODY_ADDRESS_GROUP_POLICY = ["disable", "allow", "deny"]
-VALID_BODY_STICKY_CLIENT_REMOVE = ["enable", "disable"]
-VALID_BODY_BSTM_DISASSOCIATION_IMMINENT = ["enable", "disable"]
-VALID_BODY_BEACON_ADVERTISING = ["name", "model", "serial-number"]
-VALID_BODY_OSEN = ["enable", "disable"]
-VALID_BODY_APPLICATION_DETECTION_ENGINE = ["enable", "disable"]
-VALID_BODY_APPLICATION_DSCP_MARKING = ["enable", "disable"]
-VALID_BODY_L3_ROAMING = ["enable", "disable"]
-VALID_BODY_L3_ROAMING_MODE = ["direct", "indirect"]
+VALID_BODY_UTM_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_UTM_LOG = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SCAN_BOTNET_CONNECTIONS = [
+    "disable",
+    "monitor",
+    "block",
+]
+VALID_BODY_ADDRESS_GROUP_POLICY = [
+    "disable",
+    "allow",
+    "deny",
+]
+VALID_BODY_STICKY_CLIENT_REMOVE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BSTM_DISASSOCIATION_IMMINENT = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BEACON_ADVERTISING = [
+    "name",
+    "model",
+    "serial-number",
+]
+VALID_BODY_OSEN = [
+    "enable",
+    "disable",
+]
+VALID_BODY_APPLICATION_DETECTION_ENGINE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_APPLICATION_DSCP_MARKING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_L3_ROAMING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_L3_ROAMING_MODE = [
+    "direct",
+    "indirect",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -417,13 +1260,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_vap_get(
+def validate_wireless_controller_vap_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for wireless_controller/vap.
 
     Args:
         attr: Attribute filter (optional)
@@ -433,9 +1276,20 @@ def validate_vap_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_wireless_controller_vap_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_wireless_controller_vap_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_wireless_controller_vap_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -456,7 +1310,7 @@ def validate_vap_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for wireless-controller_vap.
+    Validate required fields for wireless_controller/vap.
 
     This validator checks:
     1. Always-required fields are present
@@ -469,1606 +1323,1037 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "name": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_vap_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
+def validate_wireless_controller_vap_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new wireless_controller/vap object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - name: Virtual AP name.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "name": True,  # Virtual AP name.
+        ... }
+        >>> is_valid, error = validate_wireless_controller_vap_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "name": True,
+        ...     "pre-auth": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_wireless_controller_vap_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["pre-auth"] = "invalid-value"
+        >>> is_valid, error = validate_wireless_controller_vap_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_wireless_controller_vap_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "name cannot exceed 15 characters")
-
-    # Validate pre-auth if present
+    # Step 2: Validate enum values
     if "pre-auth" in payload:
-        value = payload.get("pre-auth")
-        if value and value not in VALID_BODY_PRE_AUTH:
-            return (
-                False,
-                f"Invalid pre-auth '{value}'. Must be one of: {', '.join(VALID_BODY_PRE_AUTH)}",
-            )
-
-    # Validate external-pre-auth if present
+        value = payload["pre-auth"]
+        if value not in VALID_BODY_PRE_AUTH:
+            desc = FIELD_DESCRIPTIONS.get("pre-auth", "")
+            error_msg = f"Invalid value for 'pre-auth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PRE_AUTH)}"
+            error_msg += f"\n  → Example: pre-auth='{{ VALID_BODY_PRE_AUTH[0] }}'"
+            return (False, error_msg)
     if "external-pre-auth" in payload:
-        value = payload.get("external-pre-auth")
-        if value and value not in VALID_BODY_EXTERNAL_PRE_AUTH:
-            return (
-                False,
-                f"Invalid external-pre-auth '{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL_PRE_AUTH)}",
-            )
-
-    # Validate mesh-backhaul if present
+        value = payload["external-pre-auth"]
+        if value not in VALID_BODY_EXTERNAL_PRE_AUTH:
+            desc = FIELD_DESCRIPTIONS.get("external-pre-auth", "")
+            error_msg = f"Invalid value for 'external-pre-auth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EXTERNAL_PRE_AUTH)}"
+            error_msg += f"\n  → Example: external-pre-auth='{{ VALID_BODY_EXTERNAL_PRE_AUTH[0] }}'"
+            return (False, error_msg)
     if "mesh-backhaul" in payload:
-        value = payload.get("mesh-backhaul")
-        if value and value not in VALID_BODY_MESH_BACKHAUL:
-            return (
-                False,
-                f"Invalid mesh-backhaul '{value}'. Must be one of: {', '.join(VALID_BODY_MESH_BACKHAUL)}",
-            )
-
-    # Validate atf-weight if present
-    if "atf-weight" in payload:
-        value = payload.get("atf-weight")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 100:
-                    return (False, "atf-weight must be between 0 and 100")
-            except (ValueError, TypeError):
-                return (False, f"atf-weight must be numeric, got: {value}")
-
-    # Validate max-clients if present
-    if "max-clients" in payload:
-        value = payload.get("max-clients")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "max-clients must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"max-clients must be numeric, got: {value}")
-
-    # Validate max-clients-ap if present
-    if "max-clients-ap" in payload:
-        value = payload.get("max-clients-ap")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "max-clients-ap must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"max-clients-ap must be numeric, got: {value}")
-
-    # Validate ssid if present
-    if "ssid" in payload:
-        value = payload.get("ssid")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "ssid cannot exceed 32 characters")
-
-    # Validate broadcast-ssid if present
+        value = payload["mesh-backhaul"]
+        if value not in VALID_BODY_MESH_BACKHAUL:
+            desc = FIELD_DESCRIPTIONS.get("mesh-backhaul", "")
+            error_msg = f"Invalid value for 'mesh-backhaul': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MESH_BACKHAUL)}"
+            error_msg += f"\n  → Example: mesh-backhaul='{{ VALID_BODY_MESH_BACKHAUL[0] }}'"
+            return (False, error_msg)
     if "broadcast-ssid" in payload:
-        value = payload.get("broadcast-ssid")
-        if value and value not in VALID_BODY_BROADCAST_SSID:
-            return (
-                False,
-                f"Invalid broadcast-ssid '{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_SSID)}",
-            )
-
-    # Validate security if present
+        value = payload["broadcast-ssid"]
+        if value not in VALID_BODY_BROADCAST_SSID:
+            desc = FIELD_DESCRIPTIONS.get("broadcast-ssid", "")
+            error_msg = f"Invalid value for 'broadcast-ssid': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BROADCAST_SSID)}"
+            error_msg += f"\n  → Example: broadcast-ssid='{{ VALID_BODY_BROADCAST_SSID[0] }}'"
+            return (False, error_msg)
     if "security" in payload:
-        value = payload.get("security")
-        if value and value not in VALID_BODY_SECURITY:
-            return (
-                False,
-                f"Invalid security '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY)}",
-            )
-
-    # Validate pmf if present
-    if "pm" in payload:
-        value = payload.get("pm")
-        if value and value not in VALID_BODY_PMF:
-            return (
-                False,
-                f"Invalid pmf '{value}'. Must be one of: {', '.join(VALID_BODY_PMF)}",
-            )
-
-    # Validate pmf-assoc-comeback-timeout if present
-    if "pmf-assoc-comeback-timeout" in payload:
-        value = payload.get("pmf-assoc-comeback-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 20:
-                    return (
-                        False,
-                        "pmf-assoc-comeback-timeout must be between 1 and 20",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pmf-assoc-comeback-timeout must be numeric, got: {value}",
-                )
-
-    # Validate pmf-sa-query-retry-timeout if present
-    if "pmf-sa-query-retry-timeout" in payload:
-        value = payload.get("pmf-sa-query-retry-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 5:
-                    return (
-                        False,
-                        "pmf-sa-query-retry-timeout must be between 1 and 5",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pmf-sa-query-retry-timeout must be numeric, got: {value}",
-                )
-
-    # Validate beacon-protection if present
+        value = payload["security"]
+        if value not in VALID_BODY_SECURITY:
+            desc = FIELD_DESCRIPTIONS.get("security", "")
+            error_msg = f"Invalid value for 'security': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SECURITY)}"
+            error_msg += f"\n  → Example: security='{{ VALID_BODY_SECURITY[0] }}'"
+            return (False, error_msg)
+    if "pmf" in payload:
+        value = payload["pmf"]
+        if value not in VALID_BODY_PMF:
+            desc = FIELD_DESCRIPTIONS.get("pmf", "")
+            error_msg = f"Invalid value for 'pmf': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PMF)}"
+            error_msg += f"\n  → Example: pmf='{{ VALID_BODY_PMF[0] }}'"
+            return (False, error_msg)
     if "beacon-protection" in payload:
-        value = payload.get("beacon-protection")
-        if value and value not in VALID_BODY_BEACON_PROTECTION:
-            return (
-                False,
-                f"Invalid beacon-protection '{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_PROTECTION)}",
-            )
-
-    # Validate okc if present
+        value = payload["beacon-protection"]
+        if value not in VALID_BODY_BEACON_PROTECTION:
+            desc = FIELD_DESCRIPTIONS.get("beacon-protection", "")
+            error_msg = f"Invalid value for 'beacon-protection': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BEACON_PROTECTION)}"
+            error_msg += f"\n  → Example: beacon-protection='{{ VALID_BODY_BEACON_PROTECTION[0] }}'"
+            return (False, error_msg)
     if "okc" in payload:
-        value = payload.get("okc")
-        if value and value not in VALID_BODY_OKC:
-            return (
-                False,
-                f"Invalid okc '{value}'. Must be one of: {', '.join(VALID_BODY_OKC)}",
-            )
-
-    # Validate mbo if present
+        value = payload["okc"]
+        if value not in VALID_BODY_OKC:
+            desc = FIELD_DESCRIPTIONS.get("okc", "")
+            error_msg = f"Invalid value for 'okc': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_OKC)}"
+            error_msg += f"\n  → Example: okc='{{ VALID_BODY_OKC[0] }}'"
+            return (False, error_msg)
     if "mbo" in payload:
-        value = payload.get("mbo")
-        if value and value not in VALID_BODY_MBO:
-            return (
-                False,
-                f"Invalid mbo '{value}'. Must be one of: {', '.join(VALID_BODY_MBO)}",
-            )
-
-    # Validate gas-comeback-delay if present
-    if "gas-comeback-delay" in payload:
-        value = payload.get("gas-comeback-delay")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 100 or int_val > 10000:
-                    return (
-                        False,
-                        "gas-comeback-delay must be between 100 and 10000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-comeback-delay must be numeric, got: {value}",
-                )
-
-    # Validate gas-fragmentation-limit if present
-    if "gas-fragmentation-limit" in payload:
-        value = payload.get("gas-fragmentation-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 512 or int_val > 4096:
-                    return (
-                        False,
-                        "gas-fragmentation-limit must be between 512 and 4096",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-fragmentation-limit must be numeric, got: {value}",
-                )
-
-    # Validate mbo-cell-data-conn-pref if present
-    if "mbo-cell-data-conn-pre" in payload:
-        value = payload.get("mbo-cell-data-conn-pre")
-        if value and value not in VALID_BODY_MBO_CELL_DATA_CONN_PREF:
-            return (
-                False,
-                f"Invalid mbo-cell-data-conn-pref '{value}'. Must be one of: {', '.join(VALID_BODY_MBO_CELL_DATA_CONN_PREF)}",
-            )
-
-    # Validate 80211k if present
+        value = payload["mbo"]
+        if value not in VALID_BODY_MBO:
+            desc = FIELD_DESCRIPTIONS.get("mbo", "")
+            error_msg = f"Invalid value for 'mbo': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MBO)}"
+            error_msg += f"\n  → Example: mbo='{{ VALID_BODY_MBO[0] }}'"
+            return (False, error_msg)
+    if "mbo-cell-data-conn-pref" in payload:
+        value = payload["mbo-cell-data-conn-pref"]
+        if value not in VALID_BODY_MBO_CELL_DATA_CONN_PREF:
+            desc = FIELD_DESCRIPTIONS.get("mbo-cell-data-conn-pref", "")
+            error_msg = f"Invalid value for 'mbo-cell-data-conn-pref': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MBO_CELL_DATA_CONN_PREF)}"
+            error_msg += f"\n  → Example: mbo-cell-data-conn-pref='{{ VALID_BODY_MBO_CELL_DATA_CONN_PREF[0] }}'"
+            return (False, error_msg)
     if "80211k" in payload:
-        value = payload.get("80211k")
-        if value and value not in VALID_BODY_80211K:
-            return (
-                False,
-                f"Invalid 80211k '{value}'. Must be one of: {', '.join(VALID_BODY_80211K)}",
-            )
-
-    # Validate 80211v if present
+        value = payload["80211k"]
+        if value not in VALID_BODY_80211K:
+            desc = FIELD_DESCRIPTIONS.get("80211k", "")
+            error_msg = f"Invalid value for '80211k': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_80211K)}"
+            error_msg += f"\n  → Example: 80211k='{{ VALID_BODY_80211K[0] }}'"
+            return (False, error_msg)
     if "80211v" in payload:
-        value = payload.get("80211v")
-        if value and value not in VALID_BODY_80211V:
-            return (
-                False,
-                f"Invalid 80211v '{value}'. Must be one of: {', '.join(VALID_BODY_80211V)}",
-            )
-
-    # Validate neighbor-report-dual-band if present
+        value = payload["80211v"]
+        if value not in VALID_BODY_80211V:
+            desc = FIELD_DESCRIPTIONS.get("80211v", "")
+            error_msg = f"Invalid value for '80211v': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_80211V)}"
+            error_msg += f"\n  → Example: 80211v='{{ VALID_BODY_80211V[0] }}'"
+            return (False, error_msg)
     if "neighbor-report-dual-band" in payload:
-        value = payload.get("neighbor-report-dual-band")
-        if value and value not in VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND:
-            return (
-                False,
-                f"Invalid neighbor-report-dual-band '{value}'. Must be one of: {', '.join(VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND)}",
-            )
-
-    # Validate fast-bss-transition if present
+        value = payload["neighbor-report-dual-band"]
+        if value not in VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND:
+            desc = FIELD_DESCRIPTIONS.get("neighbor-report-dual-band", "")
+            error_msg = f"Invalid value for 'neighbor-report-dual-band': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND)}"
+            error_msg += f"\n  → Example: neighbor-report-dual-band='{{ VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND[0] }}'"
+            return (False, error_msg)
     if "fast-bss-transition" in payload:
-        value = payload.get("fast-bss-transition")
-        if value and value not in VALID_BODY_FAST_BSS_TRANSITION:
-            return (
-                False,
-                f"Invalid fast-bss-transition '{value}'. Must be one of: {', '.join(VALID_BODY_FAST_BSS_TRANSITION)}",
-            )
-
-    # Validate ft-mobility-domain if present
-    if "ft-mobility-domain" in payload:
-        value = payload.get("ft-mobility-domain")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "ft-mobility-domain must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ft-mobility-domain must be numeric, got: {value}",
-                )
-
-    # Validate ft-r0-key-lifetime if present
-    if "ft-r0-key-lifetime" in payload:
-        value = payload.get("ft-r0-key-lifetime")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "ft-r0-key-lifetime must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ft-r0-key-lifetime must be numeric, got: {value}",
-                )
-
-    # Validate ft-over-ds if present
+        value = payload["fast-bss-transition"]
+        if value not in VALID_BODY_FAST_BSS_TRANSITION:
+            desc = FIELD_DESCRIPTIONS.get("fast-bss-transition", "")
+            error_msg = f"Invalid value for 'fast-bss-transition': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FAST_BSS_TRANSITION)}"
+            error_msg += f"\n  → Example: fast-bss-transition='{{ VALID_BODY_FAST_BSS_TRANSITION[0] }}'"
+            return (False, error_msg)
     if "ft-over-ds" in payload:
-        value = payload.get("ft-over-ds")
-        if value and value not in VALID_BODY_FT_OVER_DS:
-            return (
-                False,
-                f"Invalid ft-over-ds '{value}'. Must be one of: {', '.join(VALID_BODY_FT_OVER_DS)}",
-            )
-
-    # Validate sae-groups if present
+        value = payload["ft-over-ds"]
+        if value not in VALID_BODY_FT_OVER_DS:
+            desc = FIELD_DESCRIPTIONS.get("ft-over-ds", "")
+            error_msg = f"Invalid value for 'ft-over-ds': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_FT_OVER_DS)}"
+            error_msg += f"\n  → Example: ft-over-ds='{{ VALID_BODY_FT_OVER_DS[0] }}'"
+            return (False, error_msg)
     if "sae-groups" in payload:
-        value = payload.get("sae-groups")
-        if value and value not in VALID_BODY_SAE_GROUPS:
-            return (
-                False,
-                f"Invalid sae-groups '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_GROUPS)}",
-            )
-
-    # Validate owe-groups if present
+        value = payload["sae-groups"]
+        if value not in VALID_BODY_SAE_GROUPS:
+            desc = FIELD_DESCRIPTIONS.get("sae-groups", "")
+            error_msg = f"Invalid value for 'sae-groups': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SAE_GROUPS)}"
+            error_msg += f"\n  → Example: sae-groups='{{ VALID_BODY_SAE_GROUPS[0] }}'"
+            return (False, error_msg)
     if "owe-groups" in payload:
-        value = payload.get("owe-groups")
-        if value and value not in VALID_BODY_OWE_GROUPS:
-            return (
-                False,
-                f"Invalid owe-groups '{value}'. Must be one of: {', '.join(VALID_BODY_OWE_GROUPS)}",
-            )
-
-    # Validate owe-transition if present
+        value = payload["owe-groups"]
+        if value not in VALID_BODY_OWE_GROUPS:
+            desc = FIELD_DESCRIPTIONS.get("owe-groups", "")
+            error_msg = f"Invalid value for 'owe-groups': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_OWE_GROUPS)}"
+            error_msg += f"\n  → Example: owe-groups='{{ VALID_BODY_OWE_GROUPS[0] }}'"
+            return (False, error_msg)
     if "owe-transition" in payload:
-        value = payload.get("owe-transition")
-        if value and value not in VALID_BODY_OWE_TRANSITION:
-            return (
-                False,
-                f"Invalid owe-transition '{value}'. Must be one of: {', '.join(VALID_BODY_OWE_TRANSITION)}",
-            )
-
-    # Validate owe-transition-ssid if present
-    if "owe-transition-ssid" in payload:
-        value = payload.get("owe-transition-ssid")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "owe-transition-ssid cannot exceed 32 characters")
-
-    # Validate additional-akms if present
+        value = payload["owe-transition"]
+        if value not in VALID_BODY_OWE_TRANSITION:
+            desc = FIELD_DESCRIPTIONS.get("owe-transition", "")
+            error_msg = f"Invalid value for 'owe-transition': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_OWE_TRANSITION)}"
+            error_msg += f"\n  → Example: owe-transition='{{ VALID_BODY_OWE_TRANSITION[0] }}'"
+            return (False, error_msg)
     if "additional-akms" in payload:
-        value = payload.get("additional-akms")
-        if value and value not in VALID_BODY_ADDITIONAL_AKMS:
-            return (
-                False,
-                f"Invalid additional-akms '{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_AKMS)}",
-            )
-
-    # Validate eapol-key-retries if present
+        value = payload["additional-akms"]
+        if value not in VALID_BODY_ADDITIONAL_AKMS:
+            desc = FIELD_DESCRIPTIONS.get("additional-akms", "")
+            error_msg = f"Invalid value for 'additional-akms': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADDITIONAL_AKMS)}"
+            error_msg += f"\n  → Example: additional-akms='{{ VALID_BODY_ADDITIONAL_AKMS[0] }}'"
+            return (False, error_msg)
     if "eapol-key-retries" in payload:
-        value = payload.get("eapol-key-retries")
-        if value and value not in VALID_BODY_EAPOL_KEY_RETRIES:
-            return (
-                False,
-                f"Invalid eapol-key-retries '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_KEY_RETRIES)}",
-            )
-
-    # Validate tkip-counter-measure if present
+        value = payload["eapol-key-retries"]
+        if value not in VALID_BODY_EAPOL_KEY_RETRIES:
+            desc = FIELD_DESCRIPTIONS.get("eapol-key-retries", "")
+            error_msg = f"Invalid value for 'eapol-key-retries': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAPOL_KEY_RETRIES)}"
+            error_msg += f"\n  → Example: eapol-key-retries='{{ VALID_BODY_EAPOL_KEY_RETRIES[0] }}'"
+            return (False, error_msg)
     if "tkip-counter-measure" in payload:
-        value = payload.get("tkip-counter-measure")
-        if value and value not in VALID_BODY_TKIP_COUNTER_MEASURE:
-            return (
-                False,
-                f"Invalid tkip-counter-measure '{value}'. Must be one of: {', '.join(VALID_BODY_TKIP_COUNTER_MEASURE)}",
-            )
-
-    # Validate external-web if present
-    if "external-web" in payload:
-        value = payload.get("external-web")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "external-web cannot exceed 1023 characters")
-
-    # Validate external-web-format if present
+        value = payload["tkip-counter-measure"]
+        if value not in VALID_BODY_TKIP_COUNTER_MEASURE:
+            desc = FIELD_DESCRIPTIONS.get("tkip-counter-measure", "")
+            error_msg = f"Invalid value for 'tkip-counter-measure': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TKIP_COUNTER_MEASURE)}"
+            error_msg += f"\n  → Example: tkip-counter-measure='{{ VALID_BODY_TKIP_COUNTER_MEASURE[0] }}'"
+            return (False, error_msg)
     if "external-web-format" in payload:
-        value = payload.get("external-web-format")
-        if value and value not in VALID_BODY_EXTERNAL_WEB_FORMAT:
-            return (
-                False,
-                f"Invalid external-web-format '{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL_WEB_FORMAT)}",
-            )
-
-    # Validate external-logout if present
-    if "external-logout" in payload:
-        value = payload.get("external-logout")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "external-logout cannot exceed 127 characters")
-
-    # Validate mac-username-delimiter if present
+        value = payload["external-web-format"]
+        if value not in VALID_BODY_EXTERNAL_WEB_FORMAT:
+            desc = FIELD_DESCRIPTIONS.get("external-web-format", "")
+            error_msg = f"Invalid value for 'external-web-format': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EXTERNAL_WEB_FORMAT)}"
+            error_msg += f"\n  → Example: external-web-format='{{ VALID_BODY_EXTERNAL_WEB_FORMAT[0] }}'"
+            return (False, error_msg)
     if "mac-username-delimiter" in payload:
-        value = payload.get("mac-username-delimiter")
-        if value and value not in VALID_BODY_MAC_USERNAME_DELIMITER:
-            return (
-                False,
-                f"Invalid mac-username-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_USERNAME_DELIMITER)}",
-            )
-
-    # Validate mac-password-delimiter if present
+        value = payload["mac-username-delimiter"]
+        if value not in VALID_BODY_MAC_USERNAME_DELIMITER:
+            desc = FIELD_DESCRIPTIONS.get("mac-username-delimiter", "")
+            error_msg = f"Invalid value for 'mac-username-delimiter': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MAC_USERNAME_DELIMITER)}"
+            error_msg += f"\n  → Example: mac-username-delimiter='{{ VALID_BODY_MAC_USERNAME_DELIMITER[0] }}'"
+            return (False, error_msg)
     if "mac-password-delimiter" in payload:
-        value = payload.get("mac-password-delimiter")
-        if value and value not in VALID_BODY_MAC_PASSWORD_DELIMITER:
-            return (
-                False,
-                f"Invalid mac-password-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_PASSWORD_DELIMITER)}",
-            )
-
-    # Validate mac-calling-station-delimiter if present
+        value = payload["mac-password-delimiter"]
+        if value not in VALID_BODY_MAC_PASSWORD_DELIMITER:
+            desc = FIELD_DESCRIPTIONS.get("mac-password-delimiter", "")
+            error_msg = f"Invalid value for 'mac-password-delimiter': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MAC_PASSWORD_DELIMITER)}"
+            error_msg += f"\n  → Example: mac-password-delimiter='{{ VALID_BODY_MAC_PASSWORD_DELIMITER[0] }}'"
+            return (False, error_msg)
     if "mac-calling-station-delimiter" in payload:
-        value = payload.get("mac-calling-station-delimiter")
-        if value and value not in VALID_BODY_MAC_CALLING_STATION_DELIMITER:
-            return (
-                False,
-                f"Invalid mac-calling-station-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CALLING_STATION_DELIMITER)}",
-            )
-
-    # Validate mac-called-station-delimiter if present
+        value = payload["mac-calling-station-delimiter"]
+        if value not in VALID_BODY_MAC_CALLING_STATION_DELIMITER:
+            desc = FIELD_DESCRIPTIONS.get("mac-calling-station-delimiter", "")
+            error_msg = f"Invalid value for 'mac-calling-station-delimiter': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MAC_CALLING_STATION_DELIMITER)}"
+            error_msg += f"\n  → Example: mac-calling-station-delimiter='{{ VALID_BODY_MAC_CALLING_STATION_DELIMITER[0] }}'"
+            return (False, error_msg)
     if "mac-called-station-delimiter" in payload:
-        value = payload.get("mac-called-station-delimiter")
-        if value and value not in VALID_BODY_MAC_CALLED_STATION_DELIMITER:
-            return (
-                False,
-                f"Invalid mac-called-station-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CALLED_STATION_DELIMITER)}",
-            )
-
-    # Validate mac-case if present
+        value = payload["mac-called-station-delimiter"]
+        if value not in VALID_BODY_MAC_CALLED_STATION_DELIMITER:
+            desc = FIELD_DESCRIPTIONS.get("mac-called-station-delimiter", "")
+            error_msg = f"Invalid value for 'mac-called-station-delimiter': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MAC_CALLED_STATION_DELIMITER)}"
+            error_msg += f"\n  → Example: mac-called-station-delimiter='{{ VALID_BODY_MAC_CALLED_STATION_DELIMITER[0] }}'"
+            return (False, error_msg)
     if "mac-case" in payload:
-        value = payload.get("mac-case")
-        if value and value not in VALID_BODY_MAC_CASE:
-            return (
-                False,
-                f"Invalid mac-case '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CASE)}",
-            )
-
-    # Validate called-station-id-type if present
+        value = payload["mac-case"]
+        if value not in VALID_BODY_MAC_CASE:
+            desc = FIELD_DESCRIPTIONS.get("mac-case", "")
+            error_msg = f"Invalid value for 'mac-case': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MAC_CASE)}"
+            error_msg += f"\n  → Example: mac-case='{{ VALID_BODY_MAC_CASE[0] }}'"
+            return (False, error_msg)
     if "called-station-id-type" in payload:
-        value = payload.get("called-station-id-type")
-        if value and value not in VALID_BODY_CALLED_STATION_ID_TYPE:
-            return (
-                False,
-                f"Invalid called-station-id-type '{value}'. Must be one of: {', '.join(VALID_BODY_CALLED_STATION_ID_TYPE)}",
-            )
-
-    # Validate mac-auth-bypass if present
+        value = payload["called-station-id-type"]
+        if value not in VALID_BODY_CALLED_STATION_ID_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("called-station-id-type", "")
+            error_msg = f"Invalid value for 'called-station-id-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CALLED_STATION_ID_TYPE)}"
+            error_msg += f"\n  → Example: called-station-id-type='{{ VALID_BODY_CALLED_STATION_ID_TYPE[0] }}'"
+            return (False, error_msg)
     if "mac-auth-bypass" in payload:
-        value = payload.get("mac-auth-bypass")
-        if value and value not in VALID_BODY_MAC_AUTH_BYPASS:
-            return (
-                False,
-                f"Invalid mac-auth-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_AUTH_BYPASS)}",
-            )
-
-    # Validate radius-mac-auth if present
+        value = payload["mac-auth-bypass"]
+        if value not in VALID_BODY_MAC_AUTH_BYPASS:
+            desc = FIELD_DESCRIPTIONS.get("mac-auth-bypass", "")
+            error_msg = f"Invalid value for 'mac-auth-bypass': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MAC_AUTH_BYPASS)}"
+            error_msg += f"\n  → Example: mac-auth-bypass='{{ VALID_BODY_MAC_AUTH_BYPASS[0] }}'"
+            return (False, error_msg)
     if "radius-mac-auth" in payload:
-        value = payload.get("radius-mac-auth")
-        if value and value not in VALID_BODY_RADIUS_MAC_AUTH:
-            return (
-                False,
-                f"Invalid radius-mac-auth '{value}'. Must be one of: {', '.join(VALID_BODY_RADIUS_MAC_AUTH)}",
-            )
-
-    # Validate radius-mac-auth-server if present
-    if "radius-mac-auth-server" in payload:
-        value = payload.get("radius-mac-auth-server")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "radius-mac-auth-server cannot exceed 35 characters",
-            )
-
-    # Validate radius-mac-auth-block-interval if present
-    if "radius-mac-auth-block-interval" in payload:
-        value = payload.get("radius-mac-auth-block-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 864000:
-                    return (
-                        False,
-                        "radius-mac-auth-block-interval must be between 30 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"radius-mac-auth-block-interval must be numeric, got: {value}",
-                )
-
-    # Validate radius-mac-mpsk-auth if present
+        value = payload["radius-mac-auth"]
+        if value not in VALID_BODY_RADIUS_MAC_AUTH:
+            desc = FIELD_DESCRIPTIONS.get("radius-mac-auth", "")
+            error_msg = f"Invalid value for 'radius-mac-auth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RADIUS_MAC_AUTH)}"
+            error_msg += f"\n  → Example: radius-mac-auth='{{ VALID_BODY_RADIUS_MAC_AUTH[0] }}'"
+            return (False, error_msg)
     if "radius-mac-mpsk-auth" in payload:
-        value = payload.get("radius-mac-mpsk-auth")
-        if value and value not in VALID_BODY_RADIUS_MAC_MPSK_AUTH:
-            return (
-                False,
-                f"Invalid radius-mac-mpsk-auth '{value}'. Must be one of: {', '.join(VALID_BODY_RADIUS_MAC_MPSK_AUTH)}",
-            )
-
-    # Validate radius-mac-mpsk-timeout if present
-    if "radius-mac-mpsk-timeout" in payload:
-        value = payload.get("radius-mac-mpsk-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 864000:
-                    return (
-                        False,
-                        "radius-mac-mpsk-timeout must be between 300 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"radius-mac-mpsk-timeout must be numeric, got: {value}",
-                )
-
-    # Validate auth if present
+        value = payload["radius-mac-mpsk-auth"]
+        if value not in VALID_BODY_RADIUS_MAC_MPSK_AUTH:
+            desc = FIELD_DESCRIPTIONS.get("radius-mac-mpsk-auth", "")
+            error_msg = f"Invalid value for 'radius-mac-mpsk-auth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RADIUS_MAC_MPSK_AUTH)}"
+            error_msg += f"\n  → Example: radius-mac-mpsk-auth='{{ VALID_BODY_RADIUS_MAC_MPSK_AUTH[0] }}'"
+            return (False, error_msg)
     if "auth" in payload:
-        value = payload.get("auth")
-        if value and value not in VALID_BODY_AUTH:
-            return (
-                False,
-                f"Invalid auth '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH)}",
-            )
-
-    # Validate encrypt if present
+        value = payload["auth"]
+        if value not in VALID_BODY_AUTH:
+            desc = FIELD_DESCRIPTIONS.get("auth", "")
+            error_msg = f"Invalid value for 'auth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AUTH)}"
+            error_msg += f"\n  → Example: auth='{{ VALID_BODY_AUTH[0] }}'"
+            return (False, error_msg)
     if "encrypt" in payload:
-        value = payload.get("encrypt")
-        if value and value not in VALID_BODY_ENCRYPT:
-            return (
-                False,
-                f"Invalid encrypt '{value}'. Must be one of: {', '.join(VALID_BODY_ENCRYPT)}",
-            )
-
-    # Validate keyindex if present
-    if "keyindex" in payload:
-        value = payload.get("keyindex")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 4:
-                    return (False, "keyindex must be between 1 and 4")
-            except (ValueError, TypeError):
-                return (False, f"keyindex must be numeric, got: {value}")
-
-    # Validate sae-h2e-only if present
+        value = payload["encrypt"]
+        if value not in VALID_BODY_ENCRYPT:
+            desc = FIELD_DESCRIPTIONS.get("encrypt", "")
+            error_msg = f"Invalid value for 'encrypt': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ENCRYPT)}"
+            error_msg += f"\n  → Example: encrypt='{{ VALID_BODY_ENCRYPT[0] }}'"
+            return (False, error_msg)
     if "sae-h2e-only" in payload:
-        value = payload.get("sae-h2e-only")
-        if value and value not in VALID_BODY_SAE_H2E_ONLY:
-            return (
-                False,
-                f"Invalid sae-h2e-only '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_H2E_ONLY)}",
-            )
-
-    # Validate sae-hnp-only if present
+        value = payload["sae-h2e-only"]
+        if value not in VALID_BODY_SAE_H2E_ONLY:
+            desc = FIELD_DESCRIPTIONS.get("sae-h2e-only", "")
+            error_msg = f"Invalid value for 'sae-h2e-only': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SAE_H2E_ONLY)}"
+            error_msg += f"\n  → Example: sae-h2e-only='{{ VALID_BODY_SAE_H2E_ONLY[0] }}'"
+            return (False, error_msg)
     if "sae-hnp-only" in payload:
-        value = payload.get("sae-hnp-only")
-        if value and value not in VALID_BODY_SAE_HNP_ONLY:
-            return (
-                False,
-                f"Invalid sae-hnp-only '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_HNP_ONLY)}",
-            )
-
-    # Validate sae-pk if present
+        value = payload["sae-hnp-only"]
+        if value not in VALID_BODY_SAE_HNP_ONLY:
+            desc = FIELD_DESCRIPTIONS.get("sae-hnp-only", "")
+            error_msg = f"Invalid value for 'sae-hnp-only': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SAE_HNP_ONLY)}"
+            error_msg += f"\n  → Example: sae-hnp-only='{{ VALID_BODY_SAE_HNP_ONLY[0] }}'"
+            return (False, error_msg)
     if "sae-pk" in payload:
-        value = payload.get("sae-pk")
-        if value and value not in VALID_BODY_SAE_PK:
-            return (
-                False,
-                f"Invalid sae-pk '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_PK)}",
-            )
-
-    # Validate sae-private-key if present
-    if "sae-private-key" in payload:
-        value = payload.get("sae-private-key")
-        if value and isinstance(value, str) and len(value) > 359:
-            return (False, "sae-private-key cannot exceed 359 characters")
-
-    # Validate akm24-only if present
+        value = payload["sae-pk"]
+        if value not in VALID_BODY_SAE_PK:
+            desc = FIELD_DESCRIPTIONS.get("sae-pk", "")
+            error_msg = f"Invalid value for 'sae-pk': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SAE_PK)}"
+            error_msg += f"\n  → Example: sae-pk='{{ VALID_BODY_SAE_PK[0] }}'"
+            return (False, error_msg)
     if "akm24-only" in payload:
-        value = payload.get("akm24-only")
-        if value and value not in VALID_BODY_AKM24_ONLY:
-            return (
-                False,
-                f"Invalid akm24-only '{value}'. Must be one of: {', '.join(VALID_BODY_AKM24_ONLY)}",
-            )
-
-    # Validate radius-server if present
-    if "radius-server" in payload:
-        value = payload.get("radius-server")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "radius-server cannot exceed 35 characters")
-
-    # Validate nas-filter-rule if present
+        value = payload["akm24-only"]
+        if value not in VALID_BODY_AKM24_ONLY:
+            desc = FIELD_DESCRIPTIONS.get("akm24-only", "")
+            error_msg = f"Invalid value for 'akm24-only': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_AKM24_ONLY)}"
+            error_msg += f"\n  → Example: akm24-only='{{ VALID_BODY_AKM24_ONLY[0] }}'"
+            return (False, error_msg)
     if "nas-filter-rule" in payload:
-        value = payload.get("nas-filter-rule")
-        if value and value not in VALID_BODY_NAS_FILTER_RULE:
-            return (
-                False,
-                f"Invalid nas-filter-rule '{value}'. Must be one of: {', '.join(VALID_BODY_NAS_FILTER_RULE)}",
-            )
-
-    # Validate domain-name-stripping if present
+        value = payload["nas-filter-rule"]
+        if value not in VALID_BODY_NAS_FILTER_RULE:
+            desc = FIELD_DESCRIPTIONS.get("nas-filter-rule", "")
+            error_msg = f"Invalid value for 'nas-filter-rule': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NAS_FILTER_RULE)}"
+            error_msg += f"\n  → Example: nas-filter-rule='{{ VALID_BODY_NAS_FILTER_RULE[0] }}'"
+            return (False, error_msg)
     if "domain-name-stripping" in payload:
-        value = payload.get("domain-name-stripping")
-        if value and value not in VALID_BODY_DOMAIN_NAME_STRIPPING:
-            return (
-                False,
-                f"Invalid domain-name-stripping '{value}'. Must be one of: {', '.join(VALID_BODY_DOMAIN_NAME_STRIPPING)}",
-            )
-
-    # Validate mlo if present
-    if "mlo" in payload:
-        value = payload.get("mlo")
-        if value and value not in VALID_BODY_MLO:
-            return (
-                False,
-                f"Invalid mlo '{value}'. Must be one of: {', '.join(VALID_BODY_MLO)}",
-            )
-
-    # Validate local-standalone if present
+        value = payload["domain-name-stripping"]
+        if value not in VALID_BODY_DOMAIN_NAME_STRIPPING:
+            desc = FIELD_DESCRIPTIONS.get("domain-name-stripping", "")
+            error_msg = f"Invalid value for 'domain-name-stripping': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DOMAIN_NAME_STRIPPING)}"
+            error_msg += f"\n  → Example: domain-name-stripping='{{ VALID_BODY_DOMAIN_NAME_STRIPPING[0] }}'"
+            return (False, error_msg)
     if "local-standalone" in payload:
-        value = payload.get("local-standalone")
-        if value and value not in VALID_BODY_LOCAL_STANDALONE:
-            return (
-                False,
-                f"Invalid local-standalone '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE)}",
-            )
-
-    # Validate local-standalone-nat if present
+        value = payload["local-standalone"]
+        if value not in VALID_BODY_LOCAL_STANDALONE:
+            desc = FIELD_DESCRIPTIONS.get("local-standalone", "")
+            error_msg = f"Invalid value for 'local-standalone': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOCAL_STANDALONE)}"
+            error_msg += f"\n  → Example: local-standalone='{{ VALID_BODY_LOCAL_STANDALONE[0] }}'"
+            return (False, error_msg)
     if "local-standalone-nat" in payload:
-        value = payload.get("local-standalone-nat")
-        if value and value not in VALID_BODY_LOCAL_STANDALONE_NAT:
-            return (
-                False,
-                f"Invalid local-standalone-nat '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE_NAT)}",
-            )
-
-    # Validate dhcp-lease-time if present
-    if "dhcp-lease-time" in payload:
-        value = payload.get("dhcp-lease-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 8640000:
-                    return (
-                        False,
-                        "dhcp-lease-time must be between 300 and 8640000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dhcp-lease-time must be numeric, got: {value}",
-                )
-
-    # Validate local-standalone-dns if present
+        value = payload["local-standalone-nat"]
+        if value not in VALID_BODY_LOCAL_STANDALONE_NAT:
+            desc = FIELD_DESCRIPTIONS.get("local-standalone-nat", "")
+            error_msg = f"Invalid value for 'local-standalone-nat': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOCAL_STANDALONE_NAT)}"
+            error_msg += f"\n  → Example: local-standalone-nat='{{ VALID_BODY_LOCAL_STANDALONE_NAT[0] }}'"
+            return (False, error_msg)
     if "local-standalone-dns" in payload:
-        value = payload.get("local-standalone-dns")
-        if value and value not in VALID_BODY_LOCAL_STANDALONE_DNS:
-            return (
-                False,
-                f"Invalid local-standalone-dns '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE_DNS)}",
-            )
-
-    # Validate local-lan-partition if present
+        value = payload["local-standalone-dns"]
+        if value not in VALID_BODY_LOCAL_STANDALONE_DNS:
+            desc = FIELD_DESCRIPTIONS.get("local-standalone-dns", "")
+            error_msg = f"Invalid value for 'local-standalone-dns': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOCAL_STANDALONE_DNS)}"
+            error_msg += f"\n  → Example: local-standalone-dns='{{ VALID_BODY_LOCAL_STANDALONE_DNS[0] }}'"
+            return (False, error_msg)
     if "local-lan-partition" in payload:
-        value = payload.get("local-lan-partition")
-        if value and value not in VALID_BODY_LOCAL_LAN_PARTITION:
-            return (
-                False,
-                f"Invalid local-lan-partition '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_LAN_PARTITION)}",
-            )
-
-    # Validate local-bridging if present
+        value = payload["local-lan-partition"]
+        if value not in VALID_BODY_LOCAL_LAN_PARTITION:
+            desc = FIELD_DESCRIPTIONS.get("local-lan-partition", "")
+            error_msg = f"Invalid value for 'local-lan-partition': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOCAL_LAN_PARTITION)}"
+            error_msg += f"\n  → Example: local-lan-partition='{{ VALID_BODY_LOCAL_LAN_PARTITION[0] }}'"
+            return (False, error_msg)
     if "local-bridging" in payload:
-        value = payload.get("local-bridging")
-        if value and value not in VALID_BODY_LOCAL_BRIDGING:
-            return (
-                False,
-                f"Invalid local-bridging '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_BRIDGING)}",
-            )
-
-    # Validate local-lan if present
+        value = payload["local-bridging"]
+        if value not in VALID_BODY_LOCAL_BRIDGING:
+            desc = FIELD_DESCRIPTIONS.get("local-bridging", "")
+            error_msg = f"Invalid value for 'local-bridging': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOCAL_BRIDGING)}"
+            error_msg += f"\n  → Example: local-bridging='{{ VALID_BODY_LOCAL_BRIDGING[0] }}'"
+            return (False, error_msg)
     if "local-lan" in payload:
-        value = payload.get("local-lan")
-        if value and value not in VALID_BODY_LOCAL_LAN:
-            return (
-                False,
-                f"Invalid local-lan '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_LAN)}",
-            )
-
-    # Validate local-authentication if present
+        value = payload["local-lan"]
+        if value not in VALID_BODY_LOCAL_LAN:
+            desc = FIELD_DESCRIPTIONS.get("local-lan", "")
+            error_msg = f"Invalid value for 'local-lan': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOCAL_LAN)}"
+            error_msg += f"\n  → Example: local-lan='{{ VALID_BODY_LOCAL_LAN[0] }}'"
+            return (False, error_msg)
     if "local-authentication" in payload:
-        value = payload.get("local-authentication")
-        if value and value not in VALID_BODY_LOCAL_AUTHENTICATION:
-            return (
-                False,
-                f"Invalid local-authentication '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_AUTHENTICATION)}",
-            )
-
-    # Validate captive-portal if present
+        value = payload["local-authentication"]
+        if value not in VALID_BODY_LOCAL_AUTHENTICATION:
+            desc = FIELD_DESCRIPTIONS.get("local-authentication", "")
+            error_msg = f"Invalid value for 'local-authentication': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOCAL_AUTHENTICATION)}"
+            error_msg += f"\n  → Example: local-authentication='{{ VALID_BODY_LOCAL_AUTHENTICATION[0] }}'"
+            return (False, error_msg)
     if "captive-portal" in payload:
-        value = payload.get("captive-portal")
-        if value and value not in VALID_BODY_CAPTIVE_PORTAL:
-            return (
-                False,
-                f"Invalid captive-portal '{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_PORTAL)}",
-            )
-
-    # Validate captive-network-assistant-bypass if present
+        value = payload["captive-portal"]
+        if value not in VALID_BODY_CAPTIVE_PORTAL:
+            desc = FIELD_DESCRIPTIONS.get("captive-portal", "")
+            error_msg = f"Invalid value for 'captive-portal': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CAPTIVE_PORTAL)}"
+            error_msg += f"\n  → Example: captive-portal='{{ VALID_BODY_CAPTIVE_PORTAL[0] }}'"
+            return (False, error_msg)
     if "captive-network-assistant-bypass" in payload:
-        value = payload.get("captive-network-assistant-bypass")
-        if value and value not in VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS:
-            return (
-                False,
-                f"Invalid captive-network-assistant-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS)}",
-            )
-
-    # Validate portal-message-override-group if present
-    if "portal-message-override-group" in payload:
-        value = payload.get("portal-message-override-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "portal-message-override-group cannot exceed 35 characters",
-            )
-
-    # Validate portal-type if present
+        value = payload["captive-network-assistant-bypass"]
+        if value not in VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS:
+            desc = FIELD_DESCRIPTIONS.get("captive-network-assistant-bypass", "")
+            error_msg = f"Invalid value for 'captive-network-assistant-bypass': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS)}"
+            error_msg += f"\n  → Example: captive-network-assistant-bypass='{{ VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS[0] }}'"
+            return (False, error_msg)
     if "portal-type" in payload:
-        value = payload.get("portal-type")
-        if value and value not in VALID_BODY_PORTAL_TYPE:
-            return (
-                False,
-                f"Invalid portal-type '{value}'. Must be one of: {', '.join(VALID_BODY_PORTAL_TYPE)}",
-            )
-
-    # Validate security-exempt-list if present
-    if "security-exempt-list" in payload:
-        value = payload.get("security-exempt-list")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "security-exempt-list cannot exceed 35 characters")
-
-    # Validate security-redirect-url if present
-    if "security-redirect-url" in payload:
-        value = payload.get("security-redirect-url")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (
-                False,
-                "security-redirect-url cannot exceed 1023 characters",
-            )
-
-    # Validate auth-cert if present
-    if "auth-cert" in payload:
-        value = payload.get("auth-cert")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "auth-cert cannot exceed 35 characters")
-
-    # Validate auth-portal-addr if present
-    if "auth-portal-addr" in payload:
-        value = payload.get("auth-portal-addr")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "auth-portal-addr cannot exceed 63 characters")
-
-    # Validate intra-vap-privacy if present
+        value = payload["portal-type"]
+        if value not in VALID_BODY_PORTAL_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("portal-type", "")
+            error_msg = f"Invalid value for 'portal-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PORTAL_TYPE)}"
+            error_msg += f"\n  → Example: portal-type='{{ VALID_BODY_PORTAL_TYPE[0] }}'"
+            return (False, error_msg)
     if "intra-vap-privacy" in payload:
-        value = payload.get("intra-vap-privacy")
-        if value and value not in VALID_BODY_INTRA_VAP_PRIVACY:
-            return (
-                False,
-                f"Invalid intra-vap-privacy '{value}'. Must be one of: {', '.join(VALID_BODY_INTRA_VAP_PRIVACY)}",
-            )
-
-    # Validate ldpc if present
+        value = payload["intra-vap-privacy"]
+        if value not in VALID_BODY_INTRA_VAP_PRIVACY:
+            desc = FIELD_DESCRIPTIONS.get("intra-vap-privacy", "")
+            error_msg = f"Invalid value for 'intra-vap-privacy': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_INTRA_VAP_PRIVACY)}"
+            error_msg += f"\n  → Example: intra-vap-privacy='{{ VALID_BODY_INTRA_VAP_PRIVACY[0] }}'"
+            return (False, error_msg)
     if "ldpc" in payload:
-        value = payload.get("ldpc")
-        if value and value not in VALID_BODY_LDPC:
-            return (
-                False,
-                f"Invalid ldpc '{value}'. Must be one of: {', '.join(VALID_BODY_LDPC)}",
-            )
-
-    # Validate high-efficiency if present
+        value = payload["ldpc"]
+        if value not in VALID_BODY_LDPC:
+            desc = FIELD_DESCRIPTIONS.get("ldpc", "")
+            error_msg = f"Invalid value for 'ldpc': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LDPC)}"
+            error_msg += f"\n  → Example: ldpc='{{ VALID_BODY_LDPC[0] }}'"
+            return (False, error_msg)
     if "high-efficiency" in payload:
-        value = payload.get("high-efficiency")
-        if value and value not in VALID_BODY_HIGH_EFFICIENCY:
-            return (
-                False,
-                f"Invalid high-efficiency '{value}'. Must be one of: {', '.join(VALID_BODY_HIGH_EFFICIENCY)}",
-            )
-
-    # Validate target-wake-time if present
+        value = payload["high-efficiency"]
+        if value not in VALID_BODY_HIGH_EFFICIENCY:
+            desc = FIELD_DESCRIPTIONS.get("high-efficiency", "")
+            error_msg = f"Invalid value for 'high-efficiency': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HIGH_EFFICIENCY)}"
+            error_msg += f"\n  → Example: high-efficiency='{{ VALID_BODY_HIGH_EFFICIENCY[0] }}'"
+            return (False, error_msg)
     if "target-wake-time" in payload:
-        value = payload.get("target-wake-time")
-        if value and value not in VALID_BODY_TARGET_WAKE_TIME:
-            return (
-                False,
-                f"Invalid target-wake-time '{value}'. Must be one of: {', '.join(VALID_BODY_TARGET_WAKE_TIME)}",
-            )
-
-    # Validate port-macauth if present
+        value = payload["target-wake-time"]
+        if value not in VALID_BODY_TARGET_WAKE_TIME:
+            desc = FIELD_DESCRIPTIONS.get("target-wake-time", "")
+            error_msg = f"Invalid value for 'target-wake-time': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TARGET_WAKE_TIME)}"
+            error_msg += f"\n  → Example: target-wake-time='{{ VALID_BODY_TARGET_WAKE_TIME[0] }}'"
+            return (False, error_msg)
     if "port-macauth" in payload:
-        value = payload.get("port-macauth")
-        if value and value not in VALID_BODY_PORT_MACAUTH:
-            return (
-                False,
-                f"Invalid port-macauth '{value}'. Must be one of: {', '.join(VALID_BODY_PORT_MACAUTH)}",
-            )
-
-    # Validate port-macauth-timeout if present
-    if "port-macauth-timeout" in payload:
-        value = payload.get("port-macauth-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 60 or int_val > 65535:
-                    return (
-                        False,
-                        "port-macauth-timeout must be between 60 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"port-macauth-timeout must be numeric, got: {value}",
-                )
-
-    # Validate port-macauth-reauth-timeout if present
-    if "port-macauth-reauth-timeout" in payload:
-        value = payload.get("port-macauth-reauth-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 120 or int_val > 65535:
-                    return (
-                        False,
-                        "port-macauth-reauth-timeout must be between 120 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"port-macauth-reauth-timeout must be numeric, got: {value}",
-                )
-
-    # Validate bss-color-partial if present
+        value = payload["port-macauth"]
+        if value not in VALID_BODY_PORT_MACAUTH:
+            desc = FIELD_DESCRIPTIONS.get("port-macauth", "")
+            error_msg = f"Invalid value for 'port-macauth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PORT_MACAUTH)}"
+            error_msg += f"\n  → Example: port-macauth='{{ VALID_BODY_PORT_MACAUTH[0] }}'"
+            return (False, error_msg)
     if "bss-color-partial" in payload:
-        value = payload.get("bss-color-partial")
-        if value and value not in VALID_BODY_BSS_COLOR_PARTIAL:
-            return (
-                False,
-                f"Invalid bss-color-partial '{value}'. Must be one of: {', '.join(VALID_BODY_BSS_COLOR_PARTIAL)}",
-            )
-
-    # Validate mpsk-profile if present
-    if "mpsk-profile" in payload:
-        value = payload.get("mpsk-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "mpsk-profile cannot exceed 35 characters")
-
-    # Validate split-tunneling if present
+        value = payload["bss-color-partial"]
+        if value not in VALID_BODY_BSS_COLOR_PARTIAL:
+            desc = FIELD_DESCRIPTIONS.get("bss-color-partial", "")
+            error_msg = f"Invalid value for 'bss-color-partial': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BSS_COLOR_PARTIAL)}"
+            error_msg += f"\n  → Example: bss-color-partial='{{ VALID_BODY_BSS_COLOR_PARTIAL[0] }}'"
+            return (False, error_msg)
     if "split-tunneling" in payload:
-        value = payload.get("split-tunneling")
-        if value and value not in VALID_BODY_SPLIT_TUNNELING:
-            return (
-                False,
-                f"Invalid split-tunneling '{value}'. Must be one of: {', '.join(VALID_BODY_SPLIT_TUNNELING)}",
-            )
-
-    # Validate nac if present
+        value = payload["split-tunneling"]
+        if value not in VALID_BODY_SPLIT_TUNNELING:
+            desc = FIELD_DESCRIPTIONS.get("split-tunneling", "")
+            error_msg = f"Invalid value for 'split-tunneling': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SPLIT_TUNNELING)}"
+            error_msg += f"\n  → Example: split-tunneling='{{ VALID_BODY_SPLIT_TUNNELING[0] }}'"
+            return (False, error_msg)
     if "nac" in payload:
-        value = payload.get("nac")
-        if value and value not in VALID_BODY_NAC:
-            return (
-                False,
-                f"Invalid nac '{value}'. Must be one of: {', '.join(VALID_BODY_NAC)}",
-            )
-
-    # Validate nac-profile if present
-    if "nac-profile" in payload:
-        value = payload.get("nac-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "nac-profile cannot exceed 35 characters")
-
-    # Validate vlanid if present
-    if "vlanid" in payload:
-        value = payload.get("vlanid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4094:
-                    return (False, "vlanid must be between 0 and 4094")
-            except (ValueError, TypeError):
-                return (False, f"vlanid must be numeric, got: {value}")
-
-    # Validate vlan-auto if present
+        value = payload["nac"]
+        if value not in VALID_BODY_NAC:
+            desc = FIELD_DESCRIPTIONS.get("nac", "")
+            error_msg = f"Invalid value for 'nac': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NAC)}"
+            error_msg += f"\n  → Example: nac='{{ VALID_BODY_NAC[0] }}'"
+            return (False, error_msg)
     if "vlan-auto" in payload:
-        value = payload.get("vlan-auto")
-        if value and value not in VALID_BODY_VLAN_AUTO:
-            return (
-                False,
-                f"Invalid vlan-auto '{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_AUTO)}",
-            )
-
-    # Validate dynamic-vlan if present
+        value = payload["vlan-auto"]
+        if value not in VALID_BODY_VLAN_AUTO:
+            desc = FIELD_DESCRIPTIONS.get("vlan-auto", "")
+            error_msg = f"Invalid value for 'vlan-auto': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VLAN_AUTO)}"
+            error_msg += f"\n  → Example: vlan-auto='{{ VALID_BODY_VLAN_AUTO[0] }}'"
+            return (False, error_msg)
     if "dynamic-vlan" in payload:
-        value = payload.get("dynamic-vlan")
-        if value and value not in VALID_BODY_DYNAMIC_VLAN:
-            return (
-                False,
-                f"Invalid dynamic-vlan '{value}'. Must be one of: {', '.join(VALID_BODY_DYNAMIC_VLAN)}",
-            )
-
-    # Validate captive-portal-fw-accounting if present
+        value = payload["dynamic-vlan"]
+        if value not in VALID_BODY_DYNAMIC_VLAN:
+            desc = FIELD_DESCRIPTIONS.get("dynamic-vlan", "")
+            error_msg = f"Invalid value for 'dynamic-vlan': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DYNAMIC_VLAN)}"
+            error_msg += f"\n  → Example: dynamic-vlan='{{ VALID_BODY_DYNAMIC_VLAN[0] }}'"
+            return (False, error_msg)
     if "captive-portal-fw-accounting" in payload:
-        value = payload.get("captive-portal-fw-accounting")
-        if value and value not in VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING:
-            return (
-                False,
-                f"Invalid captive-portal-fw-accounting '{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING)}",
-            )
-
-    # Validate captive-portal-ac-name if present
-    if "captive-portal-ac-name" in payload:
-        value = payload.get("captive-portal-ac-name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "captive-portal-ac-name cannot exceed 35 characters",
-            )
-
-    # Validate captive-portal-auth-timeout if present
-    if "captive-portal-auth-timeout" in payload:
-        value = payload.get("captive-portal-auth-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 864000:
-                    return (
-                        False,
-                        "captive-portal-auth-timeout must be between 0 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"captive-portal-auth-timeout must be numeric, got: {value}",
-                )
-
-    # Validate multicast-rate if present
+        value = payload["captive-portal-fw-accounting"]
+        if value not in VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING:
+            desc = FIELD_DESCRIPTIONS.get("captive-portal-fw-accounting", "")
+            error_msg = f"Invalid value for 'captive-portal-fw-accounting': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING)}"
+            error_msg += f"\n  → Example: captive-portal-fw-accounting='{{ VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING[0] }}'"
+            return (False, error_msg)
     if "multicast-rate" in payload:
-        value = payload.get("multicast-rate")
-        if value and value not in VALID_BODY_MULTICAST_RATE:
-            return (
-                False,
-                f"Invalid multicast-rate '{value}'. Must be one of: {', '.join(VALID_BODY_MULTICAST_RATE)}",
-            )
-
-    # Validate multicast-enhance if present
+        value = payload["multicast-rate"]
+        if value not in VALID_BODY_MULTICAST_RATE:
+            desc = FIELD_DESCRIPTIONS.get("multicast-rate", "")
+            error_msg = f"Invalid value for 'multicast-rate': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MULTICAST_RATE)}"
+            error_msg += f"\n  → Example: multicast-rate='{{ VALID_BODY_MULTICAST_RATE[0] }}'"
+            return (False, error_msg)
     if "multicast-enhance" in payload:
-        value = payload.get("multicast-enhance")
-        if value and value not in VALID_BODY_MULTICAST_ENHANCE:
-            return (
-                False,
-                f"Invalid multicast-enhance '{value}'. Must be one of: {', '.join(VALID_BODY_MULTICAST_ENHANCE)}",
-            )
-
-    # Validate igmp-snooping if present
+        value = payload["multicast-enhance"]
+        if value not in VALID_BODY_MULTICAST_ENHANCE:
+            desc = FIELD_DESCRIPTIONS.get("multicast-enhance", "")
+            error_msg = f"Invalid value for 'multicast-enhance': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MULTICAST_ENHANCE)}"
+            error_msg += f"\n  → Example: multicast-enhance='{{ VALID_BODY_MULTICAST_ENHANCE[0] }}'"
+            return (False, error_msg)
     if "igmp-snooping" in payload:
-        value = payload.get("igmp-snooping")
-        if value and value not in VALID_BODY_IGMP_SNOOPING:
-            return (
-                False,
-                f"Invalid igmp-snooping '{value}'. Must be one of: {', '.join(VALID_BODY_IGMP_SNOOPING)}",
-            )
-
-    # Validate dhcp-address-enforcement if present
+        value = payload["igmp-snooping"]
+        if value not in VALID_BODY_IGMP_SNOOPING:
+            desc = FIELD_DESCRIPTIONS.get("igmp-snooping", "")
+            error_msg = f"Invalid value for 'igmp-snooping': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IGMP_SNOOPING)}"
+            error_msg += f"\n  → Example: igmp-snooping='{{ VALID_BODY_IGMP_SNOOPING[0] }}'"
+            return (False, error_msg)
     if "dhcp-address-enforcement" in payload:
-        value = payload.get("dhcp-address-enforcement")
-        if value and value not in VALID_BODY_DHCP_ADDRESS_ENFORCEMENT:
-            return (
-                False,
-                f"Invalid dhcp-address-enforcement '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_ADDRESS_ENFORCEMENT)}",
-            )
-
-    # Validate broadcast-suppression if present
+        value = payload["dhcp-address-enforcement"]
+        if value not in VALID_BODY_DHCP_ADDRESS_ENFORCEMENT:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-address-enforcement", "")
+            error_msg = f"Invalid value for 'dhcp-address-enforcement': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_ADDRESS_ENFORCEMENT)}"
+            error_msg += f"\n  → Example: dhcp-address-enforcement='{{ VALID_BODY_DHCP_ADDRESS_ENFORCEMENT[0] }}'"
+            return (False, error_msg)
     if "broadcast-suppression" in payload:
-        value = payload.get("broadcast-suppression")
-        if value and value not in VALID_BODY_BROADCAST_SUPPRESSION:
-            return (
-                False,
-                f"Invalid broadcast-suppression '{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_SUPPRESSION)}",
-            )
-
-    # Validate ipv6-rules if present
+        value = payload["broadcast-suppression"]
+        if value not in VALID_BODY_BROADCAST_SUPPRESSION:
+            desc = FIELD_DESCRIPTIONS.get("broadcast-suppression", "")
+            error_msg = f"Invalid value for 'broadcast-suppression': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BROADCAST_SUPPRESSION)}"
+            error_msg += f"\n  → Example: broadcast-suppression='{{ VALID_BODY_BROADCAST_SUPPRESSION[0] }}'"
+            return (False, error_msg)
     if "ipv6-rules" in payload:
-        value = payload.get("ipv6-rules")
-        if value and value not in VALID_BODY_IPV6_RULES:
-            return (
-                False,
-                f"Invalid ipv6-rules '{value}'. Must be one of: {', '.join(VALID_BODY_IPV6_RULES)}",
-            )
-
-    # Validate me-disable-thresh if present
-    if "me-disable-thresh" in payload:
-        value = payload.get("me-disable-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 256:
-                    return (
-                        False,
-                        "me-disable-thresh must be between 2 and 256",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"me-disable-thresh must be numeric, got: {value}",
-                )
-
-    # Validate mu-mimo if present
+        value = payload["ipv6-rules"]
+        if value not in VALID_BODY_IPV6_RULES:
+            desc = FIELD_DESCRIPTIONS.get("ipv6-rules", "")
+            error_msg = f"Invalid value for 'ipv6-rules': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_IPV6_RULES)}"
+            error_msg += f"\n  → Example: ipv6-rules='{{ VALID_BODY_IPV6_RULES[0] }}'"
+            return (False, error_msg)
     if "mu-mimo" in payload:
-        value = payload.get("mu-mimo")
-        if value and value not in VALID_BODY_MU_MIMO:
-            return (
-                False,
-                f"Invalid mu-mimo '{value}'. Must be one of: {', '.join(VALID_BODY_MU_MIMO)}",
-            )
-
-    # Validate probe-resp-suppression if present
+        value = payload["mu-mimo"]
+        if value not in VALID_BODY_MU_MIMO:
+            desc = FIELD_DESCRIPTIONS.get("mu-mimo", "")
+            error_msg = f"Invalid value for 'mu-mimo': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MU_MIMO)}"
+            error_msg += f"\n  → Example: mu-mimo='{{ VALID_BODY_MU_MIMO[0] }}'"
+            return (False, error_msg)
     if "probe-resp-suppression" in payload:
-        value = payload.get("probe-resp-suppression")
-        if value and value not in VALID_BODY_PROBE_RESP_SUPPRESSION:
-            return (
-                False,
-                f"Invalid probe-resp-suppression '{value}'. Must be one of: {', '.join(VALID_BODY_PROBE_RESP_SUPPRESSION)}",
-            )
-
-    # Validate probe-resp-threshold if present
-    if "probe-resp-threshold" in payload:
-        value = payload.get("probe-resp-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "probe-resp-threshold cannot exceed 7 characters")
-
-    # Validate radio-sensitivity if present
+        value = payload["probe-resp-suppression"]
+        if value not in VALID_BODY_PROBE_RESP_SUPPRESSION:
+            desc = FIELD_DESCRIPTIONS.get("probe-resp-suppression", "")
+            error_msg = f"Invalid value for 'probe-resp-suppression': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROBE_RESP_SUPPRESSION)}"
+            error_msg += f"\n  → Example: probe-resp-suppression='{{ VALID_BODY_PROBE_RESP_SUPPRESSION[0] }}'"
+            return (False, error_msg)
     if "radio-sensitivity" in payload:
-        value = payload.get("radio-sensitivity")
-        if value and value not in VALID_BODY_RADIO_SENSITIVITY:
-            return (
-                False,
-                f"Invalid radio-sensitivity '{value}'. Must be one of: {', '.join(VALID_BODY_RADIO_SENSITIVITY)}",
-            )
-
-    # Validate quarantine if present
+        value = payload["radio-sensitivity"]
+        if value not in VALID_BODY_RADIO_SENSITIVITY:
+            desc = FIELD_DESCRIPTIONS.get("radio-sensitivity", "")
+            error_msg = f"Invalid value for 'radio-sensitivity': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RADIO_SENSITIVITY)}"
+            error_msg += f"\n  → Example: radio-sensitivity='{{ VALID_BODY_RADIO_SENSITIVITY[0] }}'"
+            return (False, error_msg)
     if "quarantine" in payload:
-        value = payload.get("quarantine")
-        if value and value not in VALID_BODY_QUARANTINE:
-            return (
-                False,
-                f"Invalid quarantine '{value}'. Must be one of: {', '.join(VALID_BODY_QUARANTINE)}",
-            )
-
-    # Validate radio-5g-threshold if present
-    if "radio-5g-threshold" in payload:
-        value = payload.get("radio-5g-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "radio-5g-threshold cannot exceed 7 characters")
-
-    # Validate radio-2g-threshold if present
-    if "radio-2g-threshold" in payload:
-        value = payload.get("radio-2g-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "radio-2g-threshold cannot exceed 7 characters")
-
-    # Validate vlan-pooling if present
+        value = payload["quarantine"]
+        if value not in VALID_BODY_QUARANTINE:
+            desc = FIELD_DESCRIPTIONS.get("quarantine", "")
+            error_msg = f"Invalid value for 'quarantine': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_QUARANTINE)}"
+            error_msg += f"\n  → Example: quarantine='{{ VALID_BODY_QUARANTINE[0] }}'"
+            return (False, error_msg)
     if "vlan-pooling" in payload:
-        value = payload.get("vlan-pooling")
-        if value and value not in VALID_BODY_VLAN_POOLING:
-            return (
-                False,
-                f"Invalid vlan-pooling '{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_POOLING)}",
-            )
-
-    # Validate dhcp-option43-insertion if present
+        value = payload["vlan-pooling"]
+        if value not in VALID_BODY_VLAN_POOLING:
+            desc = FIELD_DESCRIPTIONS.get("vlan-pooling", "")
+            error_msg = f"Invalid value for 'vlan-pooling': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VLAN_POOLING)}"
+            error_msg += f"\n  → Example: vlan-pooling='{{ VALID_BODY_VLAN_POOLING[0] }}'"
+            return (False, error_msg)
     if "dhcp-option43-insertion" in payload:
-        value = payload.get("dhcp-option43-insertion")
-        if value and value not in VALID_BODY_DHCP_OPTION43_INSERTION:
-            return (
-                False,
-                f"Invalid dhcp-option43-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION43_INSERTION)}",
-            )
-
-    # Validate dhcp-option82-insertion if present
+        value = payload["dhcp-option43-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION43_INSERTION:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-option43-insertion", "")
+            error_msg = f"Invalid value for 'dhcp-option43-insertion': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_OPTION43_INSERTION)}"
+            error_msg += f"\n  → Example: dhcp-option43-insertion='{{ VALID_BODY_DHCP_OPTION43_INSERTION[0] }}'"
+            return (False, error_msg)
     if "dhcp-option82-insertion" in payload:
-        value = payload.get("dhcp-option82-insertion")
-        if value and value not in VALID_BODY_DHCP_OPTION82_INSERTION:
-            return (
-                False,
-                f"Invalid dhcp-option82-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_INSERTION)}",
-            )
-
-    # Validate dhcp-option82-circuit-id-insertion if present
+        value = payload["dhcp-option82-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION82_INSERTION:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-option82-insertion", "")
+            error_msg = f"Invalid value for 'dhcp-option82-insertion': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_OPTION82_INSERTION)}"
+            error_msg += f"\n  → Example: dhcp-option82-insertion='{{ VALID_BODY_DHCP_OPTION82_INSERTION[0] }}'"
+            return (False, error_msg)
     if "dhcp-option82-circuit-id-insertion" in payload:
-        value = payload.get("dhcp-option82-circuit-id-insertion")
-        if (
-            value
-            and value not in VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION
-        ):
-            return (
-                False,
-                f"Invalid dhcp-option82-circuit-id-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION)}",
-            )
-
-    # Validate dhcp-option82-remote-id-insertion if present
+        value = payload["dhcp-option82-circuit-id-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-option82-circuit-id-insertion", "")
+            error_msg = f"Invalid value for 'dhcp-option82-circuit-id-insertion': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION)}"
+            error_msg += f"\n  → Example: dhcp-option82-circuit-id-insertion='{{ VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION[0] }}'"
+            return (False, error_msg)
     if "dhcp-option82-remote-id-insertion" in payload:
-        value = payload.get("dhcp-option82-remote-id-insertion")
-        if value and value not in VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION:
-            return (
-                False,
-                f"Invalid dhcp-option82-remote-id-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION)}",
-            )
-
-    # Validate ptk-rekey if present
+        value = payload["dhcp-option82-remote-id-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION:
+            desc = FIELD_DESCRIPTIONS.get("dhcp-option82-remote-id-insertion", "")
+            error_msg = f"Invalid value for 'dhcp-option82-remote-id-insertion': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION)}"
+            error_msg += f"\n  → Example: dhcp-option82-remote-id-insertion='{{ VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION[0] }}'"
+            return (False, error_msg)
     if "ptk-rekey" in payload:
-        value = payload.get("ptk-rekey")
-        if value and value not in VALID_BODY_PTK_REKEY:
-            return (
-                False,
-                f"Invalid ptk-rekey '{value}'. Must be one of: {', '.join(VALID_BODY_PTK_REKEY)}",
-            )
-
-    # Validate ptk-rekey-intv if present
-    if "ptk-rekey-intv" in payload:
-        value = payload.get("ptk-rekey-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 600 or int_val > 864000:
-                    return (
-                        False,
-                        "ptk-rekey-intv must be between 600 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"ptk-rekey-intv must be numeric, got: {value}")
-
-    # Validate gtk-rekey if present
+        value = payload["ptk-rekey"]
+        if value not in VALID_BODY_PTK_REKEY:
+            desc = FIELD_DESCRIPTIONS.get("ptk-rekey", "")
+            error_msg = f"Invalid value for 'ptk-rekey': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PTK_REKEY)}"
+            error_msg += f"\n  → Example: ptk-rekey='{{ VALID_BODY_PTK_REKEY[0] }}'"
+            return (False, error_msg)
     if "gtk-rekey" in payload:
-        value = payload.get("gtk-rekey")
-        if value and value not in VALID_BODY_GTK_REKEY:
-            return (
-                False,
-                f"Invalid gtk-rekey '{value}'. Must be one of: {', '.join(VALID_BODY_GTK_REKEY)}",
-            )
-
-    # Validate gtk-rekey-intv if present
-    if "gtk-rekey-intv" in payload:
-        value = payload.get("gtk-rekey-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 600 or int_val > 864000:
-                    return (
-                        False,
-                        "gtk-rekey-intv must be between 600 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"gtk-rekey-intv must be numeric, got: {value}")
-
-    # Validate eap-reauth if present
+        value = payload["gtk-rekey"]
+        if value not in VALID_BODY_GTK_REKEY:
+            desc = FIELD_DESCRIPTIONS.get("gtk-rekey", "")
+            error_msg = f"Invalid value for 'gtk-rekey': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_GTK_REKEY)}"
+            error_msg += f"\n  → Example: gtk-rekey='{{ VALID_BODY_GTK_REKEY[0] }}'"
+            return (False, error_msg)
     if "eap-reauth" in payload:
-        value = payload.get("eap-reauth")
-        if value and value not in VALID_BODY_EAP_REAUTH:
-            return (
-                False,
-                f"Invalid eap-reauth '{value}'. Must be one of: {', '.join(VALID_BODY_EAP_REAUTH)}",
-            )
-
-    # Validate eap-reauth-intv if present
-    if "eap-reauth-intv" in payload:
-        value = payload.get("eap-reauth-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1800 or int_val > 864000:
-                    return (
-                        False,
-                        "eap-reauth-intv must be between 1800 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eap-reauth-intv must be numeric, got: {value}",
-                )
-
-    # Validate roaming-acct-interim-update if present
+        value = payload["eap-reauth"]
+        if value not in VALID_BODY_EAP_REAUTH:
+            desc = FIELD_DESCRIPTIONS.get("eap-reauth", "")
+            error_msg = f"Invalid value for 'eap-reauth': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_EAP_REAUTH)}"
+            error_msg += f"\n  → Example: eap-reauth='{{ VALID_BODY_EAP_REAUTH[0] }}'"
+            return (False, error_msg)
     if "roaming-acct-interim-update" in payload:
-        value = payload.get("roaming-acct-interim-update")
-        if value and value not in VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE:
-            return (
-                False,
-                f"Invalid roaming-acct-interim-update '{value}'. Must be one of: {', '.join(VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE)}",
-            )
-
-    # Validate qos-profile if present
-    if "qos-profile" in payload:
-        value = payload.get("qos-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "qos-profile cannot exceed 35 characters")
-
-    # Validate hotspot20-profile if present
-    if "hotspot20-profile" in payload:
-        value = payload.get("hotspot20-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "hotspot20-profile cannot exceed 35 characters")
-
-    # Validate access-control-list if present
-    if "access-control-list" in payload:
-        value = payload.get("access-control-list")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "access-control-list cannot exceed 35 characters")
-
-    # Validate primary-wag-profile if present
-    if "primary-wag-profile" in payload:
-        value = payload.get("primary-wag-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "primary-wag-profile cannot exceed 35 characters")
-
-    # Validate secondary-wag-profile if present
-    if "secondary-wag-profile" in payload:
-        value = payload.get("secondary-wag-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "secondary-wag-profile cannot exceed 35 characters",
-            )
-
-    # Validate tunnel-echo-interval if present
-    if "tunnel-echo-interval" in payload:
-        value = payload.get("tunnel-echo-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "tunnel-echo-interval must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"tunnel-echo-interval must be numeric, got: {value}",
-                )
-
-    # Validate tunnel-fallback-interval if present
-    if "tunnel-fallback-interval" in payload:
-        value = payload.get("tunnel-fallback-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "tunnel-fallback-interval must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"tunnel-fallback-interval must be numeric, got: {value}",
-                )
-
-    # Validate rates-11a if present
+        value = payload["roaming-acct-interim-update"]
+        if value not in VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE:
+            desc = FIELD_DESCRIPTIONS.get("roaming-acct-interim-update", "")
+            error_msg = f"Invalid value for 'roaming-acct-interim-update': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE)}"
+            error_msg += f"\n  → Example: roaming-acct-interim-update='{{ VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE[0] }}'"
+            return (False, error_msg)
     if "rates-11a" in payload:
-        value = payload.get("rates-11a")
-        if value and value not in VALID_BODY_RATES_11A:
-            return (
-                False,
-                f"Invalid rates-11a '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11A)}",
-            )
-
-    # Validate rates-11bg if present
+        value = payload["rates-11a"]
+        if value not in VALID_BODY_RATES_11A:
+            desc = FIELD_DESCRIPTIONS.get("rates-11a", "")
+            error_msg = f"Invalid value for 'rates-11a': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RATES_11A)}"
+            error_msg += f"\n  → Example: rates-11a='{{ VALID_BODY_RATES_11A[0] }}'"
+            return (False, error_msg)
     if "rates-11bg" in payload:
-        value = payload.get("rates-11bg")
-        if value and value not in VALID_BODY_RATES_11BG:
-            return (
-                False,
-                f"Invalid rates-11bg '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11BG)}",
-            )
-
-    # Validate rates-11n-ss12 if present
+        value = payload["rates-11bg"]
+        if value not in VALID_BODY_RATES_11BG:
+            desc = FIELD_DESCRIPTIONS.get("rates-11bg", "")
+            error_msg = f"Invalid value for 'rates-11bg': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RATES_11BG)}"
+            error_msg += f"\n  → Example: rates-11bg='{{ VALID_BODY_RATES_11BG[0] }}'"
+            return (False, error_msg)
     if "rates-11n-ss12" in payload:
-        value = payload.get("rates-11n-ss12")
-        if value and value not in VALID_BODY_RATES_11N_SS12:
-            return (
-                False,
-                f"Invalid rates-11n-ss12 '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11N_SS12)}",
-            )
-
-    # Validate rates-11n-ss34 if present
+        value = payload["rates-11n-ss12"]
+        if value not in VALID_BODY_RATES_11N_SS12:
+            desc = FIELD_DESCRIPTIONS.get("rates-11n-ss12", "")
+            error_msg = f"Invalid value for 'rates-11n-ss12': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RATES_11N_SS12)}"
+            error_msg += f"\n  → Example: rates-11n-ss12='{{ VALID_BODY_RATES_11N_SS12[0] }}'"
+            return (False, error_msg)
     if "rates-11n-ss34" in payload:
-        value = payload.get("rates-11n-ss34")
-        if value and value not in VALID_BODY_RATES_11N_SS34:
-            return (
-                False,
-                f"Invalid rates-11n-ss34 '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11N_SS34)}",
-            )
-
-    # Validate rates-11ac-mcs-map if present
-    if "rates-11ac-mcs-map" in payload:
-        value = payload.get("rates-11ac-mcs-map")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "rates-11ac-mcs-map cannot exceed 63 characters")
-
-    # Validate rates-11ax-mcs-map if present
-    if "rates-11ax-mcs-map" in payload:
-        value = payload.get("rates-11ax-mcs-map")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "rates-11ax-mcs-map cannot exceed 63 characters")
-
-    # Validate rates-11be-mcs-map if present
-    if "rates-11be-mcs-map" in payload:
-        value = payload.get("rates-11be-mcs-map")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "rates-11be-mcs-map cannot exceed 15 characters")
-
-    # Validate rates-11be-mcs-map-160 if present
-    if "rates-11be-mcs-map-160" in payload:
-        value = payload.get("rates-11be-mcs-map-160")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (
-                False,
-                "rates-11be-mcs-map-160 cannot exceed 15 characters",
-            )
-
-    # Validate rates-11be-mcs-map-320 if present
-    if "rates-11be-mcs-map-320" in payload:
-        value = payload.get("rates-11be-mcs-map-320")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (
-                False,
-                "rates-11be-mcs-map-320 cannot exceed 15 characters",
-            )
-
-    # Validate utm-profile if present
-    if "utm-profile" in payload:
-        value = payload.get("utm-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "utm-profile cannot exceed 35 characters")
-
-    # Validate utm-status if present
+        value = payload["rates-11n-ss34"]
+        if value not in VALID_BODY_RATES_11N_SS34:
+            desc = FIELD_DESCRIPTIONS.get("rates-11n-ss34", "")
+            error_msg = f"Invalid value for 'rates-11n-ss34': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_RATES_11N_SS34)}"
+            error_msg += f"\n  → Example: rates-11n-ss34='{{ VALID_BODY_RATES_11N_SS34[0] }}'"
+            return (False, error_msg)
     if "utm-status" in payload:
-        value = payload.get("utm-status")
-        if value and value not in VALID_BODY_UTM_STATUS:
-            return (
-                False,
-                f"Invalid utm-status '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
-            )
-
-    # Validate utm-log if present
+        value = payload["utm-status"]
+        if value not in VALID_BODY_UTM_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("utm-status", "")
+            error_msg = f"Invalid value for 'utm-status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UTM_STATUS)}"
+            error_msg += f"\n  → Example: utm-status='{{ VALID_BODY_UTM_STATUS[0] }}'"
+            return (False, error_msg)
     if "utm-log" in payload:
-        value = payload.get("utm-log")
-        if value and value not in VALID_BODY_UTM_LOG:
-            return (
-                False,
-                f"Invalid utm-log '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_LOG)}",
-            )
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate application-list if present
-    if "application-list" in payload:
-        value = payload.get("application-list")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "application-list cannot exceed 47 characters")
-
-    # Validate antivirus-profile if present
-    if "antivirus-profile" in payload:
-        value = payload.get("antivirus-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "antivirus-profile cannot exceed 47 characters")
-
-    # Validate webfilter-profile if present
-    if "webfilter-profile" in payload:
-        value = payload.get("webfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "webfilter-profile cannot exceed 47 characters")
-
-    # Validate scan-botnet-connections if present
+        value = payload["utm-log"]
+        if value not in VALID_BODY_UTM_LOG:
+            desc = FIELD_DESCRIPTIONS.get("utm-log", "")
+            error_msg = f"Invalid value for 'utm-log': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UTM_LOG)}"
+            error_msg += f"\n  → Example: utm-log='{{ VALID_BODY_UTM_LOG[0] }}'"
+            return (False, error_msg)
     if "scan-botnet-connections" in payload:
-        value = payload.get("scan-botnet-connections")
-        if value and value not in VALID_BODY_SCAN_BOTNET_CONNECTIONS:
-            return (
-                False,
-                f"Invalid scan-botnet-connections '{value}'. Must be one of: {', '.join(VALID_BODY_SCAN_BOTNET_CONNECTIONS)}",
-            )
-
-    # Validate address-group if present
-    if "address-group" in payload:
-        value = payload.get("address-group")
-        if value and isinstance(value, str) and len(value) > 79:
-            return (False, "address-group cannot exceed 79 characters")
-
-    # Validate address-group-policy if present
+        value = payload["scan-botnet-connections"]
+        if value not in VALID_BODY_SCAN_BOTNET_CONNECTIONS:
+            desc = FIELD_DESCRIPTIONS.get("scan-botnet-connections", "")
+            error_msg = f"Invalid value for 'scan-botnet-connections': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SCAN_BOTNET_CONNECTIONS)}"
+            error_msg += f"\n  → Example: scan-botnet-connections='{{ VALID_BODY_SCAN_BOTNET_CONNECTIONS[0] }}'"
+            return (False, error_msg)
     if "address-group-policy" in payload:
-        value = payload.get("address-group-policy")
-        if value and value not in VALID_BODY_ADDRESS_GROUP_POLICY:
-            return (
-                False,
-                f"Invalid address-group-policy '{value}'. Must be one of: {', '.join(VALID_BODY_ADDRESS_GROUP_POLICY)}",
-            )
-
-    # Validate sticky-client-remove if present
+        value = payload["address-group-policy"]
+        if value not in VALID_BODY_ADDRESS_GROUP_POLICY:
+            desc = FIELD_DESCRIPTIONS.get("address-group-policy", "")
+            error_msg = f"Invalid value for 'address-group-policy': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADDRESS_GROUP_POLICY)}"
+            error_msg += f"\n  → Example: address-group-policy='{{ VALID_BODY_ADDRESS_GROUP_POLICY[0] }}'"
+            return (False, error_msg)
     if "sticky-client-remove" in payload:
-        value = payload.get("sticky-client-remove")
-        if value and value not in VALID_BODY_STICKY_CLIENT_REMOVE:
-            return (
-                False,
-                f"Invalid sticky-client-remove '{value}'. Must be one of: {', '.join(VALID_BODY_STICKY_CLIENT_REMOVE)}",
-            )
-
-    # Validate sticky-client-threshold-5g if present
-    if "sticky-client-threshold-5g" in payload:
-        value = payload.get("sticky-client-threshold-5g")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (
-                False,
-                "sticky-client-threshold-5g cannot exceed 7 characters",
-            )
-
-    # Validate sticky-client-threshold-2g if present
-    if "sticky-client-threshold-2g" in payload:
-        value = payload.get("sticky-client-threshold-2g")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (
-                False,
-                "sticky-client-threshold-2g cannot exceed 7 characters",
-            )
-
-    # Validate sticky-client-threshold-6g if present
-    if "sticky-client-threshold-6g" in payload:
-        value = payload.get("sticky-client-threshold-6g")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (
-                False,
-                "sticky-client-threshold-6g cannot exceed 7 characters",
-            )
-
-    # Validate bstm-rssi-disassoc-timer if present
-    if "bstm-rssi-disassoc-timer" in payload:
-        value = payload.get("bstm-rssi-disassoc-timer")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 2000:
-                    return (
-                        False,
-                        "bstm-rssi-disassoc-timer must be between 1 and 2000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bstm-rssi-disassoc-timer must be numeric, got: {value}",
-                )
-
-    # Validate bstm-load-balancing-disassoc-timer if present
-    if "bstm-load-balancing-disassoc-timer" in payload:
-        value = payload.get("bstm-load-balancing-disassoc-timer")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 30:
-                    return (
-                        False,
-                        "bstm-load-balancing-disassoc-timer must be between 1 and 30",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bstm-load-balancing-disassoc-timer must be numeric, got: {value}",
-                )
-
-    # Validate bstm-disassociation-imminent if present
+        value = payload["sticky-client-remove"]
+        if value not in VALID_BODY_STICKY_CLIENT_REMOVE:
+            desc = FIELD_DESCRIPTIONS.get("sticky-client-remove", "")
+            error_msg = f"Invalid value for 'sticky-client-remove': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STICKY_CLIENT_REMOVE)}"
+            error_msg += f"\n  → Example: sticky-client-remove='{{ VALID_BODY_STICKY_CLIENT_REMOVE[0] }}'"
+            return (False, error_msg)
     if "bstm-disassociation-imminent" in payload:
-        value = payload.get("bstm-disassociation-imminent")
-        if value and value not in VALID_BODY_BSTM_DISASSOCIATION_IMMINENT:
-            return (
-                False,
-                f"Invalid bstm-disassociation-imminent '{value}'. Must be one of: {', '.join(VALID_BODY_BSTM_DISASSOCIATION_IMMINENT)}",
-            )
-
-    # Validate beacon-advertising if present
+        value = payload["bstm-disassociation-imminent"]
+        if value not in VALID_BODY_BSTM_DISASSOCIATION_IMMINENT:
+            desc = FIELD_DESCRIPTIONS.get("bstm-disassociation-imminent", "")
+            error_msg = f"Invalid value for 'bstm-disassociation-imminent': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BSTM_DISASSOCIATION_IMMINENT)}"
+            error_msg += f"\n  → Example: bstm-disassociation-imminent='{{ VALID_BODY_BSTM_DISASSOCIATION_IMMINENT[0] }}'"
+            return (False, error_msg)
     if "beacon-advertising" in payload:
-        value = payload.get("beacon-advertising")
-        if value and value not in VALID_BODY_BEACON_ADVERTISING:
-            return (
-                False,
-                f"Invalid beacon-advertising '{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_ADVERTISING)}",
-            )
-
-    # Validate osen if present
+        value = payload["beacon-advertising"]
+        if value not in VALID_BODY_BEACON_ADVERTISING:
+            desc = FIELD_DESCRIPTIONS.get("beacon-advertising", "")
+            error_msg = f"Invalid value for 'beacon-advertising': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BEACON_ADVERTISING)}"
+            error_msg += f"\n  → Example: beacon-advertising='{{ VALID_BODY_BEACON_ADVERTISING[0] }}'"
+            return (False, error_msg)
     if "osen" in payload:
-        value = payload.get("osen")
-        if value and value not in VALID_BODY_OSEN:
-            return (
-                False,
-                f"Invalid osen '{value}'. Must be one of: {', '.join(VALID_BODY_OSEN)}",
-            )
-
-    # Validate application-detection-engine if present
+        value = payload["osen"]
+        if value not in VALID_BODY_OSEN:
+            desc = FIELD_DESCRIPTIONS.get("osen", "")
+            error_msg = f"Invalid value for 'osen': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_OSEN)}"
+            error_msg += f"\n  → Example: osen='{{ VALID_BODY_OSEN[0] }}'"
+            return (False, error_msg)
     if "application-detection-engine" in payload:
-        value = payload.get("application-detection-engine")
-        if value and value not in VALID_BODY_APPLICATION_DETECTION_ENGINE:
-            return (
-                False,
-                f"Invalid application-detection-engine '{value}'. Must be one of: {', '.join(VALID_BODY_APPLICATION_DETECTION_ENGINE)}",
-            )
-
-    # Validate application-dscp-marking if present
+        value = payload["application-detection-engine"]
+        if value not in VALID_BODY_APPLICATION_DETECTION_ENGINE:
+            desc = FIELD_DESCRIPTIONS.get("application-detection-engine", "")
+            error_msg = f"Invalid value for 'application-detection-engine': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_APPLICATION_DETECTION_ENGINE)}"
+            error_msg += f"\n  → Example: application-detection-engine='{{ VALID_BODY_APPLICATION_DETECTION_ENGINE[0] }}'"
+            return (False, error_msg)
     if "application-dscp-marking" in payload:
-        value = payload.get("application-dscp-marking")
-        if value and value not in VALID_BODY_APPLICATION_DSCP_MARKING:
-            return (
-                False,
-                f"Invalid application-dscp-marking '{value}'. Must be one of: {', '.join(VALID_BODY_APPLICATION_DSCP_MARKING)}",
-            )
-
-    # Validate application-report-intv if present
-    if "application-report-intv" in payload:
-        value = payload.get("application-report-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 864000:
-                    return (
-                        False,
-                        "application-report-intv must be between 30 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"application-report-intv must be numeric, got: {value}",
-                )
-
-    # Validate l3-roaming if present
+        value = payload["application-dscp-marking"]
+        if value not in VALID_BODY_APPLICATION_DSCP_MARKING:
+            desc = FIELD_DESCRIPTIONS.get("application-dscp-marking", "")
+            error_msg = f"Invalid value for 'application-dscp-marking': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_APPLICATION_DSCP_MARKING)}"
+            error_msg += f"\n  → Example: application-dscp-marking='{{ VALID_BODY_APPLICATION_DSCP_MARKING[0] }}'"
+            return (False, error_msg)
     if "l3-roaming" in payload:
-        value = payload.get("l3-roaming")
-        if value and value not in VALID_BODY_L3_ROAMING:
-            return (
-                False,
-                f"Invalid l3-roaming '{value}'. Must be one of: {', '.join(VALID_BODY_L3_ROAMING)}",
-            )
-
-    # Validate l3-roaming-mode if present
+        value = payload["l3-roaming"]
+        if value not in VALID_BODY_L3_ROAMING:
+            desc = FIELD_DESCRIPTIONS.get("l3-roaming", "")
+            error_msg = f"Invalid value for 'l3-roaming': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_L3_ROAMING)}"
+            error_msg += f"\n  → Example: l3-roaming='{{ VALID_BODY_L3_ROAMING[0] }}'"
+            return (False, error_msg)
     if "l3-roaming-mode" in payload:
-        value = payload.get("l3-roaming-mode")
-        if value and value not in VALID_BODY_L3_ROAMING_MODE:
-            return (
-                False,
-                f"Invalid l3-roaming-mode '{value}'. Must be one of: {', '.join(VALID_BODY_L3_ROAMING_MODE)}",
-            )
+        value = payload["l3-roaming-mode"]
+        if value not in VALID_BODY_L3_ROAMING_MODE:
+            desc = FIELD_DESCRIPTIONS.get("l3-roaming-mode", "")
+            error_msg = f"Invalid value for 'l3-roaming-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_L3_ROAMING_MODE)}"
+            error_msg += f"\n  → Example: l3-roaming-mode='{{ VALID_BODY_L3_ROAMING_MODE[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -2078,1583 +2363,991 @@ def validate_vap_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
 # ============================================================================
 
 
-def validate_vap_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_wireless_controller_vap_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update wireless_controller/vap.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_wireless_controller_vap_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "name cannot exceed 15 characters")
-
-    # Validate pre-auth if present
+    # Step 1: Validate enum values
     if "pre-auth" in payload:
-        value = payload.get("pre-auth")
-        if value and value not in VALID_BODY_PRE_AUTH:
+        value = payload["pre-auth"]
+        if value not in VALID_BODY_PRE_AUTH:
             return (
                 False,
-                f"Invalid pre-auth '{value}'. Must be one of: {', '.join(VALID_BODY_PRE_AUTH)}",
+                f"Invalid value for 'pre-auth'='{value}'. Must be one of: {', '.join(VALID_BODY_PRE_AUTH)}",
             )
-
-    # Validate external-pre-auth if present
     if "external-pre-auth" in payload:
-        value = payload.get("external-pre-auth")
-        if value and value not in VALID_BODY_EXTERNAL_PRE_AUTH:
+        value = payload["external-pre-auth"]
+        if value not in VALID_BODY_EXTERNAL_PRE_AUTH:
             return (
                 False,
-                f"Invalid external-pre-auth '{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL_PRE_AUTH)}",
+                f"Invalid value for 'external-pre-auth'='{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL_PRE_AUTH)}",
             )
-
-    # Validate mesh-backhaul if present
     if "mesh-backhaul" in payload:
-        value = payload.get("mesh-backhaul")
-        if value and value not in VALID_BODY_MESH_BACKHAUL:
+        value = payload["mesh-backhaul"]
+        if value not in VALID_BODY_MESH_BACKHAUL:
             return (
                 False,
-                f"Invalid mesh-backhaul '{value}'. Must be one of: {', '.join(VALID_BODY_MESH_BACKHAUL)}",
+                f"Invalid value for 'mesh-backhaul'='{value}'. Must be one of: {', '.join(VALID_BODY_MESH_BACKHAUL)}",
             )
-
-    # Validate atf-weight if present
-    if "atf-weight" in payload:
-        value = payload.get("atf-weight")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 100:
-                    return (False, "atf-weight must be between 0 and 100")
-            except (ValueError, TypeError):
-                return (False, f"atf-weight must be numeric, got: {value}")
-
-    # Validate max-clients if present
-    if "max-clients" in payload:
-        value = payload.get("max-clients")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "max-clients must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"max-clients must be numeric, got: {value}")
-
-    # Validate max-clients-ap if present
-    if "max-clients-ap" in payload:
-        value = payload.get("max-clients-ap")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "max-clients-ap must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"max-clients-ap must be numeric, got: {value}")
-
-    # Validate ssid if present
-    if "ssid" in payload:
-        value = payload.get("ssid")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "ssid cannot exceed 32 characters")
-
-    # Validate broadcast-ssid if present
     if "broadcast-ssid" in payload:
-        value = payload.get("broadcast-ssid")
-        if value and value not in VALID_BODY_BROADCAST_SSID:
+        value = payload["broadcast-ssid"]
+        if value not in VALID_BODY_BROADCAST_SSID:
             return (
                 False,
-                f"Invalid broadcast-ssid '{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_SSID)}",
+                f"Invalid value for 'broadcast-ssid'='{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_SSID)}",
             )
-
-    # Validate security if present
     if "security" in payload:
-        value = payload.get("security")
-        if value and value not in VALID_BODY_SECURITY:
+        value = payload["security"]
+        if value not in VALID_BODY_SECURITY:
             return (
                 False,
-                f"Invalid security '{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY)}",
+                f"Invalid value for 'security'='{value}'. Must be one of: {', '.join(VALID_BODY_SECURITY)}",
             )
-
-    # Validate pmf if present
-    if "pm" in payload:
-        value = payload.get("pm")
-        if value and value not in VALID_BODY_PMF:
+    if "pmf" in payload:
+        value = payload["pmf"]
+        if value not in VALID_BODY_PMF:
             return (
                 False,
-                f"Invalid pmf '{value}'. Must be one of: {', '.join(VALID_BODY_PMF)}",
+                f"Invalid value for 'pmf'='{value}'. Must be one of: {', '.join(VALID_BODY_PMF)}",
             )
-
-    # Validate pmf-assoc-comeback-timeout if present
-    if "pmf-assoc-comeback-timeout" in payload:
-        value = payload.get("pmf-assoc-comeback-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 20:
-                    return (
-                        False,
-                        "pmf-assoc-comeback-timeout must be between 1 and 20",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pmf-assoc-comeback-timeout must be numeric, got: {value}",
-                )
-
-    # Validate pmf-sa-query-retry-timeout if present
-    if "pmf-sa-query-retry-timeout" in payload:
-        value = payload.get("pmf-sa-query-retry-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 5:
-                    return (
-                        False,
-                        "pmf-sa-query-retry-timeout must be between 1 and 5",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"pmf-sa-query-retry-timeout must be numeric, got: {value}",
-                )
-
-    # Validate beacon-protection if present
     if "beacon-protection" in payload:
-        value = payload.get("beacon-protection")
-        if value and value not in VALID_BODY_BEACON_PROTECTION:
+        value = payload["beacon-protection"]
+        if value not in VALID_BODY_BEACON_PROTECTION:
             return (
                 False,
-                f"Invalid beacon-protection '{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_PROTECTION)}",
+                f"Invalid value for 'beacon-protection'='{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_PROTECTION)}",
             )
-
-    # Validate okc if present
     if "okc" in payload:
-        value = payload.get("okc")
-        if value and value not in VALID_BODY_OKC:
+        value = payload["okc"]
+        if value not in VALID_BODY_OKC:
             return (
                 False,
-                f"Invalid okc '{value}'. Must be one of: {', '.join(VALID_BODY_OKC)}",
+                f"Invalid value for 'okc'='{value}'. Must be one of: {', '.join(VALID_BODY_OKC)}",
             )
-
-    # Validate mbo if present
     if "mbo" in payload:
-        value = payload.get("mbo")
-        if value and value not in VALID_BODY_MBO:
+        value = payload["mbo"]
+        if value not in VALID_BODY_MBO:
             return (
                 False,
-                f"Invalid mbo '{value}'. Must be one of: {', '.join(VALID_BODY_MBO)}",
+                f"Invalid value for 'mbo'='{value}'. Must be one of: {', '.join(VALID_BODY_MBO)}",
             )
-
-    # Validate gas-comeback-delay if present
-    if "gas-comeback-delay" in payload:
-        value = payload.get("gas-comeback-delay")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 100 or int_val > 10000:
-                    return (
-                        False,
-                        "gas-comeback-delay must be between 100 and 10000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-comeback-delay must be numeric, got: {value}",
-                )
-
-    # Validate gas-fragmentation-limit if present
-    if "gas-fragmentation-limit" in payload:
-        value = payload.get("gas-fragmentation-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 512 or int_val > 4096:
-                    return (
-                        False,
-                        "gas-fragmentation-limit must be between 512 and 4096",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-fragmentation-limit must be numeric, got: {value}",
-                )
-
-    # Validate mbo-cell-data-conn-pref if present
-    if "mbo-cell-data-conn-pre" in payload:
-        value = payload.get("mbo-cell-data-conn-pre")
-        if value and value not in VALID_BODY_MBO_CELL_DATA_CONN_PREF:
+    if "mbo-cell-data-conn-pref" in payload:
+        value = payload["mbo-cell-data-conn-pref"]
+        if value not in VALID_BODY_MBO_CELL_DATA_CONN_PREF:
             return (
                 False,
-                f"Invalid mbo-cell-data-conn-pref '{value}'. Must be one of: {', '.join(VALID_BODY_MBO_CELL_DATA_CONN_PREF)}",
+                f"Invalid value for 'mbo-cell-data-conn-pref'='{value}'. Must be one of: {', '.join(VALID_BODY_MBO_CELL_DATA_CONN_PREF)}",
             )
-
-    # Validate 80211k if present
     if "80211k" in payload:
-        value = payload.get("80211k")
-        if value and value not in VALID_BODY_80211K:
+        value = payload["80211k"]
+        if value not in VALID_BODY_80211K:
             return (
                 False,
-                f"Invalid 80211k '{value}'. Must be one of: {', '.join(VALID_BODY_80211K)}",
+                f"Invalid value for '80211k'='{value}'. Must be one of: {', '.join(VALID_BODY_80211K)}",
             )
-
-    # Validate 80211v if present
     if "80211v" in payload:
-        value = payload.get("80211v")
-        if value and value not in VALID_BODY_80211V:
+        value = payload["80211v"]
+        if value not in VALID_BODY_80211V:
             return (
                 False,
-                f"Invalid 80211v '{value}'. Must be one of: {', '.join(VALID_BODY_80211V)}",
+                f"Invalid value for '80211v'='{value}'. Must be one of: {', '.join(VALID_BODY_80211V)}",
             )
-
-    # Validate neighbor-report-dual-band if present
     if "neighbor-report-dual-band" in payload:
-        value = payload.get("neighbor-report-dual-band")
-        if value and value not in VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND:
+        value = payload["neighbor-report-dual-band"]
+        if value not in VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND:
             return (
                 False,
-                f"Invalid neighbor-report-dual-band '{value}'. Must be one of: {', '.join(VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND)}",
+                f"Invalid value for 'neighbor-report-dual-band'='{value}'. Must be one of: {', '.join(VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND)}",
             )
-
-    # Validate fast-bss-transition if present
     if "fast-bss-transition" in payload:
-        value = payload.get("fast-bss-transition")
-        if value and value not in VALID_BODY_FAST_BSS_TRANSITION:
+        value = payload["fast-bss-transition"]
+        if value not in VALID_BODY_FAST_BSS_TRANSITION:
             return (
                 False,
-                f"Invalid fast-bss-transition '{value}'. Must be one of: {', '.join(VALID_BODY_FAST_BSS_TRANSITION)}",
+                f"Invalid value for 'fast-bss-transition'='{value}'. Must be one of: {', '.join(VALID_BODY_FAST_BSS_TRANSITION)}",
             )
-
-    # Validate ft-mobility-domain if present
-    if "ft-mobility-domain" in payload:
-        value = payload.get("ft-mobility-domain")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "ft-mobility-domain must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ft-mobility-domain must be numeric, got: {value}",
-                )
-
-    # Validate ft-r0-key-lifetime if present
-    if "ft-r0-key-lifetime" in payload:
-        value = payload.get("ft-r0-key-lifetime")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "ft-r0-key-lifetime must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ft-r0-key-lifetime must be numeric, got: {value}",
-                )
-
-    # Validate ft-over-ds if present
     if "ft-over-ds" in payload:
-        value = payload.get("ft-over-ds")
-        if value and value not in VALID_BODY_FT_OVER_DS:
+        value = payload["ft-over-ds"]
+        if value not in VALID_BODY_FT_OVER_DS:
             return (
                 False,
-                f"Invalid ft-over-ds '{value}'. Must be one of: {', '.join(VALID_BODY_FT_OVER_DS)}",
+                f"Invalid value for 'ft-over-ds'='{value}'. Must be one of: {', '.join(VALID_BODY_FT_OVER_DS)}",
             )
-
-    # Validate sae-groups if present
     if "sae-groups" in payload:
-        value = payload.get("sae-groups")
-        if value and value not in VALID_BODY_SAE_GROUPS:
+        value = payload["sae-groups"]
+        if value not in VALID_BODY_SAE_GROUPS:
             return (
                 False,
-                f"Invalid sae-groups '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_GROUPS)}",
+                f"Invalid value for 'sae-groups'='{value}'. Must be one of: {', '.join(VALID_BODY_SAE_GROUPS)}",
             )
-
-    # Validate owe-groups if present
     if "owe-groups" in payload:
-        value = payload.get("owe-groups")
-        if value and value not in VALID_BODY_OWE_GROUPS:
+        value = payload["owe-groups"]
+        if value not in VALID_BODY_OWE_GROUPS:
             return (
                 False,
-                f"Invalid owe-groups '{value}'. Must be one of: {', '.join(VALID_BODY_OWE_GROUPS)}",
+                f"Invalid value for 'owe-groups'='{value}'. Must be one of: {', '.join(VALID_BODY_OWE_GROUPS)}",
             )
-
-    # Validate owe-transition if present
     if "owe-transition" in payload:
-        value = payload.get("owe-transition")
-        if value and value not in VALID_BODY_OWE_TRANSITION:
+        value = payload["owe-transition"]
+        if value not in VALID_BODY_OWE_TRANSITION:
             return (
                 False,
-                f"Invalid owe-transition '{value}'. Must be one of: {', '.join(VALID_BODY_OWE_TRANSITION)}",
+                f"Invalid value for 'owe-transition'='{value}'. Must be one of: {', '.join(VALID_BODY_OWE_TRANSITION)}",
             )
-
-    # Validate owe-transition-ssid if present
-    if "owe-transition-ssid" in payload:
-        value = payload.get("owe-transition-ssid")
-        if value and isinstance(value, str) and len(value) > 32:
-            return (False, "owe-transition-ssid cannot exceed 32 characters")
-
-    # Validate additional-akms if present
     if "additional-akms" in payload:
-        value = payload.get("additional-akms")
-        if value and value not in VALID_BODY_ADDITIONAL_AKMS:
+        value = payload["additional-akms"]
+        if value not in VALID_BODY_ADDITIONAL_AKMS:
             return (
                 False,
-                f"Invalid additional-akms '{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_AKMS)}",
+                f"Invalid value for 'additional-akms'='{value}'. Must be one of: {', '.join(VALID_BODY_ADDITIONAL_AKMS)}",
             )
-
-    # Validate eapol-key-retries if present
     if "eapol-key-retries" in payload:
-        value = payload.get("eapol-key-retries")
-        if value and value not in VALID_BODY_EAPOL_KEY_RETRIES:
+        value = payload["eapol-key-retries"]
+        if value not in VALID_BODY_EAPOL_KEY_RETRIES:
             return (
                 False,
-                f"Invalid eapol-key-retries '{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_KEY_RETRIES)}",
+                f"Invalid value for 'eapol-key-retries'='{value}'. Must be one of: {', '.join(VALID_BODY_EAPOL_KEY_RETRIES)}",
             )
-
-    # Validate tkip-counter-measure if present
     if "tkip-counter-measure" in payload:
-        value = payload.get("tkip-counter-measure")
-        if value and value not in VALID_BODY_TKIP_COUNTER_MEASURE:
+        value = payload["tkip-counter-measure"]
+        if value not in VALID_BODY_TKIP_COUNTER_MEASURE:
             return (
                 False,
-                f"Invalid tkip-counter-measure '{value}'. Must be one of: {', '.join(VALID_BODY_TKIP_COUNTER_MEASURE)}",
+                f"Invalid value for 'tkip-counter-measure'='{value}'. Must be one of: {', '.join(VALID_BODY_TKIP_COUNTER_MEASURE)}",
             )
-
-    # Validate external-web if present
-    if "external-web" in payload:
-        value = payload.get("external-web")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (False, "external-web cannot exceed 1023 characters")
-
-    # Validate external-web-format if present
     if "external-web-format" in payload:
-        value = payload.get("external-web-format")
-        if value and value not in VALID_BODY_EXTERNAL_WEB_FORMAT:
+        value = payload["external-web-format"]
+        if value not in VALID_BODY_EXTERNAL_WEB_FORMAT:
             return (
                 False,
-                f"Invalid external-web-format '{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL_WEB_FORMAT)}",
+                f"Invalid value for 'external-web-format'='{value}'. Must be one of: {', '.join(VALID_BODY_EXTERNAL_WEB_FORMAT)}",
             )
-
-    # Validate external-logout if present
-    if "external-logout" in payload:
-        value = payload.get("external-logout")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "external-logout cannot exceed 127 characters")
-
-    # Validate mac-username-delimiter if present
     if "mac-username-delimiter" in payload:
-        value = payload.get("mac-username-delimiter")
-        if value and value not in VALID_BODY_MAC_USERNAME_DELIMITER:
+        value = payload["mac-username-delimiter"]
+        if value not in VALID_BODY_MAC_USERNAME_DELIMITER:
             return (
                 False,
-                f"Invalid mac-username-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_USERNAME_DELIMITER)}",
+                f"Invalid value for 'mac-username-delimiter'='{value}'. Must be one of: {', '.join(VALID_BODY_MAC_USERNAME_DELIMITER)}",
             )
-
-    # Validate mac-password-delimiter if present
     if "mac-password-delimiter" in payload:
-        value = payload.get("mac-password-delimiter")
-        if value and value not in VALID_BODY_MAC_PASSWORD_DELIMITER:
+        value = payload["mac-password-delimiter"]
+        if value not in VALID_BODY_MAC_PASSWORD_DELIMITER:
             return (
                 False,
-                f"Invalid mac-password-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_PASSWORD_DELIMITER)}",
+                f"Invalid value for 'mac-password-delimiter'='{value}'. Must be one of: {', '.join(VALID_BODY_MAC_PASSWORD_DELIMITER)}",
             )
-
-    # Validate mac-calling-station-delimiter if present
     if "mac-calling-station-delimiter" in payload:
-        value = payload.get("mac-calling-station-delimiter")
-        if value and value not in VALID_BODY_MAC_CALLING_STATION_DELIMITER:
+        value = payload["mac-calling-station-delimiter"]
+        if value not in VALID_BODY_MAC_CALLING_STATION_DELIMITER:
             return (
                 False,
-                f"Invalid mac-calling-station-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CALLING_STATION_DELIMITER)}",
+                f"Invalid value for 'mac-calling-station-delimiter'='{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CALLING_STATION_DELIMITER)}",
             )
-
-    # Validate mac-called-station-delimiter if present
     if "mac-called-station-delimiter" in payload:
-        value = payload.get("mac-called-station-delimiter")
-        if value and value not in VALID_BODY_MAC_CALLED_STATION_DELIMITER:
+        value = payload["mac-called-station-delimiter"]
+        if value not in VALID_BODY_MAC_CALLED_STATION_DELIMITER:
             return (
                 False,
-                f"Invalid mac-called-station-delimiter '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CALLED_STATION_DELIMITER)}",
+                f"Invalid value for 'mac-called-station-delimiter'='{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CALLED_STATION_DELIMITER)}",
             )
-
-    # Validate mac-case if present
     if "mac-case" in payload:
-        value = payload.get("mac-case")
-        if value and value not in VALID_BODY_MAC_CASE:
+        value = payload["mac-case"]
+        if value not in VALID_BODY_MAC_CASE:
             return (
                 False,
-                f"Invalid mac-case '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CASE)}",
+                f"Invalid value for 'mac-case'='{value}'. Must be one of: {', '.join(VALID_BODY_MAC_CASE)}",
             )
-
-    # Validate called-station-id-type if present
     if "called-station-id-type" in payload:
-        value = payload.get("called-station-id-type")
-        if value and value not in VALID_BODY_CALLED_STATION_ID_TYPE:
+        value = payload["called-station-id-type"]
+        if value not in VALID_BODY_CALLED_STATION_ID_TYPE:
             return (
                 False,
-                f"Invalid called-station-id-type '{value}'. Must be one of: {', '.join(VALID_BODY_CALLED_STATION_ID_TYPE)}",
+                f"Invalid value for 'called-station-id-type'='{value}'. Must be one of: {', '.join(VALID_BODY_CALLED_STATION_ID_TYPE)}",
             )
-
-    # Validate mac-auth-bypass if present
     if "mac-auth-bypass" in payload:
-        value = payload.get("mac-auth-bypass")
-        if value and value not in VALID_BODY_MAC_AUTH_BYPASS:
+        value = payload["mac-auth-bypass"]
+        if value not in VALID_BODY_MAC_AUTH_BYPASS:
             return (
                 False,
-                f"Invalid mac-auth-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_MAC_AUTH_BYPASS)}",
+                f"Invalid value for 'mac-auth-bypass'='{value}'. Must be one of: {', '.join(VALID_BODY_MAC_AUTH_BYPASS)}",
             )
-
-    # Validate radius-mac-auth if present
     if "radius-mac-auth" in payload:
-        value = payload.get("radius-mac-auth")
-        if value and value not in VALID_BODY_RADIUS_MAC_AUTH:
+        value = payload["radius-mac-auth"]
+        if value not in VALID_BODY_RADIUS_MAC_AUTH:
             return (
                 False,
-                f"Invalid radius-mac-auth '{value}'. Must be one of: {', '.join(VALID_BODY_RADIUS_MAC_AUTH)}",
+                f"Invalid value for 'radius-mac-auth'='{value}'. Must be one of: {', '.join(VALID_BODY_RADIUS_MAC_AUTH)}",
             )
-
-    # Validate radius-mac-auth-server if present
-    if "radius-mac-auth-server" in payload:
-        value = payload.get("radius-mac-auth-server")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "radius-mac-auth-server cannot exceed 35 characters",
-            )
-
-    # Validate radius-mac-auth-block-interval if present
-    if "radius-mac-auth-block-interval" in payload:
-        value = payload.get("radius-mac-auth-block-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 864000:
-                    return (
-                        False,
-                        "radius-mac-auth-block-interval must be between 30 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"radius-mac-auth-block-interval must be numeric, got: {value}",
-                )
-
-    # Validate radius-mac-mpsk-auth if present
     if "radius-mac-mpsk-auth" in payload:
-        value = payload.get("radius-mac-mpsk-auth")
-        if value and value not in VALID_BODY_RADIUS_MAC_MPSK_AUTH:
+        value = payload["radius-mac-mpsk-auth"]
+        if value not in VALID_BODY_RADIUS_MAC_MPSK_AUTH:
             return (
                 False,
-                f"Invalid radius-mac-mpsk-auth '{value}'. Must be one of: {', '.join(VALID_BODY_RADIUS_MAC_MPSK_AUTH)}",
+                f"Invalid value for 'radius-mac-mpsk-auth'='{value}'. Must be one of: {', '.join(VALID_BODY_RADIUS_MAC_MPSK_AUTH)}",
             )
-
-    # Validate radius-mac-mpsk-timeout if present
-    if "radius-mac-mpsk-timeout" in payload:
-        value = payload.get("radius-mac-mpsk-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 864000:
-                    return (
-                        False,
-                        "radius-mac-mpsk-timeout must be between 300 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"radius-mac-mpsk-timeout must be numeric, got: {value}",
-                )
-
-    # Validate auth if present
     if "auth" in payload:
-        value = payload.get("auth")
-        if value and value not in VALID_BODY_AUTH:
+        value = payload["auth"]
+        if value not in VALID_BODY_AUTH:
             return (
                 False,
-                f"Invalid auth '{value}'. Must be one of: {', '.join(VALID_BODY_AUTH)}",
+                f"Invalid value for 'auth'='{value}'. Must be one of: {', '.join(VALID_BODY_AUTH)}",
             )
-
-    # Validate encrypt if present
     if "encrypt" in payload:
-        value = payload.get("encrypt")
-        if value and value not in VALID_BODY_ENCRYPT:
+        value = payload["encrypt"]
+        if value not in VALID_BODY_ENCRYPT:
             return (
                 False,
-                f"Invalid encrypt '{value}'. Must be one of: {', '.join(VALID_BODY_ENCRYPT)}",
+                f"Invalid value for 'encrypt'='{value}'. Must be one of: {', '.join(VALID_BODY_ENCRYPT)}",
             )
-
-    # Validate keyindex if present
-    if "keyindex" in payload:
-        value = payload.get("keyindex")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 4:
-                    return (False, "keyindex must be between 1 and 4")
-            except (ValueError, TypeError):
-                return (False, f"keyindex must be numeric, got: {value}")
-
-    # Validate sae-h2e-only if present
     if "sae-h2e-only" in payload:
-        value = payload.get("sae-h2e-only")
-        if value and value not in VALID_BODY_SAE_H2E_ONLY:
+        value = payload["sae-h2e-only"]
+        if value not in VALID_BODY_SAE_H2E_ONLY:
             return (
                 False,
-                f"Invalid sae-h2e-only '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_H2E_ONLY)}",
+                f"Invalid value for 'sae-h2e-only'='{value}'. Must be one of: {', '.join(VALID_BODY_SAE_H2E_ONLY)}",
             )
-
-    # Validate sae-hnp-only if present
     if "sae-hnp-only" in payload:
-        value = payload.get("sae-hnp-only")
-        if value and value not in VALID_BODY_SAE_HNP_ONLY:
+        value = payload["sae-hnp-only"]
+        if value not in VALID_BODY_SAE_HNP_ONLY:
             return (
                 False,
-                f"Invalid sae-hnp-only '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_HNP_ONLY)}",
+                f"Invalid value for 'sae-hnp-only'='{value}'. Must be one of: {', '.join(VALID_BODY_SAE_HNP_ONLY)}",
             )
-
-    # Validate sae-pk if present
     if "sae-pk" in payload:
-        value = payload.get("sae-pk")
-        if value and value not in VALID_BODY_SAE_PK:
+        value = payload["sae-pk"]
+        if value not in VALID_BODY_SAE_PK:
             return (
                 False,
-                f"Invalid sae-pk '{value}'. Must be one of: {', '.join(VALID_BODY_SAE_PK)}",
+                f"Invalid value for 'sae-pk'='{value}'. Must be one of: {', '.join(VALID_BODY_SAE_PK)}",
             )
-
-    # Validate sae-private-key if present
-    if "sae-private-key" in payload:
-        value = payload.get("sae-private-key")
-        if value and isinstance(value, str) and len(value) > 359:
-            return (False, "sae-private-key cannot exceed 359 characters")
-
-    # Validate akm24-only if present
     if "akm24-only" in payload:
-        value = payload.get("akm24-only")
-        if value and value not in VALID_BODY_AKM24_ONLY:
+        value = payload["akm24-only"]
+        if value not in VALID_BODY_AKM24_ONLY:
             return (
                 False,
-                f"Invalid akm24-only '{value}'. Must be one of: {', '.join(VALID_BODY_AKM24_ONLY)}",
+                f"Invalid value for 'akm24-only'='{value}'. Must be one of: {', '.join(VALID_BODY_AKM24_ONLY)}",
             )
-
-    # Validate radius-server if present
-    if "radius-server" in payload:
-        value = payload.get("radius-server")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "radius-server cannot exceed 35 characters")
-
-    # Validate nas-filter-rule if present
     if "nas-filter-rule" in payload:
-        value = payload.get("nas-filter-rule")
-        if value and value not in VALID_BODY_NAS_FILTER_RULE:
+        value = payload["nas-filter-rule"]
+        if value not in VALID_BODY_NAS_FILTER_RULE:
             return (
                 False,
-                f"Invalid nas-filter-rule '{value}'. Must be one of: {', '.join(VALID_BODY_NAS_FILTER_RULE)}",
+                f"Invalid value for 'nas-filter-rule'='{value}'. Must be one of: {', '.join(VALID_BODY_NAS_FILTER_RULE)}",
             )
-
-    # Validate domain-name-stripping if present
     if "domain-name-stripping" in payload:
-        value = payload.get("domain-name-stripping")
-        if value and value not in VALID_BODY_DOMAIN_NAME_STRIPPING:
+        value = payload["domain-name-stripping"]
+        if value not in VALID_BODY_DOMAIN_NAME_STRIPPING:
             return (
                 False,
-                f"Invalid domain-name-stripping '{value}'. Must be one of: {', '.join(VALID_BODY_DOMAIN_NAME_STRIPPING)}",
+                f"Invalid value for 'domain-name-stripping'='{value}'. Must be one of: {', '.join(VALID_BODY_DOMAIN_NAME_STRIPPING)}",
             )
-
-    # Validate mlo if present
-    if "mlo" in payload:
-        value = payload.get("mlo")
-        if value and value not in VALID_BODY_MLO:
-            return (
-                False,
-                f"Invalid mlo '{value}'. Must be one of: {', '.join(VALID_BODY_MLO)}",
-            )
-
-    # Validate local-standalone if present
     if "local-standalone" in payload:
-        value = payload.get("local-standalone")
-        if value and value not in VALID_BODY_LOCAL_STANDALONE:
+        value = payload["local-standalone"]
+        if value not in VALID_BODY_LOCAL_STANDALONE:
             return (
                 False,
-                f"Invalid local-standalone '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE)}",
+                f"Invalid value for 'local-standalone'='{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE)}",
             )
-
-    # Validate local-standalone-nat if present
     if "local-standalone-nat" in payload:
-        value = payload.get("local-standalone-nat")
-        if value and value not in VALID_BODY_LOCAL_STANDALONE_NAT:
+        value = payload["local-standalone-nat"]
+        if value not in VALID_BODY_LOCAL_STANDALONE_NAT:
             return (
                 False,
-                f"Invalid local-standalone-nat '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE_NAT)}",
+                f"Invalid value for 'local-standalone-nat'='{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE_NAT)}",
             )
-
-    # Validate dhcp-lease-time if present
-    if "dhcp-lease-time" in payload:
-        value = payload.get("dhcp-lease-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 300 or int_val > 8640000:
-                    return (
-                        False,
-                        "dhcp-lease-time must be between 300 and 8640000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dhcp-lease-time must be numeric, got: {value}",
-                )
-
-    # Validate local-standalone-dns if present
     if "local-standalone-dns" in payload:
-        value = payload.get("local-standalone-dns")
-        if value and value not in VALID_BODY_LOCAL_STANDALONE_DNS:
+        value = payload["local-standalone-dns"]
+        if value not in VALID_BODY_LOCAL_STANDALONE_DNS:
             return (
                 False,
-                f"Invalid local-standalone-dns '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE_DNS)}",
+                f"Invalid value for 'local-standalone-dns'='{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_STANDALONE_DNS)}",
             )
-
-    # Validate local-lan-partition if present
     if "local-lan-partition" in payload:
-        value = payload.get("local-lan-partition")
-        if value and value not in VALID_BODY_LOCAL_LAN_PARTITION:
+        value = payload["local-lan-partition"]
+        if value not in VALID_BODY_LOCAL_LAN_PARTITION:
             return (
                 False,
-                f"Invalid local-lan-partition '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_LAN_PARTITION)}",
+                f"Invalid value for 'local-lan-partition'='{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_LAN_PARTITION)}",
             )
-
-    # Validate local-bridging if present
     if "local-bridging" in payload:
-        value = payload.get("local-bridging")
-        if value and value not in VALID_BODY_LOCAL_BRIDGING:
+        value = payload["local-bridging"]
+        if value not in VALID_BODY_LOCAL_BRIDGING:
             return (
                 False,
-                f"Invalid local-bridging '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_BRIDGING)}",
+                f"Invalid value for 'local-bridging'='{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_BRIDGING)}",
             )
-
-    # Validate local-lan if present
     if "local-lan" in payload:
-        value = payload.get("local-lan")
-        if value and value not in VALID_BODY_LOCAL_LAN:
+        value = payload["local-lan"]
+        if value not in VALID_BODY_LOCAL_LAN:
             return (
                 False,
-                f"Invalid local-lan '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_LAN)}",
+                f"Invalid value for 'local-lan'='{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_LAN)}",
             )
-
-    # Validate local-authentication if present
     if "local-authentication" in payload:
-        value = payload.get("local-authentication")
-        if value and value not in VALID_BODY_LOCAL_AUTHENTICATION:
+        value = payload["local-authentication"]
+        if value not in VALID_BODY_LOCAL_AUTHENTICATION:
             return (
                 False,
-                f"Invalid local-authentication '{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_AUTHENTICATION)}",
+                f"Invalid value for 'local-authentication'='{value}'. Must be one of: {', '.join(VALID_BODY_LOCAL_AUTHENTICATION)}",
             )
-
-    # Validate captive-portal if present
     if "captive-portal" in payload:
-        value = payload.get("captive-portal")
-        if value and value not in VALID_BODY_CAPTIVE_PORTAL:
+        value = payload["captive-portal"]
+        if value not in VALID_BODY_CAPTIVE_PORTAL:
             return (
                 False,
-                f"Invalid captive-portal '{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_PORTAL)}",
+                f"Invalid value for 'captive-portal'='{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_PORTAL)}",
             )
-
-    # Validate captive-network-assistant-bypass if present
     if "captive-network-assistant-bypass" in payload:
-        value = payload.get("captive-network-assistant-bypass")
-        if value and value not in VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS:
+        value = payload["captive-network-assistant-bypass"]
+        if value not in VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS:
             return (
                 False,
-                f"Invalid captive-network-assistant-bypass '{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS)}",
+                f"Invalid value for 'captive-network-assistant-bypass'='{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS)}",
             )
-
-    # Validate portal-message-override-group if present
-    if "portal-message-override-group" in payload:
-        value = payload.get("portal-message-override-group")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "portal-message-override-group cannot exceed 35 characters",
-            )
-
-    # Validate portal-type if present
     if "portal-type" in payload:
-        value = payload.get("portal-type")
-        if value and value not in VALID_BODY_PORTAL_TYPE:
+        value = payload["portal-type"]
+        if value not in VALID_BODY_PORTAL_TYPE:
             return (
                 False,
-                f"Invalid portal-type '{value}'. Must be one of: {', '.join(VALID_BODY_PORTAL_TYPE)}",
+                f"Invalid value for 'portal-type'='{value}'. Must be one of: {', '.join(VALID_BODY_PORTAL_TYPE)}",
             )
-
-    # Validate security-exempt-list if present
-    if "security-exempt-list" in payload:
-        value = payload.get("security-exempt-list")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "security-exempt-list cannot exceed 35 characters")
-
-    # Validate security-redirect-url if present
-    if "security-redirect-url" in payload:
-        value = payload.get("security-redirect-url")
-        if value and isinstance(value, str) and len(value) > 1023:
-            return (
-                False,
-                "security-redirect-url cannot exceed 1023 characters",
-            )
-
-    # Validate auth-cert if present
-    if "auth-cert" in payload:
-        value = payload.get("auth-cert")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "auth-cert cannot exceed 35 characters")
-
-    # Validate auth-portal-addr if present
-    if "auth-portal-addr" in payload:
-        value = payload.get("auth-portal-addr")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "auth-portal-addr cannot exceed 63 characters")
-
-    # Validate intra-vap-privacy if present
     if "intra-vap-privacy" in payload:
-        value = payload.get("intra-vap-privacy")
-        if value and value not in VALID_BODY_INTRA_VAP_PRIVACY:
+        value = payload["intra-vap-privacy"]
+        if value not in VALID_BODY_INTRA_VAP_PRIVACY:
             return (
                 False,
-                f"Invalid intra-vap-privacy '{value}'. Must be one of: {', '.join(VALID_BODY_INTRA_VAP_PRIVACY)}",
+                f"Invalid value for 'intra-vap-privacy'='{value}'. Must be one of: {', '.join(VALID_BODY_INTRA_VAP_PRIVACY)}",
             )
-
-    # Validate ldpc if present
     if "ldpc" in payload:
-        value = payload.get("ldpc")
-        if value and value not in VALID_BODY_LDPC:
+        value = payload["ldpc"]
+        if value not in VALID_BODY_LDPC:
             return (
                 False,
-                f"Invalid ldpc '{value}'. Must be one of: {', '.join(VALID_BODY_LDPC)}",
+                f"Invalid value for 'ldpc'='{value}'. Must be one of: {', '.join(VALID_BODY_LDPC)}",
             )
-
-    # Validate high-efficiency if present
     if "high-efficiency" in payload:
-        value = payload.get("high-efficiency")
-        if value and value not in VALID_BODY_HIGH_EFFICIENCY:
+        value = payload["high-efficiency"]
+        if value not in VALID_BODY_HIGH_EFFICIENCY:
             return (
                 False,
-                f"Invalid high-efficiency '{value}'. Must be one of: {', '.join(VALID_BODY_HIGH_EFFICIENCY)}",
+                f"Invalid value for 'high-efficiency'='{value}'. Must be one of: {', '.join(VALID_BODY_HIGH_EFFICIENCY)}",
             )
-
-    # Validate target-wake-time if present
     if "target-wake-time" in payload:
-        value = payload.get("target-wake-time")
-        if value and value not in VALID_BODY_TARGET_WAKE_TIME:
+        value = payload["target-wake-time"]
+        if value not in VALID_BODY_TARGET_WAKE_TIME:
             return (
                 False,
-                f"Invalid target-wake-time '{value}'. Must be one of: {', '.join(VALID_BODY_TARGET_WAKE_TIME)}",
+                f"Invalid value for 'target-wake-time'='{value}'. Must be one of: {', '.join(VALID_BODY_TARGET_WAKE_TIME)}",
             )
-
-    # Validate port-macauth if present
     if "port-macauth" in payload:
-        value = payload.get("port-macauth")
-        if value and value not in VALID_BODY_PORT_MACAUTH:
+        value = payload["port-macauth"]
+        if value not in VALID_BODY_PORT_MACAUTH:
             return (
                 False,
-                f"Invalid port-macauth '{value}'. Must be one of: {', '.join(VALID_BODY_PORT_MACAUTH)}",
+                f"Invalid value for 'port-macauth'='{value}'. Must be one of: {', '.join(VALID_BODY_PORT_MACAUTH)}",
             )
-
-    # Validate port-macauth-timeout if present
-    if "port-macauth-timeout" in payload:
-        value = payload.get("port-macauth-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 60 or int_val > 65535:
-                    return (
-                        False,
-                        "port-macauth-timeout must be between 60 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"port-macauth-timeout must be numeric, got: {value}",
-                )
-
-    # Validate port-macauth-reauth-timeout if present
-    if "port-macauth-reauth-timeout" in payload:
-        value = payload.get("port-macauth-reauth-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 120 or int_val > 65535:
-                    return (
-                        False,
-                        "port-macauth-reauth-timeout must be between 120 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"port-macauth-reauth-timeout must be numeric, got: {value}",
-                )
-
-    # Validate bss-color-partial if present
     if "bss-color-partial" in payload:
-        value = payload.get("bss-color-partial")
-        if value and value not in VALID_BODY_BSS_COLOR_PARTIAL:
+        value = payload["bss-color-partial"]
+        if value not in VALID_BODY_BSS_COLOR_PARTIAL:
             return (
                 False,
-                f"Invalid bss-color-partial '{value}'. Must be one of: {', '.join(VALID_BODY_BSS_COLOR_PARTIAL)}",
+                f"Invalid value for 'bss-color-partial'='{value}'. Must be one of: {', '.join(VALID_BODY_BSS_COLOR_PARTIAL)}",
             )
-
-    # Validate mpsk-profile if present
-    if "mpsk-profile" in payload:
-        value = payload.get("mpsk-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "mpsk-profile cannot exceed 35 characters")
-
-    # Validate split-tunneling if present
     if "split-tunneling" in payload:
-        value = payload.get("split-tunneling")
-        if value and value not in VALID_BODY_SPLIT_TUNNELING:
+        value = payload["split-tunneling"]
+        if value not in VALID_BODY_SPLIT_TUNNELING:
             return (
                 False,
-                f"Invalid split-tunneling '{value}'. Must be one of: {', '.join(VALID_BODY_SPLIT_TUNNELING)}",
+                f"Invalid value for 'split-tunneling'='{value}'. Must be one of: {', '.join(VALID_BODY_SPLIT_TUNNELING)}",
             )
-
-    # Validate nac if present
     if "nac" in payload:
-        value = payload.get("nac")
-        if value and value not in VALID_BODY_NAC:
+        value = payload["nac"]
+        if value not in VALID_BODY_NAC:
             return (
                 False,
-                f"Invalid nac '{value}'. Must be one of: {', '.join(VALID_BODY_NAC)}",
+                f"Invalid value for 'nac'='{value}'. Must be one of: {', '.join(VALID_BODY_NAC)}",
             )
-
-    # Validate nac-profile if present
-    if "nac-profile" in payload:
-        value = payload.get("nac-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "nac-profile cannot exceed 35 characters")
-
-    # Validate vlanid if present
-    if "vlanid" in payload:
-        value = payload.get("vlanid")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4094:
-                    return (False, "vlanid must be between 0 and 4094")
-            except (ValueError, TypeError):
-                return (False, f"vlanid must be numeric, got: {value}")
-
-    # Validate vlan-auto if present
     if "vlan-auto" in payload:
-        value = payload.get("vlan-auto")
-        if value and value not in VALID_BODY_VLAN_AUTO:
+        value = payload["vlan-auto"]
+        if value not in VALID_BODY_VLAN_AUTO:
             return (
                 False,
-                f"Invalid vlan-auto '{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_AUTO)}",
+                f"Invalid value for 'vlan-auto'='{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_AUTO)}",
             )
-
-    # Validate dynamic-vlan if present
     if "dynamic-vlan" in payload:
-        value = payload.get("dynamic-vlan")
-        if value and value not in VALID_BODY_DYNAMIC_VLAN:
+        value = payload["dynamic-vlan"]
+        if value not in VALID_BODY_DYNAMIC_VLAN:
             return (
                 False,
-                f"Invalid dynamic-vlan '{value}'. Must be one of: {', '.join(VALID_BODY_DYNAMIC_VLAN)}",
+                f"Invalid value for 'dynamic-vlan'='{value}'. Must be one of: {', '.join(VALID_BODY_DYNAMIC_VLAN)}",
             )
-
-    # Validate captive-portal-fw-accounting if present
     if "captive-portal-fw-accounting" in payload:
-        value = payload.get("captive-portal-fw-accounting")
-        if value and value not in VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING:
+        value = payload["captive-portal-fw-accounting"]
+        if value not in VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING:
             return (
                 False,
-                f"Invalid captive-portal-fw-accounting '{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING)}",
+                f"Invalid value for 'captive-portal-fw-accounting'='{value}'. Must be one of: {', '.join(VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING)}",
             )
-
-    # Validate captive-portal-ac-name if present
-    if "captive-portal-ac-name" in payload:
-        value = payload.get("captive-portal-ac-name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "captive-portal-ac-name cannot exceed 35 characters",
-            )
-
-    # Validate captive-portal-auth-timeout if present
-    if "captive-portal-auth-timeout" in payload:
-        value = payload.get("captive-portal-auth-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 864000:
-                    return (
-                        False,
-                        "captive-portal-auth-timeout must be between 0 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"captive-portal-auth-timeout must be numeric, got: {value}",
-                )
-
-    # Validate multicast-rate if present
     if "multicast-rate" in payload:
-        value = payload.get("multicast-rate")
-        if value and value not in VALID_BODY_MULTICAST_RATE:
+        value = payload["multicast-rate"]
+        if value not in VALID_BODY_MULTICAST_RATE:
             return (
                 False,
-                f"Invalid multicast-rate '{value}'. Must be one of: {', '.join(VALID_BODY_MULTICAST_RATE)}",
+                f"Invalid value for 'multicast-rate'='{value}'. Must be one of: {', '.join(VALID_BODY_MULTICAST_RATE)}",
             )
-
-    # Validate multicast-enhance if present
     if "multicast-enhance" in payload:
-        value = payload.get("multicast-enhance")
-        if value and value not in VALID_BODY_MULTICAST_ENHANCE:
+        value = payload["multicast-enhance"]
+        if value not in VALID_BODY_MULTICAST_ENHANCE:
             return (
                 False,
-                f"Invalid multicast-enhance '{value}'. Must be one of: {', '.join(VALID_BODY_MULTICAST_ENHANCE)}",
+                f"Invalid value for 'multicast-enhance'='{value}'. Must be one of: {', '.join(VALID_BODY_MULTICAST_ENHANCE)}",
             )
-
-    # Validate igmp-snooping if present
     if "igmp-snooping" in payload:
-        value = payload.get("igmp-snooping")
-        if value and value not in VALID_BODY_IGMP_SNOOPING:
+        value = payload["igmp-snooping"]
+        if value not in VALID_BODY_IGMP_SNOOPING:
             return (
                 False,
-                f"Invalid igmp-snooping '{value}'. Must be one of: {', '.join(VALID_BODY_IGMP_SNOOPING)}",
+                f"Invalid value for 'igmp-snooping'='{value}'. Must be one of: {', '.join(VALID_BODY_IGMP_SNOOPING)}",
             )
-
-    # Validate dhcp-address-enforcement if present
     if "dhcp-address-enforcement" in payload:
-        value = payload.get("dhcp-address-enforcement")
-        if value and value not in VALID_BODY_DHCP_ADDRESS_ENFORCEMENT:
+        value = payload["dhcp-address-enforcement"]
+        if value not in VALID_BODY_DHCP_ADDRESS_ENFORCEMENT:
             return (
                 False,
-                f"Invalid dhcp-address-enforcement '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_ADDRESS_ENFORCEMENT)}",
+                f"Invalid value for 'dhcp-address-enforcement'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_ADDRESS_ENFORCEMENT)}",
             )
-
-    # Validate broadcast-suppression if present
     if "broadcast-suppression" in payload:
-        value = payload.get("broadcast-suppression")
-        if value and value not in VALID_BODY_BROADCAST_SUPPRESSION:
+        value = payload["broadcast-suppression"]
+        if value not in VALID_BODY_BROADCAST_SUPPRESSION:
             return (
                 False,
-                f"Invalid broadcast-suppression '{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_SUPPRESSION)}",
+                f"Invalid value for 'broadcast-suppression'='{value}'. Must be one of: {', '.join(VALID_BODY_BROADCAST_SUPPRESSION)}",
             )
-
-    # Validate ipv6-rules if present
     if "ipv6-rules" in payload:
-        value = payload.get("ipv6-rules")
-        if value and value not in VALID_BODY_IPV6_RULES:
+        value = payload["ipv6-rules"]
+        if value not in VALID_BODY_IPV6_RULES:
             return (
                 False,
-                f"Invalid ipv6-rules '{value}'. Must be one of: {', '.join(VALID_BODY_IPV6_RULES)}",
+                f"Invalid value for 'ipv6-rules'='{value}'. Must be one of: {', '.join(VALID_BODY_IPV6_RULES)}",
             )
-
-    # Validate me-disable-thresh if present
-    if "me-disable-thresh" in payload:
-        value = payload.get("me-disable-thresh")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 2 or int_val > 256:
-                    return (
-                        False,
-                        "me-disable-thresh must be between 2 and 256",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"me-disable-thresh must be numeric, got: {value}",
-                )
-
-    # Validate mu-mimo if present
     if "mu-mimo" in payload:
-        value = payload.get("mu-mimo")
-        if value and value not in VALID_BODY_MU_MIMO:
+        value = payload["mu-mimo"]
+        if value not in VALID_BODY_MU_MIMO:
             return (
                 False,
-                f"Invalid mu-mimo '{value}'. Must be one of: {', '.join(VALID_BODY_MU_MIMO)}",
+                f"Invalid value for 'mu-mimo'='{value}'. Must be one of: {', '.join(VALID_BODY_MU_MIMO)}",
             )
-
-    # Validate probe-resp-suppression if present
     if "probe-resp-suppression" in payload:
-        value = payload.get("probe-resp-suppression")
-        if value and value not in VALID_BODY_PROBE_RESP_SUPPRESSION:
+        value = payload["probe-resp-suppression"]
+        if value not in VALID_BODY_PROBE_RESP_SUPPRESSION:
             return (
                 False,
-                f"Invalid probe-resp-suppression '{value}'. Must be one of: {', '.join(VALID_BODY_PROBE_RESP_SUPPRESSION)}",
+                f"Invalid value for 'probe-resp-suppression'='{value}'. Must be one of: {', '.join(VALID_BODY_PROBE_RESP_SUPPRESSION)}",
             )
-
-    # Validate probe-resp-threshold if present
-    if "probe-resp-threshold" in payload:
-        value = payload.get("probe-resp-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "probe-resp-threshold cannot exceed 7 characters")
-
-    # Validate radio-sensitivity if present
     if "radio-sensitivity" in payload:
-        value = payload.get("radio-sensitivity")
-        if value and value not in VALID_BODY_RADIO_SENSITIVITY:
+        value = payload["radio-sensitivity"]
+        if value not in VALID_BODY_RADIO_SENSITIVITY:
             return (
                 False,
-                f"Invalid radio-sensitivity '{value}'. Must be one of: {', '.join(VALID_BODY_RADIO_SENSITIVITY)}",
+                f"Invalid value for 'radio-sensitivity'='{value}'. Must be one of: {', '.join(VALID_BODY_RADIO_SENSITIVITY)}",
             )
-
-    # Validate quarantine if present
     if "quarantine" in payload:
-        value = payload.get("quarantine")
-        if value and value not in VALID_BODY_QUARANTINE:
+        value = payload["quarantine"]
+        if value not in VALID_BODY_QUARANTINE:
             return (
                 False,
-                f"Invalid quarantine '{value}'. Must be one of: {', '.join(VALID_BODY_QUARANTINE)}",
+                f"Invalid value for 'quarantine'='{value}'. Must be one of: {', '.join(VALID_BODY_QUARANTINE)}",
             )
-
-    # Validate radio-5g-threshold if present
-    if "radio-5g-threshold" in payload:
-        value = payload.get("radio-5g-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "radio-5g-threshold cannot exceed 7 characters")
-
-    # Validate radio-2g-threshold if present
-    if "radio-2g-threshold" in payload:
-        value = payload.get("radio-2g-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "radio-2g-threshold cannot exceed 7 characters")
-
-    # Validate vlan-pooling if present
     if "vlan-pooling" in payload:
-        value = payload.get("vlan-pooling")
-        if value and value not in VALID_BODY_VLAN_POOLING:
+        value = payload["vlan-pooling"]
+        if value not in VALID_BODY_VLAN_POOLING:
             return (
                 False,
-                f"Invalid vlan-pooling '{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_POOLING)}",
+                f"Invalid value for 'vlan-pooling'='{value}'. Must be one of: {', '.join(VALID_BODY_VLAN_POOLING)}",
             )
-
-    # Validate dhcp-option43-insertion if present
     if "dhcp-option43-insertion" in payload:
-        value = payload.get("dhcp-option43-insertion")
-        if value and value not in VALID_BODY_DHCP_OPTION43_INSERTION:
+        value = payload["dhcp-option43-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION43_INSERTION:
             return (
                 False,
-                f"Invalid dhcp-option43-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION43_INSERTION)}",
+                f"Invalid value for 'dhcp-option43-insertion'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION43_INSERTION)}",
             )
-
-    # Validate dhcp-option82-insertion if present
     if "dhcp-option82-insertion" in payload:
-        value = payload.get("dhcp-option82-insertion")
-        if value and value not in VALID_BODY_DHCP_OPTION82_INSERTION:
+        value = payload["dhcp-option82-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION82_INSERTION:
             return (
                 False,
-                f"Invalid dhcp-option82-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_INSERTION)}",
+                f"Invalid value for 'dhcp-option82-insertion'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_INSERTION)}",
             )
-
-    # Validate dhcp-option82-circuit-id-insertion if present
     if "dhcp-option82-circuit-id-insertion" in payload:
-        value = payload.get("dhcp-option82-circuit-id-insertion")
-        if (
-            value
-            and value not in VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION
-        ):
+        value = payload["dhcp-option82-circuit-id-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION:
             return (
                 False,
-                f"Invalid dhcp-option82-circuit-id-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION)}",
+                f"Invalid value for 'dhcp-option82-circuit-id-insertion'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION)}",
             )
-
-    # Validate dhcp-option82-remote-id-insertion if present
     if "dhcp-option82-remote-id-insertion" in payload:
-        value = payload.get("dhcp-option82-remote-id-insertion")
-        if value and value not in VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION:
+        value = payload["dhcp-option82-remote-id-insertion"]
+        if value not in VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION:
             return (
                 False,
-                f"Invalid dhcp-option82-remote-id-insertion '{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION)}",
+                f"Invalid value for 'dhcp-option82-remote-id-insertion'='{value}'. Must be one of: {', '.join(VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION)}",
             )
-
-    # Validate ptk-rekey if present
     if "ptk-rekey" in payload:
-        value = payload.get("ptk-rekey")
-        if value and value not in VALID_BODY_PTK_REKEY:
+        value = payload["ptk-rekey"]
+        if value not in VALID_BODY_PTK_REKEY:
             return (
                 False,
-                f"Invalid ptk-rekey '{value}'. Must be one of: {', '.join(VALID_BODY_PTK_REKEY)}",
+                f"Invalid value for 'ptk-rekey'='{value}'. Must be one of: {', '.join(VALID_BODY_PTK_REKEY)}",
             )
-
-    # Validate ptk-rekey-intv if present
-    if "ptk-rekey-intv" in payload:
-        value = payload.get("ptk-rekey-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 600 or int_val > 864000:
-                    return (
-                        False,
-                        "ptk-rekey-intv must be between 600 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"ptk-rekey-intv must be numeric, got: {value}")
-
-    # Validate gtk-rekey if present
     if "gtk-rekey" in payload:
-        value = payload.get("gtk-rekey")
-        if value and value not in VALID_BODY_GTK_REKEY:
+        value = payload["gtk-rekey"]
+        if value not in VALID_BODY_GTK_REKEY:
             return (
                 False,
-                f"Invalid gtk-rekey '{value}'. Must be one of: {', '.join(VALID_BODY_GTK_REKEY)}",
+                f"Invalid value for 'gtk-rekey'='{value}'. Must be one of: {', '.join(VALID_BODY_GTK_REKEY)}",
             )
-
-    # Validate gtk-rekey-intv if present
-    if "gtk-rekey-intv" in payload:
-        value = payload.get("gtk-rekey-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 600 or int_val > 864000:
-                    return (
-                        False,
-                        "gtk-rekey-intv must be between 600 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"gtk-rekey-intv must be numeric, got: {value}")
-
-    # Validate eap-reauth if present
     if "eap-reauth" in payload:
-        value = payload.get("eap-reauth")
-        if value and value not in VALID_BODY_EAP_REAUTH:
+        value = payload["eap-reauth"]
+        if value not in VALID_BODY_EAP_REAUTH:
             return (
                 False,
-                f"Invalid eap-reauth '{value}'. Must be one of: {', '.join(VALID_BODY_EAP_REAUTH)}",
+                f"Invalid value for 'eap-reauth'='{value}'. Must be one of: {', '.join(VALID_BODY_EAP_REAUTH)}",
             )
-
-    # Validate eap-reauth-intv if present
-    if "eap-reauth-intv" in payload:
-        value = payload.get("eap-reauth-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1800 or int_val > 864000:
-                    return (
-                        False,
-                        "eap-reauth-intv must be between 1800 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"eap-reauth-intv must be numeric, got: {value}",
-                )
-
-    # Validate roaming-acct-interim-update if present
     if "roaming-acct-interim-update" in payload:
-        value = payload.get("roaming-acct-interim-update")
-        if value and value not in VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE:
+        value = payload["roaming-acct-interim-update"]
+        if value not in VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE:
             return (
                 False,
-                f"Invalid roaming-acct-interim-update '{value}'. Must be one of: {', '.join(VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE)}",
+                f"Invalid value for 'roaming-acct-interim-update'='{value}'. Must be one of: {', '.join(VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE)}",
             )
-
-    # Validate qos-profile if present
-    if "qos-profile" in payload:
-        value = payload.get("qos-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "qos-profile cannot exceed 35 characters")
-
-    # Validate hotspot20-profile if present
-    if "hotspot20-profile" in payload:
-        value = payload.get("hotspot20-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "hotspot20-profile cannot exceed 35 characters")
-
-    # Validate access-control-list if present
-    if "access-control-list" in payload:
-        value = payload.get("access-control-list")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "access-control-list cannot exceed 35 characters")
-
-    # Validate primary-wag-profile if present
-    if "primary-wag-profile" in payload:
-        value = payload.get("primary-wag-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "primary-wag-profile cannot exceed 35 characters")
-
-    # Validate secondary-wag-profile if present
-    if "secondary-wag-profile" in payload:
-        value = payload.get("secondary-wag-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (
-                False,
-                "secondary-wag-profile cannot exceed 35 characters",
-            )
-
-    # Validate tunnel-echo-interval if present
-    if "tunnel-echo-interval" in payload:
-        value = payload.get("tunnel-echo-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 65535:
-                    return (
-                        False,
-                        "tunnel-echo-interval must be between 1 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"tunnel-echo-interval must be numeric, got: {value}",
-                )
-
-    # Validate tunnel-fallback-interval if present
-    if "tunnel-fallback-interval" in payload:
-        value = payload.get("tunnel-fallback-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "tunnel-fallback-interval must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"tunnel-fallback-interval must be numeric, got: {value}",
-                )
-
-    # Validate rates-11a if present
     if "rates-11a" in payload:
-        value = payload.get("rates-11a")
-        if value and value not in VALID_BODY_RATES_11A:
+        value = payload["rates-11a"]
+        if value not in VALID_BODY_RATES_11A:
             return (
                 False,
-                f"Invalid rates-11a '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11A)}",
+                f"Invalid value for 'rates-11a'='{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11A)}",
             )
-
-    # Validate rates-11bg if present
     if "rates-11bg" in payload:
-        value = payload.get("rates-11bg")
-        if value and value not in VALID_BODY_RATES_11BG:
+        value = payload["rates-11bg"]
+        if value not in VALID_BODY_RATES_11BG:
             return (
                 False,
-                f"Invalid rates-11bg '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11BG)}",
+                f"Invalid value for 'rates-11bg'='{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11BG)}",
             )
-
-    # Validate rates-11n-ss12 if present
     if "rates-11n-ss12" in payload:
-        value = payload.get("rates-11n-ss12")
-        if value and value not in VALID_BODY_RATES_11N_SS12:
+        value = payload["rates-11n-ss12"]
+        if value not in VALID_BODY_RATES_11N_SS12:
             return (
                 False,
-                f"Invalid rates-11n-ss12 '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11N_SS12)}",
+                f"Invalid value for 'rates-11n-ss12'='{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11N_SS12)}",
             )
-
-    # Validate rates-11n-ss34 if present
     if "rates-11n-ss34" in payload:
-        value = payload.get("rates-11n-ss34")
-        if value and value not in VALID_BODY_RATES_11N_SS34:
+        value = payload["rates-11n-ss34"]
+        if value not in VALID_BODY_RATES_11N_SS34:
             return (
                 False,
-                f"Invalid rates-11n-ss34 '{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11N_SS34)}",
+                f"Invalid value for 'rates-11n-ss34'='{value}'. Must be one of: {', '.join(VALID_BODY_RATES_11N_SS34)}",
             )
-
-    # Validate rates-11ac-mcs-map if present
-    if "rates-11ac-mcs-map" in payload:
-        value = payload.get("rates-11ac-mcs-map")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "rates-11ac-mcs-map cannot exceed 63 characters")
-
-    # Validate rates-11ax-mcs-map if present
-    if "rates-11ax-mcs-map" in payload:
-        value = payload.get("rates-11ax-mcs-map")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "rates-11ax-mcs-map cannot exceed 63 characters")
-
-    # Validate rates-11be-mcs-map if present
-    if "rates-11be-mcs-map" in payload:
-        value = payload.get("rates-11be-mcs-map")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (False, "rates-11be-mcs-map cannot exceed 15 characters")
-
-    # Validate rates-11be-mcs-map-160 if present
-    if "rates-11be-mcs-map-160" in payload:
-        value = payload.get("rates-11be-mcs-map-160")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (
-                False,
-                "rates-11be-mcs-map-160 cannot exceed 15 characters",
-            )
-
-    # Validate rates-11be-mcs-map-320 if present
-    if "rates-11be-mcs-map-320" in payload:
-        value = payload.get("rates-11be-mcs-map-320")
-        if value and isinstance(value, str) and len(value) > 15:
-            return (
-                False,
-                "rates-11be-mcs-map-320 cannot exceed 15 characters",
-            )
-
-    # Validate utm-profile if present
-    if "utm-profile" in payload:
-        value = payload.get("utm-profile")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "utm-profile cannot exceed 35 characters")
-
-    # Validate utm-status if present
     if "utm-status" in payload:
-        value = payload.get("utm-status")
-        if value and value not in VALID_BODY_UTM_STATUS:
+        value = payload["utm-status"]
+        if value not in VALID_BODY_UTM_STATUS:
             return (
                 False,
-                f"Invalid utm-status '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
+                f"Invalid value for 'utm-status'='{value}'. Must be one of: {', '.join(VALID_BODY_UTM_STATUS)}",
             )
-
-    # Validate utm-log if present
     if "utm-log" in payload:
-        value = payload.get("utm-log")
-        if value and value not in VALID_BODY_UTM_LOG:
+        value = payload["utm-log"]
+        if value not in VALID_BODY_UTM_LOG:
             return (
                 False,
-                f"Invalid utm-log '{value}'. Must be one of: {', '.join(VALID_BODY_UTM_LOG)}",
+                f"Invalid value for 'utm-log'='{value}'. Must be one of: {', '.join(VALID_BODY_UTM_LOG)}",
             )
-
-    # Validate ips-sensor if present
-    if "ips-sensor" in payload:
-        value = payload.get("ips-sensor")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "ips-sensor cannot exceed 47 characters")
-
-    # Validate application-list if present
-    if "application-list" in payload:
-        value = payload.get("application-list")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "application-list cannot exceed 47 characters")
-
-    # Validate antivirus-profile if present
-    if "antivirus-profile" in payload:
-        value = payload.get("antivirus-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "antivirus-profile cannot exceed 47 characters")
-
-    # Validate webfilter-profile if present
-    if "webfilter-profile" in payload:
-        value = payload.get("webfilter-profile")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "webfilter-profile cannot exceed 47 characters")
-
-    # Validate scan-botnet-connections if present
     if "scan-botnet-connections" in payload:
-        value = payload.get("scan-botnet-connections")
-        if value and value not in VALID_BODY_SCAN_BOTNET_CONNECTIONS:
+        value = payload["scan-botnet-connections"]
+        if value not in VALID_BODY_SCAN_BOTNET_CONNECTIONS:
             return (
                 False,
-                f"Invalid scan-botnet-connections '{value}'. Must be one of: {', '.join(VALID_BODY_SCAN_BOTNET_CONNECTIONS)}",
+                f"Invalid value for 'scan-botnet-connections'='{value}'. Must be one of: {', '.join(VALID_BODY_SCAN_BOTNET_CONNECTIONS)}",
             )
-
-    # Validate address-group if present
-    if "address-group" in payload:
-        value = payload.get("address-group")
-        if value and isinstance(value, str) and len(value) > 79:
-            return (False, "address-group cannot exceed 79 characters")
-
-    # Validate address-group-policy if present
     if "address-group-policy" in payload:
-        value = payload.get("address-group-policy")
-        if value and value not in VALID_BODY_ADDRESS_GROUP_POLICY:
+        value = payload["address-group-policy"]
+        if value not in VALID_BODY_ADDRESS_GROUP_POLICY:
             return (
                 False,
-                f"Invalid address-group-policy '{value}'. Must be one of: {', '.join(VALID_BODY_ADDRESS_GROUP_POLICY)}",
+                f"Invalid value for 'address-group-policy'='{value}'. Must be one of: {', '.join(VALID_BODY_ADDRESS_GROUP_POLICY)}",
             )
-
-    # Validate sticky-client-remove if present
     if "sticky-client-remove" in payload:
-        value = payload.get("sticky-client-remove")
-        if value and value not in VALID_BODY_STICKY_CLIENT_REMOVE:
+        value = payload["sticky-client-remove"]
+        if value not in VALID_BODY_STICKY_CLIENT_REMOVE:
             return (
                 False,
-                f"Invalid sticky-client-remove '{value}'. Must be one of: {', '.join(VALID_BODY_STICKY_CLIENT_REMOVE)}",
+                f"Invalid value for 'sticky-client-remove'='{value}'. Must be one of: {', '.join(VALID_BODY_STICKY_CLIENT_REMOVE)}",
             )
-
-    # Validate sticky-client-threshold-5g if present
-    if "sticky-client-threshold-5g" in payload:
-        value = payload.get("sticky-client-threshold-5g")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (
-                False,
-                "sticky-client-threshold-5g cannot exceed 7 characters",
-            )
-
-    # Validate sticky-client-threshold-2g if present
-    if "sticky-client-threshold-2g" in payload:
-        value = payload.get("sticky-client-threshold-2g")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (
-                False,
-                "sticky-client-threshold-2g cannot exceed 7 characters",
-            )
-
-    # Validate sticky-client-threshold-6g if present
-    if "sticky-client-threshold-6g" in payload:
-        value = payload.get("sticky-client-threshold-6g")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (
-                False,
-                "sticky-client-threshold-6g cannot exceed 7 characters",
-            )
-
-    # Validate bstm-rssi-disassoc-timer if present
-    if "bstm-rssi-disassoc-timer" in payload:
-        value = payload.get("bstm-rssi-disassoc-timer")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 2000:
-                    return (
-                        False,
-                        "bstm-rssi-disassoc-timer must be between 1 and 2000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bstm-rssi-disassoc-timer must be numeric, got: {value}",
-                )
-
-    # Validate bstm-load-balancing-disassoc-timer if present
-    if "bstm-load-balancing-disassoc-timer" in payload:
-        value = payload.get("bstm-load-balancing-disassoc-timer")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 30:
-                    return (
-                        False,
-                        "bstm-load-balancing-disassoc-timer must be between 1 and 30",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bstm-load-balancing-disassoc-timer must be numeric, got: {value}",
-                )
-
-    # Validate bstm-disassociation-imminent if present
     if "bstm-disassociation-imminent" in payload:
-        value = payload.get("bstm-disassociation-imminent")
-        if value and value not in VALID_BODY_BSTM_DISASSOCIATION_IMMINENT:
+        value = payload["bstm-disassociation-imminent"]
+        if value not in VALID_BODY_BSTM_DISASSOCIATION_IMMINENT:
             return (
                 False,
-                f"Invalid bstm-disassociation-imminent '{value}'. Must be one of: {', '.join(VALID_BODY_BSTM_DISASSOCIATION_IMMINENT)}",
+                f"Invalid value for 'bstm-disassociation-imminent'='{value}'. Must be one of: {', '.join(VALID_BODY_BSTM_DISASSOCIATION_IMMINENT)}",
             )
-
-    # Validate beacon-advertising if present
     if "beacon-advertising" in payload:
-        value = payload.get("beacon-advertising")
-        if value and value not in VALID_BODY_BEACON_ADVERTISING:
+        value = payload["beacon-advertising"]
+        if value not in VALID_BODY_BEACON_ADVERTISING:
             return (
                 False,
-                f"Invalid beacon-advertising '{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_ADVERTISING)}",
+                f"Invalid value for 'beacon-advertising'='{value}'. Must be one of: {', '.join(VALID_BODY_BEACON_ADVERTISING)}",
             )
-
-    # Validate osen if present
     if "osen" in payload:
-        value = payload.get("osen")
-        if value and value not in VALID_BODY_OSEN:
+        value = payload["osen"]
+        if value not in VALID_BODY_OSEN:
             return (
                 False,
-                f"Invalid osen '{value}'. Must be one of: {', '.join(VALID_BODY_OSEN)}",
+                f"Invalid value for 'osen'='{value}'. Must be one of: {', '.join(VALID_BODY_OSEN)}",
             )
-
-    # Validate application-detection-engine if present
     if "application-detection-engine" in payload:
-        value = payload.get("application-detection-engine")
-        if value and value not in VALID_BODY_APPLICATION_DETECTION_ENGINE:
+        value = payload["application-detection-engine"]
+        if value not in VALID_BODY_APPLICATION_DETECTION_ENGINE:
             return (
                 False,
-                f"Invalid application-detection-engine '{value}'. Must be one of: {', '.join(VALID_BODY_APPLICATION_DETECTION_ENGINE)}",
+                f"Invalid value for 'application-detection-engine'='{value}'. Must be one of: {', '.join(VALID_BODY_APPLICATION_DETECTION_ENGINE)}",
             )
-
-    # Validate application-dscp-marking if present
     if "application-dscp-marking" in payload:
-        value = payload.get("application-dscp-marking")
-        if value and value not in VALID_BODY_APPLICATION_DSCP_MARKING:
+        value = payload["application-dscp-marking"]
+        if value not in VALID_BODY_APPLICATION_DSCP_MARKING:
             return (
                 False,
-                f"Invalid application-dscp-marking '{value}'. Must be one of: {', '.join(VALID_BODY_APPLICATION_DSCP_MARKING)}",
+                f"Invalid value for 'application-dscp-marking'='{value}'. Must be one of: {', '.join(VALID_BODY_APPLICATION_DSCP_MARKING)}",
             )
-
-    # Validate application-report-intv if present
-    if "application-report-intv" in payload:
-        value = payload.get("application-report-intv")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 864000:
-                    return (
-                        False,
-                        "application-report-intv must be between 30 and 864000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"application-report-intv must be numeric, got: {value}",
-                )
-
-    # Validate l3-roaming if present
     if "l3-roaming" in payload:
-        value = payload.get("l3-roaming")
-        if value and value not in VALID_BODY_L3_ROAMING:
+        value = payload["l3-roaming"]
+        if value not in VALID_BODY_L3_ROAMING:
             return (
                 False,
-                f"Invalid l3-roaming '{value}'. Must be one of: {', '.join(VALID_BODY_L3_ROAMING)}",
+                f"Invalid value for 'l3-roaming'='{value}'. Must be one of: {', '.join(VALID_BODY_L3_ROAMING)}",
             )
-
-    # Validate l3-roaming-mode if present
     if "l3-roaming-mode" in payload:
-        value = payload.get("l3-roaming-mode")
-        if value and value not in VALID_BODY_L3_ROAMING_MODE:
+        value = payload["l3-roaming-mode"]
+        if value not in VALID_BODY_L3_ROAMING_MODE:
             return (
                 False,
-                f"Invalid l3-roaming-mode '{value}'. Must be one of: {', '.join(VALID_BODY_L3_ROAMING_MODE)}",
+                f"Invalid value for 'l3-roaming-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_L3_ROAMING_MODE)}",
             )
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_vap_delete(name: str | None = None) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "wireless_controller/vap",
+    "category": "cmdb",
+    "api_path": "wireless-controller/vap",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure Virtual Access Points (VAPs).",
+    "total_fields": 171,
+    "required_fields_count": 1,
+    "fields_with_defaults_count": 159,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

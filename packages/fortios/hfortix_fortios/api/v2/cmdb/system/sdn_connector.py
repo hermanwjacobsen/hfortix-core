@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb System Sdn Connector
+FortiOS CMDB - System sdn_connector
 
-Configuration endpoint for managing cmdb system sdn connector objects.
+Configuration endpoint for managing cmdb system/sdn_connector objects.
 
 API Endpoints:
     GET    /cmdb/system/sdn_connector
     POST   /cmdb/system/sdn_connector
-    GET    /cmdb/system/sdn_connector
     PUT    /cmdb/system/sdn_connector/{identifier}
     DELETE /cmdb/system/sdn_connector/{identifier}
 
@@ -15,128 +14,101 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.system.sdn_connector.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.system.sdn_connector.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.system.sdn_connector.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.system.sdn_connector.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.system.sdn_connector.delete(name="item_name")
+    >>> items = fgt.api.cmdb.system_sdn_connector.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class SdnConnector:
-    """
-    Sdnconnector Operations.
-
-    Provides CRUD operations for FortiOS sdnconnector configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """SdnConnector Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize SdnConnector endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize SdnConnector endpoint."""
         self._client = client
 
     def get(
         self,
         name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve system/sdn_connector configuration.
+
+        Configure connection to SDN Connector.
 
         Args:
-            name: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: String identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all system/sdn_connector objects
+            >>> result = fgt.api.cmdb.system_sdn_connector.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific system/sdn_connector by name
+            >>> result = fgt.api.cmdb.system_sdn_connector.get(name=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.system_sdn_connector.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.system_sdn_connector.get(action="schema")
+
+        See Also:
+            - post(): Create new system/sdn_connector object
+            - put(): Update existing system/sdn_connector object
+            - delete(): Remove system/sdn_connector object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if name:
-            endpoint = f"/system/sdn-connector/{name}"
+            endpoint = "/system/sdn-connector/" + str(name)
         else:
             endpoint = "/system/sdn-connector"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,10 +116,8 @@ class SdnConnector:
 
     def put(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
+        name: str | None = None,
         status: str | None = None,
         type: str | None = None,
         proxy: str | None = None,
@@ -156,40 +126,40 @@ class SdnConnector:
         ha_status: str | None = None,
         verify_certificate: str | None = None,
         server: str | None = None,
-        server_list: list | None = None,
+        server_list: str | list | None = None,
         server_port: int | None = None,
         message_server_port: int | None = None,
         username: str | None = None,
-        password: str | None = None,
+        password: Any | None = None,
         vcenter_server: str | None = None,
         vcenter_username: str | None = None,
-        vcenter_password: str | None = None,
+        vcenter_password: Any | None = None,
         access_key: str | None = None,
-        secret_key: str | None = None,
+        secret_key: Any | None = None,
         region: str | None = None,
         vpc_id: str | None = None,
         alt_resource_ip: str | None = None,
-        external_account_list: list | None = None,
+        external_account_list: str | list | None = None,
         tenant_id: str | None = None,
         client_id: str | None = None,
-        client_secret: str | None = None,
+        client_secret: Any | None = None,
         subscription_id: str | None = None,
         resource_group: str | None = None,
         login_endpoint: str | None = None,
         resource_url: str | None = None,
         azure_region: str | None = None,
-        nic: list | None = None,
-        route_table: list | None = None,
+        nic: str | list | None = None,
+        route_table: str | list | None = None,
         user_id: str | None = None,
-        compartment_list: list | None = None,
-        oci_region_list: list | None = None,
+        compartment_list: str | list | None = None,
+        oci_region_list: str | list | None = None,
         oci_region_type: str | None = None,
         oci_cert: str | None = None,
         oci_fingerprint: str | None = None,
-        external_ip: list | None = None,
-        route: list | None = None,
-        gcp_project_list: list | None = None,
-        forwarding_rule: list | None = None,
+        external_ip: str | list | None = None,
+        route: str | list | None = None,
+        gcp_project_list: str | list | None = None,
+        forwarding_rule: str | list | None = None,
         service_account: str | None = None,
         private_key: str | None = None,
         secret_token: str | None = None,
@@ -197,276 +167,349 @@ class SdnConnector:
         group_name: str | None = None,
         server_cert: str | None = None,
         server_ca_cert: str | None = None,
-        api_key: str | None = None,
+        api_key: Any | None = None,
         ibm_region: str | None = None,
-        par_id: str | None = None,
         update_interval: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing system/sdn_connector object.
+
+        Configure connection to SDN Connector.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            name: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            name: SDN connector name. (optional)
+            payload_dict: Object data as dict. Must include name (primary key).
+            name: SDN connector name.
             status: Enable/disable connection to the remote SDN connector.
-            (optional)
-            type: Type of SDN connector. (optional)
-            proxy: SDN proxy. (optional)
-            use_metadata_iam: Enable/disable use of IAM role from metadata to
-            call API. (optional)
-            microsoft_365: Enable to use as Microsoft 365 connector. (optional)
-            ha_status: Enable/disable use for FortiGate HA service. (optional)
-            verify_certificate: Enable/disable server certificate verification.
-            (optional)
-            server: Server address of the remote SDN connector. (optional)
-            server_list: Server address list of the remote SDN connector.
-            (optional)
-            server_port: Port number of the remote SDN connector. (optional)
-            message_server_port: HTTP port number of the SAP message server.
-            (optional)
-            username: Username of the remote SDN connector as login
-            credentials. (optional)
-            password: Password of the remote SDN connector as login
-            credentials. (optional)
-            vcenter_server: vCenter server address for NSX quarantine.
-            (optional)
-            vcenter_username: vCenter server username for NSX quarantine.
-            (optional)
-            vcenter_password: vCenter server password for NSX quarantine.
-            (optional)
-            access_key: AWS / ACS access key ID. (optional)
-            secret_key: AWS / ACS secret access key. (optional)
-            region: AWS / ACS region name. (optional)
-            vpc_id: AWS VPC ID. (optional)
-            alt_resource_ip: Enable/disable AWS alternative resource IP.
-            (optional)
-            external_account_list: Configure AWS external account list.
-            (optional)
-            tenant_id: Tenant ID (directory ID). (optional)
-            client_id: Azure client ID (application ID). (optional)
-            client_secret: Azure client secret (application key). (optional)
-            subscription_id: Azure subscription ID. (optional)
-            resource_group: Azure resource group. (optional)
-            login_endpoint: Azure Stack login endpoint. (optional)
-            resource_url: Azure Stack resource URL. (optional)
-            azure_region: Azure server region. (optional)
-            nic: Configure Azure network interface. (optional)
-            route_table: Configure Azure route table. (optional)
-            user_id: User ID. (optional)
-            compartment_list: Configure OCI compartment list. (optional)
-            oci_region_list: Configure OCI region list. (optional)
-            oci_region_type: OCI region type. (optional)
-            oci_cert: OCI certificate. (optional)
-            oci_fingerprint: OCI pubkey fingerprint. (optional)
-            external_ip: Configure GCP external IP. (optional)
-            route: Configure GCP route. (optional)
-            gcp_project_list: Configure GCP project list. (optional)
-            forwarding_rule: Configure GCP forwarding rule. (optional)
-            service_account: GCP service account email. (optional)
-            private_key: Private key of GCP service account. (optional)
-            secret_token: Secret token of Kubernetes service account.
-            (optional)
-            domain: Domain name. (optional)
-            group_name: Full path group name of computers. (optional)
-            server_cert: Trust servers that contain this certificate only.
-            (optional)
-            server_ca_cert: Trust only those servers whose certificate is
-            directly/indirectly signed by this certificate. (optional)
-            api_key: IBM cloud API key or service ID API key. (optional)
-            ibm_region: IBM cloud region name. (optional)
-            par_id: Public address range ID. (optional)
-            update_interval: Dynamic object update interval (30 - 3600 sec,
-            default = 60, 0 = disabled). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            type: Type of SDN connector.
+            proxy: SDN proxy.
+            use_metadata_iam: Enable/disable use of IAM role from metadata to call API.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
+            API response dict
 
-        # Build endpoint path
-        if not name:
-            raise ValueError("name is required for put()")
-        endpoint = f"/system/sdn-connector/{name}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if name is not None:
-            data_payload["name"] = name
-        if status is not None:
-            data_payload["status"] = status
-        if type is not None:
-            data_payload["type"] = type
-        if proxy is not None:
-            data_payload["proxy"] = proxy
-        if use_metadata_iam is not None:
-            data_payload["use-metadata-iam"] = use_metadata_iam
-        if microsoft_365 is not None:
-            data_payload["microsoft-365"] = microsoft_365
-        if ha_status is not None:
-            data_payload["ha-status"] = ha_status
-        if verify_certificate is not None:
-            data_payload["verify-certificate"] = verify_certificate
-        if server is not None:
-            data_payload["server"] = server
-        if server_list is not None:
-            data_payload["server-list"] = server_list
-        if server_port is not None:
-            data_payload["server-port"] = server_port
-        if message_server_port is not None:
-            data_payload["message-server-port"] = message_server_port
-        if username is not None:
-            data_payload["username"] = username
-        if password is not None:
-            data_payload["password"] = password
-        if vcenter_server is not None:
-            data_payload["vcenter-server"] = vcenter_server
-        if vcenter_username is not None:
-            data_payload["vcenter-username"] = vcenter_username
-        if vcenter_password is not None:
-            data_payload["vcenter-password"] = vcenter_password
-        if access_key is not None:
-            data_payload["access-key"] = access_key
-        if secret_key is not None:
-            data_payload["secret-key"] = secret_key
-        if region is not None:
-            data_payload["region"] = region
-        if vpc_id is not None:
-            data_payload["vpc-id"] = vpc_id
-        if alt_resource_ip is not None:
-            data_payload["alt-resource-ip"] = alt_resource_ip
-        if external_account_list is not None:
-            data_payload["external-account-list"] = external_account_list
-        if tenant_id is not None:
-            data_payload["tenant-id"] = tenant_id
-        if client_id is not None:
-            data_payload["client-id"] = client_id
-        if client_secret is not None:
-            data_payload["client-secret"] = client_secret
-        if subscription_id is not None:
-            data_payload["subscription-id"] = subscription_id
-        if resource_group is not None:
-            data_payload["resource-group"] = resource_group
-        if login_endpoint is not None:
-            data_payload["login-endpoint"] = login_endpoint
-        if resource_url is not None:
-            data_payload["resource-url"] = resource_url
-        if azure_region is not None:
-            data_payload["azure-region"] = azure_region
-        if nic is not None:
-            data_payload["nic"] = nic
-        if route_table is not None:
-            data_payload["route-table"] = route_table
-        if user_id is not None:
-            data_payload["user-id"] = user_id
-        if compartment_list is not None:
-            data_payload["compartment-list"] = compartment_list
-        if oci_region_list is not None:
-            data_payload["oci-region-list"] = oci_region_list
-        if oci_region_type is not None:
-            data_payload["oci-region-type"] = oci_region_type
-        if oci_cert is not None:
-            data_payload["oci-cert"] = oci_cert
-        if oci_fingerprint is not None:
-            data_payload["oci-fingerprint"] = oci_fingerprint
-        if external_ip is not None:
-            data_payload["external-ip"] = external_ip
-        if route is not None:
-            data_payload["route"] = route
-        if gcp_project_list is not None:
-            data_payload["gcp-project-list"] = gcp_project_list
-        if forwarding_rule is not None:
-            data_payload["forwarding-rule"] = forwarding_rule
-        if service_account is not None:
-            data_payload["service-account"] = service_account
-        if private_key is not None:
-            data_payload["private-key"] = private_key
-        if secret_token is not None:
-            data_payload["secret-token"] = secret_token
-        if domain is not None:
-            data_payload["domain"] = domain
-        if group_name is not None:
-            data_payload["group-name"] = group_name
-        if server_cert is not None:
-            data_payload["server-cert"] = server_cert
-        if server_ca_cert is not None:
-            data_payload["server-ca-cert"] = server_ca_cert
-        if api_key is not None:
-            data_payload["api-key"] = api_key
-        if ibm_region is not None:
-            data_payload["ibm-region"] = ibm_region
-        if par_id is not None:
-            data_payload["par-id"] = par_id
-        if update_interval is not None:
-            data_payload["update-interval"] = update_interval
-        data_payload.update(kwargs)
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.system_sdn_connector.put(
+            ...     name=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.system_sdn_connector.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            status=status,
+            type=type,
+            proxy=proxy,
+            use_metadata_iam=use_metadata_iam,
+            microsoft_365=microsoft_365,
+            ha_status=ha_status,
+            verify_certificate=verify_certificate,
+            server=server,
+            server_list=server_list,
+            server_port=server_port,
+            message_server_port=message_server_port,
+            username=username,
+            password=password,
+            vcenter_server=vcenter_server,
+            vcenter_username=vcenter_username,
+            vcenter_password=vcenter_password,
+            access_key=access_key,
+            secret_key=secret_key,
+            region=region,
+            vpc_id=vpc_id,
+            alt_resource_ip=alt_resource_ip,
+            external_account_list=external_account_list,
+            tenant_id=tenant_id,
+            client_id=client_id,
+            client_secret=client_secret,
+            subscription_id=subscription_id,
+            resource_group=resource_group,
+            login_endpoint=login_endpoint,
+            resource_url=resource_url,
+            azure_region=azure_region,
+            nic=nic,
+            route_table=route_table,
+            user_id=user_id,
+            compartment_list=compartment_list,
+            oci_region_list=oci_region_list,
+            oci_region_type=oci_region_type,
+            oci_cert=oci_cert,
+            oci_fingerprint=oci_fingerprint,
+            external_ip=external_ip,
+            route=route,
+            gcp_project_list=gcp_project_list,
+            forwarding_rule=forwarding_rule,
+            service_account=service_account,
+            private_key=private_key,
+            secret_token=secret_token,
+            domain=domain,
+            group_name=group_name,
+            server_cert=server_cert,
+            server_ca_cert=server_ca_cert,
+            api_key=api_key,
+            ibm_region=ibm_region,
+            update_interval=update_interval,
+            data=payload_dict,
+        )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.sdn_connector import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/sdn_connector",
+            )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = "/system/sdn-connector/" + str(name_value)
+
         return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
-    def delete(
+    def post(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        status: str | None = None,
+        type: str | None = None,
+        proxy: str | None = None,
+        use_metadata_iam: str | None = None,
+        microsoft_365: str | None = None,
+        ha_status: str | None = None,
+        verify_certificate: str | None = None,
+        server: str | None = None,
+        server_list: str | list | None = None,
+        server_port: int | None = None,
+        message_server_port: int | None = None,
+        username: str | None = None,
+        password: Any | None = None,
+        vcenter_server: str | None = None,
+        vcenter_username: str | None = None,
+        vcenter_password: Any | None = None,
+        access_key: str | None = None,
+        secret_key: Any | None = None,
+        region: str | None = None,
+        vpc_id: str | None = None,
+        alt_resource_ip: str | None = None,
+        external_account_list: str | list | None = None,
+        tenant_id: str | None = None,
+        client_id: str | None = None,
+        client_secret: Any | None = None,
+        subscription_id: str | None = None,
+        resource_group: str | None = None,
+        login_endpoint: str | None = None,
+        resource_url: str | None = None,
+        azure_region: str | None = None,
+        nic: str | list | None = None,
+        route_table: str | list | None = None,
+        user_id: str | None = None,
+        compartment_list: str | list | None = None,
+        oci_region_list: str | list | None = None,
+        oci_region_type: str | None = None,
+        oci_cert: str | None = None,
+        oci_fingerprint: str | None = None,
+        external_ip: str | list | None = None,
+        route: str | list | None = None,
+        gcp_project_list: str | list | None = None,
+        forwarding_rule: str | list | None = None,
+        service_account: str | None = None,
+        private_key: str | None = None,
+        secret_token: str | None = None,
+        domain: str | None = None,
+        group_name: str | None = None,
+        server_cert: str | None = None,
+        server_ca_cert: str | None = None,
+        api_key: Any | None = None,
+        ibm_region: str | None = None,
+        update_interval: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Delete this specific resource.
+        Create new system/sdn_connector object.
+
+        Configure connection to SDN Connector.
 
         Args:
-            name: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            name: SDN connector name.
+            status: Enable/disable connection to the remote SDN connector.
+            type: Type of SDN connector.
+            proxy: SDN proxy.
+            use_metadata_iam: Enable/disable use of IAM role from metadata to call API.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
+            API response dict containing created object with assigned name.
 
-        # Build endpoint path
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.system_sdn_connector.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created name: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = SdnConnector.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.system_sdn_connector.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(SdnConnector.required_fields()) }}
+            
+            Use SdnConnector.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            status=status,
+            type=type,
+            proxy=proxy,
+            use_metadata_iam=use_metadata_iam,
+            microsoft_365=microsoft_365,
+            ha_status=ha_status,
+            verify_certificate=verify_certificate,
+            server=server,
+            server_list=server_list,
+            server_port=server_port,
+            message_server_port=message_server_port,
+            username=username,
+            password=password,
+            vcenter_server=vcenter_server,
+            vcenter_username=vcenter_username,
+            vcenter_password=vcenter_password,
+            access_key=access_key,
+            secret_key=secret_key,
+            region=region,
+            vpc_id=vpc_id,
+            alt_resource_ip=alt_resource_ip,
+            external_account_list=external_account_list,
+            tenant_id=tenant_id,
+            client_id=client_id,
+            client_secret=client_secret,
+            subscription_id=subscription_id,
+            resource_group=resource_group,
+            login_endpoint=login_endpoint,
+            resource_url=resource_url,
+            azure_region=azure_region,
+            nic=nic,
+            route_table=route_table,
+            user_id=user_id,
+            compartment_list=compartment_list,
+            oci_region_list=oci_region_list,
+            oci_region_type=oci_region_type,
+            oci_cert=oci_cert,
+            oci_fingerprint=oci_fingerprint,
+            external_ip=external_ip,
+            route=route,
+            gcp_project_list=gcp_project_list,
+            forwarding_rule=forwarding_rule,
+            service_account=service_account,
+            private_key=private_key,
+            secret_token=secret_token,
+            domain=domain,
+            group_name=group_name,
+            server_cert=server_cert,
+            server_ca_cert=server_ca_cert,
+            api_key=api_key,
+            ibm_region=ibm_region,
+            update_interval=update_interval,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.sdn_connector import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/sdn_connector",
+            )
+
+        endpoint = "/system/sdn-connector"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete system/sdn_connector object.
+
+        Configure connection to SDN Connector.
+
+        Args:
+            name: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.system_sdn_connector.delete(name=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
         if not name:
-            raise ValueError("name is required for delete()")
-        endpoint = f"/system/sdn-connector/{name}"
-        params.update(kwargs)
+            raise ValueError("name is required for DELETE")
+        endpoint = "/system/sdn-connector/" + str(name)
+
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
     def exists(
@@ -475,316 +518,311 @@ class SdnConnector:
         vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
-        Check if an object exists.
+        Check if system/sdn_connector object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
 
         Args:
-            name: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
+            name: Primary key identifier
+            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
 
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.system_sdn_connector.exists(name=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.system_sdn_connector.exists(name=1):
+            ...     fgt.api.cmdb.system_sdn_connector.delete(name=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
         """
-        import inspect
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
 
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(name=name, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
+    def set(
         self,
         payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
-        name: str | None = None,
-        status: str | None = None,
-        type: str | None = None,
-        proxy: str | None = None,
-        use_metadata_iam: str | None = None,
-        microsoft_365: str | None = None,
-        ha_status: str | None = None,
-        verify_certificate: str | None = None,
-        server: str | None = None,
-        server_list: list | None = None,
-        server_port: int | None = None,
-        message_server_port: int | None = None,
-        username: str | None = None,
-        password: str | None = None,
-        vcenter_server: str | None = None,
-        vcenter_username: str | None = None,
-        vcenter_password: str | None = None,
-        access_key: str | None = None,
-        secret_key: str | None = None,
-        region: str | None = None,
-        vpc_id: str | None = None,
-        alt_resource_ip: str | None = None,
-        external_account_list: list | None = None,
-        tenant_id: str | None = None,
-        client_id: str | None = None,
-        client_secret: str | None = None,
-        subscription_id: str | None = None,
-        resource_group: str | None = None,
-        login_endpoint: str | None = None,
-        resource_url: str | None = None,
-        azure_region: str | None = None,
-        nic: list | None = None,
-        route_table: list | None = None,
-        user_id: str | None = None,
-        compartment_list: list | None = None,
-        oci_region_list: list | None = None,
-        oci_region_type: str | None = None,
-        oci_cert: str | None = None,
-        oci_fingerprint: str | None = None,
-        external_ip: list | None = None,
-        route: list | None = None,
-        gcp_project_list: list | None = None,
-        forwarding_rule: list | None = None,
-        service_account: str | None = None,
-        private_key: str | None = None,
-        secret_token: str | None = None,
-        domain: str | None = None,
-        group_name: str | None = None,
-        server_cert: str | None = None,
-        server_ca_cert: str | None = None,
-        api_key: str | None = None,
-        ibm_region: str | None = None,
-        par_id: str | None = None,
-        update_interval: int | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Create or update system/sdn_connector object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            name: SDN connector name. (optional)
-            status: Enable/disable connection to the remote SDN connector.
-            (optional)
-            type: Type of SDN connector. (optional)
-            proxy: SDN proxy. (optional)
-            use_metadata_iam: Enable/disable use of IAM role from metadata to
-            call API. (optional)
-            microsoft_365: Enable to use as Microsoft 365 connector. (optional)
-            ha_status: Enable/disable use for FortiGate HA service. (optional)
-            verify_certificate: Enable/disable server certificate verification.
-            (optional)
-            server: Server address of the remote SDN connector. (optional)
-            server_list: Server address list of the remote SDN connector.
-            (optional)
-            server_port: Port number of the remote SDN connector. (optional)
-            message_server_port: HTTP port number of the SAP message server.
-            (optional)
-            username: Username of the remote SDN connector as login
-            credentials. (optional)
-            password: Password of the remote SDN connector as login
-            credentials. (optional)
-            vcenter_server: vCenter server address for NSX quarantine.
-            (optional)
-            vcenter_username: vCenter server username for NSX quarantine.
-            (optional)
-            vcenter_password: vCenter server password for NSX quarantine.
-            (optional)
-            access_key: AWS / ACS access key ID. (optional)
-            secret_key: AWS / ACS secret access key. (optional)
-            region: AWS / ACS region name. (optional)
-            vpc_id: AWS VPC ID. (optional)
-            alt_resource_ip: Enable/disable AWS alternative resource IP.
-            (optional)
-            external_account_list: Configure AWS external account list.
-            (optional)
-            tenant_id: Tenant ID (directory ID). (optional)
-            client_id: Azure client ID (application ID). (optional)
-            client_secret: Azure client secret (application key). (optional)
-            subscription_id: Azure subscription ID. (optional)
-            resource_group: Azure resource group. (optional)
-            login_endpoint: Azure Stack login endpoint. (optional)
-            resource_url: Azure Stack resource URL. (optional)
-            azure_region: Azure server region. (optional)
-            nic: Configure Azure network interface. (optional)
-            route_table: Configure Azure route table. (optional)
-            user_id: User ID. (optional)
-            compartment_list: Configure OCI compartment list. (optional)
-            oci_region_list: Configure OCI region list. (optional)
-            oci_region_type: OCI region type. (optional)
-            oci_cert: OCI certificate. (optional)
-            oci_fingerprint: OCI pubkey fingerprint. (optional)
-            external_ip: Configure GCP external IP. (optional)
-            route: Configure GCP route. (optional)
-            gcp_project_list: Configure GCP project list. (optional)
-            forwarding_rule: Configure GCP forwarding rule. (optional)
-            service_account: GCP service account email. (optional)
-            private_key: Private key of GCP service account. (optional)
-            secret_token: Secret token of Kubernetes service account.
-            (optional)
-            domain: Domain name. (optional)
-            group_name: Full path group name of computers. (optional)
-            server_cert: Trust servers that contain this certificate only.
-            (optional)
-            server_ca_cert: Trust only those servers whose certificate is
-            directly/indirectly signed by this certificate. (optional)
-            api_key: IBM cloud API key or service ID API key. (optional)
-            ibm_region: IBM cloud region name. (optional)
-            par_id: Public address range ID. (optional)
-            update_interval: Dynamic object update interval (30 - 3600 sec,
-            default = 60, 0 = disabled). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            Dictionary containing API response
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.system_sdn_connector.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.system_sdn_connector.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/system/sdn-connector"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if name is not None:
-            data_payload["name"] = name
-        if status is not None:
-            data_payload["status"] = status
-        if type is not None:
-            data_payload["type"] = type
-        if proxy is not None:
-            data_payload["proxy"] = proxy
-        if use_metadata_iam is not None:
-            data_payload["use-metadata-iam"] = use_metadata_iam
-        if microsoft_365 is not None:
-            data_payload["microsoft-365"] = microsoft_365
-        if ha_status is not None:
-            data_payload["ha-status"] = ha_status
-        if verify_certificate is not None:
-            data_payload["verify-certificate"] = verify_certificate
-        if server is not None:
-            data_payload["server"] = server
-        if server_list is not None:
-            data_payload["server-list"] = server_list
-        if server_port is not None:
-            data_payload["server-port"] = server_port
-        if message_server_port is not None:
-            data_payload["message-server-port"] = message_server_port
-        if username is not None:
-            data_payload["username"] = username
-        if password is not None:
-            data_payload["password"] = password
-        if vcenter_server is not None:
-            data_payload["vcenter-server"] = vcenter_server
-        if vcenter_username is not None:
-            data_payload["vcenter-username"] = vcenter_username
-        if vcenter_password is not None:
-            data_payload["vcenter-password"] = vcenter_password
-        if access_key is not None:
-            data_payload["access-key"] = access_key
-        if secret_key is not None:
-            data_payload["secret-key"] = secret_key
-        if region is not None:
-            data_payload["region"] = region
-        if vpc_id is not None:
-            data_payload["vpc-id"] = vpc_id
-        if alt_resource_ip is not None:
-            data_payload["alt-resource-ip"] = alt_resource_ip
-        if external_account_list is not None:
-            data_payload["external-account-list"] = external_account_list
-        if tenant_id is not None:
-            data_payload["tenant-id"] = tenant_id
-        if client_id is not None:
-            data_payload["client-id"] = client_id
-        if client_secret is not None:
-            data_payload["client-secret"] = client_secret
-        if subscription_id is not None:
-            data_payload["subscription-id"] = subscription_id
-        if resource_group is not None:
-            data_payload["resource-group"] = resource_group
-        if login_endpoint is not None:
-            data_payload["login-endpoint"] = login_endpoint
-        if resource_url is not None:
-            data_payload["resource-url"] = resource_url
-        if azure_region is not None:
-            data_payload["azure-region"] = azure_region
-        if nic is not None:
-            data_payload["nic"] = nic
-        if route_table is not None:
-            data_payload["route-table"] = route_table
-        if user_id is not None:
-            data_payload["user-id"] = user_id
-        if compartment_list is not None:
-            data_payload["compartment-list"] = compartment_list
-        if oci_region_list is not None:
-            data_payload["oci-region-list"] = oci_region_list
-        if oci_region_type is not None:
-            data_payload["oci-region-type"] = oci_region_type
-        if oci_cert is not None:
-            data_payload["oci-cert"] = oci_cert
-        if oci_fingerprint is not None:
-            data_payload["oci-fingerprint"] = oci_fingerprint
-        if external_ip is not None:
-            data_payload["external-ip"] = external_ip
-        if route is not None:
-            data_payload["route"] = route
-        if gcp_project_list is not None:
-            data_payload["gcp-project-list"] = gcp_project_list
-        if forwarding_rule is not None:
-            data_payload["forwarding-rule"] = forwarding_rule
-        if service_account is not None:
-            data_payload["service-account"] = service_account
-        if private_key is not None:
-            data_payload["private-key"] = private_key
-        if secret_token is not None:
-            data_payload["secret-token"] = secret_token
-        if domain is not None:
-            data_payload["domain"] = domain
-        if group_name is not None:
-            data_payload["group-name"] = group_name
-        if server_cert is not None:
-            data_payload["server-cert"] = server_cert
-        if server_ca_cert is not None:
-            data_payload["server-ca-cert"] = server_ca_cert
-        if api_key is not None:
-            data_payload["api-key"] = api_key
-        if ibm_region is not None:
-            data_payload["ibm-region"] = ibm_region
-        if par_id is not None:
-            data_payload["par-id"] = par_id
-        if update_interval is not None:
-            data_payload["update-interval"] = update_interval
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(SdnConnector.help())
+            
+            >>> # Get field information
+            >>> print(SdnConnector.help("name"))
+        """
+        from ._helpers.sdn_connector import (
+            get_schema_info,
+            get_field_metadata,
         )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = SdnConnector.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = SdnConnector.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.sdn_connector import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = SdnConnector.field_info("name")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.sdn_connector import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = SdnConnector.validate_field("name", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.sdn_connector import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = SdnConnector.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.sdn_connector import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = SdnConnector.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.sdn_connector import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = SdnConnector.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.sdn_connector import get_schema_info
+
+        return get_schema_info()

@@ -1,47 +1,175 @@
 """
-Validation helpers for diameter-filter profile endpoint.
+Validation helpers for diameter_filter/profile endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
     "name",  # Profile name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "feature-set": "voipd",
+    "name": "",
+    "monitor-all-messages": "disable",
+    "log-packet": "disable",
+    "track-requests-answers": "enable",
+    "missing-request-action": "block",
+    "protocol-version-invalid": "block",
+    "message-length-invalid": "block",
+    "request-error-flag-set": "block",
+    "cmd-flags-reserve-set": "block",
+    "command-code-invalid": "block",
+    "command-code-range": "",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # Profile name.
+    "comment": "var-string",  # Comment.
+    "monitor-all-messages": "option",  # Enable/disable logging for all User Name and Result Code AVP
+    "log-packet": "option",  # Enable/disable packet log for triggered diameter settings.
+    "track-requests-answers": "option",  # Enable/disable validation that each answer has a correspondi
+    "missing-request-action": "option",  # Action to be taken for answers without corresponding request
+    "protocol-version-invalid": "option",  # Action to be taken for invalid protocol version.
+    "message-length-invalid": "option",  # Action to be taken for invalid message length.
+    "request-error-flag-set": "option",  # Action to be taken for request messages with error flag set.
+    "cmd-flags-reserve-set": "option",  # Action to be taken for messages with cmd flag reserve bits s
+    "command-code-invalid": "option",  # Action to be taken for messages with invalid command code.
+    "command-code-range": "user",  # Valid range for command codes (0-16777215).
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "Profile name.",
+    "comment": "Comment.",
+    "monitor-all-messages": "Enable/disable logging for all User Name and Result Code AVP messages.",
+    "log-packet": "Enable/disable packet log for triggered diameter settings.",
+    "track-requests-answers": "Enable/disable validation that each answer has a corresponding request.",
+    "missing-request-action": "Action to be taken for answers without corresponding request.",
+    "protocol-version-invalid": "Action to be taken for invalid protocol version.",
+    "message-length-invalid": "Action to be taken for invalid message length.",
+    "request-error-flag-set": "Action to be taken for request messages with error flag set.",
+    "cmd-flags-reserve-set": "Action to be taken for messages with cmd flag reserve bits set.",
+    "command-code-invalid": "Action to be taken for messages with invalid command code.",
+    "command-code-range": "Valid range for command codes (0-16777215).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 47},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_MONITOR_ALL_MESSAGES = ["disable", "enable"]
-VALID_BODY_LOG_PACKET = ["disable", "enable"]
-VALID_BODY_TRACK_REQUESTS_ANSWERS = ["disable", "enable"]
-VALID_BODY_MISSING_REQUEST_ACTION = ["allow", "block", "reset", "monitor"]
-VALID_BODY_PROTOCOL_VERSION_INVALID = ["allow", "block", "reset", "monitor"]
-VALID_BODY_MESSAGE_LENGTH_INVALID = ["allow", "block", "reset", "monitor"]
-VALID_BODY_REQUEST_ERROR_FLAG_SET = ["allow", "block", "reset", "monitor"]
-VALID_BODY_CMD_FLAGS_RESERVE_SET = ["allow", "block", "reset", "monitor"]
-VALID_BODY_COMMAND_CODE_INVALID = ["allow", "block", "reset", "monitor"]
+VALID_BODY_MONITOR_ALL_MESSAGES = [
+    "disable",
+    "enable",
+]
+VALID_BODY_LOG_PACKET = [
+    "disable",
+    "enable",
+]
+VALID_BODY_TRACK_REQUESTS_ANSWERS = [
+    "disable",
+    "enable",
+]
+VALID_BODY_MISSING_REQUEST_ACTION = [
+    "allow",
+    "block",
+    "reset",
+    "monitor",
+]
+VALID_BODY_PROTOCOL_VERSION_INVALID = [
+    "allow",
+    "block",
+    "reset",
+    "monitor",
+]
+VALID_BODY_MESSAGE_LENGTH_INVALID = [
+    "allow",
+    "block",
+    "reset",
+    "monitor",
+]
+VALID_BODY_REQUEST_ERROR_FLAG_SET = [
+    "allow",
+    "block",
+    "reset",
+    "monitor",
+]
+VALID_BODY_CMD_FLAGS_RESERVE_SET = [
+    "allow",
+    "block",
+    "reset",
+    "monitor",
+]
+VALID_BODY_COMMAND_CODE_INVALID = [
+    "allow",
+    "block",
+    "reset",
+    "monitor",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -49,13 +177,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_profile_get(
+def validate_diameter_filter_profile_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for diameter_filter/profile.
 
     Args:
         attr: Attribute filter (optional)
@@ -65,9 +193,20 @@ def validate_profile_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_diameter_filter_profile_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_diameter_filter_profile_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_diameter_filter_profile_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -88,7 +227,7 @@ def validate_profile_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for voip_profile.
+    Validate required fields for diameter_filter/profile.
 
     This validator checks:
     1. Always-required fields are present
@@ -101,162 +240,177 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "name": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_profile_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
+def validate_diameter_filter_profile_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new diameter_filter/profile object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - name: Profile name.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ...     "name": True,  # Profile name.
+        ... }
+        >>> is_valid, error = validate_diameter_filter_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "name": True,
+        ...     "monitor-all-messages": "disable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_diameter_filter_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["monitor-all-messages"] = "invalid-value"
+        >>> is_valid, error = validate_diameter_filter_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_diameter_filter_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "name cannot exceed 47 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "comment cannot exceed 255 characters")
-
-    # Validate monitor-all-messages if present
+    # Step 2: Validate enum values
     if "monitor-all-messages" in payload:
-        value = payload.get("monitor-all-messages")
-        if value and value not in VALID_BODY_MONITOR_ALL_MESSAGES:
-            return (
-                False,
-                f"Invalid monitor-all-messages '{value}'. Must be one of: {', '.join(VALID_BODY_MONITOR_ALL_MESSAGES)}",
-            )
-
-    # Validate log-packet if present
+        value = payload["monitor-all-messages"]
+        if value not in VALID_BODY_MONITOR_ALL_MESSAGES:
+            desc = FIELD_DESCRIPTIONS.get("monitor-all-messages", "")
+            error_msg = f"Invalid value for 'monitor-all-messages': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MONITOR_ALL_MESSAGES)}"
+            error_msg += f"\n  → Example: monitor-all-messages='{{ VALID_BODY_MONITOR_ALL_MESSAGES[0] }}'"
+            return (False, error_msg)
     if "log-packet" in payload:
-        value = payload.get("log-packet")
-        if value and value not in VALID_BODY_LOG_PACKET:
-            return (
-                False,
-                f"Invalid log-packet '{value}'. Must be one of: {', '.join(VALID_BODY_LOG_PACKET)}",
-            )
-
-    # Validate track-requests-answers if present
+        value = payload["log-packet"]
+        if value not in VALID_BODY_LOG_PACKET:
+            desc = FIELD_DESCRIPTIONS.get("log-packet", "")
+            error_msg = f"Invalid value for 'log-packet': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LOG_PACKET)}"
+            error_msg += f"\n  → Example: log-packet='{{ VALID_BODY_LOG_PACKET[0] }}'"
+            return (False, error_msg)
     if "track-requests-answers" in payload:
-        value = payload.get("track-requests-answers")
-        if value and value not in VALID_BODY_TRACK_REQUESTS_ANSWERS:
-            return (
-                False,
-                f"Invalid track-requests-answers '{value}'. Must be one of: {', '.join(VALID_BODY_TRACK_REQUESTS_ANSWERS)}",
-            )
-
-    # Validate missing-request-action if present
+        value = payload["track-requests-answers"]
+        if value not in VALID_BODY_TRACK_REQUESTS_ANSWERS:
+            desc = FIELD_DESCRIPTIONS.get("track-requests-answers", "")
+            error_msg = f"Invalid value for 'track-requests-answers': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TRACK_REQUESTS_ANSWERS)}"
+            error_msg += f"\n  → Example: track-requests-answers='{{ VALID_BODY_TRACK_REQUESTS_ANSWERS[0] }}'"
+            return (False, error_msg)
     if "missing-request-action" in payload:
-        value = payload.get("missing-request-action")
-        if value and value not in VALID_BODY_MISSING_REQUEST_ACTION:
-            return (
-                False,
-                f"Invalid missing-request-action '{value}'. Must be one of: {', '.join(VALID_BODY_MISSING_REQUEST_ACTION)}",
-            )
-
-    # Validate protocol-version-invalid if present
+        value = payload["missing-request-action"]
+        if value not in VALID_BODY_MISSING_REQUEST_ACTION:
+            desc = FIELD_DESCRIPTIONS.get("missing-request-action", "")
+            error_msg = f"Invalid value for 'missing-request-action': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MISSING_REQUEST_ACTION)}"
+            error_msg += f"\n  → Example: missing-request-action='{{ VALID_BODY_MISSING_REQUEST_ACTION[0] }}'"
+            return (False, error_msg)
     if "protocol-version-invalid" in payload:
-        value = payload.get("protocol-version-invalid")
-        if value and value not in VALID_BODY_PROTOCOL_VERSION_INVALID:
-            return (
-                False,
-                f"Invalid protocol-version-invalid '{value}'. Must be one of: {', '.join(VALID_BODY_PROTOCOL_VERSION_INVALID)}",
-            )
-
-    # Validate message-length-invalid if present
+        value = payload["protocol-version-invalid"]
+        if value not in VALID_BODY_PROTOCOL_VERSION_INVALID:
+            desc = FIELD_DESCRIPTIONS.get("protocol-version-invalid", "")
+            error_msg = f"Invalid value for 'protocol-version-invalid': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROTOCOL_VERSION_INVALID)}"
+            error_msg += f"\n  → Example: protocol-version-invalid='{{ VALID_BODY_PROTOCOL_VERSION_INVALID[0] }}'"
+            return (False, error_msg)
     if "message-length-invalid" in payload:
-        value = payload.get("message-length-invalid")
-        if value and value not in VALID_BODY_MESSAGE_LENGTH_INVALID:
-            return (
-                False,
-                f"Invalid message-length-invalid '{value}'. Must be one of: {', '.join(VALID_BODY_MESSAGE_LENGTH_INVALID)}",
-            )
-
-    # Validate request-error-flag-set if present
+        value = payload["message-length-invalid"]
+        if value not in VALID_BODY_MESSAGE_LENGTH_INVALID:
+            desc = FIELD_DESCRIPTIONS.get("message-length-invalid", "")
+            error_msg = f"Invalid value for 'message-length-invalid': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MESSAGE_LENGTH_INVALID)}"
+            error_msg += f"\n  → Example: message-length-invalid='{{ VALID_BODY_MESSAGE_LENGTH_INVALID[0] }}'"
+            return (False, error_msg)
     if "request-error-flag-set" in payload:
-        value = payload.get("request-error-flag-set")
-        if value and value not in VALID_BODY_REQUEST_ERROR_FLAG_SET:
-            return (
-                False,
-                f"Invalid request-error-flag-set '{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST_ERROR_FLAG_SET)}",
-            )
-
-    # Validate cmd-flags-reserve-set if present
+        value = payload["request-error-flag-set"]
+        if value not in VALID_BODY_REQUEST_ERROR_FLAG_SET:
+            desc = FIELD_DESCRIPTIONS.get("request-error-flag-set", "")
+            error_msg = f"Invalid value for 'request-error-flag-set': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REQUEST_ERROR_FLAG_SET)}"
+            error_msg += f"\n  → Example: request-error-flag-set='{{ VALID_BODY_REQUEST_ERROR_FLAG_SET[0] }}'"
+            return (False, error_msg)
     if "cmd-flags-reserve-set" in payload:
-        value = payload.get("cmd-flags-reserve-set")
-        if value and value not in VALID_BODY_CMD_FLAGS_RESERVE_SET:
-            return (
-                False,
-                f"Invalid cmd-flags-reserve-set '{value}'. Must be one of: {', '.join(VALID_BODY_CMD_FLAGS_RESERVE_SET)}",
-            )
-
-    # Validate command-code-invalid if present
+        value = payload["cmd-flags-reserve-set"]
+        if value not in VALID_BODY_CMD_FLAGS_RESERVE_SET:
+            desc = FIELD_DESCRIPTIONS.get("cmd-flags-reserve-set", "")
+            error_msg = f"Invalid value for 'cmd-flags-reserve-set': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CMD_FLAGS_RESERVE_SET)}"
+            error_msg += f"\n  → Example: cmd-flags-reserve-set='{{ VALID_BODY_CMD_FLAGS_RESERVE_SET[0] }}'"
+            return (False, error_msg)
     if "command-code-invalid" in payload:
-        value = payload.get("command-code-invalid")
-        if value and value not in VALID_BODY_COMMAND_CODE_INVALID:
-            return (
-                False,
-                f"Invalid command-code-invalid '{value}'. Must be one of: {', '.join(VALID_BODY_COMMAND_CODE_INVALID)}",
-            )
+        value = payload["command-code-invalid"]
+        if value not in VALID_BODY_COMMAND_CODE_INVALID:
+            desc = FIELD_DESCRIPTIONS.get("command-code-invalid", "")
+            error_msg = f"Invalid value for 'command-code-invalid': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_COMMAND_CODE_INVALID)}"
+            error_msg += f"\n  → Example: command-code-invalid='{{ VALID_BODY_COMMAND_CODE_INVALID[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -266,141 +420,392 @@ def validate_profile_post(payload: dict[str, Any]) -> tuple[bool, str | None]:
 # ============================================================================
 
 
-def validate_profile_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_diameter_filter_profile_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update diameter_filter/profile.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_diameter_filter_profile_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 47:
-            return (False, "name cannot exceed 47 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "comment cannot exceed 255 characters")
-
-    # Validate monitor-all-messages if present
+    # Step 1: Validate enum values
     if "monitor-all-messages" in payload:
-        value = payload.get("monitor-all-messages")
-        if value and value not in VALID_BODY_MONITOR_ALL_MESSAGES:
+        value = payload["monitor-all-messages"]
+        if value not in VALID_BODY_MONITOR_ALL_MESSAGES:
             return (
                 False,
-                f"Invalid monitor-all-messages '{value}'. Must be one of: {', '.join(VALID_BODY_MONITOR_ALL_MESSAGES)}",
+                f"Invalid value for 'monitor-all-messages'='{value}'. Must be one of: {', '.join(VALID_BODY_MONITOR_ALL_MESSAGES)}",
             )
-
-    # Validate log-packet if present
     if "log-packet" in payload:
-        value = payload.get("log-packet")
-        if value and value not in VALID_BODY_LOG_PACKET:
+        value = payload["log-packet"]
+        if value not in VALID_BODY_LOG_PACKET:
             return (
                 False,
-                f"Invalid log-packet '{value}'. Must be one of: {', '.join(VALID_BODY_LOG_PACKET)}",
+                f"Invalid value for 'log-packet'='{value}'. Must be one of: {', '.join(VALID_BODY_LOG_PACKET)}",
             )
-
-    # Validate track-requests-answers if present
     if "track-requests-answers" in payload:
-        value = payload.get("track-requests-answers")
-        if value and value not in VALID_BODY_TRACK_REQUESTS_ANSWERS:
+        value = payload["track-requests-answers"]
+        if value not in VALID_BODY_TRACK_REQUESTS_ANSWERS:
             return (
                 False,
-                f"Invalid track-requests-answers '{value}'. Must be one of: {', '.join(VALID_BODY_TRACK_REQUESTS_ANSWERS)}",
+                f"Invalid value for 'track-requests-answers'='{value}'. Must be one of: {', '.join(VALID_BODY_TRACK_REQUESTS_ANSWERS)}",
             )
-
-    # Validate missing-request-action if present
     if "missing-request-action" in payload:
-        value = payload.get("missing-request-action")
-        if value and value not in VALID_BODY_MISSING_REQUEST_ACTION:
+        value = payload["missing-request-action"]
+        if value not in VALID_BODY_MISSING_REQUEST_ACTION:
             return (
                 False,
-                f"Invalid missing-request-action '{value}'. Must be one of: {', '.join(VALID_BODY_MISSING_REQUEST_ACTION)}",
+                f"Invalid value for 'missing-request-action'='{value}'. Must be one of: {', '.join(VALID_BODY_MISSING_REQUEST_ACTION)}",
             )
-
-    # Validate protocol-version-invalid if present
     if "protocol-version-invalid" in payload:
-        value = payload.get("protocol-version-invalid")
-        if value and value not in VALID_BODY_PROTOCOL_VERSION_INVALID:
+        value = payload["protocol-version-invalid"]
+        if value not in VALID_BODY_PROTOCOL_VERSION_INVALID:
             return (
                 False,
-                f"Invalid protocol-version-invalid '{value}'. Must be one of: {', '.join(VALID_BODY_PROTOCOL_VERSION_INVALID)}",
+                f"Invalid value for 'protocol-version-invalid'='{value}'. Must be one of: {', '.join(VALID_BODY_PROTOCOL_VERSION_INVALID)}",
             )
-
-    # Validate message-length-invalid if present
     if "message-length-invalid" in payload:
-        value = payload.get("message-length-invalid")
-        if value and value not in VALID_BODY_MESSAGE_LENGTH_INVALID:
+        value = payload["message-length-invalid"]
+        if value not in VALID_BODY_MESSAGE_LENGTH_INVALID:
             return (
                 False,
-                f"Invalid message-length-invalid '{value}'. Must be one of: {', '.join(VALID_BODY_MESSAGE_LENGTH_INVALID)}",
+                f"Invalid value for 'message-length-invalid'='{value}'. Must be one of: {', '.join(VALID_BODY_MESSAGE_LENGTH_INVALID)}",
             )
-
-    # Validate request-error-flag-set if present
     if "request-error-flag-set" in payload:
-        value = payload.get("request-error-flag-set")
-        if value and value not in VALID_BODY_REQUEST_ERROR_FLAG_SET:
+        value = payload["request-error-flag-set"]
+        if value not in VALID_BODY_REQUEST_ERROR_FLAG_SET:
             return (
                 False,
-                f"Invalid request-error-flag-set '{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST_ERROR_FLAG_SET)}",
+                f"Invalid value for 'request-error-flag-set'='{value}'. Must be one of: {', '.join(VALID_BODY_REQUEST_ERROR_FLAG_SET)}",
             )
-
-    # Validate cmd-flags-reserve-set if present
     if "cmd-flags-reserve-set" in payload:
-        value = payload.get("cmd-flags-reserve-set")
-        if value and value not in VALID_BODY_CMD_FLAGS_RESERVE_SET:
+        value = payload["cmd-flags-reserve-set"]
+        if value not in VALID_BODY_CMD_FLAGS_RESERVE_SET:
             return (
                 False,
-                f"Invalid cmd-flags-reserve-set '{value}'. Must be one of: {', '.join(VALID_BODY_CMD_FLAGS_RESERVE_SET)}",
+                f"Invalid value for 'cmd-flags-reserve-set'='{value}'. Must be one of: {', '.join(VALID_BODY_CMD_FLAGS_RESERVE_SET)}",
             )
-
-    # Validate command-code-invalid if present
     if "command-code-invalid" in payload:
-        value = payload.get("command-code-invalid")
-        if value and value not in VALID_BODY_COMMAND_CODE_INVALID:
+        value = payload["command-code-invalid"]
+        if value not in VALID_BODY_COMMAND_CODE_INVALID:
             return (
                 False,
-                f"Invalid command-code-invalid '{value}'. Must be one of: {', '.join(VALID_BODY_COMMAND_CODE_INVALID)}",
+                f"Invalid value for 'command-code-invalid'='{value}'. Must be one of: {', '.join(VALID_BODY_COMMAND_CODE_INVALID)}",
             )
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_profile_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    # Replace all non-alphanumeric characters with underscores for valid Python identifiers
+    import re
+    safe_name = re.sub(r'[^a-zA-Z0-9]', '_', field_name)
+    constant_name = f"VALID_BODY_{safe_name.upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "diameter_filter/profile",
+    "category": "cmdb",
+    "api_path": "diameter-filter/profile",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure Diameter filter profiles.",
+    "total_fields": 12,
+    "required_fields_count": 1,
+    "fields_with_defaults_count": 11,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

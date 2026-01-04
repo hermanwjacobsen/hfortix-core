@@ -3,7 +3,7 @@ FortiOS-Specific Exceptions
 FortiOS error codes and product-specific exception handling
 """
 
-from typing import Optional
+from typing import Any, Optional
 
 # ============================================================================
 # Helper Functions for Error Context
@@ -177,6 +177,86 @@ class AuthenticationError(FortinetError):
 
 class AuthorizationError(FortinetError):
     """HTTP 403 - Authorization failed (insufficient permissions)"""
+
+
+class ValidationError(FortinetError):
+    """
+    Raised when payload validation fails before API call
+    
+    Provides rich error context to help users fix validation issues.
+    
+    Attributes:
+        field: The field that failed validation
+        value: The invalid value provided
+        constraint: The validation constraint that was violated
+        valid_options: List of valid options (for enums)
+        description: Field description from schema
+        example: Example of a valid value
+        suggestion: Helpful hint for fixing the error
+    """
+    
+    def __init__(
+        self,
+        message: str,
+        field: str | None = None,
+        value: Any = None,
+        constraint: str | None = None,
+        valid_options: list[str] | None = None,
+        description: str | None = None,
+        example: str | None = None,
+        suggestion: str | None = None,
+    ):
+        super().__init__(message)
+        self.field = field
+        self.value = value
+        self.constraint = constraint
+        self.valid_options = valid_options
+        self.description = description
+        self.example = example
+        self.suggestion = suggestion
+        self._original_message = message
+    
+    def __str__(self) -> str:
+        """Format validation error with helpful context"""
+        parts = [self._original_message]
+        
+        # Add field context
+        if self.field:
+            parts.append(f"  → Field: '{self.field}'")
+        
+        # Add description from schema
+        if self.description:
+            parts.append(f"  → Description: {self.description}")
+        
+        # Add constraint details
+        if self.constraint:
+            parts.append(f"  → Constraint: {self.constraint}")
+        
+        # Add provided value
+        if self.value is not None:
+            value_str = repr(self.value) if isinstance(self.value, str) else str(self.value)
+            if len(value_str) > 100:
+                value_str = value_str[:97] + "..."
+            parts.append(f"  → You provided: {value_str}")
+        
+        # Add valid options for enums
+        if self.valid_options:
+            if len(self.valid_options) <= 10:
+                options_str = ", ".join(f"'{opt}'" for opt in self.valid_options)
+            else:
+                options_str = ", ".join(f"'{opt}'" for opt in self.valid_options[:10])
+                options_str += f" ... (+{len(self.valid_options) - 10} more)"
+            parts.append(f"  → Valid options: {options_str}")
+        
+        # Add example
+        if self.example:
+            parts.append(f"  → Example: {self.example}")
+        
+        # Add suggestion
+        if self.suggestion:
+            parts.append(f"  💡 {self.suggestion}")
+        
+        return "\n".join(parts)
 
 
 # ============================================================================

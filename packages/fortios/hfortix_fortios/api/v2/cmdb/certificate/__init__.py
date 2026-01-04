@@ -6,22 +6,24 @@ from .hsm_local import HsmLocal
 from .local import Local
 from .remote import Remote
 
-__all__ = ["Ca", "Crl", "HsmLocal", "Local", "Remote"]
+__all__ = [
+    "Ca",
+    "Certificate",
+    "Crl",
+    "HsmLocal",
+    "Local",
+    "Remote",
+]
 
 
 class Certificate:
-    """
-    Certificate category wrapper.
-
-    This class provides access to all certificate CMDB endpoints.
-    """
+    """Certificate endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Certificate with all endpoint classes.
-
+        """Certificate endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.ca = Ca(client)
         self.crl = Crl(client)

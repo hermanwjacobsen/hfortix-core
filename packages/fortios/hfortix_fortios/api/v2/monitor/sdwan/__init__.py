@@ -1,33 +1,27 @@
-"""
-FortiOS Monitor - Sdwan
-SD-WAN monitoring and health checks
-"""
+"""FortiOS Monitor - Sdwan category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["Sdwan"]
+from .link_monitor_metrics.report import Report
 
-from .link_monitor_metrics import LinkMonitorMetrics
+class LinkMonitorMetricsEndpoints:
+    """Endpoints under link_monitor_metrics."""
+
+    def __init__(self, client):
+        self.report = Report(client)
 
 
 class Sdwan:
-    """Sdwan Monitor category class"""
+    """Sdwan endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Sdwan Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """Sdwan endpoints."""
+        self.link_monitor_metrics = LinkMonitorMetricsEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.link_monitor_metrics = LinkMonitorMetrics(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["link_monitor_metrics"]
+__all__ = ["Sdwan"]

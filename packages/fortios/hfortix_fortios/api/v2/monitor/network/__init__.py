@@ -1,53 +1,15 @@
-"""
-FortiOS Monitor - Network
-Network monitoring operations
-"""
+"""Auto-generated category __init__ file."""
 
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-__all__ = ["Network"]
-
 from .arp import Arp
-from .ddns import Ddns
-from .debug_flow import DebugFlow
-from .dns import Dns
-from .fortiguard import Fortiguard
-from .lldp import Lldp
-from .reverse_ip_lookup import ReverseIpLookup
+
+if TYPE_CHECKING:
+    from hfortix_core.client import FortinetClient
 
 
 class Network:
-    """Network Monitor category class"""
+    """Container for {category_name} endpoints."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Network Monitor category
-
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
-
-        # Initialize endpoints
+    def __init__(self, client: "FortinetClient"):
         self.arp = Arp(client)
-        self.ddns = Ddns(client)
-        self.debug_flow = DebugFlow(client)
-        self.dns = Dns(client)
-        self.fortiguard = Fortiguard(client)
-        self.lldp = Lldp(client)
-        self.reverse_ip_lookup = ReverseIpLookup(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return [
-            "arp",
-            "ddns",
-            "debug_flow",
-            "dns",
-            "fortiguard",
-            "lldp",
-            "reverse_ip_lookup",
-        ]

@@ -1,14 +1,160 @@
 """
-Validation helpers for system resource_limits endpoint.
+Validation helpers for system/resource_limits endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
+
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema
+# ============================================================================
+
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
+
+# Fields marked as required (after filtering false positives)
+REQUIRED_FIELDS = [
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "session": "",
+    "ipsec-phase1": "",
+    "ipsec-phase2": "",
+    "ipsec-phase1-interface": "",
+    "ipsec-phase2-interface": "",
+    "dialup-tunnel": "",
+    "firewall-policy": "",
+    "firewall-address": "",
+    "firewall-addrgrp": "",
+    "custom-service": "",
+    "service-group": "",
+    "onetime-schedule": "",
+    "recurring-schedule": "",
+    "user": "",
+    "user-group": "",
+    "sslvpn": "",
+    "proxy": "",
+    "log-disk-quota": 0,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "session": "integer",  # Maximum number of sessions.
+    "ipsec-phase1": "integer",  # Maximum number of VPN IPsec phase1 tunnels.
+    "ipsec-phase2": "integer",  # Maximum number of VPN IPsec phase2 tunnels.
+    "ipsec-phase1-interface": "integer",  # Maximum number of VPN IPsec phase1 interface tunnels.
+    "ipsec-phase2-interface": "integer",  # Maximum number of VPN IPsec phase2 interface tunnels.
+    "dialup-tunnel": "integer",  # Maximum number of dial-up tunnels.
+    "firewall-policy": "integer",  # Maximum number of firewall policies (policy, DoS-policy4, Do
+    "firewall-address": "integer",  # Maximum number of firewall addresses (IPv4, IPv6, multicast)
+    "firewall-addrgrp": "integer",  # Maximum number of firewall address groups (IPv4, IPv6).
+    "custom-service": "integer",  # Maximum number of firewall custom services.
+    "service-group": "integer",  # Maximum number of firewall service groups.
+    "onetime-schedule": "integer",  # Maximum number of firewall one-time schedules.
+    "recurring-schedule": "integer",  # Maximum number of firewall recurring schedules.
+    "user": "integer",  # Maximum number of local users.
+    "user-group": "integer",  # Maximum number of user groups.
+    "sslvpn": "integer",  # Maximum number of Agentless VPN.
+    "proxy": "integer",  # Maximum number of concurrent proxy users.
+    "log-disk-quota": "integer",  # Log disk quota in megabytes (MB).
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "session": "Maximum number of sessions.",
+    "ipsec-phase1": "Maximum number of VPN IPsec phase1 tunnels.",
+    "ipsec-phase2": "Maximum number of VPN IPsec phase2 tunnels.",
+    "ipsec-phase1-interface": "Maximum number of VPN IPsec phase1 interface tunnels.",
+    "ipsec-phase2-interface": "Maximum number of VPN IPsec phase2 interface tunnels.",
+    "dialup-tunnel": "Maximum number of dial-up tunnels.",
+    "firewall-policy": "Maximum number of firewall policies (policy, DoS-policy4, DoS-policy6, multicast).",
+    "firewall-address": "Maximum number of firewall addresses (IPv4, IPv6, multicast).",
+    "firewall-addrgrp": "Maximum number of firewall address groups (IPv4, IPv6).",
+    "custom-service": "Maximum number of firewall custom services.",
+    "service-group": "Maximum number of firewall service groups.",
+    "onetime-schedule": "Maximum number of firewall one-time schedules.",
+    "recurring-schedule": "Maximum number of firewall recurring schedules.",
+    "user": "Maximum number of local users.",
+    "user-group": "Maximum number of user groups.",
+    "sslvpn": "Maximum number of Agentless VPN.",
+    "proxy": "Maximum number of concurrent proxy users.",
+    "log-disk-quota": "Log disk quota in megabytes (MB).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "session": {"type": "integer", "min": 0, "max": 4294967295},
+    "ipsec-phase1": {"type": "integer", "min": 0, "max": 4294967295},
+    "ipsec-phase2": {"type": "integer", "min": 0, "max": 4294967295},
+    "ipsec-phase1-interface": {"type": "integer", "min": 0, "max": 4294967295},
+    "ipsec-phase2-interface": {"type": "integer", "min": 0, "max": 4294967295},
+    "dialup-tunnel": {"type": "integer", "min": 0, "max": 4294967295},
+    "firewall-policy": {"type": "integer", "min": 0, "max": 4294967295},
+    "firewall-address": {"type": "integer", "min": 0, "max": 4294967295},
+    "firewall-addrgrp": {"type": "integer", "min": 0, "max": 4294967295},
+    "custom-service": {"type": "integer", "min": 0, "max": 4294967295},
+    "service-group": {"type": "integer", "min": 0, "max": 4294967295},
+    "onetime-schedule": {"type": "integer", "min": 0, "max": 4294967295},
+    "recurring-schedule": {"type": "integer", "min": 0, "max": 4294967295},
+    "user": {"type": "integer", "min": 0, "max": 4294967295},
+    "user-group": {"type": "integer", "min": 0, "max": 4294967295},
+    "sslvpn": {"type": "integer", "min": 0, "max": 4294967295},
+    "proxy": {"type": "integer", "min": 0, "max": 4294967295},
+    "log-disk-quota": {"type": "integer", "min": 0, "max": 4294967295},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+}
+
 
 # Valid enum values from API documentation
 VALID_QUERY_ACTION = ["default", "schema"]
@@ -18,13 +164,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_resource_limits_get(
+def validate_system_resource_limits_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for system/resource_limits.
 
     Args:
         attr: Attribute filter (optional)
@@ -34,9 +180,17 @@ def validate_resource_limits_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_system_resource_limits_get()
+        >>> assert is_valid == True
+        
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_system_resource_limits_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -51,263 +205,419 @@ def validate_resource_limits_get(
 
 
 # ============================================================================
+# POST Validation
+# ============================================================================
+
+
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system/resource_limits.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
+    """
+    # Check always-required fields
+    missing_fields = []
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
+
+    return (True, None)
+
+
+def validate_system_resource_limits_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
+    """
+    Validate POST request to create new system/resource_limits object.
+
+    This validator performs two-stage validation:
+    1. Required fields check (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Args:
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
+
+    Returns:
+        Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_system_resource_limits_post(payload)
+        >>> assert is_valid == True
+        
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_system_resource_limits_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
+    """
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate enum values
+
+    return (True, None)
+
+
+# ============================================================================
 # PUT Validation
 # ============================================================================
 
 
-def validate_resource_limits_put(
-    payload: dict[str, Any] | None = None,
+def validate_system_resource_limits_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update system/resource_limits.
 
     Args:
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_system_resource_limits_put(payload)
     """
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate session if present
-    if "session" in payload:
-        value = payload.get("session")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (False, "session must be between 0 and 4294967295")
-            except (ValueError, TypeError):
-                return (False, f"session must be numeric, got: {value}")
-
-    # Validate ipsec-phase1 if present
-    if "ipsec-phase1" in payload:
-        value = payload.get("ipsec-phase1")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "ipsec-phase1 must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"ipsec-phase1 must be numeric, got: {value}")
-
-    # Validate ipsec-phase2 if present
-    if "ipsec-phase2" in payload:
-        value = payload.get("ipsec-phase2")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "ipsec-phase2 must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"ipsec-phase2 must be numeric, got: {value}")
-
-    # Validate ipsec-phase1-interface if present
-    if "ipsec-phase1-interface" in payload:
-        value = payload.get("ipsec-phase1-interface")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "ipsec-phase1-interface must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ipsec-phase1-interface must be numeric, got: {value}",
-                )
-
-    # Validate ipsec-phase2-interface if present
-    if "ipsec-phase2-interface" in payload:
-        value = payload.get("ipsec-phase2-interface")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "ipsec-phase2-interface must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"ipsec-phase2-interface must be numeric, got: {value}",
-                )
-
-    # Validate dialup-tunnel if present
-    if "dialup-tunnel" in payload:
-        value = payload.get("dialup-tunnel")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "dialup-tunnel must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"dialup-tunnel must be numeric, got: {value}")
-
-    # Validate firewall-policy if present
-    if "firewall-policy" in payload:
-        value = payload.get("firewall-policy")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "firewall-policy must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"firewall-policy must be numeric, got: {value}",
-                )
-
-    # Validate firewall-address if present
-    if "firewall-address" in payload:
-        value = payload.get("firewall-address")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "firewall-address must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"firewall-address must be numeric, got: {value}",
-                )
-
-    # Validate firewall-addrgrp if present
-    if "firewall-addrgrp" in payload:
-        value = payload.get("firewall-addrgrp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "firewall-addrgrp must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"firewall-addrgrp must be numeric, got: {value}",
-                )
-
-    # Validate custom-service if present
-    if "custom-service" in payload:
-        value = payload.get("custom-service")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "custom-service must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"custom-service must be numeric, got: {value}")
-
-    # Validate service-group if present
-    if "service-group" in payload:
-        value = payload.get("service-group")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "service-group must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"service-group must be numeric, got: {value}")
-
-    # Validate onetime-schedule if present
-    if "onetime-schedule" in payload:
-        value = payload.get("onetime-schedule")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "onetime-schedule must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"onetime-schedule must be numeric, got: {value}",
-                )
-
-    # Validate recurring-schedule if present
-    if "recurring-schedule" in payload:
-        value = payload.get("recurring-schedule")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "recurring-schedule must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"recurring-schedule must be numeric, got: {value}",
-                )
-
-    # Validate user if present
-    if "user" in payload:
-        value = payload.get("user")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (False, "user must be between 0 and 4294967295")
-            except (ValueError, TypeError):
-                return (False, f"user must be numeric, got: {value}")
-
-    # Validate user-group if present
-    if "user-group" in payload:
-        value = payload.get("user-group")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "user-group must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"user-group must be numeric, got: {value}")
-
-    # Validate log-disk-quota if present
-    if "log-disk-quota" in payload:
-        value = payload.get("log-disk-quota")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "log-disk-quota must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"log-disk-quota must be numeric, got: {value}")
+    # Step 1: Validate enum values
 
     return (True, None)
+
+
+# ============================================================================
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
+# ============================================================================
+
+
+def get_field_description(field_name: str) -> str | None:
+    """
+    Get description/help text for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
+    """
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "system/resource_limits",
+    "category": "cmdb",
+    "api_path": "system/resource-limits",
+    "help": "Configure resource limits.",
+    "total_fields": 18,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 18,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

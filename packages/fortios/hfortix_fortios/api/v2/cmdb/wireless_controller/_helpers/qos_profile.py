@@ -1,56 +1,231 @@
 """
-Validation helpers for wireless-controller qos_profile endpoint.
+Validation helpers for wireless_controller/qos_profile endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "name",  # WiFi QoS profile name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "bandwidth-admission-control": "disable",
-    "bandwidth-capacity": 2000,
+    "name": "",
+    "comment": "",
+    "uplink": 0,
+    "downlink": 0,
+    "uplink-sta": 0,
+    "downlink-sta": 0,
     "burst": "disable",
+    "wmm": "enable",
+    "wmm-uapsd": "enable",
     "call-admission-control": "disable",
     "call-capacity": 10,
+    "bandwidth-admission-control": "disable",
+    "bandwidth-capacity": 2000,
     "dscp-wmm-mapping": "disable",
-    "wmm": "enable",
-    "wmm-bk-dscp": 8,
     "wmm-dscp-marking": "disable",
-    "wmm-uapsd": "enable",
-    "wmm-vi-dscp": 32,
     "wmm-vo-dscp": 48,
+    "wmm-vi-dscp": 32,
+    "wmm-be-dscp": 0,
+    "wmm-bk-dscp": 8,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # WiFi QoS profile name.
+    "comment": "string",  # Comment.
+    "uplink": "integer",  # Maximum uplink bandwidth for Virtual Access Points (VAPs) (0
+    "downlink": "integer",  # Maximum downlink bandwidth for Virtual Access Points (VAPs) 
+    "uplink-sta": "integer",  # Maximum uplink bandwidth for clients (0 - 2097152 Kbps, defa
+    "downlink-sta": "integer",  # Maximum downlink bandwidth for clients (0 - 2097152 Kbps, de
+    "burst": "option",  # Enable/disable client rate burst.
+    "wmm": "option",  # Enable/disable WiFi multi-media (WMM) control.
+    "wmm-uapsd": "option",  # Enable/disable WMM Unscheduled Automatic Power Save Delivery
+    "call-admission-control": "option",  # Enable/disable WMM call admission control.
+    "call-capacity": "integer",  # Maximum number of Voice over WLAN (VoWLAN) phones allowed (0
+    "bandwidth-admission-control": "option",  # Enable/disable WMM bandwidth admission control.
+    "bandwidth-capacity": "integer",  # Maximum bandwidth capacity allowed (1 - 600000 Kbps, default
+    "dscp-wmm-mapping": "option",  # Enable/disable Differentiated Services Code Point (DSCP) map
+    "dscp-wmm-vo": "string",  # DSCP mapping for voice access (default = 48 56).
+    "dscp-wmm-vi": "string",  # DSCP mapping for video access (default = 32 40).
+    "dscp-wmm-be": "string",  # DSCP mapping for best effort access (default = 0 24).
+    "dscp-wmm-bk": "string",  # DSCP mapping for background access (default = 8 16).
+    "wmm-dscp-marking": "option",  # Enable/disable WMM Differentiated Services Code Point (DSCP)
+    "wmm-vo-dscp": "integer",  # DSCP marking for voice access (default = 48).
+    "wmm-vi-dscp": "integer",  # DSCP marking for video access (default = 32).
+    "wmm-be-dscp": "integer",  # DSCP marking for best effort access (default = 0).
+    "wmm-bk-dscp": "integer",  # DSCP marking for background access (default = 8).
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "WiFi QoS profile name.",
+    "comment": "Comment.",
+    "uplink": "Maximum uplink bandwidth for Virtual Access Points (VAPs) (0 - 2097152 Kbps, default = 0, 0 means no limit).",
+    "downlink": "Maximum downlink bandwidth for Virtual Access Points (VAPs) (0 - 2097152 Kbps, default = 0, 0 means no limit).",
+    "uplink-sta": "Maximum uplink bandwidth for clients (0 - 2097152 Kbps, default = 0, 0 means no limit).",
+    "downlink-sta": "Maximum downlink bandwidth for clients (0 - 2097152 Kbps, default = 0, 0 means no limit).",
+    "burst": "Enable/disable client rate burst.",
+    "wmm": "Enable/disable WiFi multi-media (WMM) control.",
+    "wmm-uapsd": "Enable/disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.",
+    "call-admission-control": "Enable/disable WMM call admission control.",
+    "call-capacity": "Maximum number of Voice over WLAN (VoWLAN) phones allowed (0 - 60, default = 10).",
+    "bandwidth-admission-control": "Enable/disable WMM bandwidth admission control.",
+    "bandwidth-capacity": "Maximum bandwidth capacity allowed (1 - 600000 Kbps, default = 2000).",
+    "dscp-wmm-mapping": "Enable/disable Differentiated Services Code Point (DSCP) mapping.",
+    "dscp-wmm-vo": "DSCP mapping for voice access (default = 48 56).",
+    "dscp-wmm-vi": "DSCP mapping for video access (default = 32 40).",
+    "dscp-wmm-be": "DSCP mapping for best effort access (default = 0 24).",
+    "dscp-wmm-bk": "DSCP mapping for background access (default = 8 16).",
+    "wmm-dscp-marking": "Enable/disable WMM Differentiated Services Code Point (DSCP) marking.",
+    "wmm-vo-dscp": "DSCP marking for voice access (default = 48).",
+    "wmm-vi-dscp": "DSCP marking for video access (default = 32).",
+    "wmm-be-dscp": "DSCP marking for best effort access (default = 0).",
+    "wmm-bk-dscp": "DSCP marking for background access (default = 8).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 35},
+    "comment": {"type": "string", "max_length": 63},
+    "uplink": {"type": "integer", "min": 0, "max": 2097152},
+    "downlink": {"type": "integer", "min": 0, "max": 2097152},
+    "uplink-sta": {"type": "integer", "min": 0, "max": 2097152},
+    "downlink-sta": {"type": "integer", "min": 0, "max": 2097152},
+    "call-capacity": {"type": "integer", "min": 0, "max": 60},
+    "bandwidth-capacity": {"type": "integer", "min": 1, "max": 600000},
+    "wmm-vo-dscp": {"type": "integer", "min": 0, "max": 63},
+    "wmm-vi-dscp": {"type": "integer", "min": 0, "max": 63},
+    "wmm-be-dscp": {"type": "integer", "min": 0, "max": 63},
+    "wmm-bk-dscp": {"type": "integer", "min": 0, "max": 63},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "dscp-wmm-vo": {
+        "id": {
+            "type": "integer",
+            "help": "DSCP WMM mapping numbers (0 - 63).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 63,
+        },
+    },
+    "dscp-wmm-vi": {
+        "id": {
+            "type": "integer",
+            "help": "DSCP WMM mapping numbers (0 - 63).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 63,
+        },
+    },
+    "dscp-wmm-be": {
+        "id": {
+            "type": "integer",
+            "help": "DSCP WMM mapping numbers (0 - 63).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 63,
+        },
+    },
+    "dscp-wmm-bk": {
+        "id": {
+            "type": "integer",
+            "help": "DSCP WMM mapping numbers (0 - 63).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 63,
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_BURST = ["enable", "disable"]
-VALID_BODY_WMM = ["enable", "disable"]
-VALID_BODY_WMM_UAPSD = ["enable", "disable"]
-VALID_BODY_CALL_ADMISSION_CONTROL = ["enable", "disable"]
-VALID_BODY_BANDWIDTH_ADMISSION_CONTROL = ["enable", "disable"]
-VALID_BODY_DSCP_WMM_MAPPING = ["enable", "disable"]
-VALID_BODY_WMM_DSCP_MARKING = ["enable", "disable"]
+VALID_BODY_BURST = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WMM = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WMM_UAPSD = [
+    "enable",
+    "disable",
+]
+VALID_BODY_CALL_ADMISSION_CONTROL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BANDWIDTH_ADMISSION_CONTROL = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DSCP_WMM_MAPPING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WMM_DSCP_MARKING = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -58,13 +233,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_qos_profile_get(
+def validate_wireless_controller_qos_profile_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for wireless_controller/qos_profile.
 
     Args:
         attr: Attribute filter (optional)
@@ -74,9 +249,20 @@ def validate_qos_profile_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_wireless_controller_qos_profile_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_wireless_controller_qos_profile_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_wireless_controller_qos_profile_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -97,7 +283,7 @@ def validate_qos_profile_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for wireless-controller_qos-profile.
+    Validate required fields for wireless_controller/qos_profile.
 
     This validator checks:
     1. Always-required fields are present
@@ -110,265 +296,155 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "name": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_qos_profile_post(
-    payload: dict[str, Any],
+def validate_wireless_controller_qos_profile_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new wireless_controller/qos_profile object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - name: WiFi QoS profile name.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_wireless_controller_qos_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "burst": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_wireless_controller_qos_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["burst"] = "invalid-value"
+        >>> is_valid, error = validate_wireless_controller_qos_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_wireless_controller_qos_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "comment cannot exceed 63 characters")
-
-    # Validate uplink if present
-    if "uplink" in payload:
-        value = payload.get("uplink")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (False, "uplink must be between 0 and 2097152")
-            except (ValueError, TypeError):
-                return (False, f"uplink must be numeric, got: {value}")
-
-    # Validate downlink if present
-    if "downlink" in payload:
-        value = payload.get("downlink")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (False, "downlink must be between 0 and 2097152")
-            except (ValueError, TypeError):
-                return (False, f"downlink must be numeric, got: {value}")
-
-    # Validate uplink-sta if present
-    if "uplink-sta" in payload:
-        value = payload.get("uplink-sta")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (False, "uplink-sta must be between 0 and 2097152")
-            except (ValueError, TypeError):
-                return (False, f"uplink-sta must be numeric, got: {value}")
-
-    # Validate downlink-sta if present
-    if "downlink-sta" in payload:
-        value = payload.get("downlink-sta")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (
-                        False,
-                        "downlink-sta must be between 0 and 2097152",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"downlink-sta must be numeric, got: {value}")
-
-    # Validate burst if present
+    # Step 2: Validate enum values
     if "burst" in payload:
-        value = payload.get("burst")
-        if value and value not in VALID_BODY_BURST:
-            return (
-                False,
-                f"Invalid burst '{value}'. Must be one of: {', '.join(VALID_BODY_BURST)}",
-            )
-
-    # Validate wmm if present
+        value = payload["burst"]
+        if value not in VALID_BODY_BURST:
+            desc = FIELD_DESCRIPTIONS.get("burst", "")
+            error_msg = f"Invalid value for 'burst': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BURST)}"
+            error_msg += f"\n  → Example: burst='{{ VALID_BODY_BURST[0] }}'"
+            return (False, error_msg)
     if "wmm" in payload:
-        value = payload.get("wmm")
-        if value and value not in VALID_BODY_WMM:
-            return (
-                False,
-                f"Invalid wmm '{value}'. Must be one of: {', '.join(VALID_BODY_WMM)}",
-            )
-
-    # Validate wmm-uapsd if present
+        value = payload["wmm"]
+        if value not in VALID_BODY_WMM:
+            desc = FIELD_DESCRIPTIONS.get("wmm", "")
+            error_msg = f"Invalid value for 'wmm': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WMM)}"
+            error_msg += f"\n  → Example: wmm='{{ VALID_BODY_WMM[0] }}'"
+            return (False, error_msg)
     if "wmm-uapsd" in payload:
-        value = payload.get("wmm-uapsd")
-        if value and value not in VALID_BODY_WMM_UAPSD:
-            return (
-                False,
-                f"Invalid wmm-uapsd '{value}'. Must be one of: {', '.join(VALID_BODY_WMM_UAPSD)}",
-            )
-
-    # Validate call-admission-control if present
+        value = payload["wmm-uapsd"]
+        if value not in VALID_BODY_WMM_UAPSD:
+            desc = FIELD_DESCRIPTIONS.get("wmm-uapsd", "")
+            error_msg = f"Invalid value for 'wmm-uapsd': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WMM_UAPSD)}"
+            error_msg += f"\n  → Example: wmm-uapsd='{{ VALID_BODY_WMM_UAPSD[0] }}'"
+            return (False, error_msg)
     if "call-admission-control" in payload:
-        value = payload.get("call-admission-control")
-        if value and value not in VALID_BODY_CALL_ADMISSION_CONTROL:
-            return (
-                False,
-                f"Invalid call-admission-control '{value}'. Must be one of: {', '.join(VALID_BODY_CALL_ADMISSION_CONTROL)}",
-            )
-
-    # Validate call-capacity if present
-    if "call-capacity" in payload:
-        value = payload.get("call-capacity")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 60:
-                    return (False, "call-capacity must be between 0 and 60")
-            except (ValueError, TypeError):
-                return (False, f"call-capacity must be numeric, got: {value}")
-
-    # Validate bandwidth-admission-control if present
+        value = payload["call-admission-control"]
+        if value not in VALID_BODY_CALL_ADMISSION_CONTROL:
+            desc = FIELD_DESCRIPTIONS.get("call-admission-control", "")
+            error_msg = f"Invalid value for 'call-admission-control': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CALL_ADMISSION_CONTROL)}"
+            error_msg += f"\n  → Example: call-admission-control='{{ VALID_BODY_CALL_ADMISSION_CONTROL[0] }}'"
+            return (False, error_msg)
     if "bandwidth-admission-control" in payload:
-        value = payload.get("bandwidth-admission-control")
-        if value and value not in VALID_BODY_BANDWIDTH_ADMISSION_CONTROL:
-            return (
-                False,
-                f"Invalid bandwidth-admission-control '{value}'. Must be one of: {', '.join(VALID_BODY_BANDWIDTH_ADMISSION_CONTROL)}",
-            )
-
-    # Validate bandwidth-capacity if present
-    if "bandwidth-capacity" in payload:
-        value = payload.get("bandwidth-capacity")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 600000:
-                    return (
-                        False,
-                        "bandwidth-capacity must be between 1 and 600000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bandwidth-capacity must be numeric, got: {value}",
-                )
-
-    # Validate dscp-wmm-mapping if present
+        value = payload["bandwidth-admission-control"]
+        if value not in VALID_BODY_BANDWIDTH_ADMISSION_CONTROL:
+            desc = FIELD_DESCRIPTIONS.get("bandwidth-admission-control", "")
+            error_msg = f"Invalid value for 'bandwidth-admission-control': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BANDWIDTH_ADMISSION_CONTROL)}"
+            error_msg += f"\n  → Example: bandwidth-admission-control='{{ VALID_BODY_BANDWIDTH_ADMISSION_CONTROL[0] }}'"
+            return (False, error_msg)
     if "dscp-wmm-mapping" in payload:
-        value = payload.get("dscp-wmm-mapping")
-        if value and value not in VALID_BODY_DSCP_WMM_MAPPING:
-            return (
-                False,
-                f"Invalid dscp-wmm-mapping '{value}'. Must be one of: {', '.join(VALID_BODY_DSCP_WMM_MAPPING)}",
-            )
-
-    # Validate wmm-dscp-marking if present
+        value = payload["dscp-wmm-mapping"]
+        if value not in VALID_BODY_DSCP_WMM_MAPPING:
+            desc = FIELD_DESCRIPTIONS.get("dscp-wmm-mapping", "")
+            error_msg = f"Invalid value for 'dscp-wmm-mapping': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DSCP_WMM_MAPPING)}"
+            error_msg += f"\n  → Example: dscp-wmm-mapping='{{ VALID_BODY_DSCP_WMM_MAPPING[0] }}'"
+            return (False, error_msg)
     if "wmm-dscp-marking" in payload:
-        value = payload.get("wmm-dscp-marking")
-        if value and value not in VALID_BODY_WMM_DSCP_MARKING:
-            return (
-                False,
-                f"Invalid wmm-dscp-marking '{value}'. Must be one of: {', '.join(VALID_BODY_WMM_DSCP_MARKING)}",
-            )
-
-    # Validate wmm-vo-dscp if present
-    if "wmm-vo-dscp" in payload:
-        value = payload.get("wmm-vo-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-vo-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-vo-dscp must be numeric, got: {value}")
-
-    # Validate wmm-vi-dscp if present
-    if "wmm-vi-dscp" in payload:
-        value = payload.get("wmm-vi-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-vi-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-vi-dscp must be numeric, got: {value}")
-
-    # Validate wmm-be-dscp if present
-    if "wmm-be-dscp" in payload:
-        value = payload.get("wmm-be-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-be-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-be-dscp must be numeric, got: {value}")
-
-    # Validate wmm-bk-dscp if present
-    if "wmm-bk-dscp" in payload:
-        value = payload.get("wmm-bk-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-bk-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-bk-dscp must be numeric, got: {value}")
+        value = payload["wmm-dscp-marking"]
+        if value not in VALID_BODY_WMM_DSCP_MARKING:
+            desc = FIELD_DESCRIPTIONS.get("wmm-dscp-marking", "")
+            error_msg = f"Invalid value for 'wmm-dscp-marking': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WMM_DSCP_MARKING)}"
+            error_msg += f"\n  → Example: wmm-dscp-marking='{{ VALID_BODY_WMM_DSCP_MARKING[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -378,242 +454,375 @@ def validate_qos_profile_post(
 # ============================================================================
 
 
-def validate_qos_profile_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_wireless_controller_qos_profile_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update wireless_controller/qos_profile.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_wireless_controller_qos_profile_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "comment cannot exceed 63 characters")
-
-    # Validate uplink if present
-    if "uplink" in payload:
-        value = payload.get("uplink")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (False, "uplink must be between 0 and 2097152")
-            except (ValueError, TypeError):
-                return (False, f"uplink must be numeric, got: {value}")
-
-    # Validate downlink if present
-    if "downlink" in payload:
-        value = payload.get("downlink")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (False, "downlink must be between 0 and 2097152")
-            except (ValueError, TypeError):
-                return (False, f"downlink must be numeric, got: {value}")
-
-    # Validate uplink-sta if present
-    if "uplink-sta" in payload:
-        value = payload.get("uplink-sta")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (False, "uplink-sta must be between 0 and 2097152")
-            except (ValueError, TypeError):
-                return (False, f"uplink-sta must be numeric, got: {value}")
-
-    # Validate downlink-sta if present
-    if "downlink-sta" in payload:
-        value = payload.get("downlink-sta")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 2097152:
-                    return (
-                        False,
-                        "downlink-sta must be between 0 and 2097152",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"downlink-sta must be numeric, got: {value}")
-
-    # Validate burst if present
+    # Step 1: Validate enum values
     if "burst" in payload:
-        value = payload.get("burst")
-        if value and value not in VALID_BODY_BURST:
+        value = payload["burst"]
+        if value not in VALID_BODY_BURST:
             return (
                 False,
-                f"Invalid burst '{value}'. Must be one of: {', '.join(VALID_BODY_BURST)}",
+                f"Invalid value for 'burst'='{value}'. Must be one of: {', '.join(VALID_BODY_BURST)}",
             )
-
-    # Validate wmm if present
     if "wmm" in payload:
-        value = payload.get("wmm")
-        if value and value not in VALID_BODY_WMM:
+        value = payload["wmm"]
+        if value not in VALID_BODY_WMM:
             return (
                 False,
-                f"Invalid wmm '{value}'. Must be one of: {', '.join(VALID_BODY_WMM)}",
+                f"Invalid value for 'wmm'='{value}'. Must be one of: {', '.join(VALID_BODY_WMM)}",
             )
-
-    # Validate wmm-uapsd if present
     if "wmm-uapsd" in payload:
-        value = payload.get("wmm-uapsd")
-        if value and value not in VALID_BODY_WMM_UAPSD:
+        value = payload["wmm-uapsd"]
+        if value not in VALID_BODY_WMM_UAPSD:
             return (
                 False,
-                f"Invalid wmm-uapsd '{value}'. Must be one of: {', '.join(VALID_BODY_WMM_UAPSD)}",
+                f"Invalid value for 'wmm-uapsd'='{value}'. Must be one of: {', '.join(VALID_BODY_WMM_UAPSD)}",
             )
-
-    # Validate call-admission-control if present
     if "call-admission-control" in payload:
-        value = payload.get("call-admission-control")
-        if value and value not in VALID_BODY_CALL_ADMISSION_CONTROL:
+        value = payload["call-admission-control"]
+        if value not in VALID_BODY_CALL_ADMISSION_CONTROL:
             return (
                 False,
-                f"Invalid call-admission-control '{value}'. Must be one of: {', '.join(VALID_BODY_CALL_ADMISSION_CONTROL)}",
+                f"Invalid value for 'call-admission-control'='{value}'. Must be one of: {', '.join(VALID_BODY_CALL_ADMISSION_CONTROL)}",
             )
-
-    # Validate call-capacity if present
-    if "call-capacity" in payload:
-        value = payload.get("call-capacity")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 60:
-                    return (False, "call-capacity must be between 0 and 60")
-            except (ValueError, TypeError):
-                return (False, f"call-capacity must be numeric, got: {value}")
-
-    # Validate bandwidth-admission-control if present
     if "bandwidth-admission-control" in payload:
-        value = payload.get("bandwidth-admission-control")
-        if value and value not in VALID_BODY_BANDWIDTH_ADMISSION_CONTROL:
+        value = payload["bandwidth-admission-control"]
+        if value not in VALID_BODY_BANDWIDTH_ADMISSION_CONTROL:
             return (
                 False,
-                f"Invalid bandwidth-admission-control '{value}'. Must be one of: {', '.join(VALID_BODY_BANDWIDTH_ADMISSION_CONTROL)}",
+                f"Invalid value for 'bandwidth-admission-control'='{value}'. Must be one of: {', '.join(VALID_BODY_BANDWIDTH_ADMISSION_CONTROL)}",
             )
-
-    # Validate bandwidth-capacity if present
-    if "bandwidth-capacity" in payload:
-        value = payload.get("bandwidth-capacity")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 600000:
-                    return (
-                        False,
-                        "bandwidth-capacity must be between 1 and 600000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"bandwidth-capacity must be numeric, got: {value}",
-                )
-
-    # Validate dscp-wmm-mapping if present
     if "dscp-wmm-mapping" in payload:
-        value = payload.get("dscp-wmm-mapping")
-        if value and value not in VALID_BODY_DSCP_WMM_MAPPING:
+        value = payload["dscp-wmm-mapping"]
+        if value not in VALID_BODY_DSCP_WMM_MAPPING:
             return (
                 False,
-                f"Invalid dscp-wmm-mapping '{value}'. Must be one of: {', '.join(VALID_BODY_DSCP_WMM_MAPPING)}",
+                f"Invalid value for 'dscp-wmm-mapping'='{value}'. Must be one of: {', '.join(VALID_BODY_DSCP_WMM_MAPPING)}",
             )
-
-    # Validate wmm-dscp-marking if present
     if "wmm-dscp-marking" in payload:
-        value = payload.get("wmm-dscp-marking")
-        if value and value not in VALID_BODY_WMM_DSCP_MARKING:
+        value = payload["wmm-dscp-marking"]
+        if value not in VALID_BODY_WMM_DSCP_MARKING:
             return (
                 False,
-                f"Invalid wmm-dscp-marking '{value}'. Must be one of: {', '.join(VALID_BODY_WMM_DSCP_MARKING)}",
+                f"Invalid value for 'wmm-dscp-marking'='{value}'. Must be one of: {', '.join(VALID_BODY_WMM_DSCP_MARKING)}",
             )
-
-    # Validate wmm-vo-dscp if present
-    if "wmm-vo-dscp" in payload:
-        value = payload.get("wmm-vo-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-vo-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-vo-dscp must be numeric, got: {value}")
-
-    # Validate wmm-vi-dscp if present
-    if "wmm-vi-dscp" in payload:
-        value = payload.get("wmm-vi-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-vi-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-vi-dscp must be numeric, got: {value}")
-
-    # Validate wmm-be-dscp if present
-    if "wmm-be-dscp" in payload:
-        value = payload.get("wmm-be-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-be-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-be-dscp must be numeric, got: {value}")
-
-    # Validate wmm-bk-dscp if present
-    if "wmm-bk-dscp" in payload:
-        value = payload.get("wmm-bk-dscp")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 63:
-                    return (False, "wmm-bk-dscp must be between 0 and 63")
-            except (ValueError, TypeError):
-                return (False, f"wmm-bk-dscp must be numeric, got: {value}")
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_qos_profile_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "wireless_controller/qos_profile",
+    "category": "cmdb",
+    "api_path": "wireless-controller/qos-profile",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure WiFi quality of service (QoS) profiles.",
+    "total_fields": 23,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 19,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

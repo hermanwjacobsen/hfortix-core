@@ -1,52 +1,250 @@
 """
-Validation helpers for wireless-controller hotspot20_hs_profile endpoint.
+Validation helpers for wireless-controller/hotspot20_hs_profile endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "name",  # Hotspot profile name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
+    "name": "",
+    "release": 2,
+    "access-network-type": "private-network",
+    "access-network-internet": "disable",
     "access-network-asra": "disable",
     "access-network-esr": "disable",
-    "access-network-internet": "disable",
-    "access-network-type": "private-network",
     "access-network-uesa": "disable",
-    "bss-transition": "disable",
-    "deauth-request-timeout": 60,
-    "dgaf": "disable",
-    "gas-comeback-delay": 500,
-    "gas-fragmentation-limit": 1024,
-    "hessid": "00:00:00:00:00:00",
-    "l2tif": "disable",
-    "pame-bi": "enable",
-    "proxy-arp": "enable",
-    "release": 2,
     "venue-group": "unspecified",
     "venue-type": "unspecified",
-    "wba-open-roaming": "disable",
+    "hessid": "00:00:00:00:00:00",
+    "proxy-arp": "enable",
+    "l2tif": "disable",
+    "pame-bi": "enable",
+    "anqp-domain-id": 0,
+    "domain-name": "",
+    "osu-ssid": "",
+    "gas-comeback-delay": 500,
+    "gas-fragmentation-limit": 1024,
+    "dgaf": "disable",
+    "deauth-request-timeout": 60,
     "wnm-sleep-mode": "disable",
+    "bss-transition": "disable",
+    "venue-name": "",
+    "venue-url": "",
+    "roaming-consortium": "",
+    "nai-realm": "",
+    "oper-friendly-name": "",
+    "oper-icon": "",
+    "advice-of-charge": "",
+    "osu-provider-nai": "",
+    "terms-and-conditions": "",
+    "wan-metrics": "",
+    "network-auth": "",
+    "3gpp-plmn": "",
+    "conn-cap": "",
+    "qos-map": "",
+    "ip-addr-type": "",
+    "wba-open-roaming": "disable",
+    "wba-financial-clearing-provider": "",
+    "wba-data-clearing-provider": "",
+    "wba-charging-currency": "",
+    "wba-charging-rate": 0,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # Hotspot profile name.
+    "release": "integer",  # Hotspot 2.0 Release number (1, 2, 3, default = 2).
+    "access-network-type": "option",  # Access network type.
+    "access-network-internet": "option",  # Enable/disable connectivity to the Internet.
+    "access-network-asra": "option",  # Enable/disable additional step required for access (ASRA).
+    "access-network-esr": "option",  # Enable/disable emergency services reachable (ESR).
+    "access-network-uesa": "option",  # Enable/disable unauthenticated emergency service accessible 
+    "venue-group": "option",  # Venue group.
+    "venue-type": "option",  # Venue type.
+    "hessid": "mac-address",  # Homogeneous extended service set identifier (HESSID).
+    "proxy-arp": "option",  # Enable/disable Proxy ARP.
+    "l2tif": "option",  # Enable/disable Layer 2 traffic inspection and filtering.
+    "pame-bi": "option",  # Enable/disable Pre-Association Message Exchange BSSID Indepe
+    "anqp-domain-id": "integer",  # ANQP Domain ID (0-65535).
+    "domain-name": "string",  # Domain name.
+    "osu-ssid": "string",  # Online sign up (OSU) SSID.
+    "gas-comeback-delay": "integer",  # GAS comeback delay (0 or 100 - 10000 milliseconds, default =
+    "gas-fragmentation-limit": "integer",  # GAS fragmentation limit (512 - 4096, default = 1024).
+    "dgaf": "option",  # Enable/disable downstream group-addressed forwarding (DGAF).
+    "deauth-request-timeout": "integer",  # Deauthentication request timeout (in seconds).
+    "wnm-sleep-mode": "option",  # Enable/disable wireless network management (WNM) sleep mode.
+    "bss-transition": "option",  # Enable/disable basic service set (BSS) transition Support.
+    "venue-name": "string",  # Venue name.
+    "venue-url": "string",  # Venue name.
+    "roaming-consortium": "string",  # Roaming consortium list name.
+    "nai-realm": "string",  # NAI realm list name.
+    "oper-friendly-name": "string",  # Operator friendly name.
+    "oper-icon": "string",  # Operator icon.
+    "advice-of-charge": "string",  # Advice of charge.
+    "osu-provider-nai": "string",  # OSU Provider NAI.
+    "terms-and-conditions": "string",  # Terms and conditions.
+    "osu-provider": "string",  # Manually selected list of OSU provider(s).
+    "wan-metrics": "string",  # WAN metric name.
+    "network-auth": "string",  # Network authentication name.
+    "3gpp-plmn": "string",  # 3GPP PLMN name.
+    "conn-cap": "string",  # Connection capability name.
+    "qos-map": "string",  # QoS MAP set ID.
+    "ip-addr-type": "string",  # IP address type name.
+    "wba-open-roaming": "option",  # Enable/disable WBA open roaming support.
+    "wba-financial-clearing-provider": "string",  # WBA ID of financial clearing provider.
+    "wba-data-clearing-provider": "string",  # WBA ID of data clearing provider.
+    "wba-charging-currency": "string",  # Three letter currency code.
+    "wba-charging-rate": "integer",  # Number of currency units per kilobyte.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "Hotspot profile name.",
+    "release": "Hotspot 2.0 Release number (1, 2, 3, default = 2).",
+    "access-network-type": "Access network type.",
+    "access-network-internet": "Enable/disable connectivity to the Internet.",
+    "access-network-asra": "Enable/disable additional step required for access (ASRA).",
+    "access-network-esr": "Enable/disable emergency services reachable (ESR).",
+    "access-network-uesa": "Enable/disable unauthenticated emergency service accessible (UESA).",
+    "venue-group": "Venue group.",
+    "venue-type": "Venue type.",
+    "hessid": "Homogeneous extended service set identifier (HESSID).",
+    "proxy-arp": "Enable/disable Proxy ARP.",
+    "l2tif": "Enable/disable Layer 2 traffic inspection and filtering.",
+    "pame-bi": "Enable/disable Pre-Association Message Exchange BSSID Independent (PAME-BI).",
+    "anqp-domain-id": "ANQP Domain ID (0-65535).",
+    "domain-name": "Domain name.",
+    "osu-ssid": "Online sign up (OSU) SSID.",
+    "gas-comeback-delay": "GAS comeback delay (0 or 100 - 10000 milliseconds, default = 500).",
+    "gas-fragmentation-limit": "GAS fragmentation limit (512 - 4096, default = 1024).",
+    "dgaf": "Enable/disable downstream group-addressed forwarding (DGAF).",
+    "deauth-request-timeout": "Deauthentication request timeout (in seconds).",
+    "wnm-sleep-mode": "Enable/disable wireless network management (WNM) sleep mode.",
+    "bss-transition": "Enable/disable basic service set (BSS) transition Support.",
+    "venue-name": "Venue name.",
+    "venue-url": "Venue name.",
+    "roaming-consortium": "Roaming consortium list name.",
+    "nai-realm": "NAI realm list name.",
+    "oper-friendly-name": "Operator friendly name.",
+    "oper-icon": "Operator icon.",
+    "advice-of-charge": "Advice of charge.",
+    "osu-provider-nai": "OSU Provider NAI.",
+    "terms-and-conditions": "Terms and conditions.",
+    "osu-provider": "Manually selected list of OSU provider(s).",
+    "wan-metrics": "WAN metric name.",
+    "network-auth": "Network authentication name.",
+    "3gpp-plmn": "3GPP PLMN name.",
+    "conn-cap": "Connection capability name.",
+    "qos-map": "QoS MAP set ID.",
+    "ip-addr-type": "IP address type name.",
+    "wba-open-roaming": "Enable/disable WBA open roaming support.",
+    "wba-financial-clearing-provider": "WBA ID of financial clearing provider.",
+    "wba-data-clearing-provider": "WBA ID of data clearing provider.",
+    "wba-charging-currency": "Three letter currency code.",
+    "wba-charging-rate": "Number of currency units per kilobyte.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 35},
+    "release": {"type": "integer", "min": 1, "max": 3},
+    "anqp-domain-id": {"type": "integer", "min": 0, "max": 65535},
+    "domain-name": {"type": "string", "max_length": 255},
+    "osu-ssid": {"type": "string", "max_length": 255},
+    "gas-comeback-delay": {"type": "integer", "min": 100, "max": 10000},
+    "gas-fragmentation-limit": {"type": "integer", "min": 512, "max": 4096},
+    "deauth-request-timeout": {"type": "integer", "min": 30, "max": 120},
+    "venue-name": {"type": "string", "max_length": 35},
+    "venue-url": {"type": "string", "max_length": 35},
+    "roaming-consortium": {"type": "string", "max_length": 35},
+    "nai-realm": {"type": "string", "max_length": 35},
+    "oper-friendly-name": {"type": "string", "max_length": 35},
+    "oper-icon": {"type": "string", "max_length": 35},
+    "advice-of-charge": {"type": "string", "max_length": 35},
+    "osu-provider-nai": {"type": "string", "max_length": 35},
+    "terms-and-conditions": {"type": "string", "max_length": 35},
+    "wan-metrics": {"type": "string", "max_length": 35},
+    "network-auth": {"type": "string", "max_length": 35},
+    "3gpp-plmn": {"type": "string", "max_length": 35},
+    "conn-cap": {"type": "string", "max_length": 35},
+    "qos-map": {"type": "string", "max_length": 35},
+    "ip-addr-type": {"type": "string", "max_length": 35},
+    "wba-financial-clearing-provider": {"type": "string", "max_length": 127},
+    "wba-data-clearing-provider": {"type": "string", "max_length": 127},
+    "wba-charging-currency": {"type": "string", "max_length": 3},
+    "wba-charging-rate": {"type": "integer", "min": 0, "max": 4294967295},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "osu-provider": {
+        "name": {
+            "type": "string",
+            "help": "OSU provider name.",
+            "required": True,
+            "default": "",
+            "max_length": 35,
+        },
+    },
 }
 
 
@@ -61,10 +259,22 @@ VALID_BODY_ACCESS_NETWORK_TYPE = [
     "test-or-experimental",
     "wildcard",
 ]
-VALID_BODY_ACCESS_NETWORK_INTERNET = ["enable", "disable"]
-VALID_BODY_ACCESS_NETWORK_ASRA = ["enable", "disable"]
-VALID_BODY_ACCESS_NETWORK_ESR = ["enable", "disable"]
-VALID_BODY_ACCESS_NETWORK_UESA = ["enable", "disable"]
+VALID_BODY_ACCESS_NETWORK_INTERNET = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ACCESS_NETWORK_ASRA = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ACCESS_NETWORK_ESR = [
+    "enable",
+    "disable",
+]
+VALID_BODY_ACCESS_NETWORK_UESA = [
+    "enable",
+    "disable",
+]
 VALID_BODY_VENUE_GROUP = [
     "unspecified",
     "assembly",
@@ -136,13 +346,34 @@ VALID_BODY_VENUE_TYPE = [
     "bus-stop",
     "kiosk",
 ]
-VALID_BODY_PROXY_ARP = ["enable", "disable"]
-VALID_BODY_L2TIF = ["enable", "disable"]
-VALID_BODY_PAME_BI = ["disable", "enable"]
-VALID_BODY_DGAF = ["enable", "disable"]
-VALID_BODY_WNM_SLEEP_MODE = ["enable", "disable"]
-VALID_BODY_BSS_TRANSITION = ["enable", "disable"]
-VALID_BODY_WBA_OPEN_ROAMING = ["disable", "enable"]
+VALID_BODY_PROXY_ARP = [
+    "enable",
+    "disable",
+]
+VALID_BODY_L2TIF = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PAME_BI = [
+    "disable",
+    "enable",
+]
+VALID_BODY_DGAF = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WNM_SLEEP_MODE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_BSS_TRANSITION = [
+    "enable",
+    "disable",
+]
+VALID_BODY_WBA_OPEN_ROAMING = [
+    "disable",
+    "enable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -150,13 +381,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_hotspot20_hs_profile_get(
+def validate_wireless_controller_hotspot20_hs_profile_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for wireless-controller/hotspot20_hs_profile.
 
     Args:
         attr: Attribute filter (optional)
@@ -166,9 +397,20 @@ def validate_hotspot20_hs_profile_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -189,7 +431,7 @@ def validate_hotspot20_hs_profile_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for wireless-controller_hotspot20_hs-profile.
+    Validate required fields for wireless-controller/hotspot20_hs_profile.
 
     This validator checks:
     1. Always-required fields are present
@@ -202,422 +444,225 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "name": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_hotspot20_hs_profile_post(
-    payload: dict[str, Any],
+def validate_wireless_controller_hotspot20_hs_profile_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new wireless-controller/hotspot20_hs_profile object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - name: Hotspot profile name.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "access-network-type": "private-network",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["access-network-type"] = "invalid-value"
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate release if present
-    if "release" in payload:
-        value = payload.get("release")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3:
-                    return (False, "release must be between 1 and 3")
-            except (ValueError, TypeError):
-                return (False, f"release must be numeric, got: {value}")
-
-    # Validate access-network-type if present
+    # Step 2: Validate enum values
     if "access-network-type" in payload:
-        value = payload.get("access-network-type")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_TYPE:
-            return (
-                False,
-                f"Invalid access-network-type '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_TYPE)}",
-            )
-
-    # Validate access-network-internet if present
+        value = payload["access-network-type"]
+        if value not in VALID_BODY_ACCESS_NETWORK_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("access-network-type", "")
+            error_msg = f"Invalid value for 'access-network-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACCESS_NETWORK_TYPE)}"
+            error_msg += f"\n  → Example: access-network-type='{{ VALID_BODY_ACCESS_NETWORK_TYPE[0] }}'"
+            return (False, error_msg)
     if "access-network-internet" in payload:
-        value = payload.get("access-network-internet")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_INTERNET:
-            return (
-                False,
-                f"Invalid access-network-internet '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_INTERNET)}",
-            )
-
-    # Validate access-network-asra if present
+        value = payload["access-network-internet"]
+        if value not in VALID_BODY_ACCESS_NETWORK_INTERNET:
+            desc = FIELD_DESCRIPTIONS.get("access-network-internet", "")
+            error_msg = f"Invalid value for 'access-network-internet': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACCESS_NETWORK_INTERNET)}"
+            error_msg += f"\n  → Example: access-network-internet='{{ VALID_BODY_ACCESS_NETWORK_INTERNET[0] }}'"
+            return (False, error_msg)
     if "access-network-asra" in payload:
-        value = payload.get("access-network-asra")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_ASRA:
-            return (
-                False,
-                f"Invalid access-network-asra '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_ASRA)}",
-            )
-
-    # Validate access-network-esr if present
+        value = payload["access-network-asra"]
+        if value not in VALID_BODY_ACCESS_NETWORK_ASRA:
+            desc = FIELD_DESCRIPTIONS.get("access-network-asra", "")
+            error_msg = f"Invalid value for 'access-network-asra': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACCESS_NETWORK_ASRA)}"
+            error_msg += f"\n  → Example: access-network-asra='{{ VALID_BODY_ACCESS_NETWORK_ASRA[0] }}'"
+            return (False, error_msg)
     if "access-network-esr" in payload:
-        value = payload.get("access-network-esr")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_ESR:
-            return (
-                False,
-                f"Invalid access-network-esr '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_ESR)}",
-            )
-
-    # Validate access-network-uesa if present
+        value = payload["access-network-esr"]
+        if value not in VALID_BODY_ACCESS_NETWORK_ESR:
+            desc = FIELD_DESCRIPTIONS.get("access-network-esr", "")
+            error_msg = f"Invalid value for 'access-network-esr': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACCESS_NETWORK_ESR)}"
+            error_msg += f"\n  → Example: access-network-esr='{{ VALID_BODY_ACCESS_NETWORK_ESR[0] }}'"
+            return (False, error_msg)
     if "access-network-uesa" in payload:
-        value = payload.get("access-network-uesa")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_UESA:
-            return (
-                False,
-                f"Invalid access-network-uesa '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_UESA)}",
-            )
-
-    # Validate venue-group if present
+        value = payload["access-network-uesa"]
+        if value not in VALID_BODY_ACCESS_NETWORK_UESA:
+            desc = FIELD_DESCRIPTIONS.get("access-network-uesa", "")
+            error_msg = f"Invalid value for 'access-network-uesa': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ACCESS_NETWORK_UESA)}"
+            error_msg += f"\n  → Example: access-network-uesa='{{ VALID_BODY_ACCESS_NETWORK_UESA[0] }}'"
+            return (False, error_msg)
     if "venue-group" in payload:
-        value = payload.get("venue-group")
-        if value and value not in VALID_BODY_VENUE_GROUP:
-            return (
-                False,
-                f"Invalid venue-group '{value}'. Must be one of: {', '.join(VALID_BODY_VENUE_GROUP)}",
-            )
-
-    # Validate venue-type if present
+        value = payload["venue-group"]
+        if value not in VALID_BODY_VENUE_GROUP:
+            desc = FIELD_DESCRIPTIONS.get("venue-group", "")
+            error_msg = f"Invalid value for 'venue-group': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VENUE_GROUP)}"
+            error_msg += f"\n  → Example: venue-group='{{ VALID_BODY_VENUE_GROUP[0] }}'"
+            return (False, error_msg)
     if "venue-type" in payload:
-        value = payload.get("venue-type")
-        if value and value not in VALID_BODY_VENUE_TYPE:
-            return (
-                False,
-                f"Invalid venue-type '{value}'. Must be one of: {', '.join(VALID_BODY_VENUE_TYPE)}",
-            )
-
-    # Validate proxy-arp if present
+        value = payload["venue-type"]
+        if value not in VALID_BODY_VENUE_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("venue-type", "")
+            error_msg = f"Invalid value for 'venue-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_VENUE_TYPE)}"
+            error_msg += f"\n  → Example: venue-type='{{ VALID_BODY_VENUE_TYPE[0] }}'"
+            return (False, error_msg)
     if "proxy-arp" in payload:
-        value = payload.get("proxy-arp")
-        if value and value not in VALID_BODY_PROXY_ARP:
-            return (
-                False,
-                f"Invalid proxy-arp '{value}'. Must be one of: {', '.join(VALID_BODY_PROXY_ARP)}",
-            )
-
-    # Validate l2tif if present
-    if "l2ti" in payload:
-        value = payload.get("l2ti")
-        if value and value not in VALID_BODY_L2TIF:
-            return (
-                False,
-                f"Invalid l2tif '{value}'. Must be one of: {', '.join(VALID_BODY_L2TIF)}",
-            )
-
-    # Validate pame-bi if present
+        value = payload["proxy-arp"]
+        if value not in VALID_BODY_PROXY_ARP:
+            desc = FIELD_DESCRIPTIONS.get("proxy-arp", "")
+            error_msg = f"Invalid value for 'proxy-arp': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PROXY_ARP)}"
+            error_msg += f"\n  → Example: proxy-arp='{{ VALID_BODY_PROXY_ARP[0] }}'"
+            return (False, error_msg)
+    if "l2tif" in payload:
+        value = payload["l2tif"]
+        if value not in VALID_BODY_L2TIF:
+            desc = FIELD_DESCRIPTIONS.get("l2tif", "")
+            error_msg = f"Invalid value for 'l2tif': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_L2TIF)}"
+            error_msg += f"\n  → Example: l2tif='{{ VALID_BODY_L2TIF[0] }}'"
+            return (False, error_msg)
     if "pame-bi" in payload:
-        value = payload.get("pame-bi")
-        if value and value not in VALID_BODY_PAME_BI:
-            return (
-                False,
-                f"Invalid pame-bi '{value}'. Must be one of: {', '.join(VALID_BODY_PAME_BI)}",
-            )
-
-    # Validate anqp-domain-id if present
-    if "anqp-domain-id" in payload:
-        value = payload.get("anqp-domain-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "anqp-domain-id must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"anqp-domain-id must be numeric, got: {value}")
-
-    # Validate domain-name if present
-    if "domain-name" in payload:
-        value = payload.get("domain-name")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "domain-name cannot exceed 255 characters")
-
-    # Validate osu-ssid if present
-    if "osu-ssid" in payload:
-        value = payload.get("osu-ssid")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "osu-ssid cannot exceed 255 characters")
-
-    # Validate gas-comeback-delay if present
-    if "gas-comeback-delay" in payload:
-        value = payload.get("gas-comeback-delay")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 100 or int_val > 10000:
-                    return (
-                        False,
-                        "gas-comeback-delay must be between 100 and 10000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-comeback-delay must be numeric, got: {value}",
-                )
-
-    # Validate gas-fragmentation-limit if present
-    if "gas-fragmentation-limit" in payload:
-        value = payload.get("gas-fragmentation-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 512 or int_val > 4096:
-                    return (
-                        False,
-                        "gas-fragmentation-limit must be between 512 and 4096",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-fragmentation-limit must be numeric, got: {value}",
-                )
-
-    # Validate dgaf if present
-    if "dga" in payload:
-        value = payload.get("dga")
-        if value and value not in VALID_BODY_DGAF:
-            return (
-                False,
-                f"Invalid dgaf '{value}'. Must be one of: {', '.join(VALID_BODY_DGAF)}",
-            )
-
-    # Validate deauth-request-timeout if present
-    if "deauth-request-timeout" in payload:
-        value = payload.get("deauth-request-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 120:
-                    return (
-                        False,
-                        "deauth-request-timeout must be between 30 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"deauth-request-timeout must be numeric, got: {value}",
-                )
-
-    # Validate wnm-sleep-mode if present
+        value = payload["pame-bi"]
+        if value not in VALID_BODY_PAME_BI:
+            desc = FIELD_DESCRIPTIONS.get("pame-bi", "")
+            error_msg = f"Invalid value for 'pame-bi': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PAME_BI)}"
+            error_msg += f"\n  → Example: pame-bi='{{ VALID_BODY_PAME_BI[0] }}'"
+            return (False, error_msg)
+    if "dgaf" in payload:
+        value = payload["dgaf"]
+        if value not in VALID_BODY_DGAF:
+            desc = FIELD_DESCRIPTIONS.get("dgaf", "")
+            error_msg = f"Invalid value for 'dgaf': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DGAF)}"
+            error_msg += f"\n  → Example: dgaf='{{ VALID_BODY_DGAF[0] }}'"
+            return (False, error_msg)
     if "wnm-sleep-mode" in payload:
-        value = payload.get("wnm-sleep-mode")
-        if value and value not in VALID_BODY_WNM_SLEEP_MODE:
-            return (
-                False,
-                f"Invalid wnm-sleep-mode '{value}'. Must be one of: {', '.join(VALID_BODY_WNM_SLEEP_MODE)}",
-            )
-
-    # Validate bss-transition if present
+        value = payload["wnm-sleep-mode"]
+        if value not in VALID_BODY_WNM_SLEEP_MODE:
+            desc = FIELD_DESCRIPTIONS.get("wnm-sleep-mode", "")
+            error_msg = f"Invalid value for 'wnm-sleep-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WNM_SLEEP_MODE)}"
+            error_msg += f"\n  → Example: wnm-sleep-mode='{{ VALID_BODY_WNM_SLEEP_MODE[0] }}'"
+            return (False, error_msg)
     if "bss-transition" in payload:
-        value = payload.get("bss-transition")
-        if value and value not in VALID_BODY_BSS_TRANSITION:
-            return (
-                False,
-                f"Invalid bss-transition '{value}'. Must be one of: {', '.join(VALID_BODY_BSS_TRANSITION)}",
-            )
-
-    # Validate venue-name if present
-    if "venue-name" in payload:
-        value = payload.get("venue-name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "venue-name cannot exceed 35 characters")
-
-    # Validate venue-url if present
-    if "venue-url" in payload:
-        value = payload.get("venue-url")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "venue-url cannot exceed 35 characters")
-
-    # Validate roaming-consortium if present
-    if "roaming-consortium" in payload:
-        value = payload.get("roaming-consortium")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "roaming-consortium cannot exceed 35 characters")
-
-    # Validate nai-realm if present
-    if "nai-realm" in payload:
-        value = payload.get("nai-realm")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "nai-realm cannot exceed 35 characters")
-
-    # Validate oper-friendly-name if present
-    if "oper-friendly-name" in payload:
-        value = payload.get("oper-friendly-name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "oper-friendly-name cannot exceed 35 characters")
-
-    # Validate oper-icon if present
-    if "oper-icon" in payload:
-        value = payload.get("oper-icon")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "oper-icon cannot exceed 35 characters")
-
-    # Validate advice-of-charge if present
-    if "advice-of-charge" in payload:
-        value = payload.get("advice-of-charge")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "advice-of-charge cannot exceed 35 characters")
-
-    # Validate osu-provider-nai if present
-    if "osu-provider-nai" in payload:
-        value = payload.get("osu-provider-nai")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "osu-provider-nai cannot exceed 35 characters")
-
-    # Validate terms-and-conditions if present
-    if "terms-and-conditions" in payload:
-        value = payload.get("terms-and-conditions")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "terms-and-conditions cannot exceed 35 characters")
-
-    # Validate wan-metrics if present
-    if "wan-metrics" in payload:
-        value = payload.get("wan-metrics")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "wan-metrics cannot exceed 35 characters")
-
-    # Validate network-auth if present
-    if "network-auth" in payload:
-        value = payload.get("network-auth")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "network-auth cannot exceed 35 characters")
-
-    # Validate 3gpp-plmn if present
-    if "3gpp-plmn" in payload:
-        value = payload.get("3gpp-plmn")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "3gpp-plmn cannot exceed 35 characters")
-
-    # Validate conn-cap if present
-    if "conn-cap" in payload:
-        value = payload.get("conn-cap")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "conn-cap cannot exceed 35 characters")
-
-    # Validate qos-map if present
-    if "qos-map" in payload:
-        value = payload.get("qos-map")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "qos-map cannot exceed 35 characters")
-
-    # Validate ip-addr-type if present
-    if "ip-addr-type" in payload:
-        value = payload.get("ip-addr-type")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "ip-addr-type cannot exceed 35 characters")
-
-    # Validate wba-open-roaming if present
+        value = payload["bss-transition"]
+        if value not in VALID_BODY_BSS_TRANSITION:
+            desc = FIELD_DESCRIPTIONS.get("bss-transition", "")
+            error_msg = f"Invalid value for 'bss-transition': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BSS_TRANSITION)}"
+            error_msg += f"\n  → Example: bss-transition='{{ VALID_BODY_BSS_TRANSITION[0] }}'"
+            return (False, error_msg)
     if "wba-open-roaming" in payload:
-        value = payload.get("wba-open-roaming")
-        if value and value not in VALID_BODY_WBA_OPEN_ROAMING:
-            return (
-                False,
-                f"Invalid wba-open-roaming '{value}'. Must be one of: {', '.join(VALID_BODY_WBA_OPEN_ROAMING)}",
-            )
-
-    # Validate wba-financial-clearing-provider if present
-    if "wba-financial-clearing-provider" in payload:
-        value = payload.get("wba-financial-clearing-provider")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (
-                False,
-                "wba-financial-clearing-provider cannot exceed 127 characters",
-            )
-
-    # Validate wba-data-clearing-provider if present
-    if "wba-data-clearing-provider" in payload:
-        value = payload.get("wba-data-clearing-provider")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (
-                False,
-                "wba-data-clearing-provider cannot exceed 127 characters",
-            )
-
-    # Validate wba-charging-currency if present
-    if "wba-charging-currency" in payload:
-        value = payload.get("wba-charging-currency")
-        if value and isinstance(value, str) and len(value) > 3:
-            return (False, "wba-charging-currency cannot exceed 3 characters")
-
-    # Validate wba-charging-rate if present
-    if "wba-charging-rate" in payload:
-        value = payload.get("wba-charging-rate")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "wba-charging-rate must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"wba-charging-rate must be numeric, got: {value}",
-                )
+        value = payload["wba-open-roaming"]
+        if value not in VALID_BODY_WBA_OPEN_ROAMING:
+            desc = FIELD_DESCRIPTIONS.get("wba-open-roaming", "")
+            error_msg = f"Invalid value for 'wba-open-roaming': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WBA_OPEN_ROAMING)}"
+            error_msg += f"\n  → Example: wba-open-roaming='{{ VALID_BODY_WBA_OPEN_ROAMING[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -627,399 +672,424 @@ def validate_hotspot20_hs_profile_post(
 # ============================================================================
 
 
-def validate_hotspot20_hs_profile_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_wireless_controller_hotspot20_hs_profile_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update wireless-controller/hotspot20_hs_profile.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate release if present
-    if "release" in payload:
-        value = payload.get("release")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 3:
-                    return (False, "release must be between 1 and 3")
-            except (ValueError, TypeError):
-                return (False, f"release must be numeric, got: {value}")
-
-    # Validate access-network-type if present
+    # Step 1: Validate enum values
     if "access-network-type" in payload:
-        value = payload.get("access-network-type")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_TYPE:
+        value = payload["access-network-type"]
+        if value not in VALID_BODY_ACCESS_NETWORK_TYPE:
             return (
                 False,
-                f"Invalid access-network-type '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_TYPE)}",
+                f"Invalid value for 'access-network-type'='{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_TYPE)}",
             )
-
-    # Validate access-network-internet if present
     if "access-network-internet" in payload:
-        value = payload.get("access-network-internet")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_INTERNET:
+        value = payload["access-network-internet"]
+        if value not in VALID_BODY_ACCESS_NETWORK_INTERNET:
             return (
                 False,
-                f"Invalid access-network-internet '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_INTERNET)}",
+                f"Invalid value for 'access-network-internet'='{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_INTERNET)}",
             )
-
-    # Validate access-network-asra if present
     if "access-network-asra" in payload:
-        value = payload.get("access-network-asra")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_ASRA:
+        value = payload["access-network-asra"]
+        if value not in VALID_BODY_ACCESS_NETWORK_ASRA:
             return (
                 False,
-                f"Invalid access-network-asra '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_ASRA)}",
+                f"Invalid value for 'access-network-asra'='{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_ASRA)}",
             )
-
-    # Validate access-network-esr if present
     if "access-network-esr" in payload:
-        value = payload.get("access-network-esr")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_ESR:
+        value = payload["access-network-esr"]
+        if value not in VALID_BODY_ACCESS_NETWORK_ESR:
             return (
                 False,
-                f"Invalid access-network-esr '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_ESR)}",
+                f"Invalid value for 'access-network-esr'='{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_ESR)}",
             )
-
-    # Validate access-network-uesa if present
     if "access-network-uesa" in payload:
-        value = payload.get("access-network-uesa")
-        if value and value not in VALID_BODY_ACCESS_NETWORK_UESA:
+        value = payload["access-network-uesa"]
+        if value not in VALID_BODY_ACCESS_NETWORK_UESA:
             return (
                 False,
-                f"Invalid access-network-uesa '{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_UESA)}",
+                f"Invalid value for 'access-network-uesa'='{value}'. Must be one of: {', '.join(VALID_BODY_ACCESS_NETWORK_UESA)}",
             )
-
-    # Validate venue-group if present
     if "venue-group" in payload:
-        value = payload.get("venue-group")
-        if value and value not in VALID_BODY_VENUE_GROUP:
+        value = payload["venue-group"]
+        if value not in VALID_BODY_VENUE_GROUP:
             return (
                 False,
-                f"Invalid venue-group '{value}'. Must be one of: {', '.join(VALID_BODY_VENUE_GROUP)}",
+                f"Invalid value for 'venue-group'='{value}'. Must be one of: {', '.join(VALID_BODY_VENUE_GROUP)}",
             )
-
-    # Validate venue-type if present
     if "venue-type" in payload:
-        value = payload.get("venue-type")
-        if value and value not in VALID_BODY_VENUE_TYPE:
+        value = payload["venue-type"]
+        if value not in VALID_BODY_VENUE_TYPE:
             return (
                 False,
-                f"Invalid venue-type '{value}'. Must be one of: {', '.join(VALID_BODY_VENUE_TYPE)}",
+                f"Invalid value for 'venue-type'='{value}'. Must be one of: {', '.join(VALID_BODY_VENUE_TYPE)}",
             )
-
-    # Validate proxy-arp if present
     if "proxy-arp" in payload:
-        value = payload.get("proxy-arp")
-        if value and value not in VALID_BODY_PROXY_ARP:
+        value = payload["proxy-arp"]
+        if value not in VALID_BODY_PROXY_ARP:
             return (
                 False,
-                f"Invalid proxy-arp '{value}'. Must be one of: {', '.join(VALID_BODY_PROXY_ARP)}",
+                f"Invalid value for 'proxy-arp'='{value}'. Must be one of: {', '.join(VALID_BODY_PROXY_ARP)}",
             )
-
-    # Validate l2tif if present
-    if "l2ti" in payload:
-        value = payload.get("l2ti")
-        if value and value not in VALID_BODY_L2TIF:
+    if "l2tif" in payload:
+        value = payload["l2tif"]
+        if value not in VALID_BODY_L2TIF:
             return (
                 False,
-                f"Invalid l2tif '{value}'. Must be one of: {', '.join(VALID_BODY_L2TIF)}",
+                f"Invalid value for 'l2tif'='{value}'. Must be one of: {', '.join(VALID_BODY_L2TIF)}",
             )
-
-    # Validate pame-bi if present
     if "pame-bi" in payload:
-        value = payload.get("pame-bi")
-        if value and value not in VALID_BODY_PAME_BI:
+        value = payload["pame-bi"]
+        if value not in VALID_BODY_PAME_BI:
             return (
                 False,
-                f"Invalid pame-bi '{value}'. Must be one of: {', '.join(VALID_BODY_PAME_BI)}",
+                f"Invalid value for 'pame-bi'='{value}'. Must be one of: {', '.join(VALID_BODY_PAME_BI)}",
             )
-
-    # Validate anqp-domain-id if present
-    if "anqp-domain-id" in payload:
-        value = payload.get("anqp-domain-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (
-                        False,
-                        "anqp-domain-id must be between 0 and 65535",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"anqp-domain-id must be numeric, got: {value}")
-
-    # Validate domain-name if present
-    if "domain-name" in payload:
-        value = payload.get("domain-name")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "domain-name cannot exceed 255 characters")
-
-    # Validate osu-ssid if present
-    if "osu-ssid" in payload:
-        value = payload.get("osu-ssid")
-        if value and isinstance(value, str) and len(value) > 255:
-            return (False, "osu-ssid cannot exceed 255 characters")
-
-    # Validate gas-comeback-delay if present
-    if "gas-comeback-delay" in payload:
-        value = payload.get("gas-comeback-delay")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 100 or int_val > 10000:
-                    return (
-                        False,
-                        "gas-comeback-delay must be between 100 and 10000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-comeback-delay must be numeric, got: {value}",
-                )
-
-    # Validate gas-fragmentation-limit if present
-    if "gas-fragmentation-limit" in payload:
-        value = payload.get("gas-fragmentation-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 512 or int_val > 4096:
-                    return (
-                        False,
-                        "gas-fragmentation-limit must be between 512 and 4096",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"gas-fragmentation-limit must be numeric, got: {value}",
-                )
-
-    # Validate dgaf if present
-    if "dga" in payload:
-        value = payload.get("dga")
-        if value and value not in VALID_BODY_DGAF:
+    if "dgaf" in payload:
+        value = payload["dgaf"]
+        if value not in VALID_BODY_DGAF:
             return (
                 False,
-                f"Invalid dgaf '{value}'. Must be one of: {', '.join(VALID_BODY_DGAF)}",
+                f"Invalid value for 'dgaf'='{value}'. Must be one of: {', '.join(VALID_BODY_DGAF)}",
             )
-
-    # Validate deauth-request-timeout if present
-    if "deauth-request-timeout" in payload:
-        value = payload.get("deauth-request-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 30 or int_val > 120:
-                    return (
-                        False,
-                        "deauth-request-timeout must be between 30 and 120",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"deauth-request-timeout must be numeric, got: {value}",
-                )
-
-    # Validate wnm-sleep-mode if present
     if "wnm-sleep-mode" in payload:
-        value = payload.get("wnm-sleep-mode")
-        if value and value not in VALID_BODY_WNM_SLEEP_MODE:
+        value = payload["wnm-sleep-mode"]
+        if value not in VALID_BODY_WNM_SLEEP_MODE:
             return (
                 False,
-                f"Invalid wnm-sleep-mode '{value}'. Must be one of: {', '.join(VALID_BODY_WNM_SLEEP_MODE)}",
+                f"Invalid value for 'wnm-sleep-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_WNM_SLEEP_MODE)}",
             )
-
-    # Validate bss-transition if present
     if "bss-transition" in payload:
-        value = payload.get("bss-transition")
-        if value and value not in VALID_BODY_BSS_TRANSITION:
+        value = payload["bss-transition"]
+        if value not in VALID_BODY_BSS_TRANSITION:
             return (
                 False,
-                f"Invalid bss-transition '{value}'. Must be one of: {', '.join(VALID_BODY_BSS_TRANSITION)}",
+                f"Invalid value for 'bss-transition'='{value}'. Must be one of: {', '.join(VALID_BODY_BSS_TRANSITION)}",
             )
-
-    # Validate venue-name if present
-    if "venue-name" in payload:
-        value = payload.get("venue-name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "venue-name cannot exceed 35 characters")
-
-    # Validate venue-url if present
-    if "venue-url" in payload:
-        value = payload.get("venue-url")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "venue-url cannot exceed 35 characters")
-
-    # Validate roaming-consortium if present
-    if "roaming-consortium" in payload:
-        value = payload.get("roaming-consortium")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "roaming-consortium cannot exceed 35 characters")
-
-    # Validate nai-realm if present
-    if "nai-realm" in payload:
-        value = payload.get("nai-realm")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "nai-realm cannot exceed 35 characters")
-
-    # Validate oper-friendly-name if present
-    if "oper-friendly-name" in payload:
-        value = payload.get("oper-friendly-name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "oper-friendly-name cannot exceed 35 characters")
-
-    # Validate oper-icon if present
-    if "oper-icon" in payload:
-        value = payload.get("oper-icon")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "oper-icon cannot exceed 35 characters")
-
-    # Validate advice-of-charge if present
-    if "advice-of-charge" in payload:
-        value = payload.get("advice-of-charge")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "advice-of-charge cannot exceed 35 characters")
-
-    # Validate osu-provider-nai if present
-    if "osu-provider-nai" in payload:
-        value = payload.get("osu-provider-nai")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "osu-provider-nai cannot exceed 35 characters")
-
-    # Validate terms-and-conditions if present
-    if "terms-and-conditions" in payload:
-        value = payload.get("terms-and-conditions")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "terms-and-conditions cannot exceed 35 characters")
-
-    # Validate wan-metrics if present
-    if "wan-metrics" in payload:
-        value = payload.get("wan-metrics")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "wan-metrics cannot exceed 35 characters")
-
-    # Validate network-auth if present
-    if "network-auth" in payload:
-        value = payload.get("network-auth")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "network-auth cannot exceed 35 characters")
-
-    # Validate 3gpp-plmn if present
-    if "3gpp-plmn" in payload:
-        value = payload.get("3gpp-plmn")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "3gpp-plmn cannot exceed 35 characters")
-
-    # Validate conn-cap if present
-    if "conn-cap" in payload:
-        value = payload.get("conn-cap")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "conn-cap cannot exceed 35 characters")
-
-    # Validate qos-map if present
-    if "qos-map" in payload:
-        value = payload.get("qos-map")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "qos-map cannot exceed 35 characters")
-
-    # Validate ip-addr-type if present
-    if "ip-addr-type" in payload:
-        value = payload.get("ip-addr-type")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "ip-addr-type cannot exceed 35 characters")
-
-    # Validate wba-open-roaming if present
     if "wba-open-roaming" in payload:
-        value = payload.get("wba-open-roaming")
-        if value and value not in VALID_BODY_WBA_OPEN_ROAMING:
+        value = payload["wba-open-roaming"]
+        if value not in VALID_BODY_WBA_OPEN_ROAMING:
             return (
                 False,
-                f"Invalid wba-open-roaming '{value}'. Must be one of: {', '.join(VALID_BODY_WBA_OPEN_ROAMING)}",
+                f"Invalid value for 'wba-open-roaming'='{value}'. Must be one of: {', '.join(VALID_BODY_WBA_OPEN_ROAMING)}",
             )
-
-    # Validate wba-financial-clearing-provider if present
-    if "wba-financial-clearing-provider" in payload:
-        value = payload.get("wba-financial-clearing-provider")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (
-                False,
-                "wba-financial-clearing-provider cannot exceed 127 characters",
-            )
-
-    # Validate wba-data-clearing-provider if present
-    if "wba-data-clearing-provider" in payload:
-        value = payload.get("wba-data-clearing-provider")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (
-                False,
-                "wba-data-clearing-provider cannot exceed 127 characters",
-            )
-
-    # Validate wba-charging-currency if present
-    if "wba-charging-currency" in payload:
-        value = payload.get("wba-charging-currency")
-        if value and isinstance(value, str) and len(value) > 3:
-            return (False, "wba-charging-currency cannot exceed 3 characters")
-
-    # Validate wba-charging-rate if present
-    if "wba-charging-rate" in payload:
-        value = payload.get("wba-charging-rate")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 4294967295:
-                    return (
-                        False,
-                        "wba-charging-rate must be between 0 and 4294967295",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"wba-charging-rate must be numeric, got: {value}",
-                )
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_hotspot20_hs_profile_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "wireless-controller/hotspot20_hs_profile",
+    "category": "cmdb",
+    "api_path": "wireless-controller.hotspot20/hs-profile",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure hotspot profile.",
+    "total_fields": 43,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 42,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

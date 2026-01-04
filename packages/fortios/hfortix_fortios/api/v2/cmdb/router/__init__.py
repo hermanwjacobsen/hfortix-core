@@ -42,7 +42,7 @@ __all__ = [
     "Multicast",
     "Multicast6",
     "MulticastFlow",
-    "Osp",
+    "Ospf",
     "Ospf6",
     "Policy",
     "Policy6",
@@ -51,6 +51,7 @@ __all__ = [
     "Rip",
     "Ripng",
     "RouteMap",
+    "Router",
     "Setting",
     "Static",
     "Static6",
@@ -58,18 +59,13 @@ __all__ = [
 
 
 class Router:
-    """
-    Router category wrapper.
-
-    This class provides access to all router CMDB endpoints.
-    """
+    """Router endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Router with all endpoint classes.
-
+        """Router endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.access_list = AccessList(client)
         self.access_list6 = AccessList6(client)

@@ -1,33 +1,27 @@
-"""
-FortiOS Monitor - Azure
-Azure SDN connector monitoring and operations
-"""
+"""FortiOS Monitor - Azure category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["Azure"]
+from .application_list.refresh import Refresh
 
-from .application_list import ApplicationList
+class ApplicationListEndpoints:
+    """Endpoints under application_list."""
+
+    def __init__(self, client):
+        self.refresh = Refresh(client)
 
 
 class Azure:
-    """Azure Monitor category class"""
+    """Azure endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Azure Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """Azure endpoints."""
+        self.application_list = ApplicationListEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.application_list = ApplicationList(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["application_list"]
+__all__ = ["Azure"]

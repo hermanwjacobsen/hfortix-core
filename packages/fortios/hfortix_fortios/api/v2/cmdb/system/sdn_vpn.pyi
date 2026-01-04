@@ -1,0 +1,151 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+
+# Payload TypedDict for IDE autocomplete
+class SdnVpnPayload(TypedDict, total=False):
+    """
+    Type hints for system/sdn_vpn payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: SdnVpnPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: NotRequired[str]  # Public cloud VPN name.
+    sdn: str  # SDN connector name.
+    remote_type: Literal["vgw", "tgw"]  # Type of remote device.
+    routing_type: Literal["static", "dynamic"]  # Type of routing.
+    vgw_id: str  # Virtual private gateway id.
+    tgw_id: str  # Transit gateway id.
+    subnet_id: NotRequired[str]  # AWS subnet id for TGW route propagation.
+    bgp_as: int  # BGP Router AS number.
+    cgw_gateway: str  # Public IP address of the customer gateway.
+    nat_traversal: NotRequired[Literal["disable", "enable"]]  # Enable/disable use for NAT traversal. Please enable if your 
+    tunnel_interface: str  # Tunnel interface with public IP.
+    internal_interface: str  # Internal interface with local subnet.
+    local_cidr: str  # Local subnet address and subnet mask.
+    remote_cidr: str  # Remote subnet address and subnet mask.
+    cgw_name: NotRequired[str]  # AWS customer gateway name to be created.
+    psksecret: NotRequired[str]  # Pre-shared secret for PSK authentication. Auto-generated if 
+    type: NotRequired[int]  # SDN VPN type.
+    status: NotRequired[int]  # SDN VPN status.
+    code: NotRequired[int]  # SDN VPN error code.
+
+
+class SdnVpn:
+    """
+    Configure public cloud VPN service.
+    
+    Path: system/sdn_vpn
+    Category: cmdb
+    Primary Key: name
+    """
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def post(
+        self,
+        payload_dict: SdnVpnPayload | None = ...,
+        name: str | None = ...,
+        sdn: str | None = ...,
+        remote_type: Literal["vgw", "tgw"] | None = ...,
+        routing_type: Literal["static", "dynamic"] | None = ...,
+        vgw_id: str | None = ...,
+        tgw_id: str | None = ...,
+        subnet_id: str | None = ...,
+        bgp_as: int | None = ...,
+        cgw_gateway: str | None = ...,
+        nat_traversal: Literal["disable", "enable"] | None = ...,
+        tunnel_interface: str | None = ...,
+        internal_interface: str | None = ...,
+        local_cidr: str | None = ...,
+        remote_cidr: str | None = ...,
+        cgw_name: str | None = ...,
+        psksecret: str | None = ...,
+        type: int | None = ...,
+        status: int | None = ...,
+        code: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def put(
+        self,
+        payload_dict: SdnVpnPayload | None = ...,
+        name: str | None = ...,
+        sdn: str | None = ...,
+        remote_type: Literal["vgw", "tgw"] | None = ...,
+        routing_type: Literal["static", "dynamic"] | None = ...,
+        vgw_id: str | None = ...,
+        tgw_id: str | None = ...,
+        subnet_id: str | None = ...,
+        bgp_as: int | None = ...,
+        cgw_gateway: str | None = ...,
+        nat_traversal: Literal["disable", "enable"] | None = ...,
+        tunnel_interface: str | None = ...,
+        internal_interface: str | None = ...,
+        local_cidr: str | None = ...,
+        remote_cidr: str | None = ...,
+        cgw_name: str | None = ...,
+        psksecret: str | None = ...,
+        type: int | None = ...,
+        status: int | None = ...,
+        code: int | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]: ...
+    
+    def set(
+        self,
+        payload_dict: SdnVpnPayload | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...

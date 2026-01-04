@@ -1,42 +1,26 @@
 """
-FortiOS CMDB - Cmdb Switch Controller System
+FortiOS CMDB - Switch_controller system
 
-Configuration endpoint for managing cmdb switch controller system objects.
+Configuration endpoint for managing cmdb switch_controller/system objects.
 
 API Endpoints:
-    GET    /cmdb/switch-controller/system
-    PUT    /cmdb/switch-controller/system/{identifier}
+    GET    /cmdb/switch_controller/system
+    POST   /cmdb/switch_controller/system
+    PUT    /cmdb/switch_controller/system/{identifier}
+    DELETE /cmdb/switch_controller/system/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.switch_controller.system.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.switch_controller.system.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.switch_controller.system.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.switch_controller.system.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.switch_controller.system.delete(name="item_name")
+    >>> items = fgt.api.cmdb.switch_controller_system.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -45,77 +29,81 @@ from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class System:
-    """
-    System Operations.
-
-    Provides CRUD operations for FortiOS system configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        put(): Update existing configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """System Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize System endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize System endpoint."""
         self._client = client
 
     def get(
         self,
+        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        exclude_default_values: bool | None = None,
-        stat_items: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select all entries in a CLI table.
+        Retrieve switch_controller/system configuration.
+
+        Configure system-wide switch controller settings.
 
         Args:
-            exclude_default_values: Exclude properties/objects with default
-            value (optional)
-            stat_items: Items to count occurrence in entire response (multiple
-            items should be separated by '|'). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: Name identifier to retrieve specific object. If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all switch_controller/system objects
+            >>> result = fgt.api.cmdb.switch_controller_system.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.switch_controller_system.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.switch_controller_system.get(action="schema")
+
+        See Also:
+            - post(): Create new switch_controller/system object
+            - put(): Update existing switch_controller/system object
+            - delete(): Remove switch_controller/system object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-        endpoint = "/switch-controller/system"
-        if exclude_default_values is not None:
-            params["exclude-default-values"] = exclude_default_values
-        if stat_items is not None:
-            params["stat-items"] = stat_items
+        
+        if name:
+            endpoint = f"/switch-controller/system/{name}"
+        else:
+            endpoint = "/switch-controller/system"
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -124,8 +112,6 @@ class System:
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
         parallel_process_override: str | None = None,
         parallel_process: int | None = None,
         data_sync_interval: int | None = None,
@@ -143,92 +129,531 @@ class System:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing switch_controller/system object.
+
+        Configure system-wide switch controller settings.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            parallel_process_override: Enable/disable parallel process
-            override. (optional)
-            parallel_process: Maximum number of parallel processes. (optional)
-            data_sync_interval: Time interval between collection of switch data
-            (30 - 1800 sec, default = 60, 0 = disable). (optional)
-            iot_weight_threshold: MAC entry's confidence value. Value is
-            re-queried when below this value (default = 1, 0 = disable).
-            (optional)
-            iot_scan_interval: IoT scan interval (2 - 10080 mins, default = 60
-            mins, 0 = disable). (optional)
-            iot_holdoff: MAC entry's creation time. Time must be greater than
-            this value for an entry to be created (0 - 10080 mins, default = 5
-            mins). (optional)
-            iot_mac_idle: MAC entry's idle time. MAC entry is removed after
-            this value (0 - 10080 mins, default = 1440 mins). (optional)
-            nac_periodic_interval: Periodic time interval to run NAC engine (5
-            - 180 sec, default = 60). (optional)
-            dynamic_periodic_interval: Periodic time interval to run Dynamic
-            port policy engine (5 - 180 sec, default = 60). (optional)
-            tunnel_mode: Compatible/strict tunnel mode. (optional)
-            caputp_echo_interval: Echo interval for the caputp echo requests
-            from swtp. (optional)
-            caputp_max_retransmit: Maximum retransmission count for the caputp
-            tunnel packets. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include name (primary key).
+            parallel_process_override: Enable/disable parallel process override.
+            parallel_process: Maximum number of parallel processes.
+            data_sync_interval: Time interval between collection of switch data (30 - 1800 sec, default = 60, 0 = disable).
+            iot_weight_threshold: MAC entry's confidence value. Value is re-queried when below this value (default = 1, 0 = disable).
+            iot_scan_interval: IoT scan interval (2 - 10080 mins, default = 60 mins, 0 = disable).
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.switch_controller_system.put(
+            ...     name="existing-object",
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": "existing-object",
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.switch_controller_system.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/switch-controller/system"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if parallel_process_override is not None:
-            data_payload["parallel-process-override"] = (
-                parallel_process_override
-            )
-        if parallel_process is not None:
-            data_payload["parallel-process"] = parallel_process
-        if data_sync_interval is not None:
-            data_payload["data-sync-interval"] = data_sync_interval
-        if iot_weight_threshold is not None:
-            data_payload["iot-weight-threshold"] = iot_weight_threshold
-        if iot_scan_interval is not None:
-            data_payload["iot-scan-interval"] = iot_scan_interval
-        if iot_holdoff is not None:
-            data_payload["iot-holdof"] = iot_holdoff
-        if iot_mac_idle is not None:
-            data_payload["iot-mac-idle"] = iot_mac_idle
-        if nac_periodic_interval is not None:
-            data_payload["nac-periodic-interval"] = nac_periodic_interval
-        if dynamic_periodic_interval is not None:
-            data_payload["dynamic-periodic-interval"] = (
-                dynamic_periodic_interval
-            )
-        if tunnel_mode is not None:
-            data_payload["tunnel-mode"] = tunnel_mode
-        if caputp_echo_interval is not None:
-            data_payload["caputp-echo-interval"] = caputp_echo_interval
-        if caputp_max_retransmit is not None:
-            data_payload["caputp-max-retransmit"] = caputp_max_retransmit
-        data_payload.update(kwargs)
-        return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            parallel_process_override=parallel_process_override,
+            parallel_process=parallel_process,
+            data_sync_interval=data_sync_interval,
+            iot_weight_threshold=iot_weight_threshold,
+            iot_scan_interval=iot_scan_interval,
+            iot_holdoff=iot_holdoff,
+            iot_mac_idle=iot_mac_idle,
+            nac_periodic_interval=nac_periodic_interval,
+            dynamic_periodic_interval=dynamic_periodic_interval,
+            tunnel_mode=tunnel_mode,
+            caputp_echo_interval=caputp_echo_interval,
+            caputp_max_retransmit=caputp_max_retransmit,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.system import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/switch_controller/system",
+            )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = f"/switch-controller/system/{name_value}"
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        parallel_process_override: str | None = None,
+        parallel_process: int | None = None,
+        data_sync_interval: int | None = None,
+        iot_weight_threshold: int | None = None,
+        iot_scan_interval: int | None = None,
+        iot_holdoff: int | None = None,
+        iot_mac_idle: int | None = None,
+        nac_periodic_interval: int | None = None,
+        dynamic_periodic_interval: int | None = None,
+        tunnel_mode: str | None = None,
+        caputp_echo_interval: int | None = None,
+        caputp_max_retransmit: int | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new switch_controller/system object.
+
+        Configure system-wide switch controller settings.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            parallel_process_override: Enable/disable parallel process override.
+            parallel_process: Maximum number of parallel processes.
+            data_sync_interval: Time interval between collection of switch data (30 - 1800 sec, default = 60, 0 = disable).
+            iot_weight_threshold: MAC entry's confidence value. Value is re-queried when below this value (default = 1, 0 = disable).
+            iot_scan_interval: IoT scan interval (2 - 10080 mins, default = 60 mins, 0 = disable).
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned identifier.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.switch_controller_system.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created object: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = System.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.switch_controller_system.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(System.required_fields()) }}
+            
+            Use System.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            parallel_process_override=parallel_process_override,
+            parallel_process=parallel_process,
+            data_sync_interval=data_sync_interval,
+            iot_weight_threshold=iot_weight_threshold,
+            iot_scan_interval=iot_scan_interval,
+            iot_holdoff=iot_holdoff,
+            iot_mac_idle=iot_mac_idle,
+            nac_periodic_interval=nac_periodic_interval,
+            dynamic_periodic_interval=dynamic_periodic_interval,
+            tunnel_mode=tunnel_mode,
+            caputp_echo_interval=caputp_echo_interval,
+            caputp_max_retransmit=caputp_max_retransmit,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.system import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/switch_controller/system",
+            )
+
+        endpoint = "/switch-controller/system"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete switch_controller/system object.
+
+        Configure system-wide switch controller settings.
+
+        Args:
+            name: Object name (primary key)
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.switch_controller_system.delete(name="object-to-delete")
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not name:
+            raise ValueError("name is required for DELETE")
+        endpoint = f"/switch-controller/system/{name}"
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if switch_controller/system object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            name: Object name (primary key)
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.switch_controller_system.exists(name="my-object"):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.switch_controller_system.exists(name="old-object"):
+            ...     fgt.api.cmdb.switch_controller_system.delete(name="old-object")
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update switch_controller/system object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
+
+        Args:
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": "my-object",
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.switch_controller_system.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.switch_controller_system.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(System.help())
+            
+            >>> # Get field information
+            >>> print(System.help("parallel-process-override"))
+        """
+        from ._helpers.system import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = System.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = System.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.system import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = System.field_info("parallel-process-override")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.system import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = System.validate_field("parallel-process-override", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.system import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = System.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.system import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = System.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.system import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = System.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.system import get_schema_info
+
+        return get_schema_info()

@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb Firewall Address
+FortiOS CMDB - Firewall address
 
-Configuration endpoint for managing cmdb firewall address objects.
+Configuration endpoint for managing cmdb firewall/address objects.
 
 API Endpoints:
     GET    /cmdb/firewall/address
     POST   /cmdb/firewall/address
-    GET    /cmdb/firewall/address
     PUT    /cmdb/firewall/address/{identifier}
     DELETE /cmdb/firewall/address/{identifier}
 
@@ -15,31 +14,13 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.firewall.address.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.firewall.address.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.firewall.address.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.firewall.address.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.firewall.address.delete(name="item_name")
+    >>> items = fgt.api.cmdb.firewall_address.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -48,95 +29,86 @@ from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class Address:
-    """
-    Address Operations.
-
-    Provides CRUD operations for FortiOS address configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """Address Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize Address endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize Address endpoint."""
         self._client = client
 
     def get(
         self,
         name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve firewall/address configuration.
+
+        Configure IPv4 addresses.
 
         Args:
-            name: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: String identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all firewall/address objects
+            >>> result = fgt.api.cmdb.firewall_address.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific firewall/address by name
+            >>> result = fgt.api.cmdb.firewall_address.get(name=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.firewall_address.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.firewall_address.get(action="schema")
+
+        See Also:
+            - post(): Create new firewall/address object
+            - put(): Update existing firewall/address object
+            - delete(): Remove firewall/address object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if name:
-            endpoint = f"/firewall/address/{name}"
+            endpoint = "/firewall/address/" + str(name)
         else:
             endpoint = "/firewall/address"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,27 +116,25 @@ class Address:
 
     def put(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
+        name: str | None = None,
         uuid: str | None = None,
-        subnet: str | None = None,
+        subnet: Any | None = None,
         type: str | None = None,
         route_tag: int | None = None,
         sub_type: str | None = None,
         clearpass_spt: str | None = None,
-        macaddr: list | None = None,
+        macaddr: str | list | None = None,
         start_ip: str | None = None,
         end_ip: str | None = None,
         fqdn: str | None = None,
         country: str | None = None,
         wildcard_fqdn: str | None = None,
         cache_ttl: int | None = None,
-        wildcard: str | None = None,
+        wildcard: Any | None = None,
         sdn: str | None = None,
-        fsso_group: list | None = None,
-        sso_attribute_value: list | None = None,
+        fsso_group: str | list | None = None,
+        sso_attribute_value: str | list | None = None,
         interface: str | None = None,
         tenant: str | None = None,
         organization: str | None = None,
@@ -183,529 +153,640 @@ class Address:
         comment: str | None = None,
         associated_interface: str | None = None,
         color: int | None = None,
+        filter: str | None = None,
         sdn_addr_type: str | None = None,
         node_ip_only: str | None = None,
         obj_id: str | None = None,
-        list: list | None = None,
-        tagging: list | None = None,
+        list: str | list | None = None,
+        tagging: str | list | None = None,
         allow_routing: str | None = None,
-        passive_fqdn_learning: str | None = None,
         fabric_object: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing firewall/address object.
+
+        Configure IPv4 addresses.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            name: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            name: Address name. (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            subnet: IP address and subnet mask of address. (optional)
-            type: Type of address. (optional)
-            route_tag: route-tag address. (optional)
-            sub_type: Sub-type of address. (optional)
-            clearpass_spt: SPT (System Posture Token) value. (optional)
-            macaddr: Multiple MAC address ranges. (optional)
-            start_ip: First IP address (inclusive) in the range for the
-            address. (optional)
-            end_ip: Final IP address (inclusive) in the range for the address.
-            (optional)
-            fqdn: Fully Qualified Domain Name address. (optional)
-            country: IP addresses associated to a specific country. (optional)
-            wildcard_fqdn: Fully Qualified Domain Name with wildcard
-            characters. (optional)
-            cache_ttl: Defines the minimal TTL of individual IP addresses in
-            FQDN cache measured in seconds. (optional)
-            wildcard: IP address and wildcard netmask. (optional)
-            sdn: SDN. (optional)
-            fsso_group: FSSO group(s). (optional)
-            sso_attribute_value: RADIUS attributes value. (optional)
-            interface: Name of interface whose IP address is to be used.
-            (optional)
-            tenant: Tenant. (optional)
-            organization: Organization domain name (Syntax:
-            organization/domain). (optional)
-            epg_name: Endpoint group name. (optional)
-            subnet_name: Subnet name. (optional)
-            sdn_tag: SDN Tag. (optional)
-            policy_group: Policy group name. (optional)
-            obj_tag: Tag of dynamic address object. (optional)
-            obj_type: Object type. (optional)
-            tag_detection_level: Tag detection level of dynamic address object.
-            (optional)
-            tag_type: Tag type of dynamic address object. (optional)
-            hw_vendor: Dynamic address matching hardware vendor. (optional)
-            hw_model: Dynamic address matching hardware model. (optional)
-            os: Dynamic address matching operating system. (optional)
-            sw_version: Dynamic address matching software version. (optional)
-            comment: Comment. (optional)
-            associated_interface: Network interface associated with address.
-            (optional)
-            color: Color of icon on the GUI. (optional)
-            sdn_addr_type: Type of addresses to collect. (optional)
-            node_ip_only: Enable/disable collection of node addresses only in
-            Kubernetes. (optional)
-            obj_id: Object ID for NSX. (optional)
-            list: IP address list. (optional)
-            tagging: Config object tagging. (optional)
-            allow_routing: Enable/disable use of this address in routing
-            configurations. (optional)
-            passive_fqdn_learning: Enable/disable passive learning of FQDNs.
-            When enabled, the FortiGate learns, trusts, and saves FQDNs from
-            endpoint DNS queries (default = enable). (optional)
-            fabric_object: Security Fabric global object setting. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include name (primary key).
+            name: Address name.
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            subnet: IP address and subnet mask of address.
+            type: Type of address.
+            route_tag: route-tag address.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
+            API response dict
 
-        # Build endpoint path
-        if not name:
-            raise ValueError("name is required for put()")
-        endpoint = f"/firewall/address/{name}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if name is not None:
-            data_payload["name"] = name
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if subnet is not None:
-            data_payload["subnet"] = subnet
-        if type is not None:
-            data_payload["type"] = type
-        if route_tag is not None:
-            data_payload["route-tag"] = route_tag
-        if sub_type is not None:
-            data_payload["sub-type"] = sub_type
-        if clearpass_spt is not None:
-            data_payload["clearpass-spt"] = clearpass_spt
-        if macaddr is not None:
-            data_payload["macaddr"] = macaddr
-        if start_ip is not None:
-            data_payload["start-ip"] = start_ip
-        if end_ip is not None:
-            data_payload["end-ip"] = end_ip
-        if fqdn is not None:
-            data_payload["fqdn"] = fqdn
-        if country is not None:
-            data_payload["country"] = country
-        if wildcard_fqdn is not None:
-            data_payload["wildcard-fqdn"] = wildcard_fqdn
-        if cache_ttl is not None:
-            data_payload["cache-ttl"] = cache_ttl
-        if wildcard is not None:
-            data_payload["wildcard"] = wildcard
-        if sdn is not None:
-            data_payload["sdn"] = sdn
-        if fsso_group is not None:
-            data_payload["fsso-group"] = fsso_group
-        if sso_attribute_value is not None:
-            data_payload["sso-attribute-value"] = sso_attribute_value
-        if interface is not None:
-            data_payload["interface"] = interface
-        if tenant is not None:
-            data_payload["tenant"] = tenant
-        if organization is not None:
-            data_payload["organization"] = organization
-        if epg_name is not None:
-            data_payload["epg-name"] = epg_name
-        if subnet_name is not None:
-            data_payload["subnet-name"] = subnet_name
-        if sdn_tag is not None:
-            data_payload["sdn-tag"] = sdn_tag
-        if policy_group is not None:
-            data_payload["policy-group"] = policy_group
-        if obj_tag is not None:
-            data_payload["obj-tag"] = obj_tag
-        if obj_type is not None:
-            data_payload["obj-type"] = obj_type
-        if tag_detection_level is not None:
-            data_payload["tag-detection-level"] = tag_detection_level
-        if tag_type is not None:
-            data_payload["tag-type"] = tag_type
-        if hw_vendor is not None:
-            data_payload["hw-vendor"] = hw_vendor
-        if hw_model is not None:
-            data_payload["hw-model"] = hw_model
-        if os is not None:
-            data_payload["os"] = os
-        if sw_version is not None:
-            data_payload["sw-version"] = sw_version
-        if comment is not None:
-            data_payload["comment"] = comment
-        if associated_interface is not None:
-            data_payload["associated-interface"] = associated_interface
-        if color is not None:
-            data_payload["color"] = color
-        if sdn_addr_type is not None:
-            data_payload["sdn-addr-type"] = sdn_addr_type
-        if node_ip_only is not None:
-            data_payload["node-ip-only"] = node_ip_only
-        if obj_id is not None:
-            data_payload["obj-id"] = obj_id
-        if list is not None:
-            data_payload["list"] = list
-        if tagging is not None:
-            data_payload["tagging"] = tagging
-        if allow_routing is not None:
-            data_payload["allow-routing"] = allow_routing
-        if passive_fqdn_learning is not None:
-            data_payload["passive-fqdn-learning"] = passive_fqdn_learning
-        if fabric_object is not None:
-            data_payload["fabric-object"] = fabric_object
-        data_payload.update(kwargs)
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.firewall_address.put(
+            ...     name=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_address.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            uuid=uuid,
+            subnet=subnet,
+            type=type,
+            route_tag=route_tag,
+            sub_type=sub_type,
+            clearpass_spt=clearpass_spt,
+            macaddr=macaddr,
+            start_ip=start_ip,
+            end_ip=end_ip,
+            fqdn=fqdn,
+            country=country,
+            wildcard_fqdn=wildcard_fqdn,
+            cache_ttl=cache_ttl,
+            wildcard=wildcard,
+            sdn=sdn,
+            fsso_group=fsso_group,
+            sso_attribute_value=sso_attribute_value,
+            interface=interface,
+            tenant=tenant,
+            organization=organization,
+            epg_name=epg_name,
+            subnet_name=subnet_name,
+            sdn_tag=sdn_tag,
+            policy_group=policy_group,
+            obj_tag=obj_tag,
+            obj_type=obj_type,
+            tag_detection_level=tag_detection_level,
+            tag_type=tag_type,
+            hw_vendor=hw_vendor,
+            hw_model=hw_model,
+            os=os,
+            sw_version=sw_version,
+            comment=comment,
+            associated_interface=associated_interface,
+            color=color,
+            filter=filter,
+            sdn_addr_type=sdn_addr_type,
+            node_ip_only=node_ip_only,
+            obj_id=obj_id,
+            list=list,
+            tagging=tagging,
+            allow_routing=allow_routing,
+            fabric_object=fabric_object,
+            data=payload_dict,
+        )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.address import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/address",
+            )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = "/firewall/address/" + str(name_value)
+
         return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
-    def delete(
+    def post(
         self,
-        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        uuid: str | None = None,
+        subnet: Any | None = None,
+        type: str | None = None,
+        route_tag: int | None = None,
+        sub_type: str | None = None,
+        clearpass_spt: str | None = None,
+        macaddr: str | list | None = None,
+        start_ip: str | None = None,
+        end_ip: str | None = None,
+        fqdn: str | None = None,
+        country: str | None = None,
+        wildcard_fqdn: str | None = None,
+        cache_ttl: int | None = None,
+        wildcard: Any | None = None,
+        sdn: str | None = None,
+        fsso_group: str | list | None = None,
+        sso_attribute_value: str | list | None = None,
+        interface: str | None = None,
+        tenant: str | None = None,
+        organization: str | None = None,
+        epg_name: str | None = None,
+        subnet_name: str | None = None,
+        sdn_tag: str | None = None,
+        policy_group: str | None = None,
+        obj_tag: str | None = None,
+        obj_type: str | None = None,
+        tag_detection_level: str | None = None,
+        tag_type: str | None = None,
+        hw_vendor: str | None = None,
+        hw_model: str | None = None,
+        os: str | None = None,
+        sw_version: str | None = None,
+        comment: str | None = None,
+        associated_interface: str | None = None,
+        color: int | None = None,
+        filter: str | None = None,
+        sdn_addr_type: str | None = None,
+        node_ip_only: str | None = None,
+        obj_id: str | None = None,
+        list: str | list | None = None,
+        tagging: str | list | None = None,
+        allow_routing: str | None = None,
+        fabric_object: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Delete this specific resource.
+        Create new firewall/address object.
+
+        Configure IPv4 addresses.
 
         Args:
-            name: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            name: Address name.
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            subnet: IP address and subnet mask of address.
+            type: Type of address.
+            route_tag: route-tag address.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
+            API response dict containing created object with assigned name.
 
-        # Build endpoint path
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.firewall_address.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created name: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = Address.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.firewall_address.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Address.required_fields()) }}
+            
+            Use Address.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            name=name,
+            uuid=uuid,
+            subnet=subnet,
+            type=type,
+            route_tag=route_tag,
+            sub_type=sub_type,
+            clearpass_spt=clearpass_spt,
+            macaddr=macaddr,
+            start_ip=start_ip,
+            end_ip=end_ip,
+            fqdn=fqdn,
+            country=country,
+            wildcard_fqdn=wildcard_fqdn,
+            cache_ttl=cache_ttl,
+            wildcard=wildcard,
+            sdn=sdn,
+            fsso_group=fsso_group,
+            sso_attribute_value=sso_attribute_value,
+            interface=interface,
+            tenant=tenant,
+            organization=organization,
+            epg_name=epg_name,
+            subnet_name=subnet_name,
+            sdn_tag=sdn_tag,
+            policy_group=policy_group,
+            obj_tag=obj_tag,
+            obj_type=obj_type,
+            tag_detection_level=tag_detection_level,
+            tag_type=tag_type,
+            hw_vendor=hw_vendor,
+            hw_model=hw_model,
+            os=os,
+            sw_version=sw_version,
+            comment=comment,
+            associated_interface=associated_interface,
+            color=color,
+            filter=filter,
+            sdn_addr_type=sdn_addr_type,
+            node_ip_only=node_ip_only,
+            obj_id=obj_id,
+            list=list,
+            tagging=tagging,
+            allow_routing=allow_routing,
+            fabric_object=fabric_object,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.address import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/address",
+            )
+
+        endpoint = "/firewall/address"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete firewall/address object.
+
+        Configure IPv4 addresses.
+
+        Args:
+            name: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.firewall_address.delete(name=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
         if not name:
-            raise ValueError("name is required for delete()")
-        endpoint = f"/firewall/address/{name}"
-        params.update(kwargs)
+            raise ValueError("name is required for DELETE")
+        endpoint = "/firewall/address/" + str(name)
+
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
         )
 
     def exists(
         self,
         name: str,
         vdom: str | bool | None = None,
-    ):
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
-        Check if an object exists.
+        Check if firewall/address object exists.
 
-        Automatically works in both sync and async modes.
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
 
         Args:
-            name: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
+            name: Primary key identifier
+            vdom: Virtual domain name
 
         Returns:
-            bool (sync mode) or Coroutine[bool] (async mode)
+            True if object exists, False otherwise
 
-        Example (Sync):
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.firewall_address.exists(name=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.firewall_address.exists(name=1):
+            ...     fgt.api.cmdb.firewall_address.delete(name=1)
 
-        Example (Async):
-            >>> if await fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
         """
-        import inspect
-        from typing import Any, cast
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
 
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(name=name, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
+    def set(
         self,
         payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
-        name: str | None = None,
-        uuid: str | None = None,
-        subnet: str | None = None,
-        type: str | None = None,
-        route_tag: int | None = None,
-        sub_type: str | None = None,
-        clearpass_spt: str | None = None,
-        macaddr: list | None = None,
-        start_ip: str | None = None,
-        end_ip: str | None = None,
-        fqdn: str | None = None,
-        country: str | None = None,
-        wildcard_fqdn: str | None = None,
-        cache_ttl: int | None = None,
-        wildcard: str | None = None,
-        sdn: str | None = None,
-        fsso_group: list | None = None,
-        sso_attribute_value: list | None = None,
-        interface: str | None = None,
-        tenant: str | None = None,
-        organization: str | None = None,
-        epg_name: str | None = None,
-        subnet_name: str | None = None,
-        sdn_tag: str | None = None,
-        policy_group: str | None = None,
-        obj_tag: str | None = None,
-        obj_type: str | None = None,
-        tag_detection_level: str | None = None,
-        tag_type: str | None = None,
-        hw_vendor: str | None = None,
-        hw_model: str | None = None,
-        os: str | None = None,
-        sw_version: str | None = None,
-        comment: str | None = None,
-        associated_interface: str | None = None,
-        color: int | None = None,
-        sdn_addr_type: str | None = None,
-        node_ip_only: str | None = None,
-        obj_id: str | None = None,
-        list: list | None = None,
-        tagging: list | None = None,
-        allow_routing: str | None = None,
-        passive_fqdn_learning: str | None = None,
-        fabric_object: str | None = None,
         vdom: str | bool | None = None,
-        raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Create or update firewall/address object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            name: Address name. (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            subnet: IP address and subnet mask of address. (optional)
-            type: Type of address. (optional)
-            route_tag: route-tag address. (optional)
-            sub_type: Sub-type of address. (optional)
-            clearpass_spt: SPT (System Posture Token) value. (optional)
-            macaddr: Multiple MAC address ranges. (optional)
-            start_ip: First IP address (inclusive) in the range for the
-            address. (optional)
-            end_ip: Final IP address (inclusive) in the range for the address.
-            (optional)
-            fqdn: Fully Qualified Domain Name address. (optional)
-            country: IP addresses associated to a specific country. (optional)
-            wildcard_fqdn: Fully Qualified Domain Name with wildcard
-            characters. (optional)
-            cache_ttl: Defines the minimal TTL of individual IP addresses in
-            FQDN cache measured in seconds. (optional)
-            wildcard: IP address and wildcard netmask. (optional)
-            sdn: SDN. (optional)
-            fsso_group: FSSO group(s). (optional)
-            sso_attribute_value: RADIUS attributes value. (optional)
-            interface: Name of interface whose IP address is to be used.
-            (optional)
-            tenant: Tenant. (optional)
-            organization: Organization domain name (Syntax:
-            organization/domain). (optional)
-            epg_name: Endpoint group name. (optional)
-            subnet_name: Subnet name. (optional)
-            sdn_tag: SDN Tag. (optional)
-            policy_group: Policy group name. (optional)
-            obj_tag: Tag of dynamic address object. (optional)
-            obj_type: Object type. (optional)
-            tag_detection_level: Tag detection level of dynamic address object.
-            (optional)
-            tag_type: Tag type of dynamic address object. (optional)
-            hw_vendor: Dynamic address matching hardware vendor. (optional)
-            hw_model: Dynamic address matching hardware model. (optional)
-            os: Dynamic address matching operating system. (optional)
-            sw_version: Dynamic address matching software version. (optional)
-            comment: Comment. (optional)
-            associated_interface: Network interface associated with address.
-            (optional)
-            color: Color of icon on the GUI. (optional)
-            sdn_addr_type: Type of addresses to collect. (optional)
-            node_ip_only: Enable/disable collection of node addresses only in
-            Kubernetes. (optional)
-            obj_id: Object ID for NSX. (optional)
-            list: IP address list. (optional)
-            tagging: Config object tagging. (optional)
-            allow_routing: Enable/disable use of this address in routing
-            configurations. (optional)
-            passive_fqdn_learning: Enable/disable passive learning of FQDNs.
-            When enabled, the FortiGate learns, trusts, and saves FQDNs from
-            endpoint DNS queries (default = enable). (optional)
-            fabric_object: Security Fabric global object setting. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            Dictionary containing API response
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_address.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.firewall_address.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/firewall/address"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if name is not None:
-            data_payload["name"] = name
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if subnet is not None:
-            data_payload["subnet"] = subnet
-        if type is not None:
-            data_payload["type"] = type
-        if route_tag is not None:
-            data_payload["route-tag"] = route_tag
-        if sub_type is not None:
-            data_payload["sub-type"] = sub_type
-        if clearpass_spt is not None:
-            data_payload["clearpass-spt"] = clearpass_spt
-        if macaddr is not None:
-            data_payload["macaddr"] = macaddr
-        if start_ip is not None:
-            data_payload["start-ip"] = start_ip
-        if end_ip is not None:
-            data_payload["end-ip"] = end_ip
-        if fqdn is not None:
-            data_payload["fqdn"] = fqdn
-        if country is not None:
-            data_payload["country"] = country
-        if wildcard_fqdn is not None:
-            data_payload["wildcard-fqdn"] = wildcard_fqdn
-        if cache_ttl is not None:
-            data_payload["cache-ttl"] = cache_ttl
-        if wildcard is not None:
-            data_payload["wildcard"] = wildcard
-        if sdn is not None:
-            data_payload["sdn"] = sdn
-        if fsso_group is not None:
-            data_payload["fsso-group"] = fsso_group
-        if sso_attribute_value is not None:
-            data_payload["sso-attribute-value"] = sso_attribute_value
-        if interface is not None:
-            data_payload["interface"] = interface
-        if tenant is not None:
-            data_payload["tenant"] = tenant
-        if organization is not None:
-            data_payload["organization"] = organization
-        if epg_name is not None:
-            data_payload["epg-name"] = epg_name
-        if subnet_name is not None:
-            data_payload["subnet-name"] = subnet_name
-        if sdn_tag is not None:
-            data_payload["sdn-tag"] = sdn_tag
-        if policy_group is not None:
-            data_payload["policy-group"] = policy_group
-        if obj_tag is not None:
-            data_payload["obj-tag"] = obj_tag
-        if obj_type is not None:
-            data_payload["obj-type"] = obj_type
-        if tag_detection_level is not None:
-            data_payload["tag-detection-level"] = tag_detection_level
-        if tag_type is not None:
-            data_payload["tag-type"] = tag_type
-        if hw_vendor is not None:
-            data_payload["hw-vendor"] = hw_vendor
-        if hw_model is not None:
-            data_payload["hw-model"] = hw_model
-        if os is not None:
-            data_payload["os"] = os
-        if sw_version is not None:
-            data_payload["sw-version"] = sw_version
-        if comment is not None:
-            data_payload["comment"] = comment
-        if associated_interface is not None:
-            data_payload["associated-interface"] = associated_interface
-        if color is not None:
-            data_payload["color"] = color
-        if sdn_addr_type is not None:
-            data_payload["sdn-addr-type"] = sdn_addr_type
-        if node_ip_only is not None:
-            data_payload["node-ip-only"] = node_ip_only
-        if obj_id is not None:
-            data_payload["obj-id"] = obj_id
-        if list is not None:
-            data_payload["list"] = list
-        if tagging is not None:
-            data_payload["tagging"] = tagging
-        if allow_routing is not None:
-            data_payload["allow-routing"] = allow_routing
-        if passive_fqdn_learning is not None:
-            data_payload["passive-fqdn-learning"] = passive_fqdn_learning
-        if fabric_object is not None:
-            data_payload["fabric-object"] = fabric_object
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(Address.help())
+            
+            >>> # Get field information
+            >>> print(Address.help("name"))
+        """
+        from ._helpers.address import (
+            get_schema_info,
+            get_field_metadata,
         )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = Address.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = Address.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.address import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = Address.field_info("name")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.address import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = Address.validate_field("name", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.address import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = Address.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.address import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = Address.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.address import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = Address.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.address import get_schema_info
+
+        return get_schema_info()

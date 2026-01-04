@@ -1,12 +1,11 @@
 """
-FortiOS CMDB - Cmdb Firewall Shaping Policy
+FortiOS CMDB - Firewall shaping_policy
 
-Configuration endpoint for managing cmdb firewall shaping policy objects.
+Configuration endpoint for managing cmdb firewall/shaping_policy objects.
 
 API Endpoints:
     GET    /cmdb/firewall/shaping_policy
     POST   /cmdb/firewall/shaping_policy
-    GET    /cmdb/firewall/shaping_policy
     PUT    /cmdb/firewall/shaping_policy/{identifier}
     DELETE /cmdb/firewall/shaping_policy/{identifier}
 
@@ -15,128 +14,101 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.firewall.shaping_policy.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.firewall.shaping_policy.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.firewall.shaping_policy.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.firewall.shaping_policy.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.firewall.shaping_policy.delete(name="item_name")
+    >>> items = fgt.api.cmdb.firewall_shaping_policy.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class ShapingPolicy:
-    """
-    Shapingpolicy Operations.
-
-    Provides CRUD operations for FortiOS shapingpolicy configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        post(): Create new configuration objects
-        put(): Update existing configuration objects
-        delete(): Remove configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """ShapingPolicy Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize ShapingPolicy endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize ShapingPolicy endpoint."""
         self._client = client
 
     def get(
         self,
-        id: str | None = None,
+        id: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        attr: str | None = None,
-        skip_to_datasource: dict | None = None,
-        acs: int | None = None,
-        search: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select a specific entry from a CLI table.
+        Retrieve firewall/shaping_policy configuration.
+
+        Configure shaping policies.
 
         Args:
-            id: Object identifier (optional for list, required for specific)
-            attr: Attribute name that references other table (optional)
-            skip_to_datasource: Skip to provided table's Nth entry. E.g
-            {datasource: 'firewall.address', pos: 10, global_entry: false}
-            (optional)
-            acs: If true, returned result are in ascending order. (optional)
-            search: If present, the objects will be filtered by the search
-            value. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            id: Integer identifier to retrieve specific object.
+                If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all firewall/shaping_policy objects
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get specific firewall/shaping_policy by id
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.get(id=1)
+            >>> print(result['results'])
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.firewall_shaping_policy.get(action="schema")
+
+        See Also:
+            - post(): Create new firewall/shaping_policy object
+            - put(): Update existing firewall/shaping_policy object
+            - delete(): Remove firewall/shaping_policy object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
+        
         if id:
-            endpoint = f"/firewall/shaping-policy/{id}"
+            endpoint = "/firewall/shaping-policy/" + str(id)
         else:
             endpoint = "/firewall/shaping-policy"
-        if attr is not None:
-            params["attr"] = attr
-        if skip_to_datasource is not None:
-            params["skip_to_datasource"] = skip_to_datasource
-        if acs is not None:
-            params["acs"] = acs
-        if search is not None:
-            params["search"] = search
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -144,373 +116,7 @@ class ShapingPolicy:
 
     def put(
         self,
-        id: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
-        uuid: str | None = None,
-        name: str | None = None,
-        comment: str | None = None,
-        status: str | None = None,
-        ip_version: str | None = None,
-        traffic_type: str | None = None,
-        srcaddr: list | None = None,
-        dstaddr: list | None = None,
-        srcaddr6: list | None = None,
-        dstaddr6: list | None = None,
-        internet_service: str | None = None,
-        internet_service_name: list | None = None,
-        internet_service_group: list | None = None,
-        internet_service_custom: list | None = None,
-        internet_service_custom_group: list | None = None,
-        internet_service_fortiguard: list | None = None,
-        internet_service_src: str | None = None,
-        internet_service_src_name: list | None = None,
-        internet_service_src_group: list | None = None,
-        internet_service_src_custom: list | None = None,
-        internet_service_src_custom_group: list | None = None,
-        internet_service_src_fortiguard: list | None = None,
-        service: list | None = None,
-        schedule: str | None = None,
-        users: list | None = None,
-        groups: list | None = None,
-        application: list | None = None,
-        app_category: list | None = None,
-        app_group: list | None = None,
-        url_category: list | None = None,
-        srcintf: list | None = None,
-        dstintf: list | None = None,
-        tos_mask: str | None = None,
-        tos: str | None = None,
-        tos_negate: str | None = None,
-        traffic_shaper: str | None = None,
-        traffic_shaper_reverse: str | None = None,
-        per_ip_shaper: str | None = None,
-        class_id: int | None = None,
-        diffserv_forward: str | None = None,
-        diffserv_reverse: str | None = None,
-        diffservcode_forward: str | None = None,
-        diffservcode_rev: str | None = None,
-        cos_mask: str | None = None,
-        cos: str | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Update this specific resource.
-
-        Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            id: Object identifier (required)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            id: Shaping policy ID (0 - 4294967295). (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            name: Shaping policy name. (optional)
-            comment: Comments. (optional)
-            status: Enable/disable this traffic shaping policy. (optional)
-            ip_version: Apply this traffic shaping policy to IPv4 or IPv6
-            traffic. (optional)
-            traffic_type: Traffic type. (optional)
-            srcaddr: IPv4 source address and address group names. (optional)
-            dstaddr: IPv4 destination address and address group names.
-            (optional)
-            srcaddr6: IPv6 source address and address group names. (optional)
-            dstaddr6: IPv6 destination address and address group names.
-            (optional)
-            internet_service: Enable/disable use of Internet Services for this
-            policy. If enabled, destination address and service are not used.
-            (optional)
-            internet_service_name: Internet Service ID. (optional)
-            internet_service_group: Internet Service group name. (optional)
-            internet_service_custom: Custom Internet Service name. (optional)
-            internet_service_custom_group: Custom Internet Service group name.
-            (optional)
-            internet_service_fortiguard: FortiGuard Internet Service name.
-            (optional)
-            internet_service_src: Enable/disable use of Internet Services in
-            source for this policy. If enabled, source address is not used.
-            (optional)
-            internet_service_src_name: Internet Service source name. (optional)
-            internet_service_src_group: Internet Service source group name.
-            (optional)
-            internet_service_src_custom: Custom Internet Service source name.
-            (optional)
-            internet_service_src_custom_group: Custom Internet Service source
-            group name. (optional)
-            internet_service_src_fortiguard: FortiGuard Internet Service source
-            name. (optional)
-            service: Service and service group names. (optional)
-            schedule: Schedule name. (optional)
-            users: Apply this traffic shaping policy to individual users that
-            have authenticated with the FortiGate. (optional)
-            groups: Apply this traffic shaping policy to user groups that have
-            authenticated with the FortiGate. (optional)
-            application: IDs of one or more applications that this shaper
-            applies application control traffic shaping to. (optional)
-            app_category: IDs of one or more application categories that this
-            shaper applies application control traffic shaping to. (optional)
-            app_group: One or more application group names. (optional)
-            url_category: IDs of one or more FortiGuard Web Filtering
-            categories that this shaper applies traffic shaping to. (optional)
-            srcintf: One or more incoming (ingress) interfaces. (optional)
-            dstintf: One or more outgoing (egress) interfaces. (optional)
-            tos_mask: Non-zero bit positions are used for comparison while zero
-            bit positions are ignored. (optional)
-            tos: ToS (Type of Service) value used for comparison. (optional)
-            tos_negate: Enable negated TOS match. (optional)
-            traffic_shaper: Traffic shaper to apply to traffic forwarded by the
-            firewall policy. (optional)
-            traffic_shaper_reverse: Traffic shaper to apply to response traffic
-            received by the firewall policy. (optional)
-            per_ip_shaper: Per-IP traffic shaper to apply with this policy.
-            (optional)
-            class_id: Traffic class ID. (optional)
-            diffserv_forward: Enable to change packet's DiffServ values to the
-            specified diffservcode-forward value. (optional)
-            diffserv_reverse: Enable to change packet's reverse (reply)
-            DiffServ values to the specified diffservcode-rev value. (optional)
-            diffservcode_forward: Change packet's DiffServ to this value.
-            (optional)
-            diffservcode_rev: Change packet's reverse (reply) DiffServ to this
-            value. (optional)
-            cos_mask: VLAN CoS evaluated bits. (optional)
-            cos: VLAN CoS bit pattern. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        data_payload = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not id:
-            raise ValueError("id is required for put()")
-        endpoint = f"/firewall/shaping-policy/{id}"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if id is not None:
-            data_payload["id"] = id
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if name is not None:
-            data_payload["name"] = name
-        if comment is not None:
-            data_payload["comment"] = comment
-        if status is not None:
-            data_payload["status"] = status
-        if ip_version is not None:
-            data_payload["ip-version"] = ip_version
-        if traffic_type is not None:
-            data_payload["traffic-type"] = traffic_type
-        if srcaddr is not None:
-            data_payload["srcaddr"] = srcaddr
-        if dstaddr is not None:
-            data_payload["dstaddr"] = dstaddr
-        if srcaddr6 is not None:
-            data_payload["srcaddr6"] = srcaddr6
-        if dstaddr6 is not None:
-            data_payload["dstaddr6"] = dstaddr6
-        if internet_service is not None:
-            data_payload["internet-service"] = internet_service
-        if internet_service_name is not None:
-            data_payload["internet-service-name"] = internet_service_name
-        if internet_service_group is not None:
-            data_payload["internet-service-group"] = internet_service_group
-        if internet_service_custom is not None:
-            data_payload["internet-service-custom"] = internet_service_custom
-        if internet_service_custom_group is not None:
-            data_payload["internet-service-custom-group"] = (
-                internet_service_custom_group
-            )
-        if internet_service_fortiguard is not None:
-            data_payload["internet-service-fortiguard"] = (
-                internet_service_fortiguard
-            )
-        if internet_service_src is not None:
-            data_payload["internet-service-src"] = internet_service_src
-        if internet_service_src_name is not None:
-            data_payload["internet-service-src-name"] = (
-                internet_service_src_name
-            )
-        if internet_service_src_group is not None:
-            data_payload["internet-service-src-group"] = (
-                internet_service_src_group
-            )
-        if internet_service_src_custom is not None:
-            data_payload["internet-service-src-custom"] = (
-                internet_service_src_custom
-            )
-        if internet_service_src_custom_group is not None:
-            data_payload["internet-service-src-custom-group"] = (
-                internet_service_src_custom_group
-            )
-        if internet_service_src_fortiguard is not None:
-            data_payload["internet-service-src-fortiguard"] = (
-                internet_service_src_fortiguard
-            )
-        if service is not None:
-            data_payload["service"] = service
-        if schedule is not None:
-            data_payload["schedule"] = schedule
-        if users is not None:
-            data_payload["users"] = users
-        if groups is not None:
-            data_payload["groups"] = groups
-        if application is not None:
-            data_payload["application"] = application
-        if app_category is not None:
-            data_payload["app-category"] = app_category
-        if app_group is not None:
-            data_payload["app-group"] = app_group
-        if url_category is not None:
-            data_payload["url-category"] = url_category
-        if srcintf is not None:
-            data_payload["srcint"] = srcintf
-        if dstintf is not None:
-            data_payload["dstint"] = dstintf
-        if tos_mask is not None:
-            data_payload["tos-mask"] = tos_mask
-        if tos is not None:
-            data_payload["tos"] = tos
-        if tos_negate is not None:
-            data_payload["tos-negate"] = tos_negate
-        if traffic_shaper is not None:
-            data_payload["traffic-shaper"] = traffic_shaper
-        if traffic_shaper_reverse is not None:
-            data_payload["traffic-shaper-reverse"] = traffic_shaper_reverse
-        if per_ip_shaper is not None:
-            data_payload["per-ip-shaper"] = per_ip_shaper
-        if class_id is not None:
-            data_payload["class-id"] = class_id
-        if diffserv_forward is not None:
-            data_payload["diffserv-forward"] = diffserv_forward
-        if diffserv_reverse is not None:
-            data_payload["diffserv-reverse"] = diffserv_reverse
-        if diffservcode_forward is not None:
-            data_payload["diffservcode-forward"] = diffservcode_forward
-        if diffservcode_rev is not None:
-            data_payload["diffservcode-rev"] = diffservcode_rev
-        if cos_mask is not None:
-            data_payload["cos-mask"] = cos_mask
-        if cos is not None:
-            data_payload["cos"] = cos
-        data_payload.update(kwargs)
-        return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
-        )
-
-    def delete(
-        self,
-        id: str | None = None,
-        payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Delete this specific resource.
-
-        Args:
-            id: Object identifier (required)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
-
-        Returns:
-            Dictionary containing API response
-        """
-        params = payload_dict.copy() if payload_dict else {}
-
-        # Build endpoint path
-        if not id:
-            raise ValueError("id is required for delete()")
-        endpoint = f"/firewall/shaping-policy/{id}"
-        params.update(kwargs)
-        return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
-        )
-
-    def exists(
-        self,
-        id: str,
-        vdom: str | bool | None = None,
-    ) -> Union[bool, Coroutine[Any, Any, bool]]:
-        """
-        Check if an object exists.
-
-        Args:
-            id: Object identifier
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-
-        Returns:
-            True if object exists, False otherwise
-
-        Example:
-            >>> if fgt.api.cmdb.firewall.address.exists("server1"):
-            ...     print("Address exists")
-        """
-        import inspect
-
-        from hfortix_core.exceptions import ResourceNotFoundError
-
-        # Call get() - returns dict (sync) or coroutine (async)
-        result = self.get(id=id, vdom=vdom)
-
-        # Check if async mode
-        if inspect.iscoroutine(result):
-
-            async def _async():
-                try:
-                    # Runtime check confirms result is a coroutine, cast for
-                    # mypy
-                    await cast(Coroutine[Any, Any, dict[str, Any]], result)
-                    return True
-                except ResourceNotFoundError:
-                    return False
-
-            # Type ignore justified: mypy can't verify Union return type
-            # narrowing
-
-            return _async()
-        # Sync mode - get() already executed, no exception means it exists
-        return True
-
-    def post(
-        self,
-        payload_dict: dict[str, Any] | None = None,
-        nkey: str | None = None,
         id: int | None = None,
         uuid: str | None = None,
         name: str | None = None,
@@ -518,32 +124,32 @@ class ShapingPolicy:
         status: str | None = None,
         ip_version: str | None = None,
         traffic_type: str | None = None,
-        srcaddr: list | None = None,
-        dstaddr: list | None = None,
-        srcaddr6: list | None = None,
-        dstaddr6: list | None = None,
+        srcaddr: str | list | None = None,
+        dstaddr: str | list | None = None,
+        srcaddr6: str | list | None = None,
+        dstaddr6: str | list | None = None,
         internet_service: str | None = None,
-        internet_service_name: list | None = None,
-        internet_service_group: list | None = None,
-        internet_service_custom: list | None = None,
-        internet_service_custom_group: list | None = None,
-        internet_service_fortiguard: list | None = None,
+        internet_service_name: str | list | None = None,
+        internet_service_group: str | list | None = None,
+        internet_service_custom: str | list | None = None,
+        internet_service_custom_group: str | list | None = None,
+        internet_service_fortiguard: str | list | None = None,
         internet_service_src: str | None = None,
-        internet_service_src_name: list | None = None,
-        internet_service_src_group: list | None = None,
-        internet_service_src_custom: list | None = None,
-        internet_service_src_custom_group: list | None = None,
-        internet_service_src_fortiguard: list | None = None,
-        service: list | None = None,
+        internet_service_src_name: str | list | None = None,
+        internet_service_src_group: str | list | None = None,
+        internet_service_src_custom: str | list | None = None,
+        internet_service_src_custom_group: str | list | None = None,
+        internet_service_src_fortiguard: str | list | None = None,
+        service: str | list | None = None,
         schedule: str | None = None,
-        users: list | None = None,
-        groups: list | None = None,
-        application: list | None = None,
-        app_category: list | None = None,
-        app_group: list | None = None,
-        url_category: list | None = None,
-        srcintf: list | None = None,
-        dstintf: list | None = None,
+        users: str | list | None = None,
+        groups: str | list | None = None,
+        application: str | list | None = None,
+        app_category: str | list | None = None,
+        app_group: str | list | None = None,
+        url_category: str | list | None = None,
+        srcintf: str | list | None = None,
+        dstintf: str | list | None = None,
         tos_mask: str | None = None,
         tos: str | None = None,
         tos_negate: str | None = None,
@@ -562,215 +168,633 @@ class ShapingPolicy:
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Create object(s) in this table.
+        Update existing firewall/shaping_policy object.
+
+        Configure shaping policies.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            nkey: If *action=clone*, use *nkey* to specify the ID for the new
-            resource to be created. (optional)
-            id: Shaping policy ID (0 - 4294967295). (optional)
-            uuid: Universally Unique Identifier (UUID; automatically assigned
-            but can be manually reset). (optional)
-            name: Shaping policy name. (optional)
-            comment: Comments. (optional)
-            status: Enable/disable this traffic shaping policy. (optional)
-            ip_version: Apply this traffic shaping policy to IPv4 or IPv6
-            traffic. (optional)
-            traffic_type: Traffic type. (optional)
-            srcaddr: IPv4 source address and address group names. (optional)
-            dstaddr: IPv4 destination address and address group names.
-            (optional)
-            srcaddr6: IPv6 source address and address group names. (optional)
-            dstaddr6: IPv6 destination address and address group names.
-            (optional)
-            internet_service: Enable/disable use of Internet Services for this
-            policy. If enabled, destination address and service are not used.
-            (optional)
-            internet_service_name: Internet Service ID. (optional)
-            internet_service_group: Internet Service group name. (optional)
-            internet_service_custom: Custom Internet Service name. (optional)
-            internet_service_custom_group: Custom Internet Service group name.
-            (optional)
-            internet_service_fortiguard: FortiGuard Internet Service name.
-            (optional)
-            internet_service_src: Enable/disable use of Internet Services in
-            source for this policy. If enabled, source address is not used.
-            (optional)
-            internet_service_src_name: Internet Service source name. (optional)
-            internet_service_src_group: Internet Service source group name.
-            (optional)
-            internet_service_src_custom: Custom Internet Service source name.
-            (optional)
-            internet_service_src_custom_group: Custom Internet Service source
-            group name. (optional)
-            internet_service_src_fortiguard: FortiGuard Internet Service source
-            name. (optional)
-            service: Service and service group names. (optional)
-            schedule: Schedule name. (optional)
-            users: Apply this traffic shaping policy to individual users that
-            have authenticated with the FortiGate. (optional)
-            groups: Apply this traffic shaping policy to user groups that have
-            authenticated with the FortiGate. (optional)
-            application: IDs of one or more applications that this shaper
-            applies application control traffic shaping to. (optional)
-            app_category: IDs of one or more application categories that this
-            shaper applies application control traffic shaping to. (optional)
-            app_group: One or more application group names. (optional)
-            url_category: IDs of one or more FortiGuard Web Filtering
-            categories that this shaper applies traffic shaping to. (optional)
-            srcintf: One or more incoming (ingress) interfaces. (optional)
-            dstintf: One or more outgoing (egress) interfaces. (optional)
-            tos_mask: Non-zero bit positions are used for comparison while zero
-            bit positions are ignored. (optional)
-            tos: ToS (Type of Service) value used for comparison. (optional)
-            tos_negate: Enable negated TOS match. (optional)
-            traffic_shaper: Traffic shaper to apply to traffic forwarded by the
-            firewall policy. (optional)
-            traffic_shaper_reverse: Traffic shaper to apply to response traffic
-            received by the firewall policy. (optional)
-            per_ip_shaper: Per-IP traffic shaper to apply with this policy.
-            (optional)
-            class_id: Traffic class ID. (optional)
-            diffserv_forward: Enable to change packet's DiffServ values to the
-            specified diffservcode-forward value. (optional)
-            diffserv_reverse: Enable to change packet's reverse (reply)
-            DiffServ values to the specified diffservcode-rev value. (optional)
-            diffservcode_forward: Change packet's DiffServ to this value.
-            (optional)
-            diffservcode_rev: Change packet's reverse (reply) DiffServ to this
-            value. (optional)
-            cos_mask: VLAN CoS evaluated bits. (optional)
-            cos: VLAN CoS bit pattern. (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            payload_dict: Object data as dict. Must include id (primary key).
+            id: Shaping policy ID (0 - 4294967295).
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            name: Shaping policy name.
+            comment: Comments.
+            status: Enable/disable this traffic shaping policy.
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If id is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.put(
+            ...     id=1,
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "id": 1,
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/firewall/shaping-policy"
-        if nkey is not None:
-            data_payload["nkey"] = nkey
-        if id is not None:
-            data_payload["id"] = id
-        if uuid is not None:
-            data_payload["uuid"] = uuid
-        if name is not None:
-            data_payload["name"] = name
-        if comment is not None:
-            data_payload["comment"] = comment
-        if status is not None:
-            data_payload["status"] = status
-        if ip_version is not None:
-            data_payload["ip-version"] = ip_version
-        if traffic_type is not None:
-            data_payload["traffic-type"] = traffic_type
-        if srcaddr is not None:
-            data_payload["srcaddr"] = srcaddr
-        if dstaddr is not None:
-            data_payload["dstaddr"] = dstaddr
-        if srcaddr6 is not None:
-            data_payload["srcaddr6"] = srcaddr6
-        if dstaddr6 is not None:
-            data_payload["dstaddr6"] = dstaddr6
-        if internet_service is not None:
-            data_payload["internet-service"] = internet_service
-        if internet_service_name is not None:
-            data_payload["internet-service-name"] = internet_service_name
-        if internet_service_group is not None:
-            data_payload["internet-service-group"] = internet_service_group
-        if internet_service_custom is not None:
-            data_payload["internet-service-custom"] = internet_service_custom
-        if internet_service_custom_group is not None:
-            data_payload["internet-service-custom-group"] = (
-                internet_service_custom_group
-            )
-        if internet_service_fortiguard is not None:
-            data_payload["internet-service-fortiguard"] = (
-                internet_service_fortiguard
-            )
-        if internet_service_src is not None:
-            data_payload["internet-service-src"] = internet_service_src
-        if internet_service_src_name is not None:
-            data_payload["internet-service-src-name"] = (
-                internet_service_src_name
-            )
-        if internet_service_src_group is not None:
-            data_payload["internet-service-src-group"] = (
-                internet_service_src_group
-            )
-        if internet_service_src_custom is not None:
-            data_payload["internet-service-src-custom"] = (
-                internet_service_src_custom
-            )
-        if internet_service_src_custom_group is not None:
-            data_payload["internet-service-src-custom-group"] = (
-                internet_service_src_custom_group
-            )
-        if internet_service_src_fortiguard is not None:
-            data_payload["internet-service-src-fortiguard"] = (
-                internet_service_src_fortiguard
-            )
-        if service is not None:
-            data_payload["service"] = service
-        if schedule is not None:
-            data_payload["schedule"] = schedule
-        if users is not None:
-            data_payload["users"] = users
-        if groups is not None:
-            data_payload["groups"] = groups
-        if application is not None:
-            data_payload["application"] = application
-        if app_category is not None:
-            data_payload["app-category"] = app_category
-        if app_group is not None:
-            data_payload["app-group"] = app_group
-        if url_category is not None:
-            data_payload["url-category"] = url_category
-        if srcintf is not None:
-            data_payload["srcint"] = srcintf
-        if dstintf is not None:
-            data_payload["dstint"] = dstintf
-        if tos_mask is not None:
-            data_payload["tos-mask"] = tos_mask
-        if tos is not None:
-            data_payload["tos"] = tos
-        if tos_negate is not None:
-            data_payload["tos-negate"] = tos_negate
-        if traffic_shaper is not None:
-            data_payload["traffic-shaper"] = traffic_shaper
-        if traffic_shaper_reverse is not None:
-            data_payload["traffic-shaper-reverse"] = traffic_shaper_reverse
-        if per_ip_shaper is not None:
-            data_payload["per-ip-shaper"] = per_ip_shaper
-        if class_id is not None:
-            data_payload["class-id"] = class_id
-        if diffserv_forward is not None:
-            data_payload["diffserv-forward"] = diffserv_forward
-        if diffserv_reverse is not None:
-            data_payload["diffserv-reverse"] = diffserv_reverse
-        if diffservcode_forward is not None:
-            data_payload["diffservcode-forward"] = diffservcode_forward
-        if diffservcode_rev is not None:
-            data_payload["diffservcode-rev"] = diffservcode_rev
-        if cos_mask is not None:
-            data_payload["cos-mask"] = cos_mask
-        if cos is not None:
-            data_payload["cos"] = cos
-        data_payload.update(kwargs)
-        return self._client.post(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            id=id,
+            uuid=uuid,
+            name=name,
+            comment=comment,
+            status=status,
+            ip_version=ip_version,
+            traffic_type=traffic_type,
+            srcaddr=srcaddr,
+            dstaddr=dstaddr,
+            srcaddr6=srcaddr6,
+            dstaddr6=dstaddr6,
+            internet_service=internet_service,
+            internet_service_name=internet_service_name,
+            internet_service_group=internet_service_group,
+            internet_service_custom=internet_service_custom,
+            internet_service_custom_group=internet_service_custom_group,
+            internet_service_fortiguard=internet_service_fortiguard,
+            internet_service_src=internet_service_src,
+            internet_service_src_name=internet_service_src_name,
+            internet_service_src_group=internet_service_src_group,
+            internet_service_src_custom=internet_service_src_custom,
+            internet_service_src_custom_group=internet_service_src_custom_group,
+            internet_service_src_fortiguard=internet_service_src_fortiguard,
+            service=service,
+            schedule=schedule,
+            users=users,
+            groups=groups,
+            application=application,
+            app_category=app_category,
+            app_group=app_group,
+            url_category=url_category,
+            srcintf=srcintf,
+            dstintf=dstintf,
+            tos_mask=tos_mask,
+            tos=tos,
+            tos_negate=tos_negate,
+            traffic_shaper=traffic_shaper,
+            traffic_shaper_reverse=traffic_shaper_reverse,
+            per_ip_shaper=per_ip_shaper,
+            class_id=class_id,
+            diffserv_forward=diffserv_forward,
+            diffserv_reverse=diffserv_reverse,
+            diffservcode_forward=diffservcode_forward,
+            diffservcode_rev=diffservcode_rev,
+            cos_mask=cos_mask,
+            cos=cos,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.shaping_policy import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/shaping_policy",
+            )
+        
+        id_value = payload_data.get("id")
+        if not id_value:
+            raise ValueError("id is required for PUT")
+        endpoint = "/firewall/shaping-policy/" + str(id_value)
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        id: int | None = None,
+        uuid: str | None = None,
+        name: str | None = None,
+        comment: str | None = None,
+        status: str | None = None,
+        ip_version: str | None = None,
+        traffic_type: str | None = None,
+        srcaddr: str | list | None = None,
+        dstaddr: str | list | None = None,
+        srcaddr6: str | list | None = None,
+        dstaddr6: str | list | None = None,
+        internet_service: str | None = None,
+        internet_service_name: str | list | None = None,
+        internet_service_group: str | list | None = None,
+        internet_service_custom: str | list | None = None,
+        internet_service_custom_group: str | list | None = None,
+        internet_service_fortiguard: str | list | None = None,
+        internet_service_src: str | None = None,
+        internet_service_src_name: str | list | None = None,
+        internet_service_src_group: str | list | None = None,
+        internet_service_src_custom: str | list | None = None,
+        internet_service_src_custom_group: str | list | None = None,
+        internet_service_src_fortiguard: str | list | None = None,
+        service: str | list | None = None,
+        schedule: str | None = None,
+        users: str | list | None = None,
+        groups: str | list | None = None,
+        application: str | list | None = None,
+        app_category: str | list | None = None,
+        app_group: str | list | None = None,
+        url_category: str | list | None = None,
+        srcintf: str | list | None = None,
+        dstintf: str | list | None = None,
+        tos_mask: str | None = None,
+        tos: str | None = None,
+        tos_negate: str | None = None,
+        traffic_shaper: str | None = None,
+        traffic_shaper_reverse: str | None = None,
+        per_ip_shaper: str | None = None,
+        class_id: int | None = None,
+        diffserv_forward: str | None = None,
+        diffserv_reverse: str | None = None,
+        diffservcode_forward: str | None = None,
+        diffservcode_rev: str | None = None,
+        cos_mask: str | None = None,
+        cos: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new firewall/shaping_policy object.
+
+        Configure shaping policies.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            id: Shaping policy ID (0 - 4294967295).
+            uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
+            name: Shaping policy name.
+            comment: Comments.
+            status: Enable/disable this traffic shaping policy.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned id.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created id: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = ShapingPolicy.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(ShapingPolicy.required_fields()) }}
+            
+            Use ShapingPolicy.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            id=id,
+            uuid=uuid,
+            name=name,
+            comment=comment,
+            status=status,
+            ip_version=ip_version,
+            traffic_type=traffic_type,
+            srcaddr=srcaddr,
+            dstaddr=dstaddr,
+            srcaddr6=srcaddr6,
+            dstaddr6=dstaddr6,
+            internet_service=internet_service,
+            internet_service_name=internet_service_name,
+            internet_service_group=internet_service_group,
+            internet_service_custom=internet_service_custom,
+            internet_service_custom_group=internet_service_custom_group,
+            internet_service_fortiguard=internet_service_fortiguard,
+            internet_service_src=internet_service_src,
+            internet_service_src_name=internet_service_src_name,
+            internet_service_src_group=internet_service_src_group,
+            internet_service_src_custom=internet_service_src_custom,
+            internet_service_src_custom_group=internet_service_src_custom_group,
+            internet_service_src_fortiguard=internet_service_src_fortiguard,
+            service=service,
+            schedule=schedule,
+            users=users,
+            groups=groups,
+            application=application,
+            app_category=app_category,
+            app_group=app_group,
+            url_category=url_category,
+            srcintf=srcintf,
+            dstintf=dstintf,
+            tos_mask=tos_mask,
+            tos=tos,
+            tos_negate=tos_negate,
+            traffic_shaper=traffic_shaper,
+            traffic_shaper_reverse=traffic_shaper_reverse,
+            per_ip_shaper=per_ip_shaper,
+            class_id=class_id,
+            diffserv_forward=diffserv_forward,
+            diffserv_reverse=diffserv_reverse,
+            diffservcode_forward=diffservcode_forward,
+            diffservcode_rev=diffservcode_rev,
+            cos_mask=cos_mask,
+            cos=cos,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.shaping_policy import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/firewall/shaping_policy",
+            )
+
+        endpoint = "/firewall/shaping-policy"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        id: int | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete firewall/shaping_policy object.
+
+        Configure shaping policies.
+
+        Args:
+            id: Primary key identifier
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If id is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.delete(id=1)
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not id:
+            raise ValueError("id is required for DELETE")
+        endpoint = "/firewall/shaping-policy/" + str(id)
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        id: int,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if firewall/shaping_policy object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            id: Primary key identifier
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.firewall_shaping_policy.exists(id=1):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.firewall_shaping_policy.exists(id=1):
+            ...     fgt.api.cmdb.firewall_shaping_policy.delete(id=1)
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(id=id, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update firewall/shaping_policy object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (id) in the payload.
+
+        Args:
+            payload_dict: Resource data including id (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If id is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "id": 1,
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.firewall_shaping_policy.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.firewall_shaping_policy.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("id")
+        if not mkey_value:
+            raise ValueError("id is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(id=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(ShapingPolicy.help())
+            
+            >>> # Get field information
+            >>> print(ShapingPolicy.help("id"))
+        """
+        from ._helpers.shaping_policy import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = ShapingPolicy.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = ShapingPolicy.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.shaping_policy import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = ShapingPolicy.field_info("id")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.shaping_policy import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = ShapingPolicy.validate_field("id", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.shaping_policy import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = ShapingPolicy.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.shaping_policy import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = ShapingPolicy.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.shaping_policy import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = ShapingPolicy.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.shaping_policy import get_schema_info
+
+        return get_schema_info()

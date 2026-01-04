@@ -1,20 +1,521 @@
 """
-Validation helpers for system ike endpoint.
+Validation helpers for system/ike endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
+
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema
+# ============================================================================
+
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
+
+# Fields marked as required (after filtering false positives)
+REQUIRED_FIELDS = [
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "embryonic-limit": 10000,
+    "dh-multiprocess": "enable",
+    "dh-worker-count": 0,
+    "dh-mode": "software",
+    "dh-keypair-cache": "enable",
+    "dh-keypair-count": 100,
+    "dh-keypair-throttle": "enable",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "embryonic-limit": "integer",  # Maximum number of IPsec tunnels to negotiate simultaneously.
+    "dh-multiprocess": "option",  # Enable/disable multiprocess Diffie-Hellman daemon for IKE.
+    "dh-worker-count": "integer",  # Number of Diffie-Hellman workers to start.
+    "dh-mode": "option",  # Use software (CPU) or hardware (CPX) to perform Diffie-Hellm
+    "dh-keypair-cache": "option",  # Enable/disable Diffie-Hellman key pair cache.
+    "dh-keypair-count": "integer",  # Number of key pairs to pre-generate for each Diffie-Hellman 
+    "dh-keypair-throttle": "option",  # Enable/disable Diffie-Hellman key pair cache CPU throttling.
+    "dh-group-1": "string",  # Diffie-Hellman group 1 (MODP-768).
+    "dh-group-2": "string",  # Diffie-Hellman group 2 (MODP-1024).
+    "dh-group-5": "string",  # Diffie-Hellman group 5 (MODP-1536).
+    "dh-group-14": "string",  # Diffie-Hellman group 14 (MODP-2048).
+    "dh-group-15": "string",  # Diffie-Hellman group 15 (MODP-3072).
+    "dh-group-16": "string",  # Diffie-Hellman group 16 (MODP-4096).
+    "dh-group-17": "string",  # Diffie-Hellman group 17 (MODP-6144).
+    "dh-group-18": "string",  # Diffie-Hellman group 18 (MODP-8192).
+    "dh-group-19": "string",  # Diffie-Hellman group 19 (EC-P256).
+    "dh-group-20": "string",  # Diffie-Hellman group 20 (EC-P384).
+    "dh-group-21": "string",  # Diffie-Hellman group 21 (EC-P521).
+    "dh-group-27": "string",  # Diffie-Hellman group 27 (EC-P224BP).
+    "dh-group-28": "string",  # Diffie-Hellman group 28 (EC-P256BP).
+    "dh-group-29": "string",  # Diffie-Hellman group 29 (EC-P384BP).
+    "dh-group-30": "string",  # Diffie-Hellman group 30 (EC-P512BP).
+    "dh-group-31": "string",  # Diffie-Hellman group 31 (EC-X25519).
+    "dh-group-32": "string",  # Diffie-Hellman group 32 (EC-X448).
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "embryonic-limit": "Maximum number of IPsec tunnels to negotiate simultaneously.",
+    "dh-multiprocess": "Enable/disable multiprocess Diffie-Hellman daemon for IKE.",
+    "dh-worker-count": "Number of Diffie-Hellman workers to start.",
+    "dh-mode": "Use software (CPU) or hardware (CPX) to perform Diffie-Hellman calculations.",
+    "dh-keypair-cache": "Enable/disable Diffie-Hellman key pair cache.",
+    "dh-keypair-count": "Number of key pairs to pre-generate for each Diffie-Hellman group (per-worker).",
+    "dh-keypair-throttle": "Enable/disable Diffie-Hellman key pair cache CPU throttling.",
+    "dh-group-1": "Diffie-Hellman group 1 (MODP-768).",
+    "dh-group-2": "Diffie-Hellman group 2 (MODP-1024).",
+    "dh-group-5": "Diffie-Hellman group 5 (MODP-1536).",
+    "dh-group-14": "Diffie-Hellman group 14 (MODP-2048).",
+    "dh-group-15": "Diffie-Hellman group 15 (MODP-3072).",
+    "dh-group-16": "Diffie-Hellman group 16 (MODP-4096).",
+    "dh-group-17": "Diffie-Hellman group 17 (MODP-6144).",
+    "dh-group-18": "Diffie-Hellman group 18 (MODP-8192).",
+    "dh-group-19": "Diffie-Hellman group 19 (EC-P256).",
+    "dh-group-20": "Diffie-Hellman group 20 (EC-P384).",
+    "dh-group-21": "Diffie-Hellman group 21 (EC-P521).",
+    "dh-group-27": "Diffie-Hellman group 27 (EC-P224BP).",
+    "dh-group-28": "Diffie-Hellman group 28 (EC-P256BP).",
+    "dh-group-29": "Diffie-Hellman group 29 (EC-P384BP).",
+    "dh-group-30": "Diffie-Hellman group 30 (EC-P512BP).",
+    "dh-group-31": "Diffie-Hellman group 31 (EC-X25519).",
+    "dh-group-32": "Diffie-Hellman group 32 (EC-X448).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "embryonic-limit": {"type": "integer", "min": 50, "max": 20000},
+    "dh-worker-count": {"type": "integer", "min": 1, "max": 2},
+    "dh-keypair-count": {"type": "integer", "min": 0, "max": 50000},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "dh-group-1": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-2": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-5": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-14": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-15": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-16": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-17": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-18": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-19": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-20": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-21": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-27": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-28": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-29": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-30": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-31": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+    "dh-group-32": {
+        "mode": {
+            "type": "option",
+            "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["software", "hardware", "global"],
+        },
+        "keypair-cache": {
+            "type": "option",
+            "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
+            "default": "global",
+            "options": ["global", "custom"],
+        },
+        "keypair-count": {
+            "type": "integer",
+            "help": "Number of key pairs to pre-generate for this Diffie-Hellman group (per-worker).",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 50000,
+        },
+    },
+}
+
 
 # Valid enum values from API documentation
-VALID_BODY_DH_MULTIPROCESS = ["enable", "disable"]
-VALID_BODY_DH_MODE = ["software", "hardware"]
-VALID_BODY_DH_KEYPAIR_CACHE = ["enable", "disable"]
-VALID_BODY_DH_KEYPAIR_THROTTLE = ["enable", "disable"]
+VALID_BODY_DH_MULTIPROCESS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DH_MODE = [
+    "software",
+    "hardware",
+]
+VALID_BODY_DH_KEYPAIR_CACHE = [
+    "enable",
+    "disable",
+]
+VALID_BODY_DH_KEYPAIR_THROTTLE = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -22,13 +523,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_ike_get(
+def validate_system_ike_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for system/ike.
 
     Args:
         attr: Attribute filter (optional)
@@ -38,9 +539,17 @@ def validate_ike_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_system_ike_get()
+        >>> assert is_valid == True
+        
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_system_ike_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -55,108 +564,499 @@ def validate_ike_get(
 
 
 # ============================================================================
+# POST Validation
+# ============================================================================
+
+
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system/ike.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
+    """
+    # Check always-required fields
+    missing_fields = []
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
+
+    return (True, None)
+
+
+def validate_system_ike_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
+    """
+    Validate POST request to create new system/ike object.
+
+    This validator performs two-stage validation:
+    1. Required fields check (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Args:
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
+
+    Returns:
+        Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_system_ike_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "dh-multiprocess": "enable",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_system_ike_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["dh-multiprocess"] = "invalid-value"
+        >>> is_valid, error = validate_system_ike_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_system_ike_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
+    """
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate enum values
+    if "dh-multiprocess" in payload:
+        value = payload["dh-multiprocess"]
+        if value not in VALID_BODY_DH_MULTIPROCESS:
+            desc = FIELD_DESCRIPTIONS.get("dh-multiprocess", "")
+            error_msg = f"Invalid value for 'dh-multiprocess': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DH_MULTIPROCESS)}"
+            error_msg += f"\n  → Example: dh-multiprocess='{{ VALID_BODY_DH_MULTIPROCESS[0] }}'"
+            return (False, error_msg)
+    if "dh-mode" in payload:
+        value = payload["dh-mode"]
+        if value not in VALID_BODY_DH_MODE:
+            desc = FIELD_DESCRIPTIONS.get("dh-mode", "")
+            error_msg = f"Invalid value for 'dh-mode': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DH_MODE)}"
+            error_msg += f"\n  → Example: dh-mode='{{ VALID_BODY_DH_MODE[0] }}'"
+            return (False, error_msg)
+    if "dh-keypair-cache" in payload:
+        value = payload["dh-keypair-cache"]
+        if value not in VALID_BODY_DH_KEYPAIR_CACHE:
+            desc = FIELD_DESCRIPTIONS.get("dh-keypair-cache", "")
+            error_msg = f"Invalid value for 'dh-keypair-cache': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DH_KEYPAIR_CACHE)}"
+            error_msg += f"\n  → Example: dh-keypair-cache='{{ VALID_BODY_DH_KEYPAIR_CACHE[0] }}'"
+            return (False, error_msg)
+    if "dh-keypair-throttle" in payload:
+        value = payload["dh-keypair-throttle"]
+        if value not in VALID_BODY_DH_KEYPAIR_THROTTLE:
+            desc = FIELD_DESCRIPTIONS.get("dh-keypair-throttle", "")
+            error_msg = f"Invalid value for 'dh-keypair-throttle': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DH_KEYPAIR_THROTTLE)}"
+            error_msg += f"\n  → Example: dh-keypair-throttle='{{ VALID_BODY_DH_KEYPAIR_THROTTLE[0] }}'"
+            return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
 # PUT Validation
 # ============================================================================
 
 
-def validate_ike_put(
-    payload: dict[str, Any] | None = None,
+def validate_system_ike_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update system/ike.
 
     Args:
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_system_ike_put(payload)
     """
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate embryonic-limit if present
-    if "embryonic-limit" in payload:
-        value = payload.get("embryonic-limit")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 50 or int_val > 20000:
-                    return (
-                        False,
-                        "embryonic-limit must be between 50 and 20000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"embryonic-limit must be numeric, got: {value}",
-                )
-
-    # Validate dh-multiprocess if present
+    # Step 1: Validate enum values
     if "dh-multiprocess" in payload:
-        value = payload.get("dh-multiprocess")
-        if value and value not in VALID_BODY_DH_MULTIPROCESS:
+        value = payload["dh-multiprocess"]
+        if value not in VALID_BODY_DH_MULTIPROCESS:
             return (
                 False,
-                f"Invalid dh-multiprocess '{value}'. Must be one of: {', '.join(VALID_BODY_DH_MULTIPROCESS)}",
+                f"Invalid value for 'dh-multiprocess'='{value}'. Must be one of: {', '.join(VALID_BODY_DH_MULTIPROCESS)}",
             )
-
-    # Validate dh-worker-count if present
-    if "dh-worker-count" in payload:
-        value = payload.get("dh-worker-count")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1 or int_val > 8:
-                    return (False, "dh-worker-count must be between 1 and 8")
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dh-worker-count must be numeric, got: {value}",
-                )
-
-    # Validate dh-mode if present
     if "dh-mode" in payload:
-        value = payload.get("dh-mode")
-        if value and value not in VALID_BODY_DH_MODE:
+        value = payload["dh-mode"]
+        if value not in VALID_BODY_DH_MODE:
             return (
                 False,
-                f"Invalid dh-mode '{value}'. Must be one of: {', '.join(VALID_BODY_DH_MODE)}",
+                f"Invalid value for 'dh-mode'='{value}'. Must be one of: {', '.join(VALID_BODY_DH_MODE)}",
             )
-
-    # Validate dh-keypair-cache if present
     if "dh-keypair-cache" in payload:
-        value = payload.get("dh-keypair-cache")
-        if value and value not in VALID_BODY_DH_KEYPAIR_CACHE:
+        value = payload["dh-keypair-cache"]
+        if value not in VALID_BODY_DH_KEYPAIR_CACHE:
             return (
                 False,
-                f"Invalid dh-keypair-cache '{value}'. Must be one of: {', '.join(VALID_BODY_DH_KEYPAIR_CACHE)}",
+                f"Invalid value for 'dh-keypair-cache'='{value}'. Must be one of: {', '.join(VALID_BODY_DH_KEYPAIR_CACHE)}",
             )
-
-    # Validate dh-keypair-count if present
-    if "dh-keypair-count" in payload:
-        value = payload.get("dh-keypair-count")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 50000:
-                    return (
-                        False,
-                        "dh-keypair-count must be between 0 and 50000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"dh-keypair-count must be numeric, got: {value}",
-                )
-
-    # Validate dh-keypair-throttle if present
     if "dh-keypair-throttle" in payload:
-        value = payload.get("dh-keypair-throttle")
-        if value and value not in VALID_BODY_DH_KEYPAIR_THROTTLE:
+        value = payload["dh-keypair-throttle"]
+        if value not in VALID_BODY_DH_KEYPAIR_THROTTLE:
             return (
                 False,
-                f"Invalid dh-keypair-throttle '{value}'. Must be one of: {', '.join(VALID_BODY_DH_KEYPAIR_THROTTLE)}",
+                f"Invalid value for 'dh-keypair-throttle'='{value}'. Must be one of: {', '.join(VALID_BODY_DH_KEYPAIR_THROTTLE)}",
             )
 
     return (True, None)
+
+
+# ============================================================================
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
+# ============================================================================
+
+
+def get_field_description(field_name: str) -> str | None:
+    """
+    Get description/help text for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
+    """
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "system/ike",
+    "category": "cmdb",
+    "api_path": "system/ike",
+    "help": "Configure IKE global attributes.",
+    "total_fields": 24,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 7,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

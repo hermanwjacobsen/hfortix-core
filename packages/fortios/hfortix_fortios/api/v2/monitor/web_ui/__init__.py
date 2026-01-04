@@ -1,35 +1,29 @@
-"""
-FortiOS Monitor - Web Ui
-Web UI customization monitoring
-"""
+"""FortiOS Monitor - WebUi category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["WebUi"]
+from .custom_language.create import Create
+from .custom_language.update import Update
 
-from .custom_language import CustomLanguage
-from .language import Language
+class CustomLanguageEndpoints:
+    """Endpoints under custom_language."""
+
+    def __init__(self, client):
+        self.create = Create(client)
+        self.update = Update(client)
 
 
 class WebUi:
-    """WebUi Monitor category class"""
+    """WebUi endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize WebUi Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """WebUi endpoints."""
+        self.custom_language = CustomLanguageEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.custom_language = CustomLanguage(client)
-        self.language = Language(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["custom_language", "language"]
+__all__ = ["WebUi"]

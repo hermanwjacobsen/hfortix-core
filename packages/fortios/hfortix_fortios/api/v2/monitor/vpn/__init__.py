@@ -1,37 +1,21 @@
-"""
-FortiOS Monitor - Vpn
-VPN monitoring (IPsec/SSL)
-"""
+"""Auto-generated category __init__ file."""
 
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-__all__ = ["Vpn"]
-
-from .ike import Ike
 from .ipsec import Ipsec
+from .ipsec_base import Ipsec
 from .ssl import Ssl
+from .ssl_base import Ssl
+
+if TYPE_CHECKING:
+    from hfortix_core.client import FortinetClient
 
 
 class Vpn:
-    """Vpn Monitor category class"""
+    """Container for {category_name} endpoints."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize Vpn Monitor category
-
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
-
-        # Initialize endpoints
-        self.ike = Ike(client)
+    def __init__(self, client: "FortinetClient"):
+        self.ipsec = Ipsec(client)
         self.ipsec = Ipsec(client)
         self.ssl = Ssl(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["ike", "ipsec", "ssl"]
+        self.ssl = Ssl(client)

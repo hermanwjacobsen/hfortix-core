@@ -12,6 +12,7 @@ from .settings import Settings
 __all__ = [
     "DataType",
     "Dictionary",
+    "Dlp",
     "ExactDataMatch",
     "Filepattern",
     "Label",
@@ -22,18 +23,13 @@ __all__ = [
 
 
 class Dlp:
-    """
-    Dlp category wrapper.
-
-    This class provides access to all dlp CMDB endpoints.
-    """
+    """Dlp endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Dlp with all endpoint classes.
-
+        """Dlp endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.data_type = DataType(client)
         self.dictionary = Dictionary(client)

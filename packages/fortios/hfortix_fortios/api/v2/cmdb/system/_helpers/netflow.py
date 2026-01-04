@@ -1,17 +1,211 @@
 """
-Validation helpers for system netflow endpoint.
+Validation helpers for system/netflow endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
+
+# ============================================================================
+# Required Fields Validation
+# Auto-generated from schema
+# ============================================================================
+
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
+
+# Fields marked as required (after filtering false positives)
+REQUIRED_FIELDS = [
+]
+
+# Fields with defaults (optional)
+FIELDS_WITH_DEFAULTS = {
+    "active-flow-timeout": 1800,
+    "inactive-flow-timeout": 15,
+    "template-tx-timeout": 1800,
+    "template-tx-counter": 20,
+    "session-cache-size": "default",
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "active-flow-timeout": "integer",  # Timeout to report active flows (60 - 3600 sec, default = 180
+    "inactive-flow-timeout": "integer",  # Timeout for periodic report of finished flows (10 - 600 sec,
+    "template-tx-timeout": "integer",  # Timeout for periodic template flowset transmission (60 - 864
+    "template-tx-counter": "integer",  # Counter of flowset records before resending a template flows
+    "session-cache-size": "option",  # Maximum RAM usage allowed for Netflow session cache.
+    "exclusion-filters": "string",  # Exclusion filters
+    "collectors": "string",  # Netflow collectors.
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "active-flow-timeout": "Timeout to report active flows (60 - 3600 sec, default = 1800).",
+    "inactive-flow-timeout": "Timeout for periodic report of finished flows (10 - 600 sec, default = 15).",
+    "template-tx-timeout": "Timeout for periodic template flowset transmission (60 - 86400 sec, default = 1800).",
+    "template-tx-counter": "Counter of flowset records before resending a template flowset record.",
+    "session-cache-size": "Maximum RAM usage allowed for Netflow session cache.",
+    "exclusion-filters": "Exclusion filters",
+    "collectors": "Netflow collectors.",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "active-flow-timeout": {"type": "integer", "min": 60, "max": 3600},
+    "inactive-flow-timeout": {"type": "integer", "min": 10, "max": 600},
+    "template-tx-timeout": {"type": "integer", "min": 60, "max": 86400},
+    "template-tx-counter": {"type": "integer", "min": 10, "max": 6000},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
+    "exclusion-filters": {
+        "id": {
+            "type": "integer",
+            "help": "Filter ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 4294967295,
+        },
+        "source-ip": {
+            "type": "user",
+            "help": "Session source address.",
+            "default": "",
+        },
+        "destination-ip": {
+            "type": "user",
+            "help": "Session destination address.",
+            "default": "",
+        },
+        "source-port": {
+            "type": "user",
+            "help": "Session source port number or range.",
+            "default": "",
+        },
+        "destination-port": {
+            "type": "user",
+            "help": "Session destination port number or range.",
+            "default": "",
+        },
+        "protocol": {
+            "type": "integer",
+            "help": "Session IP protocol (0 - 255, default = 255, meaning any).",
+            "default": 255,
+            "min_value": 0,
+            "max_value": 255,
+        },
+    },
+    "collectors": {
+        "id": {
+            "type": "integer",
+            "help": "ID.",
+            "required": True,
+            "default": 0,
+            "min_value": 1,
+            "max_value": 6,
+        },
+        "collector-ip": {
+            "type": "string",
+            "help": "Collector IP.",
+            "required": True,
+            "default": "",
+            "max_length": 63,
+        },
+        "collector-port": {
+            "type": "integer",
+            "help": "NetFlow collector port number.",
+            "default": 2055,
+            "min_value": 0,
+            "max_value": 65535,
+        },
+        "source-ip": {
+            "type": "string",
+            "help": "Source IP address for communication with the NetFlow agent.",
+            "default": "",
+            "max_length": 63,
+        },
+        "source-ip-interface": {
+            "type": "string",
+            "help": "Name of the interface used to determine the source IP for exporting packets.",
+            "default": "",
+            "max_length": 15,
+        },
+        "interface-select-method": {
+            "type": "option",
+            "help": "Specify how to select outgoing interface to reach server.",
+            "default": "auto",
+            "options": ["auto", "sdwan", "specify"],
+        },
+        "interface": {
+            "type": "string",
+            "help": "Specify outgoing interface to reach server.",
+            "required": True,
+            "default": "",
+            "max_length": 15,
+        },
+        "vrf-select": {
+            "type": "integer",
+            "help": "VRF ID used for connection to server.",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 511,
+        },
+    },
+}
+
 
 # Valid enum values from API documentation
-VALID_BODY_SESSION_CACHE_SIZE = ["min", "default", "max"]
+VALID_BODY_SESSION_CACHE_SIZE = [
+    "min",
+    "default",
+    "max",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -19,13 +213,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_netflow_get(
+def validate_system_netflow_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for system/netflow.
 
     Args:
         attr: Attribute filter (optional)
@@ -35,9 +229,17 @@ def validate_netflow_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_system_netflow_get()
+        >>> assert is_valid == True
+        
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_system_netflow_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -52,101 +254,448 @@ def validate_netflow_get(
 
 
 # ============================================================================
+# POST Validation
+# ============================================================================
+
+
+def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
+    """
+    Validate required fields for system/netflow.
+
+    This validator checks:
+    1. Always-required fields are present
+    2. Mutually exclusive groups have at least one field
+
+    Args:
+        payload: The request payload to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
+    """
+    # Check always-required fields
+    missing_fields = []
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
+
+    return (True, None)
+
+
+def validate_system_netflow_post(
+    payload: dict,
+    **params: Any,
+) -> tuple[bool, str | None]:
+    """
+    Validate POST request to create new system/netflow object.
+
+    This validator performs two-stage validation:
+    1. Required fields check (schema-based)
+    2. Field value validation (enums, ranges, formats)
+
+    Args:
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
+
+    Returns:
+        Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_system_netflow_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "session-cache-size": "min",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_system_netflow_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["session-cache-size"] = "invalid-value"
+        >>> is_valid, error = validate_system_netflow_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_system_netflow_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
+    """
+    # Step 1: Validate required fields
+    is_valid, error = validate_required_fields(payload)
+    if not is_valid:
+        return (False, error)
+
+    # Step 2: Validate enum values
+    if "session-cache-size" in payload:
+        value = payload["session-cache-size"]
+        if value not in VALID_BODY_SESSION_CACHE_SIZE:
+            desc = FIELD_DESCRIPTIONS.get("session-cache-size", "")
+            error_msg = f"Invalid value for 'session-cache-size': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SESSION_CACHE_SIZE)}"
+            error_msg += f"\n  → Example: session-cache-size='{{ VALID_BODY_SESSION_CACHE_SIZE[0] }}'"
+            return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
 # PUT Validation
 # ============================================================================
 
 
-def validate_netflow_put(
-    payload: dict[str, Any] | None = None,
+def validate_system_netflow_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update system/netflow.
 
     Args:
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_system_netflow_put(payload)
     """
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate active-flow-timeout if present
-    if "active-flow-timeout" in payload:
-        value = payload.get("active-flow-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 60 or int_val > 3600:
-                    return (
-                        False,
-                        "active-flow-timeout must be between 60 and 3600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"active-flow-timeout must be numeric, got: {value}",
-                )
-
-    # Validate inactive-flow-timeout if present
-    if "inactive-flow-timeout" in payload:
-        value = payload.get("inactive-flow-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 600:
-                    return (
-                        False,
-                        "inactive-flow-timeout must be between 10 and 600",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"inactive-flow-timeout must be numeric, got: {value}",
-                )
-
-    # Validate template-tx-timeout if present
-    if "template-tx-timeout" in payload:
-        value = payload.get("template-tx-timeout")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 60 or int_val > 86400:
-                    return (
-                        False,
-                        "template-tx-timeout must be between 60 and 86400",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"template-tx-timeout must be numeric, got: {value}",
-                )
-
-    # Validate template-tx-counter if present
-    if "template-tx-counter" in payload:
-        value = payload.get("template-tx-counter")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 6000:
-                    return (
-                        False,
-                        "template-tx-counter must be between 10 and 6000",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"template-tx-counter must be numeric, got: {value}",
-                )
-
-    # Validate session-cache-size if present
+    # Step 1: Validate enum values
     if "session-cache-size" in payload:
-        value = payload.get("session-cache-size")
-        if value and value not in VALID_BODY_SESSION_CACHE_SIZE:
+        value = payload["session-cache-size"]
+        if value not in VALID_BODY_SESSION_CACHE_SIZE:
             return (
                 False,
-                f"Invalid session-cache-size '{value}'. Must be one of: {', '.join(VALID_BODY_SESSION_CACHE_SIZE)}",
+                f"Invalid value for 'session-cache-size'='{value}'. Must be one of: {', '.join(VALID_BODY_SESSION_CACHE_SIZE)}",
             )
 
     return (True, None)
+
+
+# ============================================================================
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
+# ============================================================================
+
+
+def get_field_description(field_name: str) -> str | None:
+    """
+    Get description/help text for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
+
+    Returns:
+        Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
+    """
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
+
+    return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "system/netflow",
+    "category": "cmdb",
+    "api_path": "system/netflow",
+    "help": "Configure NetFlow.",
+    "total_fields": 7,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 5,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

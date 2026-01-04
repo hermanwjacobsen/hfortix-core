@@ -1,42 +1,26 @@
 """
-FortiOS CMDB - Cmdb System Ha
+FortiOS CMDB - System ha
 
-Configuration endpoint for managing cmdb system ha objects.
+Configuration endpoint for managing cmdb system/ha objects.
 
 API Endpoints:
     GET    /cmdb/system/ha
+    POST   /cmdb/system/ha
     PUT    /cmdb/system/ha/{identifier}
+    DELETE /cmdb/system/ha/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.cmdb.system.ha.get()
-    >>>
-    >>> # Get specific item (if supported)
-    >>> item = fgt.api.cmdb.system.ha.get(name="item_name")
-    >>>
-    >>> # Create new item (use POST)
-    >>> result = fgt.api.cmdb.system.ha.post(
-    ...     name="new_item",
-    ...     # ... additional parameters
-    ... )
-    >>>
-    >>> # Update existing item (use PUT)
-    >>> result = fgt.api.cmdb.system.ha.put(
-    ...     name="existing_item",
-    ...     # ... parameters to update
-    ... )
-    >>>
-    >>> # Delete item
-    >>> result = fgt.api.cmdb.system.ha.delete(name="item_name")
+    >>> items = fgt.api.cmdb.system_ha.get()
 
 Important:
-    - Use **POST** to create new objects (404 error if already exists)
-    - Use **PUT** to update existing objects (404 error if doesn't exist)
-    - Use **GET** to retrieve configuration (no changes made)
-    - Use **DELETE** to remove objects (404 error if doesn't exist)
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -45,77 +29,81 @@ from typing import TYPE_CHECKING, Any, Union
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
-
     from hfortix_core.http.interface import IHTTPClient
+
+# Import helper functions from central _helpers module
+from hfortix_fortios._helpers import (
+    build_cmdb_payload,
+    is_success,
+)
 
 
 class Ha:
-    """
-    Ha Operations.
-
-    Provides CRUD operations for FortiOS ha configuration.
-
-    Methods:
-        get(): Retrieve configuration objects
-        put(): Update existing configuration objects
-
-    Important:
-        - POST creates new objects (404 if name already exists)
-        - PUT updates existing objects (404 if name doesn't exist)
-        - GET retrieves objects without making changes
-        - DELETE removes objects (404 if name doesn't exist)
-    """
+    """Ha Operations."""
 
     def __init__(self, client: "IHTTPClient"):
-        """
-        Initialize Ha endpoint.
-
-        Args:
-            client: HTTPClient instance for API communication
-        """
+        """Initialize Ha endpoint."""
         self._client = client
 
     def get(
         self,
+        name: str | None = None,
         payload_dict: dict[str, Any] | None = None,
-        exclude_default_values: bool | None = None,
-        stat_items: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Select all entries in a CLI table.
+        Retrieve system/ha configuration.
+
+        Configure HA.
 
         Args:
-            exclude_default_values: Exclude properties/objects with default
-            value (optional)
-            stat_items: Items to count occurrence in entire response (multiple
-            items should be separated by '|'). (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            name: Name identifier to retrieve specific object. If None, returns all objects.
+            payload_dict: Additional query parameters (filters, format, etc.)
+            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional query parameters (action, format, etc.)
 
         Returns:
-            Dictionary containing API response
+            Configuration data as dict. Returns Coroutine if using async client.
+            
+            Response structure:
+                - http_method: GET
+                - results: Configuration object(s)
+                - vdom: Virtual domain
+                - path: API path
+                - name: Object name (single object queries)
+                - status: success/error
+                - http_status: HTTP status code
+                - build: FortiOS build number
+
+        Examples:
+            >>> # Get all system/ha objects
+            >>> result = fgt.api.cmdb.system_ha.get()
+            >>> print(f"Found {len(result['results'])} objects")
+            
+            >>> # Get with filter
+            >>> result = fgt.api.cmdb.system_ha.get(
+            ...     payload_dict={"filter": ["name==test"]}
+            ... )
+            
+            >>> # Get schema information
+            >>> schema = fgt.api.cmdb.system_ha.get(action="schema")
+
+        See Also:
+            - post(): Create new system/ha object
+            - put(): Update existing system/ha object
+            - delete(): Remove system/ha object
+            - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
-        endpoint = "/system/ha"
-        if exclude_default_values is not None:
-            params["exclude-default-values"] = exclude_default_values
-        if stat_items is not None:
-            params["stat-items"] = stat_items
+        
+        if name:
+            endpoint = f"/system/ha/{name}"
+        else:
+            endpoint = "/system/ha"
+        
         params.update(kwargs)
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
@@ -124,16 +112,18 @@ class Ha:
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        before: str | None = None,
-        after: str | None = None,
         group_id: int | None = None,
         group_name: str | None = None,
         mode: str | None = None,
         sync_packet_balance: str | None = None,
-        password: str | None = None,
+        password: Any | None = None,
+        key: Any | None = None,
         hbdev: str | None = None,
-        auto_virtual_mac_interface: list | None = None,
-        backup_hbdev: list | None = None,
+        auto_virtual_mac_interface: str | list | None = None,
+        backup_hbdev: str | list | None = None,
+        unicast_hb: str | None = None,
+        unicast_hb_peerip: str | None = None,
+        unicast_hb_netmask: str | None = None,
         session_sync_dev: str | None = None,
         route_ttl: int | None = None,
         route_wait: int | None = None,
@@ -161,13 +151,15 @@ class Ha:
         uninterruptible_primary_wait: int | None = None,
         standalone_mgmt_vdom: str | None = None,
         ha_mgmt_status: str | None = None,
-        ha_mgmt_interfaces: list | None = None,
+        ha_mgmt_interfaces: str | list | None = None,
         ha_eth_type: str | None = None,
         hc_eth_type: str | None = None,
         l2ep_eth_type: str | None = None,
         ha_uptime_diff_margin: int | None = None,
         standalone_config_sync: str | None = None,
-        logical_sn: str | None = None,
+        unicast_status: str | None = None,
+        unicast_gateway: str | None = None,
+        unicast_peers: str | list | None = None,
         schedule: str | None = None,
         weight: str | None = None,
         cpu_threshold: str | None = None,
@@ -187,7 +179,7 @@ class Ha:
         pingserver_secondary_force_reset: str | None = None,
         pingserver_flip_timeout: int | None = None,
         vcluster_status: str | None = None,
-        vcluster: list | None = None,
+        vcluster: str | list | None = None,
         ha_direct: str | None = None,
         ssd_failover: str | None = None,
         memory_compatible_mode: str | None = None,
@@ -200,378 +192,744 @@ class Ha:
         check_secondary_dev_health: str | None = None,
         ipsec_phase2_proposal: str | None = None,
         bounce_intf_upon_failover: str | None = None,
-        status: str | None = None,
+        status: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
-        Update this specific resource.
+        Update existing system/ha object.
+
+        Configure HA.
 
         Args:
-            payload_dict: Optional dictionary of all parameters (can be passed
-            as first positional arg)
-            before: If *action=move*, use *before* to specify the ID of the
-            resource that this resource will be moved before. (optional)
-            after: If *action=move*, use *after* to specify the ID of the
-            resource that this resource will be moved after. (optional)
-            group_id: HA group ID (0 - 1023; or 0 - 7 when there are more than
-            2 vclusters). Must be the same for all members. (optional)
+            payload_dict: Object data as dict. Must include name (primary key).
+            group_id: HA group ID  (0 - 1023;  or 0 - 7 when there are more than 2 vclusters). Must be the same for all members.
             group_name: Cluster group name. Must be the same for all members.
-            (optional)
-            mode: HA mode. Must be the same for all members. FGSP requires
-            standalone. (optional)
-            sync_packet_balance: Enable/disable HA packet distribution to
-            multiple CPUs. (optional)
+            mode: HA mode. Must be the same for all members. FGSP requires standalone.
+            sync_packet_balance: Enable/disable HA packet distribution to multiple CPUs.
             password: Cluster password. Must be the same for all members.
-            (optional)
-            hbdev: Heartbeat interfaces. Must be the same for all members.
-            (optional)
-            auto_virtual_mac_interface: The physical interface that will be
-            assigned an auto-generated virtual MAC address. (optional)
-            backup_hbdev: Backup heartbeat interfaces. Must be the same for all
-            members. (optional)
-            session_sync_dev: Offload session-sync process to kernel and sync
-            sessions using connected interface(s) directly. (optional)
-            route_ttl: TTL for primary unit routes (5 - 3600 sec). Increase to
-            maintain active routes during failover. (optional)
-            route_wait: Time to wait before sending new routes to the cluster
-            (0 - 3600 sec). (optional)
-            route_hold: Time to wait between routing table updates to the
-            cluster (0 - 3600 sec). (optional)
-            multicast_ttl: HA multicast TTL on primary (5 - 3600 sec).
-            (optional)
-            evpn_ttl: HA EVPN FDB TTL on primary box (5 - 3600 sec). (optional)
-            load_balance_all: Enable to load balance TCP sessions. Disable to
-            load balance proxy sessions only. (optional)
-            sync_config: Enable/disable configuration synchronization.
-            (optional)
-            encryption: Enable/disable heartbeat message encryption. (optional)
-            authentication: Enable/disable heartbeat message authentication.
-            (optional)
-            hb_interval: Time between sending heartbeat packets (1 - 20).
-            Increase to reduce false positives. (optional)
-            hb_interval_in_milliseconds: Units of heartbeat interval time
-            between sending heartbeat packets. Default is 100ms. (optional)
-            hb_lost_threshold: Number of lost heartbeats to signal a failure (1
-            - 60). Increase to reduce false positives. (optional)
-            hello_holddown: Time to wait before changing from hello to work
-            state (5 - 300 sec). (optional)
-            gratuitous_arps: Enable/disable gratuitous ARPs. Disable if
-            link-failed-signal enabled. (optional)
-            arps: Number of gratuitous ARPs (1 - 60). Lower to reduce traffic.
-            Higher to reduce failover time. (optional)
-            arps_interval: Time between gratuitous ARPs (1 - 20 sec). Lower to
-            reduce failover time. Higher to reduce traffic. (optional)
-            session_pickup: Enable/disable session pickup. Enabling it can
-            reduce session down time when fail over happens. (optional)
-            session_pickup_connectionless: Enable/disable UDP and ICMP session
-            sync. (optional)
-            session_pickup_expectation: Enable/disable session helper
-            expectation session sync for FGSP. (optional)
-            session_pickup_nat: Enable/disable NAT session sync for FGSP.
-            (optional)
-            session_pickup_delay: Enable to sync sessions longer than 30 sec.
-            Only longer lived sessions need to be synced. (optional)
-            link_failed_signal: Enable to shut down all interfaces for 1 sec
-            after a failover. Use if gratuitous ARPs do not update network.
-            (optional)
-            upgrade_mode: The mode to upgrade a cluster. (optional)
-            uninterruptible_primary_wait: Number of minutes the primary HA unit
-            waits before the secondary HA unit is considered upgraded and the
-            system is started before starting its own upgrade (15 - 300,
-            default = 30). (optional)
-            standalone_mgmt_vdom: Enable/disable standalone management VDOM.
-            (optional)
-            ha_mgmt_status: Enable to reserve interfaces to manage individual
-            cluster units. (optional)
-            ha_mgmt_interfaces: Reserve interfaces to manage individual cluster
-            units. (optional)
-            ha_eth_type: HA heartbeat packet Ethertype (4-digit hex).
-            (optional)
-            hc_eth_type: Transparent mode HA heartbeat packet Ethertype
-            (4-digit hex). (optional)
-            l2ep_eth_type: Telnet session HA heartbeat packet Ethertype
-            (4-digit hex). (optional)
-            ha_uptime_diff_margin: Normally you would only reduce this value
-            for failover testing. (optional)
-            standalone_config_sync: Enable/disable FGSP configuration
-            synchronization. (optional)
-            logical_sn: Enable/disable usage of the logical serial number.
-            (optional)
-            schedule: Type of A-A load balancing. Use none if you have external
-            load balancers. (optional)
-            weight: Weight-round-robin weight for each cluster unit. Syntax
-            <priority> <weight>. (optional)
-            cpu_threshold: Dynamic weighted load balancing CPU usage weight and
-            high and low thresholds. (optional)
-            memory_threshold: Dynamic weighted load balancing memory usage
-            weight and high and low thresholds. (optional)
-            http_proxy_threshold: Dynamic weighted load balancing weight and
-            high and low number of HTTP proxy sessions. (optional)
-            ftp_proxy_threshold: Dynamic weighted load balancing weight and
-            high and low number of FTP proxy sessions. (optional)
-            imap_proxy_threshold: Dynamic weighted load balancing weight and
-            high and low number of IMAP proxy sessions. (optional)
-            nntp_proxy_threshold: Dynamic weighted load balancing weight and
-            high and low number of NNTP proxy sessions. (optional)
-            pop3_proxy_threshold: Dynamic weighted load balancing weight and
-            high and low number of POP3 proxy sessions. (optional)
-            smtp_proxy_threshold: Dynamic weighted load balancing weight and
-            high and low number of SMTP proxy sessions. (optional)
-            override: Enable and increase the priority of the unit that should
-            always be primary (master). (optional)
-            priority: Increase the priority to select the primary unit (0 -
-            255). (optional)
-            override_wait_time: Delay negotiating if override is enabled (0 -
-            3600 sec). Reduces how often the cluster negotiates. (optional)
-            monitor: Interfaces to check for port monitoring (or link failure).
-            (optional)
-            pingserver_monitor_interface: Interfaces to check for remote IP
-            monitoring. (optional)
-            pingserver_failover_threshold: Remote IP monitoring failover
-            threshold (0 - 50). (optional)
-            pingserver_secondary_force_reset: Enable to force the cluster to
-            negotiate after a remote IP monitoring failover. (optional)
-            pingserver_flip_timeout: Time to wait in minutes before
-            renegotiating after a remote IP monitoring failover. (optional)
-            vcluster_status: Enable/disable virtual cluster for virtual
-            clustering. (optional)
-            vcluster: Virtual cluster table. (optional)
-            ha_direct: Enable/disable using ha-mgmt interface for syslog,
-            remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow,
-            and Netflow. (optional)
-            ssd_failover: Enable/disable automatic HA failover on SSD disk
-            failure. (optional)
-            memory_compatible_mode: Enable/disable memory compatible mode.
-            (optional)
-            memory_based_failover: Enable/disable memory based failover.
-            (optional)
-            memory_failover_threshold: Memory usage threshold to trigger memory
-            based failover (0 means using conserve mode threshold in
-            system.global). (optional)
-            memory_failover_monitor_period: Duration of high memory usage
-            before memory based failover is triggered in seconds (1 - 300,
-            default = 60). (optional)
-            memory_failover_sample_rate: Rate at which memory usage is sampled
-            in order to measure memory usage in seconds (1 - 60, default = 1).
-            (optional)
-            memory_failover_flip_timeout: Time to wait between subsequent
-            memory based failovers in minutes (6 - 2147483647, default = 6).
-            (optional)
-            failover_hold_time: Time to wait before failover (0 - 300 sec,
-            default = 0), to avoid flip. (optional)
-            check_secondary_dev_health: Enable/disable secondary dev health
-            check for session load-balance in HA A-A mode. (optional)
-            ipsec_phase2_proposal: IPsec phase2 proposal. (optional)
-            bounce_intf_upon_failover: Enable/disable notification of kernel to
-            bring down and up all monitored interfaces. The setting is used
-            during failovers if gratuitous ARPs do not update the network.
-            (optional)
-            status: list ha status information (optional)
-            vdom: Virtual domain name, or False to skip. Handled by HTTPClient.
-            raw_json: If True, return full API response with metadata. If
-            False, return only results.
-            **kwargs: Additional query parameters (filter, sort, start, count,
-            format, etc.)
-
-        Common Query Parameters (via **kwargs):
-            filter: Filter results (e.g., filter='name==value')
-            sort: Sort results (e.g., sort='name,asc')
-            start: Starting entry index for paging
-            count: Maximum number of entries to return
-            format: Fields to return (e.g., format='name|type')
-            See FortiOS REST API documentation for full list of query
-            parameters
+            vdom: Virtual domain name.
+            raw_json: If True, return raw API response.
+            **kwargs: Additional parameters
 
         Returns:
-            Dictionary containing API response
+            API response dict
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Update specific fields
+            >>> result = fgt.api.cmdb.system_ha.put(
+            ...     name="existing-object",
+            ...     # ... fields to update
+            ... )
+            
+            >>> # Update using payload dict
+            >>> payload = {
+            ...     "name": "existing-object",
+            ...     "field1": "new-value",
+            ... }
+            >>> result = fgt.api.cmdb.system_ha.put(payload_dict=payload)
+
+        See Also:
+            - post(): Create new object
+            - set(): Intelligent create or update
         """
-        data_payload = payload_dict.copy() if payload_dict else {}
-        endpoint = "/system/ha"
-        if before is not None:
-            data_payload["before"] = before
-        if after is not None:
-            data_payload["after"] = after
-        if group_id is not None:
-            data_payload["group-id"] = group_id
-        if group_name is not None:
-            data_payload["group-name"] = group_name
-        if mode is not None:
-            data_payload["mode"] = mode
-        if sync_packet_balance is not None:
-            data_payload["sync-packet-balance"] = sync_packet_balance
-        if password is not None:
-            data_payload["password"] = password
-        if hbdev is not None:
-            data_payload["hbdev"] = hbdev
-        if auto_virtual_mac_interface is not None:
-            data_payload["auto-virtual-mac-interface"] = (
-                auto_virtual_mac_interface
-            )
-        if backup_hbdev is not None:
-            data_payload["backup-hbdev"] = backup_hbdev
-        if session_sync_dev is not None:
-            data_payload["session-sync-dev"] = session_sync_dev
-        if route_ttl is not None:
-            data_payload["route-ttl"] = route_ttl
-        if route_wait is not None:
-            data_payload["route-wait"] = route_wait
-        if route_hold is not None:
-            data_payload["route-hold"] = route_hold
-        if multicast_ttl is not None:
-            data_payload["multicast-ttl"] = multicast_ttl
-        if evpn_ttl is not None:
-            data_payload["evpn-ttl"] = evpn_ttl
-        if load_balance_all is not None:
-            data_payload["load-balance-all"] = load_balance_all
-        if sync_config is not None:
-            data_payload["sync-config"] = sync_config
-        if encryption is not None:
-            data_payload["encryption"] = encryption
-        if authentication is not None:
-            data_payload["authentication"] = authentication
-        if hb_interval is not None:
-            data_payload["hb-interval"] = hb_interval
-        if hb_interval_in_milliseconds is not None:
-            data_payload["hb-interval-in-milliseconds"] = (
-                hb_interval_in_milliseconds
-            )
-        if hb_lost_threshold is not None:
-            data_payload["hb-lost-threshold"] = hb_lost_threshold
-        if hello_holddown is not None:
-            data_payload["hello-holddown"] = hello_holddown
-        if gratuitous_arps is not None:
-            data_payload["gratuitous-arps"] = gratuitous_arps
-        if arps is not None:
-            data_payload["arps"] = arps
-        if arps_interval is not None:
-            data_payload["arps-interval"] = arps_interval
-        if session_pickup is not None:
-            data_payload["session-pickup"] = session_pickup
-        if session_pickup_connectionless is not None:
-            data_payload["session-pickup-connectionless"] = (
-                session_pickup_connectionless
-            )
-        if session_pickup_expectation is not None:
-            data_payload["session-pickup-expectation"] = (
-                session_pickup_expectation
-            )
-        if session_pickup_nat is not None:
-            data_payload["session-pickup-nat"] = session_pickup_nat
-        if session_pickup_delay is not None:
-            data_payload["session-pickup-delay"] = session_pickup_delay
-        if link_failed_signal is not None:
-            data_payload["link-failed-signal"] = link_failed_signal
-        if upgrade_mode is not None:
-            data_payload["upgrade-mode"] = upgrade_mode
-        if uninterruptible_primary_wait is not None:
-            data_payload["uninterruptible-primary-wait"] = (
-                uninterruptible_primary_wait
-            )
-        if standalone_mgmt_vdom is not None:
-            data_payload["standalone-mgmt-vdom"] = standalone_mgmt_vdom
-        if ha_mgmt_status is not None:
-            data_payload["ha-mgmt-status"] = ha_mgmt_status
-        if ha_mgmt_interfaces is not None:
-            data_payload["ha-mgmt-interfaces"] = ha_mgmt_interfaces
-        if ha_eth_type is not None:
-            data_payload["ha-eth-type"] = ha_eth_type
-        if hc_eth_type is not None:
-            data_payload["hc-eth-type"] = hc_eth_type
-        if l2ep_eth_type is not None:
-            data_payload["l2ep-eth-type"] = l2ep_eth_type
-        if ha_uptime_diff_margin is not None:
-            data_payload["ha-uptime-diff-margin"] = ha_uptime_diff_margin
-        if standalone_config_sync is not None:
-            data_payload["standalone-config-sync"] = standalone_config_sync
-        if logical_sn is not None:
-            data_payload["logical-sn"] = logical_sn
-        if schedule is not None:
-            data_payload["schedule"] = schedule
-        if weight is not None:
-            data_payload["weight"] = weight
-        if cpu_threshold is not None:
-            data_payload["cpu-threshold"] = cpu_threshold
-        if memory_threshold is not None:
-            data_payload["memory-threshold"] = memory_threshold
-        if http_proxy_threshold is not None:
-            data_payload["http-proxy-threshold"] = http_proxy_threshold
-        if ftp_proxy_threshold is not None:
-            data_payload["ftp-proxy-threshold"] = ftp_proxy_threshold
-        if imap_proxy_threshold is not None:
-            data_payload["imap-proxy-threshold"] = imap_proxy_threshold
-        if nntp_proxy_threshold is not None:
-            data_payload["nntp-proxy-threshold"] = nntp_proxy_threshold
-        if pop3_proxy_threshold is not None:
-            data_payload["pop3-proxy-threshold"] = pop3_proxy_threshold
-        if smtp_proxy_threshold is not None:
-            data_payload["smtp-proxy-threshold"] = smtp_proxy_threshold
-        if override is not None:
-            data_payload["override"] = override
-        if priority is not None:
-            data_payload["priority"] = priority
-        if override_wait_time is not None:
-            data_payload["override-wait-time"] = override_wait_time
-        if monitor is not None:
-            data_payload["monitor"] = monitor
-        if pingserver_monitor_interface is not None:
-            data_payload["pingserver-monitor-interface"] = (
-                pingserver_monitor_interface
-            )
-        if pingserver_failover_threshold is not None:
-            data_payload["pingserver-failover-threshold"] = (
-                pingserver_failover_threshold
-            )
-        if pingserver_secondary_force_reset is not None:
-            data_payload["pingserver-secondary-force-reset"] = (
-                pingserver_secondary_force_reset
-            )
-        if pingserver_flip_timeout is not None:
-            data_payload["pingserver-flip-timeout"] = pingserver_flip_timeout
-        if vcluster_status is not None:
-            data_payload["vcluster-status"] = vcluster_status
-        if vcluster is not None:
-            data_payload["vcluster"] = vcluster
-        if ha_direct is not None:
-            data_payload["ha-direct"] = ha_direct
-        if ssd_failover is not None:
-            data_payload["ssd-failover"] = ssd_failover
-        if memory_compatible_mode is not None:
-            data_payload["memory-compatible-mode"] = memory_compatible_mode
-        if memory_based_failover is not None:
-            data_payload["memory-based-failover"] = memory_based_failover
-        if memory_failover_threshold is not None:
-            data_payload["memory-failover-threshold"] = (
-                memory_failover_threshold
-            )
-        if memory_failover_monitor_period is not None:
-            data_payload["memory-failover-monitor-period"] = (
-                memory_failover_monitor_period
-            )
-        if memory_failover_sample_rate is not None:
-            data_payload["memory-failover-sample-rate"] = (
-                memory_failover_sample_rate
-            )
-        if memory_failover_flip_timeout is not None:
-            data_payload["memory-failover-flip-timeout"] = (
-                memory_failover_flip_timeout
-            )
-        if failover_hold_time is not None:
-            data_payload["failover-hold-time"] = failover_hold_time
-        if check_secondary_dev_health is not None:
-            data_payload["check-secondary-dev-health"] = (
-                check_secondary_dev_health
-            )
-        if ipsec_phase2_proposal is not None:
-            data_payload["ipsec-phase2-proposal"] = ipsec_phase2_proposal
-        if bounce_intf_upon_failover is not None:
-            data_payload["bounce-intf-upon-failover"] = (
-                bounce_intf_upon_failover
-            )
-        if status is not None:
-            data_payload["status"] = status
-        data_payload.update(kwargs)
-        return self._client.put(
-            "cmdb", endpoint, data=data_payload, vdom=vdom, raw_json=raw_json
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            group_id=group_id,
+            group_name=group_name,
+            mode=mode,
+            sync_packet_balance=sync_packet_balance,
+            password=password,
+            key=key,
+            hbdev=hbdev,
+            auto_virtual_mac_interface=auto_virtual_mac_interface,
+            backup_hbdev=backup_hbdev,
+            unicast_hb=unicast_hb,
+            unicast_hb_peerip=unicast_hb_peerip,
+            unicast_hb_netmask=unicast_hb_netmask,
+            session_sync_dev=session_sync_dev,
+            route_ttl=route_ttl,
+            route_wait=route_wait,
+            route_hold=route_hold,
+            multicast_ttl=multicast_ttl,
+            evpn_ttl=evpn_ttl,
+            load_balance_all=load_balance_all,
+            sync_config=sync_config,
+            encryption=encryption,
+            authentication=authentication,
+            hb_interval=hb_interval,
+            hb_interval_in_milliseconds=hb_interval_in_milliseconds,
+            hb_lost_threshold=hb_lost_threshold,
+            hello_holddown=hello_holddown,
+            gratuitous_arps=gratuitous_arps,
+            arps=arps,
+            arps_interval=arps_interval,
+            session_pickup=session_pickup,
+            session_pickup_connectionless=session_pickup_connectionless,
+            session_pickup_expectation=session_pickup_expectation,
+            session_pickup_nat=session_pickup_nat,
+            session_pickup_delay=session_pickup_delay,
+            link_failed_signal=link_failed_signal,
+            upgrade_mode=upgrade_mode,
+            uninterruptible_primary_wait=uninterruptible_primary_wait,
+            standalone_mgmt_vdom=standalone_mgmt_vdom,
+            ha_mgmt_status=ha_mgmt_status,
+            ha_mgmt_interfaces=ha_mgmt_interfaces,
+            ha_eth_type=ha_eth_type,
+            hc_eth_type=hc_eth_type,
+            l2ep_eth_type=l2ep_eth_type,
+            ha_uptime_diff_margin=ha_uptime_diff_margin,
+            standalone_config_sync=standalone_config_sync,
+            unicast_status=unicast_status,
+            unicast_gateway=unicast_gateway,
+            unicast_peers=unicast_peers,
+            schedule=schedule,
+            weight=weight,
+            cpu_threshold=cpu_threshold,
+            memory_threshold=memory_threshold,
+            http_proxy_threshold=http_proxy_threshold,
+            ftp_proxy_threshold=ftp_proxy_threshold,
+            imap_proxy_threshold=imap_proxy_threshold,
+            nntp_proxy_threshold=nntp_proxy_threshold,
+            pop3_proxy_threshold=pop3_proxy_threshold,
+            smtp_proxy_threshold=smtp_proxy_threshold,
+            override=override,
+            priority=priority,
+            override_wait_time=override_wait_time,
+            monitor=monitor,
+            pingserver_monitor_interface=pingserver_monitor_interface,
+            pingserver_failover_threshold=pingserver_failover_threshold,
+            pingserver_secondary_force_reset=pingserver_secondary_force_reset,
+            pingserver_flip_timeout=pingserver_flip_timeout,
+            vcluster_status=vcluster_status,
+            vcluster=vcluster,
+            ha_direct=ha_direct,
+            ssd_failover=ssd_failover,
+            memory_compatible_mode=memory_compatible_mode,
+            memory_based_failover=memory_based_failover,
+            memory_failover_threshold=memory_failover_threshold,
+            memory_failover_monitor_period=memory_failover_monitor_period,
+            memory_failover_sample_rate=memory_failover_sample_rate,
+            memory_failover_flip_timeout=memory_failover_flip_timeout,
+            failover_hold_time=failover_hold_time,
+            check_secondary_dev_health=check_secondary_dev_health,
+            ipsec_phase2_proposal=ipsec_phase2_proposal,
+            bounce_intf_upon_failover=bounce_intf_upon_failover,
+            status=status,
+            data=payload_dict,
         )
+        
+        # Check for deprecated fields and warn users
+        from ._helpers.ha import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/ha",
+            )
+        
+        name_value = payload_data.get("name")
+        if not name_value:
+            raise ValueError("name is required for PUT")
+        endpoint = f"/system/ha/{name_value}"
+
+        return self._client.put(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def post(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        group_id: int | None = None,
+        group_name: str | None = None,
+        mode: str | None = None,
+        sync_packet_balance: str | None = None,
+        password: Any | None = None,
+        key: Any | None = None,
+        hbdev: str | None = None,
+        auto_virtual_mac_interface: str | list | None = None,
+        backup_hbdev: str | list | None = None,
+        unicast_hb: str | None = None,
+        unicast_hb_peerip: str | None = None,
+        unicast_hb_netmask: str | None = None,
+        session_sync_dev: str | None = None,
+        route_ttl: int | None = None,
+        route_wait: int | None = None,
+        route_hold: int | None = None,
+        multicast_ttl: int | None = None,
+        evpn_ttl: int | None = None,
+        load_balance_all: str | None = None,
+        sync_config: str | None = None,
+        encryption: str | None = None,
+        authentication: str | None = None,
+        hb_interval: int | None = None,
+        hb_interval_in_milliseconds: str | None = None,
+        hb_lost_threshold: int | None = None,
+        hello_holddown: int | None = None,
+        gratuitous_arps: str | None = None,
+        arps: int | None = None,
+        arps_interval: int | None = None,
+        session_pickup: str | None = None,
+        session_pickup_connectionless: str | None = None,
+        session_pickup_expectation: str | None = None,
+        session_pickup_nat: str | None = None,
+        session_pickup_delay: str | None = None,
+        link_failed_signal: str | None = None,
+        upgrade_mode: str | None = None,
+        uninterruptible_primary_wait: int | None = None,
+        standalone_mgmt_vdom: str | None = None,
+        ha_mgmt_status: str | None = None,
+        ha_mgmt_interfaces: str | list | None = None,
+        ha_eth_type: str | None = None,
+        hc_eth_type: str | None = None,
+        l2ep_eth_type: str | None = None,
+        ha_uptime_diff_margin: int | None = None,
+        standalone_config_sync: str | None = None,
+        unicast_status: str | None = None,
+        unicast_gateway: str | None = None,
+        unicast_peers: str | list | None = None,
+        schedule: str | None = None,
+        weight: str | None = None,
+        cpu_threshold: str | None = None,
+        memory_threshold: str | None = None,
+        http_proxy_threshold: str | None = None,
+        ftp_proxy_threshold: str | None = None,
+        imap_proxy_threshold: str | None = None,
+        nntp_proxy_threshold: str | None = None,
+        pop3_proxy_threshold: str | None = None,
+        smtp_proxy_threshold: str | None = None,
+        override: str | None = None,
+        priority: int | None = None,
+        override_wait_time: int | None = None,
+        monitor: str | None = None,
+        pingserver_monitor_interface: str | None = None,
+        pingserver_failover_threshold: int | None = None,
+        pingserver_secondary_force_reset: str | None = None,
+        pingserver_flip_timeout: int | None = None,
+        vcluster_status: str | None = None,
+        vcluster: str | list | None = None,
+        ha_direct: str | None = None,
+        ssd_failover: str | None = None,
+        memory_compatible_mode: str | None = None,
+        memory_based_failover: str | None = None,
+        memory_failover_threshold: int | None = None,
+        memory_failover_monitor_period: int | None = None,
+        memory_failover_sample_rate: int | None = None,
+        memory_failover_flip_timeout: int | None = None,
+        failover_hold_time: int | None = None,
+        check_secondary_dev_health: str | None = None,
+        ipsec_phase2_proposal: str | None = None,
+        bounce_intf_upon_failover: str | None = None,
+        status: Any | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create new system/ha object.
+
+        Configure HA.
+
+        Args:
+            payload_dict: Complete object data as dict. Alternative to individual parameters.
+            group_id: HA group ID  (0 - 1023;  or 0 - 7 when there are more than 2 vclusters). Must be the same for all members.
+            group_name: Cluster group name. Must be the same for all members.
+            mode: HA mode. Must be the same for all members. FGSP requires standalone.
+            sync_packet_balance: Enable/disable HA packet distribution to multiple CPUs.
+            password: Cluster password. Must be the same for all members.
+            vdom: Virtual domain name. Use True for global, string for specific VDOM.
+            raw_json: If True, return raw API response without processing.
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict containing created object with assigned identifier.
+
+        Examples:
+            >>> # Create using individual parameters
+            >>> result = fgt.api.cmdb.system_ha.post(
+            ...     name="example",
+            ...     # ... other required fields
+            ... )
+            >>> print(f"Created object: {result['results']}")
+            
+            >>> # Create using payload dict
+            >>> payload = Ha.defaults()  # Start with defaults
+            >>> payload['name'] = 'my-object'
+            >>> result = fgt.api.cmdb.system_ha.post(payload_dict=payload)
+
+        Note:
+            Required fields: {{ ", ".join(Ha.required_fields()) }}
+            
+            Use Ha.help('field_name') to get field details.
+
+        See Also:
+            - get(): Retrieve objects
+            - put(): Update existing object
+            - set(): Intelligent create or update
+        """
+        # Build payload using helper function
+        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
+        payload_data = build_cmdb_payload(
+            group_id=group_id,
+            group_name=group_name,
+            mode=mode,
+            sync_packet_balance=sync_packet_balance,
+            password=password,
+            key=key,
+            hbdev=hbdev,
+            auto_virtual_mac_interface=auto_virtual_mac_interface,
+            backup_hbdev=backup_hbdev,
+            unicast_hb=unicast_hb,
+            unicast_hb_peerip=unicast_hb_peerip,
+            unicast_hb_netmask=unicast_hb_netmask,
+            session_sync_dev=session_sync_dev,
+            route_ttl=route_ttl,
+            route_wait=route_wait,
+            route_hold=route_hold,
+            multicast_ttl=multicast_ttl,
+            evpn_ttl=evpn_ttl,
+            load_balance_all=load_balance_all,
+            sync_config=sync_config,
+            encryption=encryption,
+            authentication=authentication,
+            hb_interval=hb_interval,
+            hb_interval_in_milliseconds=hb_interval_in_milliseconds,
+            hb_lost_threshold=hb_lost_threshold,
+            hello_holddown=hello_holddown,
+            gratuitous_arps=gratuitous_arps,
+            arps=arps,
+            arps_interval=arps_interval,
+            session_pickup=session_pickup,
+            session_pickup_connectionless=session_pickup_connectionless,
+            session_pickup_expectation=session_pickup_expectation,
+            session_pickup_nat=session_pickup_nat,
+            session_pickup_delay=session_pickup_delay,
+            link_failed_signal=link_failed_signal,
+            upgrade_mode=upgrade_mode,
+            uninterruptible_primary_wait=uninterruptible_primary_wait,
+            standalone_mgmt_vdom=standalone_mgmt_vdom,
+            ha_mgmt_status=ha_mgmt_status,
+            ha_mgmt_interfaces=ha_mgmt_interfaces,
+            ha_eth_type=ha_eth_type,
+            hc_eth_type=hc_eth_type,
+            l2ep_eth_type=l2ep_eth_type,
+            ha_uptime_diff_margin=ha_uptime_diff_margin,
+            standalone_config_sync=standalone_config_sync,
+            unicast_status=unicast_status,
+            unicast_gateway=unicast_gateway,
+            unicast_peers=unicast_peers,
+            schedule=schedule,
+            weight=weight,
+            cpu_threshold=cpu_threshold,
+            memory_threshold=memory_threshold,
+            http_proxy_threshold=http_proxy_threshold,
+            ftp_proxy_threshold=ftp_proxy_threshold,
+            imap_proxy_threshold=imap_proxy_threshold,
+            nntp_proxy_threshold=nntp_proxy_threshold,
+            pop3_proxy_threshold=pop3_proxy_threshold,
+            smtp_proxy_threshold=smtp_proxy_threshold,
+            override=override,
+            priority=priority,
+            override_wait_time=override_wait_time,
+            monitor=monitor,
+            pingserver_monitor_interface=pingserver_monitor_interface,
+            pingserver_failover_threshold=pingserver_failover_threshold,
+            pingserver_secondary_force_reset=pingserver_secondary_force_reset,
+            pingserver_flip_timeout=pingserver_flip_timeout,
+            vcluster_status=vcluster_status,
+            vcluster=vcluster,
+            ha_direct=ha_direct,
+            ssd_failover=ssd_failover,
+            memory_compatible_mode=memory_compatible_mode,
+            memory_based_failover=memory_based_failover,
+            memory_failover_threshold=memory_failover_threshold,
+            memory_failover_monitor_period=memory_failover_monitor_period,
+            memory_failover_sample_rate=memory_failover_sample_rate,
+            memory_failover_flip_timeout=memory_failover_flip_timeout,
+            failover_hold_time=failover_hold_time,
+            check_secondary_dev_health=check_secondary_dev_health,
+            ipsec_phase2_proposal=ipsec_phase2_proposal,
+            bounce_intf_upon_failover=bounce_intf_upon_failover,
+            status=status,
+            data=payload_dict,
+        )
+
+        # Check for deprecated fields and warn users
+        from ._helpers.ha import DEPRECATED_FIELDS
+        if DEPRECATED_FIELDS:
+            from hfortix_core import check_deprecated_fields
+            check_deprecated_fields(
+                payload=payload_data,
+                deprecated_fields=DEPRECATED_FIELDS,
+                endpoint="cmdb/system/ha",
+            )
+
+        endpoint = "/system/ha"
+        return self._client.post(
+            "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def delete(
+        self,
+        name: str | None = None,
+        vdom: str | bool | None = None,
+        raw_json: bool = False,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Delete system/ha object.
+
+        Configure HA.
+
+        Args:
+            name: Object name (primary key)
+            vdom: Virtual domain name
+            raw_json: If True, return raw API response
+            **kwargs: Additional parameters
+
+        Returns:
+            API response dict
+
+        Raises:
+            ValueError: If name is not provided
+
+        Examples:
+            >>> # Delete specific object
+            >>> result = fgt.api.cmdb.system_ha.delete(name="object-to-delete")
+            
+            >>> # Check for errors
+            >>> if result.get('status') != 'success':
+            ...     print(f"Delete failed: {result.get('error')}")
+
+        See Also:
+            - exists(): Check if object exists before deleting
+            - get(): Retrieve object to verify it exists
+        """
+        if not name:
+            raise ValueError("name is required for DELETE")
+        endpoint = f"/system/ha/{name}"
+
+        return self._client.delete(
+            "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
+        )
+
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = None,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]:
+        """
+        Check if system/ha object exists.
+
+        Verifies whether an object exists by attempting to retrieve it and checking the response status.
+
+        Args:
+            name: Object name (primary key)
+            vdom: Virtual domain name
+
+        Returns:
+            True if object exists, False otherwise
+
+        Examples:
+            >>> # Check if object exists before operations
+            >>> if fgt.api.cmdb.system_ha.exists(name="my-object"):
+            ...     print("Object exists")
+            ... else:
+            ...     print("Object not found")
+            
+            >>> # Conditional delete
+            >>> if fgt.api.cmdb.system_ha.exists(name="old-object"):
+            ...     fgt.api.cmdb.system_ha.delete(name="old-object")
+
+        See Also:
+            - get(): Retrieve full object data
+            - set(): Create or update automatically based on existence
+        """
+        try:
+            response = self.get(name=name, vdom=vdom, raw_json=True)
+            
+            if isinstance(response, dict):
+                # Use helper function to check success
+                return is_success(response)
+            else:
+                async def _check() -> bool:
+                    r = await response
+                    return is_success(r)
+                return _check()
+        except Exception:
+            # Resource not found or other error - return False
+            return False
+
+    def set(
+        self,
+        payload_dict: dict[str, Any] | None = None,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Create or update system/ha object (intelligent operation).
+
+        Automatically determines whether to create (POST) or update (PUT) based on
+        whether the resource exists. Requires the primary key (name) in the payload.
+
+        Args:
+            payload_dict: Resource data including name (primary key)
+            vdom: Virtual domain name
+            **kwargs: Additional parameters passed to PUT or POST
+
+        Returns:
+            API response dictionary
+
+        Raises:
+            ValueError: If name is missing from payload
+
+        Examples:
+            >>> # Intelligent create or update - no need to check exists()
+            >>> payload = {
+            ...     "name": "my-object",
+            ...     "field1": "value1",
+            ...     "field2": "value2",
+            ... }
+            >>> result = fgt.api.cmdb.system_ha.set(payload_dict=payload)
+            >>> # Will POST if object doesn't exist, PUT if it does
+            
+            >>> # Idempotent configuration
+            >>> for obj_data in configuration_list:
+            ...     fgt.api.cmdb.system_ha.set(payload_dict=obj_data)
+            >>> # Safely applies configuration regardless of current state
+
+        Note:
+            This method internally calls exists() then either post() or put().
+            For performance-critical code with known state, call post() or put() directly.
+
+        See Also:
+            - post(): Create new object
+            - put(): Update existing object
+            - exists(): Check existence manually
+        """
+        if payload_dict is None:
+            payload_dict = {}
+        
+        mkey_value = payload_dict.get("name")
+        if not mkey_value:
+            raise ValueError("name is required in payload_dict for set()")
+        
+        # Check if resource exists
+        if self.exists(name=mkey_value, vdom=vdom):
+            # Update existing resource
+            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        else:
+            # Create new resource
+            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Metadata Helper Methods
+    # Provide easy access to schema metadata without separate imports
+    # ========================================================================
+
+    @staticmethod
+    def help(field_name: str | None = None) -> str:
+        """
+        Get help text for endpoint or specific field.
+
+        Args:
+            field_name: Optional field name to get help for. If None, shows endpoint help.
+
+        Returns:
+            Formatted help text
+
+        Examples:
+            >>> # Get endpoint information
+            >>> print(Ha.help())
+            
+            >>> # Get field information
+            >>> print(Ha.help("group-id"))
+        """
+        from ._helpers.ha import (
+            get_schema_info,
+            get_field_metadata,
+        )
+
+        if field_name is None:
+            # Endpoint help
+            info = get_schema_info()
+            lines = [
+                f"Endpoint: {info['endpoint']}",
+                f"Category: {info['category']}",
+                f"Help: {info.get('help', 'N/A')}",
+                "",
+                f"Total Fields: {info['total_fields']}",
+                f"Required Fields: {info['required_fields_count']}",
+                f"Fields with Defaults: {info['fields_with_defaults_count']}",
+            ]
+            if 'mkey' in info:
+                lines.append(f"\nPrimary Key: {info['mkey']} ({info['mkey_type']})")
+            return "\n".join(lines)
+        
+        # Field help
+        meta = get_field_metadata(field_name)
+        if meta is None:
+            return f"Unknown field: {field_name}"
+
+        lines = [
+            f"Field: {meta['name']}",
+            f"Type: {meta['type']}",
+        ]
+        if 'description' in meta:
+            lines.append(f"Description: {meta['description']}")
+        lines.append(f"Required: {'Yes' if meta.get('required', False) else 'No'}")
+        if 'default' in meta:
+            lines.append(f"Default: {meta['default']}")
+        if 'options' in meta:
+            lines.append(f"Options: {', '.join(meta['options'])}")
+        if 'constraints' in meta:
+            constraints = meta['constraints']
+            if 'min' in constraints or 'max' in constraints:
+                min_val = constraints.get('min', '?')
+                max_val = constraints.get('max', '?')
+                lines.append(f"Range: {min_val} - {max_val}")
+            if 'max_length' in constraints:
+                lines.append(f"Max Length: {constraints['max_length']}")
+
+        return "\n".join(lines)
+
+    @staticmethod
+    def fields(detailed: bool = False) -> Union[list[str], dict[str, dict]]:
+        """
+        Get list of all field names or detailed field information.
+
+        Args:
+            detailed: If True, return dict with field metadata
+
+        Returns:
+            List of field names or dict of field metadata
+
+        Examples:
+            >>> # Simple list
+            >>> fields = Ha.fields()
+            >>> print(f"Available fields: {len(fields)}")
+            
+            >>> # Detailed info
+            >>> fields = Ha.fields(detailed=True)
+            >>> for name, meta in fields.items():
+            ...     print(f"{name}: {meta['type']}")
+        """
+        from ._helpers.ha import get_all_fields, get_field_metadata
+
+        field_names = get_all_fields()
+
+        if not detailed:
+            return field_names
+
+        # Build detailed dict
+        detailed_fields = {}
+        for fname in field_names:
+            meta = get_field_metadata(fname)
+            if meta:
+                detailed_fields[fname] = meta
+
+        return detailed_fields
+
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any] | None:
+        """
+        Get complete metadata for a specific field.
+
+        Args:
+            field_name: Name of the field
+
+        Returns:
+            Field metadata dict or None if field doesn't exist
+
+        Examples:
+            >>> info = Ha.field_info("group-id")
+            >>> print(f"Type: {info['type']}")
+            >>> if 'options' in info:
+            ...     print(f"Options: {info['options']}")
+        """
+        from ._helpers.ha import get_field_metadata
+
+        return get_field_metadata(field_name)
+
+    @staticmethod
+    def validate_field(field_name: str, value: Any) -> tuple[bool, str | None]:
+        """
+        Validate a field value against its constraints.
+
+        Args:
+            field_name: Name of the field
+            value: Value to validate
+
+        Returns:
+            Tuple of (is_valid, error_message)
+
+        Examples:
+            >>> is_valid, error = Ha.validate_field("group-id", "test")
+            >>> if not is_valid:
+            ...     print(f"Validation error: {error}")
+        """
+        from ._helpers.ha import validate_field_value
+
+        return validate_field_value(field_name, value)
+
+    @staticmethod
+    def required_fields() -> list[str]:
+        """
+        Get list of required field names.
+
+        Note: Due to FortiOS schema quirks, some fields may be conditionally required.
+        Always test with the actual API for authoritative requirements.
+
+        Returns:
+            List of required field names
+
+        Examples:
+            >>> required = Ha.required_fields()
+            >>> print(f"Required fields: {', '.join(required)}")
+        """
+        from ._helpers.ha import REQUIRED_FIELDS
+
+        return REQUIRED_FIELDS.copy()
+
+    @staticmethod
+    def defaults() -> dict[str, Any]:
+        """
+        Get all fields with default values.
+
+        Returns:
+            Dict mapping field names to default values
+
+        Examples:
+            >>> defaults = Ha.defaults()
+            >>> print(f"Fields with defaults: {len(defaults)}")
+            >>> # Use as starting point for payload
+            >>> payload = defaults.copy()
+            >>> payload['name'] = 'my-custom-name'
+        """
+        from ._helpers.ha import FIELDS_WITH_DEFAULTS
+
+        return FIELDS_WITH_DEFAULTS.copy()
+
+    @staticmethod
+    def schema() -> dict[str, Any]:
+        """
+        Get complete schema information for this endpoint.
+
+        Returns:
+            Schema metadata dict containing endpoint info, field counts, and primary key
+
+        Examples:
+            >>> schema = Ha.schema()
+            >>> print(f"Endpoint: {schema['endpoint']}")
+            >>> print(f"Total fields: {schema['total_fields']}")
+            >>> print(f"Primary key: {schema.get('mkey', 'N/A')}")
+        """
+        from ._helpers.ha import get_schema_info
+
+        return get_schema_info()

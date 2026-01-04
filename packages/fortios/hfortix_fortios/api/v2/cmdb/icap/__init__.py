@@ -4,22 +4,22 @@ from .profile import Profile
 from .server import Server
 from .server_group import ServerGroup
 
-__all__ = ["Profile", "Server", "ServerGroup"]
+__all__ = [
+    "Icap",
+    "Profile",
+    "Server",
+    "ServerGroup",
+]
 
 
 class Icap:
-    """
-    Icap category wrapper.
-
-    This class provides access to all icap CMDB endpoints.
-    """
+    """Icap endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Icap with all endpoint classes.
-
+        """Icap endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.profile = Profile(client)
         self.server = Server(client)

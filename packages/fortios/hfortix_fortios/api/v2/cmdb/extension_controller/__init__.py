@@ -1,4 +1,4 @@
-"""FortiOS CMDB - Extension-controller category"""
+"""FortiOS CMDB - ExtensionController category"""
 
 from .dataplan import Dataplan
 from .extender import Extender
@@ -12,24 +12,20 @@ __all__ = [
     "Extender",
     "ExtenderProfile",
     "ExtenderVap",
+    "ExtensionController",
     "Fortigate",
     "FortigateProfile",
 ]
 
 
 class ExtensionController:
-    """
-    ExtensionController category wrapper.
-
-    This class provides access to all extension-controller CMDB endpoints.
-    """
+    """ExtensionController endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize ExtensionController with all endpoint classes.
-
+        """ExtensionController endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.dataplan = Dataplan(client)
         self.extender = Extender(client)

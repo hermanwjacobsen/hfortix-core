@@ -2,7 +2,7 @@
 
 from .custom import Custom
 from .decoder import Decoder
-from .global_ import Global
+from .global_setting import GlobalSetting
 from .rule import Rule
 from .rule_settings import RuleSettings
 from .sensor import Sensor
@@ -12,7 +12,8 @@ from .view_map import ViewMap
 __all__ = [
     "Custom",
     "Decoder",
-    "Global",
+    "GlobalSetting",
+    "Ips",
     "Rule",
     "RuleSettings",
     "Sensor",
@@ -22,22 +23,17 @@ __all__ = [
 
 
 class Ips:
-    """
-    Ips category wrapper.
-
-    This class provides access to all ips CMDB endpoints.
-    """
+    """Ips endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Ips with all endpoint classes.
-
+        """Ips endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.custom = Custom(client)
         self.decoder = Decoder(client)
-        self.global_ = Global(client)
+        self.global_setting = GlobalSetting(client)
         self.rule = Rule(client)
         self.rule_settings = RuleSettings(client)
         self.sensor = Sensor(client)

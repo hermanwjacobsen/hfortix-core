@@ -1,33 +1,27 @@
-"""
-FortiOS Monitor - CASB
-CASB (Cloud Access Security Broker) monitoring operations
-"""
+"""FortiOS Monitor - Casb category"""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
 
-__all__ = ["Casb"]
+from .saas_application.details import Details
 
-from .saas_application import SaasApplication
+class SaasApplicationEndpoints:
+    """Endpoints under saas_application."""
+
+    def __init__(self, client):
+        self.details = Details(client)
 
 
 class Casb:
-    """CASB Monitor category class"""
+    """Casb endpoints wrapper for Monitor API."""
 
-    def __init__(self, client: "IHTTPClient") -> None:
-        """
-        Initialize CASB Monitor category
+    def __init__(self, client: "IHTTPClient"):
+        """Casb endpoints."""
+        self.saas_application = SaasApplicationEndpoints(client)
 
-        Args:
-            client: HTTP client implementing IHTTPClient protocol
-        """
-        self._client = client
 
-        # Initialize endpoints
-        self.saas_application = SaasApplication(client)
-
-    def __dir__(self):
-        """Control autocomplete to show only public attributes"""
-        return ["saas_application"]
+__all__ = ["Casb"]

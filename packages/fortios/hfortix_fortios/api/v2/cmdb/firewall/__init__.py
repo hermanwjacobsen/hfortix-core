@@ -1,5 +1,7 @@
 """FortiOS CMDB - Firewall category"""
 
+from .DoS_policy import DosPolicy
+from .DoS_policy6 import DosPolicy6
 from .access_proxy import AccessProxy
 from .access_proxy6 import AccessProxy6
 from .access_proxy_ssh_client_cert import AccessProxySshClientCert
@@ -15,9 +17,7 @@ from .city import City
 from .country import Country
 from .decrypted_traffic_mirror import DecryptedTrafficMirror
 from .dnstranslation import Dnstranslation
-from .DoS_policy import DosPolicy
-from .DoS_policy6 import DosPolicy6
-from .global_ import Global
+from .global_setting import GlobalSetting
 from .identity_based_route import IdentityBasedRoute
 from .interface_policy import InterfacePolicy
 from .interface_policy6 import InterfacePolicy6
@@ -91,8 +91,6 @@ from .wildcard_fqdn_custom import WildcardFqdnCustom
 from .wildcard_fqdn_group import WildcardFqdnGroup
 
 __all__ = [
-    "DosPolicy",
-    "DosPolicy6",
     "AccessProxy",
     "AccessProxy6",
     "AccessProxySshClientCert",
@@ -108,7 +106,10 @@ __all__ = [
     "Country",
     "DecryptedTrafficMirror",
     "Dnstranslation",
-    "Global",
+    "DosPolicy",
+    "DosPolicy6",
+    "Firewall",
+    "GlobalSetting",
     "IdentityBasedRoute",
     "InterfacePolicy",
     "InterfacePolicy6",
@@ -158,10 +159,17 @@ __all__ = [
     "ServiceCategory",
     "ServiceCustom",
     "ServiceGroup",
+    "ShaperPerIpShaper",
+    "ShaperTrafficShaper",
     "ShapingPolicy",
     "ShapingProfile",
     "Sniffer",
+    "SshHostKey",
+    "SshLocalCa",
+    "SshLocalKey",
+    "SshSetting",
     "SslServer",
+    "SslSetting",
     "SslSshProfile",
     "TrafficClass",
     "TtlPolicy",
@@ -171,71 +179,22 @@ __all__ = [
     "Vip6",
     "Vipgrp",
     "Vipgrp6",
-    "ShaperPerIpShaper",
-    "ShaperTrafficShaper",
-    "SshHostKey",
-    "SshLocalCa",
-    "SshLocalKey",
-    "SshSetting",
-    "SslSetting",
     "WildcardFqdnCustom",
     "WildcardFqdnGroup",
 ]
 
 
-class Shaper:
-    """Wrapper for shaper.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Shaper endpoints."""
-        self.per_ip_shaper = ShaperPerIpShaper(client)
-        self.traffic_shaper = ShaperTrafficShaper(client)
-
-
-class Ssh:
-    """Wrapper for ssh.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Ssh endpoints."""
-        self.host_key = SshHostKey(client)
-        self.local_ca = SshLocalCa(client)
-        self.local_key = SshLocalKey(client)
-        self.setting = SshSetting(client)
-
-
-class Ssl:
-    """Wrapper for ssl.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Ssl endpoints."""
-        self.setting = SslSetting(client)
-
-
-class WildcardFqdn:
-    """Wrapper for wildcard_fqdn.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize WildcardFqdn endpoints."""
-        self.custom = WildcardFqdnCustom(client)
-        self.group = WildcardFqdnGroup(client)
-
-
 class Firewall:
-    """
-    Firewall category wrapper.
-
-    This class provides access to all firewall CMDB endpoints.
-    """
+    """Firewall endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Firewall with all endpoint classes.
-
+        """Firewall endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
-        self.dos_policy = DosPolicy(client)
-        self.dos_policy6 = DosPolicy6(client)
+        self.DoS_policy = DosPolicy(client)
+        self.DoS_policy6 = DosPolicy6(client)
         self.access_proxy = AccessProxy(client)
         self.access_proxy6 = AccessProxy6(client)
         self.access_proxy_ssh_client_cert = AccessProxySshClientCert(client)
@@ -251,7 +210,7 @@ class Firewall:
         self.country = Country(client)
         self.decrypted_traffic_mirror = DecryptedTrafficMirror(client)
         self.dnstranslation = Dnstranslation(client)
-        self.global_ = Global(client)
+        self.global_setting = GlobalSetting(client)
         self.identity_based_route = IdentityBasedRoute(client)
         self.interface_policy = InterfacePolicy(client)
         self.interface_policy6 = InterfacePolicy6(client)
@@ -301,10 +260,17 @@ class Firewall:
         self.service_category = ServiceCategory(client)
         self.service_custom = ServiceCustom(client)
         self.service_group = ServiceGroup(client)
+        self.shaper_per_ip_shaper = ShaperPerIpShaper(client)
+        self.shaper_traffic_shaper = ShaperTrafficShaper(client)
         self.shaping_policy = ShapingPolicy(client)
         self.shaping_profile = ShapingProfile(client)
         self.sniffer = Sniffer(client)
+        self.ssh_host_key = SshHostKey(client)
+        self.ssh_local_ca = SshLocalCa(client)
+        self.ssh_local_key = SshLocalKey(client)
+        self.ssh_setting = SshSetting(client)
         self.ssl_server = SslServer(client)
+        self.ssl_setting = SslSetting(client)
         self.ssl_ssh_profile = SslSshProfile(client)
         self.traffic_class = TrafficClass(client)
         self.ttl_policy = TtlPolicy(client)
@@ -314,7 +280,5 @@ class Firewall:
         self.vip6 = Vip6(client)
         self.vipgrp = Vipgrp(client)
         self.vipgrp6 = Vipgrp6(client)
-        self.shaper = Shaper(client)
-        self.ssh = Ssh(client)
-        self.ssl = Ssl(client)
-        self.wildcard_fqdn = WildcardFqdn(client)
+        self.wildcard_fqdn_custom = WildcardFqdnCustom(client)
+        self.wildcard_fqdn_group = WildcardFqdnGroup(client)

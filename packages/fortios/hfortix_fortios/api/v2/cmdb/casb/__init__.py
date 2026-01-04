@@ -5,22 +5,23 @@ from .profile import Profile
 from .saas_application import SaasApplication
 from .user_activity import UserActivity
 
-__all__ = ["AttributeMatch", "Profile", "SaasApplication", "UserActivity"]
+__all__ = [
+    "AttributeMatch",
+    "Casb",
+    "Profile",
+    "SaasApplication",
+    "UserActivity",
+]
 
 
 class Casb:
-    """
-    Casb category wrapper.
-
-    This class provides access to all casb CMDB endpoints.
-    """
+    """Casb endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Casb with all endpoint classes.
-
+        """Casb endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.attribute_match = AttributeMatch(client)
         self.profile = Profile(client)

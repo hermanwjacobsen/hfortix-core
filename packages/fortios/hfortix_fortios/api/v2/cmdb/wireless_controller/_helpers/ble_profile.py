@@ -1,54 +1,163 @@
 """
-Validation helpers for wireless-controller ble_profile endpoint.
+Validation helpers for wireless_controller/ble_profile endpoint.
 
 Each endpoint has its own validation file to keep validation logic
 separate and maintainable. Use central cmdb._helpers tools for common tasks.
 
-Auto-generated from OpenAPI specification by generate_validators.py
+Auto-generated from OpenAPI specification
 Customize as needed for endpoint-specific business logic.
 """
 
-from typing import Any
+from typing import Any, TypedDict, NotRequired, Literal
+
+# Import common validators from central _helpers module
+from hfortix_fortios._helpers import (
+    validate_enable_disable,
+    validate_integer_range,
+    validate_string_length,
+    validate_port_number,
+    validate_ip_address,
+    validate_ipv6_address,
+    validate_mac_address,
+)
 
 # ============================================================================
 # Required Fields Validation
-# Auto-generated from schema using required_fields_analyzer.py
+# Auto-generated from schema
 # ============================================================================
 
-# NOTE: The FortiOS schema has known bugs where some specialized optional
-# features are incorrectly marked as required. See SCHEMA_FALSE_POSITIVES
-# for fields that should be OPTIONAL despite being marked required in
-# the schema. The REQUIRED_FIELDS list below reflects the ACTUAL
-# requirements based on API testing and schema analysis.
+# ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
+#
+# 1. FALSE POSITIVES: Some fields marked "required" have default values,
+#    meaning they're optional (filtered out by generator)
+#
+# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
+#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
+#    - These conditional requirements cannot be expressed in a simple list
+#
+# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
+#    are marked "required" but only apply when using those features
+#
+# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
+# - Are marked required in the schema
+# - Don't have non-empty default values
+# - Aren't specialized feature fields
+#
+# Do NOT use this list for strict validation - test with the actual FortiOS API!
 
-# Always required fields (no alternatives)
+# Fields marked as required (after filtering false positives)
 REQUIRED_FIELDS = [
-    "name",  # Bluetooth Low Energy profile name.
 ]
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "advertising": "ibeacon",
-    "beacon-interval": 100,
-    "ble-scanning": "disable",
-    "eddystone-instance": "abcdef",
-    "eddystone-namespace": "0102030405",
-    "eddystone-url": "http://www.fortinet.com",
+    "name": "",
+    "comment": "",
+    "advertising": "",
     "ibeacon-uuid": "005ea414-cbd1-11e5-9956-625662870761",
     "major-id": 1000,
     "minor-id": 2000,
-    "scan-interval": 50,
-    "scan-period": 4000,
-    "scan-threshold": "-90",
-    "scan-time": 1000,
-    "scan-type": "active",
-    "scan-window": 50,
+    "eddystone-namespace": "0102030405",
+    "eddystone-instance": "abcdef",
+    "eddystone-url": "http://www.fortinet.com",
     "txpower": "0",
+    "beacon-interval": 100,
+    "ble-scanning": "disable",
+    "scan-type": "active",
+    "scan-threshold": "-90",
+    "scan-period": 4000,
+    "scan-time": 1000,
+    "scan-interval": 50,
+    "scan-window": 50,
+}
+
+# ============================================================================
+# Deprecated Fields
+# Auto-generated from schema - warns users about deprecated fields
+# ============================================================================
+
+# Deprecated fields with migration guidance
+DEPRECATED_FIELDS = {
+}
+
+# ============================================================================
+# Field Metadata (Type Information & Descriptions)
+# Auto-generated from schema - use for IDE autocomplete and documentation
+# ============================================================================
+
+# Field types mapping
+FIELD_TYPES = {
+    "name": "string",  # Bluetooth Low Energy profile name.
+    "comment": "string",  # Comment.
+    "advertising": "option",  # Advertising type.
+    "ibeacon-uuid": "string",  # Universally Unique Identifier (UUID; automatically assigned 
+    "major-id": "integer",  # Major ID.
+    "minor-id": "integer",  # Minor ID.
+    "eddystone-namespace": "string",  # Eddystone namespace ID.
+    "eddystone-instance": "string",  # Eddystone instance ID.
+    "eddystone-url": "string",  # Eddystone URL.
+    "txpower": "option",  # Transmit power level (default = 0).
+    "beacon-interval": "integer",  # Beacon interval (default = 100 msec).
+    "ble-scanning": "option",  # Enable/disable Bluetooth Low Energy (BLE) scanning.
+    "scan-type": "option",  # Scan Type (default = active).
+    "scan-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP to
+    "scan-period": "integer",  # Scan Period (default = 4000 msec).
+    "scan-time": "integer",  # Scan Time (default = 1000 msec).
+    "scan-interval": "integer",  # Scan Interval (default = 50 msec).
+    "scan-window": "integer",  # Scan Windows (default = 50 msec).
+}
+
+# Field descriptions (help text from FortiOS API)
+FIELD_DESCRIPTIONS = {
+    "name": "Bluetooth Low Energy profile name.",
+    "comment": "Comment.",
+    "advertising": "Advertising type.",
+    "ibeacon-uuid": "Universally Unique Identifier (UUID; automatically assigned but can be manually reset).",
+    "major-id": "Major ID.",
+    "minor-id": "Minor ID.",
+    "eddystone-namespace": "Eddystone namespace ID.",
+    "eddystone-instance": "Eddystone instance ID.",
+    "eddystone-url": "Eddystone URL.",
+    "txpower": "Transmit power level (default = 0).",
+    "beacon-interval": "Beacon interval (default = 100 msec).",
+    "ble-scanning": "Enable/disable Bluetooth Low Energy (BLE) scanning.",
+    "scan-type": "Scan Type (default = active).",
+    "scan-threshold": "Minimum signal level/threshold in dBm required for the AP to report detected BLE device (-95 to -20, default = -90).",
+    "scan-period": "Scan Period (default = 4000 msec).",
+    "scan-time": "Scan Time (default = 1000 msec).",
+    "scan-interval": "Scan Interval (default = 50 msec).",
+    "scan-window": "Scan Windows (default = 50 msec).",
+}
+
+# Field constraints (string lengths, integer ranges)
+FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 35},
+    "comment": {"type": "string", "max_length": 63},
+    "ibeacon-uuid": {"type": "string", "max_length": 63},
+    "major-id": {"type": "integer", "min": 0, "max": 65535},
+    "minor-id": {"type": "integer", "min": 0, "max": 65535},
+    "eddystone-namespace": {"type": "string", "max_length": 20},
+    "eddystone-instance": {"type": "string", "max_length": 12},
+    "eddystone-url": {"type": "string", "max_length": 127},
+    "beacon-interval": {"type": "integer", "min": 40, "max": 3500},
+    "scan-threshold": {"type": "string", "max_length": 7},
+    "scan-period": {"type": "integer", "min": 1000, "max": 10000},
+    "scan-time": {"type": "integer", "min": 1000, "max": 10000},
+    "scan-interval": {"type": "integer", "min": 10, "max": 1000},
+    "scan-window": {"type": "integer", "min": 10, "max": 1000},
+}
+
+# Nested schemas (for table/list fields with children)
+NESTED_SCHEMAS = {
 }
 
 
 # Valid enum values from API documentation
-VALID_BODY_ADVERTISING = ["ibeacon", "eddystone-uid", "eddystone-url"]
+VALID_BODY_ADVERTISING = [
+    "ibeacon",
+    "eddystone-uid",
+    "eddystone-url",
+]
 VALID_BODY_TXPOWER = [
     "0",
     "1",
@@ -63,14 +172,15 @@ VALID_BODY_TXPOWER = [
     "10",
     "11",
     "12",
-    "13",
-    "14",
-    "15",
-    "16",
-    "17",
 ]
-VALID_BODY_BLE_SCANNING = ["enable", "disable"]
-VALID_BODY_SCAN_TYPE = ["active", "passive"]
+VALID_BODY_BLE_SCANNING = [
+    "enable",
+    "disable",
+]
+VALID_BODY_SCAN_TYPE = [
+    "active",
+    "passive",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -78,13 +188,13 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_ble_profile_get(
+def validate_wireless_controller_ble_profile_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate GET request parameters.
+    Validate GET request parameters for wireless_controller/ble_profile.
 
     Args:
         attr: Attribute filter (optional)
@@ -94,9 +204,20 @@ def validate_ble_profile_get(
     Returns:
         Tuple of (is_valid, error_message)
 
-    Example:
-        >>> # List all objects
-        >>> is_valid, error = {func_name}()
+    Examples:
+        >>> # Valid - Get all items
+        >>> is_valid, error = validate_wireless_controller_ble_profile_get()
+        >>> assert is_valid == True
+        
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_wireless_controller_ble_profile_get(name="test-item")
+        >>> assert is_valid == True
+        
+        >>> # Valid - With filters
+        >>> is_valid, error = validate_wireless_controller_ble_profile_get(
+        ...     filters={"format": "name|type"}
+        ... )
+        >>> assert is_valid == True
     """
     # Validate query parameters if present
     if "action" in params:
@@ -117,7 +238,7 @@ def validate_ble_profile_get(
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
     """
-    Validate required fields for wireless-controller_ble-profile.
+    Validate required fields for wireless_controller/ble_profile.
 
     This validator checks:
     1. Always-required fields are present
@@ -130,238 +251,125 @@ def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
         Tuple of (is_valid, error_message)
 
     Example:
-        >>> is_valid, error = validate_required_fields({
-        ...     "name": "value",
-        ...     # ... other fields
-        ... })
+        >>> payload = {"name": "test"}
+        >>> is_valid, error = validate_required_fields(payload)
     """
     # Check always-required fields
-    missing = []
+    missing_fields = []
     for field in REQUIRED_FIELDS:
-        # Skip fields with defaults
-        if field in FIELDS_WITH_DEFAULTS:
-            continue
-        if field not in payload or payload.get(field) is None:
-            missing.append(field)
-
-    if missing:
-        return (False, f"Missing required fields: {', '.join(missing)}")
+        if field not in payload:
+            missing_fields.append(field)
+    
+    if missing_fields:
+        # Build enhanced error message
+        error_parts = [f"Missing required field(s): {', '.join(missing_fields)}"]
+        
+        # Add descriptions for first few missing fields
+        for field in missing_fields[:3]:
+            desc = FIELD_DESCRIPTIONS.get(field)
+            if desc:
+                error_parts.append(f"  • {field}: {desc}")
+        
+        if len(missing_fields) > 3:
+            error_parts.append(f"  ... and {len(missing_fields) - 3} more")
+        
+        return (False, "\n".join(error_parts))
 
     return (True, None)
 
 
-# ============================================================================
-# Endpoint Validation (Enhanced with Required Fields)
-# ============================================================================
-
-
-def validate_ble_profile_post(
-    payload: dict[str, Any],
+def validate_wireless_controller_ble_profile_post(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate POST request payload.
+    Validate POST request to create new wireless_controller/ble_profile object.
 
     This validator performs two-stage validation:
-    1. Required fields validation (schema-based)
+    1. Required fields check (schema-based)
     2. Field value validation (enums, ranges, formats)
 
-    Required fields:
-      - name: Bluetooth Low Energy profile name.
-
     Args:
-        payload: The payload to validate
+        payload: Request body data with configuration
+        **params: Query parameters (vdom, etc.)
 
     Returns:
         Tuple of (is_valid, error_message)
+        - is_valid: True if payload is valid, False otherwise
+        - error_message: None if valid, detailed error string if invalid
+
+    Examples:
+        >>> # ✅ Valid - Minimal required fields
+        >>> payload = {
+        ... }
+        >>> is_valid, error = validate_wireless_controller_ble_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "advertising": "ibeacon",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_wireless_controller_ble_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["advertising"] = "invalid-value"
+        >>> is_valid, error = validate_wireless_controller_ble_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
+        
+        >>> # ❌ Invalid - Missing required field
+        >>> payload = {}  # Empty payload
+        >>> is_valid, error = validate_wireless_controller_ble_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Missing required field" in error
     """
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
-    # Validate payload exists
-    if not payload:
-        payload = {}
-
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
         return (False, error)
 
-    # Step 2: Validate field values (enums, ranges, etc.)
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "comment cannot exceed 63 characters")
-
-    # Validate advertising if present
+    # Step 2: Validate enum values
     if "advertising" in payload:
-        value = payload.get("advertising")
-        if value and value not in VALID_BODY_ADVERTISING:
-            return (
-                False,
-                f"Invalid advertising '{value}'. Must be one of: {', '.join(VALID_BODY_ADVERTISING)}",
-            )
-
-    # Validate ibeacon-uuid if present
-    if "ibeacon-uuid" in payload:
-        value = payload.get("ibeacon-uuid")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "ibeacon-uuid cannot exceed 63 characters")
-
-    # Validate major-id if present
-    if "major-id" in payload:
-        value = payload.get("major-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "major-id must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"major-id must be numeric, got: {value}")
-
-    # Validate minor-id if present
-    if "minor-id" in payload:
-        value = payload.get("minor-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "minor-id must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"minor-id must be numeric, got: {value}")
-
-    # Validate eddystone-namespace if present
-    if "eddystone-namespace" in payload:
-        value = payload.get("eddystone-namespace")
-        if value and isinstance(value, str) and len(value) > 20:
-            return (False, "eddystone-namespace cannot exceed 20 characters")
-
-    # Validate eddystone-instance if present
-    if "eddystone-instance" in payload:
-        value = payload.get("eddystone-instance")
-        if value and isinstance(value, str) and len(value) > 12:
-            return (False, "eddystone-instance cannot exceed 12 characters")
-
-    # Validate eddystone-url if present
-    if "eddystone-url" in payload:
-        value = payload.get("eddystone-url")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "eddystone-url cannot exceed 127 characters")
-
-    # Validate txpower if present
+        value = payload["advertising"]
+        if value not in VALID_BODY_ADVERTISING:
+            desc = FIELD_DESCRIPTIONS.get("advertising", "")
+            error_msg = f"Invalid value for 'advertising': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ADVERTISING)}"
+            error_msg += f"\n  → Example: advertising='{{ VALID_BODY_ADVERTISING[0] }}'"
+            return (False, error_msg)
     if "txpower" in payload:
-        value = payload.get("txpower")
-        if value and value not in VALID_BODY_TXPOWER:
-            return (
-                False,
-                f"Invalid txpower '{value}'. Must be one of: {', '.join(VALID_BODY_TXPOWER)}",
-            )
-
-    # Validate beacon-interval if present
-    if "beacon-interval" in payload:
-        value = payload.get("beacon-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 40 or int_val > 3500:
-                    return (
-                        False,
-                        "beacon-interval must be between 40 and 3500",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"beacon-interval must be numeric, got: {value}",
-                )
-
-    # Validate ble-scanning if present
+        value = payload["txpower"]
+        if value not in VALID_BODY_TXPOWER:
+            desc = FIELD_DESCRIPTIONS.get("txpower", "")
+            error_msg = f"Invalid value for 'txpower': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_TXPOWER)}"
+            error_msg += f"\n  → Example: txpower='{{ VALID_BODY_TXPOWER[0] }}'"
+            return (False, error_msg)
     if "ble-scanning" in payload:
-        value = payload.get("ble-scanning")
-        if value and value not in VALID_BODY_BLE_SCANNING:
-            return (
-                False,
-                f"Invalid ble-scanning '{value}'. Must be one of: {', '.join(VALID_BODY_BLE_SCANNING)}",
-            )
-
-    # Validate scan-type if present
+        value = payload["ble-scanning"]
+        if value not in VALID_BODY_BLE_SCANNING:
+            desc = FIELD_DESCRIPTIONS.get("ble-scanning", "")
+            error_msg = f"Invalid value for 'ble-scanning': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BLE_SCANNING)}"
+            error_msg += f"\n  → Example: ble-scanning='{{ VALID_BODY_BLE_SCANNING[0] }}'"
+            return (False, error_msg)
     if "scan-type" in payload:
-        value = payload.get("scan-type")
-        if value and value not in VALID_BODY_SCAN_TYPE:
-            return (
-                False,
-                f"Invalid scan-type '{value}'. Must be one of: {', '.join(VALID_BODY_SCAN_TYPE)}",
-            )
-
-    # Validate scan-threshold if present
-    if "scan-threshold" in payload:
-        value = payload.get("scan-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "scan-threshold cannot exceed 7 characters")
-
-    # Validate scan-period if present
-    if "scan-period" in payload:
-        value = payload.get("scan-period")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1000 or int_val > 10000:
-                    return (
-                        False,
-                        "scan-period must be between 1000 and 10000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"scan-period must be numeric, got: {value}")
-
-    # Validate scan-time if present
-    if "scan-time" in payload:
-        value = payload.get("scan-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1000 or int_val > 10000:
-                    return (False, "scan-time must be between 1000 and 10000")
-            except (ValueError, TypeError):
-                return (False, f"scan-time must be numeric, got: {value}")
-
-    # Validate scan-interval if present
-    if "scan-interval" in payload:
-        value = payload.get("scan-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 1000:
-                    return (
-                        False,
-                        "scan-interval must be between 10 and 1000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"scan-interval must be numeric, got: {value}")
-
-    # Validate scan-window if present
-    if "scan-window" in payload:
-        value = payload.get("scan-window")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 1000:
-                    return (False, "scan-window must be between 10 and 1000")
-            except (ValueError, TypeError):
-                return (False, f"scan-window must be numeric, got: {value}")
+        value = payload["scan-type"]
+        if value not in VALID_BODY_SCAN_TYPE:
+            desc = FIELD_DESCRIPTIONS.get("scan-type", "")
+            error_msg = f"Invalid value for 'scan-type': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SCAN_TYPE)}"
+            error_msg += f"\n  → Example: scan-type='{{ VALID_BODY_SCAN_TYPE[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -371,215 +379,354 @@ def validate_ble_profile_post(
 # ============================================================================
 
 
-def validate_ble_profile_put(
-    name: str | None = None, payload: dict[str, Any] | None = None
+def validate_wireless_controller_ble_profile_put(
+    payload: dict,
+    **params: Any,
 ) -> tuple[bool, str | None]:
     """
-    Validate PUT request payload for updating {endpoint_name}.
+    Validate PUT request to update wireless_controller/ble_profile.
 
     Args:
-        name: Object identifier (required)
-        payload: The payload to validate
+        payload: Request body data
+        **params: Query parameters
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> payload = {"name": "updated_item"}
+        >>> is_valid, error = validate_wireless_controller_ble_profile_put(payload)
     """
-    # name is required for updates
-    if not name:
-        return (False, "name is required for PUT operation")
-
-    # If no payload provided, nothing to validate
-    if not payload:
-        return (True, None)
-
-    # Validate name if present
-    if "name" in payload:
-        value = payload.get("name")
-        if value and isinstance(value, str) and len(value) > 35:
-            return (False, "name cannot exceed 35 characters")
-
-    # Validate comment if present
-    if "comment" in payload:
-        value = payload.get("comment")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "comment cannot exceed 63 characters")
-
-    # Validate advertising if present
+    # Step 1: Validate enum values
     if "advertising" in payload:
-        value = payload.get("advertising")
-        if value and value not in VALID_BODY_ADVERTISING:
+        value = payload["advertising"]
+        if value not in VALID_BODY_ADVERTISING:
             return (
                 False,
-                f"Invalid advertising '{value}'. Must be one of: {', '.join(VALID_BODY_ADVERTISING)}",
+                f"Invalid value for 'advertising'='{value}'. Must be one of: {', '.join(VALID_BODY_ADVERTISING)}",
             )
-
-    # Validate ibeacon-uuid if present
-    if "ibeacon-uuid" in payload:
-        value = payload.get("ibeacon-uuid")
-        if value and isinstance(value, str) and len(value) > 63:
-            return (False, "ibeacon-uuid cannot exceed 63 characters")
-
-    # Validate major-id if present
-    if "major-id" in payload:
-        value = payload.get("major-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "major-id must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"major-id must be numeric, got: {value}")
-
-    # Validate minor-id if present
-    if "minor-id" in payload:
-        value = payload.get("minor-id")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 0 or int_val > 65535:
-                    return (False, "minor-id must be between 0 and 65535")
-            except (ValueError, TypeError):
-                return (False, f"minor-id must be numeric, got: {value}")
-
-    # Validate eddystone-namespace if present
-    if "eddystone-namespace" in payload:
-        value = payload.get("eddystone-namespace")
-        if value and isinstance(value, str) and len(value) > 20:
-            return (False, "eddystone-namespace cannot exceed 20 characters")
-
-    # Validate eddystone-instance if present
-    if "eddystone-instance" in payload:
-        value = payload.get("eddystone-instance")
-        if value and isinstance(value, str) and len(value) > 12:
-            return (False, "eddystone-instance cannot exceed 12 characters")
-
-    # Validate eddystone-url if present
-    if "eddystone-url" in payload:
-        value = payload.get("eddystone-url")
-        if value and isinstance(value, str) and len(value) > 127:
-            return (False, "eddystone-url cannot exceed 127 characters")
-
-    # Validate txpower if present
     if "txpower" in payload:
-        value = payload.get("txpower")
-        if value and value not in VALID_BODY_TXPOWER:
+        value = payload["txpower"]
+        if value not in VALID_BODY_TXPOWER:
             return (
                 False,
-                f"Invalid txpower '{value}'. Must be one of: {', '.join(VALID_BODY_TXPOWER)}",
+                f"Invalid value for 'txpower'='{value}'. Must be one of: {', '.join(VALID_BODY_TXPOWER)}",
             )
-
-    # Validate beacon-interval if present
-    if "beacon-interval" in payload:
-        value = payload.get("beacon-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 40 or int_val > 3500:
-                    return (
-                        False,
-                        "beacon-interval must be between 40 and 3500",
-                    )
-            except (ValueError, TypeError):
-                return (
-                    False,
-                    f"beacon-interval must be numeric, got: {value}",
-                )
-
-    # Validate ble-scanning if present
     if "ble-scanning" in payload:
-        value = payload.get("ble-scanning")
-        if value and value not in VALID_BODY_BLE_SCANNING:
+        value = payload["ble-scanning"]
+        if value not in VALID_BODY_BLE_SCANNING:
             return (
                 False,
-                f"Invalid ble-scanning '{value}'. Must be one of: {', '.join(VALID_BODY_BLE_SCANNING)}",
+                f"Invalid value for 'ble-scanning'='{value}'. Must be one of: {', '.join(VALID_BODY_BLE_SCANNING)}",
             )
-
-    # Validate scan-type if present
     if "scan-type" in payload:
-        value = payload.get("scan-type")
-        if value and value not in VALID_BODY_SCAN_TYPE:
+        value = payload["scan-type"]
+        if value not in VALID_BODY_SCAN_TYPE:
             return (
                 False,
-                f"Invalid scan-type '{value}'. Must be one of: {', '.join(VALID_BODY_SCAN_TYPE)}",
+                f"Invalid value for 'scan-type'='{value}'. Must be one of: {', '.join(VALID_BODY_SCAN_TYPE)}",
             )
-
-    # Validate scan-threshold if present
-    if "scan-threshold" in payload:
-        value = payload.get("scan-threshold")
-        if value and isinstance(value, str) and len(value) > 7:
-            return (False, "scan-threshold cannot exceed 7 characters")
-
-    # Validate scan-period if present
-    if "scan-period" in payload:
-        value = payload.get("scan-period")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1000 or int_val > 10000:
-                    return (
-                        False,
-                        "scan-period must be between 1000 and 10000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"scan-period must be numeric, got: {value}")
-
-    # Validate scan-time if present
-    if "scan-time" in payload:
-        value = payload.get("scan-time")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 1000 or int_val > 10000:
-                    return (False, "scan-time must be between 1000 and 10000")
-            except (ValueError, TypeError):
-                return (False, f"scan-time must be numeric, got: {value}")
-
-    # Validate scan-interval if present
-    if "scan-interval" in payload:
-        value = payload.get("scan-interval")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 1000:
-                    return (
-                        False,
-                        "scan-interval must be between 10 and 1000",
-                    )
-            except (ValueError, TypeError):
-                return (False, f"scan-interval must be numeric, got: {value}")
-
-    # Validate scan-window if present
-    if "scan-window" in payload:
-        value = payload.get("scan-window")
-        if value is not None:
-            try:
-                int_val = int(value)
-                if int_val < 10 or int_val > 1000:
-                    return (False, "scan-window must be between 10 and 1000")
-            except (ValueError, TypeError):
-                return (False, f"scan-window must be numeric, got: {value}")
 
     return (True, None)
 
 
 # ============================================================================
-# DELETE Validation
+# Metadata Access Functions
+# Provide programmatic access to field metadata for IDE autocomplete,
+# documentation generation, and dynamic validation
 # ============================================================================
 
 
-def validate_ble_profile_delete(
-    name: str | None = None,
-) -> tuple[bool, str | None]:
+def get_field_description(field_name: str) -> str | None:
     """
-    Validate DELETE request parameters.
+    Get description/help text for a field.
 
     Args:
-        name: Object identifier (required)
+        field_name: Name of the field
+
+    Returns:
+        Description text or None if field doesn't exist
+
+    Example:
+        >>> desc = get_field_description("name")
+        >>> print(desc)
+    """
+    return FIELD_DESCRIPTIONS.get(field_name)
+
+
+def get_field_type(field_name: str) -> str | None:
+    """
+    Get the type of a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Field type (e.g., "string", "integer", "option") or None
+
+    Example:
+        >>> field_type = get_field_type("status")
+        >>> print(field_type)  # "option"
+    """
+    return FIELD_TYPES.get(field_name)
+
+
+def get_field_constraints(field_name: str) -> dict[str, Any] | None:
+    """
+    Get constraints for a field (min/max values, string length).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Constraint dict or None
+
+    Example:
+        >>> constraints = get_field_constraints("port")
+        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
+    """
+    return FIELD_CONSTRAINTS.get(field_name)
+
+
+def get_field_default(field_name: str) -> Any | None:
+    """
+    Get default value for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Default value or None if no default
+
+    Example:
+        >>> default = get_field_default("status")
+        >>> print(default)  # "enable"
+    """
+    return FIELDS_WITH_DEFAULTS.get(field_name)
+
+
+def get_field_options(field_name: str) -> list[str] | None:
+    """
+    Get valid enum options for a field.
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        List of valid values or None if not an enum field
+
+    Example:
+        >>> options = get_field_options("status")
+        >>> print(options)  # ["enable", "disable"]
+    """
+    # Construct the constant name from field name
+    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    return globals().get(constant_name)
+
+
+def get_nested_schema(field_name: str) -> dict[str, Any] | None:
+    """
+    Get schema for nested table/list fields.
+
+    Args:
+        field_name: Name of the parent field
+
+    Returns:
+        Dict mapping child field names to their metadata
+
+    Example:
+        >>> nested = get_nested_schema("members")
+        >>> if nested:
+        ...     for child_field, child_meta in nested.items():
+        ...         print(f"{child_field}: {child_meta['type']}")
+    """
+    return NESTED_SCHEMAS.get(field_name)
+
+
+def get_all_fields() -> list[str]:
+    """
+    Get list of all field names.
+
+    Returns:
+        List of all field names in the schema
+
+    Example:
+        >>> fields = get_all_fields()
+        >>> print(len(fields))
+    """
+    return list(FIELD_TYPES.keys())
+
+
+def get_field_metadata(field_name: str) -> dict[str, Any] | None:
+    """
+    Get complete metadata for a field (type, description, constraints, defaults, options).
+
+    Args:
+        field_name: Name of the field
+
+    Returns:
+        Dict with all available metadata or None if field doesn't exist
+
+    Example:
+        >>> meta = get_field_metadata("status")
+        >>> print(meta)
+        >>> # {
+        >>> #   "type": "option",
+        >>> #   "description": "Enable/disable this feature",
+        >>> #   "default": "enable",
+        >>> #   "options": ["enable", "disable"]
+        >>> # }
+    """
+    if field_name not in FIELD_TYPES:
+        return None
+
+    metadata = {
+        "name": field_name,
+        "type": FIELD_TYPES[field_name],
+    }
+
+    # Add description if available
+    if field_name in FIELD_DESCRIPTIONS:
+        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
+
+    # Add constraints if available
+    if field_name in FIELD_CONSTRAINTS:
+        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
+
+    # Add default if available
+    if field_name in FIELDS_WITH_DEFAULTS:
+        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
+
+    # Add required flag
+    metadata["required"] = field_name in REQUIRED_FIELDS
+
+    # Add options if available
+    options = get_field_options(field_name)
+    if options:
+        metadata["options"] = options
+
+    # Add nested schema if available
+    nested = get_nested_schema(field_name)
+    if nested:
+        metadata["nested_schema"] = nested
+
+    return metadata
+
+
+def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
+    """
+    Validate a single field value against its constraints.
+
+    Args:
+        field_name: Name of the field
+        value: Value to validate
 
     Returns:
         Tuple of (is_valid, error_message)
+
+    Example:
+        >>> is_valid, error = validate_field_value("status", "enable")
+        >>> if not is_valid:
+        ...     print(error)
     """
-    if not name:
-        return (False, "name is required for DELETE operation")
+    # Get field metadata
+    field_type = get_field_type(field_name)
+    if field_type is None:
+        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
+
+    # Get field description for better error context
+    description = get_field_description(field_name)
+
+    # Validate enum values
+    options = get_field_options(field_name)
+    if options and value not in options:
+        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
+        if description:
+            error_msg += f"\n  → Description: {description}"
+        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
+        if options:
+            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
+        return (False, error_msg)
+
+    # Validate constraints
+    constraints = get_field_constraints(field_name)
+    if constraints:
+        constraint_type = constraints.get("type")
+
+        if constraint_type == "integer":
+            if not isinstance(value, int):
+                error_msg = f"Field '{field_name}' must be an integer"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            min_val = constraints.get("min")
+            max_val = constraints.get("max")
+
+            if min_val is not None and value < min_val:
+                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if max_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+            if max_val is not None and value > max_val:
+                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                if min_val is not None:
+                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
+                return (False, error_msg)
+
+        elif constraint_type == "string":
+            if not isinstance(value, str):
+                error_msg = f"Field '{field_name}' must be a string"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
+                return (False, error_msg)
+
+            max_length = constraints.get("max_length")
+            if max_length and len(value) > max_length:
+                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
+                if description:
+                    error_msg += f"\n  → Description: {description}"
+                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
+                return (False, error_msg)
 
     return (True, None)
+
+
+# ============================================================================
+# Schema Information
+# Metadata about this endpoint schema
+# ============================================================================
+
+SCHEMA_INFO = {
+    "endpoint": "wireless_controller/ble_profile",
+    "category": "cmdb",
+    "api_path": "wireless-controller/ble-profile",
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure Bluetooth Low Energy profile.",
+    "total_fields": 18,
+    "required_fields_count": 0,
+    "fields_with_defaults_count": 18,
+}
+
+
+def get_schema_info() -> dict[str, Any]:
+    """
+    Get information about this endpoint schema.
+
+    Returns:
+        Dict with schema metadata
+
+    Example:
+        >>> info = get_schema_info()
+        >>> print(f"Endpoint: {info['endpoint']}")
+        >>> print(f"Total fields: {info['total_fields']}")
+    """
+    return SCHEMA_INFO.copy()

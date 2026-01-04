@@ -139,12 +139,12 @@ class API:
         from .v2.cmdb import CMDB
         from .v2.log import Log
         from .v2.monitor import Monitor
-        from .v2.service import Service
+        # from .v2.service import Service  # TODO: Fix service endpoint structure
 
         self.cmdb = CMDB(client)
         self.log = Log(client)
         self.monitor = Monitor(client)
-        self.service = Service(client)
+        # self.service = Service(client)  # TODO: Fix service endpoint structure
 
         # Utils requires concrete HTTPClient for access to internal attributes
         # Check if client is the concrete HTTPClient type

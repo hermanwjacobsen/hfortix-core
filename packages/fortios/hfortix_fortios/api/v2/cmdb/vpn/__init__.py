@@ -40,22 +40,18 @@ __all__ = [
     "L2tp",
     "Pptp",
     "Qkd",
+    "Vpn",
 ]
 
 
 class Vpn:
-    """
-    Vpn category wrapper.
-
-    This class provides access to all vpn CMDB endpoints.
-    """
+    """Vpn endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Vpn with all endpoint classes.
-
+        """Vpn endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.certificate_ca = CertificateCa(client)
         self.certificate_crl = CertificateCrl(client)

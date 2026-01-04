@@ -13,12 +13,8 @@ from .fortianalyzer3_override_filter import Fortianalyzer3OverrideFilter
 from .fortianalyzer3_override_setting import Fortianalyzer3OverrideSetting
 from .fortianalyzer3_setting import Fortianalyzer3Setting
 from .fortianalyzer_cloud_filter import FortianalyzerCloudFilter
-from .fortianalyzer_cloud_override_filter import (
-    FortianalyzerCloudOverrideFilter,
-)
-from .fortianalyzer_cloud_override_setting import (
-    FortianalyzerCloudOverrideSetting,
-)
+from .fortianalyzer_cloud_override_filter import FortianalyzerCloudOverrideFilter
+from .fortianalyzer_cloud_override_setting import FortianalyzerCloudOverrideSetting
 from .fortianalyzer_cloud_setting import FortianalyzerCloudSetting
 from .fortianalyzer_filter import FortianalyzerFilter
 from .fortianalyzer_override_filter import FortianalyzerOverrideFilter
@@ -51,24 +47,21 @@ from .syslogd_filter import SyslogdFilter
 from .syslogd_override_filter import SyslogdOverrideFilter
 from .syslogd_override_setting import SyslogdOverrideSetting
 from .syslogd_setting import SyslogdSetting
-from .tacacs_plus_accounting2_filter import TacacsPlusAccounting2Filter
-from .tacacs_plus_accounting2_setting import TacacsPlusAccounting2Setting
-from .tacacs_plus_accounting3_filter import TacacsPlusAccounting3Filter
-from .tacacs_plus_accounting3_setting import TacacsPlusAccounting3Setting
-from .tacacs_plus_accounting_filter import TacacsPlusAccountingFilter
-from .tacacs_plus_accounting_setting import TacacsPlusAccountingSetting
+from .tacacs_plusaccounting2_filter import TacacsPlusaccounting2Filter
+from .tacacs_plusaccounting2_setting import TacacsPlusaccounting2Setting
+from .tacacs_plusaccounting3_filter import TacacsPlusaccounting3Filter
+from .tacacs_plusaccounting3_setting import TacacsPlusaccounting3Setting
+from .tacacs_plusaccounting_filter import TacacsPlusaccountingFilter
+from .tacacs_plusaccounting_setting import TacacsPlusaccountingSetting
 from .threat_weight import ThreatWeight
 from .webtrends_filter import WebtrendsFilter
 from .webtrends_setting import WebtrendsSetting
 
 __all__ = [
     "CustomField",
-    "Eventfilter",
-    "GuiDisplay",
-    "Setting",
-    "ThreatWeight",
     "DiskFilter",
     "DiskSetting",
+    "Eventfilter",
     "Fortianalyzer2Filter",
     "Fortianalyzer2OverrideFilter",
     "Fortianalyzer2OverrideSetting",
@@ -89,11 +82,14 @@ __all__ = [
     "FortiguardOverrideFilter",
     "FortiguardOverrideSetting",
     "FortiguardSetting",
+    "GuiDisplay",
+    "Log",
     "MemoryFilter",
     "MemoryGlobalSetting",
     "MemorySetting",
     "NullDeviceFilter",
     "NullDeviceSetting",
+    "Setting",
     "Syslogd2Filter",
     "Syslogd2OverrideFilter",
     "Syslogd2OverrideSetting",
@@ -110,212 +106,80 @@ __all__ = [
     "SyslogdOverrideFilter",
     "SyslogdOverrideSetting",
     "SyslogdSetting",
-    "TacacsPlusAccounting2Filter",
-    "TacacsPlusAccounting2Setting",
-    "TacacsPlusAccounting3Filter",
-    "TacacsPlusAccounting3Setting",
-    "TacacsPlusAccountingFilter",
-    "TacacsPlusAccountingSetting",
+    "TacacsPlusaccounting2Filter",
+    "TacacsPlusaccounting2Setting",
+    "TacacsPlusaccounting3Filter",
+    "TacacsPlusaccounting3Setting",
+    "TacacsPlusaccountingFilter",
+    "TacacsPlusaccountingSetting",
+    "ThreatWeight",
     "WebtrendsFilter",
     "WebtrendsSetting",
 ]
 
 
-class Disk:
-    """Wrapper for disk.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Disk endpoints."""
-        self.filter = DiskFilter(client)
-        self.setting = DiskSetting(client)
-
-
-class Fortianalyzer2:
-    """Wrapper for fortianalyzer2.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Fortianalyzer2 endpoints."""
-        self.filter = Fortianalyzer2Filter(client)
-        self.override_filter = Fortianalyzer2OverrideFilter(client)
-        self.override_setting = Fortianalyzer2OverrideSetting(client)
-        self.setting = Fortianalyzer2Setting(client)
-
-
-class Fortianalyzer3:
-    """Wrapper for fortianalyzer3.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Fortianalyzer3 endpoints."""
-        self.filter = Fortianalyzer3Filter(client)
-        self.override_filter = Fortianalyzer3OverrideFilter(client)
-        self.override_setting = Fortianalyzer3OverrideSetting(client)
-        self.setting = Fortianalyzer3Setting(client)
-
-
-class FortianalyzerCloud:
-    """Wrapper for fortianalyzer_cloud.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize FortianalyzerCloud endpoints."""
-        self.filter = FortianalyzerCloudFilter(client)
-        self.override_filter = FortianalyzerCloudOverrideFilter(client)
-        self.override_setting = FortianalyzerCloudOverrideSetting(client)
-        self.setting = FortianalyzerCloudSetting(client)
-
-
-class Fortianalyzer:
-    """Wrapper for fortianalyzer.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Fortianalyzer endpoints."""
-        self.filter = FortianalyzerFilter(client)
-        self.override_filter = FortianalyzerOverrideFilter(client)
-        self.override_setting = FortianalyzerOverrideSetting(client)
-        self.setting = FortianalyzerSetting(client)
-
-
-class Fortiguard:
-    """Wrapper for fortiguard.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Fortiguard endpoints."""
-        self.filter = FortiguardFilter(client)
-        self.override_filter = FortiguardOverrideFilter(client)
-        self.override_setting = FortiguardOverrideSetting(client)
-        self.setting = FortiguardSetting(client)
-
-
-class Memory:
-    """Wrapper for memory.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Memory endpoints."""
-        self.filter = MemoryFilter(client)
-        self.global_setting = MemoryGlobalSetting(client)
-        self.setting = MemorySetting(client)
-
-
-class NullDevice:
-    """Wrapper for null_device.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize NullDevice endpoints."""
-        self.filter = NullDeviceFilter(client)
-        self.setting = NullDeviceSetting(client)
-
-
-class Syslogd2:
-    """Wrapper for syslogd2.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Syslogd2 endpoints."""
-        self.filter = Syslogd2Filter(client)
-        self.override_filter = Syslogd2OverrideFilter(client)
-        self.override_setting = Syslogd2OverrideSetting(client)
-        self.setting = Syslogd2Setting(client)
-
-
-class Syslogd3:
-    """Wrapper for syslogd3.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Syslogd3 endpoints."""
-        self.filter = Syslogd3Filter(client)
-        self.override_filter = Syslogd3OverrideFilter(client)
-        self.override_setting = Syslogd3OverrideSetting(client)
-        self.setting = Syslogd3Setting(client)
-
-
-class Syslogd4:
-    """Wrapper for syslogd4.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Syslogd4 endpoints."""
-        self.filter = Syslogd4Filter(client)
-        self.override_filter = Syslogd4OverrideFilter(client)
-        self.override_setting = Syslogd4OverrideSetting(client)
-        self.setting = Syslogd4Setting(client)
-
-
-class Syslogd:
-    """Wrapper for syslogd.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Syslogd endpoints."""
-        self.filter = SyslogdFilter(client)
-        self.override_filter = SyslogdOverrideFilter(client)
-        self.override_setting = SyslogdOverrideSetting(client)
-        self.setting = SyslogdSetting(client)
-
-
-class TacacsAccounting2:
-    """Wrapper for tacacs_plus_accounting2.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize TacacsAccounting2 endpoints."""
-        self.filter = TacacsPlusAccounting2Filter(client)
-        self.setting = TacacsPlusAccounting2Setting(client)
-
-
-class TacacsAccounting3:
-    """Wrapper for tacacs_plus_accounting3.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize TacacsAccounting3 endpoints."""
-        self.filter = TacacsPlusAccounting3Filter(client)
-        self.setting = TacacsPlusAccounting3Setting(client)
-
-
-class TacacsAccounting:
-    """Wrapper for tacacs_plus_accounting.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize TacacsAccounting endpoints."""
-        self.filter = TacacsPlusAccountingFilter(client)
-        self.setting = TacacsPlusAccountingSetting(client)
-
-
-class Webtrends:
-    """Wrapper for webtrends.* endpoints."""
-
-    def __init__(self, client):
-        """Initialize Webtrends endpoints."""
-        self.filter = WebtrendsFilter(client)
-        self.setting = WebtrendsSetting(client)
-
-
 class Log:
-    """
-    Log category wrapper.
-
-    This class provides access to all log CMDB endpoints.
-    """
+    """Log endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
-        """
-        Initialize Log with all endpoint classes.
-
+        """Log endpoints.
+        
         Args:
-            client: HTTPClient instance
+            client: HTTP client instance for API communication
         """
         self.custom_field = CustomField(client)
+        self.disk_filter = DiskFilter(client)
+        self.disk_setting = DiskSetting(client)
         self.eventfilter = Eventfilter(client)
+        self.fortianalyzer2_filter = Fortianalyzer2Filter(client)
+        self.fortianalyzer2_override_filter = Fortianalyzer2OverrideFilter(client)
+        self.fortianalyzer2_override_setting = Fortianalyzer2OverrideSetting(client)
+        self.fortianalyzer2_setting = Fortianalyzer2Setting(client)
+        self.fortianalyzer3_filter = Fortianalyzer3Filter(client)
+        self.fortianalyzer3_override_filter = Fortianalyzer3OverrideFilter(client)
+        self.fortianalyzer3_override_setting = Fortianalyzer3OverrideSetting(client)
+        self.fortianalyzer3_setting = Fortianalyzer3Setting(client)
+        self.fortianalyzer_cloud_filter = FortianalyzerCloudFilter(client)
+        self.fortianalyzer_cloud_override_filter = FortianalyzerCloudOverrideFilter(client)
+        self.fortianalyzer_cloud_override_setting = FortianalyzerCloudOverrideSetting(client)
+        self.fortianalyzer_cloud_setting = FortianalyzerCloudSetting(client)
+        self.fortianalyzer_filter = FortianalyzerFilter(client)
+        self.fortianalyzer_override_filter = FortianalyzerOverrideFilter(client)
+        self.fortianalyzer_override_setting = FortianalyzerOverrideSetting(client)
+        self.fortianalyzer_setting = FortianalyzerSetting(client)
+        self.fortiguard_filter = FortiguardFilter(client)
+        self.fortiguard_override_filter = FortiguardOverrideFilter(client)
+        self.fortiguard_override_setting = FortiguardOverrideSetting(client)
+        self.fortiguard_setting = FortiguardSetting(client)
         self.gui_display = GuiDisplay(client)
+        self.memory_filter = MemoryFilter(client)
+        self.memory_global_setting = MemoryGlobalSetting(client)
+        self.memory_setting = MemorySetting(client)
+        self.null_device_filter = NullDeviceFilter(client)
+        self.null_device_setting = NullDeviceSetting(client)
         self.setting = Setting(client)
+        self.syslogd2_filter = Syslogd2Filter(client)
+        self.syslogd2_override_filter = Syslogd2OverrideFilter(client)
+        self.syslogd2_override_setting = Syslogd2OverrideSetting(client)
+        self.syslogd2_setting = Syslogd2Setting(client)
+        self.syslogd3_filter = Syslogd3Filter(client)
+        self.syslogd3_override_filter = Syslogd3OverrideFilter(client)
+        self.syslogd3_override_setting = Syslogd3OverrideSetting(client)
+        self.syslogd3_setting = Syslogd3Setting(client)
+        self.syslogd4_filter = Syslogd4Filter(client)
+        self.syslogd4_override_filter = Syslogd4OverrideFilter(client)
+        self.syslogd4_override_setting = Syslogd4OverrideSetting(client)
+        self.syslogd4_setting = Syslogd4Setting(client)
+        self.syslogd_filter = SyslogdFilter(client)
+        self.syslogd_override_filter = SyslogdOverrideFilter(client)
+        self.syslogd_override_setting = SyslogdOverrideSetting(client)
+        self.syslogd_setting = SyslogdSetting(client)
+        self.tacacs_plusaccounting2_filter = TacacsPlusaccounting2Filter(client)
+        self.tacacs_plusaccounting2_setting = TacacsPlusaccounting2Setting(client)
+        self.tacacs_plusaccounting3_filter = TacacsPlusaccounting3Filter(client)
+        self.tacacs_plusaccounting3_setting = TacacsPlusaccounting3Setting(client)
+        self.tacacs_plusaccounting_filter = TacacsPlusaccountingFilter(client)
+        self.tacacs_plusaccounting_setting = TacacsPlusaccountingSetting(client)
         self.threat_weight = ThreatWeight(client)
-        self.disk = Disk(client)
-        self.fortianalyzer2 = Fortianalyzer2(client)
-        self.fortianalyzer3 = Fortianalyzer3(client)
-        self.fortianalyzer_cloud = FortianalyzerCloud(client)
-        self.fortianalyzer = Fortianalyzer(client)
-        self.fortiguard = Fortiguard(client)
-        self.memory = Memory(client)
-        self.null_device = NullDevice(client)
-        self.syslogd2 = Syslogd2(client)
-        self.syslogd3 = Syslogd3(client)
-        self.syslogd4 = Syslogd4(client)
-        self.syslogd = Syslogd(client)
-        self.tacacs_accounting2 = TacacsAccounting2(client)
-        self.tacacs_accounting3 = TacacsAccounting3(client)
-        self.tacacs_accounting = TacacsAccounting(client)
-        self.webtrends = Webtrends(client)
+        self.webtrends_filter = WebtrendsFilter(client)
+        self.webtrends_setting = WebtrendsSetting(client)
