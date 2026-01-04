@@ -689,7 +689,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/ssl/setting",
     "category": "cmdb",
-    "api_path": "firewall/ssl/setting",
+    "api_path": "firewall.ssl/setting",
     "help": "SSL proxy settings.",
     "total_fields": 11,
     "required_fields_count": 0,

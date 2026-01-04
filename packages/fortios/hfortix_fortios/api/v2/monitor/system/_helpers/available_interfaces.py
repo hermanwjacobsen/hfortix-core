@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/available_interfaces",
     "category": "monitor",
     "api_path": "system/available-interfaces",
-    "help": "Monitor endpoint for system/available-interfaces",
+    "help": "Configuration for system/available-interfaces/meta",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -3,11 +3,14 @@ FortiOS MONITOR - Firewall shaper
 
 Configuration endpoint for managing monitor firewall/shaper objects.
 
+📖 **Read-Only Reference Table**
+   This endpoint provides read-only reference data (e.g., geography, timezone).
+   - GET operations return all available data
+   - POST/PUT/DELETE operations are not supported
+   - Querying by identifier returns all items (filter is ignored)
+
 API Endpoints:
     GET    /monitor/firewall/shaper
-    POST   /monitor/firewall/shaper
-    PUT    /monitor/firewall/shaper/{identifier}
-    DELETE /monitor/firewall/shaper/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
@@ -17,10 +20,9 @@ Example Usage:
     >>> items = fgt.api.monitor.firewall_shaper.get()
 
 Important:
-    - Use **POST** to create new objects
-    - Use **PUT** to update existing objects
-    - Use **GET** to retrieve configuration
-    - Use **DELETE** to remove objects
+    - This is a **read-only** endpoint (reference data only)
+    - Use **GET** to retrieve available options
+    - Creation/modification/deletion not supported
 """
 
 from __future__ import annotations
@@ -36,6 +38,9 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,
     is_success,
 )
+
+# Import cache for readonly reference data
+from hfortix_core.cache import readonly_cache
 
 
 class Shaper:
@@ -56,7 +61,7 @@ class Shaper:
         """
         Retrieve firewall/shaper configuration.
 
-        Configuration for firewall/shaper
+        Monitor endpoint for firewall/shaper/multi-class-shaper
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -97,6 +102,20 @@ class Shaper:
             - delete(): Remove firewall/shaper object
             - exists(): Check if object exists
         """
+        # Check cache for readonly reference data (24hr TTL)
+        cache_key = f"monitor/firewall/shaper"
+        
+        # Only use cache for full list queries (no identifier, no filters)
+        is_list_query = name is None and not payload_dict and not kwargs
+        
+        if is_list_query:
+            cached_data = readonly_cache.get(cache_key)
+            if cached_data is not None:
+                # Return cached data
+                if raw_json:
+                    return cached_data
+                return cached_data
+        
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
@@ -105,294 +124,26 @@ class Shaper:
             endpoint = "/firewall/shaper"
         
         params.update(kwargs)
-        return self._client.get(
+        
+        # Fetch data and cache if this is a list query
+        response = self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
-
-    def put(
-        self,
-        payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Update existing firewall/shaper object.
-
-        Configuration for firewall/shaper
-
-        Args:
-            payload_dict: Object data as dict. Must include name (primary key).
-            vdom: Virtual domain name.
-            raw_json: If True, return raw API response.
-            **kwargs: Additional parameters
-
-        Returns:
-            API response dict
-
-        Raises:
-            ValueError: If name is missing from payload
-
-        Examples:
-            >>> # Update specific fields
-            >>> result = fgt.api.monitor.firewall_shaper.put(
-            ...     name="existing-object",
-            ...     # ... fields to update
-            ... )
-            
-            >>> # Update using payload dict
-            >>> payload = {
-            ...     "name": "existing-object",
-            ...     "field1": "new-value",
-            ... }
-            >>> result = fgt.api.monitor.firewall_shaper.put(payload_dict=payload)
-
-        See Also:
-            - post(): Create new object
-            - set(): Intelligent create or update
-        """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
-            data=payload_dict,
-        )
         
-        # Check for deprecated fields and warn users
-        from ._helpers.shaper import DEPRECATED_FIELDS
-        if DEPRECATED_FIELDS:
-            from hfortix_core import check_deprecated_fields
-            check_deprecated_fields(
-                payload=payload_data,
-                deprecated_fields=DEPRECATED_FIELDS,
-                endpoint="monitor/firewall/shaper",
-            )
-        
-        name_value = payload_data.get("name")
-        if not name_value:
-            raise ValueError("name is required for PUT")
-        endpoint = f"/firewall/shaper/{name_value}"
-
-        return self._client.put(
-            "monitor", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
-        )
-
-    def post(
-        self,
-        payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Create new firewall/shaper object.
-
-        Configuration for firewall/shaper
-
-        Args:
-            payload_dict: Complete object data as dict. Alternative to individual parameters.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
-            raw_json: If True, return raw API response without processing.
-            **kwargs: Additional parameters
-
-        Returns:
-            API response dict containing created object with assigned identifier.
-
-        Examples:
-            >>> # Create using individual parameters
-            >>> result = fgt.api.monitor.firewall_shaper.post(
-            ...     name="example",
-            ...     # ... other required fields
-            ... )
-            >>> print(f"Created object: {result['results']}")
-            
-            >>> # Create using payload dict
-            >>> payload = Shaper.defaults()  # Start with defaults
-            >>> payload['name'] = 'my-object'
-            >>> result = fgt.api.monitor.firewall_shaper.post(payload_dict=payload)
-
-        Note:
-            Required fields: {{ ", ".join(Shaper.required_fields()) }}
-            
-            Use Shaper.help('field_name') to get field details.
-
-        See Also:
-            - get(): Retrieve objects
-            - put(): Update existing object
-            - set(): Intelligent create or update
-        """
-        # Build payload using helper function
-        # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
-        payload_data = build_cmdb_payload(
-            data=payload_dict,
-        )
-
-        # Check for deprecated fields and warn users
-        from ._helpers.shaper import DEPRECATED_FIELDS
-        if DEPRECATED_FIELDS:
-            from hfortix_core import check_deprecated_fields
-            check_deprecated_fields(
-                payload=payload_data,
-                deprecated_fields=DEPRECATED_FIELDS,
-                endpoint="monitor/firewall/shaper",
-            )
-
-        endpoint = "/firewall/shaper"
-        return self._client.post(
-            "monitor", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
-        )
-
-    def delete(
-        self,
-        name: str | None = None,
-        vdom: str | bool | None = None,
-        raw_json: bool = False,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Delete firewall/shaper object.
-
-        Configuration for firewall/shaper
-
-        Args:
-            name: Object name (primary key)
-            vdom: Virtual domain name
-            raw_json: If True, return raw API response
-            **kwargs: Additional parameters
-
-        Returns:
-            API response dict
-
-        Raises:
-            ValueError: If name is not provided
-
-        Examples:
-            >>> # Delete specific object
-            >>> result = fgt.api.monitor.firewall_shaper.delete(name="object-to-delete")
-            
-            >>> # Check for errors
-            >>> if result.get('status') != 'success':
-            ...     print(f"Delete failed: {result.get('error')}")
-
-        See Also:
-            - exists(): Check if object exists before deleting
-            - get(): Retrieve object to verify it exists
-        """
-        if not name:
-            raise ValueError("name is required for DELETE")
-        endpoint = f"/firewall/shaper/{name}"
-
-        return self._client.delete(
-            "monitor", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json
-        )
-
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = None,
-    ) -> Union[bool, Coroutine[Any, Any, bool]]:
-        """
-        Check if firewall/shaper object exists.
-
-        Verifies whether an object exists by attempting to retrieve it and checking the response status.
-
-        Args:
-            name: Object name (primary key)
-            vdom: Virtual domain name
-
-        Returns:
-            True if object exists, False otherwise
-
-        Examples:
-            >>> # Check if object exists before operations
-            >>> if fgt.api.monitor.firewall_shaper.exists(name="my-object"):
-            ...     print("Object exists")
-            ... else:
-            ...     print("Object not found")
-            
-            >>> # Conditional delete
-            >>> if fgt.api.monitor.firewall_shaper.exists(name="old-object"):
-            ...     fgt.api.monitor.firewall_shaper.delete(name="old-object")
-
-        See Also:
-            - get(): Retrieve full object data
-            - set(): Create or update automatically based on existence
-        """
-        try:
-            response = self.get(name=name, vdom=vdom, raw_json=True)
-            
+        # Cache the response for list queries
+        if is_list_query:
             if isinstance(response, dict):
-                # Use helper function to check success
-                return is_success(response)
-            else:
-                async def _check() -> bool:
-                    r = await response
-                    return is_success(r)
-                return _check()
-        except Exception:
-            # Resource not found or other error - return False
-            return False
-
-    def set(
-        self,
-        payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Create or update firewall/shaper object (intelligent operation).
-
-        Automatically determines whether to create (POST) or update (PUT) based on
-        whether the resource exists. Requires the primary key (name) in the payload.
-
-        Args:
-            payload_dict: Resource data including name (primary key)
-            vdom: Virtual domain name
-            **kwargs: Additional parameters passed to PUT or POST
-
-        Returns:
-            API response dictionary
-
-        Raises:
-            ValueError: If name is missing from payload
-
-        Examples:
-            >>> # Intelligent create or update - no need to check exists()
-            >>> payload = {
-            ...     "name": "my-object",
-            ...     "field1": "value1",
-            ...     "field2": "value2",
-            ... }
-            >>> result = fgt.api.monitor.firewall_shaper.set(payload_dict=payload)
-            >>> # Will POST if object doesn't exist, PUT if it does
-            
-            >>> # Idempotent configuration
-            >>> for obj_data in configuration_list:
-            ...     fgt.api.monitor.firewall_shaper.set(payload_dict=obj_data)
-            >>> # Safely applies configuration regardless of current state
-
-        Note:
-            This method internally calls exists() then either post() or put().
-            For performance-critical code with known state, call post() or put() directly.
-
-        See Also:
-            - post(): Create new object
-            - put(): Update existing object
-            - exists(): Check existence manually
-        """
-        if payload_dict is None:
-            payload_dict = {}
+                readonly_cache.set(cache_key, response)
+            # For async responses, we can't cache easily without awaiting
+            # User will benefit from cache on subsequent sync calls
         
-        mkey_value = payload_dict.get("name")
-        if not mkey_value:
-            raise ValueError("name is required in payload_dict for set()")
-        
-        # Check if resource exists
-        if self.exists(name=mkey_value, vdom=vdom):
-            # Update existing resource
-            return self.put(payload_dict=payload_dict, vdom=vdom, **kwargs)
-        else:
-            # Create new resource
-            return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+        return response
+
+
+
+
+
+
 
     # ========================================================================
     # Metadata Helper Methods

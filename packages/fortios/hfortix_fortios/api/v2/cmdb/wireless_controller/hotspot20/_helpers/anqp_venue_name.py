@@ -563,7 +563,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "wireless_controller/hotspot20/anqp_venue_name",
     "category": "cmdb",
-    "api_path": "wireless-controller/hotspot20/anqp-venue-name",
+    "api_path": "wireless-controller.hotspot20/anqp-venue-name",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure venue name duple.",

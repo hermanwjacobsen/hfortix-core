@@ -105,9 +105,9 @@ class HsProfile:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/wireless-controller/hotspot20/hs-profile/" + str(name)
+            endpoint = "/wireless-controller.hotspot20/hs-profile/" + str(name)
         else:
-            endpoint = "/wireless-controller/hotspot20/hs-profile"
+            endpoint = "/wireless-controller.hotspot20/hs-profile"
         
         params.update(kwargs)
         return self._client.get(
@@ -267,7 +267,7 @@ class HsProfile:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/wireless-controller/hotspot20/hs-profile/" + str(name_value)
+        endpoint = "/wireless-controller.hotspot20/hs-profile/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -424,7 +424,7 @@ class HsProfile:
                 endpoint="cmdb/wireless_controller/hotspot20/hs_profile",
             )
 
-        endpoint = "/wireless-controller/hotspot20/hs-profile"
+        endpoint = "/wireless-controller.hotspot20/hs-profile"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -467,7 +467,7 @@ class HsProfile:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/wireless-controller/hotspot20/hs-profile/" + str(name)
+        endpoint = "/wireless-controller.hotspot20/hs-profile/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

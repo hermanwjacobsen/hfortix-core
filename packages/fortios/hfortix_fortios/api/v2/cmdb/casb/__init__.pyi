@@ -1,21 +1,24 @@
-"""
-Type stubs for casb category.
+"""Type stubs for CASB category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.989808+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .attribute_match import AttributeMatch as AttributeMatch
-from .profile import Profile as Profile
-from .saas_application import SaasApplication as SaasApplication
-from .user_activity import UserActivity as UserActivity
 
-__all__ = [
-    "AttributeMatch",
-    "Profile",
-    "SaasApplication",
-    "UserActivity",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import attribute_match
+    from . import profile
+    from . import saas_application
+    from . import user_activity
+
+
+class Casb:
+    """Type stub for Casb."""
+
+    attribute_match: attribute_match.AttributeMatch
+    profile: profile.Profile
+    saas_application: saas_application.SaasApplication
+    user_activity: user_activity.UserActivity
+
+    def __init__(self, client: IHTTPClient) -> None: ...

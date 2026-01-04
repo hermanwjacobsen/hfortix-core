@@ -105,9 +105,9 @@ class IpDscpMap:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/switch-controller/qos/ip-dscp-map/" + str(name)
+            endpoint = "/switch-controller.qos/ip-dscp-map/" + str(name)
         else:
-            endpoint = "/switch-controller/qos/ip-dscp-map"
+            endpoint = "/switch-controller.qos/ip-dscp-map"
         
         params.update(kwargs)
         return self._client.get(
@@ -185,7 +185,7 @@ class IpDscpMap:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/switch-controller/qos/ip-dscp-map/" + str(name_value)
+        endpoint = "/switch-controller.qos/ip-dscp-map/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -260,7 +260,7 @@ class IpDscpMap:
                 endpoint="cmdb/switch_controller/qos/ip_dscp_map",
             )
 
-        endpoint = "/switch-controller/qos/ip-dscp-map"
+        endpoint = "/switch-controller.qos/ip-dscp-map"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -303,7 +303,7 @@ class IpDscpMap:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/switch-controller/qos/ip-dscp-map/" + str(name)
+        endpoint = "/switch-controller.qos/ip-dscp-map/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

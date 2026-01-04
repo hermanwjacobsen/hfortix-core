@@ -1,21 +1,24 @@
-"""
-Type stubs for rule category.
+"""Type stubs for RULE category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.973604+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .fmwp import Fmwp as Fmwp
-from .iotd import Iotd as Iotd
-from .otdt import Otdt as Otdt
-from .otvp import Otvp as Otvp
 
-__all__ = [
-    "Fmwp",
-    "Iotd",
-    "Otdt",
-    "Otvp",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import fmwp
+    from . import iotd
+    from . import otdt
+    from . import otvp
+
+
+class Rule:
+    """Type stub for Rule."""
+
+    fmwp: fmwp.Fmwp
+    iotd: iotd.Iotd
+    otdt: otdt.Otdt
+    otvp: otvp.Otvp
+
+    def __init__(self, client: IHTTPClient) -> None: ...

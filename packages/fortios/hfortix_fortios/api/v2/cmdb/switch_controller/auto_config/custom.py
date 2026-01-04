@@ -105,9 +105,9 @@ class Custom:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/switch-controller/auto-config/custom/" + str(name)
+            endpoint = "/switch-controller.auto-config/custom/" + str(name)
         else:
-            endpoint = "/switch-controller/auto-config/custom"
+            endpoint = "/switch-controller.auto-config/custom"
         
         params.update(kwargs)
         return self._client.get(
@@ -182,7 +182,7 @@ class Custom:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/switch-controller/auto-config/custom/" + str(name_value)
+        endpoint = "/switch-controller.auto-config/custom/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -254,7 +254,7 @@ class Custom:
                 endpoint="cmdb/switch_controller/auto_config/custom",
             )
 
-        endpoint = "/switch-controller/auto-config/custom"
+        endpoint = "/switch-controller.auto-config/custom"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -297,7 +297,7 @@ class Custom:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/switch-controller/auto-config/custom/" + str(name)
+        endpoint = "/switch-controller.auto-config/custom/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

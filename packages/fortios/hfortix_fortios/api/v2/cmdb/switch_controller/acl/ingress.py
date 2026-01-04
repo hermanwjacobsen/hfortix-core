@@ -105,9 +105,9 @@ class Ingress:
         params = payload_dict.copy() if payload_dict else {}
         
         if id:
-            endpoint = "/switch-controller/acl/ingress/" + str(id)
+            endpoint = "/switch-controller.acl/ingress/" + str(id)
         else:
-            endpoint = "/switch-controller/acl/ingress"
+            endpoint = "/switch-controller.acl/ingress"
         
         params.update(kwargs)
         return self._client.get(
@@ -188,7 +188,7 @@ class Ingress:
         id_value = payload_data.get("id")
         if not id_value:
             raise ValueError("id is required for PUT")
-        endpoint = "/switch-controller/acl/ingress/" + str(id_value)
+        endpoint = "/switch-controller.acl/ingress/" + str(id_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -266,7 +266,7 @@ class Ingress:
                 endpoint="cmdb/switch_controller/acl/ingress",
             )
 
-        endpoint = "/switch-controller/acl/ingress"
+        endpoint = "/switch-controller.acl/ingress"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -309,7 +309,7 @@ class Ingress:
         """
         if not id:
             raise ValueError("id is required for DELETE")
-        endpoint = "/switch-controller/acl/ingress/" + str(id)
+        endpoint = "/switch-controller.acl/ingress/" + str(id)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

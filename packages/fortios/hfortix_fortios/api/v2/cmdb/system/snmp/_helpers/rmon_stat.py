@@ -548,7 +548,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/snmp/rmon_stat",
     "category": "cmdb",
-    "api_path": "system/snmp/rmon-stat",
+    "api_path": "system.snmp/rmon-stat",
     "mkey": "id",
     "mkey_type": "integer",
     "help": "SNMP Remote Network Monitoring (RMON) Ethernet statistics configuration.",

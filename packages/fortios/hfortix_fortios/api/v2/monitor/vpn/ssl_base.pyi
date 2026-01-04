@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Ssl:
     """
-    Monitor endpoint for vpn/ssl
+    Configuration for vpn/ssl/stats
     
     Path: vpn/ssl
     Category: monitor

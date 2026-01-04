@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Csf:
+class Performance:
     """
-    Configuration for system/csf
+    Configuration for system/performance/status
     
-    Path: system/csf
+    Path: system/performance
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Csf:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]

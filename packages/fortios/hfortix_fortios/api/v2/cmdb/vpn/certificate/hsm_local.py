@@ -105,9 +105,9 @@ class HsmLocal:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/vpn/certificate/hsm-local/" + str(name)
+            endpoint = "/vpn.certificate/hsm-local/" + str(name)
         else:
-            endpoint = "/vpn/certificate/hsm-local"
+            endpoint = "/vpn.certificate/hsm-local"
         
         params.update(kwargs)
         return self._client.get(
@@ -213,7 +213,7 @@ class HsmLocal:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/vpn/certificate/hsm-local/" + str(name_value)
+        endpoint = "/vpn.certificate/hsm-local/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -316,7 +316,7 @@ class HsmLocal:
                 endpoint="cmdb/vpn/certificate/hsm_local",
             )
 
-        endpoint = "/vpn/certificate/hsm-local"
+        endpoint = "/vpn.certificate/hsm-local"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -359,7 +359,7 @@ class HsmLocal:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/vpn/certificate/hsm-local/" + str(name)
+        endpoint = "/vpn.certificate/hsm-local/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

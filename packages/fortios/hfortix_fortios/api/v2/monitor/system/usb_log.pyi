@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class UsbLog:
+class Performance:
     """
-    Configuration for system/usb-log
+    Configuration for system/performance/status
     
-    Path: system/usb_log
+    Path: system/performance
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class UsbLog:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]

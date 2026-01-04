@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Shaper:
     """
-    Configuration for firewall/shaper
+    Monitor endpoint for firewall/shaper/multi-class-shaper
     
     Path: firewall/shaper
     Category: monitor

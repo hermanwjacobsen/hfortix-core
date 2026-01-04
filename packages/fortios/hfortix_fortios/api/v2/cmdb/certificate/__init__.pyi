@@ -1,23 +1,26 @@
-"""
-Type stubs for certificate category.
+"""Type stubs for CERTIFICATE category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.971247+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .ca import Ca as Ca
-from .crl import Crl as Crl
-from .hsm_local import HsmLocal as HsmLocal
-from .local import Local as Local
-from .remote import Remote as Remote
 
-__all__ = [
-    "Ca",
-    "Crl",
-    "HsmLocal",
-    "Local",
-    "Remote",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import ca
+    from . import crl
+    from . import hsm_local
+    from . import local
+    from . import remote
+
+
+class Certificate:
+    """Type stub for Certificate."""
+
+    ca: ca.Ca
+    crl: crl.Crl
+    hsm_local: hsm_local.HsmLocal
+    local: local.Local
+    remote: remote.Remote
+
+    def __init__(self, client: IHTTPClient) -> None: ...

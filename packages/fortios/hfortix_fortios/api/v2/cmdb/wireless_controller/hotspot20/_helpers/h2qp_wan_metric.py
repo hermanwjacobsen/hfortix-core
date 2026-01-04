@@ -643,7 +643,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "wireless_controller/hotspot20/h2qp_wan_metric",
     "category": "cmdb",
-    "api_path": "wireless-controller/hotspot20/h2qp-wan-metric",
+    "api_path": "wireless-controller.hotspot20/h2qp-wan-metric",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure WAN metrics.",

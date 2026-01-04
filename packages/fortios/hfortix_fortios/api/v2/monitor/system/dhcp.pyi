@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Dhcp:
+class Performance:
     """
-    Monitor endpoint for system/dhcp
+    Configuration for system/performance/status
     
-    Path: system/dhcp
+    Path: system/performance
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Dhcp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]

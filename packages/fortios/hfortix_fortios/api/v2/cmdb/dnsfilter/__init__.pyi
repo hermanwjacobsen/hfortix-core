@@ -1,17 +1,20 @@
-"""
-Type stubs for dnsfilter category.
+"""Type stubs for DNSFILTER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.988242+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .domain_filter import DomainFilter as DomainFilter
-from .profile import Profile as Profile
 
-__all__ = [
-    "DomainFilter",
-    "Profile",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import domain_filter
+    from . import profile
+
+
+class Dnsfilter:
+    """Type stub for Dnsfilter."""
+
+    domain_filter: domain_filter.DomainFilter
+    profile: profile.Profile
+
+    def __init__(self, client: IHTTPClient) -> None: ...

@@ -957,7 +957,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/fortianalyzer/override_setting",
     "category": "cmdb",
-    "api_path": "log/fortianalyzer/override-setting",
+    "api_path": "log.fortianalyzer/override-setting",
     "help": "Override FortiAnalyzer settings.",
     "total_fields": 29,
     "required_fields_count": 2,

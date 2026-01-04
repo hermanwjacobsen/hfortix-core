@@ -1,15 +1,18 @@
-"""
-Type stubs for file_filter category.
+"""Type stubs for FILE_FILTER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.979840+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .profile import Profile as Profile
 
-__all__ = [
-    "Profile",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import profile
+
+
+class FileFilter:
+    """Type stub for FileFilter."""
+
+    profile: profile.Profile
+
+    def __init__(self, client: IHTTPClient) -> None: ...

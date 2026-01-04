@@ -105,9 +105,9 @@ class AnqpVenueName:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/wireless-controller/hotspot20/anqp-venue-name/" + str(name)
+            endpoint = "/wireless-controller.hotspot20/anqp-venue-name/" + str(name)
         else:
-            endpoint = "/wireless-controller/hotspot20/anqp-venue-name"
+            endpoint = "/wireless-controller.hotspot20/anqp-venue-name"
         
         params.update(kwargs)
         return self._client.get(
@@ -182,7 +182,7 @@ class AnqpVenueName:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/wireless-controller/hotspot20/anqp-venue-name/" + str(name_value)
+        endpoint = "/wireless-controller.hotspot20/anqp-venue-name/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -254,7 +254,7 @@ class AnqpVenueName:
                 endpoint="cmdb/wireless_controller/hotspot20/anqp_venue_name",
             )
 
-        endpoint = "/wireless-controller/hotspot20/anqp-venue-name"
+        endpoint = "/wireless-controller.hotspot20/anqp-venue-name"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -297,7 +297,7 @@ class AnqpVenueName:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/wireless-controller/hotspot20/anqp-venue-name/" + str(name)
+        endpoint = "/wireless-controller.hotspot20/anqp-venue-name/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

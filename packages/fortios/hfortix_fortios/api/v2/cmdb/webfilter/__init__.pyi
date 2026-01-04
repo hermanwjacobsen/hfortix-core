@@ -1,41 +1,44 @@
-"""
-Type stubs for webfilter category.
+"""Type stubs for WEBFILTER category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.974537+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .content import Content as Content
-from .content_header import ContentHeader as ContentHeader
-from .fortiguard import Fortiguard as Fortiguard
-from .ftgd_local_cat import FtgdLocalCat as FtgdLocalCat
-from .ftgd_local_rating import FtgdLocalRating as FtgdLocalRating
-from .ftgd_local_risk import FtgdLocalRisk as FtgdLocalRisk
-from .ftgd_risk_level import FtgdRiskLevel as FtgdRiskLevel
-from .ips_urlfilter_cache_setting import IpsUrlfilterCacheSetting as IpsUrlfilterCacheSetting
-from .ips_urlfilter_setting import IpsUrlfilterSetting as IpsUrlfilterSetting
-from .ips_urlfilter_setting6 import IpsUrlfilterSetting6 as IpsUrlfilterSetting6
-from .override import Override as Override
-from .profile import Profile as Profile
-from .search_engine import SearchEngine as SearchEngine
-from .urlfilter import Urlfilter as Urlfilter
 
-__all__ = [
-    "Content",
-    "ContentHeader",
-    "Fortiguard",
-    "FtgdLocalCat",
-    "FtgdLocalRating",
-    "FtgdLocalRisk",
-    "FtgdRiskLevel",
-    "IpsUrlfilterCacheSetting",
-    "IpsUrlfilterSetting",
-    "IpsUrlfilterSetting6",
-    "Override",
-    "Profile",
-    "SearchEngine",
-    "Urlfilter",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import content
+    from . import content_header
+    from . import fortiguard
+    from . import ftgd_local_cat
+    from . import ftgd_local_rating
+    from . import ftgd_local_risk
+    from . import ftgd_risk_level
+    from . import ips_urlfilter_cache_setting
+    from . import ips_urlfilter_setting
+    from . import ips_urlfilter_setting6
+    from . import override
+    from . import profile
+    from . import search_engine
+    from . import urlfilter
+
+
+class Webfilter:
+    """Type stub for Webfilter."""
+
+    content: content.Content
+    content_header: content_header.ContentHeader
+    fortiguard: fortiguard.Fortiguard
+    ftgd_local_cat: ftgd_local_cat.FtgdLocalCat
+    ftgd_local_rating: ftgd_local_rating.FtgdLocalRating
+    ftgd_local_risk: ftgd_local_risk.FtgdLocalRisk
+    ftgd_risk_level: ftgd_risk_level.FtgdRiskLevel
+    ips_urlfilter_cache_setting: ips_urlfilter_cache_setting.IpsUrlfilterCacheSetting
+    ips_urlfilter_setting: ips_urlfilter_setting.IpsUrlfilterSetting
+    ips_urlfilter_setting6: ips_urlfilter_setting6.IpsUrlfilterSetting6
+    override: override.Override
+    profile: profile.Profile
+    search_engine: search_engine.SearchEngine
+    urlfilter: urlfilter.Urlfilter
+
+    def __init__(self, client: IHTTPClient) -> None: ...

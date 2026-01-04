@@ -666,7 +666,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/ssh/host_key",
     "category": "cmdb",
-    "api_path": "firewall/ssh/host-key",
+    "api_path": "firewall.ssh/host-key",
     "mkey": "name",
     "mkey_type": "string",
     "help": "SSH proxy host public keys.",

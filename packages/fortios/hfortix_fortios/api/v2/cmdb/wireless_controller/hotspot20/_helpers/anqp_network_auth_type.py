@@ -580,7 +580,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "wireless_controller/hotspot20/anqp_network_auth_type",
     "category": "cmdb",
-    "api_path": "wireless-controller/hotspot20/anqp-network-auth-type",
+    "api_path": "wireless-controller.hotspot20/anqp-network-auth-type",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure network authentication type.",

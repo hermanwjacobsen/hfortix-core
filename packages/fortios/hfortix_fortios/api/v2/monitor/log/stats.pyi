@@ -1,11 +1,11 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 
-class Stats:
+class Fortianalyzer:
     """
-    Monitor endpoint for log/stats
+    Configuration for log/fortianalyzer
     
-    Path: log/stats
+    Path: log/fortianalyzer
     Category: monitor
     """
     
@@ -80,3 +80,8 @@ class Stats:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Fortianalyzer",
+]

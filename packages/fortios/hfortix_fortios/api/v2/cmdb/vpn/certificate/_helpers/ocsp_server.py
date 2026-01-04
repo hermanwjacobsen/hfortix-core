@@ -594,7 +594,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/certificate/ocsp_server",
     "category": "cmdb",
-    "api_path": "vpn/certificate/ocsp-server",
+    "api_path": "vpn.certificate/ocsp-server",
     "mkey": "name",
     "mkey_type": "string",
     "help": "OCSP server configuration.",

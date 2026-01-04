@@ -6,19 +6,12 @@ from . import initial_config
 from . import ptp
 from . import qos
 from . import security_policy
-from .acl_group import AclGroup
-from .acl_ingress import AclIngress
-from .auto_config_custom import AutoConfigCustom
-from .auto_config_default import AutoConfigDefault
-from .auto_config_policy import AutoConfigPolicy
 from .custom_command import CustomCommand
 from .dynamic_port_policy import DynamicPortPolicy
 from .flow_tracking import FlowTracking
 from .fortilink_settings import FortilinkSettings
 from .global_setting import GlobalSetting
 from .igmp_snooping import IgmpSnooping
-from .initial_config_template import InitialConfigTemplate
-from .initial_config_vlans import InitialConfigVlans
 from .ip_source_guard_log import IpSourceGuardLog
 from .lldp_profile import LldpProfile
 from .lldp_settings import LldpSettings
@@ -26,15 +19,7 @@ from .location import Location
 from .mac_policy import MacPolicy
 from .managed_switch import ManagedSwitch
 from .network_monitor_settings import NetworkMonitorSettings
-from .ptp_interface_policy import PtpInterfacePolicy
-from .ptp_profile import PtpProfile
-from .qos_dot1p_map import QosDot1pMap
-from .qos_ip_dscp_map import QosIpDscpMap
-from .qos_qos_policy import QosQosPolicy
-from .qos_queue_policy import QosQueuePolicy
 from .remote_log import RemoteLog
-from .security_policy_802_1X import SecurityPolicy8021x
-from .security_policy_local_access import SecurityPolicyLocalAccess
 from .sflow import Sflow
 from .snmp_community import SnmpCommunity
 from .snmp_sysinfo import SnmpSysinfo
@@ -57,12 +42,7 @@ from .x802_1X_settings import X8021xSettings
 
 __all__ = [
     "Acl",
-    "AclGroup",
-    "AclIngress",
     "AutoConfig",
-    "AutoConfigCustom",
-    "AutoConfigDefault",
-    "AutoConfigPolicy",
     "CustomCommand",
     "DynamicPortPolicy",
     "FlowTracking",
@@ -70,8 +50,6 @@ __all__ = [
     "GlobalSetting",
     "IgmpSnooping",
     "InitialConfig",
-    "InitialConfigTemplate",
-    "InitialConfigVlans",
     "IpSourceGuardLog",
     "LldpProfile",
     "LldpSettings",
@@ -80,17 +58,9 @@ __all__ = [
     "ManagedSwitch",
     "NetworkMonitorSettings",
     "Ptp",
-    "PtpInterfacePolicy",
-    "PtpProfile",
     "Qos",
-    "QosDot1pMap",
-    "QosIpDscpMap",
-    "QosQosPolicy",
-    "QosQueuePolicy",
     "RemoteLog",
     "SecurityPolicy",
-    "SecurityPolicy8021x",
-    "SecurityPolicyLocalAccess",
     "Sflow",
     "SnmpCommunity",
     "SnmpSysinfo",
@@ -129,19 +99,12 @@ class SwitchController:
         self.ptp = ptp.Ptp(client)
         self.qos = qos.Qos(client)
         self.security_policy = security_policy.SecurityPolicy(client)
-        self.acl_group = AclGroup(client)
-        self.acl_ingress = AclIngress(client)
-        self.auto_config_custom = AutoConfigCustom(client)
-        self.auto_config_default = AutoConfigDefault(client)
-        self.auto_config_policy = AutoConfigPolicy(client)
         self.custom_command = CustomCommand(client)
         self.dynamic_port_policy = DynamicPortPolicy(client)
         self.flow_tracking = FlowTracking(client)
         self.fortilink_settings = FortilinkSettings(client)
         self.global_setting = GlobalSetting(client)
         self.igmp_snooping = IgmpSnooping(client)
-        self.initial_config_template = InitialConfigTemplate(client)
-        self.initial_config_vlans = InitialConfigVlans(client)
         self.ip_source_guard_log = IpSourceGuardLog(client)
         self.lldp_profile = LldpProfile(client)
         self.lldp_settings = LldpSettings(client)
@@ -149,15 +112,7 @@ class SwitchController:
         self.mac_policy = MacPolicy(client)
         self.managed_switch = ManagedSwitch(client)
         self.network_monitor_settings = NetworkMonitorSettings(client)
-        self.ptp_interface_policy = PtpInterfacePolicy(client)
-        self.ptp_profile = PtpProfile(client)
-        self.qos_dot1p_map = QosDot1pMap(client)
-        self.qos_ip_dscp_map = QosIpDscpMap(client)
-        self.qos_qos_policy = QosQosPolicy(client)
-        self.qos_queue_policy = QosQueuePolicy(client)
         self.remote_log = RemoteLog(client)
-        self.security_policy_802_1X = SecurityPolicy8021x(client)
-        self.security_policy_local_access = SecurityPolicyLocalAccess(client)
         self.sflow = Sflow(client)
         self.snmp_community = SnmpCommunity(client)
         self.snmp_sysinfo = SnmpSysinfo(client)

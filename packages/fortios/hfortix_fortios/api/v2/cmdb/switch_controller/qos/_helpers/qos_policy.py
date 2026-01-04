@@ -556,7 +556,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/qos/qos_policy",
     "category": "cmdb",
-    "api_path": "switch-controller/qos/qos-policy",
+    "api_path": "switch-controller.qos/qos-policy",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure FortiSwitch QoS policy.",

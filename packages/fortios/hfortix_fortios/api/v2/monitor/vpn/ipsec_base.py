@@ -61,7 +61,7 @@ class Ipsec:
         """
         Retrieve vpn/ipsec configuration.
 
-        Monitor endpoint for vpn/ipsec
+        Monitor endpoint for vpn/ipsec/connection-count
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

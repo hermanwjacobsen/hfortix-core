@@ -2,7 +2,6 @@
 
 from .clear_statistics import ClearStatistics
 from .manual_update import ManualUpdate
-from .server_info import ServerInfo
 from .test_availability import TestAvailability
 from .update import Update
 
@@ -10,7 +9,6 @@ __all__ = [
     "ClearStatistics",
     "Fortiguard",
     "ManualUpdate",
-    "ServerInfo",
     "TestAvailability",
     "Update",
 ]
@@ -27,6 +25,5 @@ class Fortiguard:
         """
         self.clear_statistics = ClearStatistics(client)
         self.manual_update = ManualUpdate(client)
-        self.server_info = ServerInfo(client)
         self.test_availability = TestAvailability(client)
         self.update = Update(client)

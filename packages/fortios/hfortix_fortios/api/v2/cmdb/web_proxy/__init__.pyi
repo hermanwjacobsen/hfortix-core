@@ -1,33 +1,36 @@
-"""
-Type stubs for web_proxy category.
+"""Type stubs for WEB_PROXY category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.972680+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .debug_url import DebugUrl as DebugUrl
-from .explicit import Explicit as Explicit
-from .fast_fallback import FastFallback as FastFallback
-from .forward_server import ForwardServer as ForwardServer
-from .forward_server_group import ForwardServerGroup as ForwardServerGroup
-from .global_setting import GlobalSetting as GlobalSetting
-from .isolator_server import IsolatorServer as IsolatorServer
-from .profile import Profile as Profile
-from .url_match import UrlMatch as UrlMatch
-from .wisp import Wisp as Wisp
 
-__all__ = [
-    "DebugUrl",
-    "Explicit",
-    "FastFallback",
-    "ForwardServer",
-    "ForwardServerGroup",
-    "GlobalSetting",
-    "IsolatorServer",
-    "Profile",
-    "UrlMatch",
-    "Wisp",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import debug_url
+    from . import explicit
+    from . import fast_fallback
+    from . import forward_server
+    from . import forward_server_group
+    from . import global_setting
+    from . import isolator_server
+    from . import profile
+    from . import url_match
+    from . import wisp
+
+
+class WebProxy:
+    """Type stub for WebProxy."""
+
+    debug_url: debug_url.DebugUrl
+    explicit: explicit.Explicit
+    fast_fallback: fast_fallback.FastFallback
+    forward_server: forward_server.ForwardServer
+    forward_server_group: forward_server_group.ForwardServerGroup
+    global_setting: global_setting.GlobalSetting
+    isolator_server: isolator_server.IsolatorServer
+    profile: profile.Profile
+    url_match: url_match.UrlMatch
+    wisp: wisp.Wisp
+
+    def __init__(self, client: IHTTPClient) -> None: ...

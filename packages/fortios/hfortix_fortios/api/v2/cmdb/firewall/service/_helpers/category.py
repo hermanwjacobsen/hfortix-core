@@ -579,7 +579,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/service/category",
     "category": "cmdb",
-    "api_path": "firewall/service/category",
+    "api_path": "firewall.service/category",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure service categories.",

@@ -758,7 +758,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/shaper/traffic_shaper",
     "category": "cmdb",
-    "api_path": "firewall/shaper/traffic-shaper",
+    "api_path": "firewall.shaper/traffic-shaper",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure shared traffic shaper.",

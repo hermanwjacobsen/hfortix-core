@@ -605,7 +605,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "vpn/ipsec/fec",
     "category": "cmdb",
-    "api_path": "vpn/ipsec/fec",
+    "api_path": "vpn.ipsec/fec",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure Forward Error Correction (FEC) mapping profiles.",

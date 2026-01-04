@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Botnet:
     """
-    Monitor endpoint for system/botnet
+    Configuration for system/botnet/stat
     
     Path: system/botnet
     Category: monitor
@@ -80,3 +80,8 @@ class Botnet:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Botnet",
+]

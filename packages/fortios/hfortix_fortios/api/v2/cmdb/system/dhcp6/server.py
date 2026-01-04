@@ -105,9 +105,9 @@ class Server:
         params = payload_dict.copy() if payload_dict else {}
         
         if id:
-            endpoint = "/system/dhcp6/server/" + str(id)
+            endpoint = "/system.dhcp6/server/" + str(id)
         else:
-            endpoint = "/system/dhcp6/server"
+            endpoint = "/system.dhcp6/server"
         
         params.update(kwargs)
         return self._client.get(
@@ -223,7 +223,7 @@ class Server:
         id_value = payload_data.get("id")
         if not id_value:
             raise ValueError("id is required for PUT")
-        endpoint = "/system/dhcp6/server/" + str(id_value)
+        endpoint = "/system.dhcp6/server/" + str(id_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -336,7 +336,7 @@ class Server:
                 endpoint="cmdb/system/dhcp6/server",
             )
 
-        endpoint = "/system/dhcp6/server"
+        endpoint = "/system.dhcp6/server"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -379,7 +379,7 @@ class Server:
         """
         if not id:
             raise ValueError("id is required for DELETE")
-        endpoint = "/system/dhcp6/server/" + str(id)
+        endpoint = "/system.dhcp6/server/" + str(id)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

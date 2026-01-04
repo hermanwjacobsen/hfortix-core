@@ -571,7 +571,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/webtrends/setting",
     "category": "cmdb",
-    "api_path": "log/webtrends/setting",
+    "api_path": "log.webtrends/setting",
     "help": "Settings for WebTrends.",
     "total_fields": 2,
     "required_fields_count": 0,

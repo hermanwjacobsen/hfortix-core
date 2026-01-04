@@ -105,9 +105,9 @@ class Category:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/firewall/service/category/" + str(name)
+            endpoint = "/firewall.service/category/" + str(name)
         else:
-            endpoint = "/firewall/service/category"
+            endpoint = "/firewall.service/category"
         
         params.update(kwargs)
         return self._client.get(
@@ -188,7 +188,7 @@ class Category:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/firewall/service/category/" + str(name_value)
+        endpoint = "/firewall.service/category/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -266,7 +266,7 @@ class Category:
                 endpoint="cmdb/firewall/service/category",
             )
 
-        endpoint = "/firewall/service/category"
+        endpoint = "/firewall.service/category"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -309,7 +309,7 @@ class Category:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/firewall/service/category/" + str(name)
+        endpoint = "/firewall.service/category/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

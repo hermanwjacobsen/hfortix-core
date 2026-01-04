@@ -659,7 +659,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/ptp/profile",
     "category": "cmdb",
-    "api_path": "switch-controller/ptp/profile",
+    "api_path": "switch-controller.ptp/profile",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Global PTP profile.",

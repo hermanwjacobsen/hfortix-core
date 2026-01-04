@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Forticloud:
     """
-    Configuration for log/forticloud
+    Configuration for log/forticloud/connection
     
     Path: log/forticloud
     Category: monitor
@@ -80,3 +80,8 @@ class Forticloud:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Forticloud",
+]

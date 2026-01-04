@@ -105,9 +105,9 @@ class AnqpIpAddressType:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/wireless-controller/hotspot20/anqp-ip-address-type/" + str(name)
+            endpoint = "/wireless-controller.hotspot20/anqp-ip-address-type/" + str(name)
         else:
-            endpoint = "/wireless-controller/hotspot20/anqp-ip-address-type"
+            endpoint = "/wireless-controller.hotspot20/anqp-ip-address-type"
         
         params.update(kwargs)
         return self._client.get(
@@ -185,7 +185,7 @@ class AnqpIpAddressType:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/wireless-controller/hotspot20/anqp-ip-address-type/" + str(name_value)
+        endpoint = "/wireless-controller.hotspot20/anqp-ip-address-type/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -260,7 +260,7 @@ class AnqpIpAddressType:
                 endpoint="cmdb/wireless_controller/hotspot20/anqp_ip_address_type",
             )
 
-        endpoint = "/wireless-controller/hotspot20/anqp-ip-address-type"
+        endpoint = "/wireless-controller.hotspot20/anqp-ip-address-type"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -303,7 +303,7 @@ class AnqpIpAddressType:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/wireless-controller/hotspot20/anqp-ip-address-type/" + str(name)
+        endpoint = "/wireless-controller.hotspot20/anqp-ip-address-type/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

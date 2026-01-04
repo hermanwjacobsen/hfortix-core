@@ -105,9 +105,9 @@ class Table:
         params = payload_dict.copy() if payload_dict else {}
         
         if seq_num:
-            endpoint = "/firewall/ipmacbinding/table/" + str(seq_num)
+            endpoint = "/firewall.ipmacbinding/table/" + str(seq_num)
         else:
-            endpoint = "/firewall/ipmacbinding/table"
+            endpoint = "/firewall.ipmacbinding/table"
         
         params.update(kwargs)
         return self._client.get(
@@ -191,7 +191,7 @@ class Table:
         seq_num_value = payload_data.get("seq-num")
         if not seq_num_value:
             raise ValueError("seq-num is required for PUT")
-        endpoint = "/firewall/ipmacbinding/table/" + str(seq_num_value)
+        endpoint = "/firewall.ipmacbinding/table/" + str(seq_num_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -272,7 +272,7 @@ class Table:
                 endpoint="cmdb/firewall/ipmacbinding/table",
             )
 
-        endpoint = "/firewall/ipmacbinding/table"
+        endpoint = "/firewall.ipmacbinding/table"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -315,7 +315,7 @@ class Table:
         """
         if not seq_num:
             raise ValueError("seq-num is required for DELETE")
-        endpoint = "/firewall/ipmacbinding/table/" + str(seq_num)
+        endpoint = "/firewall.ipmacbinding/table/" + str(seq_num)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

@@ -547,7 +547,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "log/memory/global_setting",
     "category": "cmdb",
-    "api_path": "log/memory/global-setting",
+    "api_path": "log.memory/global-setting",
     "help": "Global settings for memory logging.",
     "total_fields": 4,
     "required_fields_count": 0,

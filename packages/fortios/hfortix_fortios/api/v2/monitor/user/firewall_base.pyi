@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Firewall:
     """
-    Monitor endpoint for user/firewall
+    Configuration for user/firewall/count
     
     Path: user/firewall
     Category: monitor

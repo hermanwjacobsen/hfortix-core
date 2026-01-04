@@ -1,10 +1,8 @@
 """FortiOS CMDB - Shaper category"""
 
-from .multi_class_shaper import MultiClassShaper
 from .reset import Reset
 
 __all__ = [
-    "MultiClassShaper",
     "Reset",
     "Shaper",
 ]
@@ -19,5 +17,4 @@ class Shaper:
         Args:
             client: HTTP client instance for API communication
         """
-        self.multi_class_shaper = MultiClassShaper(client)
         self.reset = Reset(client)

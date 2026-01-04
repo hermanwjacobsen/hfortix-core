@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn/ssl",
     "category": "monitor",
     "api_path": "vpn/ssl",
-    "help": "Monitor endpoint for vpn/ssl",
+    "help": "Configuration for vpn/ssl/stats",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -623,7 +623,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "firewall/schedule/recurring",
     "category": "cmdb",
-    "api_path": "firewall/schedule/recurring",
+    "api_path": "firewall.schedule/recurring",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Recurring schedule configuration.",

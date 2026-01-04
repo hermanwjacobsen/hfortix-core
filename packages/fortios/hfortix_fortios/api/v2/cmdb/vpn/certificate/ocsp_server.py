@@ -105,9 +105,9 @@ class OcspServer:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/vpn/certificate/ocsp-server/" + str(name)
+            endpoint = "/vpn.certificate/ocsp-server/" + str(name)
         else:
-            endpoint = "/vpn/certificate/ocsp-server"
+            endpoint = "/vpn.certificate/ocsp-server"
         
         params.update(kwargs)
         return self._client.get(
@@ -195,7 +195,7 @@ class OcspServer:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/vpn/certificate/ocsp-server/" + str(name_value)
+        endpoint = "/vpn.certificate/ocsp-server/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -280,7 +280,7 @@ class OcspServer:
                 endpoint="cmdb/vpn/certificate/ocsp_server",
             )
 
-        endpoint = "/vpn/certificate/ocsp-server"
+        endpoint = "/vpn.certificate/ocsp-server"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -323,7 +323,7 @@ class OcspServer:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/vpn/certificate/ocsp-server/" + str(name)
+        endpoint = "/vpn.certificate/ocsp-server/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

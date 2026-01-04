@@ -628,7 +628,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/autoupdate/schedule",
     "category": "cmdb",
-    "api_path": "system/autoupdate/schedule",
+    "api_path": "system.autoupdate/schedule",
     "help": "Configure update schedule.",
     "total_fields": 4,
     "required_fields_count": 1,

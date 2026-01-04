@@ -3,11 +3,14 @@ FortiOS MONITOR - Firewall shaper
 
 Configuration endpoint for managing monitor firewall/shaper objects.
 
+📖 **Read-Only Reference Table**
+   This endpoint provides read-only reference data (e.g., geography, timezone).
+   - GET operations return all available data
+   - POST/PUT/DELETE operations are not supported
+   - Querying by identifier returns all items (filter is ignored)
+
 API Endpoints:
     GET    /monitor/firewall/shaper
-    POST   /monitor/firewall/shaper
-    PUT    /monitor/firewall/shaper/{identifier}
-    DELETE /monitor/firewall/shaper/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
@@ -17,10 +20,9 @@ Example Usage:
     >>> items = fgt.api.monitor.firewall_shaper.get()
 
 Important:
-    - Use **POST** to create new objects
-    - Use **PUT** to update existing objects
-    - Use **GET** to retrieve configuration
-    - Use **DELETE** to remove objects
+    - This is a **read-only** endpoint (reference data only)
+    - Use **GET** to retrieve available options
+    - Creation/modification/deletion not supported
 """
 
 from __future__ import annotations
@@ -36,6 +38,9 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,
     is_success,
 )
+
+# Import cache for readonly reference data
+from hfortix_core.cache import readonly_cache
 
 
 class Shaper:
@@ -56,7 +61,7 @@ class Shaper:
         """
         Retrieve firewall/shaper configuration.
 
-        Configuration for firewall/shaper
+        Monitor endpoint for firewall/shaper/multi-class-shaper
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -97,6 +102,20 @@ class Shaper:
             - delete(): Remove firewall/shaper object
             - exists(): Check if object exists
         """
+        # Check cache for readonly reference data (24hr TTL)
+        cache_key = f"monitor/firewall/shaper"
+        
+        # Only use cache for full list queries (no identifier, no filters)
+        is_list_query = name is None and not payload_dict and not kwargs
+        
+        if is_list_query:
+            cached_data = readonly_cache.get(cache_key)
+            if cached_data is not None:
+                # Return cached data
+                if raw_json:
+                    return cached_data
+                return cached_data
+        
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
@@ -105,9 +124,20 @@ class Shaper:
             endpoint = "/firewall/shaper"
         
         params.update(kwargs)
-        return self._client.get(
+        
+        # Fetch data and cache if this is a list query
+        response = self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
+        
+        # Cache the response for list queries
+        if is_list_query:
+            if isinstance(response, dict):
+                readonly_cache.set(cache_key, response)
+            # For async responses, we can't cache easily without awaiting
+            # User will benefit from cache on subsequent sync calls
+        
+        return response
 
 
 

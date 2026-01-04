@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/firewall",
     "category": "monitor",
     "api_path": "user/firewall",
-    "help": "Monitor endpoint for user/firewall",
+    "help": "Configuration for user/firewall/count",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

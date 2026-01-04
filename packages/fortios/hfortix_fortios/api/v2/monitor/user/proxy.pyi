@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Proxy:
     """
-    Monitor endpoint for user/proxy
+    Configuration for user/proxy/count
     
     Path: user/proxy
     Category: monitor
@@ -80,3 +80,8 @@ class Proxy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Proxy",
+]

@@ -846,7 +846,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/lldp/network_policy",
     "category": "cmdb",
-    "api_path": "system/lldp/network-policy",
+    "api_path": "system.lldp/network-policy",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure LLDP network policy.",

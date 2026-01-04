@@ -872,7 +872,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/dhcp6/server",
     "category": "cmdb",
-    "api_path": "system/dhcp6/server",
+    "api_path": "system.dhcp6/server",
     "mkey": "id",
     "mkey_type": "integer",
     "help": "Configure DHCPv6 servers.",

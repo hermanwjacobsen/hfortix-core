@@ -1,21 +1,24 @@
-"""
-Type stubs for antivirus category.
+"""Type stubs for ANTIVIRUS category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.979020+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .exempt_list import ExemptList as ExemptList
-from .profile import Profile as Profile
-from .quarantine import Quarantine as Quarantine
-from .settings import Settings as Settings
 
-__all__ = [
-    "ExemptList",
-    "Profile",
-    "Quarantine",
-    "Settings",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import exempt_list
+    from . import profile
+    from . import quarantine
+    from . import settings
+
+
+class Antivirus:
+    """Type stub for Antivirus."""
+
+    exempt_list: exempt_list.ExemptList
+    profile: profile.Profile
+    quarantine: quarantine.Quarantine
+    settings: settings.Settings
+
+    def __init__(self, client: IHTTPClient) -> None: ...

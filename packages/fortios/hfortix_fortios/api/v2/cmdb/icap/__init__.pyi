@@ -1,19 +1,22 @@
-"""
-Type stubs for icap category.
+"""Type stubs for ICAP category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.987298+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .profile import Profile as Profile
-from .server import Server as Server
-from .server_group import ServerGroup as ServerGroup
 
-__all__ = [
-    "Profile",
-    "Server",
-    "ServerGroup",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import profile
+    from . import server
+    from . import server_group
+
+
+class Icap:
+    """Type stub for Icap."""
+
+    profile: profile.Profile
+    server: server.Server
+    server_group: server_group.ServerGroup
+
+    def __init__(self, client: IHTTPClient) -> None: ...

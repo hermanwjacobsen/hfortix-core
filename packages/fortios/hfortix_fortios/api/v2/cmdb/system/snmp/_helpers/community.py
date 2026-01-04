@@ -890,7 +890,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/snmp/community",
     "category": "cmdb",
-    "api_path": "system/snmp/community",
+    "api_path": "system.snmp/community",
     "mkey": "id",
     "mkey_type": "integer",
     "help": "SNMP community configuration.",

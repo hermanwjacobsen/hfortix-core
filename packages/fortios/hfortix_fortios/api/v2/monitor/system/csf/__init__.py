@@ -1,11 +1,9 @@
 """FortiOS CMDB - Csf category"""
 
-from .pending_authorizations import PendingAuthorizations
 from .register_appliance import RegisterAppliance
 
 __all__ = [
     "Csf",
-    "PendingAuthorizations",
     "RegisterAppliance",
 ]
 
@@ -19,5 +17,4 @@ class Csf:
         Args:
             client: HTTP client instance for API communication
         """
-        self.pending_authorizations = PendingAuthorizations(client)
         self.register_appliance = RegisterAppliance(client)

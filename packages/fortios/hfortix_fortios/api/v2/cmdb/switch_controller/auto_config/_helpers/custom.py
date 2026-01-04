@@ -557,7 +557,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "switch_controller/auto_config/custom",
     "category": "cmdb",
-    "api_path": "switch-controller/auto-config/custom",
+    "api_path": "switch-controller.auto-config/custom",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Policies which can override the 'default' for specific ISL/ICL/FortiLink interface.",

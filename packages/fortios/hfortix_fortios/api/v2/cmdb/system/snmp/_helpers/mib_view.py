@@ -548,7 +548,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/snmp/mib_view",
     "category": "cmdb",
-    "api_path": "system/snmp/mib-view",
+    "api_path": "system.snmp/mib-view",
     "mkey": "name",
     "mkey_type": "string",
     "help": "SNMP Access Control MIB View configuration.",

@@ -105,9 +105,9 @@ class QueuePolicy:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/switch-controller/qos/queue-policy/" + str(name)
+            endpoint = "/switch-controller.qos/queue-policy/" + str(name)
         else:
-            endpoint = "/switch-controller/qos/queue-policy"
+            endpoint = "/switch-controller.qos/queue-policy"
         
         params.update(kwargs)
         return self._client.get(
@@ -188,7 +188,7 @@ class QueuePolicy:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/switch-controller/qos/queue-policy/" + str(name_value)
+        endpoint = "/switch-controller.qos/queue-policy/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -266,7 +266,7 @@ class QueuePolicy:
                 endpoint="cmdb/switch_controller/qos/queue_policy",
             )
 
-        endpoint = "/switch-controller/qos/queue-policy"
+        endpoint = "/switch-controller.qos/queue-policy"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -309,7 +309,7 @@ class QueuePolicy:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/switch-controller/qos/queue-policy/" + str(name)
+        endpoint = "/switch-controller.qos/queue-policy/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

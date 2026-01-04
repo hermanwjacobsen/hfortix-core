@@ -1,19 +1,22 @@
-"""
-Type stubs for waf category.
+"""Type stubs for WAF category."""
 
-This file provides type hints for IDE autocomplete and type checking.
+from __future__ import annotations
 
-Auto-generated - do not edit manually.
-Last generated: 2026-01-03T20:33:52.987784+00:00
-"""
+from typing import TYPE_CHECKING
 
-# Import all endpoint classes
-from .main_class import MainClass as MainClass
-from .profile import Profile as Profile
-from .signature import Signature as Signature
 
-__all__ = [
-    "MainClass",
-    "Profile",
-    "Signature",
-]
+if TYPE_CHECKING:
+    from hfortix_core.http.interface import IHTTPClient
+    from . import main_class
+    from . import profile
+    from . import signature
+
+
+class Waf:
+    """Type stub for Waf."""
+
+    main_class: main_class.MainClass
+    profile: profile.Profile
+    signature: signature.Signature
+
+    def __init__(self, client: IHTTPClient) -> None: ...

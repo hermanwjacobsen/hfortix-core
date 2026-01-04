@@ -105,9 +105,9 @@ class Ca:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/vpn/certificate/ca/" + str(name)
+            endpoint = "/vpn.certificate/ca/" + str(name)
         else:
-            endpoint = "/vpn/certificate/ca"
+            endpoint = "/vpn.certificate/ca"
         
         params.update(kwargs)
         return self._client.get(
@@ -209,7 +209,7 @@ class Ca:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/vpn/certificate/ca/" + str(name_value)
+        endpoint = "/vpn.certificate/ca/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -308,7 +308,7 @@ class Ca:
                 endpoint="cmdb/vpn/certificate/ca",
             )
 
-        endpoint = "/vpn/certificate/ca"
+        endpoint = "/vpn.certificate/ca"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -351,7 +351,7 @@ class Ca:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/vpn/certificate/ca/" + str(name)
+        endpoint = "/vpn.certificate/ca/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

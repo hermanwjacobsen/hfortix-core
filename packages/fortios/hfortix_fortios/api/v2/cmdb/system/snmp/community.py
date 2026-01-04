@@ -105,9 +105,9 @@ class Community:
         params = payload_dict.copy() if payload_dict else {}
         
         if id:
-            endpoint = "/system/snmp/community/" + str(id)
+            endpoint = "/system.snmp/community/" + str(id)
         else:
-            endpoint = "/system/snmp/community"
+            endpoint = "/system.snmp/community"
         
         params.update(kwargs)
         return self._client.get(
@@ -217,7 +217,7 @@ class Community:
         id_value = payload_data.get("id")
         if not id_value:
             raise ValueError("id is required for PUT")
-        endpoint = "/system/snmp/community/" + str(id_value)
+        endpoint = "/system.snmp/community/" + str(id_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -324,7 +324,7 @@ class Community:
                 endpoint="cmdb/system/snmp/community",
             )
 
-        endpoint = "/system/snmp/community"
+        endpoint = "/system.snmp/community"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -367,7 +367,7 @@ class Community:
         """
         if not id:
             raise ValueError("id is required for DELETE")
-        endpoint = "/system/snmp/community/" + str(id)
+        endpoint = "/system.snmp/community/" + str(id)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

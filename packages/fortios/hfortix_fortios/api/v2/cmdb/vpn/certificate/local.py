@@ -105,9 +105,9 @@ class Local:
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
-            endpoint = "/vpn/certificate/local/" + str(name)
+            endpoint = "/vpn.certificate/local/" + str(name)
         else:
-            endpoint = "/vpn/certificate/local"
+            endpoint = "/vpn.certificate/local"
         
         params.update(kwargs)
         return self._client.get(
@@ -263,7 +263,7 @@ class Local:
         name_value = payload_data.get("name")
         if not name_value:
             raise ValueError("name is required for PUT")
-        endpoint = "/vpn/certificate/local/" + str(name_value)
+        endpoint = "/vpn.certificate/local/" + str(name_value)
 
         return self._client.put(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
@@ -416,7 +416,7 @@ class Local:
                 endpoint="cmdb/vpn/certificate/local",
             )
 
-        endpoint = "/vpn/certificate/local"
+        endpoint = "/vpn.certificate/local"
         return self._client.post(
             "cmdb", endpoint, data=payload_data, params=kwargs, vdom=vdom, raw_json=raw_json
         )
@@ -459,7 +459,7 @@ class Local:
         """
         if not name:
             raise ValueError("name is required for DELETE")
-        endpoint = "/vpn/certificate/local/" + str(name)
+        endpoint = "/vpn.certificate/local/" + str(name)
 
         return self._client.delete(
             "cmdb", endpoint, params=kwargs, vdom=vdom, raw_json=raw_json

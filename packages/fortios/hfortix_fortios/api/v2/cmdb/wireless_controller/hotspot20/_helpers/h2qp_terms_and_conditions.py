@@ -554,7 +554,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "wireless_controller/hotspot20/h2qp_terms_and_conditions",
     "category": "cmdb",
-    "api_path": "wireless-controller/hotspot20/h2qp-terms-and-conditions",
+    "api_path": "wireless-controller.hotspot20/h2qp-terms-and-conditions",
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure terms and conditions.",

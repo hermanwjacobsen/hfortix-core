@@ -1305,7 +1305,7 @@ def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]
 SCHEMA_INFO = {
     "endpoint": "system/dhcp/server",
     "category": "cmdb",
-    "api_path": "system/dhcp/server",
+    "api_path": "system.dhcp/server",
     "mkey": "id",
     "mkey_type": "integer",
     "help": "Configure DHCP servers.",
