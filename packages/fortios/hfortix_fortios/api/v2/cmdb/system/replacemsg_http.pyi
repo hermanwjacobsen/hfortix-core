@@ -104,3 +104,9 @@ class ReplacemsgHttp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ReplacemsgHttp",
+    "ReplacemsgHttpPayload",
+]

@@ -114,3 +114,9 @@ class AutomationCondition:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AutomationCondition",
+    "AutomationConditionPayload",
+]

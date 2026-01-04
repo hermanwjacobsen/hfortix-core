@@ -107,3 +107,9 @@ class ForwardServerGroup:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ForwardServerGroup",
+    "ForwardServerGroupPayload",
+]

@@ -104,3 +104,9 @@ class Remote:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Remote",
+    "RemotePayload",
+]

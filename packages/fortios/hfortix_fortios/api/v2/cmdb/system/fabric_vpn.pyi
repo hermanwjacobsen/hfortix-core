@@ -133,3 +133,9 @@ class FabricVpn:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FabricVpn",
+    "FabricVpnPayload",
+]

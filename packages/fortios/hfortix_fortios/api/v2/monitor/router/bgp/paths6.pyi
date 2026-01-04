@@ -80,3 +80,8 @@ class Paths6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Paths6",
+]

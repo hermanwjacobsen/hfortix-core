@@ -1,5 +1,7 @@
 """FortiOS CMDB - Vpn category"""
 
+from . import certificate
+from . import ipsec
 from .certificate_ca import CertificateCa
 from .certificate_crl import CertificateCrl
 from .certificate_hsm_local import CertificateHsmLocal
@@ -21,6 +23,7 @@ from .pptp import Pptp
 from .qkd import Qkd
 
 __all__ = [
+    "Certificate",
     "CertificateCa",
     "CertificateCrl",
     "CertificateHsmLocal",
@@ -28,6 +31,7 @@ __all__ = [
     "CertificateOcspServer",
     "CertificateRemote",
     "CertificateSetting",
+    "Ipsec",
     "IpsecConcentrator",
     "IpsecFec",
     "IpsecManualkey",
@@ -53,6 +57,8 @@ class Vpn:
         Args:
             client: HTTP client instance for API communication
         """
+        self.certificate = certificate.Certificate(client)
+        self.ipsec = ipsec.Ipsec(client)
         self.certificate_ca = CertificateCa(client)
         self.certificate_crl = CertificateCrl(client)
         self.certificate_hsm_local = CertificateHsmLocal(client)

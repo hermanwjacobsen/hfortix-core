@@ -107,3 +107,9 @@ class ViewMap:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ViewMap",
+    "ViewMapPayload",
+]

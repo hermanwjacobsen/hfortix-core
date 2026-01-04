@@ -125,3 +125,9 @@ class UserActivity:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "UserActivity",
+    "UserActivityPayload",
+]

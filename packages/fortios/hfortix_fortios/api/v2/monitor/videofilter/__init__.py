@@ -1,15 +1,20 @@
-"""Auto-generated category __init__ file."""
-
-from typing import TYPE_CHECKING
+"""FortiOS CMDB - Videofilter category"""
 
 from .fortiguard_categories import FortiguardCategories
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "FortiguardCategories",
+    "Videofilter",
+]
 
 
 class Videofilter:
-    """Container for {category_name} endpoints."""
+    """Videofilter endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
+    def __init__(self, client):
+        """Videofilter endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
         self.fortiguard_categories = FortiguardCategories(client)

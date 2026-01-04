@@ -80,3 +80,8 @@ class ReadInfo:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ReadInfo",
+]

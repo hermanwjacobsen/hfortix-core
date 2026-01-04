@@ -140,3 +140,9 @@ class HsmLocal:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "HsmLocal",
+    "HsmLocalPayload",
+]

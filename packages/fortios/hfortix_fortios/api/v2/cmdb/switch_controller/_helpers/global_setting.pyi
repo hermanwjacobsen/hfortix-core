@@ -38,3 +38,40 @@ def validate_field_value(field_name: str, value: Any) -> bool: ...
 def get_all_fields() -> list[str]: ...
 def get_required_fields() -> list[str]: ...
 def get_schema_info() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VALID_BODY_HTTPS_IMAGE_PUSH",
+    "VALID_BODY_VLAN_ALL_MODE",
+    "VALID_BODY_VLAN_OPTIMIZATION",
+    "VALID_BODY_VLAN_IDENTITY",
+    "VALID_BODY_DHCP_SERVER_ACCESS_LIST",
+    "VALID_BODY_DHCP_OPTION82_FORMAT",
+    "VALID_BODY_DHCP_OPTION82_CIRCUIT_ID",
+    "VALID_BODY_DHCP_OPTION82_REMOTE_ID",
+    "VALID_BODY_DHCP_SNOOP_CLIENT_REQ",
+    "VALID_BODY_LOG_MAC_LIMIT_VIOLATIONS",
+    "VALID_BODY_SN_DNS_RESOLUTION",
+    "VALID_BODY_MAC_EVENT_LOGGING",
+    "VALID_BODY_BOUNCE_QUARANTINED_LINK",
+    "VALID_BODY_QUARANTINE_MODE",
+    "VALID_BODY_UPDATE_USER_DEVICE",
+    "VALID_BODY_FIPS_ENFORCE",
+    "VALID_BODY_FIRMWARE_PROVISION_ON_AUTHORIZATION",
+    "VALID_BODY_SWITCH_ON_DEAUTH",
+    "FIELD_TYPES",
+    "FIELD_DESCRIPTIONS",
+    "FIELD_CONSTRAINTS",
+    "NESTED_SCHEMAS",
+    "FIELDS_WITH_DEFAULTS",
+    "get_field_type",
+    "get_field_description",
+    "get_field_default",
+    "get_field_constraints",
+    "get_nested_schema",
+    "get_field_metadata",
+    "validate_field_value",
+    "get_all_fields",
+    "get_required_fields",
+    "get_schema_info",
+]

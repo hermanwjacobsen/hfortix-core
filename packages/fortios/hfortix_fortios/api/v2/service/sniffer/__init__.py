@@ -1,6 +1,4 @@
-"""Auto-generated category __init__ file."""
-
-from typing import TYPE_CHECKING
+"""FortiOS CMDB - Sniffer category"""
 
 from .delete import Delete
 from .download import Download
@@ -10,14 +8,27 @@ from .start import Start
 from .start_base import Start
 from .stop import Stop
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Delete",
+    "Download",
+    "List",
+    "Meta",
+    "Sniffer",
+    "Start",
+    "Start",
+    "Stop",
+]
 
 
 class Sniffer:
-    """Container for {category_name} endpoints."""
+    """Sniffer endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
+    def __init__(self, client):
+        """Sniffer endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
         self.delete = Delete(client)
         self.download = Download(client)
         self.list = List(client)

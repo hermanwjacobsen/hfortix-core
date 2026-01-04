@@ -145,3 +145,9 @@ class Syslogd3OverrideSetting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Syslogd3OverrideSetting",
+    "Syslogd3OverrideSettingPayload",
+]

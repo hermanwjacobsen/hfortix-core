@@ -80,3 +80,8 @@ class RecordList:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "RecordList",
+]

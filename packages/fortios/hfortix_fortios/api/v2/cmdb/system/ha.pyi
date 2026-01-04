@@ -212,3 +212,9 @@ class Ha:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Ha",
+    "HaPayload",
+]

@@ -164,3 +164,9 @@ class Ospf:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Ospf",
+    "OspfPayload",
+]

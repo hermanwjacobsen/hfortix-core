@@ -130,3 +130,9 @@ class Log:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Log",
+    "LogPayload",
+]

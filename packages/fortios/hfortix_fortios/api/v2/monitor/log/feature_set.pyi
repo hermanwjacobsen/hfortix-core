@@ -80,3 +80,8 @@ class FeatureSet:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FeatureSet",
+]

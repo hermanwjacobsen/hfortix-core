@@ -80,3 +80,8 @@ class Revoke:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Revoke",
+]

@@ -152,3 +152,9 @@ class AutomationTrigger:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AutomationTrigger",
+    "AutomationTriggerPayload",
+]

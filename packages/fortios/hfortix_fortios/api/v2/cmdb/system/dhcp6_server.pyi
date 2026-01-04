@@ -153,3 +153,9 @@ class Dhcp6Server:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Dhcp6Server",
+    "Dhcp6ServerPayload",
+]

@@ -154,3 +154,9 @@ class ArrpProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ArrpProfile",
+    "ArrpProfilePayload",
+]

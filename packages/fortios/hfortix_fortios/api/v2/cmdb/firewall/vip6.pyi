@@ -215,3 +215,9 @@ class Vip6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Vip6",
+    "Vip6Payload",
+]

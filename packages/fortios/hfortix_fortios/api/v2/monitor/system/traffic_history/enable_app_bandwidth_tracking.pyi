@@ -80,3 +80,8 @@ class EnableAppBandwidthTracking:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "EnableAppBandwidthTracking",
+]

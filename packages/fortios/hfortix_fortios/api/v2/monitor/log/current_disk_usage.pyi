@@ -80,3 +80,8 @@ class CurrentDiskUsage:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CurrentDiskUsage",
+]

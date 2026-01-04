@@ -99,3 +99,9 @@ class SsoFortigateCloudAdmin:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SsoFortigateCloudAdmin",
+    "SsoFortigateCloudAdminPayload",
+]

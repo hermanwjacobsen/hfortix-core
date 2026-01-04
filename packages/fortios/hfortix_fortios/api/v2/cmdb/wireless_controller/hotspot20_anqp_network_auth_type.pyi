@@ -101,3 +101,9 @@ class Hotspot20AnqpNetworkAuthType:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Hotspot20AnqpNetworkAuthType",
+    "Hotspot20AnqpNetworkAuthTypePayload",
+]

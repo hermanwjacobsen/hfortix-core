@@ -104,3 +104,9 @@ class InternetServiceExtension:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "InternetServiceExtension",
+    "InternetServiceExtensionPayload",
+]

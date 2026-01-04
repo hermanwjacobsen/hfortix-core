@@ -100,3 +100,9 @@ class IpmacbindingSetting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "IpmacbindingSetting",
+    "IpmacbindingSettingPayload",
+]

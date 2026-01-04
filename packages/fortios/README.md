@@ -5,17 +5,17 @@ Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
 [![PyPI version](https://badge.fury.io/py/hfortix-fortios.svg)](https://pypi.org/project/hfortix-fortios/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.4.0 (Published December 31, 2025)**
+> **⚠️ BETA STATUS - Version 0.5.0-beta (January 4, 2026)**
 >
-> Production-ready FortiOS client, but in beta until v1.0 with comprehensive unit tests.
-> **Major release** with modular architecture. See migration guide if upgrading from 0.3.x.
+> **Breaking Changes**: v0.5.0 removes convenience wrappers. Use direct API access via `fgt.api.*`
+> **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
 
-**Version:** 0.4.0  
-**Status:** Beta (Functional, production-ready, pending comprehensive unit tests for v1.0)
+**Version:** 0.5.0-beta
+**Status:** Beta (100% auto-generated, production-ready, pending comprehensive unit tests for v1.0)
 
 ## Overview
 
-Complete Python client for FortiOS 7.6.5 REST API with 100% endpoint coverage, convenience wrappers, and enterprise features.
+Complete Python client for FortiOS 7.6.5 REST API with 100% endpoint coverage (1,219 endpoints), full type safety, and enterprise features. All code is auto-generated from FortiOS API schemas.
 
 ## Installation
 
@@ -63,12 +63,17 @@ fgt.firewall.service_custom.create(
 
 ## API Coverage
 
-**FortiOS 7.6.5 - 100% Coverage:**
+**FortiOS 7.6.5 - 100% Coverage (1,219 Endpoints):**
 
-- **CMDB API**: 500+ endpoints across 37 categories (addresses, policies, VPN, routing, etc.)
-- **Monitor API**: 200+ endpoints across 32 categories (sessions, stats, resources, etc.)
-- **Log API**: Complete log reading functionality (traffic, events, threats, etc.)
-- **Service API**: All service categories
+- **CMDB API**: 886 endpoints - Full configuration management (firewall, system, VPN, routing, etc.)
+- **Monitor API**: 295 endpoints - Real-time monitoring (sessions, stats, resources, etc.)
+- **Log API**: 38 endpoints - Log queries (disk, memory, FortiAnalyzer, FortiCloud, search)
+
+All endpoints are **100% auto-generated** with:
+- Complete `.pyi` type stub files
+- Schema-based parameter validation
+- Auto-generated basic tests
+- Comprehensive error handling
 
 ## Key Features
 
@@ -78,21 +83,22 @@ Access every FortiOS endpoint with clean, Pythonic syntax:
 
 ```python
 # CMDB (Configuration)
-fgt.api.cmdb.firewall.policy.list()
+fgt.api.cmdb.firewall.policy.get()
 fgt.api.cmdb.system.interface.get(name="port1")
 fgt.api.cmdb.router.static.create(...)
 
 # Monitor (Real-time data)
-sessions = fgt.api.monitor.firewall.session.list()
-resources = fgt.api.monitor.system.resource.get()
+sessions = fgt.api.monitor.firewall.session.get()
+resources = fgt.api.monitor.system.resource.usage.get()
 
-# Log (Historical data)
-logs = fgt.api.log.disk.traffic.list(filter="dstport==443")
+# Log (Query logs)
+vpn_logs = fgt.api.log.disk.event.vpn.get(rows=50)
+traffic = fgt.api.log.memory.traffic.forward.get(rows=100)
 ```
 
-### 🎨 Convenience Wrappers
+### 🎨 Direct API Access
 
-Production-ready wrappers with comprehensive validation:
+All 1,219 endpoints are accessed directly - no wrappers needed:
 
 ```python
 # Service Management

@@ -107,3 +107,9 @@ class FastFallback:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FastFallback",
+    "FastFallbackPayload",
+]

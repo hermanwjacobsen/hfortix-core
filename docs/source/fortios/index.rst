@@ -1,7 +1,14 @@
 FortiOS
 =======
 
-Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (750+ endpoints across 77 categories).
+Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (1,219 endpoints: 886 CMDB + 295 Monitor + 38 Log).
+
+.. warning::
+   **v0.5.0 BREAKING CHANGES**
+   
+   - ❌ All convenience wrappers removed (``fgt.firewall.policy``, ``fgt.system.schedule``, etc.)
+   - ✅ Use direct API methods: ``fgt.api.cmdb.firewall.policy.create()``
+   - ✅ Use ``request()`` method for zero-translation from FortiGate GUI JSON
 
 .. grid:: 2
     :gutter: 3
@@ -22,7 +29,7 @@ Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (750
         :link: api-documentation/index
         :link-type: doc
 
-        Convenience wrappers and complete endpoint reference.
+        Complete endpoint reference and API patterns.
 
     .. grid-item-card:: 📋 Topic Guides
         :link: guides/index
@@ -51,23 +58,40 @@ Quick Example
     # Connect to FortiGate
     fgt = FortiOS(host="192.168.1.99", token="your-api-token")
 
-    # Create firewall address
+    # Create firewall address - Direct API method
     fgt.api.cmdb.firewall.address.create(
         name="web-server",
         subnet="10.0.1.100/32",
         comment="Production web server"
     )
 
-    # Create policy with convenience wrapper
-    fgt.firewall.policy.create(
+    # Create firewall policy - Direct API method
+    fgt.api.cmdb.firewall.policy.create(
         name="Allow-Web-Traffic",
-        srcintf=["internal"],
-        dstintf=["wan1"],
-        srcaddr=["all"],
-        dstaddr=["web-server"],
-        service=["HTTP", "HTTPS"],
+        srcintf=[{"name": "internal"}],
+        dstintf=[{"name": "wan1"}],
+        srcaddr=[{"name": "all"}],
+        dstaddr=[{"name": "web-server"}],
+        service=[{"name": "HTTP"}, {"name": "HTTPS"}],
         action="accept",
-        nat=True
+        nat="enable"
+    )
+
+    # Or use request() for zero-translation workflow
+    # Copy JSON from FortiGate GUI, paste here:
+    fgt.request(
+        method="POST",
+        path="/api/v2/cmdb/firewall/policy",
+        data={
+            "name": "Allow-Web-Traffic",
+            "srcintf": [{"name": "internal"}],
+            "dstintf": [{"name": "wan1"}],
+            "srcaddr": [{"name": "all"}],
+            "dstaddr": [{"name": "web-server"}],
+            "service": [{"name": "HTTP"}, {"name": "HTTPS"}],
+            "action": "accept",
+            "nat": "enable"
+        }
     )
 
     # Get system status
@@ -79,7 +103,7 @@ Key Features
 ------------
 
 **Complete API Coverage**
-    All 750+ FortiOS 7.6.5 API endpoints organized across 77 categories (CMDB, Monitor, Log, Service).
+    All 1,219 FortiOS 7.6.5 API endpoints: 886 CMDB + 295 Monitor + 38 Log endpoints.
 
 **Dual Interface Patterns**
     Use dict-style or kwargs-style - choose what fits your workflow.
@@ -87,14 +111,14 @@ Key Features
 **Full Async Support**
     All endpoints available in async/await with ``_async`` suffix.
 
-**Convenience Wrappers**
-    High-level wrappers for common operations: firewall policies, schedules, traffic shapers, IP/MAC bindings.
+**Direct API Access** *(New in v0.5.0)*
+    Use ``request()`` method for zero-translation workflow - copy JSON from FortiGate GUI, paste into Python.
 
 **Production Ready**
     Circuit breaker pattern, automatic retries, connection pooling, comprehensive validation.
 
 **Developer Friendly**
-    100% type hints, extensive documentation, rich error messages, validation framework.
+    100% type hints with .pyi stubs, extensive documentation, rich error messages, validation framework.
 
 Supported FortiOS Versions
 ---------------------------
@@ -111,16 +135,13 @@ API Categories
 The FortiOS API is organized into four main types:
 
 **CMDB (Configuration)**
-    37 categories for managing firewall configuration: addresses, policies, routes, VPN, system settings, etc.
+    886 endpoints for managing firewall configuration: addresses, policies, routes, VPN, system settings, etc.
 
 **Monitor (Status/Stats)**
-    32 categories for real-time monitoring: system status, interface stats, routing tables, VPN status, etc.
+    295 endpoints for real-time monitoring: system status, interface stats, routing tables, VPN status, etc.
 
 **Log (Historical Data)**
-    Access to historical logs and events.
-
-**Service (Operations)**
-    Service operations like backups, restores, and maintenance tasks.
+    38 endpoints for accessing historical logs and events with full parameterization support.
 
 See :doc:`/fortios/api-reference/index` for complete category listing.
 

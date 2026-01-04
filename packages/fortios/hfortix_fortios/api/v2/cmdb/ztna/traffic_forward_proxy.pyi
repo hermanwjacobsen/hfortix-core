@@ -116,3 +116,9 @@ class TrafficForwardProxy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "TrafficForwardProxy",
+    "TrafficForwardProxyPayload",
+]

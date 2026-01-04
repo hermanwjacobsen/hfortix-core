@@ -101,3 +101,9 @@ class PrefixList6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "PrefixList6",
+    "PrefixList6Payload",
+]

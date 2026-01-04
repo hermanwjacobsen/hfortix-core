@@ -97,3 +97,9 @@ class PcpServer:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "PcpServer",
+    "PcpServerPayload",
+]

@@ -1,27 +1,20 @@
-"""FortiOS Monitor - Service category"""
+"""FortiOS CMDB - Service category"""
 
-from __future__ import annotations
+from . import ldap
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-from .ldap.query import Query
-
-class LdapEndpoints:
-    """Endpoints under ldap."""
-
-    def __init__(self, client):
-        self.query = Query(client)
+__all__ = [
+    "Ldap",
+    "Service",
+]
 
 
 class Service:
-    """Service endpoints wrapper for Monitor API."""
+    """Service endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "IHTTPClient"):
-        """Service endpoints."""
-        self.ldap = LdapEndpoints(client)
-
-
-__all__ = ["Service"]
+    def __init__(self, client):
+        """Service endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.ldap = ldap.Ldap(client)

@@ -109,6 +109,7 @@ class SnmpTrapThreshold:
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
 
+
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -350,6 +351,7 @@ class SnmpTrapThreshold:
             # Resource not found or other error - return False
             return False
 
+
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -411,6 +413,7 @@ class SnmpTrapThreshold:
         else:
             # Create new resource
             return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
 
     # ========================================================================
     # Metadata Helper Methods

@@ -139,3 +139,9 @@ class VdomDns:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VdomDns",
+    "VdomDnsPayload",
+]

@@ -1,27 +1,20 @@
-"""FortiOS Monitor - Geoip category"""
+"""FortiOS CMDB - Geoip category"""
 
-from __future__ import annotations
+from . import geoip_query
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-from .geoip_query.select import Select
-
-class GeoipQueryEndpoints:
-    """Endpoints under geoip_query."""
-
-    def __init__(self, client):
-        self.select = Select(client)
+__all__ = [
+    "Geoip",
+    "GeoipQuery",
+]
 
 
 class Geoip:
-    """Geoip endpoints wrapper for Monitor API."""
+    """Geoip endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "IHTTPClient"):
-        """Geoip endpoints."""
-        self.geoip_query = GeoipQueryEndpoints(client)
-
-
-__all__ = ["Geoip"]
+    def __init__(self, client):
+        """Geoip endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.geoip_query = geoip_query.GeoipQuery(client)

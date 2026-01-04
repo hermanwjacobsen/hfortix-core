@@ -119,3 +119,9 @@ class MacPolicy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "MacPolicy",
+    "MacPolicyPayload",
+]

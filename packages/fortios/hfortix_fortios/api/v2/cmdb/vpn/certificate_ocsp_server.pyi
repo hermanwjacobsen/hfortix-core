@@ -113,3 +113,9 @@ class CertificateOcspServer:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CertificateOcspServer",
+    "CertificateOcspServerPayload",
+]

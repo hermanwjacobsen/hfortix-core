@@ -80,3 +80,8 @@ class Stop:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Stop",
+]

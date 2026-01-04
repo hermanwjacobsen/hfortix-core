@@ -1,25 +1,26 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - Wanopt category"""
 
-from typing import TYPE_CHECKING
+from . import history
+from . import peer_stats
+from . import webcache
 
-from .history import History
-from .history_base import History
-from .peer_stats import PeerStats
-from .peer_stats_base import PeerStats
-from .webcache import Webcache
-from .webcache_base import Webcache
-
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "History",
+    "PeerStats",
+    "Wanopt",
+    "Webcache",
+]
 
 
 class Wanopt:
-    """Container for {category_name} endpoints."""
+    """Wanopt endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
-        self.history = History(client)
-        self.history = History(client)
-        self.peer_stats = PeerStats(client)
-        self.peer_stats = PeerStats(client)
-        self.webcache = Webcache(client)
-        self.webcache = Webcache(client)
+    def __init__(self, client):
+        """Wanopt endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.history = history.History(client)
+        self.peer_stats = peer_stats.PeerStats(client)
+        self.webcache = webcache.Webcache(client)

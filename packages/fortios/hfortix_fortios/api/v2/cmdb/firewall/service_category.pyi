@@ -104,3 +104,9 @@ class ServiceCategory:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ServiceCategory",
+    "ServiceCategoryPayload",
+]

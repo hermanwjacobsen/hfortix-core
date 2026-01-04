@@ -116,3 +116,9 @@ class ApcfgProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ApcfgProfile",
+    "ApcfgProfilePayload",
+]

@@ -80,3 +80,8 @@ class HoldSignatures:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "HoldSignatures",
+]

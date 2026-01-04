@@ -118,3 +118,9 @@ class L2tp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "L2tp",
+    "L2tpPayload",
+]

@@ -119,3 +119,9 @@ class SaasApplication:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SaasApplication",
+    "SaasApplicationPayload",
+]

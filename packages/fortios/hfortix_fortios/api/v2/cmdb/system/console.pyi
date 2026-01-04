@@ -97,3 +97,9 @@ class Console:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Console",
+    "ConsolePayload",
+]

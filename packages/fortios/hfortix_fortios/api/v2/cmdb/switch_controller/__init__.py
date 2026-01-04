@@ -1,5 +1,11 @@
 """FortiOS CMDB - SwitchController category"""
 
+from . import acl
+from . import auto_config
+from . import initial_config
+from . import ptp
+from . import qos
+from . import security_policy
 from .acl_group import AclGroup
 from .acl_ingress import AclIngress
 from .auto_config_custom import AutoConfigCustom
@@ -50,8 +56,10 @@ from .vlan_policy import VlanPolicy
 from .x802_1X_settings import X8021xSettings
 
 __all__ = [
+    "Acl",
     "AclGroup",
     "AclIngress",
+    "AutoConfig",
     "AutoConfigCustom",
     "AutoConfigDefault",
     "AutoConfigPolicy",
@@ -61,6 +69,7 @@ __all__ = [
     "FortilinkSettings",
     "GlobalSetting",
     "IgmpSnooping",
+    "InitialConfig",
     "InitialConfigTemplate",
     "InitialConfigVlans",
     "IpSourceGuardLog",
@@ -70,13 +79,16 @@ __all__ = [
     "MacPolicy",
     "ManagedSwitch",
     "NetworkMonitorSettings",
+    "Ptp",
     "PtpInterfacePolicy",
     "PtpProfile",
+    "Qos",
     "QosDot1pMap",
     "QosIpDscpMap",
     "QosQosPolicy",
     "QosQueuePolicy",
     "RemoteLog",
+    "SecurityPolicy",
     "SecurityPolicy8021x",
     "SecurityPolicyLocalAccess",
     "Sflow",
@@ -111,6 +123,12 @@ class SwitchController:
         Args:
             client: HTTP client instance for API communication
         """
+        self.acl = acl.Acl(client)
+        self.auto_config = auto_config.AutoConfig(client)
+        self.initial_config = initial_config.InitialConfig(client)
+        self.ptp = ptp.Ptp(client)
+        self.qos = qos.Qos(client)
+        self.security_policy = security_policy.SecurityPolicy(client)
         self.acl_group = AclGroup(client)
         self.acl_ingress = AclIngress(client)
         self.auto_config_custom = AutoConfigCustom(client)

@@ -112,3 +112,9 @@ class SshConfig:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SshConfig",
+    "SshConfigPayload",
+]

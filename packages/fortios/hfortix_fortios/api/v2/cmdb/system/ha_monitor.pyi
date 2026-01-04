@@ -100,3 +100,9 @@ class HaMonitor:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "HaMonitor",
+    "HaMonitorPayload",
+]

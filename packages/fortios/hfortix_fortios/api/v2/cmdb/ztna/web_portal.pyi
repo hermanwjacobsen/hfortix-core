@@ -156,3 +156,9 @@ class WebPortal:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "WebPortal",
+    "WebPortalPayload",
+]

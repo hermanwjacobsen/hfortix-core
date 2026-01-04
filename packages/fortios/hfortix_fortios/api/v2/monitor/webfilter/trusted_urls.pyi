@@ -80,3 +80,8 @@ class TrustedUrls:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "TrustedUrls",
+]

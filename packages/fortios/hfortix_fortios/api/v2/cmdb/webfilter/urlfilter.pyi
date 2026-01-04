@@ -116,3 +116,9 @@ class Urlfilter:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Urlfilter",
+    "UrlfilterPayload",
+]

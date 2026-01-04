@@ -98,3 +98,9 @@ class IpsUrlfilterDns6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "IpsUrlfilterDns6",
+    "IpsUrlfilterDns6Payload",
+]

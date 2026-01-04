@@ -101,3 +101,9 @@ class AccessList:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AccessList",
+    "AccessListPayload",
+]

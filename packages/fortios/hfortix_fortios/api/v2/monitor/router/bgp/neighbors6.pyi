@@ -80,3 +80,8 @@ class Neighbors6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Neighbors6",
+]

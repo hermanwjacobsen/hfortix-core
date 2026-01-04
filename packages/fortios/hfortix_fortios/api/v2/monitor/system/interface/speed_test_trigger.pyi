@@ -80,3 +80,8 @@ class SpeedTestTrigger:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SpeedTestTrigger",
+]

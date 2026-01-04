@@ -156,3 +156,9 @@ class InterfacePolicy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "InterfacePolicy",
+    "InterfacePolicyPayload",
+]

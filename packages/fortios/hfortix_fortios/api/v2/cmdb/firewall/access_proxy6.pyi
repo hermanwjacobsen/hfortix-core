@@ -131,3 +131,9 @@ class AccessProxy6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AccessProxy6",
+    "AccessProxy6Payload",
+]

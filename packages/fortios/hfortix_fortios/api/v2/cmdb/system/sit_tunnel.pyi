@@ -113,3 +113,9 @@ class SitTunnel:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SitTunnel",
+    "SitTunnelPayload",
+]

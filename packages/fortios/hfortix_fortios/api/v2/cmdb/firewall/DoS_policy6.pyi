@@ -119,3 +119,9 @@ class DosPolicy6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "DosPolicy6",
+    "DosPolicy6Payload",
+]

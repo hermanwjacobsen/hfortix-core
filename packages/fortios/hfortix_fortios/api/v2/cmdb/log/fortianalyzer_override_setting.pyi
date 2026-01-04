@@ -160,3 +160,9 @@ class FortianalyzerOverrideSetting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FortianalyzerOverrideSetting",
+    "FortianalyzerOverrideSettingPayload",
+]

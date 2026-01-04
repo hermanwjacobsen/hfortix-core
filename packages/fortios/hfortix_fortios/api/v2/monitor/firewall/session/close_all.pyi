@@ -80,3 +80,8 @@ class CloseAll:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CloseAll",
+]

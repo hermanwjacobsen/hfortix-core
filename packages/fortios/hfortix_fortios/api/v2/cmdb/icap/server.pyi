@@ -125,3 +125,9 @@ class Server:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Server",
+    "ServerPayload",
+]

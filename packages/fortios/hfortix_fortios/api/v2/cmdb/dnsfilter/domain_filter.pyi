@@ -104,3 +104,9 @@ class DomainFilter:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "DomainFilter",
+    "DomainFilterPayload",
+]

@@ -80,3 +80,8 @@ class FortianalyzerStatus:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FortianalyzerStatus",
+]

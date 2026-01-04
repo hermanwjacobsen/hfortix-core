@@ -242,3 +242,9 @@ class WidsProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "WidsProfile",
+    "WidsProfilePayload",
+]

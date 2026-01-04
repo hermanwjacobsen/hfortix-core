@@ -119,3 +119,9 @@ class AccessProxySshClientCert:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AccessProxySshClientCert",
+    "AccessProxySshClientCertPayload",
+]

@@ -128,3 +128,9 @@ class Hotspot20H2qpConnCapability:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Hotspot20H2qpConnCapability",
+    "Hotspot20H2qpConnCapabilityPayload",
+]

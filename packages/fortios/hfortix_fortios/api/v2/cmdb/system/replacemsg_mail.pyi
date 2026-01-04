@@ -104,3 +104,9 @@ class ReplacemsgMail:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ReplacemsgMail",
+    "ReplacemsgMailPayload",
+]

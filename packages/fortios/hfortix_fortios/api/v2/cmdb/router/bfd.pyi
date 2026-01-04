@@ -97,3 +97,9 @@ class Bfd:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Bfd",
+    "BfdPayload",
+]

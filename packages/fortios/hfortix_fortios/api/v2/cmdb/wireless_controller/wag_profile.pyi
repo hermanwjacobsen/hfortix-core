@@ -119,3 +119,9 @@ class WagProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "WagProfile",
+    "WagProfilePayload",
+]

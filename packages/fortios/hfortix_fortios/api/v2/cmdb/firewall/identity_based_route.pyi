@@ -101,3 +101,9 @@ class IdentityBasedRoute:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "IdentityBasedRoute",
+    "IdentityBasedRoutePayload",
+]

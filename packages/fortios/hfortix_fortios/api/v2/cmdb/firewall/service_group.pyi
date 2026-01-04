@@ -113,3 +113,9 @@ class ServiceGroup:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ServiceGroup",
+    "ServiceGroupPayload",
+]

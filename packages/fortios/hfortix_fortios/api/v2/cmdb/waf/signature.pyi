@@ -98,3 +98,9 @@ class Signature:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Signature",
+    "SignaturePayload",
+]

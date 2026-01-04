@@ -80,3 +80,8 @@ class AddressFqdns6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AddressFqdns6",
+]

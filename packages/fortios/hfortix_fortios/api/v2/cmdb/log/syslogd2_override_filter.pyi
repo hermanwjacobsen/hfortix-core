@@ -130,3 +130,9 @@ class Syslogd2OverrideFilter:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Syslogd2OverrideFilter",
+    "Syslogd2OverrideFilterPayload",
+]

@@ -80,3 +80,8 @@ class AvailableCertificates:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AvailableCertificates",
+]

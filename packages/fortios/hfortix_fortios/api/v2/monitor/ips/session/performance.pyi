@@ -80,3 +80,8 @@ class Performance:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Performance",
+]

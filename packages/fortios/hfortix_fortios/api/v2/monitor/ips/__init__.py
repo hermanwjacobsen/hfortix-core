@@ -1,20 +1,31 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - Ips category"""
 
-from typing import TYPE_CHECKING
-
+from . import session
 from .anomaly import Anomaly
 from .hold_signatures import HoldSignatures
 from .metadata import Metadata
 from .rate_based import RateBased
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Anomaly",
+    "HoldSignatures",
+    "Ips",
+    "Metadata",
+    "RateBased",
+    "Session",
+]
 
 
 class Ips:
-    """Container for {category_name} endpoints."""
+    """Ips endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
+    def __init__(self, client):
+        """Ips endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.session = session.Session(client)
         self.anomaly = Anomaly(client)
         self.hold_signatures = HoldSignatures(client)
         self.metadata = Metadata(client)

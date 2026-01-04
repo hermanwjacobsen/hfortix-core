@@ -122,3 +122,9 @@ class Scim:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Scim",
+    "ScimPayload",
+]

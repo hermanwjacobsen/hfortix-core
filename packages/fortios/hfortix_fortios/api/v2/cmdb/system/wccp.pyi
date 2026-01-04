@@ -155,3 +155,9 @@ class Wccp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Wccp",
+    "WccpPayload",
+]

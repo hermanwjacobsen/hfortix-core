@@ -26,18 +26,24 @@ HFortix - Python SDK for Fortinet Products
       :link: fortios/index
       :link-type: doc
 
-      Complete FortiOS API client with 750+ endpoints.
-      **Available Now** - v0.4.0 Beta
+      Complete FortiOS API client with 1,219 endpoints (886 CMDB + 295 Monitor + 38 Log).
+      **Available Now** - v0.5.0 Beta
 
    .. grid-item-card:: ⚙️ Core Framework
       :link: core/index
       :link-type: doc
 
       Foundation HTTP client and exception handling.
-      **Available Now** - v0.4.0 Beta
+      **Available Now** - v0.5.0 Beta
 
 .. warning::
-   **BETA STATUS - Version 0.4.0**
+   **BETA STATUS - Version 0.5.0**
+   
+   **BREAKING CHANGES IN v0.5.0:**
+   
+   - ❌ **All convenience wrappers REMOVED** (``fgt.firewall.policy``, ``fgt.system.schedule``, etc.)
+   - ✅ Use direct API methods: ``fgt.api.cmdb.firewall.policy.create()``
+   - ✅ Use ``request()`` method for zero-translation workflow from FortiGate GUI JSON
    
    All implementations are functional but in **BETA**. APIs work correctly but may have incomplete
    parameter coverage or undiscovered edge cases. All packages remain in beta until version 1.0.0
@@ -47,7 +53,7 @@ Key Features
 ------------
 
 ✨ **Complete API Coverage**
-   100% coverage of FortiOS 7.6.5 API (750+ endpoints across 77 categories)
+   100% coverage of FortiOS 7.6.5 API (1,219 endpoints: 886 CMDB + 295 Monitor + 38 Log)
 
 🎯 **Fully Typed**
    Complete type hints with .pyi stubs for excellent IDE support and type safety
@@ -61,13 +67,13 @@ Key Features
 🔄 **Flexible Interface**
    Dual-pattern syntax supporting both dictionary and keyword arguments
 
-🎨 **Convenience Wrappers**
-   High-level wrappers for common tasks (firewall policies, schedules, services)
+🎨 **Direct API Access** *(New in v0.5.0)*
+   Use ``request()`` method for zero-translation workflow - copy JSON from FortiGate GUI, paste into Python
 
-🔍 **Enhanced Debugging** *(New in v0.4.0)*
+🔍 **Enhanced Debugging**
    Connection pool monitoring, request inspection, debug sessions, and performance profiling
 
-📊 **Advanced Observability** *(New in v0.4.0)*
+📊 **Advanced Observability**
    Structured logging, multi-tenant support, request tracing, and SIEM integration
 
 Quick Example - FortiOS
@@ -80,23 +86,40 @@ Quick Example - FortiOS
    # Connect to FortiGate
    fgt = FortiOS("192.168.1.99", token="your_token_here")
 
-   # Create firewall address
+   # Create firewall address - Direct API method
    fgt.api.cmdb.firewall.address.create(
        name='web-server',
        subnet='192.0.2.100/32',
        comment='Production web server'
    )
 
-   # Use convenience wrapper for policy
-   fgt.firewall.policy.create(
+   # Create firewall policy - Direct API method
+   fgt.api.cmdb.firewall.policy.create(
        name='Allow-Web',
-       srcintf=['internal'],
-       dstintf=['wan1'],
-       srcaddr=['all'],
-       dstaddr=['web-server'],
-       service=['HTTPS'],
+       srcintf=[{'name': 'internal'}],
+       dstintf=[{'name': 'wan1'}],
+       srcaddr=[{'name': 'all'}],
+       dstaddr=[{'name': 'web-server'}],
+       service=[{'name': 'HTTPS'}],
        action='accept',
-       nat=True
+       nat='enable'
+   )
+
+   # Or use request() for zero-translation workflow
+   # Copy JSON from FortiGate GUI, paste here:
+   fgt.request(
+       method='POST',
+       path='/api/v2/cmdb/firewall/policy',
+       data={
+           'name': 'Allow-Web',
+           'srcintf': [{'name': 'internal'}],
+           'dstintf': [{'name': 'wan1'}],
+           'srcaddr': [{'name': 'all'}],
+           'dstaddr': [{'name': 'web-server'}],
+           'service': [{'name': 'HTTPS'}],
+           'action': 'accept',
+           'nat': 'enable'
+       }
    )
 
 See :doc:`/fortios/getting-started/quickstart` for more examples.
@@ -145,40 +168,36 @@ Coverage Status
    .. grid-item-card:: CMDB API
       :class-header: bg-success text-white
 
-      37 of 37 categories
+      886 endpoints
       ^^^
-      **100% coverage** - 500+ endpoints
+      **100% coverage** - Configuration database management
       
-      🔷 Beta Status
+      🔷 v0.5.0 Beta
 
    .. grid-item-card:: Monitor API
       :class-header: bg-success text-white
 
-      32 of 32 categories
+      295 endpoints
       ^^^
-      **100% coverage** - 200+ endpoints
+      **100% coverage** - Real-time monitoring and statistics
       
-      🔷 Beta Status
+      🔷 v0.5.0 Beta
 
    .. grid-item-card:: Log API
       :class-header: bg-success text-white
 
-      5 of 5 categories
+      38 endpoints
       ^^^
-      **100% coverage** - Log reading functionality
+      **100% coverage** - Log retrieval with full parameterization
       
-      🔷 Beta Status
+      🔷 v0.5.0 Beta
 
-   .. grid-item-card:: Service API
-      :class-header: bg-success text-white
+**Overall: 1,219 API methods across all categories (100% coverage)** 🎉
 
-      3 of 3 categories
-      ^^^
-      **100% coverage** - 21 methods
-      
-      🔷 Beta Status
-
-**Overall: 77 of 77 categories (100% coverage) - 750+ API methods** 🎉
+- **886 CMDB endpoints** - Configuration database management
+- **295 Monitor endpoints** - Real-time monitoring and statistics
+- **38 Log endpoints** - Log retrieval and analysis
+- **100% auto-generated** - Complete swagger coverage with fallback
 
 Package Status
 --------------
@@ -192,17 +211,17 @@ Package Status
      - Status
      - Description
    * - ``hfortix`` (meta)
-     - 0.4.0
+     - 0.5.0
      - Beta
      - Meta package - installs all available packages
    * - ``hfortix-core``
-     - 0.4.0
+     - 0.5.0
      - Beta
-     - Core HTTP client and exception framework
+     - HTTP client, error handling, circuit breaker, observability
    * - ``hfortix-fortios``
-     - 0.4.0
+     - 0.5.0
      - Beta
-     - FortiOS/FortiGate API client (750+ endpoints)
+     - FortiOS/FortiGate SDK - 1,219 endpoints (886 CMDB + 295 Monitor + 38 Log)
 
 Community & Support
 -------------------

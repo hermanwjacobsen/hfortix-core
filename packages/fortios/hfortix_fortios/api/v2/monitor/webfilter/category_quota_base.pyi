@@ -80,3 +80,8 @@ class CategoryQuota:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CategoryQuota",
+]

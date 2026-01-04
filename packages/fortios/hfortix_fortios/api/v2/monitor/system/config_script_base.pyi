@@ -80,3 +80,8 @@ class ConfigScript:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ConfigScript",
+]

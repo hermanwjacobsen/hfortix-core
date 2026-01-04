@@ -98,3 +98,9 @@ class InternetServiceBotnet:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "InternetServiceBotnet",
+    "InternetServiceBotnetPayload",
+]

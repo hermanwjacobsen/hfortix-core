@@ -67,32 +67,19 @@ API Namespace
 
 The ``api`` namespace provides access to:
 
-- ``api.cmdb`` - Configuration Management Database (37 categories)
-- ``api.monitor`` - Monitoring and status (34 categories)  
-- ``api.log`` - Log queries (5 categories)
-- ``api.service`` - System services (3 categories)
+- ``api.cmdb`` - Configuration Management Database (886 endpoints)
+- ``api.monitor`` - Monitoring and status (295 endpoints)  
+- ``api.log`` - Log queries (38 endpoints with full parameterization)
 
-Firewall Namespace
-^^^^^^^^^^^^^^^^^^
-
-.. autoclass:: hfortix_fortios.client.FirewallNamespace
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-The ``firewall`` namespace provides convenience wrappers:
-
-- ``firewall.policy`` - Firewall policies
-- ``firewall.schedule_recurring`` - Recurring schedules
-- ``firewall.schedule_onetime`` - One-time schedules
-- ``firewall.schedule_group`` - Schedule groups
-- ``firewall.service_custom`` - Custom services
-- ``firewall.service_group`` - Service groups
-- ``firewall.service_category`` - Service categories
-- ``firewall.traffic_shaper`` - Traffic shapers
-- ``firewall.shaper_per_ip`` - Per-IP shapers
-- ``firewall.ipmac_binding_setting`` - IP/MAC binding settings
-- ``firewall.ipmac_binding_table`` - IP/MAC binding table
+.. warning::
+   **v0.5.0 BREAKING CHANGE**
+   
+   The ``firewall`` namespace with convenience wrappers has been **REMOVED** in v0.5.0.
+   Use direct API methods instead:
+   
+   - ❌ ``fgt.firewall.policy.create()`` - NO LONGER EXISTS
+   - ✅ ``fgt.api.cmdb.firewall.policy.create()`` - Use this instead
+   - ✅ ``fgt.request(method='POST', path='/api/v2/cmdb/firewall/policy', data={...})`` - Or use request()
 
 Examples
 --------

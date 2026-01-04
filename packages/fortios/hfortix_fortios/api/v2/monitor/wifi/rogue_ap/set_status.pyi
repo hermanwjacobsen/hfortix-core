@@ -80,3 +80,8 @@ class SetStatus:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SetStatus",
+]

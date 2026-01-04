@@ -80,3 +80,8 @@ class AddressDynamic:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AddressDynamic",
+]

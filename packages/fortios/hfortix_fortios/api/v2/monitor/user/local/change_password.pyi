@@ -80,3 +80,8 @@ class ChangePassword:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ChangePassword",
+]

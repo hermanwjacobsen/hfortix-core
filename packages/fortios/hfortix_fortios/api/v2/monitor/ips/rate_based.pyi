@@ -80,3 +80,8 @@ class RateBased:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "RateBased",
+]

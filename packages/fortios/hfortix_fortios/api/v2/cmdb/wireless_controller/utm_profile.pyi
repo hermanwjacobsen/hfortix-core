@@ -116,3 +116,9 @@ class UtmProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "UtmProfile",
+    "UtmProfilePayload",
+]

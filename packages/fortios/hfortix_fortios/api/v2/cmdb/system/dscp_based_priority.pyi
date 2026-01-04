@@ -101,3 +101,9 @@ class DscpBasedPriority:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "DscpBasedPriority",
+    "DscpBasedPriorityPayload",
+]

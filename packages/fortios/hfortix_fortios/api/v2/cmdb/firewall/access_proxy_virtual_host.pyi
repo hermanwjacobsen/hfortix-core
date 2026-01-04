@@ -116,3 +116,9 @@ class AccessProxyVirtualHost:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AccessProxyVirtualHost",
+    "AccessProxyVirtualHostPayload",
+]

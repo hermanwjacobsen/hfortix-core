@@ -1,8 +1,8 @@
 API Reference
 =============
 
-Complete low-level API documentation for all 750+ FortiOS endpoints organized by category.
-These endpoints use HTTP methods (GET, POST, PUT, DELETE) for direct API access.
+Complete low-level API documentation for all 1,219 FortiOS endpoints (886 CMDB + 295 Monitor + 38 Log).
+These endpoints use standard methods (get, create, update, delete) for direct API access.
 
 CMDB API (Configuration)
 -------------------------
@@ -49,7 +49,7 @@ CMDB API - Configuration Management
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The **Configuration Management Database (CMDB)** API provides access to all FortiOS configuration settings.
-This includes 37 categories covering:
+This includes **886 endpoints** across categories covering:
 
 - **Firewall**: Addresses, policies, services, VIPs, schedules
 - **System**: Global settings, interfaces, routing, admin users
@@ -59,12 +59,12 @@ This includes 37 categories covering:
 - **Network**: Routing (static, BGP, OSPF), DNS, DHCP
 - **And much more...**
 
-See :doc:`/fortios/api-reference/cmdb/index` for the complete list of 37 CMDB categories.
+See :doc:`/fortios/api-reference/cmdb/index` for the complete list of CMDB endpoints.
 
 Monitor API - Status & Statistics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The **Monitor** API provides real-time status information and statistics. This includes 32 categories covering:
+The **Monitor** API provides real-time status information and statistics. This includes **295 endpoints** across categories covering:
 
 - **System**: Status, resources, performance
 - **Firewall**: Active sessions, policy stats
@@ -74,10 +74,12 @@ The **Monitor** API provides real-time status information and statistics. This i
 - **UTM**: IPS stats, AV activity, web filter logs
 - **And much more...**
 
-See :doc:`/fortios/api-reference/monitor/index` for the complete list of 32 Monitor categories.
+See :doc:`/fortios/api-reference/monitor/index` for the complete list of Monitor endpoints.
 
 Log API - Historical Data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **Log** API provides access to historical logs and events. This includes **38 endpoints** with full parameterization support:
 
 The **Log** API provides access to historical log data:
 

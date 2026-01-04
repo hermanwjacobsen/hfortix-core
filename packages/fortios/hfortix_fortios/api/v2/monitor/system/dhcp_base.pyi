@@ -80,3 +80,8 @@ class Dhcp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Dhcp",
+]

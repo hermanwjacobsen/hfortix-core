@@ -110,3 +110,9 @@ class FortilinkSettings:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FortilinkSettings",
+    "FortilinkSettingsPayload",
+]

@@ -113,3 +113,9 @@ class PtpProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "PtpProfile",
+    "PtpProfilePayload",
+]

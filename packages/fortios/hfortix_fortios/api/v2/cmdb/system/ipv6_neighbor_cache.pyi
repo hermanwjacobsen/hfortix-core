@@ -104,3 +104,9 @@ class Ipv6NeighborCache:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Ipv6NeighborCache",
+    "Ipv6NeighborCachePayload",
+]

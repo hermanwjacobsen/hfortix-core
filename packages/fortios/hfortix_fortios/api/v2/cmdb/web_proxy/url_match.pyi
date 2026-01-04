@@ -113,3 +113,9 @@ class UrlMatch:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "UrlMatch",
+    "UrlMatchPayload",
+]

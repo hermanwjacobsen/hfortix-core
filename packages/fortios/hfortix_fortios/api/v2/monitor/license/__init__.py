@@ -1,20 +1,31 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - License category"""
 
-from typing import TYPE_CHECKING
-
+from . import database
 from .fortianalyzer_status import FortianalyzerStatus
 from .forticare_org_list import ForticareOrgList
 from .forticare_resellers import ForticareResellers
 from .status import Status
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Database",
+    "FortianalyzerStatus",
+    "ForticareOrgList",
+    "ForticareResellers",
+    "License",
+    "Status",
+]
 
 
 class License:
-    """Container for {category_name} endpoints."""
+    """License endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
+    def __init__(self, client):
+        """License endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.database = database.Database(client)
         self.fortianalyzer_status = FortianalyzerStatus(client)
         self.forticare_org_list = ForticareOrgList(client)
         self.forticare_resellers = ForticareResellers(client)

@@ -107,3 +107,9 @@ class MulticastAddress6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "MulticastAddress6",
+    "MulticastAddress6Payload",
+]

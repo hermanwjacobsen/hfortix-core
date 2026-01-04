@@ -1,5 +1,12 @@
 """FortiOS CMDB - Firewall category"""
 
+from . import ipmacbinding
+from . import schedule
+from . import service
+from . import shaper
+from . import ssh
+from . import ssl
+from . import wildcard_fqdn
 from .DoS_policy import DosPolicy
 from .DoS_policy6 import DosPolicy6
 from .access_proxy import AccessProxy
@@ -132,6 +139,7 @@ __all__ = [
     "InternetServiceSld",
     "InternetServiceSubapp",
     "IpTranslation",
+    "Ipmacbinding",
     "IpmacbindingSetting",
     "IpmacbindingTable",
     "Ippool",
@@ -152,22 +160,27 @@ __all__ = [
     "ProxyAddrgrp",
     "ProxyPolicy",
     "Region",
+    "Schedule",
     "ScheduleGroup",
     "ScheduleOnetime",
     "ScheduleRecurring",
     "SecurityPolicy",
+    "Service",
     "ServiceCategory",
     "ServiceCustom",
     "ServiceGroup",
+    "Shaper",
     "ShaperPerIpShaper",
     "ShaperTrafficShaper",
     "ShapingPolicy",
     "ShapingProfile",
     "Sniffer",
+    "Ssh",
     "SshHostKey",
     "SshLocalCa",
     "SshLocalKey",
     "SshSetting",
+    "Ssl",
     "SslServer",
     "SslSetting",
     "SslSshProfile",
@@ -179,6 +192,7 @@ __all__ = [
     "Vip6",
     "Vipgrp",
     "Vipgrp6",
+    "WildcardFqdn",
     "WildcardFqdnCustom",
     "WildcardFqdnGroup",
 ]
@@ -193,6 +207,13 @@ class Firewall:
         Args:
             client: HTTP client instance for API communication
         """
+        self.ipmacbinding = ipmacbinding.Ipmacbinding(client)
+        self.schedule = schedule.Schedule(client)
+        self.service = service.Service(client)
+        self.shaper = shaper.Shaper(client)
+        self.ssh = ssh.Ssh(client)
+        self.ssl = ssl.Ssl(client)
+        self.wildcard_fqdn = wildcard_fqdn.WildcardFqdn(client)
         self.DoS_policy = DosPolicy(client)
         self.DoS_policy6 = DosPolicy6(client)
         self.access_proxy = AccessProxy(client)

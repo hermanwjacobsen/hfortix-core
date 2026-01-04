@@ -101,3 +101,9 @@ class ReplacemsgImage:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ReplacemsgImage",
+    "ReplacemsgImagePayload",
+]

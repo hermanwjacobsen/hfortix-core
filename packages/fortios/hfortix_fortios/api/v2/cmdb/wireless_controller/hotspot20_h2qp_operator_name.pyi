@@ -98,3 +98,9 @@ class Hotspot20H2qpOperatorName:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Hotspot20H2qpOperatorName",
+    "Hotspot20H2qpOperatorNamePayload",
+]

@@ -1,61 +1,26 @@
-"""FortiOS Monitor - Registration category"""
+"""FortiOS CMDB - Registration category"""
 
-from __future__ import annotations
+from . import forticare
+from . import forticloud
+from . import vdom
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-from .forticare.add_license import AddLicense
-from .forticare.create import Create
-from .forticare.deregister_device import DeregisterDevice
-from .forticare.login import Login
-from .forticare.transfer import Transfer
-from .forticloud.domains import Domains
-from .forticloud.login import Login
-from .forticloud.logout import Logout
-from .forticloud.migrate import Migrate
-from .forticloud.register_device import RegisterDevice
-from .vdom.add_license import AddLicense
-
-class ForticareEndpoints:
-    """Endpoints under forticare."""
-
-    def __init__(self, client):
-        self.add_license = AddLicense(client)
-        self.create = Create(client)
-        self.deregister_device = DeregisterDevice(client)
-        self.login = Login(client)
-        self.transfer = Transfer(client)
-
-
-class ForticloudEndpoints:
-    """Endpoints under forticloud."""
-
-    def __init__(self, client):
-        self.domains = Domains(client)
-        self.login = Login(client)
-        self.logout = Logout(client)
-        self.migrate = Migrate(client)
-        self.register_device = RegisterDevice(client)
-
-
-class VdomEndpoints:
-    """Endpoints under vdom."""
-
-    def __init__(self, client):
-        self.add_license = AddLicense(client)
+__all__ = [
+    "Forticare",
+    "Forticloud",
+    "Registration",
+    "Vdom",
+]
 
 
 class Registration:
-    """Registration endpoints wrapper for Monitor API."""
+    """Registration endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "IHTTPClient"):
-        """Registration endpoints."""
-        self.forticare = ForticareEndpoints(client)
-        self.forticloud = ForticloudEndpoints(client)
-        self.vdom = VdomEndpoints(client)
-
-
-__all__ = ["Registration"]
+    def __init__(self, client):
+        """Registration endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.forticare = forticare.Forticare(client)
+        self.forticloud = forticloud.Forticloud(client)
+        self.vdom = vdom.Vdom(client)

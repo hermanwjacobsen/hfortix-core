@@ -104,3 +104,9 @@ class WtpGroup:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "WtpGroup",
+    "WtpGroupPayload",
+]

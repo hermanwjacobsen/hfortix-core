@@ -138,3 +138,9 @@ class DeviceUpgrade:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "DeviceUpgrade",
+    "DeviceUpgradePayload",
+]

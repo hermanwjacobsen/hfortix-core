@@ -80,3 +80,8 @@ class SetTier1:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SetTier1",
+]

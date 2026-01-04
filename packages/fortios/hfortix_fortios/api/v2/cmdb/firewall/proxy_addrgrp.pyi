@@ -113,3 +113,9 @@ class ProxyAddrgrp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ProxyAddrgrp",
+    "ProxyAddrgrpPayload",
+]

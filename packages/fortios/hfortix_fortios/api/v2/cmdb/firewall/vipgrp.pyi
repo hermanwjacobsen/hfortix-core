@@ -110,3 +110,9 @@ class Vipgrp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Vipgrp",
+    "VipgrpPayload",
+]

@@ -160,3 +160,9 @@ class ServiceCustom:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ServiceCustom",
+    "ServiceCustomPayload",
+]

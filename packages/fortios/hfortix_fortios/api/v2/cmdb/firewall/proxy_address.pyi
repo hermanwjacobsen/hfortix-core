@@ -153,3 +153,9 @@ class ProxyAddress:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ProxyAddress",
+    "ProxyAddressPayload",
+]

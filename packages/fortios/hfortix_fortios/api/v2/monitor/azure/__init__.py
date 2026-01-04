@@ -1,27 +1,20 @@
-"""FortiOS Monitor - Azure category"""
+"""FortiOS CMDB - Azure category"""
 
-from __future__ import annotations
+from . import application_list
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-from .application_list.refresh import Refresh
-
-class ApplicationListEndpoints:
-    """Endpoints under application_list."""
-
-    def __init__(self, client):
-        self.refresh = Refresh(client)
+__all__ = [
+    "ApplicationList",
+    "Azure",
+]
 
 
 class Azure:
-    """Azure endpoints wrapper for Monitor API."""
+    """Azure endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "IHTTPClient"):
-        """Azure endpoints."""
-        self.application_list = ApplicationListEndpoints(client)
-
-
-__all__ = ["Azure"]
+    def __init__(self, client):
+        """Azure endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.application_list = application_list.ApplicationList(client)

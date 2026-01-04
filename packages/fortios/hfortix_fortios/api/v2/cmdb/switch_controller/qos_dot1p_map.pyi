@@ -125,3 +125,9 @@ class QosDot1pMap:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "QosDot1pMap",
+    "QosDot1pMapPayload",
+]

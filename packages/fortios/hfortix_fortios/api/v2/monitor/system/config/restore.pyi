@@ -80,3 +80,8 @@ class Restore:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Restore",
+]

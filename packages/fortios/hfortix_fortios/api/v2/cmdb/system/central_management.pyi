@@ -153,3 +153,9 @@ class CentralManagement:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CentralManagement",
+    "CentralManagementPayload",
+]

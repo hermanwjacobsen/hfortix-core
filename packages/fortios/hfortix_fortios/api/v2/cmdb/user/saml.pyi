@@ -153,3 +153,9 @@ class Saml:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Saml",
+    "SamlPayload",
+]

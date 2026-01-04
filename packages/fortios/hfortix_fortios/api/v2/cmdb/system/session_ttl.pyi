@@ -97,3 +97,9 @@ class SessionTtl:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SessionTtl",
+    "SessionTtlPayload",
+]

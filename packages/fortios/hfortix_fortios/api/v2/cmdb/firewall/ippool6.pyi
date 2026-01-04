@@ -119,3 +119,9 @@ class Ippool6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Ippool6",
+    "Ippool6Payload",
+]

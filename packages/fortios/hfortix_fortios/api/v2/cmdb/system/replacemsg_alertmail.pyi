@@ -104,3 +104,9 @@ class ReplacemsgAlertmail:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ReplacemsgAlertmail",
+    "ReplacemsgAlertmailPayload",
+]

@@ -1,6 +1,4 @@
-"""LOG API - Auto-generated __init__ file."""
-
-from typing import TYPE_CHECKING
+"""FortiOS CMDB - Log category"""
 
 from .disk import Disk
 from .fortianalyzer import Fortianalyzer
@@ -8,15 +6,25 @@ from .forticloud import Forticloud
 from .memory import Memory
 from .search import Search
 
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
+__all__ = [
+    "Disk",
+    "Fortianalyzer",
+    "Forticloud",
+    "Log",
+    "Memory",
+    "Search",
+]
 
 
 class Log:
-    """Container for LOG endpoints."""
+    """Log endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "IHTTPClient"):
-        """Initialize LOG category."""
+    def __init__(self, client):
+        """Log endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
         self.disk = Disk(client)
         self.fortianalyzer = Fortianalyzer(client)
         self.forticloud = Forticloud(client)

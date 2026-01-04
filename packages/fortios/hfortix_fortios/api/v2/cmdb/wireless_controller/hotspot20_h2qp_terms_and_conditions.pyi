@@ -104,3 +104,9 @@ class Hotspot20H2qpTermsAndConditions:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Hotspot20H2qpTermsAndConditions",
+    "Hotspot20H2qpTermsAndConditionsPayload",
+]

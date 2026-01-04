@@ -128,3 +128,9 @@ class ExtenderProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ExtenderProfile",
+    "ExtenderProfilePayload",
+]

@@ -118,3 +118,9 @@ class FortiguardOverrideSetting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FortiguardOverrideSetting",
+    "FortiguardOverrideSettingPayload",
+]

@@ -101,3 +101,9 @@ class SecurityPolicyLocalAccess:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SecurityPolicyLocalAccess",
+    "SecurityPolicyLocalAccessPayload",
+]

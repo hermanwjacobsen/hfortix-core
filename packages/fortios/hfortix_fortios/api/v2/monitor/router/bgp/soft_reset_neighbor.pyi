@@ -80,3 +80,8 @@ class SoftResetNeighbor:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SoftResetNeighbor",
+]

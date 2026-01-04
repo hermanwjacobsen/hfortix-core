@@ -101,3 +101,9 @@ class SnmpRmonStat:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SnmpRmonStat",
+    "SnmpRmonStatPayload",
+]

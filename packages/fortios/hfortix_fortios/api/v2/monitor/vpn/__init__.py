@@ -1,21 +1,26 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - Vpn category"""
 
-from typing import TYPE_CHECKING
+from . import ike
+from . import ipsec
+from . import ssl
 
-from .ipsec import Ipsec
-from .ipsec_base import Ipsec
-from .ssl import Ssl
-from .ssl_base import Ssl
-
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Ike",
+    "Ipsec",
+    "Ssl",
+    "Vpn",
+]
 
 
 class Vpn:
-    """Container for {category_name} endpoints."""
+    """Vpn endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
-        self.ipsec = Ipsec(client)
-        self.ipsec = Ipsec(client)
-        self.ssl = Ssl(client)
-        self.ssl = Ssl(client)
+    def __init__(self, client):
+        """Vpn endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.ike = ike.Ike(client)
+        self.ipsec = ipsec.Ipsec(client)
+        self.ssl = ssl.Ssl(client)

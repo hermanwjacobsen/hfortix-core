@@ -104,3 +104,9 @@ class BlockAllowList:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "BlockAllowList",
+    "BlockAllowListPayload",
+]

@@ -116,3 +116,9 @@ class SnmpUser:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SnmpUser",
+    "SnmpUserPayload",
+]

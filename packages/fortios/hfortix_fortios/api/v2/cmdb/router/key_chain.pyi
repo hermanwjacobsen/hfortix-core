@@ -98,3 +98,9 @@ class KeyChain:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "KeyChain",
+    "KeyChainPayload",
+]

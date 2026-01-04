@@ -9,49 +9,53 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.4.3**
+> **⚠️ BETA STATUS - Version 0.5.0-beta**
 >
-> - **Current Version**: 0.4.3 (Published to PyPI - January 2, 2026)
-> - **Major Release**: Required fields validation across 374 helpers + type safety improvements
+> - **Current Version**: 0.5.0-beta (Under Development - January 4, 2026)
+> - **Major Release**: Complete code regeneration with 1,219 endpoints
+> - **Breaking Changes**: Convenience wrappers removed - use direct API access
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
-> All implementations are functional but in **BETA**. APIs work correctly but may have incomplete
-> parameter coverage or undiscovered edge cases. All packages remain in beta until version 1.0.0
-> with comprehensive unit test coverage.
+> **⚠️ Version 0.5.0 introduces breaking changes**: All convenience wrappers have been removed
+> in favor of 100% auto-generated endpoints. All implementations remain in **BETA** until version 1.0.0.
 
-**FortiOS 7.6.5 Coverage (December 23, 2025):**
+**FortiOS 7.6.5 Coverage (January 4, 2026):**
 
-- **CMDB API**: 37 of 37 categories (100% coverage) - 500+ endpoints 🔷 Beta
-- **Monitor API**: 32 of 32 categories (100% coverage) - 200+ endpoints 🔷 Beta
-- **Log API**: 5 of 5 categories (100% coverage) - Log reading functionality 🔷 Beta
-- **Service API**: 3 of 3 categories (100% coverage) - 21 methods 🔷 Beta
-- **Overall**: 77 of 77 categories (100% coverage) - 750+ API methods 🎉
+- **CMDB API**: 886 endpoints (100% coverage) - Full configuration management 🔷 Beta
+- **Monitor API**: 295 endpoints (100% coverage) - Complete monitoring capabilities 🔷 Beta
+- **Log API**: 38 endpoints (5 destinations × multiple subtypes) - Log query support 🔷 Beta
+- **Overall**: **1,219 total endpoints** (100% coverage) - Fully auto-generated 🎉
 
-**Validation Coverage (v0.4.3):**
+**Code Generation (v0.5.0):**
 
-- 832 validation helper modules auto-generated for all API types (CMDB, Monitor, Log, Service)
-- Enum, length, range, pattern, and type validation implemented
-- **374 helpers with required field validation** (all integrated January 2026)
-- Two-stage validation: required fields → field values (enums, ranges, formats)
-- Schema-based validators derived from FortiOS API schemas
-- Automatic null payload handling across all validators
-- See [VALIDATION_GUIDE.md](docs/fortios/VALIDATION_GUIDE.md) for complete guide
+- ✨ **100% Auto-Generated**: All 1,219 endpoints generated from FortiOS API schemas
+- 📝 **Complete Type Stubs**: Full `.pyi` stub files for perfect IDE autocomplete
+- ✅ **Auto-Generated Tests**: Basic test coverage for all endpoints
+- 🔍 **Enhanced Validators**: Schema-based validation for all 1,219 endpoints
+- 🚀 **Swagger Fallback**: Automatic fallback to Swagger docs when API unavailable
+- 📊 **Smart Generator**: Handles all edge cases (3-part paths, log parameterization, etc.)
 
-**Test Coverage:** 226 test files (145 CMDB, 81 Monitor) with 75%+ pass rate (~50% of generated endpoints tested)
+**Validation Coverage (v0.5.0):**
+
+- 1,219 validation helper modules auto-generated for all endpoints
+- Schema-derived validators with enum, length, range, pattern validation
+- Required field validation across all applicable endpoints
+- Two-stage validation: required fields → field values
+- Automatic null payload handling
+
+
+**Test Coverage:** 1,200+ auto-generated test files with basic smoke tests for all endpoints
 **Note:** All implementations remain in beta until version 1.0.0 with comprehensive unit test coverage.
 
-**🔥 Recent Highlights (December 2025):**
+**🔥 Recent Highlights (January 2026):**
 
-- 🎉 **100% API COVERAGE**: Complete implementation of ALL documented FortiOS 7.6.5 API categories!
-- 🚀 **MASSIVE EXPANSION**: Generated 500+ new endpoints across 37 CMDB + 32 Monitor categories
-- 🔄 **API Refactoring**: All endpoints refactored with RESTful methods (.list(), .get(), .create(), .update(), .delete())
-- ⚡ **Dual-Pattern Interface**: Flexible syntax supporting both dictionary and keyword arguments
-- 🏗️ **Repository Organization**: Clean structure with all dev tools
-- ⚡ **Unified Module Generator**: Single tool handles all edge cases (digit-prefixed names, certificates, nested resources)
-- ✨ **Handler Protocol System** (v0.4.1): Extensible plugin architecture for custom audit handlers - See [HANDLER_PROTOCOL_SYSTEM.md](docs/fortios/HANDLER_PROTOCOL_SYSTEM.md)
-- ✨ **Monitor API** (v0.3.11): 6 categories with 50+ monitoring endpoints (firewall stats, sessions, EMS, etc.)
-- ✨ **Log Configuration** (v0.3.11): 56 endpoints for comprehensive logging setup
-- ✨ **Firewall Expansion** (v0.3.11): FTP proxy, ICAP, IPS, DoS policies, access-proxy (WAF)
+- 🎉 **v0.5.0 COMPLETE REGENERATION**: All 1,219 endpoints regenerated from scratch!
+- 🚀 **BREAKING CHANGE**: Convenience wrappers removed - use direct API access
+- ⚡ **Advanced Generator**: Swagger fallback, smart path conversion, comprehensive error handling
+- 📋 **Log Endpoint Support**: Native parameterized log queries for all 5 destinations
+- 🏗️ **Clean Architecture**: 100% auto-generated code, no hand-written wrappers
+- ✨ **Type Safety**: Complete `.pyi` stub files for all endpoints (perfect autocomplete)
+- 🎯 **Generic request() Method**: Copy JSON directly from FortiGate GUI (v0.4.2, still available in v0.5.0)
 
 **📖 Documentation:**
 

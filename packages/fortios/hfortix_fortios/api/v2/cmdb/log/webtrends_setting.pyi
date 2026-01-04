@@ -97,3 +97,9 @@ class WebtrendsSetting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "WebtrendsSetting",
+    "WebtrendsSettingPayload",
+]

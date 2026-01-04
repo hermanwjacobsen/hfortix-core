@@ -110,3 +110,9 @@ class Address6Template:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Address6Template",
+    "Address6TemplatePayload",
+]

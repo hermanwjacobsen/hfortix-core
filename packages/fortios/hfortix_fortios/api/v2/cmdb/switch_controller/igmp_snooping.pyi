@@ -100,3 +100,9 @@ class IgmpSnooping:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "IgmpSnooping",
+    "IgmpSnoopingPayload",
+]

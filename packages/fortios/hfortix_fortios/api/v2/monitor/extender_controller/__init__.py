@@ -1,17 +1,20 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - ExtenderController category"""
 
-from typing import TYPE_CHECKING
+from . import extender
 
-from .extender import Extender
-from .extender_base import Extender
-
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Extender",
+    "ExtenderController",
+]
 
 
 class ExtenderController:
-    """Container for {category_name} endpoints."""
+    """ExtenderController endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
-        self.extender = Extender(client)
-        self.extender = Extender(client)
+    def __init__(self, client):
+        """ExtenderController endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.extender = extender.Extender(client)

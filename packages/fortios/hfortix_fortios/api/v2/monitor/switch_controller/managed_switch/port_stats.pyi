@@ -80,3 +80,8 @@ class PortStats:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "PortStats",
+]

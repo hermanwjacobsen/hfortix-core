@@ -154,3 +154,9 @@ class Static:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Static",
+    "StaticPayload",
+]
