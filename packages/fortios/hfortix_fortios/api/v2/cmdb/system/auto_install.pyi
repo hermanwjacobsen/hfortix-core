@@ -103,3 +103,9 @@ class AutoInstall:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AutoInstall",
+    "AutoInstallPayload",
+]

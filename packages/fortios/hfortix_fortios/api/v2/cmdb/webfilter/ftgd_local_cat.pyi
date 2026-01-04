@@ -101,3 +101,9 @@ class FtgdLocalCat:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FtgdLocalCat",
+    "FtgdLocalCatPayload",
+]

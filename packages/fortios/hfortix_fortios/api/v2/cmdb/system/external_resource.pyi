@@ -157,3 +157,9 @@ class ExternalResource:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ExternalResource",
+    "ExternalResourcePayload",
+]

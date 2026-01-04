@@ -1,5 +1,21 @@
 """FortiOS CMDB - Log category"""
 
+from . import disk
+from . import fortianalyzer
+from . import fortianalyzer2
+from . import fortianalyzer3
+from . import fortianalyzer_cloud
+from . import fortiguard
+from . import memory
+from . import null_device
+from . import syslogd
+from . import syslogd2
+from . import syslogd3
+from . import syslogd4
+from . import tacacs_plusaccounting
+from . import tacacs_plusaccounting2
+from . import tacacs_plusaccounting3
+from . import webtrends
 from .custom_field import CustomField
 from .disk_filter import DiskFilter
 from .disk_setting import DiskSetting
@@ -59,17 +75,22 @@ from .webtrends_setting import WebtrendsSetting
 
 __all__ = [
     "CustomField",
+    "Disk",
     "DiskFilter",
     "DiskSetting",
     "Eventfilter",
+    "Fortianalyzer",
+    "Fortianalyzer2",
     "Fortianalyzer2Filter",
     "Fortianalyzer2OverrideFilter",
     "Fortianalyzer2OverrideSetting",
     "Fortianalyzer2Setting",
+    "Fortianalyzer3",
     "Fortianalyzer3Filter",
     "Fortianalyzer3OverrideFilter",
     "Fortianalyzer3OverrideSetting",
     "Fortianalyzer3Setting",
+    "FortianalyzerCloud",
     "FortianalyzerCloudFilter",
     "FortianalyzerCloudOverrideFilter",
     "FortianalyzerCloudOverrideSetting",
@@ -78,26 +99,33 @@ __all__ = [
     "FortianalyzerOverrideFilter",
     "FortianalyzerOverrideSetting",
     "FortianalyzerSetting",
+    "Fortiguard",
     "FortiguardFilter",
     "FortiguardOverrideFilter",
     "FortiguardOverrideSetting",
     "FortiguardSetting",
     "GuiDisplay",
     "Log",
+    "Memory",
     "MemoryFilter",
     "MemoryGlobalSetting",
     "MemorySetting",
+    "NullDevice",
     "NullDeviceFilter",
     "NullDeviceSetting",
     "Setting",
+    "Syslogd",
+    "Syslogd2",
     "Syslogd2Filter",
     "Syslogd2OverrideFilter",
     "Syslogd2OverrideSetting",
     "Syslogd2Setting",
+    "Syslogd3",
     "Syslogd3Filter",
     "Syslogd3OverrideFilter",
     "Syslogd3OverrideSetting",
     "Syslogd3Setting",
+    "Syslogd4",
     "Syslogd4Filter",
     "Syslogd4OverrideFilter",
     "Syslogd4OverrideSetting",
@@ -106,13 +134,17 @@ __all__ = [
     "SyslogdOverrideFilter",
     "SyslogdOverrideSetting",
     "SyslogdSetting",
+    "TacacsPlusaccounting",
+    "TacacsPlusaccounting2",
     "TacacsPlusaccounting2Filter",
     "TacacsPlusaccounting2Setting",
+    "TacacsPlusaccounting3",
     "TacacsPlusaccounting3Filter",
     "TacacsPlusaccounting3Setting",
     "TacacsPlusaccountingFilter",
     "TacacsPlusaccountingSetting",
     "ThreatWeight",
+    "Webtrends",
     "WebtrendsFilter",
     "WebtrendsSetting",
 ]
@@ -127,6 +159,22 @@ class Log:
         Args:
             client: HTTP client instance for API communication
         """
+        self.disk = disk.Disk(client)
+        self.fortianalyzer = fortianalyzer.Fortianalyzer(client)
+        self.fortianalyzer2 = fortianalyzer2.Fortianalyzer2(client)
+        self.fortianalyzer3 = fortianalyzer3.Fortianalyzer3(client)
+        self.fortianalyzer_cloud = fortianalyzer_cloud.FortianalyzerCloud(client)
+        self.fortiguard = fortiguard.Fortiguard(client)
+        self.memory = memory.Memory(client)
+        self.null_device = null_device.NullDevice(client)
+        self.syslogd = syslogd.Syslogd(client)
+        self.syslogd2 = syslogd2.Syslogd2(client)
+        self.syslogd3 = syslogd3.Syslogd3(client)
+        self.syslogd4 = syslogd4.Syslogd4(client)
+        self.tacacs_plusaccounting = tacacs_plusaccounting.TacacsPlusaccounting(client)
+        self.tacacs_plusaccounting2 = tacacs_plusaccounting2.TacacsPlusaccounting2(client)
+        self.tacacs_plusaccounting3 = tacacs_plusaccounting3.TacacsPlusaccounting3(client)
+        self.webtrends = webtrends.Webtrends(client)
         self.custom_field = CustomField(client)
         self.disk_filter = DiskFilter(client)
         self.disk_setting = DiskSetting(client)

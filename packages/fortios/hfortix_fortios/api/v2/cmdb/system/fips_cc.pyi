@@ -100,3 +100,9 @@ class FipsCc:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FipsCc",
+    "FipsCcPayload",
+]

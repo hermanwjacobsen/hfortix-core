@@ -80,3 +80,8 @@ class DetectedDevice:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "DetectedDevice",
+]

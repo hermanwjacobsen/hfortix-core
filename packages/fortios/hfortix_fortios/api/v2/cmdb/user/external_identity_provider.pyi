@@ -131,3 +131,9 @@ class ExternalIdentityProvider:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ExternalIdentityProvider",
+    "ExternalIdentityProviderPayload",
+]

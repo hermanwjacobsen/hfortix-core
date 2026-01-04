@@ -146,3 +146,9 @@ class LldpProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "LldpProfile",
+    "LldpProfilePayload",
+]

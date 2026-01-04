@@ -104,3 +104,9 @@ class IpsecConcentrator:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "IpsecConcentrator",
+    "IpsecConcentratorPayload",
+]

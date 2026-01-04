@@ -80,3 +80,8 @@ class Current:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Current",
+]

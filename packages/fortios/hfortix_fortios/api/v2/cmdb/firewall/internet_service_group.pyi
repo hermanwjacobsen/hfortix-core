@@ -104,3 +104,9 @@ class InternetServiceGroup:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "InternetServiceGroup",
+    "InternetServiceGroupPayload",
+]

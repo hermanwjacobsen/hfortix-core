@@ -1,15 +1,38 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - Network category"""
 
-from typing import TYPE_CHECKING
-
+from . import ddns
+from . import debug_flow
+from . import dns
+from . import fortiguard
+from . import lldp
 from .arp import Arp
+from .reverse_ip_lookup import ReverseIpLookup
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Arp",
+    "Ddns",
+    "DebugFlow",
+    "Dns",
+    "Fortiguard",
+    "Lldp",
+    "Network",
+    "ReverseIpLookup",
+]
 
 
 class Network:
-    """Container for {category_name} endpoints."""
+    """Network endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
+    def __init__(self, client):
+        """Network endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.ddns = ddns.Ddns(client)
+        self.debug_flow = debug_flow.DebugFlow(client)
+        self.dns = dns.Dns(client)
+        self.fortiguard = fortiguard.Fortiguard(client)
+        self.lldp = lldp.Lldp(client)
         self.arp = Arp(client)
+        self.reverse_ip_lookup = ReverseIpLookup(client)

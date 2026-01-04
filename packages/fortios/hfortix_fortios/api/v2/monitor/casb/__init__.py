@@ -1,27 +1,20 @@
-"""FortiOS Monitor - Casb category"""
+"""FortiOS CMDB - Casb category"""
 
-from __future__ import annotations
+from . import saas_application
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-from .saas_application.details import Details
-
-class SaasApplicationEndpoints:
-    """Endpoints under saas_application."""
-
-    def __init__(self, client):
-        self.details = Details(client)
+__all__ = [
+    "Casb",
+    "SaasApplication",
+]
 
 
 class Casb:
-    """Casb endpoints wrapper for Monitor API."""
+    """Casb endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "IHTTPClient"):
-        """Casb endpoints."""
-        self.saas_application = SaasApplicationEndpoints(client)
-
-
-__all__ = ["Casb"]
+    def __init__(self, client):
+        """Casb endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.saas_application = saas_application.SaasApplication(client)

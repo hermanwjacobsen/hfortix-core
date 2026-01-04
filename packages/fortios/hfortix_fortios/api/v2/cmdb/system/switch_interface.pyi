@@ -120,3 +120,9 @@ class SwitchInterface:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SwitchInterface",
+    "SwitchInterfacePayload",
+]

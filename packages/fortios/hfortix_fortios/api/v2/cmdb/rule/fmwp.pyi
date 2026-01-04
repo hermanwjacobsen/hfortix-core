@@ -137,3 +137,9 @@ class Fmwp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Fmwp",
+    "FmwpPayload",
+]

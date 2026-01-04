@@ -80,3 +80,8 @@ class CreateDefault:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CreateDefault",
+]

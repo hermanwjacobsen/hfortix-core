@@ -107,3 +107,9 @@ class Pop3:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Pop3",
+    "Pop3Payload",
+]

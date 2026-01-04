@@ -100,3 +100,9 @@ class SnmpTrapThreshold:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SnmpTrapThreshold",
+    "SnmpTrapThresholdPayload",
+]

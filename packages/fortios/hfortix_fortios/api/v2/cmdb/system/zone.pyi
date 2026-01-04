@@ -107,3 +107,9 @@ class Zone:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Zone",
+    "ZonePayload",
+]

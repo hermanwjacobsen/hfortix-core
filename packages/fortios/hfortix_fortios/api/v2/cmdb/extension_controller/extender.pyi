@@ -147,3 +147,9 @@ class Extender:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Extender",
+    "ExtenderPayload",
+]

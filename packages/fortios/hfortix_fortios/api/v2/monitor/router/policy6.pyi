@@ -80,3 +80,8 @@ class Policy6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Policy6",
+]

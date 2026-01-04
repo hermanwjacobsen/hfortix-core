@@ -80,3 +80,8 @@ class Email:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Email",
+]

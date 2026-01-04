@@ -154,3 +154,9 @@ class CentralSnatMap:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CentralSnatMap",
+    "CentralSnatMapPayload",
+]

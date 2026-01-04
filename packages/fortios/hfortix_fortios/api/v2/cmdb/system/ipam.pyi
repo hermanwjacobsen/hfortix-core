@@ -118,3 +118,9 @@ class Ipam:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Ipam",
+    "IpamPayload",
+]

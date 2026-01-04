@@ -159,3 +159,9 @@ class Fortianalyzer2Setting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Fortianalyzer2Setting",
+    "Fortianalyzer2SettingPayload",
+]

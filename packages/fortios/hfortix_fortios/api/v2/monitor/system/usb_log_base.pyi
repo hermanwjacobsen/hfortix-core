@@ -80,3 +80,8 @@ class UsbLog:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "UsbLog",
+]

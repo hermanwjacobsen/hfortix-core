@@ -1,15 +1,32 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - Utm category"""
 
-from typing import TYPE_CHECKING
-
+from . import antivirus
+from . import blacklisted_certificates
+from . import rating_lookup
+from .app_lookup import AppLookup
 from .application_categories import ApplicationCategories
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Antivirus",
+    "AppLookup",
+    "ApplicationCategories",
+    "BlacklistedCertificates",
+    "RatingLookup",
+    "Utm",
+]
 
 
 class Utm:
-    """Container for {category_name} endpoints."""
+    """Utm endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
+    def __init__(self, client):
+        """Utm endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.antivirus = antivirus.Antivirus(client)
+        self.blacklisted_certificates = blacklisted_certificates.BlacklistedCertificates(client)
+        self.rating_lookup = rating_lookup.RatingLookup(client)
+        self.app_lookup = AppLookup(client)
         self.application_categories = ApplicationCategories(client)

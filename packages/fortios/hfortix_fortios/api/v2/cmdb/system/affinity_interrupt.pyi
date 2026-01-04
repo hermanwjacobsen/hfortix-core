@@ -104,3 +104,9 @@ class AffinityInterrupt:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AffinityInterrupt",
+    "AffinityInterruptPayload",
+]

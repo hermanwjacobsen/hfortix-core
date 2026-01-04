@@ -114,6 +114,7 @@ class Hotspot20H2qpConnCapability:
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
 
+
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -395,6 +396,7 @@ class Hotspot20H2qpConnCapability:
             # Resource not found or other error - return False
             return False
 
+
     def set(
         self,
         payload_dict: dict[str, Any] | None = None,
@@ -456,6 +458,7 @@ class Hotspot20H2qpConnCapability:
         else:
             # Create new resource
             return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
 
     # ========================================================================
     # Metadata Helper Methods

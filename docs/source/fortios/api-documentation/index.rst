@@ -21,7 +21,7 @@ Choose Your Interface
         :link: /fortios/api-reference/index
         :link-type: doc
 
-        Low-level endpoint documentation (750+ endpoints).
+        Low-level endpoint documentation (1,219 endpoints).
         
         Direct HTTP methods: GET, POST, PUT, DELETE
 

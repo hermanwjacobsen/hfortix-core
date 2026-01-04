@@ -7,7 +7,149 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.4.2] - 2026-01-02
+## [0.5.0-beta] - 2026-01-04
+
+### 🎉 **MAJOR RELEASE - Complete Code Regeneration**
+
+Version 0.5.0 represents a **complete regeneration** of the FortiOS API implementation with significant architectural improvements. This is a **breaking change** release that removes convenience wrappers in favor of a more maintainable, comprehensive, and auto-generated approach.
+
+⚠️ **BREAKING CHANGES**: This release removes convenience wrappers. Use direct API access via `fgt.api.cmdb.*`, `fgt.api.monitor.*`, and `fgt.api.log.*` instead.
+
+### Added
+
+- **Complete API Regeneration** (January 2026):
+  - ✨ **1,219 Total Endpoints**: Complete FortiOS 7.6.5 API coverage
+    - 886 CMDB endpoints (configuration management)
+    - 295 Monitor endpoints (status and monitoring)
+    - 38 Log endpoints (5 destinations × multiple subtypes)
+  - 🏗️ **All Code Auto-Generated**: 100% generated from FortiOS API schemas
+  - 📝 **Comprehensive Type Stubs**: Full `.pyi` stub files for all 1,219 endpoints
+  - ✅ **Auto-Generated Tests**: Basic test coverage for all endpoints
+  - 🔍 **Enhanced Validators**: 1,219 validator modules with schema-based validation
+
+- **Advanced Code Generator** (January 2026):
+  - 🚀 **Swagger Fallback System**: Automatically uses Swagger docs when API unavailable
+    - Handles HTTP 400, 404, 405, 424, 500, 503 errors
+    - Handles JSON parse errors for binary endpoints
+    - Creates valid schemas from Swagger/OpenAPI documentation
+    - Includes metadata tracking (`fallback_reason` field)
+  - 🔧 **Smart Path Conversion**: Automatically handles 3-part CMDB paths
+    - Example: `system.snmp/community` → `/api/v2/cmdb/system.snmp/community`
+  - 📊 **Comprehensive Error Reporting**: Configurable error display with `--max-errors`
+  - 🎯 **Bug Fixes**: Fixed Swagger parser type errors with proper dict/string handling
+
+- **Log Endpoint Support** (January 2026):
+  - 📋 **Parameterized Log Queries**: Native support for FortiGate log endpoints
+  - 🏗️ **Nested Class Structure**: Organized log access pattern
+    ```python
+    # Event logs by subtype
+    fgt.api.log.disk.event.vpn.get(rows=10, filter="...")
+    fgt.api.log.disk.event.system.get(rows=50)
+    
+    # Traffic logs by subtype
+    fgt.api.log.disk.traffic.forward.get(rows=100)
+    fgt.api.log.memory.traffic.local.get(rows=20)
+    ```
+  - 🎯 **5 Log Destinations**: disk, memory, fortianalyzer, forticloud, search
+  - 📝 **12 Event Subtypes**: vpn, user, system, ha, router, wireless, wad, endpoint, fortiextender, connector, compliance_check, security_rating
+  - 🚦 **6 Traffic Subtypes**: forward, local, multicast, sniffer, fortiview, threat
+  - ⚡ **Specialized Generator**: Dedicated `log_generator.py` for parameterized paths
+
+- **Enhanced Type Safety** (January 2026):
+  - 📘 **Complete Type Stubs**: `.pyi` files for all endpoints (1,219 total)
+  - 🔍 **Validator Stubs**: Type hints for all validator functions
+  - ✅ **IDE Autocomplete**: Full IntelliSense support in VS Code, PyCharm, etc.
+  - 🎯 **Type Checking**: All generated code passes mypy strict mode
+
+- **Test Infrastructure** (January 2026):
+  - ✅ **Auto-Generated Tests**: Basic smoke tests for all endpoints
+    - GET operations testing (safe, read-only)
+    - VDOM parameter testing
+    - Filter parameter testing (CMDB)
+    - exists() method testing
+    - Validator import testing
+  - 📊 **Test Structure**: Organized by category/subcategory matching API structure
+  - 🧪 **Mock Support**: Structure tests for log endpoints (no live API calls needed)
+
+### Changed
+
+- **Generator Architecture** (January 2026):
+  - 🔄 **Unified Generation**: Single generator handles all endpoint types
+  - 📁 **Clean Structure**: Organized in `.dev/generator/` directory
+  - 🔧 **Modular Design**: Separate generators for endpoints, validators, stubs, tests
+  - 📝 **Template-Based**: Jinja2 templates for consistent code generation
+  - 🎯 **Smart Filtering**: Automatically excludes log endpoints from CMDB processing
+
+- **Code Organization** (January 2026):
+  - 📦 **Streamlined Package**: Removed complexity, focus on core API
+  - 🗂️ **Clear Hierarchy**: `api/v2/{category}/{subcategory}/{endpoint}.py`
+  - 🎯 **Helper Organization**: All helpers in `{category}/{subcategory}/_helpers/`
+  - 📝 **Documentation**: Inline docstrings for all generated methods
+
+### Removed
+
+- **⚠️ BREAKING: Convenience Wrappers Removed**:
+  - ❌ Removed all convenience wrapper classes (firewall, schedule, shaper, etc.)
+  - ❌ Removed `hfortix_fortios.firewall.*` modules
+  - ❌ Removed `hfortix_fortios.schedule.*` modules
+  - ❌ Removed `hfortix_fortios.shaper.*` modules
+  - **Reason**: Unsustainable to maintain 1,200+ hand-written wrappers
+  - **Alternative**: Use direct API access via `fgt.api.cmdb.*`, `fgt.api.monitor.*`, `fgt.api.log.*`
+  - All functionality available through auto-generated API endpoints
+
+### Migration from v0.4.x
+
+Users upgrading from v0.4.x must migrate from convenience wrappers to direct API access:
+
+**Old (v0.4.x) - Convenience Wrappers**:
+```python
+from hfortix_fortios.firewall import FirewallAddress
+addr = FirewallAddress(fgt)
+result = addr.create(name="test", subnet="10.0.0.1/32")
+```
+
+**New (v0.5.0) - Direct API**:
+```python
+result = fgt.api.cmdb.firewall.address.create(
+    name="test",
+    subnet="10.0.0.1/32"
+)
+```
+
+All methods (get, create, update, delete, exists) work the same way - just accessed directly through the endpoint.
+
+### Technical Improvements
+
+- **Schema Processing** (January 2026):
+  - 📥 **Smart Downloads**: Skip unavailable endpoints, use Swagger fallback
+  - 🔍 **Metadata Tracking**: All schemas include source, timestamp, fallback reason
+  - ✅ **Validation**: Schema validation before code generation
+  - 🎯 **Error Handling**: Comprehensive error reporting with context
+
+- **Build Process** (January 2026):
+  - ⚡ **Faster Generation**: Optimized for 1,200+ endpoints
+  - 📊 **Progress Tracking**: Real-time progress display during generation
+  - 🔍 **Detailed Logging**: Complete generation logs with error details
+  - ✅ **Verification**: Automatic validation of generated code
+
+### Statistics
+
+- **Endpoint Coverage**: 1,219 total endpoints (886 CMDB + 295 Monitor + 38 Log)
+- **Type Stubs**: 1,219 `.pyi` stub files (100% coverage)
+- **Validators**: 1,219 validator modules with schema-based validation
+- **Tests**: 1,200+ auto-generated basic test files
+- **Lines of Code**: ~500,000 lines of auto-generated Python code
+- **Generator Success Rate**: 100% (0 failures with Swagger fallback)
+
+### Notes
+
+- 🚧 **Beta Status**: Version 0.5.0 remains in BETA until v1.0.0
+- 📚 **Documentation**: All docs updated to reflect new architecture
+- 🔄 **Breaking Changes**: Convenience wrappers removed (see migration guide)
+- ✅ **Stability**: Generated code is stable and production-ready
+- 🎯 **Future**: Focus on test coverage expansion and bug fixes toward v1.0.0
+
+## [0.4.3] - 2026-01-02
 
 ### Added
 

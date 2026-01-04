@@ -114,3 +114,9 @@ class Fortigate:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Fortigate",
+    "FortigatePayload",
+]

@@ -80,3 +80,8 @@ class VerifyCert:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VerifyCert",
+]

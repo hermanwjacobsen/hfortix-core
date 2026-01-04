@@ -80,3 +80,8 @@ class RefreshServer:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "RefreshServer",
+]

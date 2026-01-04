@@ -5,17 +5,19 @@ Complete Python SDK for Fortinet Products - Modular, type-safe, production-ready
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.4.0 MAJOR RELEASE (Published December 31, 2025)**
+> **⚠️ BETA STATUS - Version 0.5.0-beta (January 4, 2026)**
 >
-> **Breaking Changes**: Modular architecture introduced. Existing users upgrade with `pip install hfortix[fortios]`  
+> **Breaking Changes**: v0.5.0 removes convenience wrappers. Use direct API access via `fgt.api.*`
 > **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
 
-**Version:** 0.4.0  
-**Status:** Beta (Functional, production-ready, pending comprehensive unit tests for v1.0)
+**Version:** 0.5.0-beta
+**Status:** Beta (100% auto-generated, production-ready, pending comprehensive unit tests for v1.0)
 
 ## Overview
 
 HFortix is a modular Python SDK that provides comprehensive, production-ready clients for Fortinet products. Starting with FortiOS/FortiGate, with future support planned for FortiManager, FortiAnalyzer, and more.
+
+**Version 0.5.0** features complete code regeneration with 1,219 auto-generated endpoints and removes hand-written convenience wrappers in favor of a more maintainable, comprehensive approach.
 
 This is a **meta-package** that provides convenient installation patterns for the HFortix ecosystem.
 
@@ -120,17 +122,16 @@ Install only what you need:
 ### ⚡ Complete FortiOS Support
 
 **API Coverage (FortiOS 7.6.5):**
-- 500+ CMDB endpoints (configuration)
-- 200+ Monitor endpoints (real-time data)
-- Complete Log API (historical data)
-- All Service categories
+- **1,219 total endpoints** (100% auto-generated)
+- 886 CMDB endpoints (configuration)
+- 295 Monitor endpoints (real-time data)
+- 38 Log endpoints (query logs from disk, memory, FortiAnalyzer, FortiCloud)
 
-**Convenience Wrappers:**
-- Service management (`service_custom`, `service_category`, `service_group`)
-- Schedules (`schedule_onetime`, `schedule_recurring`, `schedule_group`)
-- Traffic shaping (`traffic_shaper`, `shaper_per_ip`)
-- IP/MAC binding (`ipmacbinding_table`, `ipmacbinding_setting`)
-- Firewall policies (150+ parameters)
+**Features:**
+- Complete `.pyi` type stubs for perfect IDE autocomplete
+- Schema-based validation for all parameters
+- Auto-generated tests for all endpoints
+- Swagger fallback for 100% coverage
 
 ### �� Enterprise Features
 
@@ -165,21 +166,28 @@ from hfortix import FortiOS
 from hfortix.FortiOS import FortiOS
 ```
 
-## Migration from v0.3.x
+## Migration from v0.4.x
 
-**From monolithic package:**
-```bash
-# Old installation
-pip uninstall hfortix
+**Breaking Changes in v0.5.0:**
+- All convenience wrappers have been removed
+- Use direct API access via `fgt.api.cmdb.*`, `fgt.api.monitor.*`, `fgt.api.log.*`
 
-# New installation
-pip install hfortix[fortios]  # or hfortix-fortios
+**Old (v0.4.x):**
+```python
+from hfortix_fortios.firewall import FirewallAddress
+addr = FirewallAddress(fgt)
+result = addr.create(name="test", subnet="10.0.0.1/32")
 ```
 
-**Code changes:**
-- Update imports to `from hfortix_fortios import FortiOS`
-- Legacy imports (`from hfortix import FortiOS`) still work
-- No other code changes required
+**New (v0.5.0):**
+```python
+result = fgt.api.cmdb.firewall.address.create(
+    name="test",
+    subnet="10.0.0.1/32"
+)
+```
+
+All methods work the same - just accessed directly through the endpoint.
 
 ## Documentation
 

@@ -303,3 +303,9 @@ class Vap:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Vap",
+    "VapPayload",
+]

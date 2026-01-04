@@ -125,3 +125,9 @@ class Group:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Group",
+    "GroupPayload",
+]

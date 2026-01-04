@@ -97,3 +97,9 @@ class SwitchLog:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SwitchLog",
+    "SwitchLogPayload",
+]

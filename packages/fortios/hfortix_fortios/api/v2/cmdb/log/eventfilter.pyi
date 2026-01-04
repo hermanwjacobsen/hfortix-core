@@ -142,3 +142,9 @@ class Eventfilter:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Eventfilter",
+    "EventfilterPayload",
+]

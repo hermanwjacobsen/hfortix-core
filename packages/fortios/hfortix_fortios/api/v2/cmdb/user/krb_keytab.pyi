@@ -107,3 +107,9 @@ class KrbKeytab:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "KrbKeytab",
+    "KrbKeytabPayload",
+]

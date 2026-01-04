@@ -116,3 +116,9 @@ class Geneve:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Geneve",
+    "GenevePayload",
+]

@@ -107,3 +107,9 @@ class WildcardFqdnGroup:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "WildcardFqdnGroup",
+    "WildcardFqdnGroupPayload",
+]

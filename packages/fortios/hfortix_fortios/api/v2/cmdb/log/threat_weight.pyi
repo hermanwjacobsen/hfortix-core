@@ -124,3 +124,9 @@ class ThreatWeight:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ThreatWeight",
+    "ThreatWeightPayload",
+]

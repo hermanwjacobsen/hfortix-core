@@ -94,3 +94,9 @@ class Sflow:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Sflow",
+    "SflowPayload",
+]

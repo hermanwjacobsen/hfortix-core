@@ -1,4 +1,6 @@
-# HFortix - Quick Reference
+# HFortix - Quick Reference (v0.5.0-beta)
+
+⚠️ **Breaking Changes in v0.5.0**: Convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead.
 
 ## Installation
 
@@ -13,7 +15,7 @@ pip install hfortix-fortios  # FortiOS/FortiGate client only
 pip install hfortix-core     # Core exceptions and HTTP framework only
 ```
 
-**Note:** Version 0.4.0 introduces modular packages for flexible installation.
+**Note:** Version 0.5.0 introduces auto-generated endpoints and removes convenience wrappers.
 
 ### From Source
 
@@ -34,12 +36,9 @@ from hfortix import FortiOS
 ### Alternative: Direct Module Import (v0.4.0+)
 
 ```python
-# New modular package imports (v0.4.0+)
+# Modular package imports (v0.4.0+)
 from hfortix_fortios import FortiOS
 from hfortix_core import FortinetError, APIError
-
-# Legacy imports (still supported via hfortix meta-package)
-from hfortix.FortiOS import FortiOS
 ```
 
 ### Exception Imports
@@ -48,36 +47,88 @@ from hfortix.FortiOS import FortiOS
 from hfortix import APIError, ResourceNotFoundError, FortinetError
 ```
 
-### Future Products (Coming Soon)
-
-```python
-# FortiManager / FortiAnalyzer are planned; currently FortiOS is available.
-from hfortix import FortiOS
-```
-
 ## Quick Start
 
-## Generic request() Method (NEW in v0.4.1)
-
-The fastest way to test FortiGate API calls - copy JSON directly from the GUI:
+### Basic Connection
 
 ```python
 from hfortix import FortiOS
 
-fgt = FortiOS(host="192.168.1.99", token="your-api-token", verify=False)
+# Connect to FortiGate
+fgt = FortiOS(
+    host="192.168.1.99",
+    token="your-api-token",
+    verify=False  # Set True for production
+)
 
-# 1. In FortiGate GUI, click "API Preview" on any object
-# 2. Copy the JSON shown
-# 3. Paste it into your code:
+# All endpoints are accessed via fgt.api
+# Examples:
+# - fgt.api.cmdb.firewall.address - Firewall addresses
+# - fgt.api.cmdb.firewall.policy - Firewall policies  
+# - fgt.api.monitor.firewall.session - Active sessions
+# - fgt.api.log.disk.event.vpn - VPN event logs
+```
+
+### CMDB Endpoints (Configuration)
+
+All configuration is accessed via `fgt.api.cmdb.*`:
+
+```python
+# Firewall Address
+result = fgt.api.cmdb.firewall.address.create(
+    name="web-server",
+    subnet="10.0.1.100/32",
+    comment="Production web server"
+)
+
+# Get all addresses
+addresses = fgt.api.cmdb.firewall.address.get()
+
+# Get specific address
+addr = fgt.api.cmdb.firewall.address.get(name="web-server")
+
+# Update address
+result = fgt.api.cmdb.firewall.address.update(
+    name="web-server",
+    comment="Updated comment"
+)
+
+# Delete address
+result = fgt.api.cmdb.firewall.address.delete(name="web-server")
+
+# Check if exists
+exists = fgt.api.cmdb.firewall.address.exists(name="web-server")
+```
+
+### Quick Testing with request() Method
+
+The `request()` method (introduced in v0.4.2) lets you copy JSON directly from FortiGate GUI:
+
+```python
+# In FortiGate GUI, click "API Preview" on any object
+# Copy the JSON and paste it here:
 
 config = {
     "method": "POST",
     "url": "/api/v2/cmdb/firewall/address",
     "params": {"vdom": "root"},
     "data": {
-        "name": "web-server",
-        "subnet": "10.0.1.100/32",
-        "comment": "Production web server"
+        "name": "test-host",
+        "subnet": "10.0.0.1/32",
+        "comment": "Created via request() method"
+    }
+}
+
+result = fgt.request(config)
+
+# Works with GET, POST, PUT, DELETE
+get_config = {
+    "method": "GET",
+    "url": "/api/v2/cmdb/firewall/address",
+    "params": {"vdom": "root"}
+}
+addresses = fgt.request(get_config)
+```
     }
 }
 

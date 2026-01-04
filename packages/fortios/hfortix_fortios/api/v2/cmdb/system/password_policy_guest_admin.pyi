@@ -124,3 +124,9 @@ class PasswordPolicyGuestAdmin:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "PasswordPolicyGuestAdmin",
+    "PasswordPolicyGuestAdminPayload",
+]

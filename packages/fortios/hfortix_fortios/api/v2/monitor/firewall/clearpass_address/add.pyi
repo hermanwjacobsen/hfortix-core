@@ -80,3 +80,8 @@ class Add:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Add",
+]

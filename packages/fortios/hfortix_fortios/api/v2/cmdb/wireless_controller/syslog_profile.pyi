@@ -119,3 +119,9 @@ class SyslogProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SyslogProfile",
+    "SyslogProfilePayload",
+]

@@ -112,3 +112,9 @@ class TacacsPlusaccounting3Setting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "TacacsPlusaccounting3Setting",
+    "TacacsPlusaccounting3SettingPayload",
+]

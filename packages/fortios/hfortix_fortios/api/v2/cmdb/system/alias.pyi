@@ -98,3 +98,9 @@ class Alias:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Alias",
+    "AliasPayload",
+]

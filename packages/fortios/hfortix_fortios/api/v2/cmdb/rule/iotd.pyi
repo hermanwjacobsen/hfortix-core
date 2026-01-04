@@ -131,3 +131,9 @@ class Iotd:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Iotd",
+    "IotdPayload",
+]

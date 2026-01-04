@@ -121,3 +121,9 @@ class X8021xSettings:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "X8021xSettings",
+    "X8021xSettingsPayload",
+]

@@ -80,3 +80,8 @@ class Disconnect:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Disconnect",
+]

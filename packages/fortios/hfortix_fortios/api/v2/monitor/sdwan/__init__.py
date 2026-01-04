@@ -1,27 +1,20 @@
-"""FortiOS Monitor - Sdwan category"""
+"""FortiOS CMDB - Sdwan category"""
 
-from __future__ import annotations
+from . import link_monitor_metrics
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-from .link_monitor_metrics.report import Report
-
-class LinkMonitorMetricsEndpoints:
-    """Endpoints under link_monitor_metrics."""
-
-    def __init__(self, client):
-        self.report = Report(client)
+__all__ = [
+    "LinkMonitorMetrics",
+    "Sdwan",
+]
 
 
 class Sdwan:
-    """Sdwan endpoints wrapper for Monitor API."""
+    """Sdwan endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "IHTTPClient"):
-        """Sdwan endpoints."""
-        self.link_monitor_metrics = LinkMonitorMetricsEndpoints(client)
-
-
-__all__ = ["Sdwan"]
+    def __init__(self, client):
+        """Sdwan endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.link_monitor_metrics = link_monitor_metrics.LinkMonitorMetrics(client)

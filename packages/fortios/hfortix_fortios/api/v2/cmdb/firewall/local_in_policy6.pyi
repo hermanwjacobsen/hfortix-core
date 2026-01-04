@@ -154,3 +154,9 @@ class LocalInPolicy6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "LocalInPolicy6",
+    "LocalInPolicy6Payload",
+]

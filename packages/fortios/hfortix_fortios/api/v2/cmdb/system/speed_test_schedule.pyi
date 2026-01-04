@@ -140,3 +140,9 @@ class SpeedTestSchedule:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SpeedTestSchedule",
+    "SpeedTestSchedulePayload",
+]

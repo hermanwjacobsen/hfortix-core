@@ -33,3 +33,35 @@ def validate_field_value(field_name: str, value: Any) -> bool: ...
 def get_all_fields() -> list[str]: ...
 def get_required_fields() -> list[str]: ...
 def get_schema_info() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VALID_BODY_MODE",
+    "VALID_BODY_TYPE",
+    "VALID_BODY_SCHEDULE_CONFIG_RESTORE",
+    "VALID_BODY_SCHEDULE_SCRIPT_RESTORE",
+    "VALID_BODY_ALLOW_PUSH_CONFIGURATION",
+    "VALID_BODY_ALLOW_PUSH_FIRMWARE",
+    "VALID_BODY_ALLOW_REMOTE_FIRMWARE_UPGRADE",
+    "VALID_BODY_ALLOW_MONITOR",
+    "VALID_BODY_FMG_UPDATE_PORT",
+    "VALID_BODY_FMG_UPDATE_HTTP_HEADER",
+    "VALID_BODY_INCLUDE_DEFAULT_SERVERS",
+    "VALID_BODY_ENC_ALGORITHM",
+    "VALID_BODY_INTERFACE_SELECT_METHOD",
+    "FIELD_TYPES",
+    "FIELD_DESCRIPTIONS",
+    "FIELD_CONSTRAINTS",
+    "NESTED_SCHEMAS",
+    "FIELDS_WITH_DEFAULTS",
+    "get_field_type",
+    "get_field_description",
+    "get_field_default",
+    "get_field_constraints",
+    "get_nested_schema",
+    "get_field_metadata",
+    "validate_field_value",
+    "get_all_fields",
+    "get_required_fields",
+    "get_schema_info",
+]

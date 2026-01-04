@@ -104,3 +104,9 @@ class ProxyArp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ProxyArp",
+    "ProxyArpPayload",
+]

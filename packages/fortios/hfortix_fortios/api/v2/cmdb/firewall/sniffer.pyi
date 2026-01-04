@@ -162,3 +162,9 @@ class Sniffer:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Sniffer",
+    "SnifferPayload",
+]

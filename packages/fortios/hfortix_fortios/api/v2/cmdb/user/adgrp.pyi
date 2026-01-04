@@ -104,3 +104,9 @@ class Adgrp:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Adgrp",
+    "AdgrpPayload",
+]

@@ -331,3 +331,9 @@ class IpsecPhase1Interface:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "IpsecPhase1Interface",
+    "IpsecPhase1InterfacePayload",
+]

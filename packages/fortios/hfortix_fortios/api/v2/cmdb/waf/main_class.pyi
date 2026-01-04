@@ -98,3 +98,9 @@ class MainClass:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "MainClass",
+    "MainClassPayload",
+]

@@ -110,3 +110,9 @@ class Ipv6Tunnel:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Ipv6Tunnel",
+    "Ipv6TunnelPayload",
+]

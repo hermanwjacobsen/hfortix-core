@@ -80,3 +80,8 @@ class InterfaceLog:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "InterfaceLog",
+]

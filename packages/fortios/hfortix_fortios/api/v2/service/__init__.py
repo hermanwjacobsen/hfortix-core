@@ -1,27 +1,26 @@
-"""
-FortiOS API v2 - service endpoints.
+"""FortiOS CMDB - Service category"""
 
-Auto-generated from FortiOS 7.6 schemas.
-"""
+from . import security_rating
+from . import sniffer
+from . import system
 
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from hfortix_core.http.interface import IHTTPClient
-
-from .sniffer import Sniffer
-from .system import System
+__all__ = [
+    "SecurityRating",
+    "Service",
+    "Sniffer",
+    "System",
+]
 
 
 class Service:
-    """Service category endpoints."""
-    
-    def __init__(self, client: "IHTTPClient"):
-        """Initialize Service endpoints."""
-        self.sniffer = Sniffer(client)
-        self.system = System(client)
+    """Service endpoints wrapper for CMDB API."""
 
-
-__all__ = ["Service"]
+    def __init__(self, client):
+        """Service endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.security_rating = security_rating.SecurityRating(client)
+        self.sniffer = sniffer.Sniffer(client)
+        self.system = system.System(client)

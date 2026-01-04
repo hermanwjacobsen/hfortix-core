@@ -1,29 +1,32 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - Webfilter category"""
 
-from typing import TYPE_CHECKING
-
-from .category_quota import CategoryQuota
-from .category_quota_base import CategoryQuota
+from . import category_quota
+from . import malicious_urls
+from . import override
 from .fortiguard_categories import FortiguardCategories
-from .malicious_urls import MaliciousUrls
-from .malicious_urls_base import MaliciousUrls
-from .override import Override
-from .override_base import Override
 from .trusted_urls import TrustedUrls
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "CategoryQuota",
+    "FortiguardCategories",
+    "MaliciousUrls",
+    "Override",
+    "TrustedUrls",
+    "Webfilter",
+]
 
 
 class Webfilter:
-    """Container for {category_name} endpoints."""
+    """Webfilter endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
-        self.category_quota = CategoryQuota(client)
-        self.category_quota = CategoryQuota(client)
+    def __init__(self, client):
+        """Webfilter endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.category_quota = category_quota.CategoryQuota(client)
+        self.malicious_urls = malicious_urls.MaliciousUrls(client)
+        self.override = override.Override(client)
         self.fortiguard_categories = FortiguardCategories(client)
-        self.malicious_urls = MaliciousUrls(client)
-        self.malicious_urls = MaliciousUrls(client)
-        self.override = Override(client)
-        self.override = Override(client)
         self.trusted_urls = TrustedUrls(client)

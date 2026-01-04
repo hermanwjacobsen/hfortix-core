@@ -91,8 +91,7 @@ FIELD_DESCRIPTIONS = {
     "vendor": "Cloud service vendor.",
     "traffic-vdom": "Vdom used to communicate with cloud service.",
     "gck-service-account": "Service account (e.g. \"account-id@sampledomain.com\").",
-    "gck-private-key": "Service account private key in PEM format (e.g. \"-----BEGIN PRIVATE KEY-----\
-...\").",
+    "gck-private-key": "Service account private key in PEM format (e.g. \"-----BEGIN PRIVATE KEY-----\ ...\").",
     "gck-keyid": "Key id, also referred as \"kid\".",
     "gck-access-token-lifetime": "Lifetime of automatically generated access tokens in minutes (default is 60 minutes).",
 }
@@ -405,7 +404,10 @@ def get_field_options(field_name: str) -> list[str] | None:
         >>> print(options)  # ["enable", "disable"]
     """
     # Construct the constant name from field name
-    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    # Replace all non-alphanumeric characters with underscores for valid Python identifiers
+    import re
+    safe_name = re.sub(r'[^a-zA-Z0-9]', '_', field_name)
+    constant_name = f"VALID_BODY_{safe_name.upper()}"
     return globals().get(constant_name)
 
 

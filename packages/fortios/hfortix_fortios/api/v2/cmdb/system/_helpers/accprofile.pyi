@@ -40,3 +40,42 @@ def validate_field_value(field_name: str, value: Any) -> bool: ...
 def get_all_fields() -> list[str]: ...
 def get_required_fields() -> list[str]: ...
 def get_schema_info() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VALID_BODY_SCOPE",
+    "VALID_BODY_SECFABGRP",
+    "VALID_BODY_FTVIEWGRP",
+    "VALID_BODY_AUTHGRP",
+    "VALID_BODY_SYSGRP",
+    "VALID_BODY_NETGRP",
+    "VALID_BODY_LOGGRP",
+    "VALID_BODY_FWGRP",
+    "VALID_BODY_VPNGRP",
+    "VALID_BODY_UTMGRP",
+    "VALID_BODY_WANOPTGRP",
+    "VALID_BODY_WIFI",
+    "VALID_BODY_ADMINTIMEOUT_OVERRIDE",
+    "VALID_BODY_CLI_DIAGNOSE",
+    "VALID_BODY_CLI_GET",
+    "VALID_BODY_CLI_SHOW",
+    "VALID_BODY_CLI_EXEC",
+    "VALID_BODY_CLI_CONFIG",
+    "VALID_BODY_SYSTEM_EXECUTE_SSH",
+    "VALID_BODY_SYSTEM_EXECUTE_TELNET",
+    "FIELD_TYPES",
+    "FIELD_DESCRIPTIONS",
+    "FIELD_CONSTRAINTS",
+    "NESTED_SCHEMAS",
+    "FIELDS_WITH_DEFAULTS",
+    "get_field_type",
+    "get_field_description",
+    "get_field_default",
+    "get_field_constraints",
+    "get_nested_schema",
+    "get_field_metadata",
+    "validate_field_value",
+    "get_all_fields",
+    "get_required_fields",
+    "get_schema_info",
+]

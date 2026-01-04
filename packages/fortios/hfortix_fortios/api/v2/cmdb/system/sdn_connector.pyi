@@ -184,3 +184,9 @@ class SdnConnector:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SdnConnector",
+    "SdnConnectorPayload",
+]

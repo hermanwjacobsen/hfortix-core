@@ -1,72 +1,39 @@
 Convenience Wrappers
 ====================
 
-High-level wrappers that simplify common FortiOS operations with intuitive methods
-like ``get()``, ``create()``, ``update()``, and ``delete()``.
-
-Overview
---------
-
-Convenience wrappers are accessed through the ``firewall`` namespace and provide
-object-oriented interfaces for common FortiOS configuration tasks:
-
-.. code-block:: python
-
-   from hfortix_fortios import FortiOS
-
-   fgt = FortiOS(host='192.168.1.99', token='your-token')
+.. danger::
+   **DEPRECATED IN v0.5.0 - REMOVED**
    
-   # Use high-level wrapper methods
-   fgt.firewall.policy.get()           # List all policies
-   fgt.firewall.policy.get(policyid=1)  # Get specific policy
-   fgt.firewall.policy.create(...)      # Create new policy
-   fgt.firewall.policy.update(...)      # Update existing policy
-   fgt.firewall.policy.delete(...)      # Delete policy
+   All convenience wrappers have been **REMOVED** in v0.5.0.
+   
+   **Migration Required:**
+   
+   - ❌ ``fgt.firewall.policy.create()`` - NO LONGER EXISTS
+   - ✅ ``fgt.api.cmdb.firewall.policy.create()`` - Use direct API method
+   - ✅ ``fgt.request(method='POST', path='/api/v2/cmdb/firewall/policy', data={...})`` - Use request() method
+   
+   See :doc:`/fortios/getting-started/quickstart` for updated examples.
 
-Firewall & Objects
-------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   firewall/policy
-   firewall/schedule
-   firewall/service
-   firewall/shaper
-   firewall/ipmac-binding
-
-Wrapper vs API Methods
+Why Were They Removed?
 ----------------------
 
-**Convenience Wrapper Methods** (High-level, recommended):
+Convenience wrappers were removed in v0.5.0 for the following reasons:
 
-- ``get()`` - Retrieve all resources (when called without parameters) or a specific resource (with ID parameter)
-- ``create()`` - Create a new resource
-- ``update()`` - Update an existing resource
-- ``delete()`` - Delete a resource
-- Plus helper methods like ``exists()``, ``clone()``, ``get_by_name()``
+1. **Maintenance Burden** - Required manual updates for every FortiOS schema change
+2. **API Drift** - Wrapper behavior could diverge from actual FortiOS API behavior
+3. **Limited Coverage** - Only covered ~20 endpoints out of 1,219 total
+4. **Type Safety Issues** - Harder to maintain accurate type hints for translations
+5. **Zero-Translation Alternative** - The ``request()`` method provides a better workflow
 
-**API Endpoint Methods** (Low-level):
+Migration Guide
+---------------
 
-- ``.get()`` - HTTP GET request
-- ``.post()`` - HTTP POST request
-- ``.put()`` - HTTP PUT request
-- ``.delete()`` - HTTP DELETE request
-
-**When to use each:**
-
-- **Use convenience wrappers** for common tasks (creating policies, schedules, services)
-- **Use API endpoints** when you need direct API access or endpoints without wrappers
-
-Example Comparison
-------------------
-
-**Using Convenience Wrapper** (Recommended):
+Old convenience wrapper code:
 
 .. code-block:: python
 
-   # Simple, intuitive
-   policy = fgt.firewall.policy.create(
+   # v0.4.0 - NO LONGER WORKS
+   fgt.firewall.policy.create(
        name='Allow-Web',
        srcintf=['port1'],
        dstintf=['port2'],
@@ -76,13 +43,26 @@ Example Comparison
        action='accept'
    )
 
-**Using API Endpoint** (Low-level):
+New direct API code (v0.5.0+):
 
 .. code-block:: python
 
-   # More complex, requires knowing API structure
-   policy = fgt.api.cmdb.firewall.policy.post(
-       json={
+   # v0.5.0 - Direct API method
+   fgt.api.cmdb.firewall.policy.create(
+       name='Allow-Web',
+       srcintf=[{'name': 'port1'}],
+       dstintf=[{'name': 'port2'}],
+       srcaddr=[{'name': 'all'}],
+       dstaddr=[{'name': 'all'}],
+       service=[{'name': 'HTTP'}, {'name': 'HTTPS'}],
+       action='accept'
+   )
+
+   # Or use request() method (copy JSON from FortiGate GUI):
+   fgt.request(
+       method='POST',
+       path='/api/v2/cmdb/firewall/policy',
+       data={
            'name': 'Allow-Web',
            'srcintf': [{'name': 'port1'}],
            'dstintf': [{'name': 'port2'}],
@@ -93,9 +73,51 @@ Example Comparison
        }
    )
 
+Previously Available Wrappers (v0.4.0)
+---------------------------------------
+
+The following wrappers existed in v0.4.0 but are **REMOVED** in v0.5.0:
+
+Firewall & Objects
+~~~~~~~~~~~~~~~~~~
+
+- ``fgt.firewall.policy`` - Firewall policies (use ``fgt.api.cmdb.firewall.policy`` now)
+- ``fgt.firewall.schedule`` - Schedules (use ``fgt.api.cmdb.firewall.schedule.*`` now)
+- ``fgt.firewall.service`` - Custom services (use ``fgt.api.cmdb.firewall.service.custom`` now)
+- ``fgt.firewall.shaper`` - Traffic shapers (use ``fgt.api.cmdb.firewall.shaper.*`` now)
+- ``fgt.firewall.ipmac_binding`` - IP/MAC bindings (use ``fgt.api.cmdb.firewall.ipmacbinding.table`` now)
+
+For the complete list of 1,219 available endpoints, see :doc:`/fortios/api-reference/index`.
+
+Direct API Access (Recommended)
+--------------------------------
+
+Instead of convenience wrappers, use direct API access:
+
+**API Endpoint Methods:**
+
+- ``create(name=..., **params)`` - Create resource with parameters
+- ``update(mkey=..., **params)`` - Update resource by key
+- ``delete(mkey=...)`` - Delete resource by key
+- ``get(mkey=None, **params)`` - Get one resource or list all
+- ``exists(mkey=...)`` - Check if resource exists
+
+**request() Method (Zero-Translation):**
+
+The ``request()`` method lets you copy JSON directly from FortiGate GUI and use it in Python:
+
+.. code-block:: python
+
+   # Copy JSON from FortiGate GUI, paste here - zero translation needed
+   fgt.request(
+       method='POST',
+       path='/api/v2/cmdb/firewall/policy',
+       data={...}  # Exact JSON from GUI
+   )
+
 See Also
 --------
 
-- :doc:`/fortios/getting-started/quickstart` - Quick start guide
-- :doc:`/fortios/api-reference/index` - Low-level API reference
+- :doc:`/fortios/getting-started/quickstart` - Updated quick start guide for v0.5.0
+- :doc:`/fortios/api-reference/index` - Complete endpoint reference (1,219 endpoints)
 - :doc:`/fortios/user-guide/endpoint-methods` - Endpoint methods guide

@@ -80,3 +80,8 @@ class FabricTimeInSync:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FabricTimeInSync",
+]

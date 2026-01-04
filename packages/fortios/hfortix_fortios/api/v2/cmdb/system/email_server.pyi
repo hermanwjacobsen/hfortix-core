@@ -133,3 +133,9 @@ class EmailServer:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "EmailServer",
+    "EmailServerPayload",
+]

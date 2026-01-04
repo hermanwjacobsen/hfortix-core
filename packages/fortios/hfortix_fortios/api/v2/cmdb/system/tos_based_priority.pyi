@@ -101,3 +101,9 @@ class TosBasedPriority:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "TosBasedPriority",
+    "TosBasedPriorityPayload",
+]

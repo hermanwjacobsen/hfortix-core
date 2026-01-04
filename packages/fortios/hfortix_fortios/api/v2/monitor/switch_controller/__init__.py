@@ -1,23 +1,44 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - SwitchController category"""
 
-from typing import TYPE_CHECKING
-
+from . import fsw_firmware
+from . import isl_lockdown
+from . import managed_switch
+from . import mclag_icl
+from . import nac_device
+from . import recommendation
 from .detected_device import DetectedDevice
-from .fsw_firmware import FswFirmware
-from .fsw_firmware_base import FswFirmware
 from .known_nac_device_criteria_list import KnownNacDeviceCriteriaList
 from .matched_devices import MatchedDevices
 
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "DetectedDevice",
+    "FswFirmware",
+    "IslLockdown",
+    "KnownNacDeviceCriteriaList",
+    "ManagedSwitch",
+    "MatchedDevices",
+    "MclagIcl",
+    "NacDevice",
+    "Recommendation",
+    "SwitchController",
+]
 
 
 class SwitchController:
-    """Container for {category_name} endpoints."""
+    """SwitchController endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
+    def __init__(self, client):
+        """SwitchController endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.fsw_firmware = fsw_firmware.FswFirmware(client)
+        self.isl_lockdown = isl_lockdown.IslLockdown(client)
+        self.managed_switch = managed_switch.ManagedSwitch(client)
+        self.mclag_icl = mclag_icl.MclagIcl(client)
+        self.nac_device = nac_device.NacDevice(client)
+        self.recommendation = recommendation.Recommendation(client)
         self.detected_device = DetectedDevice(client)
-        self.fsw_firmware = FswFirmware(client)
-        self.fsw_firmware = FswFirmware(client)
         self.known_nac_device_criteria_list = KnownNacDeviceCriteriaList(client)
         self.matched_devices = MatchedDevices(client)

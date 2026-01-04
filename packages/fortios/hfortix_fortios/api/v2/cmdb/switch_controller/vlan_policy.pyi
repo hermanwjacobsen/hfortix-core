@@ -116,3 +116,9 @@ class VlanPolicy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VlanPolicy",
+    "VlanPolicyPayload",
+]

@@ -149,3 +149,9 @@ class ShaperTrafficShaper:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ShaperTrafficShaper",
+    "ShaperTrafficShaperPayload",
+]

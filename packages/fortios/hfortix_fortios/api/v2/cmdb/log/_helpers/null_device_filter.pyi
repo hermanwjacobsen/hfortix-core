@@ -32,3 +32,34 @@ def validate_field_value(field_name: str, value: Any) -> bool: ...
 def get_all_fields() -> list[str]: ...
 def get_required_fields() -> list[str]: ...
 def get_schema_info() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VALID_BODY_SEVERITY",
+    "VALID_BODY_FORWARD_TRAFFIC",
+    "VALID_BODY_LOCAL_TRAFFIC",
+    "VALID_BODY_MULTICAST_TRAFFIC",
+    "VALID_BODY_SNIFFER_TRAFFIC",
+    "VALID_BODY_ZTNA_TRAFFIC",
+    "VALID_BODY_HTTP_TRANSACTION",
+    "VALID_BODY_ANOMALY",
+    "VALID_BODY_VOIP",
+    "VALID_BODY_GTP",
+    "VALID_BODY_FORTI_SWITCH",
+    "VALID_BODY_DEBUG",
+    "FIELD_TYPES",
+    "FIELD_DESCRIPTIONS",
+    "FIELD_CONSTRAINTS",
+    "NESTED_SCHEMAS",
+    "FIELDS_WITH_DEFAULTS",
+    "get_field_type",
+    "get_field_description",
+    "get_field_default",
+    "get_field_constraints",
+    "get_nested_schema",
+    "get_field_metadata",
+    "validate_field_value",
+    "get_all_fields",
+    "get_required_fields",
+    "get_schema_info",
+]

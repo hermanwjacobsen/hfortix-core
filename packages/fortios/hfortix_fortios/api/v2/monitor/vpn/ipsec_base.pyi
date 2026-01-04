@@ -80,3 +80,8 @@ class Ipsec:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Ipsec",
+]

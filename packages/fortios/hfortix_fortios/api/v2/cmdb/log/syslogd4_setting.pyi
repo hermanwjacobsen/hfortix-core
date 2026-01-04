@@ -142,3 +142,9 @@ class Syslogd4Setting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Syslogd4Setting",
+    "Syslogd4SettingPayload",
+]

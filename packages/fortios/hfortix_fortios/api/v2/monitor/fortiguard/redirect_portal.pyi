@@ -80,3 +80,8 @@ class RedirectPortal:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "RedirectPortal",
+]

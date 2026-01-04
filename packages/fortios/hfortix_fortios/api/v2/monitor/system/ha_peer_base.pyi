@@ -80,3 +80,8 @@ class HaPeer:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "HaPeer",
+]

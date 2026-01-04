@@ -104,3 +104,9 @@ class ReplacemsgUtm:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ReplacemsgUtm",
+    "ReplacemsgUtmPayload",
+]

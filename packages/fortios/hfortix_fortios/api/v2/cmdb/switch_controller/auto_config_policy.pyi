@@ -110,3 +110,9 @@ class AutoConfigPolicy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AutoConfigPolicy",
+    "AutoConfigPolicyPayload",
+]

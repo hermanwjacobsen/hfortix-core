@@ -80,3 +80,8 @@ class DhcpRenew:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "DhcpRenew",
+]

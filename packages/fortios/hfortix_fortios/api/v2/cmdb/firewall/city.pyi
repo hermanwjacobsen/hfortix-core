@@ -98,3 +98,9 @@ class City:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "City",
+    "CityPayload",
+]

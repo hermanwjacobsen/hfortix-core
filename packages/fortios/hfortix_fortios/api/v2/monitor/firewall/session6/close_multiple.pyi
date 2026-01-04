@@ -80,3 +80,8 @@ class CloseMultiple:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CloseMultiple",
+]

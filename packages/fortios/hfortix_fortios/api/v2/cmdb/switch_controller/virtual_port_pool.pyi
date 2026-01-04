@@ -98,3 +98,9 @@ class VirtualPortPool:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VirtualPortPool",
+    "VirtualPortPoolPayload",
+]

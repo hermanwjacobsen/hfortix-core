@@ -104,3 +104,9 @@ class PtpInterfacePolicy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "PtpInterfacePolicy",
+    "PtpInterfacePolicyPayload",
+]

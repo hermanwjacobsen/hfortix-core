@@ -107,3 +107,9 @@ class Sensor:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Sensor",
+    "SensorPayload",
+]

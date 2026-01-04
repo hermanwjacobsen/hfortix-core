@@ -80,3 +80,8 @@ class Firmware:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Firmware",
+]

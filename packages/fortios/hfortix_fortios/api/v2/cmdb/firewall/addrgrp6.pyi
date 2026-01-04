@@ -119,3 +119,9 @@ class Addrgrp6:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Addrgrp6",
+    "Addrgrp6Payload",
+]

@@ -80,3 +80,8 @@ class VdomResource:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VdomResource",
+]

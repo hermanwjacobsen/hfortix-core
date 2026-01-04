@@ -125,3 +125,9 @@ class IpsecManualkey:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "IpsecManualkey",
+    "IpsecManualkeyPayload",
+]

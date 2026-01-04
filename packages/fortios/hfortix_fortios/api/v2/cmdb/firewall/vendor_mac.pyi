@@ -104,3 +104,9 @@ class VendorMac:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VendorMac",
+    "VendorMacPayload",
+]

@@ -104,3 +104,9 @@ class Location:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Location",
+    "LocationPayload",
+]

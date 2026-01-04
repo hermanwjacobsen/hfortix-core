@@ -131,3 +131,9 @@ class Crl:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Crl",
+    "CrlPayload",
+]

@@ -107,3 +107,9 @@ class GeoipOverride:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "GeoipOverride",
+    "GeoipOverridePayload",
+]

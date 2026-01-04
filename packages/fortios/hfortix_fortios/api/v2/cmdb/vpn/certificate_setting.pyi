@@ -164,3 +164,9 @@ class CertificateSetting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "CertificateSetting",
+    "CertificateSettingPayload",
+]

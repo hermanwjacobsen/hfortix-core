@@ -107,3 +107,9 @@ class SshLocalCa:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SshLocalCa",
+    "SshLocalCaPayload",
+]

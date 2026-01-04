@@ -26,3 +26,28 @@ def validate_field_value(field_name: str, value: Any) -> bool: ...
 def get_all_fields() -> list[str]: ...
 def get_required_fields() -> list[str]: ...
 def get_schema_info() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VALID_BODY_SOURCE_ADDRESS",
+    "VALID_BODY_PERMIT_X11_FORWARDING",
+    "VALID_BODY_PERMIT_AGENT_FORWARDING",
+    "VALID_BODY_PERMIT_PORT_FORWARDING",
+    "VALID_BODY_PERMIT_PTY",
+    "VALID_BODY_PERMIT_USER_RC",
+    "FIELD_TYPES",
+    "FIELD_DESCRIPTIONS",
+    "FIELD_CONSTRAINTS",
+    "NESTED_SCHEMAS",
+    "FIELDS_WITH_DEFAULTS",
+    "get_field_type",
+    "get_field_description",
+    "get_field_default",
+    "get_field_constraints",
+    "get_nested_schema",
+    "get_field_metadata",
+    "validate_field_value",
+    "get_all_fields",
+    "get_required_fields",
+    "get_schema_info",
+]

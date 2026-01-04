@@ -159,3 +159,9 @@ class Dns:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Dns",
+    "DnsPayload",
+]

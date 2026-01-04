@@ -104,3 +104,9 @@ class AclIngress:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AclIngress",
+    "AclIngressPayload",
+]

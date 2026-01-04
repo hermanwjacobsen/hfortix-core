@@ -80,3 +80,8 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "FabricAdminLockoutExistsOnFirmwareUpdate",
+]

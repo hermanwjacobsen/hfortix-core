@@ -116,3 +116,9 @@ class TtlPolicy:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "TtlPolicy",
+    "TtlPolicyPayload",
+]

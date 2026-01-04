@@ -32,3 +32,34 @@ def validate_field_value(field_name: str, value: Any) -> bool: ...
 def get_all_fields() -> list[str]: ...
 def get_required_fields() -> list[str]: ...
 def get_schema_info() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VALID_BODY_STATUS",
+    "VALID_BODY_UPSTREAM_INTERFACE_SELECT_METHOD",
+    "VALID_BODY_ACCEPT_AUTH_BY_CERT",
+    "VALID_BODY_LOG_UNIFICATION",
+    "VALID_BODY_AUTHORIZATION_REQUEST_TYPE",
+    "VALID_BODY_DOWNSTREAM_ACCESS",
+    "VALID_BODY_LEGACY_AUTHENTICATION",
+    "VALID_BODY_CONFIGURATION_SYNC",
+    "VALID_BODY_FABRIC_OBJECT_UNIFICATION",
+    "VALID_BODY_SAML_CONFIGURATION_SYNC",
+    "VALID_BODY_FORTICLOUD_ACCOUNT_ENFORCEMENT",
+    "VALID_BODY_FILE_MGMT",
+    "FIELD_TYPES",
+    "FIELD_DESCRIPTIONS",
+    "FIELD_CONSTRAINTS",
+    "NESTED_SCHEMAS",
+    "FIELDS_WITH_DEFAULTS",
+    "get_field_type",
+    "get_field_description",
+    "get_field_default",
+    "get_field_constraints",
+    "get_nested_schema",
+    "get_field_metadata",
+    "validate_field_value",
+    "get_all_fields",
+    "get_required_fields",
+    "get_schema_info",
+]

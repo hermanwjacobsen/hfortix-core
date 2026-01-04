@@ -100,3 +100,9 @@ class Dns64:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Dns64",
+    "Dns64Payload",
+]

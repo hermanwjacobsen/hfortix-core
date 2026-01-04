@@ -163,3 +163,9 @@ class GlobalSetting:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "GlobalSetting",
+    "GlobalSettingPayload",
+]

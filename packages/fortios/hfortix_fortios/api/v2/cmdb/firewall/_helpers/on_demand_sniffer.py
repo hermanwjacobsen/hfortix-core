@@ -432,7 +432,10 @@ def get_field_options(field_name: str) -> list[str] | None:
         >>> print(options)  # ["enable", "disable"]
     """
     # Construct the constant name from field name
-    constant_name = f"VALID_BODY_{field_name.replace('-', '_').upper()}"
+    # Replace all non-alphanumeric characters with underscores for valid Python identifiers
+    import re
+    safe_name = re.sub(r'[^a-zA-Z0-9]', '_', field_name)
+    constant_name = f"VALID_BODY_{safe_name.upper()}"
     return globals().get(constant_name)
 
 

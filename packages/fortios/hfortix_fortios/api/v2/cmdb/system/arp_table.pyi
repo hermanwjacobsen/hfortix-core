@@ -104,3 +104,9 @@ class ArpTable:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ArpTable",
+    "ArpTablePayload",
+]

@@ -80,3 +80,8 @@ class KernelInterfaces:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "KernelInterfaces",
+]

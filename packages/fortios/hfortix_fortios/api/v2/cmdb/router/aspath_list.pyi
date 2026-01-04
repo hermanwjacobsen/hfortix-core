@@ -98,3 +98,9 @@ class AspathList:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AspathList",
+    "AspathListPayload",
+]

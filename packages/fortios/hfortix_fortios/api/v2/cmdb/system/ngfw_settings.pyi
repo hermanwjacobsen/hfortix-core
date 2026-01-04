@@ -100,3 +100,9 @@ class NgfwSettings:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "NgfwSettings",
+    "NgfwSettingsPayload",
+]

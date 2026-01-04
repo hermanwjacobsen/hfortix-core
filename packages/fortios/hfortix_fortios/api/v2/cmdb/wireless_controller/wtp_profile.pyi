@@ -189,3 +189,9 @@ class WtpProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "WtpProfile",
+    "WtpProfilePayload",
+]

@@ -104,3 +104,9 @@ class ReplacemsgSpam:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ReplacemsgSpam",
+    "ReplacemsgSpamPayload",
+]

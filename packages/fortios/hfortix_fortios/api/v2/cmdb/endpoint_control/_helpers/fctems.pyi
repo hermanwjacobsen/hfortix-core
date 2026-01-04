@@ -32,3 +32,34 @@ def validate_field_value(field_name: str, value: Any) -> bool: ...
 def get_all_fields() -> list[str]: ...
 def get_required_fields() -> list[str]: ...
 def get_schema_info() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "VALID_BODY_STATUS",
+    "VALID_BODY_DIRTY_REASON",
+    "VALID_BODY_FORTINETONE_CLOUD_AUTHENTICATION",
+    "VALID_BODY_PULL_SYSINFO",
+    "VALID_BODY_PULL_VULNERABILITIES",
+    "VALID_BODY_PULL_TAGS",
+    "VALID_BODY_PULL_MALWARE_HASH",
+    "VALID_BODY_CAPABILITIES",
+    "VALID_BODY_SEND_TAGS_TO_ALL_VDOMS",
+    "VALID_BODY_WEBSOCKET_OVERRIDE",
+    "VALID_BODY_INTERFACE_SELECT_METHOD",
+    "VALID_BODY_TRUST_CA_CN",
+    "FIELD_TYPES",
+    "FIELD_DESCRIPTIONS",
+    "FIELD_CONSTRAINTS",
+    "NESTED_SCHEMAS",
+    "FIELDS_WITH_DEFAULTS",
+    "get_field_type",
+    "get_field_description",
+    "get_field_default",
+    "get_field_constraints",
+    "get_nested_schema",
+    "get_field_metadata",
+    "validate_field_value",
+    "get_all_fields",
+    "get_required_fields",
+    "get_schema_info",
+]

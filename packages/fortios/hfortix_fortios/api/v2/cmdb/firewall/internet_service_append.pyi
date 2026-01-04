@@ -100,3 +100,9 @@ class InternetServiceAppend:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "InternetServiceAppend",
+    "InternetServiceAppendPayload",
+]

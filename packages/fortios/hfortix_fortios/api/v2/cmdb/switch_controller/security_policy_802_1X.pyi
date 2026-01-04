@@ -155,3 +155,9 @@ class SecurityPolicy8021x:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SecurityPolicy8021x",
+    "SecurityPolicy8021xPayload",
+]

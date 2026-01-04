@@ -107,3 +107,9 @@ class DecryptedTrafficMirror:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "DecryptedTrafficMirror",
+    "DecryptedTrafficMirrorPayload",
+]

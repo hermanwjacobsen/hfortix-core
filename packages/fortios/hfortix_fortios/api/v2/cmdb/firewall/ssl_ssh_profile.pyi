@@ -161,3 +161,9 @@ class SslSshProfile:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SslSshProfile",
+    "SslSshProfilePayload",
+]

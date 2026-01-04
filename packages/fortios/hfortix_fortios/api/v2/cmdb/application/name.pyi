@@ -131,3 +131,9 @@ class Name:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Name",
+    "NamePayload",
+]

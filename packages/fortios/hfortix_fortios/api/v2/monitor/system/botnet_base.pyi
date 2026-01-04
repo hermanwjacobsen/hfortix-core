@@ -80,3 +80,8 @@ class Botnet:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Botnet",
+]

@@ -104,3 +104,9 @@ class HealthCheckFortiguard:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "HealthCheckFortiguard",
+    "HealthCheckFortiguardPayload",
+]

@@ -1,17 +1,20 @@
-"""Auto-generated category __init__ file."""
+"""FortiOS CMDB - Webcache category"""
 
-from typing import TYPE_CHECKING
+from . import stats
 
-from .stats import Stats
-from .stats_base import Stats
-
-if TYPE_CHECKING:
-    from hfortix_core.client import FortinetClient
+__all__ = [
+    "Stats",
+    "Webcache",
+]
 
 
 class Webcache:
-    """Container for {category_name} endpoints."""
+    """Webcache endpoints wrapper for CMDB API."""
 
-    def __init__(self, client: "FortinetClient"):
-        self.stats = Stats(client)
-        self.stats = Stats(client)
+    def __init__(self, client):
+        """Webcache endpoints.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        self.stats = stats.Stats(client)

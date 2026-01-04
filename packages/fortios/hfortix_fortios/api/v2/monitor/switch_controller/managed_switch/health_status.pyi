@@ -80,3 +80,8 @@ class HealthStatus:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "HealthStatus",
+]

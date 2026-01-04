@@ -100,3 +100,9 @@ class Alarm:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "Alarm",
+    "AlarmPayload",
+]

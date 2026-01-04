@@ -119,3 +119,9 @@ class SshHostKey:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "SshHostKey",
+    "SshHostKeyPayload",
+]

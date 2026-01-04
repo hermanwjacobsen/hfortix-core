@@ -80,3 +80,8 @@ class UuidList:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "UuidList",
+]

@@ -116,3 +116,9 @@ class AutomationStitch:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "AutomationStitch",
+    "AutomationStitchPayload",
+]

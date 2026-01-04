@@ -80,3 +80,8 @@ class ForticareOrgList:
     
     @staticmethod
     def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "ForticareOrgList",
+]
