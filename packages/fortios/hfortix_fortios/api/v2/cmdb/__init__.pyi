@@ -4,48 +4,87 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .alertemail import Alertemail as Alertemail
-from .antivirus import Antivirus as Antivirus
-from .application import Application as Application
-from .authentication import Authentication as Authentication
-from .automation import Automation as Automation
-from .casb import Casb as Casb
-from .certificate import Certificate as Certificate
-from .diameter_filter import DiameterFilter as DiameterFilter
-from .dlp import Dlp as Dlp
-from .dnsfilter import Dnsfilter as Dnsfilter
-from .emailfilter import Emailfilter as Emailfilter
-from .endpoint_control import EndpointControl as EndpointControl
-from .extension_controller import ExtensionController as ExtensionController
-from .file_filter import FileFilter as FileFilter
-from .firewall import Firewall as Firewall
-from .ftp_proxy import FtpProxy as FtpProxy
-from .icap import Icap as Icap
-from .ips import Ips as Ips
-from .log import Log as Log
-from .report import Report as Report
-from .router import Router as Router
-from .rule import Rule as Rule
-from .sctp_filter import SctpFilter as SctpFilter
-from .switch_controller import SwitchController as SwitchController
-from .system import System as System
-from .user import User as User
-from .videofilter import Videofilter as Videofilter
-from .virtual_patch import VirtualPatch as VirtualPatch
-from .voip import Voip as Voip
-from .vpn import Vpn as Vpn
-from .waf import Waf as Waf
-from .web_proxy import WebProxy as WebProxy
-from .webfilter import Webfilter as Webfilter
-from .wireless_controller import WirelessController as WirelessController
-from .ztna import Ztna as Ztna
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
+    from . import alertemail
+    from . import antivirus
+    from . import application
+    from . import authentication
+    from . import automation
+    from . import casb
+    from . import certificate
+    from . import diameter_filter
+    from . import dlp
+    from . import dnsfilter
+    from . import emailfilter
+    from . import endpoint_control
+    from . import ethernet_oam
+    from . import extension_controller
+    from . import file_filter
+    from . import firewall
+    from . import ftp_proxy
+    from . import icap
+    from . import ips
+    from . import log
+    from . import monitoring
+    from . import report
+    from . import router
+    from . import rule
+    from . import sctp_filter
+    from . import switch_controller
+    from . import system
+    from . import user
+    from . import videofilter
+    from . import virtual_patch
+    from . import voip
+    from . import vpn
+    from . import waf
+    from . import web_proxy
+    from . import webfilter
+    from . import wireless_controller
+    from . import ztna
 
 
 class CMDB:
     """Type stub for CMDB."""
 
+    alertemail: alertemail.Alertemail
+    antivirus: antivirus.Antivirus
+    application: application.Application
+    authentication: authentication.Authentication
+    automation: automation.Automation
+    casb: casb.Casb
+    certificate: certificate.Certificate
+    diameter_filter: diameter_filter.DiameterFilter
+    dlp: dlp.Dlp
+    dnsfilter: dnsfilter.Dnsfilter
+    emailfilter: emailfilter.Emailfilter
+    endpoint_control: endpoint_control.EndpointControl
+    ethernet_oam: ethernet_oam.EthernetOam
+    extension_controller: extension_controller.ExtensionController
+    file_filter: file_filter.FileFilter
+    firewall: firewall.Firewall
+    ftp_proxy: ftp_proxy.FtpProxy
+    icap: icap.Icap
+    ips: ips.Ips
+    log: log.Log
+    monitoring: monitoring.Monitoring
+    report: report.Report
+    router: router.Router
+    rule: rule.Rule
+    sctp_filter: sctp_filter.SctpFilter
+    switch_controller: switch_controller.SwitchController
+    system: system.System
+    user: user.User
+    videofilter: videofilter.Videofilter
+    virtual_patch: virtual_patch.VirtualPatch
+    voip: voip.Voip
+    vpn: vpn.Vpn
+    waf: waf.Waf
+    web_proxy: web_proxy.WebProxy
+    webfilter: webfilter.Webfilter
+    wireless_controller: wireless_controller.WirelessController
+    ztna: ztna.Ztna
 
     def __init__(self, client: IHTTPClient) -> None: ...

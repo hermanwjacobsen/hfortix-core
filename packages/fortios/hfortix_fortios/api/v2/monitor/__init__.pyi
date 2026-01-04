@@ -4,73 +4,77 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .azure import Azure as Azure
-from .casb import Casb as Casb
-from .endpoint_control import EndpointControl as EndpointControl
-from .extender_controller import ExtenderController as ExtenderController
-from .firewall import Firewall as Firewall
-from .fortiguard import Fortiguard as Fortiguard
-from .fortiview import Fortiview as Fortiview
-from .geoip import Geoip as Geoip
-from .ips import Ips as Ips
-from .license import License as License
-from .log import Log as Log
-from .network import Network as Network
-from .registration import Registration as Registration
-from .router import Router as Router
-from .sdwan import Sdwan as Sdwan
-from .service import Service as Service
-from .switch_controller import SwitchController as SwitchController
-from .system import System as System
-from .user import User as User
-from .utm import Utm as Utm
-from .videofilter import Videofilter as Videofilter
-from .virtual_wan import VirtualWan as VirtualWan
-from .vpn import Vpn as Vpn
-from .vpn_certificate import VpnCertificate as VpnCertificate
-from .wanopt import Wanopt as Wanopt
-from .web_ui import WebUi as WebUi
-from .webcache import Webcache as Webcache
-from .webfilter import Webfilter as Webfilter
-from .webproxy import Webproxy as Webproxy
-from .wifi import Wifi as Wifi
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
+    from . import azure
+    from . import casb
+    from . import endpoint_control
+    from . import extender_controller
+    from . import extension_controller
+    from . import firewall
+    from . import firmware
+    from . import fortiguard
+    from . import fortiview
+    from . import geoip
+    from . import ips
+    from . import license
+    from . import log
+    from . import network
+    from . import registration
+    from . import router
+    from . import sdwan
+    from . import service
+    from . import switch_controller
+    from . import system
+    from . import user
+    from . import utm
+    from . import videofilter
+    from . import virtual_wan
+    from . import vpn
+    from . import vpn_certificate
+    from . import wanopt
+    from . import web_ui
+    from . import webcache
+    from . import webfilter
+    from . import webproxy
+    from . import wifi
 
 
 class Monitor:
     """Type stub for Monitor."""
 
-    azure: Azure
-    casb: Casb
-    endpoint_control: EndpointControl
-    extender_controller: ExtenderController
-    firewall: Firewall
-    fortiguard: Fortiguard
-    fortiview: Fortiview
-    geoip: Geoip
-    ips: Ips
-    license: License
-    log: Log
-    network: Network
-    registration: Registration
-    router: Router
-    sdwan: Sdwan
-    service: Service
-    switch_controller: SwitchController
-    system: System
-    user: User
-    utm: Utm
-    videofilter: Videofilter
-    virtual_wan: VirtualWan
-    vpn: Vpn
-    vpn_certificate: VpnCertificate
-    wanopt: Wanopt
-    web_ui: WebUi
-    webcache: Webcache
-    webfilter: Webfilter
-    webproxy: Webproxy
-    wifi: Wifi
+    azure: azure.Azure
+    casb: casb.Casb
+    endpoint_control: endpoint_control.EndpointControl
+    extender_controller: extender_controller.ExtenderController
+    extension_controller: extension_controller.ExtensionController
+    firewall: firewall.Firewall
+    firmware: firmware.Firmware
+    fortiguard: fortiguard.Fortiguard
+    fortiview: fortiview.Fortiview
+    geoip: geoip.Geoip
+    ips: ips.Ips
+    license: license.License
+    log: log.Log
+    network: network.Network
+    registration: registration.Registration
+    router: router.Router
+    sdwan: sdwan.Sdwan
+    service: service.Service
+    switch_controller: switch_controller.SwitchController
+    system: system.System
+    user: user.User
+    utm: utm.Utm
+    videofilter: videofilter.Videofilter
+    virtual_wan: virtual_wan.VirtualWan
+    vpn: vpn.Vpn
+    vpn_certificate: vpn_certificate.VpnCertificate
+    wanopt: wanopt.Wanopt
+    web_ui: web_ui.WebUi
+    webcache: webcache.Webcache
+    webfilter: webfilter.Webfilter
+    webproxy: webproxy.Webproxy
+    wifi: wifi.Wifi
 
     def __init__(self, client: IHTTPClient) -> None: ...
