@@ -1,24 +1,26 @@
 """Type stubs for LOG category."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-from .disk import Disk as Disk
-from .fortianalyzer import Fortianalyzer as Fortianalyzer
-from .forticloud import Forticloud as Forticloud
-from .memory import Memory as Memory
-from .search import Search as Search
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
+    from . import disk
+    from . import fortianalyzer
+    from . import forticloud
+    from . import memory
+    from . import search
 
 
 class Log:
-    """Container for LOG endpoints."""
+    """Type stub for Log."""
 
-    disk: Disk
-    fortianalyzer: Fortianalyzer
-    forticloud: Forticloud
-    memory: Memory
-    search: Search
+    disk: disk.Disk
+    fortianalyzer: fortianalyzer.Fortianalyzer
+    forticloud: forticloud.Forticloud
+    memory: memory.Memory
+    search: search.Search
 
     def __init__(self, client: IHTTPClient) -> None: ...
