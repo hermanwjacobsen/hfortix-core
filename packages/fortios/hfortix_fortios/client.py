@@ -9,115 +9,7 @@ from hfortix_core.http.interface import IHTTPClient
 
 from .api import API
 
-if TYPE_CHECKING:
-    from hfortix_fortios.firewall import (
-        FirewallPolicy,
-        IPMACBindingSetting,
-        IPMACBindingTable,
-        ScheduleGroup,
-        ScheduleOnetime,
-        ScheduleRecurring,
-        ServiceCategory,
-        ServiceCustom,
-        ServiceGroup,
-        ShaperPerIp,
-        SSHHostKey,
-        SSHLocalCA,
-        SSHLocalKey,
-        SSHSetting,
-        SSLSetting,
-        TrafficShaper,
-        WildcardFqdnCustom,
-        WildcardFqdnGroup,
-    )
-
 __all__ = ["FortiOS"]
-
-
-class FirewallNamespace:
-    """Namespace for firewall convenience wrappers."""
-
-    policy: "FirewallPolicy"
-    ipmac_binding_setting: "IPMACBindingSetting"
-    ipmac_binding_table: "IPMACBindingTable"
-    schedule_recurring: "ScheduleRecurring"
-    schedule_onetime: "ScheduleOnetime"
-    schedule_group: "ScheduleGroup"
-    service_category: "ServiceCategory"
-    service_custom: "ServiceCustom"
-    service_group: "ServiceGroup"
-    shaper_per_ip: "ShaperPerIp"
-    ssh_host_key: "SSHHostKey"
-    ssh_local_ca: "SSHLocalCA"
-    ssh_local_key: "SSHLocalKey"
-    ssh_setting: "SSHSetting"
-    ssl_setting: "SSLSetting"
-    traffic_shaper: "TrafficShaper"
-    wildcard_fqdn_custom: "WildcardFqdnCustom"
-    wildcard_fqdn_group: "WildcardFqdnGroup"
-
-    def __init__(self, fortios_instance: "FortiOS"):
-        """Initialize with reference to FortiOS instance."""
-        # Import at runtime to avoid circular imports
-        from hfortix_fortios.firewall import (
-            FirewallPolicy,
-            IPMACBindingSetting,
-            IPMACBindingTable,
-            ScheduleGroup,
-            ScheduleOnetime,
-            ScheduleRecurring,
-            ServiceCategory,
-            ServiceCustom,
-            ServiceGroup,
-            ShaperPerIp,
-            SSHHostKey,
-            SSHLocalCA,
-            SSHLocalKey,
-            SSHSetting,
-            SSLSetting,
-            TrafficShaper,
-            WildcardFqdnCustom,
-            WildcardFqdnGroup,
-        )
-
-        # fmt: off
-        self.policy = FirewallPolicy(
-            fortios_instance)  # type: ignore
-        self.ipmac_binding_setting = IPMACBindingSetting(
-            fortios_instance)  # type: ignore
-        self.ipmac_binding_table = IPMACBindingTable(
-            fortios_instance)  # type: ignore
-        self.schedule_recurring = ScheduleRecurring(
-            fortios_instance)  # type: ignore
-        self.schedule_onetime = ScheduleOnetime(
-            fortios_instance)  # type: ignore
-        self.schedule_group = ScheduleGroup(
-            fortios_instance)  # type: ignore
-        self.service_category = ServiceCategory(
-            fortios_instance)  # type: ignore
-        self.service_custom = ServiceCustom(
-            fortios_instance)  # type: ignore
-        self.service_group = ServiceGroup(
-            fortios_instance)  # type: ignore
-        self.shaper_per_ip = ShaperPerIp(
-            fortios_instance)  # type: ignore
-        self.ssh_host_key = SSHHostKey(
-            fortios_instance)  # type: ignore
-        self.ssh_local_ca = SSHLocalCA(
-            fortios_instance)  # type: ignore
-        self.ssh_local_key = SSHLocalKey(
-            fortios_instance)  # type: ignore
-        self.ssh_setting = SSHSetting(
-            fortios_instance)  # type: ignore
-        self.ssl_setting = SSLSetting(
-            fortios_instance)  # type: ignore
-        self.traffic_shaper = TrafficShaper(
-            fortios_instance)  # type: ignore
-        self.wildcard_fqdn_custom = WildcardFqdnCustom(
-            fortios_instance)  # type: ignore
-        self.wildcard_fqdn_group = WildcardFqdnGroup(
-            fortios_instance)  # type: ignore
-        # fmt: on
 
 
 class FortiOS:
@@ -209,6 +101,7 @@ class FortiOS:
         retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
+        response_mode: Literal["dict", "object"] = "dict",
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
@@ -251,6 +144,7 @@ class FortiOS:
         retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
+        response_mode: Literal["dict", "object"] = "dict",
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
@@ -292,6 +186,7 @@ class FortiOS:
         retry_jitter: bool = False,
         error_mode: Literal["raise", "return", "print"] = "raise",
         error_format: Literal["detailed", "simple", "code_only"] = "detailed",
+        response_mode: Literal["dict", "object"] = "dict",
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
@@ -450,10 +345,7 @@ class FortiOS:
                        - "log": Log error and return None (program always
                        continues)
 
-                       Can be overridden per method call. This only affects
-                       convenience wrappers
-                       (e.g., fgt.firewall.policy.create), not direct API
-                       calls (e.g., fgt.api.cmdb...).
+                       Can be overridden per method call.
             error_format: Error message detail level (default: "detailed").
 
                 - "detailed": Full context with endpoint, parameters,
@@ -649,6 +541,7 @@ class FortiOS:
         self._error_format: Literal["detailed", "simple", "code_only"] = (
             error_format
         )
+        self._response_mode: Literal["dict", "object"] = response_mode
 
         # Validate credentials if not using custom client
         if client is None:
@@ -760,12 +653,49 @@ class FortiOS:
                     user_context=user_context,  # type: ignore[call-arg]
                 )
 
+        # Wrap the client to enable response processing (object mode)
+        from hfortix_fortios.models import process_response
+        
+        class ResponseProcessingClient:
+            """Wrapper that processes responses based on response_mode setting."""
+            
+            def __init__(self, client, response_mode):
+                self._wrapped_client = client
+                self._response_mode = response_mode
+            
+            def get(self, api_type, path, params=None, vdom=None, raw_json=False):
+                """GET request with response processing."""
+                result = self._wrapped_client.get(api_type, path, params, vdom, raw_json)
+                return process_response(result, self._response_mode)
+            
+            def post(self, api_type, path, data=None, params=None, vdom=None, raw_json=False):
+                """POST request with response processing."""
+                result = self._wrapped_client.post(api_type, path, data, params, vdom, raw_json)
+                return process_response(result, self._response_mode)
+            
+            def put(self, api_type, path, data=None, params=None, vdom=None, raw_json=False):
+                """PUT request with response processing."""
+                result = self._wrapped_client.put(api_type, path, data, params, vdom, raw_json)
+                return process_response(result, self._response_mode)
+            
+            def delete(self, api_type, path, params=None, vdom=None, raw_json=False):
+                """DELETE request with response processing."""
+                result = self._wrapped_client.delete(api_type, path, params, vdom, raw_json)
+                return process_response(result, self._response_mode)
+            
+            def __getattr__(self, name):
+                """Delegate all other attributes to the wrapped client."""
+                return getattr(self._wrapped_client, name)
+        
+        # Wrap client for response processing
+        wrapped_client = ResponseProcessingClient(self._client, self._response_mode)
+
         # Initialize API namespace.
         # Store it privately and expose a property so IDEs treat it as a
         # concrete
         # instance attribute (often improves autocomplete ranking vs dunder
         # attrs).
-        self._api = API(self._client)  # type: ignore[arg-type]
+        self._api = API(wrapped_client)  # type: ignore[arg-type]
 
         # Log initialization
         logger = logging.getLogger("hfortix.client")
@@ -897,38 +827,14 @@ class FortiOS:
         """
         return self._api
 
-    @property
-    def firewall(self) -> FirewallNamespace:
-        """
-        Convenience wrappers for firewall operations.
-
-        Provides simplified syntax for common firewall tasks.
-
-        Example:
-            >>> fgt = FortiOS("192.0.2.10", token="...")
-            >>> # Create a policy using the convenience wrapper
-            >>> fgt.firewall.policy.create(
-            ...     name='Allow-Web',
-            ...     srcintf='port1',
-            ...     dstintf='port2',
-            ...     srcaddr='all',
-            ...     dstaddr='all',
-            ...     service=['HTTP', 'HTTPS'],
-            ...     action='accept'
-            ... )
-        """
-        if not hasattr(self, "_firewall"):
-            self._firewall = FirewallNamespace(self)
-        return self._firewall
-
     def __dir__(self) -> list[str]:
         """
-        Prefer showing `api` and `firewall` early in interactive completion.
+        Prefer showing `api` early in interactive completion.
         """
         # Start with the default dir() list, then move important attrs to the
         # front.
         names = sorted(set(super().__dir__()))
-        priority_attrs = ["api", "firewall"]
+        priority_attrs = ["api"]
         for attr in reversed(priority_attrs):
             if attr in names:
                 names.remove(attr)
@@ -1222,7 +1128,7 @@ class FortiOS:
                 "Operation tracking is not enabled. "
                 "Initialize FortiOS with track_operations=True to use this feature."  # noqa: E501
             )
-        return self._client.get_operations()
+        return self._client.get_operations()  # type: ignore
 
     def get_write_operations(self) -> list[dict[str, Any]]:
         """
@@ -1264,7 +1170,7 @@ class FortiOS:
                 "Operation tracking is not enabled. "
                 "Initialize FortiOS with track_operations=True to use this feature."  # noqa: E501
             )
-        return self._client.get_write_operations()
+        return self._client.get_write_operations()  # type: ignore
 
     def export_audit_logs(
         self,
@@ -1332,7 +1238,7 @@ class FortiOS:
             )
 
         # Get operations and apply filters
-        operations = self._client.get_operations()
+        operations = self._client.get_operations()  # type: ignore
 
         # Filter by method
         if filter_method:
@@ -1440,7 +1346,7 @@ class FortiOS:
                 "retry_by_endpoint": {},
                 "last_retry_time": None,
             }
-        return self._client.get_retry_stats()
+        return self._client.get_retry_stats()  # type: ignore
 
     def get_circuit_breaker_state(self) -> dict[str, Any]:
         """
@@ -1484,7 +1390,7 @@ class FortiOS:
                 "timeout": 0,
                 "last_failure_time": None,
             }
-        return self._client.get_circuit_breaker_state()
+        return self._client.get_circuit_breaker_state()  # type: ignore
 
     def get_health_metrics(self) -> dict[str, Any]:
         """
@@ -1538,7 +1444,7 @@ class FortiOS:
                 "retry_stats": {},
                 "adaptive_retry_enabled": False,
             }
-        return self._client.get_health_metrics()
+        return self._client.get_health_metrics()  # type: ignore
 
     def close(self) -> None:
         """

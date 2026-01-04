@@ -142,6 +142,26 @@ class HTTPClient:
         """
         ...
 
+    def get_operations(self) -> list[dict[str, Any]]:
+        """Get list of all operations performed (requires track_operations=True)."""
+        ...
+
+    def get_write_operations(self) -> list[dict[str, Any]]:
+        """Get list of write operations only (requires track_operations=True)."""
+        ...
+
+    def get_retry_stats(self) -> dict[str, Any]:
+        """Get retry statistics and metrics."""
+        ...
+
+    def get_circuit_breaker_state(self) -> dict[str, Any]:
+        """Get current circuit breaker state and metrics."""
+        ...
+
+    def get_health_metrics(self) -> dict[str, Any]:
+        """Get comprehensive health metrics."""
+        ...
+
     def close(self) -> None:
         """Close HTTP client and release resources."""
         ...

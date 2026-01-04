@@ -268,6 +268,30 @@ class IHTTPClient(Protocol):
         """
         ...
 
+    def get_retry_stats(self) -> dict[str, Any]:
+        """
+        Get retry statistics and metrics.
+
+        Optional method - not required for basic protocol compliance.
+        Only available when adaptive retry is enabled.
+
+        Returns:
+            Dictionary with retry statistics (retry counts, backoff times, etc.)
+        """
+        ...
+
+    def get_circuit_breaker_state(self) -> dict[str, Any]:
+        """
+        Get current circuit breaker state and metrics.
+
+        Optional method - not required for basic protocol compliance.
+        Only available when circuit breaker is enabled.
+
+        Returns:
+            Dictionary with circuit breaker state (open/closed, failure count, etc.)
+        """
+        ...
+
     def get_health_metrics(self) -> dict[str, Any]:
         """
         Get health metrics and performance indicators.

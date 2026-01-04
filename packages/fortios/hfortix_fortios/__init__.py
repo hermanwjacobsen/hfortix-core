@@ -47,6 +47,7 @@ from hfortix_core import (
 )
 
 from .client import FortiOS
+from .models import FortiObject
 
 # Import convenience wrappers for easier access
 # NOTE: Commented out old convenience wrappers - using new generated API structure
@@ -68,6 +69,7 @@ __version__ = "0.5.1"
 __all__ = [
     # Main client
     "FortiOS",
+    "FortiObject",
     "configure_logging",
     # Convenience wrappers - commented out, using generated API
     # "FirewallPolicy",

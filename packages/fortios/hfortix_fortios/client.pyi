@@ -49,6 +49,7 @@ class FortiOS:
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
+        response_mode: Literal["dict", "object"] = "dict",
     ) -> None:
         """Initialize with token authentication."""
         ...
@@ -88,6 +89,7 @@ class FortiOS:
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
+        response_mode: Literal["dict", "object"] = "dict",
     ) -> None:
         """Initialize with username/password authentication."""
         ...
