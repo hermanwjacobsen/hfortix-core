@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,31 +117,31 @@ class Ospf(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        abr_type: str | None = None,
+        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = None,
         auto_cost_ref_bandwidth: int | None = None,
         distance_external: int | None = None,
         distance_inter_area: int | None = None,
         distance_intra_area: int | None = None,
-        database_overflow: str | None = None,
+        database_overflow: Literal["enable", "disable"] | None = None,
         database_overflow_max_lsas: int | None = None,
         database_overflow_time_to_recover: int | None = None,
-        default_information_originate: str | None = None,
+        default_information_originate: Literal["enable", "always", "disable"] | None = None,
         default_information_metric: int | None = None,
-        default_information_metric_type: str | None = None,
+        default_information_metric_type: Literal["1", "2"] | None = None,
         default_information_route_map: str | None = None,
         default_metric: int | None = None,
         distance: int | None = None,
         lsa_refresh_interval: int | None = None,
-        rfc1583_compatible: str | None = None,
+        rfc1583_compatible: Literal["enable", "disable"] | None = None,
         router_id: str | None = None,
         spf_timers: str | None = None,
-        bfd: str | None = None,
-        log_neighbour_changes: str | None = None,
+        bfd: Literal["enable", "disable"] | None = None,
+        log_neighbour_changes: Literal["enable", "disable"] | None = None,
         distribute_list_in: str | None = None,
         distribute_route_map_in: str | None = None,
-        restart_mode: str | None = None,
+        restart_mode: Literal["none", "lls", "graceful-restart"] | None = None,
         restart_period: int | None = None,
-        restart_on_topology_change: str | None = None,
+        restart_on_topology_change: Literal["enable", "disable"] | None = None,
         area: str | list | None = None,
         ospf_interface: str | list | None = None,
         network: str | list | None = None,

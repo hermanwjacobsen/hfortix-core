@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,11 +125,11 @@ class AccessProxyVirtualHost(MetadataMixin):
         name: str | None = None,
         ssl_certificate: str | list | None = None,
         host: str | None = None,
-        host_type: str | None = None,
+        host_type: Literal["sub-string", "wildcard"] | None = None,
         replacemsg_group: str | None = None,
-        empty_cert_action: str | None = None,
-        user_agent_detect: str | None = None,
-        client_cert: str | None = None,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = None,
+        user_agent_detect: Literal["disable", "enable"] | None = None,
+        client_cert: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -214,11 +213,11 @@ class AccessProxyVirtualHost(MetadataMixin):
         name: str | None = None,
         ssl_certificate: str | list | None = None,
         host: str | None = None,
-        host_type: str | None = None,
+        host_type: Literal["sub-string", "wildcard"] | None = None,
         replacemsg_group: str | None = None,
-        empty_cert_action: str | None = None,
-        user_agent_detect: str | None = None,
-        client_cert: str | None = None,
+        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = None,
+        user_agent_detect: Literal["disable", "enable"] | None = None,
+        client_cert: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

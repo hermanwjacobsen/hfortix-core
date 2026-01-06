@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -121,8 +120,8 @@ class LldpSettings(MetadataMixin):
         tx_hold: int | None = None,
         tx_interval: int | None = None,
         fast_start_interval: int | None = None,
-        management_interface: str | None = None,
-        device_detection: str | None = None,
+        management_interface: Literal["internal", "mgmt"] | None = None,
+        device_detection: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

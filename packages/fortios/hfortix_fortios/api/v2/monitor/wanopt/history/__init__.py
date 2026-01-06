@@ -1,6 +1,5 @@
 """FortiOS CMDB - History category"""
 
-from ..history_base import History as HistoryBase
 from .reset import Reset
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class History(HistoryBase):
+class History:
     """History endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class History(HistoryBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.reset = Reset(client)

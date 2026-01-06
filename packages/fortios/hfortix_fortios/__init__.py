@@ -49,6 +49,18 @@ from hfortix_core import (
 from .client import FortiOS
 from .models import FortiObject
 
+# Import type definitions for IDE support
+from .types import (
+    ActionType,
+    FortiOSErrorResponse,
+    FortiOSResponse,
+    FortiOSSuccessResponse,
+    LogSeverity,
+    ProtocolType,
+    ScheduleType,
+    StatusType,
+)
+
 # Import convenience wrappers for easier access
 # NOTE: Commented out old convenience wrappers - using new generated API structure
 # from .firewall import (
@@ -71,6 +83,15 @@ __all__ = [
     "FortiOS",
     "FortiObject",
     "configure_logging",
+    # Type definitions for IDE support
+    "FortiOSSuccessResponse",
+    "FortiOSErrorResponse",
+    "FortiOSResponse",
+    "ActionType",
+    "StatusType",
+    "LogSeverity",
+    "ScheduleType",
+    "ProtocolType",
     # Convenience wrappers - commented out, using generated API
     # "FirewallPolicy",
     # "IPMACBindingSetting",

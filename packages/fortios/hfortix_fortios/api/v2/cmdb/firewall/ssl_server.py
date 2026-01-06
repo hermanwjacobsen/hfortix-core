@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,17 +125,17 @@ class SslServer(MetadataMixin):
         name: str | None = None,
         ip: str | None = None,
         port: int | None = None,
-        ssl_mode: str | None = None,
-        add_header_x_forwarded_proto: str | None = None,
+        ssl_mode: Literal["half", "full"] | None = None,
+        add_header_x_forwarded_proto: Literal["enable", "disable"] | None = None,
         mapped_port: int | None = None,
         ssl_cert: str | list | None = None,
-        ssl_dh_bits: str | None = None,
-        ssl_algorithm: str | None = None,
-        ssl_client_renegotiation: str | None = None,
-        ssl_min_version: str | None = None,
-        ssl_max_version: str | None = None,
-        ssl_send_empty_frags: str | None = None,
-        url_rewrite: str | None = None,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = None,
+        ssl_algorithm: Literal["high", "medium", "low"] | None = None,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = None,
+        ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = None,
+        ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = None,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = None,
+        url_rewrite: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -226,17 +225,17 @@ class SslServer(MetadataMixin):
         name: str | None = None,
         ip: str | None = None,
         port: int | None = None,
-        ssl_mode: str | None = None,
-        add_header_x_forwarded_proto: str | None = None,
+        ssl_mode: Literal["half", "full"] | None = None,
+        add_header_x_forwarded_proto: Literal["enable", "disable"] | None = None,
         mapped_port: int | None = None,
         ssl_cert: str | list | None = None,
-        ssl_dh_bits: str | None = None,
-        ssl_algorithm: str | None = None,
-        ssl_client_renegotiation: str | None = None,
-        ssl_min_version: str | None = None,
-        ssl_max_version: str | None = None,
-        ssl_send_empty_frags: str | None = None,
-        url_rewrite: str | None = None,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = None,
+        ssl_algorithm: Literal["high", "medium", "low"] | None = None,
+        ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = None,
+        ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = None,
+        ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = None,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = None,
+        url_rewrite: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

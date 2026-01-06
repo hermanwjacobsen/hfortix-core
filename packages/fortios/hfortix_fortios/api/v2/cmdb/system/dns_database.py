@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,16 +123,16 @@ class DnsDatabase(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         domain: str | None = None,
         allow_transfer: str | list | None = None,
-        type: str | None = None,
-        view: str | None = None,
+        type: Literal["primary", "secondary"] | None = None,
+        view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = None,
         ip_primary: str | None = None,
         primary_name: str | None = None,
         contact: str | None = None,
         ttl: int | None = None,
-        authoritative: str | None = None,
+        authoritative: Literal["enable", "disable"] | None = None,
         forwarder: str | list | None = None,
         forwarder6: str | None = None,
         source_ip: str | None = None,
@@ -141,7 +140,7 @@ class DnsDatabase(MetadataMixin):
         source_ip_interface: str | None = None,
         rr_max: int | None = None,
         dns_entry: str | list | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
@@ -238,16 +237,16 @@ class DnsDatabase(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         domain: str | None = None,
         allow_transfer: str | list | None = None,
-        type: str | None = None,
-        view: str | None = None,
+        type: Literal["primary", "secondary"] | None = None,
+        view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = None,
         ip_primary: str | None = None,
         primary_name: str | None = None,
         contact: str | None = None,
         ttl: int | None = None,
-        authoritative: str | None = None,
+        authoritative: Literal["enable", "disable"] | None = None,
         forwarder: str | list | None = None,
         forwarder6: str | None = None,
         source_ip: str | None = None,
@@ -255,7 +254,7 @@ class DnsDatabase(MetadataMixin):
         source_ip_interface: str | None = None,
         rr_max: int | None = None,
         dns_entry: str | list | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

@@ -27,8 +27,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -157,7 +156,7 @@ class ViewMap(MetadataMixin):
         vdom_id: int | None = None,
         policy_id: int | None = None,
         id_policy_id: int | None = None,
-        which: str | None = None,
+        which: Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -239,7 +238,7 @@ class ViewMap(MetadataMixin):
         vdom_id: int | None = None,
         policy_id: int | None = None,
         id_policy_id: int | None = None,
-        which: str | None = None,
+        which: Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

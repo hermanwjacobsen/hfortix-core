@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -119,12 +118,12 @@ class Ike(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         embryonic_limit: int | None = None,
-        dh_multiprocess: str | None = None,
+        dh_multiprocess: Literal["enable", "disable"] | None = None,
         dh_worker_count: int | None = None,
-        dh_mode: str | None = None,
-        dh_keypair_cache: str | None = None,
+        dh_mode: Literal["software", "hardware"] | None = None,
+        dh_keypair_cache: Literal["enable", "disable"] | None = None,
         dh_keypair_count: int | None = None,
-        dh_keypair_throttle: str | None = None,
+        dh_keypair_throttle: Literal["enable", "disable"] | None = None,
         dh_group_1: str | None = None,
         dh_group_2: str | None = None,
         dh_group_5: str | None = None,

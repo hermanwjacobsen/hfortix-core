@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class FssoPolling(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         server: str | None = None,
         default_domain: str | None = None,
         port: int | None = None,
@@ -134,8 +133,8 @@ class FssoPolling(MetadataMixin):
         logon_history: int | None = None,
         polling_frequency: int | None = None,
         adgrp: str | list | None = None,
-        smbv1: str | None = None,
-        smb_ntlmv1_auth: str | None = None,
+        smbv1: Literal["enable", "disable"] | None = None,
+        smb_ntlmv1_auth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -222,7 +221,7 @@ class FssoPolling(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         server: str | None = None,
         default_domain: str | None = None,
         port: int | None = None,
@@ -232,8 +231,8 @@ class FssoPolling(MetadataMixin):
         logon_history: int | None = None,
         polling_frequency: int | None = None,
         adgrp: str | list | None = None,
-        smbv1: str | None = None,
-        smb_ntlmv1_auth: str | None = None,
+        smbv1: Literal["enable", "disable"] | None = None,
+        smb_ntlmv1_auth: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

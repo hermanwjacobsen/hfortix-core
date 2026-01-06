@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,11 +117,11 @@ class FabricVpn(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        sync_mode: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        sync_mode: Literal["enable", "disable"] | None = None,
         branch_name: str | None = None,
-        policy_rule: str | None = None,
-        vpn_role: str | None = None,
+        policy_rule: Literal["health-check", "manual", "auto"] | None = None,
+        vpn_role: Literal["hub", "spoke"] | None = None,
         overlays: str | list | None = None,
         advertised_subnets: str | list | None = None,
         loopback_address_block: Any | None = None,

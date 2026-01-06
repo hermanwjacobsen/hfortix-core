@@ -58,11 +58,12 @@ fgt.api.cmdb.firewall.address.create(
     subnet="192.168.1.100 255.255.255.255"
 )
 
-# Use convenience wrappers (v0.3.39+)
-fgt.firewall.service_custom.create(
-    name="HTTPS-8443",
-    tcp_portrange="8443",
-    protocol="TCP/UDP/SCTP"
+# 🎯 NEW! IDE autocomplete with Literal types (v0.5.4+)
+fgt.api.cmdb.firewall.policy.create(
+    name="allow-web",
+    action="accept",      # 💡 IDE suggests: 'accept', 'deny', 'ipsec'
+    status="enable",      # 💡 IDE suggests: 'enable', 'disable'
+    logtraffic="all"      # 💡 IDE suggests: 'all', 'utm', 'disable'
 )
 ```
 
@@ -81,6 +82,29 @@ All endpoints are **100% auto-generated** with:
 - Comprehensive error handling
 
 ## Key Features
+
+### 🎯 IDE Autocomplete with Literal Types (NEW in v0.5.4!)
+
+**15,000+ parameters with intelligent IDE autocomplete!** Every enum parameter provides instant suggestions:
+
+```python
+# ✨ Autocomplete for ALL enum fields
+fgt.api.cmdb.firewall.policy.create(
+    action='accept',      # 💡 IDE: 'accept', 'deny', 'ipsec'
+    status='enable',      # 💡 IDE: 'enable', 'disable'
+    nat='enable',         # 💡 IDE: 'enable', 'disable'
+    logtraffic='all'      # 💡 IDE: 'all', 'utm', 'disable'
+)
+
+# 🛡️ Type safety catches errors at development time
+fgt.api.cmdb.system.interface.create(
+    mode='static',        # 💡 IDE: 'static', 'dhcp', 'pppoe'
+    type='physical',      # 💡 IDE: 'physical', 'vlan', 'tunnel', ...
+    role='lan'            # 💡 IDE: 'lan', 'wan', 'dmz', 'undefined'
+)
+```
+
+**Benefits:** ⚡ Instant autocomplete • 🛡️ Type safety • 📚 Self-documenting • ✅ 100% backward compatible
 
 ### 🎯 Complete API Coverage
 

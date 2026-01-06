@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,8 +124,8 @@ class SaasApplication(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        status: str | None = None,
-        type: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         description: str | None = None,
         domains: str | list | None = None,
@@ -215,8 +214,8 @@ class SaasApplication(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        status: str | None = None,
-        type: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         description: str | None = None,
         domains: str | list | None = None,

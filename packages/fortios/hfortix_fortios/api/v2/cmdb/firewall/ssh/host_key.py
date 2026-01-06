@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,10 +123,10 @@ class HostKey(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
-        type: str | None = None,
-        nid: str | None = None,
-        usage: str | None = None,
+        status: Literal["trusted", "revoked"] | None = None,
+        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
+        nid: Literal["256", "384", "521"] | None = None,
+        usage: Literal["transparent-proxy", "access-proxy"] | None = None,
         ip: str | None = None,
         port: int | None = None,
         hostname: str | None = None,
@@ -214,10 +213,10 @@ class HostKey(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
-        type: str | None = None,
-        nid: str | None = None,
-        usage: str | None = None,
+        status: Literal["trusted", "revoked"] | None = None,
+        type: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"] | None = None,
+        nid: Literal["256", "384", "521"] | None = None,
+        usage: Literal["transparent-proxy", "access-proxy"] | None = None,
         ip: str | None = None,
         port: int | None = None,
         hostname: str | None = None,

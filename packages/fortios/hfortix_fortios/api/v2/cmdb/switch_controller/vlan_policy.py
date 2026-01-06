@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -129,8 +128,8 @@ class VlanPolicy(MetadataMixin):
         vlan: str | None = None,
         allowed_vlans: str | list | None = None,
         untagged_vlans: str | list | None = None,
-        allowed_vlans_all: str | None = None,
-        discard_mode: str | None = None,
+        allowed_vlans_all: Literal["enable", "disable"] | None = None,
+        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -217,8 +216,8 @@ class VlanPolicy(MetadataMixin):
         vlan: str | None = None,
         allowed_vlans: str | list | None = None,
         untagged_vlans: str | list | None = None,
-        allowed_vlans_all: str | None = None,
-        discard_mode: str | None = None,
+        allowed_vlans_all: Literal["enable", "disable"] | None = None,
+        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,20 +124,20 @@ class ProxyAddress(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: str | None = None,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
         host: str | None = None,
         host_regex: str | None = None,
         path: str | None = None,
         query: str | None = None,
-        referrer: str | None = None,
+        referrer: Literal["enable", "disable"] | None = None,
         category: str | list | None = None,
-        method: str | list | None = None,
-        ua: str | list | None = None,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list | None = None,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list | None = None,
         ua_min_ver: str | None = None,
         ua_max_ver: str | None = None,
         header_name: str | None = None,
         header: str | None = None,
-        case_sensitivity: str | None = None,
+        case_sensitivity: Literal["disable", "enable"] | None = None,
         header_group: str | list | None = None,
         color: int | None = None,
         tagging: str | list | None = None,
@@ -239,20 +238,20 @@ class ProxyAddress(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: str | None = None,
+        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = None,
         host: str | None = None,
         host_regex: str | None = None,
         path: str | None = None,
         query: str | None = None,
-        referrer: str | None = None,
+        referrer: Literal["enable", "disable"] | None = None,
         category: str | list | None = None,
-        method: str | list | None = None,
-        ua: str | list | None = None,
+        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list | None = None,
+        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list | None = None,
         ua_min_ver: str | None = None,
         ua_max_ver: str | None = None,
         header_name: str | None = None,
         header: str | None = None,
-        case_sensitivity: str | None = None,
+        case_sensitivity: Literal["disable", "enable"] | None = None,
         header_group: str | list | None = None,
         color: int | None = None,
         tagging: str | list | None = None,

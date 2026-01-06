@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class FtgdLocalRisk(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         url: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         comment: str | None = None,
         risk_score: int | None = None,
         vdom: str | bool | None = None,
@@ -203,7 +202,7 @@ class FtgdLocalRisk(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         url: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         comment: str | None = None,
         risk_score: int | None = None,
         vdom: str | bool | None = None,

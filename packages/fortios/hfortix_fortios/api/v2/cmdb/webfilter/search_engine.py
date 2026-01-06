@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,8 +126,8 @@ class SearchEngine(MetadataMixin):
         hostname: str | None = None,
         url: str | None = None,
         query: str | None = None,
-        safesearch: str | None = None,
-        charset: str | None = None,
+        safesearch: Literal["disable", "url", "header", "translate", "yt-pattern", "yt-scan", "yt-video", "yt-channel"] | None = None,
+        charset: Literal["utf-8", "gb2312"] | None = None,
         safesearch_str: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -213,8 +212,8 @@ class SearchEngine(MetadataMixin):
         hostname: str | None = None,
         url: str | None = None,
         query: str | None = None,
-        safesearch: str | None = None,
-        charset: str | None = None,
+        safesearch: Literal["disable", "url", "header", "translate", "yt-pattern", "yt-scan", "yt-video", "yt-channel"] | None = None,
+        charset: Literal["utf-8", "gb2312"] | None = None,
         safesearch_str: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

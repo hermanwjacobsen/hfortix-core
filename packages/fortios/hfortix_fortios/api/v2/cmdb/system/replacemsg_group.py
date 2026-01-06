@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,7 +124,7 @@ class ReplacemsgGroup(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        group_type: str | None = None,
+        group_type: Literal["default", "utm", "auth"] | None = None,
         mail: str | list | None = None,
         http: str | list | None = None,
         webproxy: str | list | None = None,
@@ -235,7 +234,7 @@ class ReplacemsgGroup(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        group_type: str | None = None,
+        group_type: Literal["default", "utm", "auth"] | None = None,
         mail: str | list | None = None,
         http: str | list | None = None,
         webproxy: str | list | None = None,

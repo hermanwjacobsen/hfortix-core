@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,11 +123,11 @@ class Server(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
-        status: str | None = None,
-        rapid_commit: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
+        rapid_commit: Literal["disable", "enable"] | None = None,
         lease_time: int | None = None,
-        dns_service: str | None = None,
-        dns_search_list: str | None = None,
+        dns_service: Literal["delegated", "default", "specify"] | None = None,
+        dns_search_list: Literal["delegated", "specify"] | None = None,
         dns_server1: str | None = None,
         dns_server2: str | None = None,
         dns_server3: str | None = None,
@@ -136,12 +135,12 @@ class Server(MetadataMixin):
         domain: str | None = None,
         subnet: str | None = None,
         interface: str | None = None,
-        delegated_prefix_route: str | None = None,
+        delegated_prefix_route: Literal["disable", "enable"] | None = None,
         options: str | list | None = None,
         upstream_interface: str | None = None,
         delegated_prefix_iaid: int | None = None,
-        ip_mode: str | None = None,
-        prefix_mode: str | None = None,
+        ip_mode: Literal["range", "delegated"] | None = None,
+        prefix_mode: Literal["dhcp6", "ra"] | None = None,
         prefix_range: str | list | None = None,
         ip_range: str | list | None = None,
         vdom: str | bool | None = None,
@@ -238,11 +237,11 @@ class Server(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
-        status: str | None = None,
-        rapid_commit: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
+        rapid_commit: Literal["disable", "enable"] | None = None,
         lease_time: int | None = None,
-        dns_service: str | None = None,
-        dns_search_list: str | None = None,
+        dns_service: Literal["delegated", "default", "specify"] | None = None,
+        dns_search_list: Literal["delegated", "specify"] | None = None,
         dns_server1: str | None = None,
         dns_server2: str | None = None,
         dns_server3: str | None = None,
@@ -250,12 +249,12 @@ class Server(MetadataMixin):
         domain: str | None = None,
         subnet: str | None = None,
         interface: str | None = None,
-        delegated_prefix_route: str | None = None,
+        delegated_prefix_route: Literal["disable", "enable"] | None = None,
         options: str | list | None = None,
         upstream_interface: str | None = None,
         delegated_prefix_iaid: int | None = None,
-        ip_mode: str | None = None,
-        prefix_mode: str | None = None,
+        ip_mode: Literal["range", "delegated"] | None = None,
+        prefix_mode: Literal["dhcp6", "ra"] | None = None,
         prefix_range: str | list | None = None,
         ip_range: str | list | None = None,
         vdom: str | bool | None = None,

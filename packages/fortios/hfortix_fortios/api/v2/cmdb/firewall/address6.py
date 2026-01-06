@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,7 +124,7 @@ class Address6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: str | None = None,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
         route_tag: int | None = None,
         macaddr: str | list | None = None,
         sdn: str | None = None,
@@ -142,16 +141,16 @@ class Address6(MetadataMixin):
         comment: str | None = None,
         template: str | None = None,
         subnet_segment: str | list | None = None,
-        host_type: str | None = None,
+        host_type: Literal["any", "specific"] | None = None,
         host: str | None = None,
         tenant: str | None = None,
         epg_name: str | None = None,
         sdn_tag: str | None = None,
         filter: str | None = None,
         list: str | list | None = None,
-        sdn_addr_type: str | None = None,
-        passive_fqdn_learning: str | None = None,
-        fabric_object: str | None = None,
+        sdn_addr_type: Literal["private", "public", "all"] | None = None,
+        passive_fqdn_learning: Literal["disable", "enable"] | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -255,7 +254,7 @@ class Address6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        type: str | None = None,
+        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = None,
         route_tag: int | None = None,
         macaddr: str | list | None = None,
         sdn: str | None = None,
@@ -272,16 +271,16 @@ class Address6(MetadataMixin):
         comment: str | None = None,
         template: str | None = None,
         subnet_segment: str | list | None = None,
-        host_type: str | None = None,
+        host_type: Literal["any", "specific"] | None = None,
         host: str | None = None,
         tenant: str | None = None,
         epg_name: str | None = None,
         sdn_tag: str | None = None,
         filter: str | None = None,
         list: str | list | None = None,
-        sdn_addr_type: str | None = None,
-        passive_fqdn_learning: str | None = None,
-        fabric_object: str | None = None,
+        sdn_addr_type: Literal["private", "public", "all"] | None = None,
+        passive_fqdn_learning: Literal["disable", "enable"] | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

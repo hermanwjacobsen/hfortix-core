@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,17 +123,17 @@ class ExternalIdentityProvider(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
-        version: str | None = None,
+        type: Literal["ms-graph"] | None = None,
+        version: Literal["v1.0", "beta"] | None = None,
         url: str | None = None,
         user_attr_name: str | None = None,
         group_attr_name: str | None = None,
         port: int | None = None,
         source_ip: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
-        server_identity_check: str | None = None,
+        server_identity_check: Literal["disable", "enable"] | None = None,
         timeout: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -222,17 +221,17 @@ class ExternalIdentityProvider(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
-        version: str | None = None,
+        type: Literal["ms-graph"] | None = None,
+        version: Literal["v1.0", "beta"] | None = None,
         url: str | None = None,
         user_attr_name: str | None = None,
         group_attr_name: str | None = None,
         port: int | None = None,
         source_ip: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
-        server_identity_check: str | None = None,
+        server_identity_check: Literal["disable", "enable"] | None = None,
         timeout: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

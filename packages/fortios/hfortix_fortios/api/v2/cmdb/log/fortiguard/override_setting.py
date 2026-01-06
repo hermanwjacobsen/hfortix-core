@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,15 +117,15 @@ class OverrideSetting(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        override: str | None = None,
-        status: str | None = None,
-        upload_option: str | None = None,
-        upload_interval: str | None = None,
+        override: Literal["enable", "disable"] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = None,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = None,
         upload_day: str | None = None,
         upload_time: str | None = None,
-        priority: str | None = None,
+        priority: Literal["default", "low"] | None = None,
         max_log_rate: int | None = None,
-        access_config: str | None = None,
+        access_config: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

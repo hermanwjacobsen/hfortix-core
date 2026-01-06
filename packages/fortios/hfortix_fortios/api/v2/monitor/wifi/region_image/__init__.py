@@ -1,6 +1,5 @@
 """FortiOS CMDB - RegionImage category"""
 
-from ..region_image_base import RegionImage as RegionImageBase
 from .upload import Upload
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class RegionImage(RegionImageBase):
+class RegionImage:
     """RegionImage endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class RegionImage(RegionImageBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.upload = Upload(client)

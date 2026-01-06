@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,21 +117,21 @@ class Global(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        fail_open: str | None = None,
-        database: str | None = None,
-        traffic_submit: str | None = None,
-        anomaly_mode: str | None = None,
-        session_limit_mode: str | None = None,
+        fail_open: Literal["enable", "disable"] | None = None,
+        database: Literal["regular", "extended"] | None = None,
+        traffic_submit: Literal["enable", "disable"] | None = None,
+        anomaly_mode: Literal["periodical", "continuous"] | None = None,
+        session_limit_mode: Literal["accurate", "heuristic"] | None = None,
         socket_size: int | None = None,
         engine_count: int | None = None,
-        sync_session_ttl: str | None = None,
+        sync_session_ttl: Literal["enable", "disable"] | None = None,
         deep_app_insp_timeout: int | None = None,
         deep_app_insp_db_limit: int | None = None,
-        exclude_signatures: str | None = None,
+        exclude_signatures: Literal["none", "ot"] | None = None,
         packet_log_queue_depth: int | None = None,
         ngfw_max_scan_range: int | None = None,
         av_mem_limit: int | None = None,
-        machine_learning_detection: str | None = None,
+        machine_learning_detection: Literal["enable", "disable"] | None = None,
         tls_active_probe: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

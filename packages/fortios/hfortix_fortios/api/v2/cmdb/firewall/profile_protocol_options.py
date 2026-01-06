@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,8 +125,8 @@ class ProfileProtocolOptions(MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         replacemsg_group: str | None = None,
-        oversize_log: str | None = None,
-        switching_protocols_log: str | None = None,
+        oversize_log: Literal["disable", "enable"] | None = None,
+        switching_protocols_log: Literal["disable", "enable"] | None = None,
         http: str | None = None,
         ftp: str | None = None,
         imap: str | None = None,
@@ -139,7 +138,7 @@ class ProfileProtocolOptions(MetadataMixin):
         dns: str | None = None,
         cifs: str | None = None,
         mail_signature: str | None = None,
-        rpc_over_http: str | None = None,
+        rpc_over_http: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -232,8 +231,8 @@ class ProfileProtocolOptions(MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         replacemsg_group: str | None = None,
-        oversize_log: str | None = None,
-        switching_protocols_log: str | None = None,
+        oversize_log: Literal["disable", "enable"] | None = None,
+        switching_protocols_log: Literal["disable", "enable"] | None = None,
         http: str | None = None,
         ftp: str | None = None,
         imap: str | None = None,
@@ -245,7 +244,7 @@ class ProfileProtocolOptions(MetadataMixin):
         dns: str | None = None,
         cifs: str | None = None,
         mail_signature: str | None = None,
-        rpc_over_http: str | None = None,
+        rpc_over_http: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

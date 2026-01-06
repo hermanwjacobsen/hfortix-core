@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,7 +125,7 @@ class Vxlan(MetadataMixin):
         name: str | None = None,
         interface: str | None = None,
         vni: int | None = None,
-        ip_version: str | None = None,
+        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = None,
         remote_ip: str | list | None = None,
         local_ip: str | None = None,
         remote_ip6: str | list | None = None,
@@ -134,7 +133,7 @@ class Vxlan(MetadataMixin):
         dstport: int | None = None,
         multicast_ttl: int | None = None,
         evpn_id: int | None = None,
-        learn_from_traffic: str | None = None,
+        learn_from_traffic: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -222,7 +221,7 @@ class Vxlan(MetadataMixin):
         name: str | None = None,
         interface: str | None = None,
         vni: int | None = None,
-        ip_version: str | None = None,
+        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = None,
         remote_ip: str | list | None = None,
         local_ip: str | None = None,
         remote_ip6: str | list | None = None,
@@ -230,7 +229,7 @@ class Vxlan(MetadataMixin):
         dstport: int | None = None,
         multicast_ttl: int | None = None,
         evpn_id: int | None = None,
-        learn_from_traffic: str | None = None,
+        learn_from_traffic: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

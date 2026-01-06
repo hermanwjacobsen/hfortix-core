@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,11 +124,11 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        feature_set: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
-        log: str | None = None,
-        extended_log: str | None = None,
-        scan_archive_contents: str | None = None,
+        log: Literal["disable", "enable"] | None = None,
+        extended_log: Literal["disable", "enable"] | None = None,
+        scan_archive_contents: Literal["disable", "enable"] | None = None,
         rules: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -213,11 +212,11 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        feature_set: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
-        log: str | None = None,
-        extended_log: str | None = None,
-        scan_archive_contents: str | None = None,
+        log: Literal["disable", "enable"] | None = None,
+        extended_log: Literal["disable", "enable"] | None = None,
+        scan_archive_contents: Literal["disable", "enable"] | None = None,
         rules: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

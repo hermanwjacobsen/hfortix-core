@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,9 +125,9 @@ class Sensor(MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         replacemsg_group: str | None = None,
-        block_malicious_url: str | None = None,
-        scan_botnet_connections: str | None = None,
-        extended_log: str | None = None,
+        block_malicious_url: Literal["disable", "enable"] | None = None,
+        scan_botnet_connections: Literal["disable", "block", "monitor"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
         entries: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -212,9 +211,9 @@ class Sensor(MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         replacemsg_group: str | None = None,
-        block_malicious_url: str | None = None,
-        scan_botnet_connections: str | None = None,
-        extended_log: str | None = None,
+        block_malicious_url: Literal["disable", "enable"] | None = None,
+        scan_botnet_connections: Literal["disable", "block", "monitor"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
         entries: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

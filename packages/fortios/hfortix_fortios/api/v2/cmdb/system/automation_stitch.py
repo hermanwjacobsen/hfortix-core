@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,10 +124,10 @@ class AutomationStitch(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         trigger: str | None = None,
         condition: str | list | None = None,
-        condition_logic: str | None = None,
+        condition_logic: Literal["and", "or"] | None = None,
         actions: str | list | None = None,
         destination: str | list | None = None,
         vdom: str | bool | None = None,
@@ -213,10 +212,10 @@ class AutomationStitch(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         trigger: str | None = None,
         condition: str | list | None = None,
-        condition_logic: str | None = None,
+        condition_logic: Literal["and", "or"] | None = None,
         actions: str | list | None = None,
         destination: str | list | None = None,
         vdom: str | bool | None = None,

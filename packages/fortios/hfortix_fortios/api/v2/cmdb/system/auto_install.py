@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,8 +117,8 @@ class AutoInstall(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        auto_install_config: str | None = None,
-        auto_install_image: str | None = None,
+        auto_install_config: Literal["enable", "disable"] | None = None,
+        auto_install_image: Literal["enable", "disable"] | None = None,
         default_config_file: str | None = None,
         default_image_file: str | None = None,
         vdom: str | bool | None = None,

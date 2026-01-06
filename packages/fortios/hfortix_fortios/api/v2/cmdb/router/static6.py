@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class Static6(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         dst: str | None = None,
         gateway: str | None = None,
         device: str | None = None,
@@ -133,13 +132,13 @@ class Static6(MetadataMixin):
         weight: int | None = None,
         priority: int | None = None,
         comment: str | None = None,
-        blackhole: str | None = None,
-        dynamic_gateway: str | None = None,
+        blackhole: Literal["enable", "disable"] | None = None,
+        dynamic_gateway: Literal["enable", "disable"] | None = None,
         sdwan_zone: str | list | None = None,
         dstaddr: str | None = None,
-        link_monitor_exempt: str | None = None,
+        link_monitor_exempt: Literal["enable", "disable"] | None = None,
         vrf: int | None = None,
-        bfd: str | None = None,
+        bfd: Literal["enable", "disable"] | None = None,
         tag: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -232,7 +231,7 @@ class Static6(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         dst: str | None = None,
         gateway: str | None = None,
         device: str | None = None,
@@ -241,13 +240,13 @@ class Static6(MetadataMixin):
         weight: int | None = None,
         priority: int | None = None,
         comment: str | None = None,
-        blackhole: str | None = None,
-        dynamic_gateway: str | None = None,
+        blackhole: Literal["enable", "disable"] | None = None,
+        dynamic_gateway: Literal["enable", "disable"] | None = None,
         sdwan_zone: str | list | None = None,
         dstaddr: str | None = None,
-        link_monitor_exempt: str | None = None,
+        link_monitor_exempt: Literal["enable", "disable"] | None = None,
         vrf: int | None = None,
-        bfd: str | None = None,
+        bfd: Literal["enable", "disable"] | None = None,
         tag: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

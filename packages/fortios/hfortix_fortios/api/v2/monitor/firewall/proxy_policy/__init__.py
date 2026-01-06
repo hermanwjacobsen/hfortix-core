@@ -1,6 +1,5 @@
 """FortiOS CMDB - ProxyPolicy category"""
 
-from ..proxy_policy_base import ProxyPolicy as ProxyPolicyBase
 from .clear_counters import ClearCounters
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class ProxyPolicy(ProxyPolicyBase):
+class ProxyPolicy:
     """ProxyPolicy endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class ProxyPolicy(ProxyPolicyBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.clear_counters = ClearCounters(client)

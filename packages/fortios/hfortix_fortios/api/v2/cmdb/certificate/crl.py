@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,8 +124,8 @@ class Crl(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         crl: str | None = None,
-        range: str | None = None,
-        source: str | None = None,
+        range: Literal["global", "vdom"] | None = None,
+        source: Literal["factory", "user", "bundle"] | None = None,
         update_vdom: str | None = None,
         ldap_server: str | None = None,
         ldap_username: str | None = None,
@@ -223,8 +222,8 @@ class Crl(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         crl: str | None = None,
-        range: str | None = None,
-        source: str | None = None,
+        range: Literal["global", "vdom"] | None = None,
+        source: Literal["factory", "user", "bundle"] | None = None,
         update_vdom: str | None = None,
         ldap_server: str | None = None,
         ldap_username: str | None = None,

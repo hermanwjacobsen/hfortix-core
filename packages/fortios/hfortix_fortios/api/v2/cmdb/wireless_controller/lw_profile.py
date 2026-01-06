@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,7 +124,7 @@ class LwProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        lw_protocol: str | None = None,
+        lw_protocol: Literal["basics-station", "packet-forwarder"] | None = None,
         cups_server: str | None = None,
         cups_server_port: int | None = None,
         cups_api_key: Any | None = None,
@@ -215,7 +214,7 @@ class LwProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        lw_protocol: str | None = None,
+        lw_protocol: Literal["basics-station", "packet-forwarder"] | None = None,
         cups_server: str | None = None,
         cups_server_port: int | None = None,
         cups_api_key: Any | None = None,

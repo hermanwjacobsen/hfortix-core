@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,15 +124,15 @@ class Dot1pMap(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        egress_pri_tagging: str | None = None,
-        priority_0: str | None = None,
-        priority_1: str | None = None,
-        priority_2: str | None = None,
-        priority_3: str | None = None,
-        priority_4: str | None = None,
-        priority_5: str | None = None,
-        priority_6: str | None = None,
-        priority_7: str | None = None,
+        egress_pri_tagging: Literal["disable", "enable"] | None = None,
+        priority_0: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_1: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_2: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_3: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_4: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_5: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_6: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_7: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -219,15 +218,15 @@ class Dot1pMap(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        egress_pri_tagging: str | None = None,
-        priority_0: str | None = None,
-        priority_1: str | None = None,
-        priority_2: str | None = None,
-        priority_3: str | None = None,
-        priority_4: str | None = None,
-        priority_5: str | None = None,
-        priority_6: str | None = None,
-        priority_7: str | None = None,
+        egress_pri_tagging: Literal["disable", "enable"] | None = None,
+        priority_0: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_1: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_2: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_3: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_4: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_5: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_6: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
+        priority_7: Literal["queue-0", "queue-1", "queue-2", "queue-3", "queue-4", "queue-5", "queue-6", "queue-7"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

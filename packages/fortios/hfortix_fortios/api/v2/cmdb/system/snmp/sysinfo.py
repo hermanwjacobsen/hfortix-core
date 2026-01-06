@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,8 +117,8 @@ class Sysinfo(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        engine_id_type: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        engine_id_type: Literal["text", "hex", "mac"] | None = None,
         engine_id: str | None = None,
         description: str | None = None,
         contact_info: str | None = None,
@@ -129,8 +128,8 @@ class Sysinfo(MetadataMixin):
         trap_log_full_threshold: int | None = None,
         trap_free_memory_threshold: int | None = None,
         trap_freeable_memory_threshold: int | None = None,
-        append_index: str | None = None,
-        non_mgmt_vdom_query: str | None = None,
+        append_index: Literal["enable", "disable"] | None = None,
+        non_mgmt_vdom_query: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

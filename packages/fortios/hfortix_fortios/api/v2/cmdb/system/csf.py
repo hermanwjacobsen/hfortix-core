@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,30 +117,30 @@ class Csf(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         uid: str | None = None,
         upstream: str | None = None,
         source_ip: str | None = None,
-        upstream_interface_select_method: str | None = None,
+        upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         upstream_interface: str | None = None,
         upstream_port: int | None = None,
         group_name: str | None = None,
         group_password: Any | None = None,
-        accept_auth_by_cert: str | None = None,
-        log_unification: str | None = None,
-        authorization_request_type: str | None = None,
+        accept_auth_by_cert: Literal["disable", "enable"] | None = None,
+        log_unification: Literal["disable", "enable"] | None = None,
+        authorization_request_type: Literal["serial", "certificate"] | None = None,
         certificate: str | None = None,
         fabric_workers: int | None = None,
-        downstream_access: str | None = None,
-        legacy_authentication: str | None = None,
+        downstream_access: Literal["enable", "disable"] | None = None,
+        legacy_authentication: Literal["disable", "enable"] | None = None,
         downstream_accprofile: str | None = None,
-        configuration_sync: str | None = None,
-        fabric_object_unification: str | None = None,
-        saml_configuration_sync: str | None = None,
+        configuration_sync: Literal["default", "local"] | None = None,
+        fabric_object_unification: Literal["default", "local"] | None = None,
+        saml_configuration_sync: Literal["default", "local"] | None = None,
         trusted_list: str | list | None = None,
         fabric_connector: str | list | None = None,
-        forticloud_account_enforcement: str | None = None,
-        file_mgmt: str | None = None,
+        forticloud_account_enforcement: Literal["enable", "disable"] | None = None,
+        file_mgmt: Literal["enable", "disable"] | None = None,
         file_quota: int | None = None,
         file_quota_warning: int | None = None,
         vdom: str | bool | None = None,

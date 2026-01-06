@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,16 +117,16 @@ class Sdwan(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        load_balance_mode: str | None = None,
-        speedtest_bypass_routing: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
+        load_balance_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based", "measured-volume-based"] | None = None,
+        speedtest_bypass_routing: Literal["disable", "enable"] | None = None,
         duplication_max_num: int | None = None,
         duplication_max_discrepancy: int | None = None,
-        neighbor_hold_down: str | None = None,
+        neighbor_hold_down: Literal["enable", "disable"] | None = None,
         neighbor_hold_down_time: int | None = None,
         app_perf_log_period: int | None = None,
         neighbor_hold_boot_time: int | None = None,
-        fail_detect: str | None = None,
+        fail_detect: Literal["enable", "disable"] | None = None,
         fail_alert_interfaces: str | list | None = None,
         zone: str | list | None = None,
         members: str | list | None = None,

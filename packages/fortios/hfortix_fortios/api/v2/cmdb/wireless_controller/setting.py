@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -119,18 +118,18 @@ class Setting(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         account_id: str | None = None,
-        country: str | None = None,
-        duplicate_ssid: str | None = None,
-        fapc_compatibility: str | None = None,
-        wfa_compatibility: str | None = None,
-        phishing_ssid_detect: str | None = None,
-        fake_ssid_action: str | list | None = None,
+        country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = None,
+        duplicate_ssid: Literal["enable", "disable"] | None = None,
+        fapc_compatibility: Literal["enable", "disable"] | None = None,
+        wfa_compatibility: Literal["enable", "disable"] | None = None,
+        phishing_ssid_detect: Literal["enable", "disable"] | None = None,
+        fake_ssid_action: Literal["log", "suppress"] | list | None = None,
         offending_ssid: str | list | None = None,
         device_weight: int | None = None,
         device_holdoff: int | None = None,
         device_idle: int | None = None,
-        firmware_provision_on_authorization: str | None = None,
-        rolling_wtp_upgrade: str | None = None,
+        firmware_provision_on_authorization: Literal["enable", "disable"] | None = None,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = None,
         darrp_optimize: int | None = None,
         darrp_optimize_schedules: str | list | None = None,
         vdom: str | bool | None = None,

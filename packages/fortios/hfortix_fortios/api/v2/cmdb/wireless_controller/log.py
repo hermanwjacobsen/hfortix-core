@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,19 +117,19 @@ class Log(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        addrgrp_log: str | None = None,
-        ble_log: str | None = None,
-        clb_log: str | None = None,
-        dhcp_starv_log: str | None = None,
-        led_sched_log: str | None = None,
-        radio_event_log: str | None = None,
-        rogue_event_log: str | None = None,
-        sta_event_log: str | None = None,
-        sta_locate_log: str | None = None,
-        wids_log: str | None = None,
-        wtp_event_log: str | None = None,
-        wtp_fips_event_log: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        addrgrp_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        ble_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        clb_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        dhcp_starv_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        led_sched_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        radio_event_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        rogue_event_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        sta_event_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        sta_locate_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        wids_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        wtp_event_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        wtp_fips_event_log: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

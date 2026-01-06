@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,8 +117,8 @@ class Console(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        output: str | None = None,
-        login: str | None = None,
+        output: Literal["standard", "more"] | None = None,
+        login: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

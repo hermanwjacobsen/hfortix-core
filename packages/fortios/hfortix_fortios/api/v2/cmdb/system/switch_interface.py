@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,11 +126,11 @@ class SwitchInterface(MetadataMixin):
         span_dest_port: str | None = None,
         span_source_port: str | list | None = None,
         member: str | list | None = None,
-        type: str | None = None,
-        intra_switch_policy: str | None = None,
+        type: Literal["switch", "hub"] | None = None,
+        intra_switch_policy: Literal["implicit", "explicit"] | None = None,
         mac_ttl: int | None = None,
-        span: str | None = None,
-        span_direction: str | None = None,
+        span: Literal["disable", "enable"] | None = None,
+        span_direction: Literal["rx", "tx", "both"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -217,11 +216,11 @@ class SwitchInterface(MetadataMixin):
         span_dest_port: str | None = None,
         span_source_port: str | list | None = None,
         member: str | list | None = None,
-        type: str | None = None,
-        intra_switch_policy: str | None = None,
+        type: Literal["switch", "hub"] | None = None,
+        intra_switch_policy: Literal["implicit", "explicit"] | None = None,
         mac_ttl: int | None = None,
-        span: str | None = None,
-        span_direction: str | None = None,
+        span: Literal["disable", "enable"] | None = None,
+        span_direction: Literal["rx", "tx", "both"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

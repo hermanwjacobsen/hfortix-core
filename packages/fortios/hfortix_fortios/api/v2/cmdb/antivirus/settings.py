@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,11 +117,11 @@ class Settings(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        machine_learning_detection: str | None = None,
-        use_extreme_db: str | None = None,
-        grayware: str | None = None,
+        machine_learning_detection: Literal["enable", "monitor", "disable"] | None = None,
+        use_extreme_db: Literal["enable", "disable"] | None = None,
+        grayware: Literal["enable", "disable"] | None = None,
         override_timeout: int | None = None,
-        cache_infected_result: str | None = None,
+        cache_infected_result: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

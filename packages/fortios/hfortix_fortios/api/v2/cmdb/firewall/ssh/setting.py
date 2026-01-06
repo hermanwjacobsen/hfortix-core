@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,7 +125,7 @@ class Setting(MetadataMixin):
         hostkey_ecdsa384: str | None = None,
         hostkey_ecdsa521: str | None = None,
         hostkey_ed25519: str | None = None,
-        host_trusted_checking: str | None = None,
+        host_trusted_checking: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,13 +124,13 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        feature_set: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
-        spam_log: str | None = None,
-        spam_log_fortiguard_response: str | None = None,
-        spam_filtering: str | None = None,
-        external: str | None = None,
-        options: str | list | None = None,
+        spam_log: Literal["disable", "enable"] | None = None,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = None,
+        spam_filtering: Literal["enable", "disable"] | None = None,
+        external: Literal["enable", "disable"] | None = None,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list | None = None,
         imap: str | None = None,
         pop3: str | None = None,
         smtp: str | None = None,
@@ -243,13 +242,13 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        feature_set: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
-        spam_log: str | None = None,
-        spam_log_fortiguard_response: str | None = None,
-        spam_filtering: str | None = None,
-        external: str | None = None,
-        options: str | list | None = None,
+        spam_log: Literal["disable", "enable"] | None = None,
+        spam_log_fortiguard_response: Literal["disable", "enable"] | None = None,
+        spam_filtering: Literal["enable", "disable"] | None = None,
+        external: Literal["enable", "disable"] | None = None,
+        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list | None = None,
         imap: str | None = None,
         pop3: str | None = None,
         smtp: str | None = None,

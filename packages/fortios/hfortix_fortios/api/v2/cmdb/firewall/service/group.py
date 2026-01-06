@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,11 +124,11 @@ class Group(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        proxy: str | None = None,
+        proxy: Literal["enable", "disable"] | None = None,
         member: str | list | None = None,
         comment: str | None = None,
         color: int | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -211,11 +210,11 @@ class Group(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        proxy: str | None = None,
+        proxy: Literal["enable", "disable"] | None = None,
         member: str | list | None = None,
         comment: str | None = None,
         color: int | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

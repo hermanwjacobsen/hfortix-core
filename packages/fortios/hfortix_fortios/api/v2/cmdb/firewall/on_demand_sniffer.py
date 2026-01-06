@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -129,7 +128,7 @@ class OnDemandSniffer(MetadataMixin):
         hosts: str | list | None = None,
         ports: str | list | None = None,
         protocols: str | list | None = None,
-        non_ip_packet: str | None = None,
+        non_ip_packet: Literal["enable", "disable"] | None = None,
         advanced_filter: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -217,7 +216,7 @@ class OnDemandSniffer(MetadataMixin):
         hosts: str | list | None = None,
         ports: str | list | None = None,
         protocols: str | list | None = None,
-        non_ip_packet: str | None = None,
+        non_ip_packet: Literal["enable", "disable"] | None = None,
         advanced_filter: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

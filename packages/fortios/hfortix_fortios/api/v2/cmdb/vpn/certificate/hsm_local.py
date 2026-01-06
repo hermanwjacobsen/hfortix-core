@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,11 +124,11 @@ class HsmLocal(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comments: str | None = None,
-        vendor: str | None = None,
-        api_version: str | None = None,
+        vendor: Literal["unknown", "gch"] | None = None,
+        api_version: Literal["unknown", "gch-default"] | None = None,
         certificate: str | None = None,
-        range: str | None = None,
-        source: str | None = None,
+        range: Literal["global", "vdom"] | None = None,
+        source: Literal["factory", "user", "bundle"] | None = None,
         gch_url: str | None = None,
         gch_project: str | None = None,
         gch_location: str | None = None,
@@ -137,7 +136,7 @@ class HsmLocal(MetadataMixin):
         gch_cryptokey: str | None = None,
         gch_cryptokey_version: str | None = None,
         gch_cloud_service_name: str | None = None,
-        gch_cryptokey_algorithm: str | None = None,
+        gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = None,
         details: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -229,11 +228,11 @@ class HsmLocal(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comments: str | None = None,
-        vendor: str | None = None,
-        api_version: str | None = None,
+        vendor: Literal["unknown", "gch"] | None = None,
+        api_version: Literal["unknown", "gch-default"] | None = None,
         certificate: str | None = None,
-        range: str | None = None,
-        source: str | None = None,
+        range: Literal["global", "vdom"] | None = None,
+        source: Literal["factory", "user", "bundle"] | None = None,
         gch_url: str | None = None,
         gch_project: str | None = None,
         gch_location: str | None = None,
@@ -241,7 +240,7 @@ class HsmLocal(MetadataMixin):
         gch_cryptokey: str | None = None,
         gch_cryptokey_version: str | None = None,
         gch_cloud_service_name: str | None = None,
-        gch_cryptokey_algorithm: str | None = None,
+        gch_cryptokey_algorithm: Literal["rsa-sign-pkcs1-2048-sha256", "rsa-sign-pkcs1-3072-sha256", "rsa-sign-pkcs1-4096-sha256", "rsa-sign-pkcs1-4096-sha512", "rsa-sign-pss-2048-sha256", "rsa-sign-pss-3072-sha256", "rsa-sign-pss-4096-sha256", "rsa-sign-pss-4096-sha512", "ec-sign-p256-sha256", "ec-sign-p384-sha384", "ec-sign-secp256k1-sha256"] | None = None,
         details: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

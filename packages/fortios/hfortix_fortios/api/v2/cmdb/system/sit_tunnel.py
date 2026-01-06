@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -128,8 +127,8 @@ class SitTunnel(MetadataMixin):
         destination: str | None = None,
         ip6: str | None = None,
         interface: str | None = None,
-        use_sdwan: str | None = None,
-        auto_asic_offload: str | None = None,
+        use_sdwan: Literal["disable", "enable"] | None = None,
+        auto_asic_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -214,8 +213,8 @@ class SitTunnel(MetadataMixin):
         destination: str | None = None,
         ip6: str | None = None,
         interface: str | None = None,
-        use_sdwan: str | None = None,
-        auto_asic_offload: str | None = None,
+        use_sdwan: Literal["disable", "enable"] | None = None,
+        auto_asic_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,35 +117,35 @@ class Setting(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        ips_archive: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        ips_archive: Literal["enable", "disable"] | None = None,
         max_log_file_size: int | None = None,
         max_policy_packet_capture_size: int | None = None,
-        roll_schedule: str | None = None,
-        roll_day: str | list | None = None,
+        roll_schedule: Literal["daily", "weekly"] | None = None,
+        roll_day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | list | None = None,
         roll_time: str | None = None,
-        diskfull: str | None = None,
+        diskfull: Literal["overwrite", "nolog"] | None = None,
         log_quota: int | None = None,
         dlp_archive_quota: int | None = None,
         report_quota: int | None = None,
         maximum_log_age: int | None = None,
-        upload: str | None = None,
-        upload_destination: str | None = None,
+        upload: Literal["enable", "disable"] | None = None,
+        upload_destination: Literal["ftp-server"] | None = None,
         uploadip: str | None = None,
         uploadport: int | None = None,
         source_ip: str | None = None,
         uploaduser: str | None = None,
         uploadpass: Any | None = None,
         uploaddir: str | None = None,
-        uploadtype: str | list | None = None,
-        uploadsched: str | None = None,
+        uploadtype: Literal["traffic", "event", "virus", "webfilter", "IPS", "emailfilter", "dlp-archive", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"] | list | None = None,
+        uploadsched: Literal["disable", "enable"] | None = None,
         uploadtime: str | None = None,
-        upload_delete_files: str | None = None,
-        upload_ssl_conn: str | None = None,
+        upload_delete_files: Literal["enable", "disable"] | None = None,
+        upload_ssl_conn: Literal["default", "high", "low", "disable"] | None = None,
         full_first_warning_threshold: int | None = None,
         full_second_warning_threshold: int | None = None,
         full_final_warning_threshold: int | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

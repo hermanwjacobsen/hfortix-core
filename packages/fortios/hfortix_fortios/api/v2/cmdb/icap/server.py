@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,15 +123,15 @@ class Server(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        addr_type: str | None = None,
+        addr_type: Literal["ip4", "ip6", "fqdn"] | None = None,
         ip_address: str | None = None,
         ip6_address: str | None = None,
         fqdn: str | None = None,
         port: int | None = None,
         max_connections: int | None = None,
-        secure: str | None = None,
+        secure: Literal["disable", "enable"] | None = None,
         ssl_cert: str | None = None,
-        healthcheck: str | None = None,
+        healthcheck: Literal["disable", "enable"] | None = None,
         healthcheck_service: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -218,15 +217,15 @@ class Server(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        addr_type: str | None = None,
+        addr_type: Literal["ip4", "ip6", "fqdn"] | None = None,
         ip_address: str | None = None,
         ip6_address: str | None = None,
         fqdn: str | None = None,
         port: int | None = None,
         max_connections: int | None = None,
-        secure: str | None = None,
+        secure: Literal["disable", "enable"] | None = None,
         ssl_cert: str | None = None,
-        healthcheck: str | None = None,
+        healthcheck: Literal["disable", "enable"] | None = None,
         healthcheck_service: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,7 +124,7 @@ class Fortigate(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: str | None = None,
-        authorized: str | None = None,
+        authorized: Literal["discovered", "disable", "enable"] | None = None,
         hostname: str | None = None,
         description: str | None = None,
         device_id: int | None = None,
@@ -211,7 +210,7 @@ class Fortigate(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: str | None = None,
-        authorized: str | None = None,
+        authorized: Literal["discovered", "disable", "enable"] | None = None,
         hostname: str | None = None,
         description: str | None = None,
         device_id: int | None = None,

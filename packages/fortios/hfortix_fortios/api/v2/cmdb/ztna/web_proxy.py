@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,11 +126,11 @@ class WebProxy(MetadataMixin):
         vip: str | None = None,
         host: str | None = None,
         decrypted_traffic_mirror: str | None = None,
-        log_blocked_traffic: str | None = None,
-        auth_portal: str | None = None,
+        log_blocked_traffic: Literal["disable", "enable"] | None = None,
+        auth_portal: Literal["disable", "enable"] | None = None,
         auth_virtual_host: str | None = None,
         vip6: str | None = None,
-        svr_pool_multiplex: str | None = None,
+        svr_pool_multiplex: Literal["enable", "disable"] | None = None,
         svr_pool_ttl: int | None = None,
         svr_pool_server_max_request: int | None = None,
         svr_pool_server_max_concurrent_request: int | None = None,
@@ -227,11 +226,11 @@ class WebProxy(MetadataMixin):
         vip: str | None = None,
         host: str | None = None,
         decrypted_traffic_mirror: str | None = None,
-        log_blocked_traffic: str | None = None,
-        auth_portal: str | None = None,
+        log_blocked_traffic: Literal["disable", "enable"] | None = None,
+        auth_portal: Literal["disable", "enable"] | None = None,
         auth_virtual_host: str | None = None,
         vip6: str | None = None,
-        svr_pool_multiplex: str | None = None,
+        svr_pool_multiplex: Literal["enable", "disable"] | None = None,
         svr_pool_ttl: int | None = None,
         svr_pool_server_max_request: int | None = None,
         svr_pool_server_max_concurrent_request: int | None = None,

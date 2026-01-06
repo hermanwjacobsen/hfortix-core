@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,17 +123,17 @@ class PppoeInterface(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        dial_on_demand: str | None = None,
-        ipv6: str | None = None,
+        dial_on_demand: Literal["enable", "disable"] | None = None,
+        ipv6: Literal["enable", "disable"] | None = None,
         device: str | None = None,
         username: str | None = None,
         password: Any | None = None,
-        pppoe_egress_cos: str | None = None,
-        auth_type: str | None = None,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = None,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = None,
         ipunnumbered: str | None = None,
-        pppoe_unnumbered_negotiate: str | None = None,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = None,
         idle_timeout: int | None = None,
-        multilink: str | None = None,
+        multilink: Literal["enable", "disable"] | None = None,
         mrru: int | None = None,
         disc_retry_timeout: int | None = None,
         padt_retry_timeout: int | None = None,
@@ -234,17 +233,17 @@ class PppoeInterface(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        dial_on_demand: str | None = None,
-        ipv6: str | None = None,
+        dial_on_demand: Literal["enable", "disable"] | None = None,
+        ipv6: Literal["enable", "disable"] | None = None,
         device: str | None = None,
         username: str | None = None,
         password: Any | None = None,
-        pppoe_egress_cos: str | None = None,
-        auth_type: str | None = None,
+        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = None,
+        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = None,
         ipunnumbered: str | None = None,
-        pppoe_unnumbered_negotiate: str | None = None,
+        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = None,
         idle_timeout: int | None = None,
-        multilink: str | None = None,
+        multilink: Literal["enable", "disable"] | None = None,
         mrru: int | None = None,
         disc_retry_timeout: int | None = None,
         padt_retry_timeout: int | None = None,

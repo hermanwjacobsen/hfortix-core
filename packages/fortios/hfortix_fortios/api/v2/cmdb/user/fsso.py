@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class Fsso(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["default", "fortinac"] | None = None,
         server: str | None = None,
         port: int | None = None,
         password: Any | None = None,
@@ -143,17 +142,17 @@ class Fsso(MetadataMixin):
         logon_timeout: int | None = None,
         ldap_server: str | None = None,
         group_poll_interval: int | None = None,
-        ldap_poll: str | None = None,
+        ldap_poll: Literal["enable", "disable"] | None = None,
         ldap_poll_interval: int | None = None,
         ldap_poll_filter: str | None = None,
         user_info_server: str | None = None,
-        ssl: str | None = None,
+        ssl: Literal["enable", "disable"] | None = None,
         sni: str | None = None,
-        ssl_server_host_ip_check: str | None = None,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = None,
         ssl_trusted_cert: str | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
@@ -262,7 +261,7 @@ class Fsso(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["default", "fortinac"] | None = None,
         server: str | None = None,
         port: int | None = None,
         password: Any | None = None,
@@ -281,17 +280,17 @@ class Fsso(MetadataMixin):
         logon_timeout: int | None = None,
         ldap_server: str | None = None,
         group_poll_interval: int | None = None,
-        ldap_poll: str | None = None,
+        ldap_poll: Literal["enable", "disable"] | None = None,
         ldap_poll_interval: int | None = None,
         ldap_poll_filter: str | None = None,
         user_info_server: str | None = None,
-        ssl: str | None = None,
+        ssl: Literal["enable", "disable"] | None = None,
         sni: str | None = None,
-        ssl_server_host_ip_check: str | None = None,
+        ssl_server_host_ip_check: Literal["enable", "disable"] | None = None,
         ssl_trusted_cert: str | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

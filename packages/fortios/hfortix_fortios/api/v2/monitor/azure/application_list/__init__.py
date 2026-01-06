@@ -1,6 +1,5 @@
 """FortiOS CMDB - ApplicationList category"""
 
-from ..application_list_base import ApplicationList as ApplicationListBase
 from .refresh import Refresh
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class ApplicationList(ApplicationListBase):
+class ApplicationList:
     """ApplicationList endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class ApplicationList(ApplicationListBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.refresh = Refresh(client)

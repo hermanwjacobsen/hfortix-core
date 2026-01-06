@@ -1,6 +1,5 @@
 """FortiOS CMDB - Ipsec category"""
 
-from ..ipsec_base import Ipsec as IpsecBase
 from .connection_count import ConnectionCount
 from .tunnel_down import TunnelDown
 from .tunnel_reset_stats import TunnelResetStats
@@ -15,7 +14,7 @@ __all__ = [
 ]
 
 
-class Ipsec(IpsecBase):
+class Ipsec:
     """Ipsec endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -24,7 +23,6 @@ class Ipsec(IpsecBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.connection_count = ConnectionCount(client)
         self.tunnel_down = TunnelDown(client)
         self.tunnel_reset_stats = TunnelResetStats(client)

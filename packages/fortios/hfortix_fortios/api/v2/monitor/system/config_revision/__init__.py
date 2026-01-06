@@ -1,6 +1,5 @@
 """FortiOS CMDB - ConfigRevision category"""
 
-from ..config_revision_base import ConfigRevision as ConfigRevisionBase
 from .delete import Delete
 from .file import File
 from .info import Info
@@ -17,7 +16,7 @@ __all__ = [
 ]
 
 
-class ConfigRevision(ConfigRevisionBase):
+class ConfigRevision:
     """ConfigRevision endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -26,7 +25,6 @@ class ConfigRevision(ConfigRevisionBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.delete = Delete(client)
         self.file = File(client)
         self.info = Info(client)

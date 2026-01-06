@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,11 +123,11 @@ class DnsServer(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        mode: str | None = None,
+        mode: Literal["recursive", "non-recursive", "forward-only", "resolver"] | None = None,
         dnsfilter_profile: str | None = None,
-        doh: str | None = None,
-        doh3: str | None = None,
-        doq: str | None = None,
+        doh: Literal["enable", "disable"] | None = None,
+        doh3: Literal["enable", "disable"] | None = None,
+        doq: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -208,11 +207,11 @@ class DnsServer(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        mode: str | None = None,
+        mode: Literal["recursive", "non-recursive", "forward-only", "resolver"] | None = None,
         dnsfilter_profile: str | None = None,
-        doh: str | None = None,
-        doh3: str | None = None,
-        doq: str | None = None,
+        doh: Literal["enable", "disable"] | None = None,
+        doh3: Literal["enable", "disable"] | None = None,
+        doq: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

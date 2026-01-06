@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,8 +123,8 @@ class VdomLink(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        vcluster: str | None = None,
-        type: str | None = None,
+        vcluster: Literal["vcluster1", "vcluster2"] | None = None,
+        type: Literal["ppp", "ethernet"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -200,8 +199,8 @@ class VdomLink(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        vcluster: str | None = None,
-        type: str | None = None,
+        vcluster: Literal["vcluster1", "vcluster2"] | None = None,
+        type: Literal["ppp", "ethernet"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

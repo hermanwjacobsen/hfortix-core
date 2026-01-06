@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,10 +124,10 @@ class Custom(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        proxy: str | None = None,
+        proxy: Literal["enable", "disable"] | None = None,
         category: str | None = None,
-        protocol: str | None = None,
-        helper: str | None = None,
+        protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"] | None = None,
+        helper: Literal["auto", "disable", "ftp", "tftp", "ras", "h323", "tns", "mms", "sip", "pptp", "rtsp", "dns-udp", "dns-tcp", "pmap", "rsh", "dcerpc", "mgcp"] | None = None,
         iprange: str | None = None,
         fqdn: str | None = None,
         protocol_number: int | None = None,
@@ -144,13 +143,13 @@ class Custom(MetadataMixin):
         tcp_rst_timer: int | None = None,
         udp_idle_timer: int | None = None,
         session_ttl: str | None = None,
-        check_reset_range: str | None = None,
+        check_reset_range: Literal["disable", "strict", "default"] | None = None,
         comment: str | None = None,
         color: int | None = None,
-        app_service_type: str | None = None,
+        app_service_type: Literal["disable", "app-id", "app-category"] | None = None,
         app_category: str | list | None = None,
         application: str | list | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -253,10 +252,10 @@ class Custom(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        proxy: str | None = None,
+        proxy: Literal["enable", "disable"] | None = None,
         category: str | None = None,
-        protocol: str | None = None,
-        helper: str | None = None,
+        protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"] | None = None,
+        helper: Literal["auto", "disable", "ftp", "tftp", "ras", "h323", "tns", "mms", "sip", "pptp", "rtsp", "dns-udp", "dns-tcp", "pmap", "rsh", "dcerpc", "mgcp"] | None = None,
         iprange: str | None = None,
         fqdn: str | None = None,
         protocol_number: int | None = None,
@@ -272,13 +271,13 @@ class Custom(MetadataMixin):
         tcp_rst_timer: int | None = None,
         udp_idle_timer: int | None = None,
         session_ttl: str | None = None,
-        check_reset_range: str | None = None,
+        check_reset_range: Literal["disable", "strict", "default"] | None = None,
         comment: str | None = None,
         color: int | None = None,
-        app_service_type: str | None = None,
+        app_service_type: Literal["disable", "app-id", "app-category"] | None = None,
         app_category: str | list | None = None,
         application: str | list | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

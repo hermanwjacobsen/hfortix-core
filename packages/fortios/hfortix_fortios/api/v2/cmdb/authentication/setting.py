@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -121,21 +120,21 @@ class Setting(MetadataMixin):
         active_auth_scheme: str | None = None,
         sso_auth_scheme: str | None = None,
         update_time: str | None = None,
-        persistent_cookie: str | None = None,
-        ip_auth_cookie: str | None = None,
+        persistent_cookie: Literal["enable", "disable"] | None = None,
+        ip_auth_cookie: Literal["enable", "disable"] | None = None,
         cookie_max_age: int | None = None,
         cookie_refresh_div: int | None = None,
-        captive_portal_type: str | None = None,
+        captive_portal_type: Literal["fqdn", "ip"] | None = None,
         captive_portal_ip: str | None = None,
         captive_portal_ip6: str | None = None,
         captive_portal: str | None = None,
         captive_portal6: str | None = None,
-        cert_auth: str | None = None,
+        cert_auth: Literal["enable", "disable"] | None = None,
         cert_captive_portal: str | None = None,
         cert_captive_portal_ip: str | None = None,
         cert_captive_portal_port: int | None = None,
         captive_portal_port: int | None = None,
-        auth_https: str | None = None,
+        auth_https: Literal["enable", "disable"] | None = None,
         captive_portal_ssl_port: int | None = None,
         user_cert_ca: str | list | None = None,
         dev_range: str | list | None = None,

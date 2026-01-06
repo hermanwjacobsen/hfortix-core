@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,11 +117,11 @@ class SshConfig(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        ssh_kex_algo: str | list | None = None,
-        ssh_enc_algo: str | list | None = None,
-        ssh_mac_algo: str | list | None = None,
-        ssh_hsk_algo: str | list | None = None,
-        ssh_hsk_override: str | None = None,
+        ssh_kex_algo: Literal["diffie-hellman-group1-sha1", "diffie-hellman-group14-sha1", "diffie-hellman-group14-sha256", "diffie-hellman-group16-sha512", "diffie-hellman-group18-sha512", "diffie-hellman-group-exchange-sha1", "diffie-hellman-group-exchange-sha256", "curve25519-sha256@libssh.org", "ecdh-sha2-nistp256", "ecdh-sha2-nistp384", "ecdh-sha2-nistp521"] | list | None = None,
+        ssh_enc_algo: Literal["chacha20-poly1305@openssh.com", "aes128-ctr", "aes192-ctr", "aes256-ctr", "arcfour256", "arcfour128", "aes128-cbc", "3des-cbc", "blowfish-cbc", "cast128-cbc", "aes192-cbc", "aes256-cbc", "arcfour", "rijndael-cbc@lysator.liu.se", "aes128-gcm@openssh.com", "aes256-gcm@openssh.com"] | list | None = None,
+        ssh_mac_algo: Literal["hmac-md5", "hmac-md5-etm@openssh.com", "hmac-md5-96", "hmac-md5-96-etm@openssh.com", "hmac-sha1", "hmac-sha1-etm@openssh.com", "hmac-sha2-256", "hmac-sha2-256-etm@openssh.com", "hmac-sha2-512", "hmac-sha2-512-etm@openssh.com", "hmac-ripemd160", "hmac-ripemd160@openssh.com", "hmac-ripemd160-etm@openssh.com", "umac-64@openssh.com", "umac-128@openssh.com", "umac-64-etm@openssh.com", "umac-128-etm@openssh.com"] | list | None = None,
+        ssh_hsk_algo: Literal["ssh-rsa", "ecdsa-sha2-nistp521", "ecdsa-sha2-nistp384", "ecdsa-sha2-nistp256", "rsa-sha2-256", "rsa-sha2-512", "ssh-ed25519"] | list | None = None,
+        ssh_hsk_override: Literal["disable", "enable"] | None = None,
         ssh_hsk_password: Any | None = None,
         ssh_hsk: str | None = None,
         vdom: str | bool | None = None,

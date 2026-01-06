@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,11 +124,11 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        mode: str | None = None,
-        ptp_profile: str | None = None,
-        transport: str | None = None,
+        mode: Literal["transparent-e2e", "transparent-p2p"] | None = None,
+        ptp_profile: Literal["C37.238-2017"] | None = None,
+        transport: Literal["l2-mcast"] | None = None,
         domain: int | None = None,
-        pdelay_req_interval: str | None = None,
+        pdelay_req_interval: Literal["1sec", "2sec", "4sec", "8sec", "16sec", "32sec"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -211,11 +210,11 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        mode: str | None = None,
-        ptp_profile: str | None = None,
-        transport: str | None = None,
+        mode: Literal["transparent-e2e", "transparent-p2p"] | None = None,
+        ptp_profile: Literal["C37.238-2017"] | None = None,
+        transport: Literal["l2-mcast"] | None = None,
         domain: int | None = None,
-        pdelay_req_interval: str | None = None,
+        pdelay_req_interval: Literal["1sec", "2sec", "4sec", "8sec", "16sec", "32sec"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,10 +117,10 @@ class InterController(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        inter_controller_mode: str | None = None,
-        l3_roaming: str | None = None,
+        inter_controller_mode: Literal["disable", "l2-roaming", "1+1"] | None = None,
+        l3_roaming: Literal["enable", "disable"] | None = None,
         inter_controller_key: Any | None = None,
-        inter_controller_pri: str | None = None,
+        inter_controller_pri: Literal["primary", "secondary"] | None = None,
         fast_failover_max: int | None = None,
         fast_failover_wait: int | None = None,
         inter_controller_peer: str | list | None = None,

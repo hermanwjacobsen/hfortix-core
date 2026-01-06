@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -122,7 +121,7 @@ class Netflow(MetadataMixin):
         inactive_flow_timeout: int | None = None,
         template_tx_timeout: int | None = None,
         template_tx_counter: int | None = None,
-        session_cache_size: str | None = None,
+        session_cache_size: Literal["min", "default", "max"] | None = None,
         exclusion_filters: str | list | None = None,
         collectors: str | list | None = None,
         vdom: str | bool | None = None,

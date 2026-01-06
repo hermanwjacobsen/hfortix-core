@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -122,8 +121,8 @@ class Settings(MetadataMixin):
         packet_log_post_attack: int | None = None,
         packet_log_memory: int | None = None,
         ips_packet_quota: int | None = None,
-        proxy_inline_ips: str | None = None,
-        ha_session_pickup: str | None = None,
+        proxy_inline_ips: Literal["disable", "enable"] | None = None,
+        ha_session_pickup: Literal["connectivity", "security"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

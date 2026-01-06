@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -120,9 +119,9 @@ class ProbeResponse(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         port: int | None = None,
         http_probe_value: str | None = None,
-        ttl_mode: str | None = None,
-        mode: str | None = None,
-        security_mode: str | None = None,
+        ttl_mode: Literal["reinit", "decrease", "retain"] | None = None,
+        mode: Literal["none", "http-probe", "twamp"] | None = None,
+        security_mode: Literal["none", "authentication"] | None = None,
         password: Any | None = None,
         timeout: int | None = None,
         vdom: str | bool | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -123,21 +122,21 @@ class DeviceUpgrade(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = None,
         ha_reboot_controller: str | None = None,
         next_path_index: int | None = None,
         known_ha_members: str | list | None = None,
         initial_version: str | None = None,
         starter_admin: str | None = None,
         serial: str | None = None,
-        timing: str | None = None,
+        timing: Literal["immediate", "scheduled"] | None = None,
         maximum_minutes: int | None = None,
         time: str | None = None,
         setup_time: str | None = None,
         upgrade_path: str | None = None,
-        device_type: str | None = None,
-        allow_download: str | None = None,
-        failure_reason: str | None = None,
+        device_type: Literal["fortigate", "fortiswitch", "fortiap", "fortiextender"] | None = None,
+        allow_download: Literal["enable", "disable"] | None = None,
+        failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -225,21 +224,21 @@ class DeviceUpgrade(MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = None,
         ha_reboot_controller: str | None = None,
         next_path_index: int | None = None,
         known_ha_members: str | list | None = None,
         initial_version: str | None = None,
         starter_admin: str | None = None,
         serial: str | None = None,
-        timing: str | None = None,
+        timing: Literal["immediate", "scheduled"] | None = None,
         maximum_minutes: int | None = None,
         time: str | None = None,
         setup_time: str | None = None,
         upgrade_path: str | None = None,
-        device_type: str | None = None,
-        allow_download: str | None = None,
-        failure_reason: str | None = None,
+        device_type: Literal["fortigate", "fortiswitch", "fortiap", "fortiextender"] | None = None,
+        allow_download: Literal["enable", "disable"] | None = None,
+        failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

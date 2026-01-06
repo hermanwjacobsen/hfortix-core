@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,15 +117,15 @@ class Ntp(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        ntpsync: str | None = None,
-        type: str | None = None,
+        ntpsync: Literal["enable", "disable"] | None = None,
+        type: Literal["fortiguard", "custom"] | None = None,
         syncinterval: int | None = None,
         ntpserver: str | list | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
-        server_mode: str | None = None,
-        authentication: str | None = None,
-        key_type: str | None = None,
+        server_mode: Literal["enable", "disable"] | None = None,
+        authentication: Literal["enable", "disable"] | None = None,
+        key_type: Literal["MD5", "SHA1", "SHA256"] | None = None,
         key: Any | None = None,
         key_id: int | None = None,
         interface: str | list | None = None,

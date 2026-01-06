@@ -27,8 +27,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -154,10 +153,10 @@ class Rule(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: Any | None = None,
-        log: str | None = None,
-        log_packet: str | None = None,
-        action: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
+        log: Literal["disable", "enable"] | None = None,
+        log_packet: Literal["disable", "enable"] | None = None,
+        action: Literal["pass", "block"] | None = None,
         group: str | None = None,
         severity: str | None = None,
         location: str | list | None = None,
@@ -256,10 +255,10 @@ class Rule(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: Any | None = None,
-        log: str | None = None,
-        log_packet: str | None = None,
-        action: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
+        log: Literal["disable", "enable"] | None = None,
+        log_packet: Literal["disable", "enable"] | None = None,
+        action: Literal["pass", "block"] | None = None,
         group: str | None = None,
         severity: str | None = None,
         location: str | list | None = None,

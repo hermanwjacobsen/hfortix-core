@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -119,7 +118,7 @@ class Acme(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         interface: str | list | None = None,
-        use_ha_direct: str | None = None,
+        use_ha_direct: Literal["enable", "disable"] | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
         accounts: str | list | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,7 +117,7 @@ class HaMonitor(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        monitor_vlan: str | None = None,
+        monitor_vlan: Literal["enable", "disable"] | None = None,
         vlan_hb_interval: int | None = None,
         vlan_hb_lost_threshold: int | None = None,
         vdom: str | bool | None = None,

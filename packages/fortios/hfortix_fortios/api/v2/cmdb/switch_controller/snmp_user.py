@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,12 +123,12 @@ class SnmpUser(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        queries: str | None = None,
+        queries: Literal["disable", "enable"] | None = None,
         query_port: int | None = None,
-        security_level: str | None = None,
-        auth_proto: str | None = None,
+        security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = None,
+        auth_proto: Literal["md5", "sha1", "sha224", "sha256", "sha384", "sha512"] | None = None,
         auth_pwd: Any | None = None,
-        priv_proto: str | None = None,
+        priv_proto: Literal["aes128", "aes192", "aes192c", "aes256", "aes256c", "des"] | None = None,
         priv_pwd: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -212,12 +211,12 @@ class SnmpUser(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        queries: str | None = None,
+        queries: Literal["disable", "enable"] | None = None,
         query_port: int | None = None,
-        security_level: str | None = None,
-        auth_proto: str | None = None,
+        security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = None,
+        auth_proto: Literal["md5", "sha1", "sha224", "sha256", "sha384", "sha512"] | None = None,
         auth_pwd: Any | None = None,
-        priv_proto: str | None = None,
+        priv_proto: Literal["aes128", "aes192", "aes192c", "aes256", "aes256c", "des"] | None = None,
         priv_pwd: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

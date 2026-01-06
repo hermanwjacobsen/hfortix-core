@@ -4,7 +4,7 @@ FortiOS Object Models
 Provides zero-maintenance object wrappers for FortiOS API responses.
 """
 
-from typing import Any
+from typing import Any, Literal
 
 
 class FortiObject:

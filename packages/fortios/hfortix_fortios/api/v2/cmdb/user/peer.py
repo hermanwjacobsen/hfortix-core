@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,17 +123,17 @@ class Peer(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        mandatory_ca_verify: str | None = None,
+        mandatory_ca_verify: Literal["enable", "disable"] | None = None,
         ca: str | None = None,
         subject: str | None = None,
         cn: str | None = None,
-        cn_type: str | None = None,
-        mfa_mode: str | None = None,
+        cn_type: Literal["string", "email", "FQDN", "ipv4", "ipv6"] | None = None,
+        mfa_mode: Literal["none", "password", "subject-identity"] | None = None,
         mfa_server: str | None = None,
         mfa_username: str | None = None,
         mfa_password: Any | None = None,
         ocsp_override_server: str | None = None,
-        two_factor: str | None = None,
+        two_factor: Literal["enable", "disable"] | None = None,
         passwd: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -222,17 +221,17 @@ class Peer(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        mandatory_ca_verify: str | None = None,
+        mandatory_ca_verify: Literal["enable", "disable"] | None = None,
         ca: str | None = None,
         subject: str | None = None,
         cn: str | None = None,
-        cn_type: str | None = None,
-        mfa_mode: str | None = None,
+        cn_type: Literal["string", "email", "FQDN", "ipv4", "ipv6"] | None = None,
+        mfa_mode: Literal["none", "password", "subject-identity"] | None = None,
         mfa_server: str | None = None,
         mfa_username: str | None = None,
         mfa_password: Any | None = None,
         ocsp_override_server: str | None = None,
-        two_factor: str | None = None,
+        two_factor: Literal["enable", "disable"] | None = None,
         passwd: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

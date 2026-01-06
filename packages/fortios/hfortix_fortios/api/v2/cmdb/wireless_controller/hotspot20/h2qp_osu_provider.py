@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,7 +125,7 @@ class H2qpOsuProvider(MetadataMixin):
         name: str | None = None,
         friendly_name: str | list | None = None,
         server_uri: str | None = None,
-        osu_method: str | list | None = None,
+        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list | None = None,
         osu_nai: str | None = None,
         service_description: str | list | None = None,
         icon: str | None = None,
@@ -212,7 +211,7 @@ class H2qpOsuProvider(MetadataMixin):
         name: str | None = None,
         friendly_name: str | list | None = None,
         server_uri: str | None = None,
-        osu_method: str | list | None = None,
+        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list | None = None,
         osu_nai: str | None = None,
         service_description: str | list | None = None,
         icon: str | None = None,

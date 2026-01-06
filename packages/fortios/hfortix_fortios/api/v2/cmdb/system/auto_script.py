@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,7 +125,7 @@ class AutoScript(MetadataMixin):
         name: str | None = None,
         interval: int | None = None,
         repeat: int | None = None,
-        start: str | None = None,
+        start: Literal["manual", "auto"] | None = None,
         script: str | None = None,
         output_size: int | None = None,
         timeout: int | None = None,
@@ -212,7 +211,7 @@ class AutoScript(MetadataMixin):
         name: str | None = None,
         interval: int | None = None,
         repeat: int | None = None,
-        start: str | None = None,
+        start: Literal["manual", "auto"] | None = None,
         script: str | None = None,
         output_size: int | None = None,
         timeout: int | None = None,

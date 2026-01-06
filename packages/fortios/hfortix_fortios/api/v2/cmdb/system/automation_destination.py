@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class AutomationDestination(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["fortigate", "ha-cluster"] | None = None,
         destination: str | list | None = None,
         ha_group_id: int | None = None,
         vdom: str | bool | None = None,
@@ -203,7 +202,7 @@ class AutomationDestination(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["fortigate", "ha-cluster"] | None = None,
         destination: str | list | None = None,
         ha_group_id: int | None = None,
         vdom: str | bool | None = None,

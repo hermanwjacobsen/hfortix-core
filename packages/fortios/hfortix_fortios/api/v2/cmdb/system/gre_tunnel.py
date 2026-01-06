@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,19 +124,19 @@ class GreTunnel(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         interface: str | None = None,
-        ip_version: str | None = None,
+        ip_version: Literal["4", "6"] | None = None,
         remote_gw6: str | None = None,
         local_gw6: str | None = None,
         remote_gw: str | None = None,
         local_gw: str | None = None,
-        use_sdwan: str | None = None,
-        sequence_number_transmission: str | None = None,
-        sequence_number_reception: str | None = None,
-        checksum_transmission: str | None = None,
-        checksum_reception: str | None = None,
+        use_sdwan: Literal["disable", "enable"] | None = None,
+        sequence_number_transmission: Literal["disable", "enable"] | None = None,
+        sequence_number_reception: Literal["disable", "enable"] | None = None,
+        checksum_transmission: Literal["disable", "enable"] | None = None,
+        checksum_reception: Literal["disable", "enable"] | None = None,
         key_outbound: int | None = None,
         key_inbound: int | None = None,
-        dscp_copying: str | None = None,
+        dscp_copying: Literal["disable", "enable"] | None = None,
         diffservcode: str | None = None,
         keepalive_interval: int | None = None,
         keepalive_failtimes: int | None = None,
@@ -233,19 +232,19 @@ class GreTunnel(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         interface: str | None = None,
-        ip_version: str | None = None,
+        ip_version: Literal["4", "6"] | None = None,
         remote_gw6: str | None = None,
         local_gw6: str | None = None,
         remote_gw: str | None = None,
         local_gw: str | None = None,
-        use_sdwan: str | None = None,
-        sequence_number_transmission: str | None = None,
-        sequence_number_reception: str | None = None,
-        checksum_transmission: str | None = None,
-        checksum_reception: str | None = None,
+        use_sdwan: Literal["disable", "enable"] | None = None,
+        sequence_number_transmission: Literal["disable", "enable"] | None = None,
+        sequence_number_reception: Literal["disable", "enable"] | None = None,
+        checksum_transmission: Literal["disable", "enable"] | None = None,
+        checksum_reception: Literal["disable", "enable"] | None = None,
         key_outbound: int | None = None,
         key_inbound: int | None = None,
-        dscp_copying: str | None = None,
+        dscp_copying: Literal["disable", "enable"] | None = None,
         diffservcode: str | None = None,
         keepalive_interval: int | None = None,
         keepalive_failtimes: int | None = None,

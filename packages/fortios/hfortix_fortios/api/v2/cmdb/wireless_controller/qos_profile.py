@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -129,19 +128,19 @@ class QosProfile(MetadataMixin):
         downlink: int | None = None,
         uplink_sta: int | None = None,
         downlink_sta: int | None = None,
-        burst: str | None = None,
-        wmm: str | None = None,
-        wmm_uapsd: str | None = None,
-        call_admission_control: str | None = None,
+        burst: Literal["enable", "disable"] | None = None,
+        wmm: Literal["enable", "disable"] | None = None,
+        wmm_uapsd: Literal["enable", "disable"] | None = None,
+        call_admission_control: Literal["enable", "disable"] | None = None,
         call_capacity: int | None = None,
-        bandwidth_admission_control: str | None = None,
+        bandwidth_admission_control: Literal["enable", "disable"] | None = None,
         bandwidth_capacity: int | None = None,
-        dscp_wmm_mapping: str | None = None,
+        dscp_wmm_mapping: Literal["enable", "disable"] | None = None,
         dscp_wmm_vo: str | list | None = None,
         dscp_wmm_vi: str | list | None = None,
         dscp_wmm_be: str | list | None = None,
         dscp_wmm_bk: str | list | None = None,
-        wmm_dscp_marking: str | None = None,
+        wmm_dscp_marking: Literal["enable", "disable"] | None = None,
         wmm_vo_dscp: int | None = None,
         wmm_vi_dscp: int | None = None,
         wmm_be_dscp: int | None = None,
@@ -247,19 +246,19 @@ class QosProfile(MetadataMixin):
         downlink: int | None = None,
         uplink_sta: int | None = None,
         downlink_sta: int | None = None,
-        burst: str | None = None,
-        wmm: str | None = None,
-        wmm_uapsd: str | None = None,
-        call_admission_control: str | None = None,
+        burst: Literal["enable", "disable"] | None = None,
+        wmm: Literal["enable", "disable"] | None = None,
+        wmm_uapsd: Literal["enable", "disable"] | None = None,
+        call_admission_control: Literal["enable", "disable"] | None = None,
         call_capacity: int | None = None,
-        bandwidth_admission_control: str | None = None,
+        bandwidth_admission_control: Literal["enable", "disable"] | None = None,
         bandwidth_capacity: int | None = None,
-        dscp_wmm_mapping: str | None = None,
+        dscp_wmm_mapping: Literal["enable", "disable"] | None = None,
         dscp_wmm_vo: str | list | None = None,
         dscp_wmm_vi: str | list | None = None,
         dscp_wmm_be: str | list | None = None,
         dscp_wmm_bk: str | list | None = None,
-        wmm_dscp_marking: str | None = None,
+        wmm_dscp_marking: Literal["enable", "disable"] | None = None,
         wmm_vo_dscp: int | None = None,
         wmm_vi_dscp: int | None = None,
         wmm_be_dscp: int | None = None,

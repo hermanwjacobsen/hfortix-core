@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,32 +117,32 @@ class Setting(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        ips_archive: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        ips_archive: Literal["enable", "disable"] | None = None,
         server: str | None = None,
         alt_server: str | None = None,
-        fallback_to_primary: str | None = None,
-        certificate_verification: str | None = None,
+        fallback_to_primary: Literal["enable", "disable"] | None = None,
+        certificate_verification: Literal["enable", "disable"] | None = None,
         serial: str | list | None = None,
         server_cert_ca: str | None = None,
         preshared_key: str | None = None,
-        access_config: str | None = None,
-        hmac_algorithm: str | None = None,
-        enc_algorithm: str | None = None,
-        ssl_min_proto_version: str | None = None,
+        access_config: Literal["enable", "disable"] | None = None,
+        hmac_algorithm: Literal["sha256"] | None = None,
+        enc_algorithm: Literal["high-medium", "high", "low"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         conn_timeout: int | None = None,
         monitor_keepalive_period: int | None = None,
         monitor_failure_retry_period: int | None = None,
         certificate: str | None = None,
         source_ip: str | None = None,
-        upload_option: str | None = None,
-        upload_interval: str | None = None,
+        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = None,
+        upload_interval: Literal["daily", "weekly", "monthly"] | None = None,
         upload_day: str | None = None,
         upload_time: str | None = None,
-        reliable: str | None = None,
-        priority: str | None = None,
+        reliable: Literal["enable", "disable"] | None = None,
+        priority: Literal["default", "low"] | None = None,
         max_log_rate: int | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

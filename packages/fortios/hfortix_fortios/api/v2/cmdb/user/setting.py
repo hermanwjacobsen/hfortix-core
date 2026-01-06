@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,29 +117,29 @@ class Setting(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        auth_type: str | list | None = None,
+        auth_type: Literal["http", "https", "ftp", "telnet"] | list | None = None,
         auth_cert: str | None = None,
         auth_ca_cert: str | None = None,
-        auth_secure_http: str | None = None,
-        auth_http_basic: str | None = None,
-        auth_ssl_allow_renegotiation: str | None = None,
-        auth_src_mac: str | None = None,
-        auth_on_demand: str | None = None,
+        auth_secure_http: Literal["enable", "disable"] | None = None,
+        auth_http_basic: Literal["enable", "disable"] | None = None,
+        auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = None,
+        auth_src_mac: Literal["enable", "disable"] | None = None,
+        auth_on_demand: Literal["always", "implicitly"] | None = None,
         auth_timeout: int | None = None,
-        auth_timeout_type: str | None = None,
+        auth_timeout_type: Literal["idle-timeout", "hard-timeout", "new-session"] | None = None,
         auth_portal_timeout: int | None = None,
-        radius_ses_timeout_act: str | None = None,
+        radius_ses_timeout_act: Literal["hard-timeout", "ignore-timeout"] | None = None,
         auth_blackout_time: int | None = None,
         auth_invalid_max: int | None = None,
         auth_lockout_threshold: int | None = None,
         auth_lockout_duration: int | None = None,
-        per_policy_disclaimer: str | None = None,
+        per_policy_disclaimer: Literal["enable", "disable"] | None = None,
         auth_ports: str | list | None = None,
-        auth_ssl_min_proto_version: str | None = None,
-        auth_ssl_max_proto_version: str | None = None,
-        auth_ssl_sigalgs: str | None = None,
+        auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = None,
+        auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = None,
         default_user_password_policy: str | None = None,
-        cors: str | None = None,
+        cors: Literal["disable", "enable"] | None = None,
         cors_allowed_origins: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,12 +123,12 @@ class AccessProxySshClientCert(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        source_address: str | None = None,
-        permit_x11_forwarding: str | None = None,
-        permit_agent_forwarding: str | None = None,
-        permit_port_forwarding: str | None = None,
-        permit_pty: str | None = None,
-        permit_user_rc: str | None = None,
+        source_address: Literal["enable", "disable"] | None = None,
+        permit_x11_forwarding: Literal["enable", "disable"] | None = None,
+        permit_agent_forwarding: Literal["enable", "disable"] | None = None,
+        permit_port_forwarding: Literal["enable", "disable"] | None = None,
+        permit_pty: Literal["enable", "disable"] | None = None,
+        permit_user_rc: Literal["enable", "disable"] | None = None,
         cert_extension: str | list | None = None,
         auth_ca: str | None = None,
         vdom: str | bool | None = None,
@@ -214,12 +213,12 @@ class AccessProxySshClientCert(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        source_address: str | None = None,
-        permit_x11_forwarding: str | None = None,
-        permit_agent_forwarding: str | None = None,
-        permit_port_forwarding: str | None = None,
-        permit_pty: str | None = None,
-        permit_user_rc: str | None = None,
+        source_address: Literal["enable", "disable"] | None = None,
+        permit_x11_forwarding: Literal["enable", "disable"] | None = None,
+        permit_agent_forwarding: Literal["enable", "disable"] | None = None,
+        permit_port_forwarding: Literal["enable", "disable"] | None = None,
+        permit_pty: Literal["enable", "disable"] | None = None,
+        permit_user_rc: Literal["enable", "disable"] | None = None,
         cert_extension: str | list | None = None,
         auth_ca: str | None = None,
         vdom: str | bool | None = None,

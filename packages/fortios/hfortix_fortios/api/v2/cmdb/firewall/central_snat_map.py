@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,8 +124,8 @@ class CentralSnatMap(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         policyid: int | None = None,
         uuid: str | None = None,
-        status: str | None = None,
-        type: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["ipv4", "ipv6"] | None = None,
         srcintf: str | list | None = None,
         dstintf: str | list | None = None,
         orig_addr: str | list | None = None,
@@ -135,13 +134,13 @@ class CentralSnatMap(MetadataMixin):
         dst_addr6: str | list | None = None,
         protocol: int | None = None,
         orig_port: str | None = None,
-        nat: str | None = None,
-        nat46: str | None = None,
-        nat64: str | None = None,
+        nat: Literal["disable", "enable"] | None = None,
+        nat46: Literal["enable", "disable"] | None = None,
+        nat64: Literal["enable", "disable"] | None = None,
         nat_ippool: str | list | None = None,
         nat_ippool6: str | list | None = None,
-        port_preserve: str | None = None,
-        port_random: str | None = None,
+        port_preserve: Literal["enable", "disable"] | None = None,
+        port_random: Literal["enable", "disable"] | None = None,
         nat_port: str | None = None,
         dst_port: str | None = None,
         comments: str | None = None,
@@ -241,8 +240,8 @@ class CentralSnatMap(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         policyid: int | None = None,
         uuid: str | None = None,
-        status: str | None = None,
-        type: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["ipv4", "ipv6"] | None = None,
         srcintf: str | list | None = None,
         dstintf: str | list | None = None,
         orig_addr: str | list | None = None,
@@ -251,13 +250,13 @@ class CentralSnatMap(MetadataMixin):
         dst_addr6: str | list | None = None,
         protocol: int | None = None,
         orig_port: str | None = None,
-        nat: str | None = None,
-        nat46: str | None = None,
-        nat64: str | None = None,
+        nat: Literal["disable", "enable"] | None = None,
+        nat46: Literal["enable", "disable"] | None = None,
+        nat64: Literal["enable", "disable"] | None = None,
         nat_ippool: str | list | None = None,
         nat_ippool6: str | list | None = None,
-        port_preserve: str | None = None,
-        port_random: str | None = None,
+        port_preserve: Literal["enable", "disable"] | None = None,
+        port_random: Literal["enable", "disable"] | None = None,
         nat_port: str | None = None,
         dst_port: str | None = None,
         comments: str | None = None,
