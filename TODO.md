@@ -1,12 +1,14 @@
-# 📋 TODO: Schema v1.7.0 Implementation
+# 📋 hfortix TODO List
 
 **Last Updated:** January 6, 2026  
 **Branch:** `feature/validator-generation`  
 **Overall Progress:** 60% Complete
 
+This document combines all TODO items for the hfortix project, including Schema v1.7.0 implementation and future feature enhancements.
+
 ---
 
-## 🎯 HIGH PRIORITY (Next 1-2 Days)
+## 🔥 CRITICAL PRIORITY - Schema v1.7.0 Implementation (Next 1-2 Days)
 
 ### 1. ✅ Pydantic Model Generation [0% → 100%]
 **Status:** ❌ NOT STARTED  
@@ -128,6 +130,58 @@ class FirewallPolicy(BaseModel):
 
 ---
 
+## 🎯 HIGH PRIORITY - Feature Development (Post v1.7.0)
+
+### 19. ✅ Object Response Mode Implementation [0% → 100%]
+**Status:** 📋 PLANNED  
+**Effort:** 2-3 days  
+**Impact:** 🔴 HIGH  
+**Documentation:** `.dev/OBJECT_RESPONSE_DESIGN.md`
+
+Add support for object-based responses from FortiOS API calls, allowing cleaner attribute access instead of dictionary lookups.
+
+**Requirements:**
+- Create `FortiObject` wrapper class for safe attribute access
+- Add `response_mode` parameter to client initialization
+- Support client-level default setting: `FortiOS(response_mode="object")`
+- Support per-request override: `fgt.api.cmdb.firewall.policy.get(response_mode="object")`
+- Auto-flatten member_table fields (e.g., `srcaddr` → list of names)
+- Maintain full backward compatibility with dict responses
+- Update all generated endpoint methods to support response modes
+
+**Example Usage:**
+```python
+# Option 1: Set at client level
+fgt = FortiOS(host="...", token="...", response_mode="object")
+policies = fgt.api.cmdb.firewall.policy.get()
+for policy in policies:
+    print(policy.name, policy.srcaddr)
+
+# Option 2: Override per request
+fgt = FortiOS(host="...", token="...")  # defaults to dict mode
+policies = fgt.api.cmdb.firewall.policy.get(response_mode="object")
+for policy in policies:
+    print(policy.name, policy.srcaddr)
+```
+
+**Subtasks:**
+- [ ] Implement `FortiObject` wrapper class in `packages/fortios/hfortix_fortios/models.py`
+- [ ] Add `response_mode` to HTTP client interface
+- [ ] Update Jinja2 templates to include response_mode parameter
+- [ ] Regenerate all API endpoints with new template
+- [ ] Write unit tests for FortiObject wrapper
+- [ ] Write integration tests with live API
+- [ ] Update documentation and examples
+- [ ] Add to CHANGELOG.md
+
+**Phase 2 (Future):**
+- [ ] Generate Pydantic models from schemas for type safety
+- [ ] Add `response_mode="pydantic"` option (depends on Task #1-4 completion)
+- [ ] Create model generator script
+- [ ] Generate models for commonly-used endpoints
+
+---
+
 ## 🟡 MEDIUM PRIORITY (Next 3-5 Days)
 
 ### 5. ✅ Datasource & Relationship Validation [0% → 100%]
@@ -209,6 +263,24 @@ def get(self, ...):
         - firewall.service.custom - Service references
     """
 ```
+
+### 20. ✅ Schema Discovery Enhancement [0% → 100%]
+**Status:** 📋 PLANNED  
+**Effort:** 1 day  
+**Impact:** 🟡 MEDIUM
+
+Improve schema discovery and caching mechanisms.
+
+**Tasks:**
+- [ ] Add schema version detection
+- [ ] Implement schema diff tool for version comparison
+- [ ] Cache schemas locally with TTL
+- [ ] Add schema validation for generated code
+- [ ] Add schema upgrade notifications
+
+**Files to Update:**
+- Add new `packages/fortios/hfortix_fortios/schema_manager.py`
+- Update discovery mechanisms
 
 ---
 
@@ -327,6 +399,33 @@ Complexity: VERY_COMPLEX
 - [ ] Add contributing guide for models
 - [ ] Document extension points
 
+### 21. ✅ Performance Optimizations [0% → 100%]
+**Status:** 📋 PLANNED  
+**Effort:** 1-2 days  
+**Impact:** 🟢 LOW-MEDIUM
+
+**Tasks:**
+- [ ] Benchmark current implementation
+- [ ] Optimize bulk operations
+- [ ] Add connection pooling
+- [ ] Implement request batching where applicable
+- [ ] Profile memory usage for large result sets
+- [ ] Add performance metrics collection
+- [ ] Document performance best practices
+
+### 22. ✅ Developer Experience Improvements [0% → 100%]
+**Status:** 📋 PLANNED  
+**Effort:** 2-3 days  
+**Impact:** 🟢 LOW
+
+**Tasks:**
+- [ ] Create VSCode extension for FortiOS development
+- [ ] Add PyCharm plugin
+- [ ] Provide code snippets for common operations
+- [ ] Add debug mode with detailed logging
+- [ ] Create interactive CLI tool
+- [ ] Add shell auto-completion
+
 ---
 
 ## 🗑️ CLEANUP
@@ -353,7 +452,112 @@ Complexity: VERY_COMPLEX
 
 ---
 
-## 📊 PROGRESS TRACKING
+## � FUTURE IDEAS & ENHANCEMENTS
+
+### GraphQL-like Query Language
+**Status:** 💡 IDEA STAGE  
+**Complexity:** High
+
+Investigate adding a GraphQL-style query interface for filtering:
+```python
+policies = fgt.query("""
+    firewall.policy {
+        name
+        srcaddr
+        dstaddr
+        where: { status: "enable", action: "accept" }
+    }
+""")
+```
+
+**Tasks:**
+- [ ] Research GraphQL integration options
+- [ ] Design query syntax
+- [ ] Implement query parser
+- [ ] Add query optimization
+- [ ] Write comprehensive tests
+
+### Declarative Configuration Management
+**Status:** 💡 IDEA STAGE  
+**Complexity:** High
+
+Add Terraform-like declarative config:
+```python
+fgt.declare({
+    "firewall.policy": [
+        {"name": "allow_web", "srcintf": "internal", ...},
+        {"name": "allow_dns", "srcintf": "internal", ...},
+    ]
+})
+fgt.apply()  # Creates/updates/deletes to match desired state
+```
+
+**Tasks:**
+- [ ] Design declarative API
+- [ ] Implement state diffing
+- [ ] Add rollback support
+- [ ] Create plan/apply workflow
+- [ ] Add drift detection
+
+### AI-Assisted Policy Analysis
+**Status:** 💡 IDEA STAGE  
+**Complexity:** High
+
+Integrate with LLMs for policy analysis:
+```python
+fgt.analyze_policies("Find policies that allow unrestricted internet access")
+fgt.suggest_optimizations()
+fgt.explain_policy(policyid=1)
+```
+
+**Tasks:**
+- [ ] Research LLM integration options
+- [ ] Design AI analysis framework
+- [ ] Add policy context extraction
+- [ ] Implement suggestion engine
+- [ ] Add security best practices checks
+
+---
+
+## ✅ COMPLETED WORK
+
+### Schema v1.7.0 Generation
+**Completed:** January 2026
+
+- [x] Generated 1,348 enhanced schemas with v1.7.0 metadata
+- [x] Added capabilities, complexity, relationships
+- [x] Field validation rules (72% of fields)
+- [x] Datasource mapping (20% of fields)
+- [x] Related endpoints tracking (38 avg per endpoint)
+
+### Code Generation System
+**Completed:** January 2026
+
+- [x] Schema-based code generator
+- [x] Template system for endpoints
+- [x] Automatic test generation
+- [x] Support for CMDB, Monitor, Log, Service endpoints
+- [x] 2,129 endpoint files generated
+- [x] 260+ validator helper modules
+
+### Monitor Endpoint Fixes
+**Completed:** January 2026
+
+- [x] Fixed 400+ monitor endpoint naming issues
+- [x] Standardized underscore/hyphen conventions
+- [x] Updated all test files
+- [x] Regenerated .pyi stub files
+
+### Initial Package Structure
+**Completed:** December 2025
+
+- [x] Multi-package architecture (core, fortios, meta)
+- [x] Proper dependency management
+- [x] CI/CD pipeline setup
+
+---
+
+## �📊 OVERALL PROGRESS TRACKING
 
 ### Phase 1: Core Validation (Days 1-2)
 **Priority:** 🔴 CRITICAL  
@@ -451,13 +655,53 @@ Complexity: VERY_COMPLEX
 
 ## 🔗 RELATED DOCUMENTS
 
-- **IMPLEMENTATION_STATUS.md** - Current status and detailed analysis
+- **`.dev/dev/IMPLEMENTATION_STATUS.md`** - Current status and detailed analysis
+- **`.dev/OBJECT_RESPONSE_DESIGN.md`** - Object mode implementation design
 - **CHANGELOG.md** - What's been completed
-- **REALITY_CHECK_ANALYSIS.md** - Feature-by-feature comparison
-- **docs/fortios/VALIDATION_GUIDE.md** - Validation documentation
+- **`.dev/REALITY_CHECK_ANALYSIS.md`** - Feature-by-feature comparison
+- **`docs/fortios/VALIDATION_GUIDE.md`** - Validation documentation
+
+---
+
+## 📝 CONTRIBUTING TO THIS TODO
+
+To add items to this TODO list:
+1. Create a detailed description with clear deliverables
+2. Assign priority (🔥 Critical / 🎯 High / 🟡 Medium / 🟢 Low / 💡 Idea)
+3. Add complexity/effort estimate
+4. Add impact rating (🔴 CRITICAL / 🟡 MEDIUM / 🟢 LOW)
+5. Link to relevant documentation or issues
+6. Break down into subtasks if large
+7. Add example code if applicable
+
+For major features, create a design document in `.dev/` directory first.
+
+---
+
+## 📌 LEGEND
+
+**Status:**
+- ❌ NOT STARTED - Planned but not started
+- 🟡 IN PROGRESS - Currently being worked on
+- ✅ COMPLETED - Finished
+- 📋 PLANNED - Designed and ready to implement
+- 💡 IDEA STAGE - Proposal/concept phase
+- 🚫 BLOCKED - Waiting on dependencies
+
+**Priority:**
+- 🔥 CRITICAL - Must complete for v1.0.0
+- 🎯 HIGH - Important for v1.0.0 or v1.1.0
+- 🟡 MEDIUM - Nice to have for v1.x
+- 🟢 LOW - Future enhancements
+- 💡 IDEA - Long-term vision
+
+**Impact:**
+- 🔴 CRITICAL - Affects core functionality
+- 🟡 MEDIUM - Improves usability
+- 🟢 LOW - Nice to have enhancement
 
 ---
 
 **Last Updated:** January 6, 2026  
-**Next Review:** After Phase 1 completion  
-**Questions?** See IMPLEMENTATION_STATUS.md for detailed analysis
+**Next Review:** After Phase 1 completion (Pydantic models)  
+**Questions?** See `.dev/dev/IMPLEMENTATION_STATUS.md` for detailed analysis
