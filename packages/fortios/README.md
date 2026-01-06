@@ -5,12 +5,12 @@ Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
 [![PyPI version](https://badge.fury.io/py/hfortix-fortios.svg)](https://pypi.org/project/hfortix-fortios/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.5.0-beta (January 4, 2026)**
+> **⚠️ BETA STATUS - Version 0.5.4-beta (January 6, 2026)**
 >
 > **Breaking Changes**: v0.5.0 removes convenience wrappers. Use direct API access via `fgt.api.*`
 > **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
 
-**Version:** 0.5.0-beta
+**Version:** 0.5.4-beta
 **Status:** Beta (100% auto-generated, production-ready, pending comprehensive unit tests for v1.0)
 
 ## Overview
@@ -23,11 +23,14 @@ Complete Python client for FortiOS 7.6.5 REST API with 100% endpoint coverage (1
 pip install hfortix-fortios
 ```
 
-This automatically installs `hfortix-core` as a dependency.
+This automatically installs:
+- `hfortix-core` - Core utilities and HTTP client
+- `hfortix-fortios-stubs` - Type stubs for optimal IDE/type checker performance
 
-**For full IDE type support (recommended for development):**
+**For minimal installation (without stubs, smaller size):**
 ```bash
-pip install hfortix-fortios[stubs]
+pip install --no-deps hfortix-fortios
+pip install hfortix-core  # Then install only runtime dependencies
 ```
 
 **For everything (includes future products):**

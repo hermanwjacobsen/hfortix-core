@@ -21,12 +21,12 @@ classifiers = [
 ]
 dependencies = [
     "hfortix-core>=0.5.2",
+    "hfortix-fortios-stubs==0.5.4",  # Type stubs for optimal IDE/type checker performance
 ]
 
 [project.optional-dependencies]
-stubs = [
-    "hfortix-fortios-stubs==0.5.4",
-]
+# Minimal installation without stubs (for size-constrained environments)
+minimal = []
 
 [project.urls]
 Homepage = "https://github.com/hermanwjacobsen/hfortix"
