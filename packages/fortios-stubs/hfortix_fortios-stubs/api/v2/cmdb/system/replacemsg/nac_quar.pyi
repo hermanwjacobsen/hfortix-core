@@ -1,0 +1,112 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+
+# Payload TypedDict for IDE autocomplete
+class NacQuarPayload(TypedDict, total=False):
+    """
+    Type hints for system/replacemsg/nac_quar payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: NacQuarPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    msg_type: str  # Message type.
+    buffer: NotRequired[str]  # Message string.
+    header: NotRequired[Literal[{"description": "No header type", "help": "No header type.", "label": "None", "name": "none"}, {"description": "HTTP    8bit:8 bit", "help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}]]  # Header flag.
+    format: NotRequired[Literal[{"description": "No format type", "help": "No format type.", "label": "None", "name": "none"}, {"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "HTML format", "help": "HTML format.", "label": "Html", "name": "html"}]]  # Format flag.
+
+
+class NacQuar:
+    """
+    Replacement messages.
+    
+    Path: system/replacemsg/nac_quar
+    Category: cmdb
+    Primary Key: msg-type
+    """
+    
+    def get(
+        self,
+        msg_type: str | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def post(
+        self,
+        payload_dict: NacQuarPayload | None = ...,
+        msg_type: str | None = ...,
+        buffer: str | None = ...,
+        header: Literal[{"description": "No header type", "help": "No header type.", "label": "None", "name": "none"}, {"description": "HTTP    8bit:8 bit", "help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}] | None = ...,
+        format: Literal[{"description": "No format type", "help": "No format type.", "label": "None", "name": "none"}, {"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "HTML format", "help": "HTML format.", "label": "Html", "name": "html"}] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def put(
+        self,
+        payload_dict: NacQuarPayload | None = ...,
+        msg_type: str | None = ...,
+        buffer: str | None = ...,
+        header: Literal[{"description": "No header type", "help": "No header type.", "label": "None", "name": "none"}, {"description": "HTTP    8bit:8 bit", "help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}] | None = ...,
+        format: Literal[{"description": "No format type", "help": "No format type.", "label": "None", "name": "none"}, {"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "HTML format", "help": "HTML format.", "label": "Html", "name": "html"}] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def delete(
+        self,
+        msg_type: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def exists(
+        self,
+        msg_type: str,
+        vdom: str | bool | None = ...,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]: ...
+    
+    def set(
+        self,
+        payload_dict: NacQuarPayload | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "NacQuar",
+    "NacQuarPayload",
+]

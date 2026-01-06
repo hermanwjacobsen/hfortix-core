@@ -70,7 +70,7 @@ htmlcov/
 
 # Local test files and internal development
 .dev/
-
+dev/
 # Schema files (generated, not for version control)
 schema/
 

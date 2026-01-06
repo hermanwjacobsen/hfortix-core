@@ -25,6 +25,11 @@ pip install hfortix-fortios
 
 This automatically installs `hfortix-core` as a dependency.
 
+**For full IDE type support (recommended for development):**
+```bash
+pip install hfortix-fortios[stubs]
+```
+
 **For everything (includes future products):**
 ```bash
 pip install hfortix[all]

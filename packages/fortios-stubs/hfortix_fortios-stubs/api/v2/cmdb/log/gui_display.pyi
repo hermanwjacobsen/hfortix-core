@@ -1,0 +1,108 @@
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+
+# Payload TypedDict for IDE autocomplete
+class GuiDisplayPayload(TypedDict, total=False):
+    """
+    Type hints for log/gui_display payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: GuiDisplayPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    resolve_hosts: NotRequired[Literal[{"description": "Enable resolving IP addresses to hostnames", "help": "Enable resolving IP addresses to hostnames.", "label": "Enable", "name": "enable"}, {"description": "Disable resolving IP addresses to hostnames", "help": "Disable resolving IP addresses to hostnames.", "label": "Disable", "name": "disable"}]]  # Enable/disable resolving IP addresses to hostname in log mes
+    resolve_apps: NotRequired[Literal[{"description": "Enable unknown applications on the GUI", "help": "Enable unknown applications on the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown applications on the GUI", "help": "Disable unknown applications on the GUI.", "label": "Disable", "name": "disable"}]]  # Resolve unknown applications on the GUI using Fortinet's rem
+    fortiview_unscanned_apps: NotRequired[Literal[{"description": "Enable showing unscanned traffic", "help": "Enable showing unscanned traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable showing unscanned traffic", "help": "Disable showing unscanned traffic.", "label": "Disable", "name": "disable"}]]  # Enable/disable showing unscanned traffic in FortiView applic
+
+
+class GuiDisplay:
+    """
+    Configure how log messages are displayed on the GUI.
+    
+    Path: log/gui_display
+    Category: cmdb
+    """
+    
+    def get(
+        self,
+        name: str | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def post(
+        self,
+        payload_dict: GuiDisplayPayload | None = ...,
+        resolve_hosts: Literal[{"description": "Enable resolving IP addresses to hostnames", "help": "Enable resolving IP addresses to hostnames.", "label": "Enable", "name": "enable"}, {"description": "Disable resolving IP addresses to hostnames", "help": "Disable resolving IP addresses to hostnames.", "label": "Disable", "name": "disable"}] | None = ...,
+        resolve_apps: Literal[{"description": "Enable unknown applications on the GUI", "help": "Enable unknown applications on the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown applications on the GUI", "help": "Disable unknown applications on the GUI.", "label": "Disable", "name": "disable"}] | None = ...,
+        fortiview_unscanned_apps: Literal[{"description": "Enable showing unscanned traffic", "help": "Enable showing unscanned traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable showing unscanned traffic", "help": "Disable showing unscanned traffic.", "label": "Disable", "name": "disable"}] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def put(
+        self,
+        payload_dict: GuiDisplayPayload | None = ...,
+        resolve_hosts: Literal[{"description": "Enable resolving IP addresses to hostnames", "help": "Enable resolving IP addresses to hostnames.", "label": "Enable", "name": "enable"}, {"description": "Disable resolving IP addresses to hostnames", "help": "Disable resolving IP addresses to hostnames.", "label": "Disable", "name": "disable"}] | None = ...,
+        resolve_apps: Literal[{"description": "Enable unknown applications on the GUI", "help": "Enable unknown applications on the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown applications on the GUI", "help": "Disable unknown applications on the GUI.", "label": "Disable", "name": "disable"}] | None = ...,
+        fortiview_unscanned_apps: Literal[{"description": "Enable showing unscanned traffic", "help": "Enable showing unscanned traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable showing unscanned traffic", "help": "Disable showing unscanned traffic.", "label": "Disable", "name": "disable"}] | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def delete(
+        self,
+        name: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = ...,
+    ) -> Union[bool, Coroutine[Any, Any, bool]]: ...
+    
+    def set(
+        self,
+        payload_dict: GuiDisplayPayload | None = ...,
+        vdom: str | bool | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    
+    # Helper methods
+    @staticmethod
+    def help(field_name: str | None = ...) -> str: ...
+    
+    @staticmethod
+    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    
+    @staticmethod
+    def field_info(field_name: str) -> dict[str, Any]: ...
+    
+    @staticmethod
+    def validate_field(name: str, value: Any) -> bool: ...
+    
+    @staticmethod
+    def required_fields() -> list[str]: ...
+    
+    @staticmethod
+    def defaults() -> dict[str, Any]: ...
+    
+    @staticmethod
+    def schema() -> dict[str, Any]: ...
+
+
+__all__ = [
+    "GuiDisplay",
+    "GuiDisplayPayload",
+]

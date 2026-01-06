@@ -46,6 +46,22 @@ from hfortix_fortios._helpers.response import (
     is_success,
 )
 
+# Metadata accessors (shared by all validator modules)
+from hfortix_fortios._helpers.metadata import (
+    get_field_description,
+    get_field_type,
+    get_field_constraints,
+    get_field_default,
+    get_field_options,
+    get_nested_schema,
+    get_all_fields,
+    get_field_metadata,
+    validate_field_value,
+)
+
+# Metadata mixin for endpoint classes
+from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
+
 # Validators - SSH/SSL proxy-specific
 # Validators - Firewall-specific
 # Validators - Generic
@@ -91,6 +107,18 @@ __all__ = [
     "get_mkey",  # Alias for backward compatibility
     "get_results",
     "is_success",
+    # Metadata accessors
+    "get_field_description",
+    "get_field_type",
+    "get_field_constraints",
+    "get_field_default",
+    "get_field_options",
+    "get_nested_schema",
+    "get_all_fields",
+    "get_field_metadata",
+    "validate_field_value",
+    # Metadata mixin
+    "MetadataMixin",
     # Validation - Generic
     "validate_required_fields",
     "validate_color",

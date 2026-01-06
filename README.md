@@ -9,12 +9,12 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.0-beta + Schema v1.7.0**
+> **⚠️ BETA STATUS - Version 0.5.4**
 >
-> - **Current Version**: 0.5.0-beta (Under Development - January 6, 2026)
+> - **Current Version**: 0.5.4 (Released - January 6, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
+> - **Package Size**: 30 MB (53% reduction from v0.3.x through deduplication)
 > - **Implementation**: Basic API (60% complete) - Pydantic models pending
-> - **Breaking Changes**: Convenience wrappers removed - use direct API access
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
 > **📊 Implementation Status:** Schema generation complete (100%), Pydantic model generation pending (0%)
@@ -55,13 +55,14 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 **🔥 Recent Highlights (January 2026):**
 
-- 🎉 **v0.5.0 COMPLETE REGENERATION**: All 1,219 endpoints regenerated from scratch!
-- 🚀 **BREAKING CHANGE**: Convenience wrappers removed - use direct API access
+- 🎉 **v0.5.4 METADATAMIXIN REFACTORING**: 53% total package size reduction (64 MB → 30 MB)!
+- ♻️ **CODE DEDUPLICATION**: Eliminated ~160K lines of duplicate metadata methods
+- 📦 **OPTIMIZED PACKAGE**: Two-phase optimization (stub separation + mixin refactoring)
+- 🚀 **v0.5.0 COMPLETE REGENERATION**: All 1,219 endpoints regenerated from scratch!
 - ⚡ **Advanced Generator**: Swagger fallback, smart path conversion, comprehensive error handling
 - 📋 **Log Endpoint Support**: Native parameterized log queries for all 5 destinations
 - 🏗️ **Clean Architecture**: 100% auto-generated code, no hand-written wrappers
 - ✨ **Type Safety**: Complete `.pyi` stub files for all endpoints (perfect autocomplete)
-- 🎯 **Generic request() Method**: Copy JSON directly from FortiGate GUI (v0.4.2, still available in v0.5.0)
 
 **📖 Documentation:**
 

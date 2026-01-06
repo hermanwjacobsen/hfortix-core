@@ -1,12 +1,4 @@
-"""
-Validation helpers for firewall/health endpoint.
-
-Each endpoint has its own validation file to keep validation logic
-separate and maintainable. Use central monitor._helpers tools for common tasks.
-
-Auto-generated from OpenAPI specification
-Customize as needed for endpoint-specific business logic.
-"""
+"""Validation helpers for firewall/health - Auto-generated"""
 
 from typing import Any, TypedDict, NotRequired, Literal
 
@@ -27,22 +19,7 @@ from hfortix_fortios._helpers import (
 # ============================================================================
 
 # ⚠️  IMPORTANT: FortiOS schemas have known issues with required field marking:
-#
-# 1. FALSE POSITIVES: Some fields marked "required" have default values,
-#    meaning they're optional (filtered out by generator)
-#
-# 2. CONDITIONAL REQUIREMENTS: Many endpoints require EITHER field A OR field B:
-#    - firewall.policy: requires (srcaddr + dstaddr) OR (srcaddr6 + dstaddr6)
-#    - These conditional requirements cannot be expressed in a simple list
-#
-# 3. SPECIALIZED FEATURES: Fields for WAN optimization, VPN, NAT64, etc.
-#    are marked "required" but only apply when using those features
-#
-# The REQUIRED_FIELDS list below is INFORMATIONAL ONLY and shows fields that:
-# - Are marked required in the schema
-# - Don't have non-empty default values
-# - Aren't specialized feature fields
-#
+
 # Do NOT use this list for strict validation - test with the actual FortiOS API!
 
 # Fields marked as required (after filtering false positives)
@@ -97,29 +74,7 @@ def validate_firewall_health_get(
     filters: dict[str, Any] | None = None,
     **params: Any,
 ) -> tuple[bool, str | None]:
-    """
-    Validate GET request parameters for firewall/health.
-
-    Args:
-        attr: Attribute filter (optional)
-        filters: Additional filter parameters
-        **params: Other query parameters
-
-    Returns:
-        Tuple of (is_valid, error_message)
-
-    Examples:
-        >>> # Valid - Get all items
-        >>> is_valid, error = validate_firewall_health_get()
-        >>> assert is_valid == True
-        
-        
-        >>> # Valid - With filters
-        >>> is_valid, error = validate_firewall_health_get(
-        ...     filters={"format": "name|type"}
-        ... )
-        >>> assert is_valid == True
-    """
+    """Validate GET request parameters for firewall/health."""
     # Validate query parameters if present
     if "action" in params:
         value = params.get("action")
@@ -138,23 +93,7 @@ def validate_firewall_health_get(
 
 
 def validate_required_fields(payload: dict) -> tuple[bool, str | None]:
-    """
-    Validate required fields for firewall/health.
-
-    This validator checks:
-    1. Always-required fields are present
-    2. Mutually exclusive groups have at least one field
-
-    Args:
-        payload: The request payload to validate
-
-    Returns:
-        Tuple of (is_valid, error_message)
-
-    Example:
-        >>> payload = {"name": "test"}
-        >>> is_valid, error = validate_required_fields(payload)
-    """
+    """Validate required fields for firewall/health."""
     # Check always-required fields
     missing_fields = []
     for field in REQUIRED_FIELDS:
@@ -183,36 +122,7 @@ def validate_firewall_health_post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
-    """
-    Validate POST request to create new firewall/health object.
-
-    This validator performs two-stage validation:
-    1. Required fields check (schema-based)
-    2. Field value validation (enums, ranges, formats)
-
-    Args:
-        payload: Request body data with configuration
-        **params: Query parameters (vdom, etc.)
-
-    Returns:
-        Tuple of (is_valid, error_message)
-        - is_valid: True if payload is valid, False otherwise
-        - error_message: None if valid, detailed error string if invalid
-
-    Examples:
-        >>> # ✅ Valid - Minimal required fields
-        >>> payload = {
-        ... }
-        >>> is_valid, error = validate_firewall_health_post(payload)
-        >>> assert is_valid == True
-        
-        
-        >>> # ❌ Invalid - Missing required field
-        >>> payload = {}  # Empty payload
-        >>> is_valid, error = validate_firewall_health_post(payload)
-        >>> assert is_valid == False
-        >>> assert "Missing required field" in error
-    """
+    """Validate POST request to create new firewall/health object."""
     # Step 1: Validate required fields
     is_valid, error = validate_required_fields(payload)
     if not is_valid:
@@ -232,20 +142,7 @@ def validate_firewall_health_put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
-    """
-    Validate PUT request to update firewall/health.
-
-    Args:
-        payload: Request body data
-        **params: Query parameters
-
-    Returns:
-        Tuple of (is_valid, error_message)
-
-    Example:
-        >>> payload = {"name": "updated_item"}
-        >>> is_valid, error = validate_firewall_health_put(payload)
-    """
+    """Validate PUT request to update firewall/health."""
     # Step 1: Validate enum values
 
     return (True, None)
@@ -253,274 +150,64 @@ def validate_firewall_health_put(
 
 # ============================================================================
 # Metadata Access Functions
-# Provide programmatic access to field metadata for IDE autocomplete,
-# documentation generation, and dynamic validation
+# Imported from central module to avoid duplication across 1,062 files
 # ============================================================================
 
+from hfortix_fortios._helpers.metadata import (
+    get_field_description as _get_field_description,
+    get_field_type as _get_field_type,
+    get_field_constraints as _get_field_constraints,
+    get_field_default as _get_field_default,
+    get_field_options as _get_field_options,
+    get_nested_schema as _get_nested_schema,
+    get_all_fields as _get_all_fields,
+    get_field_metadata as _get_field_metadata,
+    validate_field_value as _validate_field_value,
+)
 
+# Wrapper functions that bind module-specific data to central functions
 def get_field_description(field_name: str) -> str | None:
-    """
-    Get description/help text for a field.
-
-    Args:
-        field_name: Name of the field
-
-    Returns:
-        Description text or None if field doesn't exist
-
-    Example:
-        >>> desc = get_field_description("name")
-        >>> print(desc)
-    """
-    return FIELD_DESCRIPTIONS.get(field_name)
-
+    """Get description/help text for a field."""
+    return _get_field_description(FIELD_DESCRIPTIONS, field_name)
 
 def get_field_type(field_name: str) -> str | None:
-    """
-    Get the type of a field.
-
-    Args:
-        field_name: Name of the field
-
-    Returns:
-        Field type (e.g., "string", "integer", "option") or None
-
-    Example:
-        >>> field_type = get_field_type("status")
-        >>> print(field_type)  # "option"
-    """
-    return FIELD_TYPES.get(field_name)
-
+    """Get the type of a field."""
+    return _get_field_type(FIELD_TYPES, field_name)
 
 def get_field_constraints(field_name: str) -> dict[str, Any] | None:
-    """
-    Get constraints for a field (min/max values, string length).
-
-    Args:
-        field_name: Name of the field
-
-    Returns:
-        Constraint dict or None
-
-    Example:
-        >>> constraints = get_field_constraints("port")
-        >>> print(constraints)  # {"type": "integer", "min": 1, "max": 65535}
-    """
-    return FIELD_CONSTRAINTS.get(field_name)
-
+    """Get constraints for a field (min/max values, string length)."""
+    return _get_field_constraints(FIELD_CONSTRAINTS, field_name)
 
 def get_field_default(field_name: str) -> Any | None:
-    """
-    Get default value for a field.
-
-    Args:
-        field_name: Name of the field
-
-    Returns:
-        Default value or None if no default
-
-    Example:
-        >>> default = get_field_default("status")
-        >>> print(default)  # "enable"
-    """
-    return FIELDS_WITH_DEFAULTS.get(field_name)
-
+    """Get default value for a field."""
+    return _get_field_default(FIELDS_WITH_DEFAULTS, field_name)
 
 def get_field_options(field_name: str) -> list[str] | None:
-    """
-    Get valid enum options for a field.
-
-    Args:
-        field_name: Name of the field
-
-    Returns:
-        List of valid values or None if not an enum field
-
-    Example:
-        >>> options = get_field_options("status")
-        >>> print(options)  # ["enable", "disable"]
-    """
-    # Construct the constant name from field name
-    # Replace all non-alphanumeric characters with underscores for valid Python identifiers
-    import re
-    safe_name = re.sub(r'[^a-zA-Z0-9]', '_', field_name)
-    constant_name = f"VALID_BODY_{safe_name.upper()}"
-    return globals().get(constant_name)
-
+    """Get valid enum options for a field."""
+    return _get_field_options(globals(), field_name)
 
 def get_nested_schema(field_name: str) -> dict[str, Any] | None:
-    """
-    Get schema for nested table/list fields.
-
-    Args:
-        field_name: Name of the parent field
-
-    Returns:
-        Dict mapping child field names to their metadata
-
-    Example:
-        >>> nested = get_nested_schema("members")
-        >>> if nested:
-        ...     for child_field, child_meta in nested.items():
-        ...         print(f"{child_field}: {child_meta['type']}")
-    """
-    return NESTED_SCHEMAS.get(field_name)
-
+    """Get schema for nested table/list fields."""
+    return _get_nested_schema(NESTED_SCHEMAS, field_name)
 
 def get_all_fields() -> list[str]:
-    """
-    Get list of all field names.
-
-    Returns:
-        List of all field names in the schema
-
-    Example:
-        >>> fields = get_all_fields()
-        >>> print(len(fields))
-    """
-    return list(FIELD_TYPES.keys())
-
+    """Get list of all field names."""
+    return _get_all_fields(FIELD_TYPES)
 
 def get_field_metadata(field_name: str) -> dict[str, Any] | None:
-    """
-    Get complete metadata for a field (type, description, constraints, defaults, options).
-
-    Args:
-        field_name: Name of the field
-
-    Returns:
-        Dict with all available metadata or None if field doesn't exist
-
-    Example:
-        >>> meta = get_field_metadata("status")
-        >>> print(meta)
-        >>> # {
-        >>> #   "type": "option",
-        >>> #   "description": "Enable/disable this feature",
-        >>> #   "default": "enable",
-        >>> #   "options": ["enable", "disable"]
-        >>> # }
-    """
-    if field_name not in FIELD_TYPES:
-        return None
-
-    metadata = {
-        "name": field_name,
-        "type": FIELD_TYPES[field_name],
-    }
-
-    # Add description if available
-    if field_name in FIELD_DESCRIPTIONS:
-        metadata["description"] = FIELD_DESCRIPTIONS[field_name]
-
-    # Add constraints if available
-    if field_name in FIELD_CONSTRAINTS:
-        metadata["constraints"] = FIELD_CONSTRAINTS[field_name]
-
-    # Add default if available
-    if field_name in FIELDS_WITH_DEFAULTS:
-        metadata["default"] = FIELDS_WITH_DEFAULTS[field_name]
-
-    # Add required flag
-    metadata["required"] = field_name in REQUIRED_FIELDS
-
-    # Add options if available
-    options = get_field_options(field_name)
-    if options:
-        metadata["options"] = options
-
-    # Add nested schema if available
-    nested = get_nested_schema(field_name)
-    if nested:
-        metadata["nested_schema"] = nested
-
-    return metadata
-
+    """Get complete metadata for a field (type, description, constraints, defaults, options)."""
+    return _get_field_metadata(
+        FIELD_TYPES, FIELD_DESCRIPTIONS, FIELD_CONSTRAINTS,
+        FIELDS_WITH_DEFAULTS, REQUIRED_FIELDS, NESTED_SCHEMAS,
+        globals(), field_name
+    )
 
 def validate_field_value(field_name: str, value: Any) -> tuple[bool, str | None]:
-    """
-    Validate a single field value against its constraints.
-
-    Args:
-        field_name: Name of the field
-        value: Value to validate
-
-    Returns:
-        Tuple of (is_valid, error_message)
-
-    Example:
-        >>> is_valid, error = validate_field_value("status", "enable")
-        >>> if not is_valid:
-        ...     print(error)
-    """
-    # Get field metadata
-    field_type = get_field_type(field_name)
-    if field_type is None:
-        return (False, f"Unknown field: '{field_name}' (not defined in schema)")
-
-    # Get field description for better error context
-    description = get_field_description(field_name)
-
-    # Validate enum values
-    options = get_field_options(field_name)
-    if options and value not in options:
-        error_msg = f"Invalid value for '{field_name}': {repr(value)}"
-        if description:
-            error_msg += f"\n  → Description: {description}"
-        error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in options)}"
-        if options:
-            error_msg += f"\n  → Example: {field_name}={repr(options[0])}"
-        return (False, error_msg)
-
-    # Validate constraints
-    constraints = get_field_constraints(field_name)
-    if constraints:
-        constraint_type = constraints.get("type")
-
-        if constraint_type == "integer":
-            if not isinstance(value, int):
-                error_msg = f"Field '{field_name}' must be an integer"
-                if description:
-                    error_msg += f"\n  → Description: {description}"
-                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
-                return (False, error_msg)
-
-            min_val = constraints.get("min")
-            max_val = constraints.get("max")
-
-            if min_val is not None and value < min_val:
-                error_msg = f"Field '{field_name}' value {value} is below minimum {min_val}"
-                if description:
-                    error_msg += f"\n  → Description: {description}"
-                if max_val is not None:
-                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
-                return (False, error_msg)
-
-            if max_val is not None and value > max_val:
-                error_msg = f"Field '{field_name}' value {value} exceeds maximum {max_val}"
-                if description:
-                    error_msg += f"\n  → Description: {description}"
-                if min_val is not None:
-                    error_msg += f"\n  → Valid range: {min_val} to {max_val}"
-                return (False, error_msg)
-
-        elif constraint_type == "string":
-            if not isinstance(value, str):
-                error_msg = f"Field '{field_name}' must be a string"
-                if description:
-                    error_msg += f"\n  → Description: {description}"
-                error_msg += f"\n  → You provided: {type(value).__name__} = {repr(value)}"
-                return (False, error_msg)
-
-            max_length = constraints.get("max_length")
-            if max_length and len(value) > max_length:
-                error_msg = f"Field '{field_name}' length {len(value)} exceeds maximum {max_length}"
-                if description:
-                    error_msg += f"\n  → Description: {description}"
-                error_msg += f"\n  → Your value: {repr(value[:50])}{'...' if len(value) > 50 else ''}"
-                return (False, error_msg)
-
-    return (True, None)
+    """Validate a single field value against its constraints."""
+    return _validate_field_value(
+        FIELD_TYPES, FIELD_DESCRIPTIONS, FIELD_CONSTRAINTS,
+        globals(), field_name, value
+    )
 
 
 # ============================================================================
@@ -540,15 +227,5 @@ SCHEMA_INFO = {
 
 
 def get_schema_info() -> dict[str, Any]:
-    """
-    Get information about this endpoint schema.
-
-    Returns:
-        Dict with schema metadata
-
-    Example:
-        >>> info = get_schema_info()
-        >>> print(f"Endpoint: {info['endpoint']}")
-        >>> print(f"Total fields: {info['total_fields']}")
-    """
+    """Get information about this endpoint schema."""
     return SCHEMA_INFO.copy()
