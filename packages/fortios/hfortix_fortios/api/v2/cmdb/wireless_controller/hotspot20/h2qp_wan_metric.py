@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,9 +123,9 @@ class H2qpWanMetric(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        link_status: str | None = None,
-        symmetric_wan_link: str | None = None,
-        link_at_capacity: str | None = None,
+        link_status: Literal["up", "down", "in-test"] | None = None,
+        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = None,
+        link_at_capacity: Literal["enable", "disable"] | None = None,
         uplink_speed: int | None = None,
         downlink_speed: int | None = None,
         uplink_load: int | None = None,
@@ -214,9 +213,9 @@ class H2qpWanMetric(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        link_status: str | None = None,
-        symmetric_wan_link: str | None = None,
-        link_at_capacity: str | None = None,
+        link_status: Literal["up", "down", "in-test"] | None = None,
+        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = None,
+        link_at_capacity: Literal["enable", "disable"] | None = None,
         uplink_speed: int | None = None,
         downlink_speed: int | None = None,
         uplink_load: int | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,14 +124,14 @@ class Scim(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         base_url: str | None = None,
-        auth_method: str | None = None,
+        auth_method: Literal["token", "base"] | None = None,
         token_certificate: str | None = None,
         secret: Any | None = None,
         certificate: str | None = None,
-        client_identity_check: str | None = None,
-        cascade: str | None = None,
+        client_identity_check: Literal["enable", "disable"] | None = None,
+        cascade: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -217,14 +216,14 @@ class Scim(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         base_url: str | None = None,
-        auth_method: str | None = None,
+        auth_method: Literal["token", "base"] | None = None,
         token_certificate: str | None = None,
         secret: Any | None = None,
         certificate: str | None = None,
-        client_identity_check: str | None = None,
-        cascade: str | None = None,
+        client_identity_check: Literal["enable", "disable"] | None = None,
+        cascade: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

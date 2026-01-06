@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,7 +125,7 @@ class AffinityPacketRedistribution(MetadataMixin):
         id: int | None = None,
         interface: str | None = None,
         rxqid: int | None = None,
-        round_robin: str | None = None,
+        round_robin: Literal["enable", "disable"] | None = None,
         affinity_cpumask: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -208,7 +207,7 @@ class AffinityPacketRedistribution(MetadataMixin):
         id: int | None = None,
         interface: str | None = None,
         rxqid: int | None = None,
-        round_robin: str | None = None,
+        round_robin: Literal["enable", "disable"] | None = None,
         affinity_cpumask: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

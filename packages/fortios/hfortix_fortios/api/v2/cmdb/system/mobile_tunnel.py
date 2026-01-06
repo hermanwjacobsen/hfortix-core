@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class MobileTunnel(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
         roaming_interface: str | None = None,
         home_agent: str | None = None,
         home_address: str | None = None,
@@ -133,10 +132,10 @@ class MobileTunnel(MetadataMixin):
         reg_interval: int | None = None,
         reg_retry: int | None = None,
         n_mhae_spi: int | None = None,
-        n_mhae_key_type: str | None = None,
+        n_mhae_key_type: Literal["ascii", "base64"] | None = None,
         n_mhae_key: Any | None = None,
-        hash_algorithm: str | None = None,
-        tunnel_mode: str | None = None,
+        hash_algorithm: Literal["hmac-md5"] | None = None,
+        tunnel_mode: Literal["gre"] | None = None,
         network: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -226,7 +225,7 @@ class MobileTunnel(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
         roaming_interface: str | None = None,
         home_agent: str | None = None,
         home_address: str | None = None,
@@ -235,10 +234,10 @@ class MobileTunnel(MetadataMixin):
         reg_interval: int | None = None,
         reg_retry: int | None = None,
         n_mhae_spi: int | None = None,
-        n_mhae_key_type: str | None = None,
+        n_mhae_key_type: Literal["ascii", "base64"] | None = None,
         n_mhae_key: Any | None = None,
-        hash_algorithm: str | None = None,
-        tunnel_mode: str | None = None,
+        hash_algorithm: Literal["hmac-md5"] | None = None,
+        tunnel_mode: Literal["gre"] | None = None,
         network: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

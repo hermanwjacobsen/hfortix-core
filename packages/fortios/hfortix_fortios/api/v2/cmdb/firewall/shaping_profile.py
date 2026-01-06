@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,8 +124,8 @@ class ShapingProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         profile_name: str | None = None,
         comment: str | None = None,
-        type: str | None = None,
-        npu_offloading: str | None = None,
+        type: Literal["policing", "queuing"] | None = None,
+        npu_offloading: Literal["disable", "enable"] | None = None,
         default_class_id: int | None = None,
         shaping_entries: str | list | None = None,
         vdom: str | bool | None = None,
@@ -209,8 +208,8 @@ class ShapingProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         profile_name: str | None = None,
         comment: str | None = None,
-        type: str | None = None,
-        npu_offloading: str | None = None,
+        type: Literal["policing", "queuing"] | None = None,
+        npu_offloading: Literal["disable", "enable"] | None = None,
         default_class_id: int | None = None,
         shaping_entries: str | list | None = None,
         vdom: str | bool | None = None,

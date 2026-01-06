@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,8 +126,8 @@ class Evpn(MetadataMixin):
         rd: str | None = None,
         import_rt: str | list | None = None,
         export_rt: str | list | None = None,
-        ip_local_learning: str | None = None,
-        arp_suppression: str | None = None,
+        ip_local_learning: Literal["enable", "disable"] | None = None,
+        arp_suppression: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -211,8 +210,8 @@ class Evpn(MetadataMixin):
         rd: str | None = None,
         import_rt: str | list | None = None,
         export_rt: str | list | None = None,
-        ip_local_learning: str | None = None,
-        arp_suppression: str | None = None,
+        ip_local_learning: Literal["enable", "disable"] | None = None,
+        arp_suppression: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

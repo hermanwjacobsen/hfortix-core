@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,8 +117,8 @@ class Multicast6(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        multicast_routing: str | None = None,
-        multicast_pmtu: str | None = None,
+        multicast_routing: Literal["enable", "disable"] | None = None,
+        multicast_pmtu: Literal["enable", "disable"] | None = None,
         interface: str | list | None = None,
         pim_sm_global: str | None = None,
         vdom: str | bool | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -120,7 +119,7 @@ class Settings(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         storage_device: str | None = None,
         size: int | None = None,
-        db_mode: str | None = None,
+        db_mode: Literal["stop-adding", "remove-modified-then-oldest", "remove-oldest"] | None = None,
         cache_mem_percent: int | None = None,
         chunk_size: int | None = None,
         config_builder_timeout: int | None = None,

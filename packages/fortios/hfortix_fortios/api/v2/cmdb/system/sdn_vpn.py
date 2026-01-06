@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,14 +124,14 @@ class SdnVpn(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         sdn: str | None = None,
-        remote_type: str | None = None,
-        routing_type: str | None = None,
+        remote_type: Literal["vgw", "tgw"] | None = None,
+        routing_type: Literal["static", "dynamic"] | None = None,
         vgw_id: str | None = None,
         tgw_id: str | None = None,
         subnet_id: str | None = None,
         bgp_as: int | None = None,
         cgw_gateway: str | None = None,
-        nat_traversal: str | None = None,
+        nat_traversal: Literal["disable", "enable"] | None = None,
         tunnel_interface: str | None = None,
         internal_interface: str | None = None,
         local_cidr: str | None = None,
@@ -235,14 +234,14 @@ class SdnVpn(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         sdn: str | None = None,
-        remote_type: str | None = None,
-        routing_type: str | None = None,
+        remote_type: Literal["vgw", "tgw"] | None = None,
+        routing_type: Literal["static", "dynamic"] | None = None,
         vgw_id: str | None = None,
         tgw_id: str | None = None,
         subnet_id: str | None = None,
         bgp_as: int | None = None,
         cgw_gateway: str | None = None,
-        nat_traversal: str | None = None,
+        nat_traversal: Literal["disable", "enable"] | None = None,
         tunnel_interface: str | None = None,
         internal_interface: str | None = None,
         local_cidr: str | None = None,

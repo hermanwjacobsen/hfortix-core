@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,14 +123,14 @@ class Ippool6(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["overload", "nptv6"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         internal_prefix: str | None = None,
         external_prefix: str | None = None,
         comments: str | None = None,
-        nat46: str | None = None,
-        add_nat46_route: str | None = None,
+        nat46: Literal["disable", "enable"] | None = None,
+        add_nat46_route: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -214,14 +213,14 @@ class Ippool6(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["overload", "nptv6"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         internal_prefix: str | None = None,
         external_prefix: str | None = None,
         comments: str | None = None,
-        nat46: str | None = None,
-        add_nat46_route: str | None = None,
+        nat46: Literal["disable", "enable"] | None = None,
+        add_nat46_route: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

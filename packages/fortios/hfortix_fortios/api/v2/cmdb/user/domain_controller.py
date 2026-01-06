@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class DomainController(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        ad_mode: str | None = None,
+        ad_mode: Literal["none", "ds", "lds"] | None = None,
         hostname: str | None = None,
         username: str | None = None,
         password: Any | None = None,
@@ -134,15 +133,15 @@ class DomainController(MetadataMixin):
         source_ip_address: str | None = None,
         source_ip6: str | None = None,
         source_port: int | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         extra_server: str | list | None = None,
         domain_name: str | None = None,
         replication_port: int | None = None,
         ldap_server: str | list | None = None,
-        change_detection: str | None = None,
+        change_detection: Literal["enable", "disable"] | None = None,
         change_detection_period: int | None = None,
-        dns_srv_lookup: str | None = None,
+        dns_srv_lookup: Literal["enable", "disable"] | None = None,
         adlds_dn: str | None = None,
         adlds_ip_address: str | None = None,
         adlds_ip6: str | None = None,
@@ -244,7 +243,7 @@ class DomainController(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        ad_mode: str | None = None,
+        ad_mode: Literal["none", "ds", "lds"] | None = None,
         hostname: str | None = None,
         username: str | None = None,
         password: Any | None = None,
@@ -254,15 +253,15 @@ class DomainController(MetadataMixin):
         source_ip_address: str | None = None,
         source_ip6: str | None = None,
         source_port: int | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         extra_server: str | list | None = None,
         domain_name: str | None = None,
         replication_port: int | None = None,
         ldap_server: str | list | None = None,
-        change_detection: str | None = None,
+        change_detection: Literal["enable", "disable"] | None = None,
         change_detection_period: int | None = None,
-        dns_srv_lookup: str | None = None,
+        dns_srv_lookup: Literal["enable", "disable"] | None = None,
         adlds_dn: str | None = None,
         adlds_ip_address: str | None = None,
         adlds_ip6: str | None = None,

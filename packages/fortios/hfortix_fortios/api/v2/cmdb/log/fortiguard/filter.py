@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,17 +117,17 @@ class Filter(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        severity: str | None = None,
-        forward_traffic: str | None = None,
-        local_traffic: str | None = None,
-        multicast_traffic: str | None = None,
-        sniffer_traffic: str | None = None,
-        ztna_traffic: str | None = None,
-        http_transaction: str | None = None,
-        anomaly: str | None = None,
-        voip: str | None = None,
-        gtp: str | None = None,
-        forti_switch: str | None = None,
+        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = None,
+        forward_traffic: Literal["enable", "disable"] | None = None,
+        local_traffic: Literal["enable", "disable"] | None = None,
+        multicast_traffic: Literal["enable", "disable"] | None = None,
+        sniffer_traffic: Literal["enable", "disable"] | None = None,
+        ztna_traffic: Literal["enable", "disable"] | None = None,
+        http_transaction: Literal["enable", "disable"] | None = None,
+        anomaly: Literal["enable", "disable"] | None = None,
+        voip: Literal["enable", "disable"] | None = None,
+        gtp: Literal["enable", "disable"] | None = None,
+        forti_switch: Literal["enable", "disable"] | None = None,
         free_style: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

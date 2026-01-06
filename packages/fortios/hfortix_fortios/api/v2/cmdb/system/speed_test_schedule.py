@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,18 +123,18 @@ class SpeedTestSchedule(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         interface: str | None = None,
-        status: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
         diffserv: str | None = None,
         server_name: str | None = None,
-        mode: str | None = None,
+        mode: Literal["UDP", "TCP", "Auto"] | None = None,
         schedules: str | list | None = None,
-        dynamic_server: str | None = None,
+        dynamic_server: Literal["disable", "enable"] | None = None,
         ctrl_port: int | None = None,
         server_port: int | None = None,
-        update_shaper: str | None = None,
-        update_inbandwidth: str | None = None,
-        update_outbandwidth: str | None = None,
-        update_interface_shaping: str | None = None,
+        update_shaper: Literal["disable", "local", "remote", "both"] | None = None,
+        update_inbandwidth: Literal["disable", "enable"] | None = None,
+        update_outbandwidth: Literal["disable", "enable"] | None = None,
+        update_interface_shaping: Literal["disable", "enable"] | None = None,
         update_inbandwidth_maximum: int | None = None,
         update_inbandwidth_minimum: int | None = None,
         update_outbandwidth_maximum: int | None = None,
@@ -242,18 +241,18 @@ class SpeedTestSchedule(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         interface: str | None = None,
-        status: str | None = None,
+        status: Literal["disable", "enable"] | None = None,
         diffserv: str | None = None,
         server_name: str | None = None,
-        mode: str | None = None,
+        mode: Literal["UDP", "TCP", "Auto"] | None = None,
         schedules: str | list | None = None,
-        dynamic_server: str | None = None,
+        dynamic_server: Literal["disable", "enable"] | None = None,
         ctrl_port: int | None = None,
         server_port: int | None = None,
-        update_shaper: str | None = None,
-        update_inbandwidth: str | None = None,
-        update_outbandwidth: str | None = None,
-        update_interface_shaping: str | None = None,
+        update_shaper: Literal["disable", "local", "remote", "both"] | None = None,
+        update_inbandwidth: Literal["disable", "enable"] | None = None,
+        update_outbandwidth: Literal["disable", "enable"] | None = None,
+        update_interface_shaping: Literal["disable", "enable"] | None = None,
         update_inbandwidth_maximum: int | None = None,
         update_inbandwidth_minimum: int | None = None,
         update_outbandwidth_maximum: int | None = None,

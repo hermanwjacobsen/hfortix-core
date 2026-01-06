@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,20 +117,20 @@ class VdomDns(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        vdom_dns: str | None = None,
+        vdom_dns: Literal["enable", "disable"] | None = None,
         primary: str | None = None,
         secondary: str | None = None,
-        protocol: str | list | None = None,
+        protocol: Literal["cleartext", "dot", "doh"] | list | None = None,
         ssl_certificate: str | None = None,
         server_hostname: str | list | None = None,
         ip6_primary: str | None = None,
         ip6_secondary: str | None = None,
         source_ip: str | None = None,
         source_ip_interface: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
-        server_select_method: str | None = None,
+        server_select_method: Literal["least-rtt", "failover"] | None = None,
         alt_primary: str | None = None,
         alt_secondary: str | None = None,
         vdom: str | bool | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,8 +124,8 @@ class Certificate(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: int | None = None,
-        status: str | None = None,
-        type: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["single-certificate", "trusted-issuer"] | None = None,
         common_name: str | None = None,
         issuer: str | None = None,
         vdom: str | bool | None = None,
@@ -209,8 +208,8 @@ class Certificate(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: int | None = None,
-        status: str | None = None,
-        type: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        type: Literal["single-certificate", "trusted-issuer"] | None = None,
         common_name: str | None = None,
         issuer: str | None = None,
         vdom: str | bool | None = None,

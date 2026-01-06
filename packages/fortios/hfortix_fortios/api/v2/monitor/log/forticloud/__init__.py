@@ -1,6 +1,5 @@
 """FortiOS CMDB - Forticloud category"""
 
-from ..forticloud_base import Forticloud as ForticloudBase
 from .connection import Connection
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class Forticloud(ForticloudBase):
+class Forticloud:
     """Forticloud endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class Forticloud(ForticloudBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.connection = Connection(client)

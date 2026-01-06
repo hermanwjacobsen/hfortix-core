@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -132,10 +131,10 @@ class TacacsPlus(MetadataMixin):
         secondary_key: Any | None = None,
         tertiary_key: Any | None = None,
         status_ttl: int | None = None,
-        authen_type: str | None = None,
-        authorization: str | None = None,
+        authen_type: Literal["mschap", "chap", "pap", "ascii", "auto"] | None = None,
+        authorization: Literal["enable", "disable"] | None = None,
         source_ip: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,
@@ -234,10 +233,10 @@ class TacacsPlus(MetadataMixin):
         secondary_key: Any | None = None,
         tertiary_key: Any | None = None,
         status_ttl: int | None = None,
-        authen_type: str | None = None,
-        authorization: str | None = None,
+        authen_type: Literal["mschap", "chap", "pap", "ascii", "auto"] | None = None,
+        authorization: Literal["enable", "disable"] | None = None,
         source_ip: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

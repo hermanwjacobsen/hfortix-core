@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class ExtcommunityList(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["standard", "expanded"] | None = None,
         rule: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -200,7 +199,7 @@ class ExtcommunityList(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["standard", "expanded"] | None = None,
         rule: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

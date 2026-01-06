@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,10 +123,10 @@ class ObjectTagging(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         category: str | None = None,
-        address: str | None = None,
-        device: str | None = None,
-        interface: str | None = None,
-        multiple: str | None = None,
+        address: Literal["disable", "mandatory", "optional"] | None = None,
+        device: Literal["disable", "mandatory", "optional"] | None = None,
+        interface: Literal["disable", "mandatory", "optional"] | None = None,
+        multiple: Literal["enable", "disable"] | None = None,
         color: int | None = None,
         tags: str | list | None = None,
         vdom: str | bool | None = None,
@@ -210,10 +209,10 @@ class ObjectTagging(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         category: str | None = None,
-        address: str | None = None,
-        device: str | None = None,
-        interface: str | None = None,
-        multiple: str | None = None,
+        address: Literal["disable", "mandatory", "optional"] | None = None,
+        device: Literal["disable", "mandatory", "optional"] | None = None,
+        interface: Literal["disable", "mandatory", "optional"] | None = None,
+        multiple: Literal["enable", "disable"] | None = None,
         color: int | None = None,
         tags: str | list | None = None,
         vdom: str | bool | None = None,

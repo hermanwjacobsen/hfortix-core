@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,11 +117,11 @@ class FlowTracking(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        sample_mode: str | None = None,
+        sample_mode: Literal["local", "perimeter", "device-ingress"] | None = None,
         sample_rate: int | None = None,
-        format: str | None = None,
+        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = None,
         collectors: str | list | None = None,
-        level: str | None = None,
+        level: Literal["vlan", "ip", "port", "proto", "mac"] | None = None,
         max_export_pkt_size: int | None = None,
         template_export_period: int | None = None,
         timeout_general: int | None = None,

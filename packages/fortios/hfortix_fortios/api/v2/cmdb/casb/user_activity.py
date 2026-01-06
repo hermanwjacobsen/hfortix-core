@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,13 +124,13 @@ class UserActivity(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         description: str | None = None,
-        type: str | None = None,
+        type: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         application: str | None = None,
-        category: str | None = None,
-        match_strategy: str | None = None,
+        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = None,
+        match_strategy: Literal["and", "or"] | None = None,
         match: str | list | None = None,
         control_options: str | list | None = None,
         vdom: str | bool | None = None,
@@ -219,13 +218,13 @@ class UserActivity(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         uuid: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         description: str | None = None,
-        type: str | None = None,
+        type: Literal["built-in", "customized"] | None = None,
         casb_name: str | None = None,
         application: str | None = None,
-        category: str | None = None,
-        match_strategy: str | None = None,
+        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = None,
+        match_strategy: Literal["and", "or"] | None = None,
         match: str | list | None = None,
         control_options: str | list | None = None,
         vdom: str | bool | None = None,

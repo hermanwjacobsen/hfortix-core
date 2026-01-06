@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -120,17 +119,17 @@ class StandaloneCluster(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         standalone_group_id: int | None = None,
         group_member_id: int | None = None,
-        layer2_connection: str | None = None,
+        layer2_connection: Literal["available", "unavailable"] | None = None,
         session_sync_dev: str | list | None = None,
-        encryption: str | None = None,
+        encryption: Literal["enable", "disable"] | None = None,
         psksecret: Any | None = None,
-        asymmetric_traffic_control: str | None = None,
+        asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = None,
         cluster_peer: str | list | None = None,
         monitor_interface: str | list | None = None,
         pingsvr_monitor_interface: str | list | None = None,
         monitor_prefix: str | list | None = None,
-        helper_traffic_bounce: str | None = None,
-        utm_traffic_bounce: str | None = None,
+        helper_traffic_bounce: Literal["enable", "disable"] | None = None,
+        utm_traffic_bounce: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

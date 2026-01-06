@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,11 +126,11 @@ class VneInterface(MetadataMixin):
         interface: str | None = None,
         ssl_certificate: str | None = None,
         bmr_hostname: Any | None = None,
-        auto_asic_offload: str | None = None,
+        auto_asic_offload: Literal["enable", "disable"] | None = None,
         ipv4_address: Any | None = None,
         br: str | None = None,
         update_url: str | None = None,
-        mode: str | None = None,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = None,
         http_username: str | None = None,
         http_password: Any | None = None,
         vdom: str | bool | None = None,
@@ -221,11 +220,11 @@ class VneInterface(MetadataMixin):
         interface: str | None = None,
         ssl_certificate: str | None = None,
         bmr_hostname: Any | None = None,
-        auto_asic_offload: str | None = None,
+        auto_asic_offload: Literal["enable", "disable"] | None = None,
         ipv4_address: Any | None = None,
         br: str | None = None,
         update_url: str | None = None,
-        mode: str | None = None,
+        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = None,
         http_username: str | None = None,
         http_password: Any | None = None,
         vdom: str | bool | None = None,

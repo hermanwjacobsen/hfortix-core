@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -119,7 +118,7 @@ class IgmpSnooping(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         aging_time: int | None = None,
-        flood_unknown_multicast: str | None = None,
+        flood_unknown_multicast: Literal["enable", "disable"] | None = None,
         query_interval: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

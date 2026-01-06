@@ -1,6 +1,5 @@
 """FortiOS CMDB - Euclid category"""
 
-from ..euclid_base import Euclid as EuclidBase
 from .reset import Reset
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class Euclid(EuclidBase):
+class Euclid:
     """Euclid endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class Euclid(EuclidBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.reset = Reset(client)

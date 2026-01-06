@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -128,10 +127,10 @@ class MacPolicy(MetadataMixin):
         fortilink: str | None = None,
         vlan: str | None = None,
         traffic_policy: str | None = None,
-        count: str | None = None,
-        bounce_port_link: str | None = None,
+        count: Literal["disable", "enable"] | None = None,
+        bounce_port_link: Literal["disable", "enable"] | None = None,
         bounce_port_duration: int | None = None,
-        poe_reset: str | None = None,
+        poe_reset: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -218,10 +217,10 @@ class MacPolicy(MetadataMixin):
         fortilink: str | None = None,
         vlan: str | None = None,
         traffic_policy: str | None = None,
-        count: str | None = None,
-        bounce_port_link: str | None = None,
+        count: Literal["disable", "enable"] | None = None,
+        bounce_port_link: Literal["disable", "enable"] | None = None,
         bounce_port_duration: int | None = None,
-        poe_reset: str | None = None,
+        poe_reset: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

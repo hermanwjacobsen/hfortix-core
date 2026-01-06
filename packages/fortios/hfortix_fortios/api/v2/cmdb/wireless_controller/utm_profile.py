@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,12 +124,12 @@ class UtmProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        utm_log: str | None = None,
+        utm_log: Literal["enable", "disable"] | None = None,
         ips_sensor: str | None = None,
         application_list: str | None = None,
         antivirus_profile: str | None = None,
         webfilter_profile: str | None = None,
-        scan_botnet_connections: str | None = None,
+        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -213,12 +212,12 @@ class UtmProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        utm_log: str | None = None,
+        utm_log: Literal["enable", "disable"] | None = None,
         ips_sensor: str | None = None,
         application_list: str | None = None,
         antivirus_profile: str | None = None,
         webfilter_profile: str | None = None,
-        scan_botnet_connections: str | None = None,
+        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

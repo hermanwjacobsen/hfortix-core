@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,10 +125,10 @@ class Urlfilter(MetadataMixin):
         id: int | None = None,
         name: str | None = None,
         comment: str | None = None,
-        one_arm_ips_urlfilter: str | None = None,
-        ip_addr_block: str | None = None,
-        ip4_mapped_ip6: str | None = None,
-        include_subdomains: str | None = None,
+        one_arm_ips_urlfilter: Literal["enable", "disable"] | None = None,
+        ip_addr_block: Literal["enable", "disable"] | None = None,
+        ip4_mapped_ip6: Literal["enable", "disable"] | None = None,
+        include_subdomains: Literal["enable", "disable"] | None = None,
         entries: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -214,10 +213,10 @@ class Urlfilter(MetadataMixin):
         id: int | None = None,
         name: str | None = None,
         comment: str | None = None,
-        one_arm_ips_urlfilter: str | None = None,
-        ip_addr_block: str | None = None,
-        ip4_mapped_ip6: str | None = None,
-        include_subdomains: str | None = None,
+        one_arm_ips_urlfilter: Literal["enable", "disable"] | None = None,
+        ip_addr_block: Literal["enable", "disable"] | None = None,
+        ip4_mapped_ip6: Literal["enable", "disable"] | None = None,
+        include_subdomains: Literal["enable", "disable"] | None = None,
         entries: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

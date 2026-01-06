@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -119,16 +118,16 @@ class Setting(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         proxy_connect_timeout: int | None = None,
-        ssl_dh_bits: str | None = None,
-        ssl_send_empty_frags: str | None = None,
-        no_matching_cipher_action: str | None = None,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = None,
+        ssl_send_empty_frags: Literal["enable", "disable"] | None = None,
+        no_matching_cipher_action: Literal["bypass", "drop"] | None = None,
         cert_manager_cache_timeout: int | None = None,
-        resigned_short_lived_certificate: str | None = None,
+        resigned_short_lived_certificate: Literal["enable", "disable"] | None = None,
         cert_cache_capacity: int | None = None,
         cert_cache_timeout: int | None = None,
         session_cache_capacity: int | None = None,
         session_cache_timeout: int | None = None,
-        abbreviate_handshake: str | None = None,
+        abbreviate_handshake: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

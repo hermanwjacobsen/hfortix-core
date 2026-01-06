@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,9 +125,9 @@ class Profile(MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         filters: str | list | None = None,
-        youtube: str | None = None,
-        vimeo: str | None = None,
-        dailymotion: str | None = None,
+        youtube: Literal["enable", "disable"] | None = None,
+        vimeo: Literal["enable", "disable"] | None = None,
+        dailymotion: Literal["enable", "disable"] | None = None,
         replacemsg_group: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -212,9 +211,9 @@ class Profile(MetadataMixin):
         name: str | None = None,
         comment: str | None = None,
         filters: str | list | None = None,
-        youtube: str | None = None,
-        vimeo: str | None = None,
-        dailymotion: str | None = None,
+        youtube: Literal["enable", "disable"] | None = None,
+        vimeo: Literal["enable", "disable"] | None = None,
+        dailymotion: Literal["enable", "disable"] | None = None,
         replacemsg_group: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

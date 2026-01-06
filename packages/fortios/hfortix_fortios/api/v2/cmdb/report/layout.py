@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -128,14 +127,14 @@ class Layout(MetadataMixin):
         subtitle: str | None = None,
         description: str | None = None,
         style_theme: str | None = None,
-        options: str | list | None = None,
-        format: str | list | None = None,
-        schedule_type: str | None = None,
-        day: str | None = None,
+        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list | None = None,
+        format: Literal["pdf"] | list | None = None,
+        schedule_type: Literal["demand", "daily", "weekly"] | None = None,
+        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         time: str | None = None,
-        cutoff_option: str | None = None,
+        cutoff_option: Literal["run-time", "custom"] | None = None,
         cutoff_time: str | None = None,
-        email_send: str | None = None,
+        email_send: Literal["enable", "disable"] | None = None,
         email_recipients: str | None = None,
         max_pdf_report: int | None = None,
         page: str | None = None,
@@ -234,14 +233,14 @@ class Layout(MetadataMixin):
         subtitle: str | None = None,
         description: str | None = None,
         style_theme: str | None = None,
-        options: str | list | None = None,
-        format: str | list | None = None,
-        schedule_type: str | None = None,
-        day: str | None = None,
+        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | list | None = None,
+        format: Literal["pdf"] | list | None = None,
+        schedule_type: Literal["demand", "daily", "weekly"] | None = None,
+        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         time: str | None = None,
-        cutoff_option: str | None = None,
+        cutoff_option: Literal["run-time", "custom"] | None = None,
         cutoff_time: str | None = None,
-        email_send: str | None = None,
+        email_send: Literal["enable", "disable"] | None = None,
         email_recipients: str | None = None,
         max_pdf_report: int | None = None,
         page: str | None = None,

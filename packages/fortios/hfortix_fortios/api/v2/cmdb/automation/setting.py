@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -119,8 +118,8 @@ class Setting(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         max_concurrent_stitches: int | None = None,
-        fabric_sync: str | None = None,
-        secure_mode: str | None = None,
+        fabric_sync: Literal["enable", "disable"] | None = None,
+        secure_mode: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

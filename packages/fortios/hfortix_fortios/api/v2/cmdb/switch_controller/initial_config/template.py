@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,9 +125,9 @@ class Template(MetadataMixin):
         name: str | None = None,
         vlanid: int | None = None,
         ip: Any | None = None,
-        allowaccess: str | list | None = None,
-        auto_ip: str | None = None,
-        dhcp_server: str | None = None,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm"] | list | None = None,
+        auto_ip: Literal["enable", "disable"] | None = None,
+        dhcp_server: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -210,9 +209,9 @@ class Template(MetadataMixin):
         name: str | None = None,
         vlanid: int | None = None,
         ip: Any | None = None,
-        allowaccess: str | list | None = None,
-        auto_ip: str | None = None,
-        dhcp_server: str | None = None,
+        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm"] | list | None = None,
+        auto_ip: Literal["enable", "disable"] | None = None,
+        dhcp_server: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

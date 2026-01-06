@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,7 +117,7 @@ class InternetServiceAppend(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        addr_mode: str | None = None,
+        addr_mode: Literal["ipv4", "ipv6", "both"] | None = None,
         match_port: int | None = None,
         append_port: int | None = None,
         vdom: str | bool | None = None,

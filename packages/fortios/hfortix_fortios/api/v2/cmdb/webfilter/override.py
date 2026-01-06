@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,8 +123,8 @@ class Override(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
-        status: str | None = None,
-        scope: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        scope: Literal["user", "user-group", "ip", "ip6"] | None = None,
         ip: str | None = None,
         user: str | None = None,
         user_group: str | None = None,
@@ -218,8 +217,8 @@ class Override(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
-        status: str | None = None,
-        scope: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        scope: Literal["user", "user-group", "ip", "ip6"] | None = None,
         ip: str | None = None,
         user: str | None = None,
         user_group: str | None = None,

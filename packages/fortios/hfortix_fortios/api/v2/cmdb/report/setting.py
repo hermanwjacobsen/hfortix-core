@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,9 +117,9 @@ class Setting(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        pdf_report: str | None = None,
-        fortiview: str | None = None,
-        report_source: str | list | None = None,
+        pdf_report: Literal["enable", "disable"] | None = None,
+        fortiview: Literal["enable", "disable"] | None = None,
+        report_source: Literal["forward-traffic", "sniffer-traffic", "local-deny-traffic"] | list | None = None,
         web_browsing_threshold: int | None = None,
         top_n: int | None = None,
         vdom: str | bool | None = None,

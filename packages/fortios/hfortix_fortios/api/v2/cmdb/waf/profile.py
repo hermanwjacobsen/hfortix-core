@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,8 +123,8 @@ class Profile(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        external: str | None = None,
-        extended_log: str | None = None,
+        external: Literal["disable", "enable"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
         signature: str | None = None,
         constraint: str | None = None,
         method: str | None = None,
@@ -214,8 +213,8 @@ class Profile(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        external: str | None = None,
-        extended_log: str | None = None,
+        external: Literal["disable", "enable"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
         signature: str | None = None,
         constraint: str | None = None,
         method: str | None = None,

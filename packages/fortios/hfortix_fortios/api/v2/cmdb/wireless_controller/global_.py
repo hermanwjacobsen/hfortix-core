@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -122,13 +121,13 @@ class Global(MetadataMixin):
         location: str | None = None,
         acd_process_count: int | None = None,
         wpad_process_count: int | None = None,
-        image_download: str | None = None,
-        rolling_wtp_upgrade: str | None = None,
+        image_download: Literal["enable", "disable"] | None = None,
+        rolling_wtp_upgrade: Literal["enable", "disable"] | None = None,
         rolling_wtp_upgrade_threshold: str | None = None,
         max_retransmit: int | None = None,
-        control_message_offload: str | list | None = None,
-        data_ethernet_II: str | None = None,
-        link_aggregation: str | None = None,
+        control_message_offload: Literal["ebp-frame", "aeroscout-tag", "ap-list", "sta-list", "sta-cap-list", "stats", "aeroscout-mu", "sta-health", "spectral-analysis"] | list | None = None,
+        data_ethernet_II: Literal["enable", "disable"] | None = None,
+        link_aggregation: Literal["enable", "disable"] | None = None,
         mesh_eth_type: int | None = None,
         fiapp_eth_type: int | None = None,
         discovery_mc_addr: Any | None = None,
@@ -136,10 +135,10 @@ class Global(MetadataMixin):
         max_clients: int | None = None,
         rogue_scan_mac_adjacency: int | None = None,
         ipsec_base_ip: str | None = None,
-        wtp_share: str | None = None,
-        tunnel_mode: str | None = None,
+        wtp_share: Literal["enable", "disable"] | None = None,
+        tunnel_mode: Literal["compatible", "strict"] | None = None,
         nac_interval: int | None = None,
-        ap_log_server: str | None = None,
+        ap_log_server: Literal["enable", "disable"] | None = None,
         ap_log_server_ip: str | None = None,
         ap_log_server_port: int | None = None,
         max_sta_offline: int | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,17 +124,17 @@ class Ca(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         ca: str | None = None,
-        range: str | None = None,
-        source: str | None = None,
-        ssl_inspection_trusted: str | None = None,
+        range: Literal["global", "vdom"] | None = None,
+        source: Literal["factory", "user", "bundle"] | None = None,
+        ssl_inspection_trusted: Literal["enable", "disable"] | None = None,
         scep_url: str | None = None,
         est_url: str | None = None,
         auto_update_days: int | None = None,
         auto_update_days_warning: int | None = None,
         source_ip: str | None = None,
         ca_identifier: str | None = None,
-        obsolete: str | None = None,
-        fabric_ca: str | None = None,
+        obsolete: Literal["disable", "enable"] | None = None,
+        fabric_ca: Literal["disable", "enable"] | None = None,
         details: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -225,17 +224,17 @@ class Ca(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         ca: str | None = None,
-        range: str | None = None,
-        source: str | None = None,
-        ssl_inspection_trusted: str | None = None,
+        range: Literal["global", "vdom"] | None = None,
+        source: Literal["factory", "user", "bundle"] | None = None,
+        ssl_inspection_trusted: Literal["enable", "disable"] | None = None,
         scep_url: str | None = None,
         est_url: str | None = None,
         auto_update_days: int | None = None,
         auto_update_days_warning: int | None = None,
         source_ip: str | None = None,
         ca_identifier: str | None = None,
-        obsolete: str | None = None,
-        fabric_ca: str | None = None,
+        obsolete: Literal["disable", "enable"] | None = None,
+        fabric_ca: Literal["disable", "enable"] | None = None,
         details: Any | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

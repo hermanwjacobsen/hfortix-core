@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,15 +117,15 @@ class CentralManagement(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        mode: str | None = None,
-        type: str | None = None,
+        mode: Literal["normal", "backup"] | None = None,
+        type: Literal["fortimanager", "fortiguard", "none"] | None = None,
         fortigate_cloud_sso_default_profile: str | None = None,
-        schedule_config_restore: str | None = None,
-        schedule_script_restore: str | None = None,
-        allow_push_configuration: str | None = None,
-        allow_push_firmware: str | None = None,
-        allow_remote_firmware_upgrade: str | None = None,
-        allow_monitor: str | None = None,
+        schedule_config_restore: Literal["enable", "disable"] | None = None,
+        schedule_script_restore: Literal["enable", "disable"] | None = None,
+        allow_push_configuration: Literal["enable", "disable"] | None = None,
+        allow_push_firmware: Literal["enable", "disable"] | None = None,
+        allow_remote_firmware_upgrade: Literal["enable", "disable"] | None = None,
+        allow_monitor: Literal["enable", "disable"] | None = None,
         serial_number: str | None = None,
         fmg: str | None = None,
         fmg_source_ip: str | None = None,
@@ -134,11 +133,11 @@ class CentralManagement(MetadataMixin):
         local_cert: str | None = None,
         ca_cert: str | None = None,
         server_list: str | list | None = None,
-        fmg_update_port: str | None = None,
-        fmg_update_http_header: str | None = None,
-        include_default_servers: str | None = None,
-        enc_algorithm: str | None = None,
-        interface_select_method: str | None = None,
+        fmg_update_port: Literal["8890", "443"] | None = None,
+        fmg_update_http_header: Literal["enable", "disable"] | None = None,
+        include_default_servers: Literal["enable", "disable"] | None = None,
+        enc_algorithm: Literal["default", "high", "low"] | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,10 +126,10 @@ class Recurring(MetadataMixin):
         uuid: str | None = None,
         start: str | None = None,
         end: str | None = None,
-        day: str | list | None = None,
-        label_day: str | None = None,
+        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"] | list | None = None,
+        label_day: Literal["none", "over-night", "early-morning", "morning", "midday", "afternoon", "evening", "night", "late-night"] | None = None,
         color: int | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -215,10 +214,10 @@ class Recurring(MetadataMixin):
         uuid: str | None = None,
         start: str | None = None,
         end: str | None = None,
-        day: str | list | None = None,
-        label_day: str | None = None,
+        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"] | list | None = None,
+        label_day: Literal["none", "over-night", "early-morning", "morning", "midday", "afternoon", "evening", "night", "late-night"] | None = None,
         color: int | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

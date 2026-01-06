@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -129,13 +128,13 @@ class Exchange(MetadataMixin):
         username: str | None = None,
         password: Any | None = None,
         ip: str | None = None,
-        connect_protocol: str | None = None,
-        validate_server_certificate: str | None = None,
-        auth_type: str | None = None,
-        auth_level: str | None = None,
-        http_auth_type: str | None = None,
-        ssl_min_proto_version: str | None = None,
-        auto_discover_kdc: str | None = None,
+        connect_protocol: Literal["rpc-over-tcp", "rpc-over-http", "rpc-over-https"] | None = None,
+        validate_server_certificate: Literal["disable", "enable"] | None = None,
+        auth_type: Literal["spnego", "ntlm", "kerberos"] | None = None,
+        auth_level: Literal["connect", "call", "packet", "integrity", "privacy"] | None = None,
+        http_auth_type: Literal["basic", "ntlm"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        auto_discover_kdc: Literal["enable", "disable"] | None = None,
         kdc_ip: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -229,13 +228,13 @@ class Exchange(MetadataMixin):
         username: str | None = None,
         password: Any | None = None,
         ip: str | None = None,
-        connect_protocol: str | None = None,
-        validate_server_certificate: str | None = None,
-        auth_type: str | None = None,
-        auth_level: str | None = None,
-        http_auth_type: str | None = None,
-        ssl_min_proto_version: str | None = None,
-        auto_discover_kdc: str | None = None,
+        connect_protocol: Literal["rpc-over-tcp", "rpc-over-http", "rpc-over-https"] | None = None,
+        validate_server_certificate: Literal["disable", "enable"] | None = None,
+        auth_type: Literal["spnego", "ntlm", "kerberos"] | None = None,
+        auth_level: Literal["connect", "call", "packet", "integrity", "privacy"] | None = None,
+        http_auth_type: Literal["basic", "ntlm"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        auto_discover_kdc: Literal["enable", "disable"] | None = None,
         kdc_ip: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

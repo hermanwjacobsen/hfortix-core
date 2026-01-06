@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,8 +124,8 @@ class DecryptedTrafficMirror(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         dstmac: str | None = None,
-        traffic_type: str | list | None = None,
-        traffic_source: str | None = None,
+        traffic_type: Literal["ssl", "ssh"] | list | None = None,
+        traffic_source: Literal["client", "server", "both"] | None = None,
         interface: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -207,8 +206,8 @@ class DecryptedTrafficMirror(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         dstmac: str | None = None,
-        traffic_type: str | list | None = None,
-        traffic_source: str | None = None,
+        traffic_type: Literal["ssl", "ssh"] | list | None = None,
+        traffic_source: Literal["client", "server", "both"] | None = None,
         interface: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

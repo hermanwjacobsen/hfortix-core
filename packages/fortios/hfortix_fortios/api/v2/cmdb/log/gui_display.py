@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,9 +117,9 @@ class GuiDisplay(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        resolve_hosts: str | None = None,
-        resolve_apps: str | None = None,
-        fortiview_unscanned_apps: str | None = None,
+        resolve_hosts: Literal["enable", "disable"] | None = None,
+        resolve_apps: Literal["enable", "disable"] | None = None,
+        fortiview_unscanned_apps: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

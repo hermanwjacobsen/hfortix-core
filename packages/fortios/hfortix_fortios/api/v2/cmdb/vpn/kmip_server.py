@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,9 +126,9 @@ class KmipServer(MetadataMixin):
         server_list: str | list | None = None,
         username: str | None = None,
         password: Any | None = None,
-        ssl_min_proto_version: str | None = None,
-        server_identity_check: str | None = None,
-        interface_select_method: str | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        server_identity_check: Literal["enable", "disable"] | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         source_ip: str | None = None,
@@ -219,9 +218,9 @@ class KmipServer(MetadataMixin):
         server_list: str | list | None = None,
         username: str | None = None,
         password: Any | None = None,
-        ssl_min_proto_version: str | None = None,
-        server_identity_check: str | None = None,
-        interface_select_method: str | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        server_identity_check: Literal["enable", "disable"] | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         source_ip: str | None = None,

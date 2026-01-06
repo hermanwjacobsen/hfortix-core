@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,17 +123,17 @@ class PasswordPolicy(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        expire_status: str | None = None,
+        expire_status: Literal["enable", "disable"] | None = None,
         expire_days: int | None = None,
         warn_days: int | None = None,
-        expired_password_renewal: str | None = None,
+        expired_password_renewal: Literal["enable", "disable"] | None = None,
         minimum_length: int | None = None,
         min_lower_case_letter: int | None = None,
         min_upper_case_letter: int | None = None,
         min_non_alphanumeric: int | None = None,
         min_number: int | None = None,
         min_change_characters: int | None = None,
-        reuse_password: str | None = None,
+        reuse_password: Literal["enable", "disable"] | None = None,
         reuse_password_limit: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -222,17 +221,17 @@ class PasswordPolicy(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        expire_status: str | None = None,
+        expire_status: Literal["enable", "disable"] | None = None,
         expire_days: int | None = None,
         warn_days: int | None = None,
-        expired_password_renewal: str | None = None,
+        expired_password_renewal: Literal["enable", "disable"] | None = None,
         minimum_length: int | None = None,
         min_lower_case_letter: int | None = None,
         min_upper_case_letter: int | None = None,
         min_non_alphanumeric: int | None = None,
         min_number: int | None = None,
         min_change_characters: int | None = None,
-        reuse_password: str | None = None,
+        reuse_password: Literal["enable", "disable"] | None = None,
         reuse_password_limit: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

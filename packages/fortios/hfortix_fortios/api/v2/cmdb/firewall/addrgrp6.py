@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -128,10 +127,10 @@ class Addrgrp6(MetadataMixin):
         color: int | None = None,
         comment: str | None = None,
         member: str | list | None = None,
-        exclude: str | None = None,
+        exclude: Literal["enable", "disable"] | None = None,
         exclude_member: str | list | None = None,
         tagging: str | list | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -218,10 +217,10 @@ class Addrgrp6(MetadataMixin):
         color: int | None = None,
         comment: str | None = None,
         member: str | list | None = None,
-        exclude: str | None = None,
+        exclude: Literal["enable", "disable"] | None = None,
         exclude_member: str | list | None = None,
         tagging: str | list | None = None,
-        fabric_object: str | None = None,
+        fabric_object: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,14 +123,14 @@ class Storage(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
-        media_status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        media_status: Literal["enable", "disable", "fail"] | None = None,
         order: int | None = None,
         partition: str | None = None,
         device: str | None = None,
         size: int | None = None,
-        usage: str | None = None,
-        wanopt_mode: str | None = None,
+        usage: Literal["log", "wanopt"] | None = None,
+        wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -214,14 +213,14 @@ class Storage(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        status: str | None = None,
-        media_status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        media_status: Literal["enable", "disable", "fail"] | None = None,
         order: int | None = None,
         partition: str | None = None,
         device: str | None = None,
         size: int | None = None,
-        usage: str | None = None,
-        wanopt_mode: str | None = None,
+        usage: Literal["log", "wanopt"] | None = None,
+        wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

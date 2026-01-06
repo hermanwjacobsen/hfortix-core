@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,12 +117,12 @@ class Saml(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        role: str | None = None,
-        default_login_page: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        role: Literal["identity-provider", "service-provider"] | None = None,
+        default_login_page: Literal["normal", "sso"] | None = None,
         default_profile: str | None = None,
         cert: str | None = None,
-        binding_protocol: str | None = None,
+        binding_protocol: Literal["post", "redirect"] | None = None,
         portal_url: str | None = None,
         entity_id: str | None = None,
         single_sign_on_url: str | None = None,
@@ -133,7 +132,7 @@ class Saml(MetadataMixin):
         idp_single_logout_url: str | None = None,
         idp_cert: str | None = None,
         server_address: str | None = None,
-        require_signed_resp_and_asrt: str | None = None,
+        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = None,
         tolerance: int | None = None,
         life: int | None = None,
         service_providers: str | list | None = None,

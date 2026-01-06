@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,15 +117,15 @@ class L2tp(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         eip: str | None = None,
         sip: str | None = None,
         usrgrp: str | None = None,
-        enforce_ipsec: str | None = None,
+        enforce_ipsec: Literal["enable", "disable"] | None = None,
         lcp_echo_interval: int | None = None,
         lcp_max_echo_fails: int | None = None,
         hello_interval: int | None = None,
-        compress: str | None = None,
+        compress: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

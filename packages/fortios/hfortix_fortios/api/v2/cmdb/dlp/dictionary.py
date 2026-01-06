@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,8 +124,8 @@ class Dictionary(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         uuid: str | None = None,
         name: str | None = None,
-        match_type: str | None = None,
-        match_around: str | None = None,
+        match_type: Literal["match-all", "match-any"] | None = None,
+        match_around: Literal["enable", "disable"] | None = None,
         comment: str | None = None,
         entries: str | list | None = None,
         vdom: str | bool | None = None,
@@ -209,8 +208,8 @@ class Dictionary(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         uuid: str | None = None,
         name: str | None = None,
-        match_type: str | None = None,
-        match_around: str | None = None,
+        match_type: Literal["match-all", "match-any"] | None = None,
+        match_around: Literal["enable", "disable"] | None = None,
         comment: str | None = None,
         entries: str | list | None = None,
         vdom: str | bool | None = None,

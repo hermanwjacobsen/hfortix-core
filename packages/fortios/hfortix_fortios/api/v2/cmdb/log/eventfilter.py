@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,24 +117,24 @@ class Eventfilter(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        event: str | None = None,
-        system: str | None = None,
-        vpn: str | None = None,
-        user: str | None = None,
-        router: str | None = None,
-        wireless_activity: str | None = None,
-        wan_opt: str | None = None,
-        endpoint: str | None = None,
-        ha: str | None = None,
-        security_rating: str | None = None,
-        fortiextender: str | None = None,
-        connector: str | None = None,
-        sdwan: str | None = None,
-        cifs: str | None = None,
-        switch_controller: str | None = None,
-        rest_api: str | None = None,
-        web_svc: str | None = None,
-        webproxy: str | None = None,
+        event: Literal["enable", "disable"] | None = None,
+        system: Literal["enable", "disable"] | None = None,
+        vpn: Literal["enable", "disable"] | None = None,
+        user: Literal["enable", "disable"] | None = None,
+        router: Literal["enable", "disable"] | None = None,
+        wireless_activity: Literal["enable", "disable"] | None = None,
+        wan_opt: Literal["enable", "disable"] | None = None,
+        endpoint: Literal["enable", "disable"] | None = None,
+        ha: Literal["enable", "disable"] | None = None,
+        security_rating: Literal["enable", "disable"] | None = None,
+        fortiextender: Literal["enable", "disable"] | None = None,
+        connector: Literal["enable", "disable"] | None = None,
+        sdwan: Literal["enable", "disable"] | None = None,
+        cifs: Literal["enable", "disable"] | None = None,
+        switch_controller: Literal["enable", "disable"] | None = None,
+        rest_api: Literal["enable", "disable"] | None = None,
+        web_svc: Literal["enable", "disable"] | None = None,
+        webproxy: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

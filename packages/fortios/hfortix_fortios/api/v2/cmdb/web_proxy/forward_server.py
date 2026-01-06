@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,19 +123,19 @@ class ForwardServer(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        addr_type: str | None = None,
+        addr_type: Literal["ip", "ipv6", "fqdn"] | None = None,
         ip: str | None = None,
         ipv6: str | None = None,
         fqdn: str | None = None,
         port: int | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         comment: str | None = None,
-        masquerade: str | None = None,
-        healthcheck: str | None = None,
+        masquerade: Literal["enable", "disable"] | None = None,
+        healthcheck: Literal["disable", "enable"] | None = None,
         monitor: str | None = None,
-        server_down_option: str | None = None,
+        server_down_option: Literal["block", "pass"] | None = None,
         username: str | None = None,
         password: Any | None = None,
         vdom: str | bool | None = None,
@@ -228,19 +227,19 @@ class ForwardServer(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        addr_type: str | None = None,
+        addr_type: Literal["ip", "ipv6", "fqdn"] | None = None,
         ip: str | None = None,
         ipv6: str | None = None,
         fqdn: str | None = None,
         port: int | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         comment: str | None = None,
-        masquerade: str | None = None,
-        healthcheck: str | None = None,
+        masquerade: Literal["enable", "disable"] | None = None,
+        healthcheck: Literal["disable", "enable"] | None = None,
         monitor: str | None = None,
-        server_down_option: str | None = None,
+        server_down_option: Literal["block", "pass"] | None = None,
         username: str | None = None,
         password: Any | None = None,
         vdom: str | bool | None = None,

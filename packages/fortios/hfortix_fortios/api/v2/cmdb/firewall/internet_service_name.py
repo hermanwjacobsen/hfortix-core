@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class InternetServiceName(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["default", "location"] | None = None,
         internet_service_id: int | None = None,
         country_id: int | None = None,
         region_id: int | None = None,
@@ -208,7 +207,7 @@ class InternetServiceName(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
+        type: Literal["default", "location"] | None = None,
         internet_service_id: int | None = None,
         country_id: int | None = None,
         region_id: int | None = None,

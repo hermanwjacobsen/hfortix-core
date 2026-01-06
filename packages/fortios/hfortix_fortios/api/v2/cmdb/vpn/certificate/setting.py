@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,28 +117,28 @@ class Setting(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        ocsp_status: str | None = None,
-        ocsp_option: str | None = None,
+        ocsp_status: Literal["enable", "mandatory", "disable"] | None = None,
+        ocsp_option: Literal["certificate", "server"] | None = None,
         proxy: str | None = None,
         proxy_port: int | None = None,
         proxy_username: str | None = None,
         proxy_password: Any | None = None,
         source_ip: str | None = None,
         ocsp_default_server: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
-        check_ca_cert: str | None = None,
-        check_ca_chain: str | None = None,
-        subject_match: str | None = None,
-        subject_set: str | None = None,
-        cn_match: str | None = None,
-        cn_allow_multi: str | None = None,
+        check_ca_cert: Literal["enable", "disable"] | None = None,
+        check_ca_chain: Literal["enable", "disable"] | None = None,
+        subject_match: Literal["substring", "value"] | None = None,
+        subject_set: Literal["subset", "superset"] | None = None,
+        cn_match: Literal["substring", "value"] | None = None,
+        cn_allow_multi: Literal["disable", "enable"] | None = None,
         crl_verification: str | None = None,
-        strict_ocsp_check: str | None = None,
-        ssl_min_proto_version: str | None = None,
-        cmp_save_extra_certs: str | None = None,
-        cmp_key_usage_checking: str | None = None,
+        strict_ocsp_check: Literal["enable", "disable"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        cmp_save_extra_certs: Literal["enable", "disable"] | None = None,
+        cmp_key_usage_checking: Literal["enable", "disable"] | None = None,
         cert_expire_warning: int | None = None,
         certname_rsa1024: str | None = None,
         certname_rsa2048: str | None = None,

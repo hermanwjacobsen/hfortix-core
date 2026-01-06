@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,7 +124,7 @@ class DscpBasedPriority(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
         ds: int | None = None,
-        priority: str | None = None,
+        priority: Literal["low", "medium", "high"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -201,7 +200,7 @@ class DscpBasedPriority(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
         ds: int | None = None,
-        priority: str | None = None,
+        priority: Literal["low", "medium", "high"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

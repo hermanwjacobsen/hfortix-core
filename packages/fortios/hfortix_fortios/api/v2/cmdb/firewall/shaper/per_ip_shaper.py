@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,12 +124,12 @@ class PerIpShaper(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         max_bandwidth: int | None = None,
-        bandwidth_unit: str | None = None,
+        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = None,
         max_concurrent_session: int | None = None,
         max_concurrent_tcp_session: int | None = None,
         max_concurrent_udp_session: int | None = None,
-        diffserv_forward: str | None = None,
-        diffserv_reverse: str | None = None,
+        diffserv_forward: Literal["enable", "disable"] | None = None,
+        diffserv_reverse: Literal["enable", "disable"] | None = None,
         diffservcode_forward: str | None = None,
         diffservcode_rev: str | None = None,
         vdom: str | bool | None = None,
@@ -217,12 +216,12 @@ class PerIpShaper(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         max_bandwidth: int | None = None,
-        bandwidth_unit: str | None = None,
+        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = None,
         max_concurrent_session: int | None = None,
         max_concurrent_tcp_session: int | None = None,
         max_concurrent_udp_session: int | None = None,
-        diffserv_forward: str | None = None,
-        diffserv_reverse: str | None = None,
+        diffserv_forward: Literal["enable", "disable"] | None = None,
+        diffserv_reverse: Literal["enable", "disable"] | None = None,
         diffservcode_forward: str | None = None,
         diffservcode_rev: str | None = None,
         vdom: str | bool | None = None,

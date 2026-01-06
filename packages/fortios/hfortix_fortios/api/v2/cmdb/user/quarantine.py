@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,7 +117,7 @@ class Quarantine(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        quarantine: str | None = None,
+        quarantine: Literal["enable", "disable"] | None = None,
         traffic_policy: str | None = None,
         firewall_groups: str | None = None,
         targets: str | list | None = None,

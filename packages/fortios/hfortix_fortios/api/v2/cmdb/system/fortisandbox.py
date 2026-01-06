@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,20 +117,20 @@ class Fortisandbox(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        forticloud: str | None = None,
-        inline_scan: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        forticloud: Literal["enable", "disable"] | None = None,
+        inline_scan: Literal["enable", "disable"] | None = None,
         server: str | None = None,
         source_ip: str | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
-        enc_algorithm: str | None = None,
-        ssl_min_proto_version: str | None = None,
+        enc_algorithm: Literal["default", "high", "low"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         email: str | None = None,
         ca: str | None = None,
         cn: str | None = None,
-        certificate_verification: str | None = None,
+        certificate_verification: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -120,32 +119,32 @@ class Global(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         ssl_cert: str | None = None,
         ssl_ca_cert: str | None = None,
-        fast_policy_match: str | None = None,
-        ldap_user_cache: str | None = None,
+        fast_policy_match: Literal["enable", "disable"] | None = None,
+        ldap_user_cache: Literal["enable", "disable"] | None = None,
         proxy_fqdn: str | None = None,
         max_request_length: int | None = None,
         max_message_length: int | None = None,
         http2_client_window_size: int | None = None,
         http2_server_window_size: int | None = None,
         auth_sign_timeout: int | None = None,
-        strict_web_check: str | None = None,
-        forward_proxy_auth: str | None = None,
+        strict_web_check: Literal["enable", "disable"] | None = None,
+        forward_proxy_auth: Literal["enable", "disable"] | None = None,
         forward_server_affinity_timeout: int | None = None,
         max_waf_body_cache_length: int | None = None,
         webproxy_profile: str | None = None,
-        learn_client_ip: str | None = None,
-        always_learn_client_ip: str | None = None,
-        learn_client_ip_from_header: str | list | None = None,
+        learn_client_ip: Literal["enable", "disable"] | None = None,
+        always_learn_client_ip: Literal["enable", "disable"] | None = None,
+        learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list | None = None,
         learn_client_ip_srcaddr: str | list | None = None,
         learn_client_ip_srcaddr6: str | list | None = None,
         src_affinity_exempt_addr: str | list | None = None,
         src_affinity_exempt_addr6: str | list | None = None,
-        policy_partial_match: str | None = None,
-        log_policy_pending: str | None = None,
-        log_forward_server: str | None = None,
-        log_app_id: str | None = None,
-        proxy_transparent_cert_inspection: str | None = None,
-        request_obs_fold: str | None = None,
+        policy_partial_match: Literal["enable", "disable"] | None = None,
+        log_policy_pending: Literal["enable", "disable"] | None = None,
+        log_forward_server: Literal["enable", "disable"] | None = None,
+        log_app_id: Literal["enable", "disable"] | None = None,
+        proxy_transparent_cert_inspection: Literal["enable", "disable"] | None = None,
+        request_obs_fold: Literal["replace-with-sp", "block", "keep"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

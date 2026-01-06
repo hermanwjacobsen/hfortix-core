@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,7 +124,7 @@ class WagProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        tunnel_type: str | None = None,
+        tunnel_type: Literal["l2tpv3", "gre"] | None = None,
         wag_ip: str | None = None,
         wag_port: int | None = None,
         ping_interval: int | None = None,
@@ -215,7 +214,7 @@ class WagProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        tunnel_type: str | None = None,
+        tunnel_type: Literal["l2tpv3", "gre"] | None = None,
         wag_ip: str | None = None,
         wag_port: int | None = None,
         ping_interval: int | None = None,

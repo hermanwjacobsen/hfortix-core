@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,12 +117,12 @@ class ThreatWeight(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         level: str | None = None,
-        blocked_connection: str | None = None,
-        failed_connection: str | None = None,
-        url_block_detected: str | None = None,
-        botnet_connection_detected: str | None = None,
+        blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = None,
+        failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = None,
+        url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = None,
+        botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = None,
         malware: str | None = None,
         ips: str | None = None,
         web: str | list | None = None,

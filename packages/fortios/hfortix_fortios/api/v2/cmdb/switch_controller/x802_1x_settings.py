@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,16 +117,16 @@ class X8021xSettings(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        link_down_auth: str | None = None,
+        link_down_auth: Literal["set-unauth", "no-action"] | None = None,
         reauth_period: int | None = None,
         max_reauth_attempt: int | None = None,
         tx_period: int | None = None,
-        mab_reauth: str | None = None,
-        mac_username_delimiter: str | None = None,
-        mac_password_delimiter: str | None = None,
-        mac_calling_station_delimiter: str | None = None,
-        mac_called_station_delimiter: str | None = None,
-        mac_case: str | None = None,
+        mab_reauth: Literal["disable", "enable"] | None = None,
+        mac_username_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = None,
+        mac_password_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = None,
+        mac_calling_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = None,
+        mac_called_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"] | None = None,
+        mac_case: Literal["lowercase", "uppercase"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

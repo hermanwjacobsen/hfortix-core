@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,17 +125,17 @@ class TrafficShaper(MetadataMixin):
         name: str | None = None,
         guaranteed_bandwidth: int | None = None,
         maximum_bandwidth: int | None = None,
-        bandwidth_unit: str | None = None,
-        priority: str | None = None,
-        per_policy: str | None = None,
-        diffserv: str | None = None,
+        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = None,
+        priority: Literal["low", "medium", "high"] | None = None,
+        per_policy: Literal["disable", "enable"] | None = None,
+        diffserv: Literal["enable", "disable"] | None = None,
         diffservcode: str | None = None,
-        dscp_marking_method: str | None = None,
+        dscp_marking_method: Literal["multi-stage", "static"] | None = None,
         exceed_bandwidth: int | None = None,
         exceed_dscp: str | None = None,
         maximum_dscp: str | None = None,
-        cos_marking: str | None = None,
-        cos_marking_method: str | None = None,
+        cos_marking: Literal["enable", "disable"] | None = None,
+        cos_marking_method: Literal["multi-stage", "static"] | None = None,
         cos: str | None = None,
         exceed_cos: str | None = None,
         maximum_cos: str | None = None,
@@ -236,17 +235,17 @@ class TrafficShaper(MetadataMixin):
         name: str | None = None,
         guaranteed_bandwidth: int | None = None,
         maximum_bandwidth: int | None = None,
-        bandwidth_unit: str | None = None,
-        priority: str | None = None,
-        per_policy: str | None = None,
-        diffserv: str | None = None,
+        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = None,
+        priority: Literal["low", "medium", "high"] | None = None,
+        per_policy: Literal["disable", "enable"] | None = None,
+        diffserv: Literal["enable", "disable"] | None = None,
         diffservcode: str | None = None,
-        dscp_marking_method: str | None = None,
+        dscp_marking_method: Literal["multi-stage", "static"] | None = None,
         exceed_bandwidth: int | None = None,
         exceed_dscp: str | None = None,
         maximum_dscp: str | None = None,
-        cos_marking: str | None = None,
-        cos_marking_method: str | None = None,
+        cos_marking: Literal["enable", "disable"] | None = None,
+        cos_marking_method: Literal["multi-stage", "static"] | None = None,
         cos: str | None = None,
         exceed_cos: str | None = None,
         maximum_cos: str | None = None,

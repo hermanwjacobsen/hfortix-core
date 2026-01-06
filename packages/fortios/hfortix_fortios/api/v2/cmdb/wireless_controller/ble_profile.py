@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,17 +124,17 @@ class BleProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        advertising: str | list | None = None,
+        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list | None = None,
         ibeacon_uuid: str | None = None,
         major_id: int | None = None,
         minor_id: int | None = None,
         eddystone_namespace: str | None = None,
         eddystone_instance: str | None = None,
         eddystone_url: str | None = None,
-        txpower: str | None = None,
+        txpower: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"] | None = None,
         beacon_interval: int | None = None,
-        ble_scanning: str | None = None,
-        scan_type: str | None = None,
+        ble_scanning: Literal["enable", "disable"] | None = None,
+        scan_type: Literal["active", "passive"] | None = None,
         scan_threshold: str | None = None,
         scan_period: int | None = None,
         scan_time: int | None = None,
@@ -233,17 +232,17 @@ class BleProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        advertising: str | list | None = None,
+        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | list | None = None,
         ibeacon_uuid: str | None = None,
         major_id: int | None = None,
         minor_id: int | None = None,
         eddystone_namespace: str | None = None,
         eddystone_instance: str | None = None,
         eddystone_url: str | None = None,
-        txpower: str | None = None,
+        txpower: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"] | None = None,
         beacon_interval: int | None = None,
-        ble_scanning: str | None = None,
-        scan_type: str | None = None,
+        ble_scanning: Literal["enable", "disable"] | None = None,
+        scan_type: Literal["active", "passive"] | None = None,
         scan_threshold: str | None = None,
         scan_period: int | None = None,
         scan_time: int | None = None,

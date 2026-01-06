@@ -27,8 +27,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -155,8 +154,8 @@ class NacQuar(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         msg_type: str | None = None,
         buffer: str | None = None,
-        header: str | None = None,
-        format: str | None = None,
+        header: Literal["none", "http", "8bit"] | None = None,
+        format: Literal["none", "text", "html"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -234,8 +233,8 @@ class NacQuar(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         msg_type: str | None = None,
         buffer: str | None = None,
-        header: str | None = None,
-        format: str | None = None,
+        header: Literal["none", "http", "8bit"] | None = None,
+        format: Literal["none", "text", "html"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

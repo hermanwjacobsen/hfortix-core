@@ -1,6 +1,5 @@
 """FortiOS CMDB - Webcache category"""
 
-from ..webcache_base import Webcache as WebcacheBase
 from .reset import Reset
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class Webcache(WebcacheBase):
+class Webcache:
     """Webcache endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class Webcache(WebcacheBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.reset = Reset(client)

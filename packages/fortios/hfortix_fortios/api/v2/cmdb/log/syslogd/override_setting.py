@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,22 +117,22 @@ class OverrideSetting(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         server: str | None = None,
-        mode: str | None = None,
-        use_management_vdom: str | None = None,
+        mode: Literal["udp", "legacy-reliable", "reliable"] | None = None,
+        use_management_vdom: Literal["enable", "disable"] | None = None,
         port: int | None = None,
-        facility: str | None = None,
+        facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = None,
         source_ip_interface: str | None = None,
         source_ip: str | None = None,
-        format: str | None = None,
-        priority: str | None = None,
+        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = None,
+        priority: Literal["default", "low"] | None = None,
         max_log_rate: int | None = None,
-        enc_algorithm: str | None = None,
-        ssl_min_proto_version: str | None = None,
+        enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         certificate: str | None = None,
         custom_field_name: str | list | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

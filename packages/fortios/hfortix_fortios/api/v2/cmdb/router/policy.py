@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,14 +124,14 @@ class Policy(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
         input_device: str | list | None = None,
-        input_device_negate: str | None = None,
+        input_device_negate: Literal["enable", "disable"] | None = None,
         src: str | list | None = None,
         srcaddr: str | list | None = None,
-        src_negate: str | None = None,
+        src_negate: Literal["enable", "disable"] | None = None,
         dst: str | list | None = None,
         dstaddr: str | list | None = None,
-        dst_negate: str | None = None,
-        action: str | None = None,
+        dst_negate: Literal["enable", "disable"] | None = None,
+        action: Literal["deny", "permit"] | None = None,
         protocol: int | None = None,
         start_port: int | None = None,
         end_port: int | None = None,
@@ -142,7 +141,7 @@ class Policy(MetadataMixin):
         output_device: str | None = None,
         tos: str | None = None,
         tos_mask: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         comments: str | None = None,
         internet_service_id: str | list | None = None,
         internet_service_custom: str | list | None = None,
@@ -249,14 +248,14 @@ class Policy(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
         input_device: str | list | None = None,
-        input_device_negate: str | None = None,
+        input_device_negate: Literal["enable", "disable"] | None = None,
         src: str | list | None = None,
         srcaddr: str | list | None = None,
-        src_negate: str | None = None,
+        src_negate: Literal["enable", "disable"] | None = None,
         dst: str | list | None = None,
         dstaddr: str | list | None = None,
-        dst_negate: str | None = None,
-        action: str | None = None,
+        dst_negate: Literal["enable", "disable"] | None = None,
+        action: Literal["deny", "permit"] | None = None,
         protocol: int | None = None,
         start_port: int | None = None,
         end_port: int | None = None,
@@ -266,7 +265,7 @@ class Policy(MetadataMixin):
         output_device: str | None = None,
         tos: str | None = None,
         tos_mask: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         comments: str | None = None,
         internet_service_id: str | list | None = None,
         internet_service_custom: str | list | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,18 +117,18 @@ class EmailServer(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        type: str | None = None,
+        type: Literal["custom"] | None = None,
         server: str | None = None,
         port: int | None = None,
         source_ip: str | None = None,
         source_ip6: str | None = None,
-        authenticate: str | None = None,
-        validate_server: str | None = None,
+        authenticate: Literal["enable", "disable"] | None = None,
+        validate_server: Literal["enable", "disable"] | None = None,
         username: str | None = None,
         password: Any | None = None,
-        security: str | None = None,
-        ssl_min_proto_version: str | None = None,
-        interface_select_method: str | None = None,
+        security: Literal["none", "starttls", "smtps"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
         vdom: str | bool | None = None,

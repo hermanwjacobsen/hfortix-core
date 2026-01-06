@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,7 +124,7 @@ class Group(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        type: str | None = None,
+        type: Literal["application", "filter"] | None = None,
         application: str | list | None = None,
         category: str | list | None = None,
         risk: str | list | None = None,
@@ -133,7 +132,7 @@ class Group(MetadataMixin):
         vendor: str | list | None = None,
         technology: str | list | None = None,
         behavior: str | list | None = None,
-        popularity: str | list | None = None,
+        popularity: Literal["1", "2", "3", "4", "5"] | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -219,7 +218,7 @@ class Group(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        type: str | None = None,
+        type: Literal["application", "filter"] | None = None,
         application: str | list | None = None,
         category: str | list | None = None,
         risk: str | list | None = None,
@@ -227,7 +226,7 @@ class Group(MetadataMixin):
         vendor: str | list | None = None,
         technology: str | list | None = None,
         behavior: str | list | None = None,
-        popularity: str | list | None = None,
+        popularity: Literal["1", "2", "3", "4", "5"] | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,9 +125,9 @@ class Policy(MetadataMixin):
         name: str | None = None,
         qos_policy: str | None = None,
         storm_control_policy: str | None = None,
-        poe_status: str | None = None,
-        igmp_flood_report: str | None = None,
-        igmp_flood_traffic: str | None = None,
+        poe_status: Literal["enable", "disable"] | None = None,
+        igmp_flood_report: Literal["enable", "disable"] | None = None,
+        igmp_flood_traffic: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -210,9 +209,9 @@ class Policy(MetadataMixin):
         name: str | None = None,
         qos_policy: str | None = None,
         storm_control_policy: str | None = None,
-        poe_status: str | None = None,
-        igmp_flood_report: str | None = None,
-        igmp_flood_traffic: str | None = None,
+        poe_status: Literal["enable", "disable"] | None = None,
+        igmp_flood_report: Literal["enable", "disable"] | None = None,
+        igmp_flood_traffic: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

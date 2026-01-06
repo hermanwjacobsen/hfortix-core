@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,15 +124,15 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        feature_set: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
         rule: str | list | None = None,
-        dlp_log: str | None = None,
-        extended_log: str | None = None,
-        nac_quar_log: str | None = None,
-        full_archive_proto: str | list | None = None,
-        summary_proto: str | list | None = None,
-        fortidata_error_action: str | None = None,
+        dlp_log: Literal["enable", "disable"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
+        nac_quar_log: Literal["enable", "disable"] | None = None,
+        full_archive_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | list | None = None,
+        summary_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | list | None = None,
+        fortidata_error_action: Literal["log-only", "block", "ignore"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -219,15 +218,15 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        feature_set: str | None = None,
+        feature_set: Literal["flow", "proxy"] | None = None,
         replacemsg_group: str | None = None,
         rule: str | list | None = None,
-        dlp_log: str | None = None,
-        extended_log: str | None = None,
-        nac_quar_log: str | None = None,
-        full_archive_proto: str | list | None = None,
-        summary_proto: str | list | None = None,
-        fortidata_error_action: str | None = None,
+        dlp_log: Literal["enable", "disable"] | None = None,
+        extended_log: Literal["enable", "disable"] | None = None,
+        nac_quar_log: Literal["enable", "disable"] | None = None,
+        full_archive_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | list | None = None,
+        summary_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | list | None = None,
+        fortidata_error_action: Literal["log-only", "block", "ignore"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

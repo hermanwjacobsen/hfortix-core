@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,10 +117,10 @@ class DedicatedMgmt(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         interface: str | None = None,
         default_gateway: str | None = None,
-        dhcp_server: str | None = None,
+        dhcp_server: Literal["enable", "disable"] | None = None,
         dhcp_netmask: str | None = None,
         dhcp_start_ip: str | None = None,
         dhcp_end_ip: str | None = None,

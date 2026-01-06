@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class IpTranslation(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         transid: int | None = None,
-        type: str | None = None,
+        type: Literal["SCTP"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         map_startip: str | None = None,
@@ -206,7 +205,7 @@ class IpTranslation(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         transid: int | None = None,
-        type: str | None = None,
+        type: Literal["SCTP"] | None = None,
         startip: str | None = None,
         endip: str | None = None,
         map_startip: str | None = None,

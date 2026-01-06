@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,8 +123,8 @@ class Label(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
-        mpip_type: str | None = None,
+        type: Literal["mpip", "fortidata"] | None = None,
+        mpip_type: Literal["remote", "local"] | None = None,
         connector: str | None = None,
         comment: str | None = None,
         entries: str | list | None = None,
@@ -208,8 +207,8 @@ class Label(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        type: str | None = None,
-        mpip_type: str | None = None,
+        type: Literal["mpip", "fortidata"] | None = None,
+        mpip_type: Literal["remote", "local"] | None = None,
         connector: str | None = None,
         comment: str | None = None,
         entries: str | list | None = None,

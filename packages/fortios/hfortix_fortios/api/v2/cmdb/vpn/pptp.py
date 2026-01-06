@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,8 +117,8 @@ class Pptp(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        ip_mode: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        ip_mode: Literal["range", "usrgrp"] | None = None,
         eip: str | None = None,
         sip: str | None = None,
         local_ip: str | None = None,

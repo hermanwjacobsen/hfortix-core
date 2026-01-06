@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -121,12 +120,12 @@ class Quarantine(MetadataMixin):
         agelimit: int | None = None,
         maxfilesize: int | None = None,
         quarantine_quota: int | None = None,
-        drop_infected: str | list | None = None,
-        store_infected: str | list | None = None,
-        drop_machine_learning: str | list | None = None,
-        store_machine_learning: str | list | None = None,
-        lowspace: str | None = None,
-        destination: str | None = None,
+        drop_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list | None = None,
+        store_infected: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list | None = None,
+        drop_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list | None = None,
+        store_machine_learning: Literal["imap", "smtp", "pop3", "http", "ftp", "nntp", "imaps", "smtps", "pop3s", "https", "ftps", "mapi", "cifs", "ssh"] | list | None = None,
+        lowspace: Literal["drop-new", "ovrw-old"] | None = None,
+        destination: Literal["NULL", "disk", "FortiAnalyzer"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

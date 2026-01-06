@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,9 +124,9 @@ class MpskProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         mpsk_concurrent_clients: int | None = None,
-        mpsk_external_server_auth: str | None = None,
+        mpsk_external_server_auth: Literal["enable", "disable"] | None = None,
         mpsk_external_server: str | None = None,
-        mpsk_type: str | None = None,
+        mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = None,
         mpsk_group: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -209,9 +208,9 @@ class MpskProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         mpsk_concurrent_clients: int | None = None,
-        mpsk_external_server_auth: str | None = None,
+        mpsk_external_server_auth: Literal["enable", "disable"] | None = None,
         mpsk_external_server: str | None = None,
-        mpsk_type: str | None = None,
+        mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = None,
         mpsk_group: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

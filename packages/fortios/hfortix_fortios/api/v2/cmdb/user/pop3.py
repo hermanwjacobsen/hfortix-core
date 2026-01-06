@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,8 +125,8 @@ class Pop3(MetadataMixin):
         name: str | None = None,
         server: str | None = None,
         port: int | None = None,
-        secure: str | None = None,
-        ssl_min_proto_version: str | None = None,
+        secure: Literal["none", "starttls", "pop3s"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -208,8 +207,8 @@ class Pop3(MetadataMixin):
         name: str | None = None,
         server: str | None = None,
         port: int | None = None,
-        secure: str | None = None,
-        ssl_min_proto_version: str | None = None,
+        secure: Literal["none", "starttls", "pop3s"] | None = None,
+        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

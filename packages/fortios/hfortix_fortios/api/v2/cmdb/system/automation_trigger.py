@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,14 +124,14 @@ class AutomationTrigger(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        trigger_type: str | None = None,
-        event_type: str | None = None,
-        license_type: str | None = None,
-        report_type: str | None = None,
+        trigger_type: Literal["event-based", "scheduled"] | None = None,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = None,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = None,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = None,
         stitch_name: str | None = None,
         logid: str | list | None = None,
-        trigger_frequency: str | None = None,
-        trigger_weekday: str | None = None,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = None,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         trigger_day: int | None = None,
         trigger_hour: int | None = None,
         trigger_minute: int | None = None,
@@ -239,14 +238,14 @@ class AutomationTrigger(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        trigger_type: str | None = None,
-        event_type: str | None = None,
-        license_type: str | None = None,
-        report_type: str | None = None,
+        trigger_type: Literal["event-based", "scheduled"] | None = None,
+        event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"] | None = None,
+        license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = None,
+        report_type: Literal["posture", "coverage", "optimization", "any"] | None = None,
         stitch_name: str | None = None,
         logid: str | list | None = None,
-        trigger_frequency: str | None = None,
-        trigger_weekday: str | None = None,
+        trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = None,
+        trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = None,
         trigger_day: int | None = None,
         trigger_hour: int | None = None,
         trigger_minute: int | None = None,

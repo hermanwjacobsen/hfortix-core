@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,20 +124,20 @@ class Community(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
         name: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         hosts: str | list | None = None,
         hosts6: str | list | None = None,
-        query_v1_status: str | None = None,
+        query_v1_status: Literal["enable", "disable"] | None = None,
         query_v1_port: int | None = None,
-        query_v2c_status: str | None = None,
+        query_v2c_status: Literal["enable", "disable"] | None = None,
         query_v2c_port: int | None = None,
-        trap_v1_status: str | None = None,
+        trap_v1_status: Literal["enable", "disable"] | None = None,
         trap_v1_lport: int | None = None,
         trap_v1_rport: int | None = None,
-        trap_v2c_status: str | None = None,
+        trap_v2c_status: Literal["enable", "disable"] | None = None,
         trap_v2c_lport: int | None = None,
         trap_v2c_rport: int | None = None,
-        events: str | list | None = None,
+        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list | None = None,
         mib_view: str | None = None,
         vdoms: str | list | None = None,
         vdom: str | bool | None = None,
@@ -233,20 +232,20 @@ class Community(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
         name: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         hosts: str | list | None = None,
         hosts6: str | list | None = None,
-        query_v1_status: str | None = None,
+        query_v1_status: Literal["enable", "disable"] | None = None,
         query_v1_port: int | None = None,
-        query_v2c_status: str | None = None,
+        query_v2c_status: Literal["enable", "disable"] | None = None,
         query_v2c_port: int | None = None,
-        trap_v1_status: str | None = None,
+        trap_v1_status: Literal["enable", "disable"] | None = None,
         trap_v1_lport: int | None = None,
         trap_v1_rport: int | None = None,
-        trap_v2c_status: str | None = None,
+        trap_v2c_status: Literal["enable", "disable"] | None = None,
         trap_v2c_lport: int | None = None,
         trap_v2c_rport: int | None = None,
-        events: str | list | None = None,
+        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list | None = None,
         mib_view: str | None = None,
         vdoms: str | list | None = None,
         vdom: str | bool | None = None,

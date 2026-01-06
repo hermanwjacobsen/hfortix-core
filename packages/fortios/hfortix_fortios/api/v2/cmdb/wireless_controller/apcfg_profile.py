@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,9 +123,9 @@ class ApcfgProfile(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        ap_family: str | None = None,
+        ap_family: Literal["fap", "fap-u", "fap-c"] | None = None,
         comment: str | None = None,
-        ac_type: str | None = None,
+        ac_type: Literal["default", "specify", "apcfg"] | None = None,
         ac_timer: int | None = None,
         ac_ip: str | None = None,
         ac_port: int | None = None,
@@ -212,9 +211,9 @@ class ApcfgProfile(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        ap_family: str | None = None,
+        ap_family: Literal["fap", "fap-u", "fap-c"] | None = None,
         comment: str | None = None,
-        ac_type: str | None = None,
+        ac_type: Literal["default", "specify", "apcfg"] | None = None,
         ac_timer: int | None = None,
         ac_ip: str | None = None,
         ac_port: int | None = None,

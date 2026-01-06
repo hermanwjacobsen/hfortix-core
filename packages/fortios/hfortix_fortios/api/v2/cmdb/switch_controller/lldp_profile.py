@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,19 +123,19 @@ class LldpProfile(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        med_tlvs: str | list | None = None,
-        x802_1_tlvs: str | list | None = None,
-        x802_3_tlvs: str | list | None = None,
-        auto_isl: str | None = None,
+        med_tlvs: Literal["inventory-management", "network-policy", "power-management", "location-identification"] | list | None = None,
+        x802_1_tlvs: Literal["port-vlan-id"] | list | None = None,
+        x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | list | None = None,
+        auto_isl: Literal["disable", "enable"] | None = None,
         auto_isl_hello_timer: int | None = None,
         auto_isl_receive_timeout: int | None = None,
         auto_isl_port_group: int | None = None,
-        auto_mclag_icl: str | None = None,
-        auto_isl_auth: str | None = None,
+        auto_mclag_icl: Literal["disable", "enable"] | None = None,
+        auto_isl_auth: Literal["legacy", "strict", "relax"] | None = None,
         auto_isl_auth_user: str | None = None,
         auto_isl_auth_identity: str | None = None,
         auto_isl_auth_reauth: int | None = None,
-        auto_isl_auth_encrypt: str | None = None,
+        auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = None,
         auto_isl_auth_macsec_profile: str | None = None,
         med_network_policy: str | list | None = None,
         med_location_service: str | list | None = None,
@@ -232,19 +231,19 @@ class LldpProfile(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        med_tlvs: str | list | None = None,
-        x802_1_tlvs: str | list | None = None,
-        x802_3_tlvs: str | list | None = None,
-        auto_isl: str | None = None,
+        med_tlvs: Literal["inventory-management", "network-policy", "power-management", "location-identification"] | list | None = None,
+        x802_1_tlvs: Literal["port-vlan-id"] | list | None = None,
+        x802_3_tlvs: Literal["max-frame-size", "power-negotiation"] | list | None = None,
+        auto_isl: Literal["disable", "enable"] | None = None,
         auto_isl_hello_timer: int | None = None,
         auto_isl_receive_timeout: int | None = None,
         auto_isl_port_group: int | None = None,
-        auto_mclag_icl: str | None = None,
-        auto_isl_auth: str | None = None,
+        auto_mclag_icl: Literal["disable", "enable"] | None = None,
+        auto_isl_auth: Literal["legacy", "strict", "relax"] | None = None,
         auto_isl_auth_user: str | None = None,
         auto_isl_auth_identity: str | None = None,
         auto_isl_auth_reauth: int | None = None,
-        auto_isl_auth_encrypt: str | None = None,
+        auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = None,
         auto_isl_auth_macsec_profile: str | None = None,
         med_network_policy: str | list | None = None,
         med_location_service: str | list | None = None,

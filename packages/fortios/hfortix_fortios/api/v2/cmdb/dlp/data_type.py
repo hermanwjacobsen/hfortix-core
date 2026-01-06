@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -133,7 +132,7 @@ class DataType(MetadataMixin):
         match_back: int | None = None,
         match_ahead: int | None = None,
         transform: str | None = None,
-        verify_transformed_pattern: str | None = None,
+        verify_transformed_pattern: Literal["enable", "disable"] | None = None,
         comment: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -229,7 +228,7 @@ class DataType(MetadataMixin):
         match_back: int | None = None,
         match_ahead: int | None = None,
         transform: str | None = None,
-        verify_transformed_pattern: str | None = None,
+        verify_transformed_pattern: Literal["enable", "disable"] | None = None,
         comment: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

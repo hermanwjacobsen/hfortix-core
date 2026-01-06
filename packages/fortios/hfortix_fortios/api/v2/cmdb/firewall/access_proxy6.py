@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,11 +124,11 @@ class AccessProxy6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         vip: str | None = None,
-        auth_portal: str | None = None,
+        auth_portal: Literal["disable", "enable"] | None = None,
         auth_virtual_host: str | None = None,
-        log_blocked_traffic: str | None = None,
-        add_vhost_domain_to_dnsdb: str | None = None,
-        svr_pool_multiplex: str | None = None,
+        log_blocked_traffic: Literal["enable", "disable"] | None = None,
+        add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = None,
+        svr_pool_multiplex: Literal["enable", "disable"] | None = None,
         svr_pool_ttl: int | None = None,
         svr_pool_server_max_request: int | None = None,
         svr_pool_server_max_concurrent_request: int | None = None,
@@ -223,11 +222,11 @@ class AccessProxy6(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         vip: str | None = None,
-        auth_portal: str | None = None,
+        auth_portal: Literal["disable", "enable"] | None = None,
         auth_virtual_host: str | None = None,
-        log_blocked_traffic: str | None = None,
-        add_vhost_domain_to_dnsdb: str | None = None,
-        svr_pool_multiplex: str | None = None,
+        log_blocked_traffic: Literal["enable", "disable"] | None = None,
+        add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = None,
+        svr_pool_multiplex: Literal["enable", "disable"] | None = None,
         svr_pool_ttl: int | None = None,
         svr_pool_server_max_request: int | None = None,
         svr_pool_server_max_concurrent_request: int | None = None,

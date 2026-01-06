@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,7 +117,7 @@ class System(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        parallel_process_override: str | None = None,
+        parallel_process_override: Literal["disable", "enable"] | None = None,
         parallel_process: int | None = None,
         data_sync_interval: int | None = None,
         iot_weight_threshold: int | None = None,
@@ -127,7 +126,7 @@ class System(MetadataMixin):
         iot_mac_idle: int | None = None,
         nac_periodic_interval: int | None = None,
         dynamic_periodic_interval: int | None = None,
-        tunnel_mode: str | None = None,
+        tunnel_mode: Literal["compatible", "moderate", "strict"] | None = None,
         caputp_echo_interval: int | None = None,
         caputp_max_retransmit: int | None = None,
         vdom: str | bool | None = None,

@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,18 +117,18 @@ class PasswordPolicy(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        apply_to: str | list | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        apply_to: Literal["admin-password", "ipsec-preshared-key"] | list | None = None,
         minimum_length: int | None = None,
         min_lower_case_letter: int | None = None,
         min_upper_case_letter: int | None = None,
         min_non_alphanumeric: int | None = None,
         min_number: int | None = None,
-        expire_status: str | None = None,
+        expire_status: Literal["enable", "disable"] | None = None,
         expire_day: int | None = None,
-        reuse_password: str | None = None,
+        reuse_password: Literal["enable", "disable"] | None = None,
         reuse_password_limit: int | None = None,
-        login_lockout_upon_weaker_encryption: str | None = None,
+        login_lockout_upon_weaker_encryption: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

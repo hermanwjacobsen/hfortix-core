@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -120,9 +119,9 @@ class StormControl(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         rate: int | None = None,
         burst_size_level: int | None = None,
-        unknown_unicast: str | None = None,
-        unknown_multicast: str | None = None,
-        broadcast: str | None = None,
+        unknown_unicast: Literal["enable", "disable"] | None = None,
+        unknown_multicast: Literal["enable", "disable"] | None = None,
+        broadcast: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

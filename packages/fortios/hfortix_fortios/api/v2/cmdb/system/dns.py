@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -120,7 +119,7 @@ class Dns(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         primary: str | None = None,
         secondary: str | None = None,
-        protocol: str | list | None = None,
+        protocol: Literal["cleartext", "dot", "doh"] | list | None = None,
         ssl_certificate: str | None = None,
         server_hostname: str | list | None = None,
         domain: str | list | None = None,
@@ -130,17 +129,17 @@ class Dns(MetadataMixin):
         retry: int | None = None,
         dns_cache_limit: int | None = None,
         dns_cache_ttl: int | None = None,
-        cache_notfound_responses: str | None = None,
+        cache_notfound_responses: Literal["disable", "enable"] | None = None,
         source_ip: str | None = None,
         source_ip_interface: str | None = None,
         root_servers: str | list | None = None,
-        interface_select_method: str | None = None,
+        interface_select_method: Literal["auto", "sdwan", "specify"] | None = None,
         interface: str | None = None,
         vrf_select: int | None = None,
-        server_select_method: str | None = None,
+        server_select_method: Literal["least-rtt", "failover"] | None = None,
         alt_primary: str | None = None,
         alt_secondary: str | None = None,
-        log: str | None = None,
+        log: Literal["disable", "error", "all"] | None = None,
         fqdn_cache_ttl: int | None = None,
         fqdn_max_refresh: int | None = None,
         fqdn_min_refresh: int | None = None,

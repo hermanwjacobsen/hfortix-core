@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,11 +124,11 @@ class AutomationCondition(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        condition_type: str | None = None,
+        condition_type: Literal["cpu", "memory", "vpn"] | None = None,
         cpu_usage_percent: int | None = None,
         mem_usage_percent: int | None = None,
         vpn_tunnel_name: str | None = None,
-        vpn_tunnel_state: str | None = None,
+        vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -211,11 +210,11 @@ class AutomationCondition(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        condition_type: str | None = None,
+        condition_type: Literal["cpu", "memory", "vpn"] | None = None,
         cpu_usage_percent: int | None = None,
         mem_usage_percent: int | None = None,
         vpn_tunnel_name: str | None = None,
-        vpn_tunnel_state: str | None = None,
+        vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

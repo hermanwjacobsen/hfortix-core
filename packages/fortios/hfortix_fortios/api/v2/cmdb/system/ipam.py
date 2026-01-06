@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,13 +117,13 @@ class Ipam(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
-        server_type: str | None = None,
-        automatic_conflict_resolution: str | None = None,
-        require_subnet_size_match: str | None = None,
-        manage_lan_addresses: str | None = None,
-        manage_lan_extension_addresses: str | None = None,
-        manage_ssid_addresses: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        server_type: Literal["fabric-root"] | None = None,
+        automatic_conflict_resolution: Literal["disable", "enable"] | None = None,
+        require_subnet_size_match: Literal["disable", "enable"] | None = None,
+        manage_lan_addresses: Literal["disable", "enable"] | None = None,
+        manage_lan_extension_addresses: Literal["disable", "enable"] | None = None,
+        manage_ssid_addresses: Literal["disable", "enable"] | None = None,
         pools: str | list | None = None,
         rules: str | list | None = None,
         vdom: str | bool | None = None,

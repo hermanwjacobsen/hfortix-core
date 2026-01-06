@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,19 +124,19 @@ class ManualkeyInterface(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         interface: str | None = None,
-        ip_version: str | None = None,
-        addr_type: str | None = None,
+        ip_version: Literal["4", "6"] | None = None,
+        addr_type: Literal["4", "6"] | None = None,
         remote_gw: str | None = None,
         remote_gw6: str | None = None,
         local_gw: str | None = None,
         local_gw6: str | None = None,
-        auth_alg: str | None = None,
-        enc_alg: str | None = None,
+        auth_alg: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = None,
+        enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = None,
         auth_key: str | None = None,
         enc_key: str | None = None,
         local_spi: str | None = None,
         remote_spi: str | None = None,
-        npu_offload: str | None = None,
+        npu_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -227,19 +226,19 @@ class ManualkeyInterface(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         interface: str | None = None,
-        ip_version: str | None = None,
-        addr_type: str | None = None,
+        ip_version: Literal["4", "6"] | None = None,
+        addr_type: Literal["4", "6"] | None = None,
         remote_gw: str | None = None,
         remote_gw6: str | None = None,
         local_gw: str | None = None,
         local_gw6: str | None = None,
-        auth_alg: str | None = None,
-        enc_alg: str | None = None,
+        auth_alg: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = None,
+        enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = None,
         auth_key: str | None = None,
         enc_key: str | None = None,
         local_spi: str | None = None,
         remote_spi: str | None = None,
-        npu_offload: str | None = None,
+        npu_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

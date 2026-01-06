@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -140,9 +139,9 @@ class ArrpProfile(MetadataMixin):
         threshold_spectral_rssi: str | None = None,
         threshold_tx_retries: int | None = None,
         threshold_rx_errors: int | None = None,
-        include_weather_channel: str | None = None,
-        include_dfs_channel: str | None = None,
-        override_darrp_optimize: str | None = None,
+        include_weather_channel: Literal["enable", "disable"] | None = None,
+        include_dfs_channel: Literal["enable", "disable"] | None = None,
+        override_darrp_optimize: Literal["enable", "disable"] | None = None,
         darrp_optimize: int | None = None,
         darrp_optimize_schedules: str | list | None = None,
         vdom: str | bool | None = None,
@@ -256,9 +255,9 @@ class ArrpProfile(MetadataMixin):
         threshold_spectral_rssi: str | None = None,
         threshold_tx_retries: int | None = None,
         threshold_rx_errors: int | None = None,
-        include_weather_channel: str | None = None,
-        include_dfs_channel: str | None = None,
-        override_darrp_optimize: str | None = None,
+        include_weather_channel: Literal["enable", "disable"] | None = None,
+        include_dfs_channel: Literal["enable", "disable"] | None = None,
+        override_darrp_optimize: Literal["enable", "disable"] | None = None,
         darrp_optimize: int | None = None,
         darrp_optimize_schedules: str | list | None = None,
         vdom: str | bool | None = None,

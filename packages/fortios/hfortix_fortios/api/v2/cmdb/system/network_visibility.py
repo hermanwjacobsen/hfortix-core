@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,10 +117,10 @@ class NetworkVisibility(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        destination_visibility: str | None = None,
-        source_location: str | None = None,
-        destination_hostname_visibility: str | None = None,
-        destination_location: str | None = None,
+        destination_visibility: Literal["disable", "enable"] | None = None,
+        source_location: Literal["disable", "enable"] | None = None,
+        destination_hostname_visibility: Literal["disable", "enable"] | None = None,
+        destination_location: Literal["disable", "enable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

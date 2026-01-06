@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,15 +124,15 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        monitor_all_messages: str | None = None,
-        log_packet: str | None = None,
-        track_requests_answers: str | None = None,
-        missing_request_action: str | None = None,
-        protocol_version_invalid: str | None = None,
-        message_length_invalid: str | None = None,
-        request_error_flag_set: str | None = None,
-        cmd_flags_reserve_set: str | None = None,
-        command_code_invalid: str | None = None,
+        monitor_all_messages: Literal["disable", "enable"] | None = None,
+        log_packet: Literal["disable", "enable"] | None = None,
+        track_requests_answers: Literal["disable", "enable"] | None = None,
+        missing_request_action: Literal["allow", "block", "reset", "monitor"] | None = None,
+        protocol_version_invalid: Literal["allow", "block", "reset", "monitor"] | None = None,
+        message_length_invalid: Literal["allow", "block", "reset", "monitor"] | None = None,
+        request_error_flag_set: Literal["allow", "block", "reset", "monitor"] | None = None,
+        cmd_flags_reserve_set: Literal["allow", "block", "reset", "monitor"] | None = None,
+        command_code_invalid: Literal["allow", "block", "reset", "monitor"] | None = None,
         command_code_range: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -221,15 +220,15 @@ class Profile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         comment: str | None = None,
-        monitor_all_messages: str | None = None,
-        log_packet: str | None = None,
-        track_requests_answers: str | None = None,
-        missing_request_action: str | None = None,
-        protocol_version_invalid: str | None = None,
-        message_length_invalid: str | None = None,
-        request_error_flag_set: str | None = None,
-        cmd_flags_reserve_set: str | None = None,
-        command_code_invalid: str | None = None,
+        monitor_all_messages: Literal["disable", "enable"] | None = None,
+        log_packet: Literal["disable", "enable"] | None = None,
+        track_requests_answers: Literal["disable", "enable"] | None = None,
+        missing_request_action: Literal["allow", "block", "reset", "monitor"] | None = None,
+        protocol_version_invalid: Literal["allow", "block", "reset", "monitor"] | None = None,
+        message_length_invalid: Literal["allow", "block", "reset", "monitor"] | None = None,
+        request_error_flag_set: Literal["allow", "block", "reset", "monitor"] | None = None,
+        cmd_flags_reserve_set: Literal["allow", "block", "reset", "monitor"] | None = None,
+        command_code_invalid: Literal["allow", "block", "reset", "monitor"] | None = None,
         command_code_range: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,

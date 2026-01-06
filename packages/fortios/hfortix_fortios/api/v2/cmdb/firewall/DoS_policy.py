@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class DosPolicy(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         policyid: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         name: str | None = None,
         comments: str | None = None,
         interface: str | None = None,
@@ -214,7 +213,7 @@ class DosPolicy(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         policyid: int | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         name: str | None = None,
         comments: str | None = None,
         interface: str | None = None,

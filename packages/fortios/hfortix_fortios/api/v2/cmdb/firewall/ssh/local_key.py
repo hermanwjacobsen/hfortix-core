@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,7 +126,7 @@ class LocalKey(MetadataMixin):
         password: Any | None = None,
         private_key: str | None = None,
         public_key: str | None = None,
-        source: str | None = None,
+        source: Literal["built-in", "user"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -209,7 +208,7 @@ class LocalKey(MetadataMixin):
         password: Any | None = None,
         private_key: str | None = None,
         public_key: str | None = None,
-        source: str | None = None,
+        source: Literal["built-in", "user"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

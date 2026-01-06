@@ -1,6 +1,5 @@
 """FortiOS CMDB - Override category"""
 
-from ..override_base import Override as OverrideBase
 from .delete import Delete
 
 __all__ = [
@@ -9,7 +8,7 @@ __all__ = [
 ]
 
 
-class Override(OverrideBase):
+class Override:
     """Override endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -18,5 +17,4 @@ class Override(OverrideBase):
         Args:
             client: HTTP client instance for API communication
         """
-        super().__init__(client)  # Initialize base class with GET methods
         self.delete = Delete(client)

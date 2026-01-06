@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,11 +124,11 @@ class NacPolicy(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        category: str | None = None,
-        status: str | None = None,
-        match_type: str | None = None,
+        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        match_type: Literal["dynamic", "override"] | None = None,
         match_period: int | None = None,
-        match_remove: str | None = None,
+        match_remove: Literal["default", "link-down"] | None = None,
         mac: str | None = None,
         hw_vendor: str | None = None,
         type: str | None = None,
@@ -249,11 +248,11 @@ class NacPolicy(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         description: str | None = None,
-        category: str | None = None,
-        status: str | None = None,
-        match_type: str | None = None,
+        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        match_type: Literal["dynamic", "override"] | None = None,
         match_period: int | None = None,
-        match_remove: str | None = None,
+        match_remove: Literal["default", "link-down"] | None = None,
         mac: str | None = None,
         hw_vendor: str | None = None,
         type: str | None = None,

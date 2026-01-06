@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -127,13 +126,13 @@ class Manualkey(MetadataMixin):
         interface: str | None = None,
         remote_gw: str | None = None,
         local_gw: str | None = None,
-        authentication: str | None = None,
-        encryption: str | None = None,
+        authentication: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = None,
+        encryption: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = None,
         authkey: str | None = None,
         enckey: str | None = None,
         localspi: str | None = None,
         remotespi: str | None = None,
-        npu_offload: str | None = None,
+        npu_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -221,13 +220,13 @@ class Manualkey(MetadataMixin):
         interface: str | None = None,
         remote_gw: str | None = None,
         local_gw: str | None = None,
-        authentication: str | None = None,
-        encryption: str | None = None,
+        authentication: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = None,
+        encryption: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = None,
         authkey: str | None = None,
         enckey: str | None = None,
         localspi: str | None = None,
         remotespi: str | None = None,
-        npu_offload: str | None = None,
+        npu_offload: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

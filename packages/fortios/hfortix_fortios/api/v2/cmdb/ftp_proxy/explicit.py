@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,16 +117,16 @@ class Explicit(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         incoming_port: str | None = None,
         incoming_ip: str | None = None,
         outgoing_ip: str | list | None = None,
-        sec_default_action: str | None = None,
-        server_data_mode: str | None = None,
-        ssl: str | None = None,
+        sec_default_action: Literal["accept", "deny"] | None = None,
+        server_data_mode: Literal["client", "passive"] | None = None,
+        ssl: Literal["enable", "disable"] | None = None,
         ssl_cert: str | list | None = None,
-        ssl_dh_bits: str | None = None,
-        ssl_algorithm: str | None = None,
+        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = None,
+        ssl_algorithm: Literal["high", "medium", "low"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

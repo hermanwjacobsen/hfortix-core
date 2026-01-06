@@ -27,8 +27,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -156,8 +155,8 @@ class InternetService(MetadataMixin):
         id: int | None = None,
         name: str | None = None,
         icon_id: int | None = None,
-        direction: str | None = None,
-        database: str | None = None,
+        direction: Literal["src", "dst", "both"] | None = None,
+        database: Literal["isdb", "irdb"] | None = None,
         ip_range_number: int | None = None,
         extra_ip_range_number: int | None = None,
         ip_number: int | None = None,
@@ -252,8 +251,8 @@ class InternetService(MetadataMixin):
         id: int | None = None,
         name: str | None = None,
         icon_id: int | None = None,
-        direction: str | None = None,
-        database: str | None = None,
+        direction: Literal["src", "dst", "both"] | None = None,
+        database: Literal["isdb", "irdb"] | None = None,
         ip_range_number: int | None = None,
         extra_ip_range_number: int | None = None,
         ip_number: int | None = None,

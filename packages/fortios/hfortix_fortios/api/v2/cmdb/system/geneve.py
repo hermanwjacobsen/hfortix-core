@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -126,8 +125,8 @@ class Geneve(MetadataMixin):
         name: str | None = None,
         interface: str | None = None,
         vni: int | None = None,
-        type: str | None = None,
-        ip_version: str | None = None,
+        type: Literal["ethernet", "ppp"] | None = None,
+        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = None,
         remote_ip: str | None = None,
         remote_ip6: str | None = None,
         dstport: int | None = None,
@@ -214,8 +213,8 @@ class Geneve(MetadataMixin):
         name: str | None = None,
         interface: str | None = None,
         vni: int | None = None,
-        type: str | None = None,
-        ip_version: str | None = None,
+        type: Literal["ethernet", "ppp"] | None = None,
+        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = None,
         remote_ip: str | None = None,
         remote_ip6: str | None = None,
         dstport: int | None = None,

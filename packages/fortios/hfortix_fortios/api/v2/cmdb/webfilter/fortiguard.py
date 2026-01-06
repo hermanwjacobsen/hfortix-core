@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -118,18 +117,18 @@ class Fortiguard(MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        cache_mode: str | None = None,
-        cache_prefix_match: str | None = None,
+        cache_mode: Literal["ttl", "db-ver"] | None = None,
+        cache_prefix_match: Literal["enable", "disable"] | None = None,
         cache_mem_permille: int | None = None,
         ovrd_auth_port_http: int | None = None,
         ovrd_auth_port_https: int | None = None,
         ovrd_auth_port_https_flow: int | None = None,
         ovrd_auth_port_warning: int | None = None,
-        ovrd_auth_https: str | None = None,
-        warn_auth_https: str | None = None,
-        close_ports: str | None = None,
+        ovrd_auth_https: Literal["enable", "disable"] | None = None,
+        warn_auth_https: Literal["enable", "disable"] | None = None,
+        close_ports: Literal["enable", "disable"] | None = None,
         request_packet_size_limit: int | None = None,
-        embed_image: str | None = None,
+        embed_image: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,

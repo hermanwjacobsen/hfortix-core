@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -124,7 +123,7 @@ class CloudService(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        vendor: str | None = None,
+        vendor: Literal["unknown", "google-cloud-kms"] | None = None,
         traffic_vdom: str | None = None,
         gck_service_account: str | None = None,
         gck_private_key: str | None = None,
@@ -211,7 +210,7 @@ class CloudService(MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        vendor: str | None = None,
+        vendor: Literal["unknown", "google-cloud-kms"] | None = None,
         traffic_vdom: str | None = None,
         gck_service_account: str | None = None,
         gck_private_key: str | None = None,

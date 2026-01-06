@@ -25,8 +25,7 @@ Important:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Union
-
+from typing import TYPE_CHECKING, Any, Union, Literal
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
@@ -125,12 +124,12 @@ class ExtenderProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: int | None = None,
-        model: str | None = None,
-        extension: str | None = None,
-        allowaccess: str | list | None = None,
-        login_password_change: str | None = None,
+        model: Literal["FX201E", "FX211E", "FX200F", "FXA11F", "FXE11F", "FXA21F", "FXE21F", "FXA22F", "FXE22F", "FX212F", "FX311F", "FX312F", "FX511F", "FXR51G", "FXN51G", "FXW51G", "FVG21F", "FVA21F", "FVG22F", "FVA22F", "FX04DA", "FG", "BS10FW", "BS20GW", "BS20GN", "FVG51G", "FXE11G", "FX211G"] | None = None,
+        extension: Literal["wan-extension", "lan-extension"] | None = None,
+        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list | None = None,
+        login_password_change: Literal["yes", "default", "no"] | None = None,
         login_password: Any | None = None,
-        enforce_bandwidth: str | None = None,
+        enforce_bandwidth: Literal["enable", "disable"] | None = None,
         bandwidth_limit: int | None = None,
         cellular: str | None = None,
         wifi: str | None = None,
@@ -221,12 +220,12 @@ class ExtenderProfile(MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
         id: int | None = None,
-        model: str | None = None,
-        extension: str | None = None,
-        allowaccess: str | list | None = None,
-        login_password_change: str | None = None,
+        model: Literal["FX201E", "FX211E", "FX200F", "FXA11F", "FXE11F", "FXA21F", "FXE21F", "FXA22F", "FXE22F", "FX212F", "FX311F", "FX312F", "FX511F", "FXR51G", "FXN51G", "FXW51G", "FVG21F", "FVA21F", "FVG22F", "FVA22F", "FX04DA", "FG", "BS10FW", "BS20GW", "BS20GN", "FVG51G", "FXE11G", "FX211G"] | None = None,
+        extension: Literal["wan-extension", "lan-extension"] | None = None,
+        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list | None = None,
+        login_password_change: Literal["yes", "default", "no"] | None = None,
         login_password: Any | None = None,
-        enforce_bandwidth: str | None = None,
+        enforce_bandwidth: Literal["enable", "disable"] | None = None,
         bandwidth_limit: int | None = None,
         cellular: str | None = None,
         wifi: str | None = None,
