@@ -56,7 +56,7 @@ class Delete:
         """
         Retrieve sniffer/delete configuration.
 
-        Configuration for sniffer/delete
+        Deletes a packet capture.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["standard", "expanded"]
+VALID_BODY_TYPE: Literal[{"description": "Standard community list type", "help": "Standard community list type.", "label": "Standard", "name": "standard"}, {"description": "Expanded community list type", "help": "Expanded community list type.", "label": "Expanded", "name": "expanded"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

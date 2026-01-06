@@ -121,9 +121,7 @@ class SyslogProfile:
         name: str | None = None,
         comment: str | None = None,
         server_status: str | None = None,
-        server_addr_type: str | None = None,
-        server_fqdn: str | None = None,
-        server_ip: str | None = None,
+        server: str | None = None,
         server_port: int | None = None,
         server_type: str | None = None,
         log_level: str | None = None,
@@ -141,8 +139,8 @@ class SyslogProfile:
             name: WTP system log server profile name.
             comment: Comment.
             server_status: Enable/disable FortiAP units to send log messages to a syslog server (default = enable).
-            server_addr_type: Syslog server address type (default = ip).
-            server_fqdn: FQDN of syslog server that FortiAP units send log messages to.
+            server: Syslog server CN domain name or IP address.
+            server_port: Port number of syslog server that FortiAP units send log messages to (default = 514).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             **kwargs: Additional parameters
@@ -177,9 +175,7 @@ class SyslogProfile:
             name=name,
             comment=comment,
             server_status=server_status,
-            server_addr_type=server_addr_type,
-            server_fqdn=server_fqdn,
-            server_ip=server_ip,
+            server=server,
             server_port=server_port,
             server_type=server_type,
             log_level=log_level,
@@ -211,9 +207,7 @@ class SyslogProfile:
         name: str | None = None,
         comment: str | None = None,
         server_status: str | None = None,
-        server_addr_type: str | None = None,
-        server_fqdn: str | None = None,
-        server_ip: str | None = None,
+        server: str | None = None,
         server_port: int | None = None,
         server_type: str | None = None,
         log_level: str | None = None,
@@ -231,8 +225,8 @@ class SyslogProfile:
             name: WTP system log server profile name.
             comment: Comment.
             server_status: Enable/disable FortiAP units to send log messages to a syslog server (default = enable).
-            server_addr_type: Syslog server address type (default = ip).
-            server_fqdn: FQDN of syslog server that FortiAP units send log messages to.
+            server: Syslog server CN domain name or IP address.
+            server_port: Port number of syslog server that FortiAP units send log messages to (default = 514).
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             **kwargs: Additional parameters
@@ -269,9 +263,7 @@ class SyslogProfile:
             name=name,
             comment=comment,
             server_status=server_status,
-            server_addr_type=server_addr_type,
-            server_fqdn=server_fqdn,
-            server_ip=server_ip,
+            server=server,
             server_port=server_port,
             server_type=server_type,
             log_level=log_level,

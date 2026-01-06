@@ -10,16 +10,16 @@ class SdwanPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable SD-WAN.
-    load_balance_mode: NotRequired[Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based", "measured-volume-based"]]  # Algorithm or mode to use for load balancing Internet traffic
-    speedtest_bypass_routing: NotRequired[Literal["disable", "enable"]]  # Enable/disable bypass routing when speedtest on a SD-WAN mem
+    status: NotRequired[Literal[{"description": "Disable SD-WAN", "help": "Disable SD-WAN.", "label": "Disable", "name": "disable"}, {"description": "Enable SD-WAN", "help": "Enable SD-WAN.", "label": "Enable", "name": "enable"}]]  # Enable/disable SD-WAN.
+    load_balance_mode: NotRequired[Literal[{"description": "Source IP load balancing", "help": "Source IP load balancing. All traffic from a source IP is sent to the same interface.", "label": "Source Ip Based", "name": "source-ip-based"}, {"description": "Weight-based load balancing", "help": "Weight-based load balancing. Interfaces with higher weights have higher priority and get more traffic.", "label": "Weight Based", "name": "weight-based"}, {"description": "Usage-based load balancing", "help": "Usage-based load balancing. All traffic is sent to the first interface on the list. When the bandwidth on that interface exceeds the spill-over limit new traffic is sent to the next interface.", "label": "Usage Based", "name": "usage-based"}, {"description": "Source and destination IP load balancing", "help": "Source and destination IP load balancing. All traffic from a source IP to a destination IP is sent to the same interface.", "label": "Source Dest Ip Based", "name": "source-dest-ip-based"}, {"description": "Volume-based load balancing", "help": "Volume-based load balancing. Traffic is load balanced based on traffic volume (in bytes). More traffic is sent to interfaces with higher volume ratios.", "label": "Measured Volume Based", "name": "measured-volume-based"}]]  # Algorithm or mode to use for load balancing Internet traffic
+    speedtest_bypass_routing: NotRequired[Literal[{"description": "Disable SD-WAN", "help": "Disable SD-WAN.", "label": "Disable", "name": "disable"}, {"description": "Enable SD-WAN", "help": "Enable SD-WAN.", "label": "Enable", "name": "enable"}]]  # Enable/disable bypass routing when speedtest on a SD-WAN mem
     duplication_max_num: NotRequired[int]  # Maximum number of interface members a packet is duplicated i
     duplication_max_discrepancy: NotRequired[int]  # Maximum discrepancy between two packets for deduplication in
-    neighbor_hold_down: NotRequired[Literal["enable", "disable"]]  # Enable/disable hold switching from the secondary neighbor to
+    neighbor_hold_down: NotRequired[Literal[{"description": "Enable hold switching from the secondary neighbor to the primary neighbor", "help": "Enable hold switching from the secondary neighbor to the primary neighbor.", "label": "Enable", "name": "enable"}, {"description": "Disable hold switching from the secondary neighbor to the primary neighbor", "help": "Disable hold switching from the secondary neighbor to the primary neighbor.", "label": "Disable", "name": "disable"}]]  # Enable/disable hold switching from the secondary neighbor to
     neighbor_hold_down_time: NotRequired[int]  # Waiting period in seconds when switching from the secondary 
     app_perf_log_period: NotRequired[int]  # Time interval in seconds that application performance logs a
     neighbor_hold_boot_time: NotRequired[int]  # Waiting period in seconds when switching from the primary ne
-    fail_detect: NotRequired[Literal["enable", "disable"]]  # Enable/disable SD-WAN Internet connection status checking (f
+    fail_detect: NotRequired[Literal[{"description": "Enable status checking", "help": "Enable status checking.", "label": "Enable", "name": "enable"}, {"description": "Disable status checking", "help": "Disable status checking.", "label": "Disable", "name": "disable"}]]  # Enable/disable SD-WAN Internet connection status checking (f
     fail_alert_interfaces: NotRequired[list[dict[str, Any]]]  # Physical interfaces that will be alerted.
     zone: NotRequired[list[dict[str, Any]]]  # Configure SD-WAN zones.
     members: NotRequired[list[dict[str, Any]]]  # FortiGate interfaces added to the SD-WAN.
@@ -53,16 +53,16 @@ class Sdwan:
     def post(
         self,
         payload_dict: SdwanPayload | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        load_balance_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based", "measured-volume-based"] | None = ...,
-        speedtest_bypass_routing: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable SD-WAN", "help": "Disable SD-WAN.", "label": "Disable", "name": "disable"}, {"description": "Enable SD-WAN", "help": "Enable SD-WAN.", "label": "Enable", "name": "enable"}] | None = ...,
+        load_balance_mode: Literal[{"description": "Source IP load balancing", "help": "Source IP load balancing. All traffic from a source IP is sent to the same interface.", "label": "Source Ip Based", "name": "source-ip-based"}, {"description": "Weight-based load balancing", "help": "Weight-based load balancing. Interfaces with higher weights have higher priority and get more traffic.", "label": "Weight Based", "name": "weight-based"}, {"description": "Usage-based load balancing", "help": "Usage-based load balancing. All traffic is sent to the first interface on the list. When the bandwidth on that interface exceeds the spill-over limit new traffic is sent to the next interface.", "label": "Usage Based", "name": "usage-based"}, {"description": "Source and destination IP load balancing", "help": "Source and destination IP load balancing. All traffic from a source IP to a destination IP is sent to the same interface.", "label": "Source Dest Ip Based", "name": "source-dest-ip-based"}, {"description": "Volume-based load balancing", "help": "Volume-based load balancing. Traffic is load balanced based on traffic volume (in bytes). More traffic is sent to interfaces with higher volume ratios.", "label": "Measured Volume Based", "name": "measured-volume-based"}] | None = ...,
+        speedtest_bypass_routing: Literal[{"description": "Disable SD-WAN", "help": "Disable SD-WAN.", "label": "Disable", "name": "disable"}, {"description": "Enable SD-WAN", "help": "Enable SD-WAN.", "label": "Enable", "name": "enable"}] | None = ...,
         duplication_max_num: int | None = ...,
         duplication_max_discrepancy: int | None = ...,
-        neighbor_hold_down: Literal["enable", "disable"] | None = ...,
+        neighbor_hold_down: Literal[{"description": "Enable hold switching from the secondary neighbor to the primary neighbor", "help": "Enable hold switching from the secondary neighbor to the primary neighbor.", "label": "Enable", "name": "enable"}, {"description": "Disable hold switching from the secondary neighbor to the primary neighbor", "help": "Disable hold switching from the secondary neighbor to the primary neighbor.", "label": "Disable", "name": "disable"}] | None = ...,
         neighbor_hold_down_time: int | None = ...,
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
-        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect: Literal[{"description": "Enable status checking", "help": "Enable status checking.", "label": "Enable", "name": "enable"}, {"description": "Disable status checking", "help": "Disable status checking.", "label": "Disable", "name": "disable"}] | None = ...,
         fail_alert_interfaces: list[dict[str, Any]] | None = ...,
         zone: list[dict[str, Any]] | None = ...,
         members: list[dict[str, Any]] | None = ...,
@@ -78,16 +78,16 @@ class Sdwan:
     def put(
         self,
         payload_dict: SdwanPayload | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        load_balance_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based", "measured-volume-based"] | None = ...,
-        speedtest_bypass_routing: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable SD-WAN", "help": "Disable SD-WAN.", "label": "Disable", "name": "disable"}, {"description": "Enable SD-WAN", "help": "Enable SD-WAN.", "label": "Enable", "name": "enable"}] | None = ...,
+        load_balance_mode: Literal[{"description": "Source IP load balancing", "help": "Source IP load balancing. All traffic from a source IP is sent to the same interface.", "label": "Source Ip Based", "name": "source-ip-based"}, {"description": "Weight-based load balancing", "help": "Weight-based load balancing. Interfaces with higher weights have higher priority and get more traffic.", "label": "Weight Based", "name": "weight-based"}, {"description": "Usage-based load balancing", "help": "Usage-based load balancing. All traffic is sent to the first interface on the list. When the bandwidth on that interface exceeds the spill-over limit new traffic is sent to the next interface.", "label": "Usage Based", "name": "usage-based"}, {"description": "Source and destination IP load balancing", "help": "Source and destination IP load balancing. All traffic from a source IP to a destination IP is sent to the same interface.", "label": "Source Dest Ip Based", "name": "source-dest-ip-based"}, {"description": "Volume-based load balancing", "help": "Volume-based load balancing. Traffic is load balanced based on traffic volume (in bytes). More traffic is sent to interfaces with higher volume ratios.", "label": "Measured Volume Based", "name": "measured-volume-based"}] | None = ...,
+        speedtest_bypass_routing: Literal[{"description": "Disable SD-WAN", "help": "Disable SD-WAN.", "label": "Disable", "name": "disable"}, {"description": "Enable SD-WAN", "help": "Enable SD-WAN.", "label": "Enable", "name": "enable"}] | None = ...,
         duplication_max_num: int | None = ...,
         duplication_max_discrepancy: int | None = ...,
-        neighbor_hold_down: Literal["enable", "disable"] | None = ...,
+        neighbor_hold_down: Literal[{"description": "Enable hold switching from the secondary neighbor to the primary neighbor", "help": "Enable hold switching from the secondary neighbor to the primary neighbor.", "label": "Enable", "name": "enable"}, {"description": "Disable hold switching from the secondary neighbor to the primary neighbor", "help": "Disable hold switching from the secondary neighbor to the primary neighbor.", "label": "Disable", "name": "disable"}] | None = ...,
         neighbor_hold_down_time: int | None = ...,
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
-        fail_detect: Literal["enable", "disable"] | None = ...,
+        fail_detect: Literal[{"description": "Enable status checking", "help": "Enable status checking.", "label": "Enable", "name": "enable"}, {"description": "Disable status checking", "help": "Disable status checking.", "label": "Disable", "name": "disable"}] | None = ...,
         fail_alert_interfaces: list[dict[str, Any]] | None = ...,
         zone: list[dict[str, Any]] | None = ...,
         members: list[dict[str, Any]] | None = ...,

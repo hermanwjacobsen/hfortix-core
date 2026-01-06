@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/interface",
     "category": "monitor",
     "api_path": "system/interface",
-    "help": "Monitor endpoint for system/interface/kernel-interfaces",
+    "help": "Retrieve statistics for all system interfaces.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

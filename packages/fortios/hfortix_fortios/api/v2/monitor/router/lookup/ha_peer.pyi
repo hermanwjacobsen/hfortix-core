@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaPeer:
     """
-    Configuration for router/lookup/ha-peer
+    Performs a route lookup by querying the routing table of an HA peer.
     
     Path: router/lookup/ha_peer
     Category: monitor

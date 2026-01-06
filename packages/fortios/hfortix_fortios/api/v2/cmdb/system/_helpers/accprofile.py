@@ -111,6 +111,7 @@ FIELD_TYPES = {
     "fwgrp-permission": "string",  # Custom firewall permission.
     "loggrp-permission": "string",  # Custom Log & Report permission.
     "utmgrp-permission": "string",  # Custom Security Profile permissions.
+    "secfabgrp-permission": "string",  # Custom Security Fabric permissions.
     "admintimeout-override": "option",  # Enable/disable overriding the global administrator idle time
     "admintimeout": "integer",  # Administrator timeout for this access profile (0 - 480 min, 
     "cli-diagnose": "option",  # Enable/disable permission to run diagnostic commands.
@@ -143,6 +144,7 @@ FIELD_DESCRIPTIONS = {
     "fwgrp-permission": "Custom firewall permission.",
     "loggrp-permission": "Custom Log & Report permission.",
     "utmgrp-permission": "Custom Security Profile permissions.",
+    "secfabgrp-permission": "Custom Security Fabric permissions.",
     "admintimeout-override": "Enable/disable overriding the global administrator idle timeout.",
     "admintimeout": "Administrator timeout for this access profile (0 - 480 min, default = 10, 0 means never timeout).",
     "cli-diagnose": "Enable/disable permission to run diagnostic commands.",
@@ -167,19 +169,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Network Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "packet-capture": {
             "type": "option",
             "help": "Packet Capture Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "route-cfg": {
             "type": "option",
             "help": "Router Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
     },
     "sysgrp-permission": {
@@ -187,25 +189,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Administrator Users.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "upd": {
             "type": "option",
             "help": "FortiGuard Updates.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "cfg": {
             "type": "option",
             "help": "System Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "mnt": {
             "type": "option",
             "help": "Maintenance.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
     },
     "fwgrp-permission": {
@@ -213,31 +215,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Policy Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "address": {
             "type": "option",
             "help": "Address Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "service": {
             "type": "option",
             "help": "Service Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "schedule": {
             "type": "option",
             "help": "Schedule Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "others": {
             "type": "option",
             "help": "Other Firewall Configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
     },
     "loggrp-permission": {
@@ -245,25 +247,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Log & Report configuration.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "data-access": {
             "type": "option",
             "help": "Log & Report Data Access.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "report-access": {
             "type": "option",
             "help": "Log & Report Report Access.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "threat-weight": {
             "type": "option",
             "help": "Log & Report Threat Weight.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
     },
     "utmgrp-permission": {
@@ -271,97 +273,111 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Antivirus profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "ips": {
             "type": "option",
             "help": "IPS profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "webfilter": {
             "type": "option",
             "help": "Web Filter profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "emailfilter": {
             "type": "option",
             "help": "Email Filter and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "dlp": {
             "type": "option",
             "help": "DLP profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "file-filter": {
             "type": "option",
             "help": "File-filter profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "application-control": {
             "type": "option",
             "help": "Application Control profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "icap": {
             "type": "option",
             "help": "ICAP profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "voip": {
             "type": "option",
             "help": "VoIP profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "waf": {
             "type": "option",
             "help": "Web Application Firewall profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "dnsfilter": {
             "type": "option",
             "help": "DNS Filter profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "endpoint-control": {
             "type": "option",
             "help": "FortiClient Profiles.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "videofilter": {
             "type": "option",
             "help": "Video filter profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "virtual-patch": {
             "type": "option",
             "help": "Virtual patch profiles and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "casb": {
             "type": "option",
             "help": "Inline CASB filter profile and settings",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
         "telemetry": {
             "type": "option",
             "help": "Telemetry profile and settings.",
             "default": "none",
-            "options": ["none", "read", "read-write"],
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
+        },
+    },
+    "secfabgrp-permission": {
+        "csfsys": {
+            "type": "option",
+            "help": "Security Fabric system profiles and settings.",
+            "default": "none",
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
+        },
+        "csffoo": {
+            "type": "option",
+            "help": "Fabric Overlay Orchestrator profiles and settings.",
+            "default": "none",
+            "options": [{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}],
         },
     },
 }
@@ -369,100 +385,101 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SCOPE = [
-    "vdom",
-    "global",
+    "vdom",  # VDOM access.
+    "global",  # Global access.
 ]
 VALID_BODY_SECFABGRP = [
-    "none",
-    "read",
-    "read-write",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
+    "custom",  # Customized access.
 ]
 VALID_BODY_FTVIEWGRP = [
-    "none",
-    "read",
-    "read-write",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
 ]
 VALID_BODY_AUTHGRP = [
-    "none",
-    "read",
-    "read-write",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
 ]
 VALID_BODY_SYSGRP = [
-    "none",
-    "read",
-    "read-write",
-    "custom",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
+    "custom",  # Customized access.
 ]
 VALID_BODY_NETGRP = [
-    "none",
-    "read",
-    "read-write",
-    "custom",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
+    "custom",  # Customized access.
 ]
 VALID_BODY_LOGGRP = [
-    "none",
-    "read",
-    "read-write",
-    "custom",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
+    "custom",  # Customized access.
 ]
 VALID_BODY_FWGRP = [
-    "none",
-    "read",
-    "read-write",
-    "custom",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
+    "custom",  # Customized access.
 ]
 VALID_BODY_VPNGRP = [
-    "none",
-    "read",
-    "read-write",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
 ]
 VALID_BODY_UTMGRP = [
-    "none",
-    "read",
-    "read-write",
-    "custom",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
+    "custom",  # Customized access.
 ]
 VALID_BODY_WANOPTGRP = [
-    "none",
-    "read",
-    "read-write",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
 ]
 VALID_BODY_WIFI = [
-    "none",
-    "read",
-    "read-write",
+    "none",  # No access.
+    "read",  # Read access.
+    "read-write",  # Read/write access.
 ]
 VALID_BODY_ADMINTIMEOUT_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable overriding the global administrator idle timeout.
+    "disable",  # Disable overriding the global administrator idle timeout.
 ]
 VALID_BODY_CLI_DIAGNOSE = [
-    "enable",
-    "disable",
+    "enable",  # Enable permission to run diagnostic commands.
+    "disable",  # Disable permission to run diagnostic commands.
 ]
 VALID_BODY_CLI_GET = [
-    "enable",
-    "disable",
+    "enable",  # Enable permission to run get commands.
+    "disable",  # Disable permission to run get commands.
 ]
 VALID_BODY_CLI_SHOW = [
-    "enable",
-    "disable",
+    "enable",  # Enable permission to run show commands.
+    "disable",  # Disable permission to run show commands.
 ]
 VALID_BODY_CLI_EXEC = [
-    "enable",
-    "disable",
+    "enable",  # Enable permission to run execute commands.
+    "disable",  # Disable permission to run execute commands.
 ]
 VALID_BODY_CLI_CONFIG = [
-    "enable",
-    "disable",
+    "enable",  # Enable permission to run config commands.
+    "disable",  # Disable permission to run config commands.
 ]
 VALID_BODY_SYSTEM_EXECUTE_SSH = [
-    "enable",
-    "disable",
+    "enable",  # Enable permission to execute SSH commands.
+    "disable",  # Disable permission to execute SSH commands.
 ]
 VALID_BODY_SYSTEM_EXECUTE_TELNET = [
-    "enable",
-    "disable",
+    "enable",  # Enable permission to execute TELNET commands.
+    "disable",  # Disable permission to execute TELNET commands.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -592,7 +609,7 @@ def validate_system_accprofile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "scope": "vdom",  # Valid enum value
+        ...     "scope": "{'name': 'vdom', 'help': 'VDOM access.', 'label': 'Vdom', 'description': 'VDOM access'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_accprofile_post(payload)
         >>> assert is_valid == True
@@ -1271,7 +1288,7 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure access profiles for system administrators.",
-    "total_fields": 28,
+    "total_fields": 29,
     "required_fields_count": 1,
     "fields_with_defaults_count": 22,
 }

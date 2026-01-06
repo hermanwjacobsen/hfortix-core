@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve system/config_error_log/download configuration.
 
-        Configuration for system/config-error-log/download
+        Download the error log of the configuration management database.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -13,7 +13,7 @@ class H2qpOsuProviderPayload(TypedDict, total=False):
     name: NotRequired[str]  # OSU provider ID.
     friendly_name: NotRequired[list[dict[str, Any]]]  # OSU provider friendly name.
     server_uri: NotRequired[str]  # Server URI.
-    osu_method: NotRequired[Literal["oma-dm", "soap-xml-spp", "reserved"]]  # OSU method list.
+    osu_method: NotRequired[Literal[{"description": "OMA DM", "help": "OMA DM.", "label": "Oma Dm", "name": "oma-dm"}, {"description": "SOAP XML SPP", "help": "SOAP XML SPP.", "label": "Soap Xml Spp", "name": "soap-xml-spp"}, {"description": "Reserved", "help": "Reserved.", "label": "Reserved", "name": "reserved"}]]  # OSU method list.
     osu_nai: NotRequired[str]  # OSU NAI.
     service_description: NotRequired[list[dict[str, Any]]]  # OSU service name.
     icon: NotRequired[str]  # OSU provider icon.
@@ -47,7 +47,7 @@ class H2qpOsuProvider:
         name: str | None = ...,
         friendly_name: list[dict[str, Any]] | None = ...,
         server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | None = ...,
+        osu_method: Literal[{"description": "OMA DM", "help": "OMA DM.", "label": "Oma Dm", "name": "oma-dm"}, {"description": "SOAP XML SPP", "help": "SOAP XML SPP.", "label": "Soap Xml Spp", "name": "soap-xml-spp"}, {"description": "Reserved", "help": "Reserved.", "label": "Reserved", "name": "reserved"}] | None = ...,
         osu_nai: str | None = ...,
         service_description: list[dict[str, Any]] | None = ...,
         icon: str | None = ...,
@@ -62,7 +62,7 @@ class H2qpOsuProvider:
         name: str | None = ...,
         friendly_name: list[dict[str, Any]] | None = ...,
         server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | None = ...,
+        osu_method: Literal[{"description": "OMA DM", "help": "OMA DM.", "label": "Oma Dm", "name": "oma-dm"}, {"description": "SOAP XML SPP", "help": "SOAP XML SPP.", "label": "Soap Xml Spp", "name": "soap-xml-spp"}, {"description": "Reserved", "help": "Reserved.", "label": "Reserved", "name": "reserved"}] | None = ...,
         osu_nai: str | None = ...,
         service_description: list[dict[str, Any]] | None = ...,
         icon: str | None = ...,

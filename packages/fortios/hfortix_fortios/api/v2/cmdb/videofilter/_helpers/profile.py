@@ -123,7 +123,7 @@ NESTED_SCHEMAS = {
             "help": "Filter type.",
             "required": True,
             "default": "category",
-            "options": ["category", "channel", "title", "description"],
+            "options": [{"help": "Filter videos by FortiGuard category.", "label": "Category", "name": "category"}, {"help": "Filter videos by channel ID.", "label": "Channel", "name": "channel"}, {"help": "Filter videos by title.", "label": "Title", "name": "title"}, {"help": "Filter videos by description.", "label": "Description", "name": "description"}],
         },
         "keyword": {
             "type": "integer",
@@ -151,13 +151,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Video filter action.",
             "default": "monitor",
-            "options": ["allow", "monitor", "block"],
+            "options": [{"help": "Allow videos to be accessed.", "label": "Allow", "name": "allow"}, {"help": "Monitor videos.", "label": "Monitor", "name": "monitor"}, {"help": "Block videos.", "label": "Block", "name": "block"}],
         },
         "log": {
             "type": "option",
             "help": "Enable/disable logging.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable logging.", "label": "Enable", "name": "enable"}, {"help": "Disable logging.", "label": "Disable", "name": "disable"}],
         },
     },
 }
@@ -165,16 +165,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_YOUTUBE = [
-    "enable",
-    "disable",
+    "enable",  # Enable YouTube source.
+    "disable",  # Disable YouTube source.
 ]
 VALID_BODY_VIMEO = [
-    "enable",
-    "disable",
+    "enable",  # Enable Vimeo source.
+    "disable",  # Disable Vimeo source.
 ]
 VALID_BODY_DAILYMOTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable Dailymotion source.
+    "disable",  # Disable Dailymotion source.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -305,7 +305,7 @@ def validate_videofilter_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "youtube": "enable",  # Valid enum value
+        ...     "youtube": "{'name': 'enable', 'help': 'Enable YouTube source.', 'label': 'Enable', 'description': 'Enable YouTube source'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_videofilter_profile_post(payload)
         >>> assert is_valid == True

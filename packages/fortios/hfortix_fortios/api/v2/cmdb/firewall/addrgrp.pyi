@@ -11,17 +11,17 @@ class AddrgrpPayload(TypedDict, total=False):
         }
     """
     name: str  # Address group name.
-    type: NotRequired[Literal["default", "folder"]]  # Address group type.
-    category: NotRequired[Literal["default", "ztna-ems-tag", "ztna-geo-tag"]]  # Address group category.
-    allow_routing: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of this group in routing configurations.
+    type: NotRequired[Literal[{"description": "Default address group type (address may belong to multiple groups)", "help": "Default address group type (address may belong to multiple groups).", "label": "Default", "name": "default"}, {"description": "Address folder group (members may not belong to any other group)", "help": "Address folder group (members may not belong to any other group).", "label": "Folder", "name": "folder"}]]  # Address group type.
+    category: NotRequired[Literal[{"description": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy)", "help": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy).", "label": "Default", "name": "default"}, {"description": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy", "help": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy.", "label": "Ztna Ems Tag", "name": "ztna-ems-tag"}, {"description": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy", "help": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy.", "label": "Ztna Geo Tag", "name": "ztna-geo-tag"}]]  # Address group category.
+    allow_routing: NotRequired[Literal[{"description": "Enable use of this group in routing configurations", "help": "Enable use of this group in routing configurations.", "label": "Enable", "name": "enable"}, {"description": "Disable use of this group in routing configurations", "help": "Disable use of this group in routing configurations.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of this group in routing configurations.
     member: NotRequired[list[dict[str, Any]]]  # Address objects contained within the group.
     comment: NotRequired[str]  # Comment.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    exclude: NotRequired[Literal["enable", "disable"]]  # Enable/disable address exclusion.
+    exclude: NotRequired[Literal[{"description": "Enable address exclusion", "help": "Enable address exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address exclusion", "help": "Disable address exclusion.", "label": "Disable", "name": "disable"}]]  # Enable/disable address exclusion.
     exclude_member: list[dict[str, Any]]  # Address exclusion member.
     color: NotRequired[int]  # Color of icon on the GUI.
     tagging: NotRequired[list[dict[str, Any]]]  # Config object tagging.
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Addrgrp:
@@ -50,17 +50,17 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
-        category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
-        allow_routing: Literal["enable", "disable"] | None = ...,
+        type: Literal[{"description": "Default address group type (address may belong to multiple groups)", "help": "Default address group type (address may belong to multiple groups).", "label": "Default", "name": "default"}, {"description": "Address folder group (members may not belong to any other group)", "help": "Address folder group (members may not belong to any other group).", "label": "Folder", "name": "folder"}] | None = ...,
+        category: Literal[{"description": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy)", "help": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy).", "label": "Default", "name": "default"}, {"description": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy", "help": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy.", "label": "Ztna Ems Tag", "name": "ztna-ems-tag"}, {"description": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy", "help": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy.", "label": "Ztna Geo Tag", "name": "ztna-geo-tag"}] | None = ...,
+        allow_routing: Literal[{"description": "Enable use of this group in routing configurations", "help": "Enable use of this group in routing configurations.", "label": "Enable", "name": "enable"}, {"description": "Disable use of this group in routing configurations", "help": "Disable use of this group in routing configurations.", "label": "Disable", "name": "disable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         uuid: str | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
+        exclude: Literal[{"description": "Enable address exclusion", "help": "Enable address exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address exclusion", "help": "Disable address exclusion.", "label": "Disable", "name": "disable"}] | None = ...,
         exclude_member: list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -70,17 +70,17 @@ class Addrgrp:
         self,
         payload_dict: AddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "folder"] | None = ...,
-        category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
-        allow_routing: Literal["enable", "disable"] | None = ...,
+        type: Literal[{"description": "Default address group type (address may belong to multiple groups)", "help": "Default address group type (address may belong to multiple groups).", "label": "Default", "name": "default"}, {"description": "Address folder group (members may not belong to any other group)", "help": "Address folder group (members may not belong to any other group).", "label": "Folder", "name": "folder"}] | None = ...,
+        category: Literal[{"description": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy)", "help": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy).", "label": "Default", "name": "default"}, {"description": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy", "help": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy.", "label": "Ztna Ems Tag", "name": "ztna-ems-tag"}, {"description": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy", "help": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy.", "label": "Ztna Geo Tag", "name": "ztna-geo-tag"}] | None = ...,
+        allow_routing: Literal[{"description": "Enable use of this group in routing configurations", "help": "Enable use of this group in routing configurations.", "label": "Enable", "name": "enable"}, {"description": "Disable use of this group in routing configurations", "help": "Disable use of this group in routing configurations.", "label": "Disable", "name": "disable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         uuid: str | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
+        exclude: Literal[{"description": "Enable address exclusion", "help": "Enable address exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address exclusion", "help": "Disable address exclusion.", "label": "Disable", "name": "disable"}] | None = ...,
         exclude_member: list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

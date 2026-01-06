@@ -191,25 +191,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "log": {
             "type": "option",
             "help": "Enable/disable logging.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "severity": {
             "type": "option",
             "help": "Severity.",
             "default": "medium",
-            "options": ["high", "medium", "low"],
+            "options": [{"help": "High severity", "label": "High", "name": "high"}, {"help": "medium severity", "label": "Medium", "name": "medium"}, {"help": "low severity", "label": "Low", "name": "low"}],
         },
         "default-allowed-methods": {
             "type": "option",
             "help": "Methods.",
             "default": "",
-            "options": ["get", "post", "put", "head", "connect", "trace", "options", "delete", "others"],
+            "options": [{"help": "HTTP GET method.", "label": "Get", "name": "get"}, {"help": "HTTP POST method.", "label": "Post", "name": "post"}, {"help": "HTTP PUT method.", "label": "Put", "name": "put"}, {"help": "HTTP HEAD method.", "label": "Head", "name": "head"}, {"help": "HTTP CONNECT method.", "label": "Connect", "name": "connect"}, {"help": "HTTP TRACE method.", "label": "Trace", "name": "trace"}, {"help": "HTTP OPTIONS method.", "label": "Options", "name": "options"}, {"help": "HTTP DELETE method.", "label": "Delete", "name": "delete"}, {"help": "Other HTTP methods.", "label": "Others", "name": "others"}],
         },
         "method-policy": {
             "type": "string",
@@ -221,19 +221,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "blocked-log": {
             "type": "option",
             "help": "Enable/disable logging on blocked addresses.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "severity": {
             "type": "option",
             "help": "Severity.",
             "default": "medium",
-            "options": ["high", "medium", "low"],
+            "options": [{"help": "High severity.", "label": "High", "name": "high"}, {"help": "Medium severity.", "label": "Medium", "name": "medium"}, {"help": "Low severity.", "label": "Low", "name": "low"}],
         },
         "trusted-address": {
             "type": "string",
@@ -263,19 +263,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Action.",
             "default": "permit",
-            "options": ["bypass", "permit", "block"],
+            "options": [{"help": "Allow the HTTP request, also bypass further WAF scanning.", "label": "Bypass", "name": "bypass"}, {"help": "Allow the HTTP request, and continue further WAF scanning.", "label": "Permit", "name": "permit"}, {"help": "Block HTTP request.", "label": "Block", "name": "block"}],
         },
         "log": {
             "type": "option",
             "help": "Enable/disable logging.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "severity": {
             "type": "option",
             "help": "Severity.",
             "default": "medium",
-            "options": ["high", "medium", "low"],
+            "options": [{"help": "High severity.", "label": "High", "name": "high"}, {"help": "Medium severity.", "label": "Medium", "name": "medium"}, {"help": "Low severity.", "label": "Low", "name": "low"}],
         },
         "access-pattern": {
             "type": "string",
@@ -287,12 +287,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_EXTERNAL = [
-    "disable",
-    "enable",
+    "disable",  # Disable external inspection.
+    "enable",  # Enable external inspection.
 ]
 VALID_BODY_EXTENDED_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -420,7 +420,7 @@ def validate_waf_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "external": "disable",  # Valid enum value
+        ...     "external": "{'name': 'disable', 'help': 'Disable external inspection.', 'label': 'Disable', 'description': 'Disable external inspection'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_waf_profile_post(payload)
         >>> assert is_valid == True

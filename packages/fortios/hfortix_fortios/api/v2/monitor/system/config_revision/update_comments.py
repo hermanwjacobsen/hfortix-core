@@ -56,7 +56,7 @@ class UpdateComments:
         """
         Retrieve system/config_revision/update_comments configuration.
 
-        Configuration for system/config-revision/update-comments
+        Updates comments for a system configuration file.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

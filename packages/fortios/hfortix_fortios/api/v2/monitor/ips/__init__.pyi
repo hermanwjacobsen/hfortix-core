@@ -16,10 +16,10 @@ if TYPE_CHECKING:
 class Ips:
     """Type stub for Ips."""
 
+    session: Session
     anomaly: Anomaly
     hold_signatures: HoldSignatures
     metadata: Metadata
     rate_based: RateBased
-    session: Session
 
     def __init__(self, client: IHTTPClient) -> None: ...

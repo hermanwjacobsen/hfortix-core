@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/proxy_policy/clear_counters",
     "category": "monitor",
     "api_path": "firewall/proxy-policy/clear_counters",
-    "help": "Configuration for firewall/proxy-policy/clear_counters",
+    "help": "Reset traffic statistics for one or more explicit proxy policies by policy ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

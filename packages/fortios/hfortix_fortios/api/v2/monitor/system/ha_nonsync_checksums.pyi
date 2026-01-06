@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaNonsyncChecksums:
     """
-    Monitor endpoint for system/ha-nonsync-checksums
+    List of HA non-sync checksums for members of HA cluster.
     
     Path: system/ha_nonsync_checksums
     Category: monitor

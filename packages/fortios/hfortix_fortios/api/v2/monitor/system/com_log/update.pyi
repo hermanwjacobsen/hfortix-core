@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for system/com-log/update
+    Fetch system com-log file dump progress.
     
     Path: system/com_log/update
     Category: monitor

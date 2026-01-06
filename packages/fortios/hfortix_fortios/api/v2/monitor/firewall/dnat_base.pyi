@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Dnat:
     """
-    Configuration for firewall/dnat
+    List hit count statistics for firewall virtual IP/server.
     
     Path: firewall/dnat
     Category: monitor

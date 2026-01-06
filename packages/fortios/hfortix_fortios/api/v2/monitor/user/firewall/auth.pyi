@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Auth:
     """
-    Configuration for user/firewall/auth
+    Trigger authentication for a single firewall user.
     
     Path: user/firewall/auth
     Category: monitor

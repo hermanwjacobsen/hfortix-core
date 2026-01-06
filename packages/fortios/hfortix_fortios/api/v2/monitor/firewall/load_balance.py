@@ -56,7 +56,7 @@ class LoadBalance:
         """
         Retrieve firewall/load_balance configuration.
 
-        Configuration for firewall/load-balance
+        List all firewall load balance servers.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

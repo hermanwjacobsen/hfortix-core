@@ -56,7 +56,7 @@ class PortStatsReset:
         """
         Retrieve switch_controller/managed_switch/port_stats_reset configuration.
 
-        Configuration for switch-controller/managed-switch/port-stats-reset
+        Reset port statistics for a given FortiSwitch.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

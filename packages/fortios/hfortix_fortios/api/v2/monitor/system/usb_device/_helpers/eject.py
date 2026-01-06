@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/usb_device/eject",
     "category": "monitor",
     "api_path": "system/usb-device/eject",
-    "help": "Configuration for system/usb-device/eject",
+    "help": "Eject USB drives for safe removal.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

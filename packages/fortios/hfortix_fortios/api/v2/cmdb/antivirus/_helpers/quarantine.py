@@ -116,77 +116,77 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DROP_INFECTED = [
-    "imap",
-    "smtp",
-    "pop3",
-    "http",
-    "ftp",
-    "nntp",
-    "imaps",
-    "smtps",
-    "pop3s",
-    "https",
-    "ftps",
-    "mapi",
-    "cifs",
-    "ssh",
+    "imap",  # IMAP.
+    "smtp",  # SMTP.
+    "pop3",  # POP3.
+    "http",  # HTTP.
+    "ftp",  # FTP.
+    "nntp",  # NNTP.
+    "imaps",  # IMAPS.
+    "smtps",  # SMTPS.
+    "pop3s",  # POP3S.
+    "https",  # HTTPS.
+    "ftps",  # FTPS.
+    "mapi",  # MAPI.
+    "cifs",  # CIFS.
+    "ssh",  # SSH.
 ]
 VALID_BODY_STORE_INFECTED = [
-    "imap",
-    "smtp",
-    "pop3",
-    "http",
-    "ftp",
-    "nntp",
-    "imaps",
-    "smtps",
-    "pop3s",
-    "https",
-    "ftps",
-    "mapi",
-    "cifs",
-    "ssh",
+    "imap",  # IMAP.
+    "smtp",  # SMTP.
+    "pop3",  # POP3.
+    "http",  # HTTP.
+    "ftp",  # FTP.
+    "nntp",  # NNTP.
+    "imaps",  # IMAPS.
+    "smtps",  # SMTPS.
+    "pop3s",  # POP3S.
+    "https",  # HTTPS.
+    "ftps",  # FTPS.
+    "mapi",  # MAPI.
+    "cifs",  # CIFS.
+    "ssh",  # SSH.
 ]
 VALID_BODY_DROP_MACHINE_LEARNING = [
-    "imap",
-    "smtp",
-    "pop3",
-    "http",
-    "ftp",
-    "nntp",
-    "imaps",
-    "smtps",
-    "pop3s",
-    "https",
-    "ftps",
-    "mapi",
-    "cifs",
-    "ssh",
+    "imap",  # IMAP.
+    "smtp",  # SMTP.
+    "pop3",  # POP3.
+    "http",  # HTTP.
+    "ftp",  # FTP.
+    "nntp",  # NNTP.
+    "imaps",  # IMAPS.
+    "smtps",  # SMTPS.
+    "pop3s",  # POP3S.
+    "https",  # HTTPS.
+    "ftps",  # FTPS.
+    "mapi",  # MAPI.
+    "cifs",  # CIFS.
+    "ssh",  # SSH.
 ]
 VALID_BODY_STORE_MACHINE_LEARNING = [
-    "imap",
-    "smtp",
-    "pop3",
-    "http",
-    "ftp",
-    "nntp",
-    "imaps",
-    "smtps",
-    "pop3s",
-    "https",
-    "ftps",
-    "mapi",
-    "cifs",
-    "ssh",
+    "imap",  # IMAP.
+    "smtp",  # SMTP.
+    "pop3",  # POP3.
+    "http",  # HTTP.
+    "ftp",  # FTP.
+    "nntp",  # NNTP.
+    "imaps",  # IMAPS.
+    "smtps",  # SMTPS.
+    "pop3s",  # POP3S.
+    "https",  # HTTPS.
+    "ftps",  # FTPS.
+    "mapi",  # MAPI.
+    "cifs",  # CIFS.
+    "ssh",  # SSH.
 ]
 VALID_BODY_LOWSPACE = [
-    "drop-new",
-    "ovrw-old",
+    "drop-new",  # Drop (delete) the most recently quarantined files.
+    "ovrw-old",  # Overwrite the oldest quarantined files. That is, the files that are closest to being deleted from the quarantine.
 ]
 VALID_BODY_DESTINATION = [
-    "NULL",
-    "disk",
-    "FortiAnalyzer",
+    "NULL",  # Files that would be quarantined are deleted.
+    "disk",  # Quarantine files to the FortiGate hard disk.
+    "FortiAnalyzer",  # FortiAnalyzer
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -311,7 +311,7 @@ def validate_antivirus_quarantine_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "drop-infected": "imap",  # Valid enum value
+        ...     "drop-infected": "{'name': 'imap', 'help': 'IMAP.', 'label': 'Imap', 'description': 'IMAP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_antivirus_quarantine_post(payload)
         >>> assert is_valid == True

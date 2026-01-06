@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/shaper",
     "category": "monitor",
     "api_path": "firewall/shaper",
-    "help": "Monitor endpoint for firewall/shaper/multi-class-shaper",
+    "help": "List of statistics for configured firewall shared traffic shapers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

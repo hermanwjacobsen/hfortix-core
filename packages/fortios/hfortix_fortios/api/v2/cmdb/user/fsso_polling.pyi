@@ -11,7 +11,7 @@ class FssoPollingPayload(TypedDict, total=False):
         }
     """
     id: NotRequired[int]  # Active Directory server ID.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable polling for the status of this Active Directo
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable polling for the status of this Active Directo
     server: str  # Host name or IP address of the Active Directory server.
     default_domain: NotRequired[str]  # Default domain managed by this Active Directory server.
     port: NotRequired[int]  # Port to communicate with this Active Directory server.
@@ -21,8 +21,8 @@ class FssoPollingPayload(TypedDict, total=False):
     logon_history: NotRequired[int]  # Number of hours of logon history to keep, 0 means keep all h
     polling_frequency: NotRequired[int]  # Polling frequency (every 1 to 30 seconds).
     adgrp: NotRequired[list[dict[str, Any]]]  # LDAP Group Info.
-    smbv1: NotRequired[Literal["enable", "disable"]]  # Enable/disable support of SMBv1 for Samba.
-    smb_ntlmv1_auth: NotRequired[Literal["enable", "disable"]]  # Enable/disable support of NTLMv1 for Samba authentication.
+    smbv1: NotRequired[Literal[{"description": "Enable support of SMBv1 for Samba", "help": "Enable support of SMBv1 for Samba.", "label": "Enable", "name": "enable"}, {"description": "Disable support of SMBv1 for Samba", "help": "Disable support of SMBv1 for Samba.", "label": "Disable", "name": "disable"}]]  # Enable/disable support of SMBv1 for Samba.
+    smb_ntlmv1_auth: NotRequired[Literal[{"description": "Enable support of NTLMv1 for Samba authentication", "help": "Enable support of NTLMv1 for Samba authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable support of NTLMv1 for Samba authentication", "help": "Disable support of NTLMv1 for Samba authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable support of NTLMv1 for Samba authentication.
 
 
 class FssoPolling:
@@ -51,7 +51,7 @@ class FssoPolling:
         self,
         payload_dict: FssoPollingPayload | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         server: str | None = ...,
         default_domain: str | None = ...,
         port: int | None = ...,
@@ -61,8 +61,8 @@ class FssoPolling:
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
         adgrp: list[dict[str, Any]] | None = ...,
-        smbv1: Literal["enable", "disable"] | None = ...,
-        smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
+        smbv1: Literal[{"description": "Enable support of SMBv1 for Samba", "help": "Enable support of SMBv1 for Samba.", "label": "Enable", "name": "enable"}, {"description": "Disable support of SMBv1 for Samba", "help": "Disable support of SMBv1 for Samba.", "label": "Disable", "name": "disable"}] | None = ...,
+        smb_ntlmv1_auth: Literal[{"description": "Enable support of NTLMv1 for Samba authentication", "help": "Enable support of NTLMv1 for Samba authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable support of NTLMv1 for Samba authentication", "help": "Disable support of NTLMv1 for Samba authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -72,7 +72,7 @@ class FssoPolling:
         self,
         payload_dict: FssoPollingPayload | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         server: str | None = ...,
         default_domain: str | None = ...,
         port: int | None = ...,
@@ -82,8 +82,8 @@ class FssoPolling:
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
         adgrp: list[dict[str, Any]] | None = ...,
-        smbv1: Literal["enable", "disable"] | None = ...,
-        smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
+        smbv1: Literal[{"description": "Enable support of SMBv1 for Samba", "help": "Enable support of SMBv1 for Samba.", "label": "Enable", "name": "enable"}, {"description": "Disable support of SMBv1 for Samba", "help": "Disable support of SMBv1 for Samba.", "label": "Disable", "name": "disable"}] | None = ...,
+        smb_ntlmv1_auth: Literal[{"description": "Enable support of NTLMv1 for Samba authentication", "help": "Enable support of NTLMv1 for Samba authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable support of NTLMv1 for Samba authentication", "help": "Disable support of NTLMv1 for Samba authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

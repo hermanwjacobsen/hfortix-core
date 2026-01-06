@@ -56,7 +56,7 @@ class Start:
         """
         Retrieve wifi/spectrum/start configuration.
 
-        Configuration for wifi/spectrum/start
+        Start spectrum analysis for a specific FortiAP for a duration of time.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

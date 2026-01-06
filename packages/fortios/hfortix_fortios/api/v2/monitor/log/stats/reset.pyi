@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for log/stats/reset
+    Reset logging statistics for all log devices.
     
     Path: log/stats/reset
     Category: monitor

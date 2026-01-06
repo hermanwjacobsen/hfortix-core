@@ -13,9 +13,9 @@ class SensorPayload(TypedDict, total=False):
     name: str  # Sensor name.
     comment: NotRequired[str]  # Comment.
     replacemsg_group: NotRequired[str]  # Replacement message group.
-    block_malicious_url: NotRequired[Literal["disable", "enable"]]  # Enable/disable malicious URL blocking.
-    scan_botnet_connections: NotRequired[Literal["disable", "block", "monitor"]]  # Block or monitor connections to Botnet servers, or disable B
-    extended_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended logging.
+    block_malicious_url: NotRequired[Literal[{"description": "Disable malicious URL blocking", "help": "Disable malicious URL blocking.", "label": "Disable", "name": "disable"}, {"description": "Enable malicious URL blocking", "help": "Enable malicious URL blocking.", "label": "Enable", "name": "enable"}]]  # Enable/disable malicious URL blocking.
+    scan_botnet_connections: NotRequired[Literal[{"description": "Do not scan connections to botnet servers", "help": "Do not scan connections to botnet servers.", "label": "Disable", "name": "disable"}, {"description": "Block connections to botnet servers", "help": "Block connections to botnet servers.", "label": "Block", "name": "block"}, {"description": "Log connections to botnet servers", "help": "Log connections to botnet servers.", "label": "Monitor", "name": "monitor"}]]  # Block or monitor connections to Botnet servers, or disable B
+    extended_log: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable extended logging.
     entries: NotRequired[list[dict[str, Any]]]  # IPS sensor filter.
 
 
@@ -47,9 +47,9 @@ class Sensor:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        block_malicious_url: Literal["disable", "enable"] | None = ...,
-        scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
+        block_malicious_url: Literal[{"description": "Disable malicious URL blocking", "help": "Disable malicious URL blocking.", "label": "Disable", "name": "disable"}, {"description": "Enable malicious URL blocking", "help": "Enable malicious URL blocking.", "label": "Enable", "name": "enable"}] | None = ...,
+        scan_botnet_connections: Literal[{"description": "Do not scan connections to botnet servers", "help": "Do not scan connections to botnet servers.", "label": "Disable", "name": "disable"}, {"description": "Block connections to botnet servers", "help": "Block connections to botnet servers.", "label": "Block", "name": "block"}, {"description": "Log connections to botnet servers", "help": "Log connections to botnet servers.", "label": "Monitor", "name": "monitor"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -62,9 +62,9 @@ class Sensor:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        block_malicious_url: Literal["disable", "enable"] | None = ...,
-        scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
+        block_malicious_url: Literal[{"description": "Disable malicious URL blocking", "help": "Disable malicious URL blocking.", "label": "Disable", "name": "disable"}, {"description": "Enable malicious URL blocking", "help": "Enable malicious URL blocking.", "label": "Enable", "name": "enable"}] | None = ...,
+        scan_botnet_connections: Literal[{"description": "Do not scan connections to botnet servers", "help": "Do not scan connections to botnet servers.", "label": "Disable", "name": "disable"}, {"description": "Block connections to botnet servers", "help": "Block connections to botnet servers.", "label": "Block", "name": "block"}, {"description": "Log connections to botnet servers", "help": "Log connections to botnet servers.", "label": "Monitor", "name": "monitor"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

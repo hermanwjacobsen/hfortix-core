@@ -11,7 +11,7 @@ class LdbMonitorPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Monitor name.
-    type: Literal["ping", "tcp", "http", "https", "dns"]  # Select the Monitor type used by the health check monitor to 
+    type: Literal[{"description": "PING health monitor", "help": "PING health monitor.", "label": "Ping", "name": "ping"}, {"description": "TCP-connect health monitor", "help": "TCP-connect health monitor.", "label": "Tcp", "name": "tcp"}, {"description": "HTTP-GET health monitor", "help": "HTTP-GET health monitor.", "label": "Http", "name": "http"}, {"description": "HTTP-GET health monitor with SSL", "help": "HTTP-GET health monitor with SSL.", "label": "Https", "name": "https"}, {"description": "DNS health monitor", "help": "DNS health monitor.", "label": "Dns", "name": "dns"}]  # Select the Monitor type used by the health check monitor to 
     interval: NotRequired[int]  # Time between health checks (5 - 65535 sec, default = 10).
     timeout: NotRequired[int]  # Time to wait to receive response to a health check from a se
     retry: NotRequired[int]  # Number health check attempts before the server is considered
@@ -20,7 +20,7 @@ class LdbMonitorPayload(TypedDict, total=False):
     http_get: NotRequired[str]  # Request URI used to send a GET request to check the health o
     http_match: NotRequired[str]  # String to match the value expected in response to an HTTP-GE
     http_max_redirects: NotRequired[int]  # The maximum number of HTTP redirects to be allowed (0 - 5, d
-    dns_protocol: NotRequired[Literal["udp", "tcp"]]  # Select the protocol used by the DNS health check monitor to 
+    dns_protocol: NotRequired[Literal[{"description": "UDP", "help": "UDP.", "label": "Udp", "name": "udp"}, {"description": "TCP", "help": "TCP.", "label": "Tcp", "name": "tcp"}]]  # Select the protocol used by the DNS health check monitor to 
     dns_request_domain: NotRequired[str]  # Fully qualified domain name to resolve for the DNS probe.
     dns_match_ip: NotRequired[str]  # Response IP expected from DNS server.
 
@@ -51,7 +51,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type: Literal[{"description": "PING health monitor", "help": "PING health monitor.", "label": "Ping", "name": "ping"}, {"description": "TCP-connect health monitor", "help": "TCP-connect health monitor.", "label": "Tcp", "name": "tcp"}, {"description": "HTTP-GET health monitor", "help": "HTTP-GET health monitor.", "label": "Http", "name": "http"}, {"description": "HTTP-GET health monitor with SSL", "help": "HTTP-GET health monitor with SSL.", "label": "Https", "name": "https"}, {"description": "DNS health monitor", "help": "DNS health monitor.", "label": "Dns", "name": "dns"}] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -60,7 +60,7 @@ class LdbMonitor:
         http_get: str | None = ...,
         http_match: str | None = ...,
         http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
+        dns_protocol: Literal[{"description": "UDP", "help": "UDP.", "label": "Udp", "name": "udp"}, {"description": "TCP", "help": "TCP.", "label": "Tcp", "name": "tcp"}] | None = ...,
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
@@ -72,7 +72,7 @@ class LdbMonitor:
         self,
         payload_dict: LdbMonitorPayload | None = ...,
         name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
+        type: Literal[{"description": "PING health monitor", "help": "PING health monitor.", "label": "Ping", "name": "ping"}, {"description": "TCP-connect health monitor", "help": "TCP-connect health monitor.", "label": "Tcp", "name": "tcp"}, {"description": "HTTP-GET health monitor", "help": "HTTP-GET health monitor.", "label": "Http", "name": "http"}, {"description": "HTTP-GET health monitor with SSL", "help": "HTTP-GET health monitor with SSL.", "label": "Https", "name": "https"}, {"description": "DNS health monitor", "help": "DNS health monitor.", "label": "Dns", "name": "dns"}] | None = ...,
         interval: int | None = ...,
         timeout: int | None = ...,
         retry: int | None = ...,
@@ -81,7 +81,7 @@ class LdbMonitor:
         http_get: str | None = ...,
         http_match: str | None = ...,
         http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
+        dns_protocol: Literal[{"description": "UDP", "help": "UDP.", "label": "Udp", "name": "udp"}, {"description": "TCP", "help": "TCP.", "label": "Tcp", "name": "tcp"}] | None = ...,
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,

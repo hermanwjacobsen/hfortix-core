@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AppLookup:
     """
-    Configuration for utm/app-lookup
+    Query ISDB to resolve hosts to application control entries.
     
     Path: utm/app_lookup
     Category: monitor

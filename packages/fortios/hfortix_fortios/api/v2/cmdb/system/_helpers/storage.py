@@ -118,22 +118,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_MEDIA_STATUS = [
-    "enable",
-    "disable",
-    "fail",
+    "enable",  # Storage is enabled.
+    "disable",  # Storage is disabled.
+    "fail",  # Storage have some fail sector.
 ]
 VALID_BODY_USAGE = [
-    "log",
-    "wanopt",
+    "log",  # Use hard disk for logging.
+    "wanopt",  # Use hard disk for WAN Optimization.
 ]
 VALID_BODY_WANOPT_MODE = [
-    "mix",
-    "wanopt",
-    "webcache",
+    "mix",  # Use hard disk for WAN Optimization mix mode.
+    "wanopt",  # Use hard disk for WAN Optimization wanopt mode.
+    "webcache",  # Use hard disk for WAN Optimization webcache mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -261,7 +261,7 @@ def validate_system_storage_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_storage_post(payload)
         >>> assert is_valid == True

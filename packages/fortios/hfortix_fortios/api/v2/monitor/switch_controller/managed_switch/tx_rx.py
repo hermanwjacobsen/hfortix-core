@@ -56,7 +56,7 @@ class TxRx:
         """
         Retrieve switch_controller/managed_switch/tx_rx configuration.
 
-        Configuration for switch-controller/managed-switch/tx-rx
+        Retrieve the transceiver Tx and Rx power for a specific port.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -56,7 +56,7 @@ class Status:
         """
         Retrieve switch_controller/isl_lockdown/status configuration.
 
-        Configuration for switch-controller/isl-lockdown/status
+        Get current status of ISL lockdown.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

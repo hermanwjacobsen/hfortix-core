@@ -105,7 +105,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Permit or deny this IP address and netmask prefix.",
             "default": "permit",
-            "options": ["permit", "deny"],
+            "options": [{"help": "Permit or allow this IP address and netmask prefix.", "label": "Permit", "name": "permit"}, {"help": "Deny this IP address and netmask prefix.", "label": "Deny", "name": "deny"}],
         },
         "prefix6": {
             "type": "user",
@@ -117,7 +117,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable exact prefix match.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable exact match.", "label": "Enable", "name": "enable"}, {"help": "Disable exact match.", "label": "Disable", "name": "disable"}],
         },
         "flags": {
             "type": "integer",

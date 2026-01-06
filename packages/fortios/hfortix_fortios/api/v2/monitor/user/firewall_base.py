@@ -56,7 +56,7 @@ class Firewall:
         """
         Retrieve user/firewall configuration.
 
-        Configuration for user/firewall/count
+        List authenticated firewall users.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable local risk level", "help": "Enable local risk level.", "label": "Enable", "name": "enable"}, {"description": "Disable local risk level", "help": "Disable local risk level.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

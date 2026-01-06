@@ -155,8 +155,6 @@ FIELDS_WITH_DEFAULTS = {
     "ntlm": "disable",
     "ntlm-guest": "disable",
     "fsso-agent-for-ntlm": "",
-    "scim": "disable",
-    "saml-server": "",
     "auth-path": "disable",
     "disclaimer": "disable",
     "email-collect": "disable",
@@ -327,7 +325,7 @@ FIELD_TYPES = {
     "pcp-outbound": "option",  # Enable/disable PCP outbound SNAT.
     "pcp-inbound": "option",  # Enable/disable PCP inbound DNAT.
     "pcp-poolname": "string",  # PCP pool names.
-    "permit-any-host": "option",  # Accept UDP packets from any host.
+    "permit-any-host": "option",  # Enable/disable fullcone NAT. Accept UDP packets from any hos
     "permit-stun-host": "option",  # Accept UDP packets from any Session Traversal Utilities for 
     "fixedport": "option",  # Enable to prevent source NAT from changing a session's sourc
     "port-preserve": "option",  # Enable/disable preservation of the original source port from
@@ -351,10 +349,6 @@ FIELD_TYPES = {
     "groups": "string",  # Names of user groups that can authenticate with this policy.
     "users": "string",  # Names of individual users that can authenticate with this po
     "fsso-groups": "string",  # Names of FSSO groups.
-    "scim": "option",  # Enable/disable SCIM (default = disable).
-    "saml-server": "string",  # SAML server name.
-    "scim-users": "string",  # Names of SCIM users.
-    "scim-groups": "string",  # Names of SCIM groups.
     "auth-path": "option",  # Enable/disable authentication-based routing.
     "disclaimer": "option",  # Enable/disable user authentication disclaimer.
     "email-collect": "option",  # Enable/disable email collection.
@@ -519,7 +513,7 @@ FIELD_DESCRIPTIONS = {
     "pcp-outbound": "Enable/disable PCP outbound SNAT.",
     "pcp-inbound": "Enable/disable PCP inbound DNAT.",
     "pcp-poolname": "PCP pool names.",
-    "permit-any-host": "Accept UDP packets from any host.",
+    "permit-any-host": "Enable/disable fullcone NAT. Accept UDP packets from any host.",
     "permit-stun-host": "Accept UDP packets from any Session Traversal Utilities for NAT (STUN) host.",
     "fixedport": "Enable to prevent source NAT from changing a session's source port.",
     "port-preserve": "Enable/disable preservation of the original source port from source NAT if it has not been used.",
@@ -543,10 +537,6 @@ FIELD_DESCRIPTIONS = {
     "groups": "Names of user groups that can authenticate with this policy.",
     "users": "Names of individual users that can authenticate with this policy.",
     "fsso-groups": "Names of FSSO groups.",
-    "scim": "Enable/disable SCIM (default = disable).",
-    "saml-server": "SAML server name.",
-    "scim-users": "Names of SCIM users.",
-    "scim-groups": "Names of SCIM groups.",
     "auth-path": "Enable/disable authentication-based routing.",
     "disclaimer": "Enable/disable user authentication disclaimer.",
     "email-collect": "Enable/disable email collection.",
@@ -633,7 +623,6 @@ FIELD_CONSTRAINTS = {
     "vlan-cos-fwd": {"type": "integer", "min": 0, "max": 7},
     "vlan-cos-rev": {"type": "integer", "min": 0, "max": 7},
     "fsso-agent-for-ntlm": {"type": "string", "max_length": 35},
-    "saml-server": {"type": "string", "max_length": 35},
     "vpntunnel": {"type": "string", "max_length": 35},
     "tcp-mss-sender": {"type": "integer", "min": 0, "max": 65535},
     "tcp-mss-receiver": {"type": "integer", "min": 0, "max": 65535},
@@ -976,22 +965,6 @@ NESTED_SCHEMAS = {
             "max_length": 511,
         },
     },
-    "scim-users": {
-        "name": {
-            "type": "string",
-            "help": "Names of SCIM users.",
-            "default": "",
-            "max_length": 79,
-        },
-    },
-    "scim-groups": {
-        "name": {
-            "type": "string",
-            "help": "Names of SCIM groups.",
-            "default": "",
-            "max_length": 79,
-        },
-    },
     "custom-log-fields": {
         "field-id": {
             "type": "string",
@@ -1051,354 +1024,350 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ACTION = [
-    "accept",
-    "deny",
-    "ipsec",
+    "accept",  # Allows session that match the firewall policy.
+    "deny",  # Blocks sessions that match the firewall policy.
+    "ipsec",  # Firewall policy becomes a policy-based IPsec VPN policy.
 ]
 VALID_BODY_NAT64 = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAT64.
+    "disable",  # Disable NAT64.
 ]
 VALID_BODY_NAT46 = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAT46.
+    "disable",  # Disable NAT46.
 ]
 VALID_BODY_ZTNA_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable zero trust network access.
+    "disable",  # Disable zero trust network access.
 ]
 VALID_BODY_ZTNA_DEVICE_OWNERSHIP = [
-    "enable",
-    "disable",
+    "enable",  # Enable ZTNA device ownership check.
+    "disable",  # Disable ZTNA device ownership check.
 ]
 VALID_BODY_ZTNA_TAGS_MATCH_LOGIC = [
-    "or",
-    "and",
+    "or",  # Match ZTNA tags using a logical OR operator.
+    "and",  # Match ZTNA tags using a logical AND operator.
 ]
 VALID_BODY_INTERNET_SERVICE = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Services in policy.
+    "disable",  # Disable use of Internet Services in policy.
 ]
 VALID_BODY_INTERNET_SERVICE_SRC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Services source in policy.
+    "disable",  # Disable use of Internet Services source in policy.
 ]
 VALID_BODY_REPUTATION_DIRECTION = [
-    "source",
-    "destination",
+    "source",  # Check reputation for source address.
+    "destination",  # Check reputation for destination address.
 ]
 VALID_BODY_INTERNET_SERVICE6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of IPv6 Internet Services in policy.
+    "disable",  # Disable use of IPv6 Internet Services in policy.
 ]
 VALID_BODY_INTERNET_SERVICE6_SRC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of IPv6 Internet Services source in policy.
+    "disable",  # Disable use of IPv6 Internet Services source in policy.
 ]
 VALID_BODY_REPUTATION_DIRECTION6 = [
-    "source",
-    "destination",
+    "source",  # Check reputation for IPv6 source address.
+    "destination",  # Check reputation for IPv6 destination address.
 ]
 VALID_BODY_RTP_NAT = [
-    "disable",
-    "enable",
+    "disable",  # Disable setting.
+    "enable",  # Enable setting.
 ]
 VALID_BODY_SEND_DENY_PACKET = [
-    "disable",
-    "enable",
+    "disable",  # Disable deny-packet sending.
+    "enable",  # Enable deny-packet sending.
 ]
 VALID_BODY_FIREWALL_SESSION_DIRTY = [
-    "check-all",
-    "check-new",
+    "check-all",  # Flush all current sessions accepted by this policy. These sessions must be started and re-matched with policies.
+    "check-new",  # Continue to allow sessions already accepted by this policy.
 ]
 VALID_BODY_SCHEDULE_TIMEOUT = [
-    "enable",
-    "disable",
+    "enable",  # Enable schedule timeout.
+    "disable",  # Disable schedule timeout.
 ]
 VALID_BODY_POLICY_EXPIRY = [
-    "enable",
-    "disable",
+    "enable",  # Enable policy expiry.
+    "disable",  # Disable polcy expiry.
 ]
 VALID_BODY_TOS_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable TOS match negate.
+    "disable",  # Disable TOS match negate.
 ]
 VALID_BODY_ANTI_REPLAY = [
-    "enable",
-    "disable",
+    "enable",  # Enable anti-replay check.
+    "disable",  # Disable anti-replay check.
 ]
 VALID_BODY_TCP_SESSION_WITHOUT_SYN = [
-    "all",
-    "data-only",
-    "disable",
+    "all",  # Enable TCP session without SYN.
+    "data-only",  # Enable TCP session data only.
+    "disable",  # Disable TCP session without SYN.
 ]
 VALID_BODY_GEOIP_ANYCAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable recognition of anycast IP addresses using the geography IP database.
+    "disable",  # Disable recognition of anycast IP addresses using the geography IP database.
 ]
 VALID_BODY_GEOIP_MATCH = [
-    "physical-location",
-    "registered-location",
+    "physical-location",  # Match geography address to its physical location using the geography IP database.
+    "registered-location",  # Match geography address to its registered location using the geography IP database.
 ]
 VALID_BODY_DYNAMIC_SHAPING = [
-    "enable",
-    "disable",
+    "enable",  # Enable dynamic RADIUS defined traffic shaping.
+    "disable",  # Disable dynamic RADIUS defined traffic shaping.
 ]
 VALID_BODY_PASSIVE_WAN_HEALTH_MEASUREMENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable Passive WAN health measurement.
+    "disable",  # Disable Passive WAN health measurement.
 ]
 VALID_BODY_APP_MONITOR = [
-    "enable",
-    "disable",
+    "enable",  # Enable TCP metrics in session logs.
+    "disable",  # Disable TCP metrics in session logs.
 ]
 VALID_BODY_UTM_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_INSPECTION_MODE = [
-    "proxy",
-    "flow",
+    "proxy",  # Proxy based inspection.
+    "flow",  # Flow based inspection.
 ]
 VALID_BODY_HTTP_POLICY_REDIRECT = [
-    "enable",
-    "disable",
-    "legacy",
+    "enable",  # Enable HTTP(S) policy redirect.
+    "disable",  # Disable HTTP(S) policy redirect.
+    "legacy",  # Enable HTTP(S) policy redirect (for preserving old behavior, not recommended for new setups).
 ]
 VALID_BODY_SSH_POLICY_REDIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable SSH policy redirect.
+    "disable",  # Disable SSH policy redirect.
 ]
 VALID_BODY_ZTNA_POLICY_REDIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable ZTNA proxy-policy redirect.
+    "disable",  # Disable ZTNA proxy-policy redirect.
 ]
 VALID_BODY_PROFILE_TYPE = [
-    "single",
-    "group",
+    "single",  # Do not allow security profile groups.
+    "group",  # Allow security profile groups.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "all",
-    "utm",
-    "disable",
+    "all",  # Log all sessions accepted or denied by this policy.
+    "utm",  # Log traffic that has a security profile applied to it.
+    "disable",  # Disable all logging for this policy.
 ]
 VALID_BODY_LOGTRAFFIC_START = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOG_HTTP_TRANSACTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable HTTP transaction log.
+    "disable",  # Disable HTTP transaction log.
 ]
 VALID_BODY_CAPTURE_PACKET = [
-    "enable",
-    "disable",
+    "enable",  # Enable capture packets.
+    "disable",  # Disable capture packets.
 ]
 VALID_BODY_AUTO_ASIC_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable auto ASIC offloading.
+    "disable",  # Disable ASIC offloading.
 ]
 VALID_BODY_WANOPT = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WANOPT_DETECTION = [
-    "active",
-    "passive",
-    "off",
+    "active",  # Active WAN optimization peer auto-detection.
+    "passive",  # Passive WAN optimization peer auto-detection.
+    "off",  # Turn off WAN optimization peer auto-detection.
 ]
 VALID_BODY_WANOPT_PASSIVE_OPT = [
-    "default",
-    "transparent",
-    "non-transparent",
+    "default",  # Allow client side WAN opt peer to decide.
+    "transparent",  # Use address of client to connect to server.
+    "non-transparent",  # Use local FortiGate address to connect to server.
 ]
 VALID_BODY_WEBCACHE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEBCACHE_HTTPS = [
-    "disable",
-    "enable",
+    "disable",  # Disable web cache for HTTPS.
+    "enable",  # Enable web cache for HTTPS.
 ]
 VALID_BODY_NAT = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PCP_OUTBOUND = [
-    "enable",
-    "disable",
+    "enable",  # Enable PCP outbound SNAT.
+    "disable",  # Disable PCP outbound SNAT.
 ]
 VALID_BODY_PCP_INBOUND = [
-    "enable",
-    "disable",
+    "enable",  # Enable PCP inbound DNAT.
+    "disable",  # Disable PCP inbound DNAT.
 ]
 VALID_BODY_PERMIT_ANY_HOST = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PERMIT_STUN_HOST = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_FIXEDPORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PORT_PRESERVE = [
-    "enable",
-    "disable",
+    "enable",  # Use the original source port if it has not been used.
+    "disable",  # Source NAT always changes the source port.
 ]
 VALID_BODY_PORT_RANDOM = [
-    "enable",
-    "disable",
+    "enable",  # Enable random source port selection for source NAT.
+    "disable",  # Disable random source port selection for source NAT.
 ]
 VALID_BODY_IPPOOL = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_INBOUND = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_OUTBOUND = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_NATINBOUND = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_NATOUTBOUND = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_FEC = [
-    "enable",
-    "disable",
+    "enable",  # Enable Forward Error Correction.
+    "disable",  # Disable Forward Error Correction.
 ]
 VALID_BODY_WCCP = [
-    "enable",
-    "disable",
+    "enable",  # Enable WCCP setting.
+    "disable",  # Disable WCCP setting.
 ]
 VALID_BODY_NTLM = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_NTLM_GUEST = [
-    "enable",
-    "disable",
-]
-VALID_BODY_SCIM = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_AUTH_PATH = [
-    "enable",
-    "disable",
+    "enable",  # Enable authentication-based routing.
+    "disable",  # Disable authentication-based routing.
 ]
 VALID_BODY_DISCLAIMER = [
-    "enable",
-    "disable",
+    "enable",  # Enable user authentication disclaimer.
+    "disable",  # Disable user authentication disclaimer.
 ]
 VALID_BODY_EMAIL_COLLECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable email collection.
+    "disable",  # Disable email collection.
 ]
 VALID_BODY_MATCH_VIP = [
-    "enable",
-    "disable",
+    "enable",  # Match DNATed packet.
+    "disable",  # Do not match DNATed packet.
 ]
 VALID_BODY_MATCH_VIP_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # Enable matching of only those packets that have had their destination addresses changed by a VIP.
+    "disable",  # Disable matching of only those packets that have had their destination addresses changed by a VIP.
 ]
 VALID_BODY_DIFFSERV_COPY = [
-    "enable",
-    "disable",
+    "enable",  # Enable DSCP copy.
+    "disable",  # Disable DSCP copy.
 ]
 VALID_BODY_DIFFSERV_FORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting forward (original) traffic Diffserv.
+    "disable",  # Disable setting forward (original) traffic Diffserv.
 ]
 VALID_BODY_DIFFSERV_REVERSE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting reverse (reply) traffic DiffServ.
+    "disable",  # Disable setting reverse (reply) traffic DiffServ.
 ]
 VALID_BODY_BLOCK_NOTIFICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SRCADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable source address negate.
+    "disable",  # Disable source address negate.
 ]
 VALID_BODY_SRCADDR6_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv6 source address negate.
+    "disable",  # Disable IPv6 source address negate.
 ]
 VALID_BODY_DSTADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable destination address negate.
+    "disable",  # Disable destination address negate.
 ]
 VALID_BODY_DSTADDR6_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv6 destination address negate.
+    "disable",  # Disable IPv6 destination address negate.
 ]
 VALID_BODY_ZTNA_EMS_TAG_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable ZTNA EMS tags negate.
+    "disable",  # Disable ZTNA EMS tags negate.
 ]
 VALID_BODY_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated service match.
+    "disable",  # Disable negated service match.
 ]
 VALID_BODY_INTERNET_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated Internet Service match.
+    "disable",  # Disable negated Internet Service match.
 ]
 VALID_BODY_INTERNET_SERVICE_SRC_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated Internet Service source match.
+    "disable",  # Disable negated Internet Service source match.
 ]
 VALID_BODY_INTERNET_SERVICE6_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated IPv6 Internet Service match.
+    "disable",  # Disable negated IPv6 Internet Service match.
 ]
 VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated IPv6 Internet Service source match.
+    "disable",  # Disable negated IPv6 Internet Service source match.
 ]
 VALID_BODY_TIMEOUT_SEND_RST = [
-    "enable",
-    "disable",
+    "enable",  # Enable sending of RST packet upon TCP session expiration.
+    "disable",  # Disable sending of RST packet upon TCP session expiration.
 ]
 VALID_BODY_CAPTIVE_PORTAL_EXEMPT = [
-    "enable",
-    "disable",
+    "enable",  # Enable exemption of captive portal.
+    "disable",  # Disable exemption of captive portal.
 ]
 VALID_BODY_DSRI = [
-    "enable",
-    "disable",
+    "enable",  # Enable DSRI.
+    "disable",  # Disable DSRI.
 ]
 VALID_BODY_RADIUS_MAC_AUTH_BYPASS = [
-    "enable",
-    "disable",
+    "enable",  # Enable MAC authentication bypass.
+    "disable",  # Disable MAC authentication bypass.
 ]
 VALID_BODY_RADIUS_IP_AUTH_BYPASS = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP authentication bypass.
+    "disable",  # Disable IP authentication bypass.
 ]
 VALID_BODY_DELAY_TCP_NPU_SESSION = [
-    "enable",
-    "disable",
+    "enable",  # Enable TCP NPU session delay in order to guarantee packet order of 3-way handshake.
+    "disable",  # Disable TCP NPU session delay in order to guarantee packet order of 3-way handshake.
 ]
 VALID_BODY_SGT_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable SGT check.
+    "disable",  # Disable SGT check.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1529,7 +1498,7 @@ def validate_firewall_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "srcintf": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_policy_post(payload)
         >>> assert is_valid == True
@@ -2141,16 +2110,6 @@ def validate_firewall_policy_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_NTLM_GUEST)}"
             error_msg += f"\n  → Example: ntlm-guest='{{ VALID_BODY_NTLM_GUEST[0] }}'"
-            return (False, error_msg)
-    if "scim" in payload:
-        value = payload["scim"]
-        if value not in VALID_BODY_SCIM:
-            desc = FIELD_DESCRIPTIONS.get("scim", "")
-            error_msg = f"Invalid value for 'scim': '{value}'"
-            if desc:
-                error_msg += f"\n  → Description: {desc}"
-            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SCIM)}"
-            error_msg += f"\n  → Example: scim='{{ VALID_BODY_SCIM[0] }}'"
             return (False, error_msg)
     if "auth-path" in payload:
         value = payload["auth-path"]
@@ -2853,13 +2812,6 @@ def validate_firewall_policy_put(
                 False,
                 f"Invalid value for 'ntlm-guest'='{value}'. Must be one of: {', '.join(VALID_BODY_NTLM_GUEST)}",
             )
-    if "scim" in payload:
-        value = payload["scim"]
-        if value not in VALID_BODY_SCIM:
-            return (
-                False,
-                f"Invalid value for 'scim'='{value}'. Must be one of: {', '.join(VALID_BODY_SCIM)}",
-            )
     if "auth-path" in payload:
         value = payload["auth-path"]
         if value not in VALID_BODY_AUTH_PATH:
@@ -3330,9 +3282,9 @@ SCHEMA_INFO = {
     "mkey": "policyid",
     "mkey_type": "integer",
     "help": "Configure IPv4/IPv6 policies.",
-    "total_fields": 188,
+    "total_fields": 184,
     "required_fields_count": 3,
-    "fields_with_defaults_count": 141,
+    "fields_with_defaults_count": 139,
 }
 
 

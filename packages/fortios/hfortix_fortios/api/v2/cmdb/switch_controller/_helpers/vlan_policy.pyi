@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ALLOWED_VLANS_ALL: Literal["enable", "disable"]
-VALID_BODY_DISCARD_MODE: Literal["none", "all-untagged", "all-tagged"]
+VALID_BODY_ALLOWED_VLANS_ALL: Literal[{"description": "Enable all defined VLANs", "help": "Enable all defined VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable all defined VLANs", "help": "Disable all defined VLANs.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DISCARD_MODE: Literal[{"description": "Discard disabled", "help": "Discard disabled.", "label": "None", "name": "none"}, {"description": "Discard all frames that are untagged", "help": "Discard all frames that are untagged.", "label": "All Untagged", "name": "all-untagged"}, {"description": "Discard all frames that are tagged", "help": "Discard all frames that are tagged.", "label": "All Tagged", "name": "all-tagged"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

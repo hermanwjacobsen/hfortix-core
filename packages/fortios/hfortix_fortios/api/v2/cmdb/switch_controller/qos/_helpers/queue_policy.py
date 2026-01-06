@@ -140,13 +140,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "COS queue drop policy.",
             "default": "taildrop",
-            "options": ["taildrop", "weighted-random-early-detection"],
+            "options": [{"help": "Taildrop policy.", "label": "Taildrop", "name": "taildrop"}, {"help": "Weighted random early detection drop policy.", "label": "Weighted Random Early Detection", "name": "weighted-random-early-detection"}],
         },
         "ecn": {
             "type": "option",
             "help": "Enable/disable ECN packet marking to drop eligible packets.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable ECN packet marking to drop eligible packets.", "label": "Disable", "name": "disable"}, {"help": "Enable ECN packet marking to drop eligible packets.", "label": "Enable", "name": "enable"}],
         },
         "weight": {
             "type": "integer",
@@ -161,13 +161,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SCHEDULE = [
-    "strict",
-    "round-robin",
-    "weighted",
+    "strict",  # Strict scheduling (queue7: highest priority, queue0: lowest priority).
+    "round-robin",  # Round robin scheduling.
+    "weighted",  # Weighted round robin scheduling.
 ]
 VALID_BODY_RATE_BY = [
-    "kbps",
-    "percent",
+    "kbps",  # Rate by kbps.
+    "percent",  # Rate by percent.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -297,7 +297,7 @@ def validate_switch_controller_qos_queue_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "schedule": "strict",  # Valid enum value
+        ...     "schedule": "{'name': 'strict', 'help': 'Strict scheduling (queue7: highest priority, queue0: lowest priority).', 'label': 'Strict', 'description': 'Strict scheduling (queue7: highest priority, queue0: lowest priority)'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_qos_queue_policy_post(payload)
         >>> assert is_valid == True

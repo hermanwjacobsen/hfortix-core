@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve system/crash_log/download configuration.
 
-        Configuration for system/crash-log/download
+        Download system crash log.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

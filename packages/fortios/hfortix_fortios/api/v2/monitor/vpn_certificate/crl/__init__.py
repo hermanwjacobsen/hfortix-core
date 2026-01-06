@@ -1,10 +1,10 @@
 """FortiOS CMDB - Crl category"""
 
-from .import_setting import ImportSetting
+from .import_ import Import
 
 __all__ = [
     "Crl",
-    "ImportSetting",
+    "Import",
 ]
 
 
@@ -17,4 +17,4 @@ class Crl:
         Args:
             client: HTTP client instance for API communication
         """
-        self.import_setting = ImportSetting(client)
+        self.import_ = Import(client)

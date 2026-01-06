@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve switch_controller/fsw_firmware/upload configuration.
 
-        Configuration for switch-controller/fsw-firmware/upload
+        Upload FortiSwitch firmware to the management FortiGate and then push to target FortiSwitches.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

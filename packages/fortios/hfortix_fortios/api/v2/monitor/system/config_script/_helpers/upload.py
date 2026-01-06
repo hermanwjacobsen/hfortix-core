@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_script/upload",
     "category": "monitor",
     "api_path": "system/config-script/upload",
-    "help": "Configuration for system/config-script/upload",
+    "help": "Upload and run a new configuration script file.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

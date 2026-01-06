@@ -56,7 +56,7 @@ class Shutdown:
         """
         Retrieve system/os/shutdown configuration.
 
-        Configuration for system/os/shutdown
+        Immediately shutdown this device.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

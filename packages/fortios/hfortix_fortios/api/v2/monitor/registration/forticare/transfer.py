@@ -56,7 +56,7 @@ class Transfer:
         """
         Retrieve registration/forticare/transfer configuration.
 
-        Configuration for registration/forticare/transfer
+        Transfer to a new FortiCare account.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

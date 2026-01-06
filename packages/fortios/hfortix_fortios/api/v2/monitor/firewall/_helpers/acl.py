@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/acl",
     "category": "monitor",
     "api_path": "firewall/acl",
-    "help": "Configuration for firewall/acl",
+    "help": "List counters for all IPv4 ACL.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

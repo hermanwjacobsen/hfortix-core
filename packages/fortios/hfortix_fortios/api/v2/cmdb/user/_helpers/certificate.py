@@ -110,12 +110,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable user.
+    "disable",  # Disable user.
 ]
 VALID_BODY_TYPE = [
-    "single-certificate",
-    "trusted-issuer",
+    "single-certificate",  # Single certificate.
+    "trusted-issuer",  # Trusted CA issuer.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -246,7 +246,7 @@ def validate_user_certificate_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "common-name": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable user.', 'label': 'Enable', 'description': 'Enable user'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_certificate_post(payload)
         >>> assert is_valid == True

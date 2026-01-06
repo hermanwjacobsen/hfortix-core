@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from .backup import Backup
     from .restore import Restore
     from .restore_status import RestoreStatus
+    from .usb_filelist import UsbFilelist
 
 
 class Config:
@@ -17,5 +18,6 @@ class Config:
     backup: Backup
     restore: Restore
     restore_status: RestoreStatus
+    usb_filelist: UsbFilelist
 
     def __init__(self, client: IHTTPClient) -> None: ...

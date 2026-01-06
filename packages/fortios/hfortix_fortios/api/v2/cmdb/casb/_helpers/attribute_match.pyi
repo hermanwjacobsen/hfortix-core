@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MATCH_STRATEGY: Literal["and", "or"]
+VALID_BODY_MATCH_STRATEGY: Literal[{"description": "Match when any rule is satisfied", "help": "Match when any rule is satisfied.", "label": "Or", "name": "or"}, {"description": "Match when all rules are satisfied", "help": "Match when all rules are satisfied.", "label": "And", "name": "and"}, {"description": "Match when extracted attributes are found within defined rules", "help": "Match when extracted attributes are found within defined rules.", "label": "Subset", "name": "subset"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

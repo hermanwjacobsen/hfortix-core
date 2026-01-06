@@ -99,7 +99,7 @@ NESTED_SCHEMAS = {
             "help": "Usage charge type.",
             "required": True,
             "default": "time-based",
-            "options": ["time-based", "volume-based", "time-and-volume-based", "unlimited"],
+            "options": [{"help": "Time based usage charge.", "label": "Time Based", "name": "time-based"}, {"help": "Volume based usage charge.", "label": "Volume Based", "name": "volume-based"}, {"help": "Time and volume based usage charge.", "label": "Time And Volume Based", "name": "time-and-volume-based"}, {"help": "Unlimited usage.", "label": "Unlimited", "name": "unlimited"}],
         },
         "nai-realm-encoding": {
             "type": "string",

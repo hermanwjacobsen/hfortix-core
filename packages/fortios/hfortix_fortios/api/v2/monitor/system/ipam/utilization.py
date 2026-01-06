@@ -56,7 +56,7 @@ class Utilization:
         """
         Retrieve system/ipam/utilization configuration.
 
-        Configuration for system/ipam/utilization
+        Retrieve IP utilization for IPAM.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

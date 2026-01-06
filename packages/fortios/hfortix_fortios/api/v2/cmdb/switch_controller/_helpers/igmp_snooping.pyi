@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_FLOOD_UNKNOWN_MULTICAST: Literal["enable", "disable"]
+VALID_BODY_FLOOD_UNKNOWN_MULTICAST: Literal[{"description": "Enable unknown multicast flooding", "help": "Enable unknown multicast flooding.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast flooding", "help": "Disable unknown multicast flooding.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

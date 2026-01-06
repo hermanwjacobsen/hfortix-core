@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Status:
     """
-    Configuration for system/lte-modem/status
+    Retrieve the LTE modem status.
     
     Path: system/lte_modem/status
     Category: monitor

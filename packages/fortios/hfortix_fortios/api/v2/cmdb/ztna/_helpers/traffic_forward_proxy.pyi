@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_LOG_BLOCKED_TRAFFIC: Literal["disable", "enable"]
-VALID_BODY_AUTH_PORTAL: Literal["disable", "enable"]
+VALID_BODY_LOG_BLOCKED_TRAFFIC: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}]
+VALID_BODY_AUTH_PORTAL: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Firmware:
     """
-    Configuration for system/firmware
+    Retrieve a list of firmware images available to use for upgrade on this device.
     
     Path: system/firmware
     Category: monitor

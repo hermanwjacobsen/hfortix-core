@@ -118,8 +118,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_QUARANTINE = [
-    "enable",
-    "disable",
+    "enable",  # Enable quarantine.
+    "disable",  # Disable quarantine.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -244,7 +244,7 @@ def validate_user_quarantine_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "quarantine": "enable",  # Valid enum value
+        ...     "quarantine": "{'name': 'enable', 'help': 'Enable quarantine.', 'label': 'Enable', 'description': 'Enable quarantine'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_quarantine_post(payload)
         >>> assert is_valid == True

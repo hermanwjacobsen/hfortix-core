@@ -56,7 +56,7 @@ class PoeUsage:
         """
         Retrieve system/interface/poe_usage configuration.
 
-        Configuration for system/interface/poe-usage
+        Retrieve PoE usage stats across all VDOMs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

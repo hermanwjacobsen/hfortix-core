@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for log/local-report/download
+    Download local report
     
     Path: log/local_report/download
     Category: monitor

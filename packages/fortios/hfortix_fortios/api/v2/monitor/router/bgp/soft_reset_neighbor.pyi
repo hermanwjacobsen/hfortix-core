@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SoftResetNeighbor:
     """
-    Configuration for router/bgp/soft-reset-neighbor
+    BGP Neighbor soft reset.
     
     Path: router/bgp/soft_reset_neighbor
     Category: monitor

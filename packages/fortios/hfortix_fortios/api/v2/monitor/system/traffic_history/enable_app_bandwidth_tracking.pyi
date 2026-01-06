@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class EnableAppBandwidthTracking:
     """
-    Configuration for system/traffic-history/enable-app-bandwidth-tracking
+    Enable FortiView application bandwidth tracking.
     
     Path: system/traffic_history/enable_app_bandwidth_tracking
     Category: monitor

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stop:
     """
-    Configuration for sniffer/stop
+    Stop a running packet capture.
     
     Path: sniffer/stop
     Category: service

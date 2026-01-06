@@ -11,8 +11,8 @@ class ProfilePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # WAF Profile name.
-    external: NotRequired[Literal["disable", "enable"]]  # Disable/Enable external HTTP Inspection.
-    extended_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended logging.
+    external: NotRequired[Literal[{"description": "Disable external inspection", "help": "Disable external inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable external inspection", "help": "Enable external inspection.", "label": "Enable", "name": "enable"}]]  # Disable/Enable external HTTP Inspection.
+    extended_log: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable extended logging.
     signature: NotRequired[str]  # WAF signatures.
     constraint: NotRequired[str]  # WAF HTTP protocol restrictions.
     method: NotRequired[str]  # Method restriction.
@@ -47,8 +47,8 @@ class Profile:
         self,
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
-        external: Literal["disable", "enable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
+        external: Literal[{"description": "Disable external inspection", "help": "Disable external inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable external inspection", "help": "Enable external inspection.", "label": "Enable", "name": "enable"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         signature: str | None = ...,
         constraint: str | None = ...,
         method: str | None = ...,
@@ -64,8 +64,8 @@ class Profile:
         self,
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
-        external: Literal["disable", "enable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
+        external: Literal[{"description": "Disable external inspection", "help": "Disable external inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable external inspection", "help": "Enable external inspection.", "label": "Enable", "name": "enable"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         signature: str | None = ...,
         constraint: str | None = ...,
         method: str | None = ...,

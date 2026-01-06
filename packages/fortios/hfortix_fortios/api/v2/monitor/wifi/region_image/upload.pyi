@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for wifi/region-image/upload
+    Saves a floorplan/region image to an existing region.
     
     Path: wifi/region_image/upload
     Category: monitor

@@ -10,7 +10,7 @@ class OverrideSettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging to FortiAnalyzer.
+    status: NotRequired[Literal[{"description": "Enable logging to FortiAnalyzer", "help": "Enable logging to FortiAnalyzer.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to FortiAnalyzer", "help": "Disable logging to FortiAnalyzer.", "label": "Disable", "name": "disable"}]]  # Enable/disable logging to FortiAnalyzer.
 
 
 class OverrideSetting:
@@ -37,7 +37,7 @@ class OverrideSetting:
     def post(
         self,
         payload_dict: OverrideSettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable logging to FortiAnalyzer", "help": "Enable logging to FortiAnalyzer.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to FortiAnalyzer", "help": "Disable logging to FortiAnalyzer.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -46,7 +46,7 @@ class OverrideSetting:
     def put(
         self,
         payload_dict: OverrideSettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable logging to FortiAnalyzer", "help": "Enable logging to FortiAnalyzer.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to FortiAnalyzer", "help": "Disable logging to FortiAnalyzer.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

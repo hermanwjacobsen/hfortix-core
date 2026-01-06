@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/sessions",
     "category": "monitor",
     "api_path": "firewall/sessions",
-    "help": "Configuration for firewall/sessions",
+    "help": "List all active firewall sessions (optionally filtered).",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

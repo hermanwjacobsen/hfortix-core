@@ -56,7 +56,7 @@ class PurdueLevel:
         """
         Retrieve user/device/purdue_level configuration.
 
-        Configuration for user/device/purdue-level
+        Update the Purdue level of device from device store.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

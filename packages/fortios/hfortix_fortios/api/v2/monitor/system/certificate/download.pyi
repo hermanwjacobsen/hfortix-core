@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for system/certificate/download
+    Download certificate.
     
     Path: system/certificate/download
     Category: monitor

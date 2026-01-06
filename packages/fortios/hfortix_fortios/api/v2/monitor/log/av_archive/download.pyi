@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for log/av-archive/download
+    Download file quarantined by AntiVirus.
     
     Path: log/av_archive/download
     Category: monitor

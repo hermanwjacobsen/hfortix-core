@@ -56,7 +56,7 @@ class Update:
         """
         Retrieve system/ha_peer/update configuration.
 
-        Configuration for system/ha-peer/update
+        Update configuration of peer in HA cluster.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

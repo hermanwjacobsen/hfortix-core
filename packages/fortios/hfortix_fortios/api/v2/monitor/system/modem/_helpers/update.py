@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/modem/update",
     "category": "monitor",
     "api_path": "system/modem/update",
-    "help": "Configuration for system/modem/update",
+    "help": "Update supported modem list from FortiGuard.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

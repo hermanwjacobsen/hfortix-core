@@ -13,7 +13,7 @@ class ZonePayload(TypedDict, total=False):
     name: NotRequired[str]  # Zone name.
     tagging: NotRequired[list[dict[str, Any]]]  # Config object tagging.
     description: NotRequired[str]  # Description.
-    intrazone: NotRequired[Literal["allow", "deny"]]  # Allow or deny traffic routing between different interfaces i
+    intrazone: NotRequired[Literal[{"description": "Allow traffic between interfaces in the zone", "help": "Allow traffic between interfaces in the zone.", "label": "Allow", "name": "allow"}, {"description": "Deny traffic between interfaces in the zone", "help": "Deny traffic between interfaces in the zone.", "label": "Deny", "name": "deny"}]]  # Allow or deny traffic routing between different interfaces i
     interface: NotRequired[list[dict[str, Any]]]  # Add interfaces to this zone. Interfaces must not be assigned
 
 
@@ -45,7 +45,7 @@ class Zone:
         name: str | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
         description: str | None = ...,
-        intrazone: Literal["allow", "deny"] | None = ...,
+        intrazone: Literal[{"description": "Allow traffic between interfaces in the zone", "help": "Allow traffic between interfaces in the zone.", "label": "Allow", "name": "allow"}, {"description": "Deny traffic between interfaces in the zone", "help": "Deny traffic between interfaces in the zone.", "label": "Deny", "name": "deny"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -58,7 +58,7 @@ class Zone:
         name: str | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
         description: str | None = ...,
-        intrazone: Literal["allow", "deny"] | None = ...,
+        intrazone: Literal[{"description": "Allow traffic between interfaces in the zone", "help": "Allow traffic between interfaces in the zone.", "label": "Allow", "name": "allow"}, {"description": "Deny traffic between interfaces in the zone", "help": "Deny traffic between interfaces in the zone.", "label": "Deny", "name": "deny"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

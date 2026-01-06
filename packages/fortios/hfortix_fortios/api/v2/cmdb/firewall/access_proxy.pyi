@@ -12,11 +12,11 @@ class AccessProxyPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Access Proxy name.
     vip: str  # Virtual IP name.
-    auth_portal: NotRequired[Literal["disable", "enable"]]  # Enable/disable authentication portal.
+    auth_portal: NotRequired[Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}]]  # Enable/disable authentication portal.
     auth_virtual_host: NotRequired[str]  # Virtual host for authentication portal.
-    log_blocked_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging of blocked traffic.
-    add_vhost_domain_to_dnsdb: NotRequired[Literal["enable", "disable"]]  # Enable/disable adding vhost/domain to dnsdb for ztna dox tun
-    svr_pool_multiplex: NotRequired[Literal["enable", "disable"]]  # Enable/disable server pool multiplexing (default = disable).
+    log_blocked_traffic: NotRequired[Literal[{"description": "Log all traffic denied by this access proxy", "help": "Log all traffic denied by this access proxy.", "label": "Enable", "name": "enable"}, {"description": "Do not log all traffic denied by this access proxy", "help": "Do not log all traffic denied by this access proxy.", "label": "Disable", "name": "disable"}]]  # Enable/disable logging of blocked traffic.
+    add_vhost_domain_to_dnsdb: NotRequired[Literal[{"description": "add dns entry for all vhosts used by access proxy", "help": "add dns entry for all vhosts used by access proxy.", "label": "Enable", "name": "enable"}, {"description": "Do not add dns entry for all vhosts used by access proxy", "help": "Do not add dns entry for all vhosts used by access proxy.", "label": "Disable", "name": "disable"}]]  # Enable/disable adding vhost/domain to dnsdb for ztna dox tun
+    svr_pool_multiplex: NotRequired[Literal[{"description": "Enable server pool multiplexing", "help": "Enable server pool multiplexing.  Share connected server.", "label": "Enable", "name": "enable"}, {"description": "Disable server pool multiplexing", "help": "Disable server pool multiplexing.  Do not share connected server.", "label": "Disable", "name": "disable"}]]  # Enable/disable server pool multiplexing (default = disable).
     svr_pool_ttl: NotRequired[int]  # Time-to-live in the server pool for idle connections to serv
     svr_pool_server_max_request: NotRequired[int]  # Maximum number of requests that servers in server pool handl
     svr_pool_server_max_concurrent_request: NotRequired[int]  # Maximum number of concurrent requests that servers in server
@@ -52,11 +52,11 @@ class AccessProxy:
         payload_dict: AccessProxyPayload | None = ...,
         name: str | None = ...,
         vip: str | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
-        log_blocked_traffic: Literal["enable", "disable"] | None = ...,
-        add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Log all traffic denied by this access proxy", "help": "Log all traffic denied by this access proxy.", "label": "Enable", "name": "enable"}, {"description": "Do not log all traffic denied by this access proxy", "help": "Do not log all traffic denied by this access proxy.", "label": "Disable", "name": "disable"}] | None = ...,
+        add_vhost_domain_to_dnsdb: Literal[{"description": "add dns entry for all vhosts used by access proxy", "help": "add dns entry for all vhosts used by access proxy.", "label": "Enable", "name": "enable"}, {"description": "Do not add dns entry for all vhosts used by access proxy", "help": "Do not add dns entry for all vhosts used by access proxy.", "label": "Disable", "name": "disable"}] | None = ...,
+        svr_pool_multiplex: Literal[{"description": "Enable server pool multiplexing", "help": "Enable server pool multiplexing.  Share connected server.", "label": "Enable", "name": "enable"}, {"description": "Disable server pool multiplexing", "help": "Disable server pool multiplexing.  Do not share connected server.", "label": "Disable", "name": "disable"}] | None = ...,
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
@@ -73,11 +73,11 @@ class AccessProxy:
         payload_dict: AccessProxyPayload | None = ...,
         name: str | None = ...,
         vip: str | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
-        log_blocked_traffic: Literal["enable", "disable"] | None = ...,
-        add_vhost_domain_to_dnsdb: Literal["enable", "disable"] | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Log all traffic denied by this access proxy", "help": "Log all traffic denied by this access proxy.", "label": "Enable", "name": "enable"}, {"description": "Do not log all traffic denied by this access proxy", "help": "Do not log all traffic denied by this access proxy.", "label": "Disable", "name": "disable"}] | None = ...,
+        add_vhost_domain_to_dnsdb: Literal[{"description": "add dns entry for all vhosts used by access proxy", "help": "add dns entry for all vhosts used by access proxy.", "label": "Enable", "name": "enable"}, {"description": "Do not add dns entry for all vhosts used by access proxy", "help": "Do not add dns entry for all vhosts used by access proxy.", "label": "Disable", "name": "disable"}] | None = ...,
+        svr_pool_multiplex: Literal[{"description": "Enable server pool multiplexing", "help": "Enable server pool multiplexing.  Share connected server.", "label": "Enable", "name": "enable"}, {"description": "Disable server pool multiplexing", "help": "Disable server pool multiplexing.  Do not share connected server.", "label": "Disable", "name": "disable"}] | None = ...,
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,

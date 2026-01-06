@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class BackupAction:
     """
-    Configuration for system/fortimanager/backup-action
+    Import or update from FortiManager objects.
     
     Path: system/fortimanager/backup_action
     Category: monitor

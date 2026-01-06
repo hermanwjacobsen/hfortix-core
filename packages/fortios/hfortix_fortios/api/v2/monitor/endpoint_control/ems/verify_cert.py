@@ -56,7 +56,7 @@ class VerifyCert:
         """
         Retrieve endpoint_control/ems/verify_cert configuration.
 
-        Configuration for endpoint-control/ems/verify-cert
+        Verify EMS server certificate for a specific EMS.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

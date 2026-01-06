@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_VCLUSTER: Literal["vcluster1", "vcluster2"]
-VALID_BODY_TYPE: Literal["ppp", "ethernet"]
+VALID_BODY_VCLUSTER: Literal[{"description": "Virtual cluster 1", "help": "Virtual cluster 1.", "label": "Vcluster1", "name": "vcluster1"}, {"description": "Virtual cluster 2", "help": "Virtual cluster 2.", "label": "Vcluster2", "name": "vcluster2"}]
+VALID_BODY_TYPE: Literal[{"description": "PPP VDOM link", "help": "PPP VDOM link.", "label": "Ppp", "name": "ppp"}, {"description": "Ethernet VDOM link", "help": "Ethernet VDOM link.", "label": "Ethernet", "name": "ethernet"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

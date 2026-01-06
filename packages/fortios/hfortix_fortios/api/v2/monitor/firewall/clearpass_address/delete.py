@@ -56,7 +56,7 @@ class Delete:
         """
         Retrieve firewall/clearpass_address/delete configuration.
 
-        Configuration for firewall/clearpass-address/delete
+        Delete ClearPass address with SPT (System Posture Token) value.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

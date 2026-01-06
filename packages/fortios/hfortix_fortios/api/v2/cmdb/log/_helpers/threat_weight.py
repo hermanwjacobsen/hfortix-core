@@ -143,97 +143,97 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Threat weight score for virus (infected) detected.",
             "default": "critical",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus (infected) detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus (infected) detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus (infected) detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus (infected) detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus (infected) detected.", "label": "Critical", "name": "critical"}],
         },
         "inline-block": {
             "type": "option",
             "help": "Threat weight score for malware detected by inline block.",
             "default": "critical",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus detected by inline block.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus detected by inline block.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus detected by inline block.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus detected by inline block.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus detected by inline block.", "label": "Critical", "name": "critical"}],
         },
         "file-blocked": {
             "type": "option",
             "help": "Threat weight score for blocked file detected.",
             "default": "low",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for blocked file detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for blocked file detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for blocked file detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for blocked file detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for blocked file detected.", "label": "Critical", "name": "critical"}],
         },
         "command-blocked": {
             "type": "option",
             "help": "Threat weight score for blocked command detected.",
             "default": "disable",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for blocked command detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for blocked command detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for blocked command detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for blocked command detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for blocked command detected.", "label": "Critical", "name": "critical"}],
         },
         "oversized": {
             "type": "option",
             "help": "Threat weight score for oversized file detected.",
             "default": "disable",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for oversized file detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for oversized file detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for oversized file detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for oversized file detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for oversized file detected.", "label": "Critical", "name": "critical"}],
         },
         "virus-scan-error": {
             "type": "option",
             "help": "Threat weight score for virus (scan error) detected.",
             "default": "high",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus (scan error) detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus (scan error) detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus (scan error) detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus (scan error) detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus (scan error) detected.", "label": "Critical", "name": "critical"}],
         },
         "switch-proto": {
             "type": "option",
             "help": "Threat weight score for switch proto detected.",
             "default": "disable",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for switch proto detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for switch proto detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for switch proto detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for switch proto detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for switch proto detected.", "label": "Critical", "name": "critical"}],
         },
         "mimefragmented": {
             "type": "option",
             "help": "Threat weight score for mimefragmented detected.",
             "default": "disable",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for mimefragmented detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for mimefragmented detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for mimefragmented detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for mimefragmented detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for mimefragmented detected.", "label": "Critical", "name": "critical"}],
         },
         "virus-file-type-executable": {
             "type": "option",
             "help": "Threat weight score for virus (file type executable) detected.",
             "default": "medium",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus (filetype executable) detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus (filetype executable) detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus (filetype executable) detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus (filetype executable) detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus (filetype executable) detected.", "label": "Critical", "name": "critical"}],
         },
         "virus-outbreak-prevention": {
             "type": "option",
             "help": "Threat weight score for virus (outbreak prevention) event.",
             "default": "critical",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus (outbreak prevention) event.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus (outbreak prevention) event.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus (outbreak prevention) event.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus (outbreak prevention) event.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus (outbreak prevention) event.", "label": "Critical", "name": "critical"}],
         },
         "content-disarm": {
             "type": "option",
             "help": "Threat weight score for virus (content disarm) detected.",
             "default": "medium",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus (content disarm) detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus (content disarm) detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus (content disarm) detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus (content disarm) detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus (content disarm) detected.", "label": "Critical", "name": "critical"}],
         },
         "malware-list": {
             "type": "option",
             "help": "Threat weight score for virus (malware list) detected.",
             "default": "medium",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus (malware list) detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus (malware list) detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus (malware list) detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus (malware list) detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus (malware list) detected.", "label": "Critical", "name": "critical"}],
         },
         "ems-threat-feed": {
             "type": "option",
             "help": "Threat weight score for virus (EMS threat feed) detected.",
             "default": "medium",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for virus (EMS threat feed) detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for virus (EMS threat feed) detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for virus (EMS threat feed) detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for virus (EMS threat feed) detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for virus (EMS threat feed) detected.", "label": "Critical", "name": "critical"}],
         },
         "fsa-malicious": {
             "type": "option",
             "help": "Threat weight score for FortiSandbox malicious malware detected.",
             "default": "critical",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for FortiSandbox malicious malware detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for FortiSandbox malicious malware detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for FortiSandbox malicious malware detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for FortiSandbox malicious malware detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for FortiSandbox malicious malware detected.", "label": "Critical", "name": "critical"}],
         },
         "fsa-high-risk": {
             "type": "option",
             "help": "Threat weight score for FortiSandbox high risk malware detected.",
             "default": "high",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for FortiSandbox high risk malware detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for FortiSandbox high risk malware detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for FortiSandbox high risk malware detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for FortiSandbox high risk malware detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for FortiSandbox high risk malware detected.", "label": "Critical", "name": "critical"}],
         },
         "fsa-medium-risk": {
             "type": "option",
             "help": "Threat weight score for FortiSandbox medium risk malware detected.",
             "default": "medium",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for FortiSandbox medium risk malware detected.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for FortiSandbox medium risk malware detected.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for FortiSandbox medium risk malware detected.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for FortiSandbox medium risk malware detected.", "label": "High", "name": "high"}, {"help": "Use the critical level score for FortiSandbox medium risk malware detected.", "label": "Critical", "name": "critical"}],
         },
     },
     "ips": {
@@ -241,31 +241,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Threat weight score for IPS info severity events.",
             "default": "disable",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for IPS info severity events.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for IPS info severity events.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for IPS info severity events.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for IPS info severity events.", "label": "High", "name": "high"}, {"help": "Use the critical level score for IPS info severity events.", "label": "Critical", "name": "critical"}],
         },
         "low-severity": {
             "type": "option",
             "help": "Threat weight score for IPS low severity events.",
             "default": "low",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for IPS low severity events.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for IPS low severity events.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for IPS low severity events.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for IPS low severity events.", "label": "High", "name": "high"}, {"help": "Use the critical level score for IPS low severity events.", "label": "Critical", "name": "critical"}],
         },
         "medium-severity": {
             "type": "option",
             "help": "Threat weight score for IPS medium severity events.",
             "default": "medium",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for IPS medium severity events.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for IPS medium severity events.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for IPS medium severity events.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for IPS medium severity events.", "label": "High", "name": "high"}, {"help": "Use the critical level score for IPS medium severity events.", "label": "Critical", "name": "critical"}],
         },
         "high-severity": {
             "type": "option",
             "help": "Threat weight score for IPS high severity events.",
             "default": "high",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for IPS high severity events.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for IPS high severity events.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for IPS high severity events.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for IPS high severity events.", "label": "High", "name": "high"}, {"help": "Use the critical level score for IPS high severity events.", "label": "Critical", "name": "critical"}],
         },
         "critical-severity": {
             "type": "option",
             "help": "Threat weight score for IPS critical severity events.",
             "default": "critical",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for IPS critical severity events.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for IPS critical severity events.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for IPS critical severity events.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for IPS critical severity events.", "label": "High", "name": "high"}, {"help": "Use the critical level score for IPS critical severity events.", "label": "Critical", "name": "critical"}],
         },
     },
     "web": {
@@ -288,7 +288,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Threat weight score for web category filtering matches.",
             "default": "low",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for web category filtering matches.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for web category filtering matches.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for web category filtering matches.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for web category filtering matches.", "label": "High", "name": "high"}, {"help": "Use the critical level score for web category filtering matches.", "label": "Critical", "name": "critical"}],
         },
     },
     "geolocation": {
@@ -310,7 +310,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Threat weight score for Geolocation-based events.",
             "default": "low",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for Geolocation-based events.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for Geolocation-based events.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for Geolocation-based events.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for Geolocation-based events.", "label": "High", "name": "high"}, {"help": "Use the critical level score for Geolocation-based events.", "label": "Critical", "name": "critical"}],
         },
     },
     "application": {
@@ -333,7 +333,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Threat weight score for Application events.",
             "default": "low",
-            "options": ["disable", "low", "medium", "high", "critical"],
+            "options": [{"help": "Disable threat weight scoring for Application events.", "label": "Disable", "name": "disable"}, {"help": "Use the low level score for Application events.", "label": "Low", "name": "low"}, {"help": "Use the medium level score for Application events.", "label": "Medium", "name": "medium"}, {"help": "Use the high level score for Application events.", "label": "High", "name": "high"}, {"help": "Use the critical level score for Application events.", "label": "Critical", "name": "critical"}],
         },
     },
 }
@@ -341,36 +341,36 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable the threat weight feature.
+    "disable",  # Disable the threat weight feature.
 ]
 VALID_BODY_BLOCKED_CONNECTION = [
-    "disable",
-    "low",
-    "medium",
-    "high",
-    "critical",
+    "disable",  # Disable threat weight scoring for blocked connections.
+    "low",  # Use the low level score for blocked connections.
+    "medium",  # Use the medium level score for blocked connections.
+    "high",  # Use the high level score for blocked connections.
+    "critical",  # Use the critical level score for blocked connections.
 ]
 VALID_BODY_FAILED_CONNECTION = [
-    "disable",
-    "low",
-    "medium",
-    "high",
-    "critical",
+    "disable",  # Disable threat weight scoring for failed connections.
+    "low",  # Use the low level score for failed connections.
+    "medium",  # Use the medium level score for failed connections.
+    "high",  # Use the high level score for failed connections.
+    "critical",  # Use the critical level score for failed connections.
 ]
 VALID_BODY_URL_BLOCK_DETECTED = [
-    "disable",
-    "low",
-    "medium",
-    "high",
-    "critical",
+    "disable",  # Disable threat weight scoring for URL blocking.
+    "low",  # Use the low level score for URL blocking.
+    "medium",  # Use the medium level score for URL blocking.
+    "high",  # Use the high level score for URL blocking.
+    "critical",  # Use the critical level score for URL blocking.
 ]
 VALID_BODY_BOTNET_CONNECTION_DETECTED = [
-    "disable",
-    "low",
-    "medium",
-    "high",
-    "critical",
+    "disable",  # Disable threat weight scoring for detected botnet connections.
+    "low",  # Use the low level score for detected botnet connections.
+    "medium",  # Use the medium level score for detected botnet connections.
+    "high",  # Use the high level score for detected botnet connections.
+    "critical",  # Use the critical level score for detected botnet connections.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -495,7 +495,7 @@ def validate_log_threat_weight_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable the threat weight feature.', 'label': 'Enable', 'description': 'Enable the threat weight feature'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_threat_weight_post(payload)
         >>> assert is_valid == True

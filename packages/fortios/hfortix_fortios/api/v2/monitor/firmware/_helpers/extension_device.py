@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firmware/extension_device",
     "category": "monitor",
     "api_path": "firmware/extension-device",
-    "help": "Configuration for firmware/extension-device",
+    "help": "Retrieve a list of recommended firmwares for the specified extension device type.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -51,7 +51,7 @@ REQUIRED_FIELDS = [
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "max-size": 62524579,
+    "max-size": 62524334,
     "full-first-warning-threshold": 75,
     "full-second-warning-threshold": 90,
     "full-final-warning-threshold": 95,

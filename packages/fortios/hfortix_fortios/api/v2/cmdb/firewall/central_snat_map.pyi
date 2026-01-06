@@ -12,8 +12,8 @@ class CentralSnatMapPayload(TypedDict, total=False):
     """
     policyid: NotRequired[int]  # Policy ID.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the active status of this policy.
-    type: NotRequired[Literal["ipv4", "ipv6"]]  # IPv4/IPv6 source NAT.
+    status: NotRequired[Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable the active status of this policy.
+    type: NotRequired[Literal[{"description": "Perform IPv4 source NAT", "help": "Perform IPv4 source NAT.", "label": "Ipv4", "name": "ipv4"}, {"description": "Perform IPv6 source NAT", "help": "Perform IPv6 source NAT.", "label": "Ipv6", "name": "ipv6"}]]  # IPv4/IPv6 source NAT.
     srcintf: list[dict[str, Any]]  # Source interface name from available interfaces.
     dstintf: list[dict[str, Any]]  # Destination interface name from available interfaces.
     orig_addr: list[dict[str, Any]]  # IPv4 Original address.
@@ -22,13 +22,13 @@ class CentralSnatMapPayload(TypedDict, total=False):
     dst_addr6: list[dict[str, Any]]  # IPv6 Destination address.
     protocol: NotRequired[int]  # Integer value for the protocol type (0 - 255).
     orig_port: NotRequired[str]  # Original TCP port (1 to 65535, 0 means any port).
-    nat: NotRequired[Literal["disable", "enable"]]  # Enable/disable source NAT.
-    nat46: NotRequired[Literal["enable", "disable"]]  # Enable/disable NAT46.
-    nat64: NotRequired[Literal["enable", "disable"]]  # Enable/disable NAT64.
+    nat: NotRequired[Literal[{"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}, {"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}]]  # Enable/disable source NAT.
+    nat46: NotRequired[Literal[{"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}]]  # Enable/disable NAT46.
+    nat64: NotRequired[Literal[{"description": "Enable NAT64", "help": "Enable NAT64.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT64", "help": "Disable NAT64.", "label": "Disable", "name": "disable"}]]  # Enable/disable NAT64.
     nat_ippool: NotRequired[list[dict[str, Any]]]  # Name of the IP pools to be used to translate addresses from 
     nat_ippool6: NotRequired[list[dict[str, Any]]]  # IPv6 pools to be used for source NAT.
-    port_preserve: NotRequired[Literal["enable", "disable"]]  # Enable/disable preservation of the original source port from
-    port_random: NotRequired[Literal["enable", "disable"]]  # Enable/disable random source port selection for source NAT.
+    port_preserve: NotRequired[Literal[{"description": "Use the original source port if it has not been used", "help": "Use the original source port if it has not been used.", "label": "Enable", "name": "enable"}, {"description": "Source NAT always changes the source port", "help": "Source NAT always changes the source port.", "label": "Disable", "name": "disable"}]]  # Enable/disable preservation of the original source port from
+    port_random: NotRequired[Literal[{"description": "Enable random source port selection for source NAT", "help": "Enable random source port selection for source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable random source port selection for source NAT", "help": "Disable random source port selection for source NAT.", "label": "Disable", "name": "disable"}]]  # Enable/disable random source port selection for source NAT.
     nat_port: NotRequired[str]  # Translated port or port range (1 to 65535, 0 means any port)
     dst_port: NotRequired[str]  # Destination port or port range (1 to 65535, 0 means any port
     comments: NotRequired[str]  # Comment.
@@ -61,8 +61,8 @@ class CentralSnatMap:
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Perform IPv4 source NAT", "help": "Perform IPv4 source NAT.", "label": "Ipv4", "name": "ipv4"}, {"description": "Perform IPv6 source NAT", "help": "Perform IPv6 source NAT.", "label": "Ipv6", "name": "ipv6"}] | None = ...,
         srcintf: list[dict[str, Any]] | None = ...,
         dstintf: list[dict[str, Any]] | None = ...,
         orig_addr: list[dict[str, Any]] | None = ...,
@@ -71,13 +71,13 @@ class CentralSnatMap:
         dst_addr6: list[dict[str, Any]] | None = ...,
         protocol: int | None = ...,
         orig_port: str | None = ...,
-        nat: Literal["disable", "enable"] | None = ...,
-        nat46: Literal["enable", "disable"] | None = ...,
-        nat64: Literal["enable", "disable"] | None = ...,
+        nat: Literal[{"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}, {"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}] | None = ...,
+        nat46: Literal[{"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}] | None = ...,
+        nat64: Literal[{"description": "Enable NAT64", "help": "Enable NAT64.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT64", "help": "Disable NAT64.", "label": "Disable", "name": "disable"}] | None = ...,
         nat_ippool: list[dict[str, Any]] | None = ...,
         nat_ippool6: list[dict[str, Any]] | None = ...,
-        port_preserve: Literal["enable", "disable"] | None = ...,
-        port_random: Literal["enable", "disable"] | None = ...,
+        port_preserve: Literal[{"description": "Use the original source port if it has not been used", "help": "Use the original source port if it has not been used.", "label": "Enable", "name": "enable"}, {"description": "Source NAT always changes the source port", "help": "Source NAT always changes the source port.", "label": "Disable", "name": "disable"}] | None = ...,
+        port_random: Literal[{"description": "Enable random source port selection for source NAT", "help": "Enable random source port selection for source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable random source port selection for source NAT", "help": "Disable random source port selection for source NAT.", "label": "Disable", "name": "disable"}] | None = ...,
         nat_port: str | None = ...,
         dst_port: str | None = ...,
         comments: str | None = ...,
@@ -91,8 +91,8 @@ class CentralSnatMap:
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["ipv4", "ipv6"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Perform IPv4 source NAT", "help": "Perform IPv4 source NAT.", "label": "Ipv4", "name": "ipv4"}, {"description": "Perform IPv6 source NAT", "help": "Perform IPv6 source NAT.", "label": "Ipv6", "name": "ipv6"}] | None = ...,
         srcintf: list[dict[str, Any]] | None = ...,
         dstintf: list[dict[str, Any]] | None = ...,
         orig_addr: list[dict[str, Any]] | None = ...,
@@ -101,13 +101,13 @@ class CentralSnatMap:
         dst_addr6: list[dict[str, Any]] | None = ...,
         protocol: int | None = ...,
         orig_port: str | None = ...,
-        nat: Literal["disable", "enable"] | None = ...,
-        nat46: Literal["enable", "disable"] | None = ...,
-        nat64: Literal["enable", "disable"] | None = ...,
+        nat: Literal[{"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}, {"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}] | None = ...,
+        nat46: Literal[{"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}] | None = ...,
+        nat64: Literal[{"description": "Enable NAT64", "help": "Enable NAT64.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT64", "help": "Disable NAT64.", "label": "Disable", "name": "disable"}] | None = ...,
         nat_ippool: list[dict[str, Any]] | None = ...,
         nat_ippool6: list[dict[str, Any]] | None = ...,
-        port_preserve: Literal["enable", "disable"] | None = ...,
-        port_random: Literal["enable", "disable"] | None = ...,
+        port_preserve: Literal[{"description": "Use the original source port if it has not been used", "help": "Use the original source port if it has not been used.", "label": "Enable", "name": "enable"}, {"description": "Source NAT always changes the source port", "help": "Source NAT always changes the source port.", "label": "Disable", "name": "disable"}] | None = ...,
+        port_random: Literal[{"description": "Enable random source port selection for source NAT", "help": "Enable random source port selection for source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable random source port selection for source NAT", "help": "Disable random source port selection for source NAT.", "label": "Disable", "name": "disable"}] | None = ...,
         nat_port: str | None = ...,
         dst_port: str | None = ...,
         comments: str | None = ...,

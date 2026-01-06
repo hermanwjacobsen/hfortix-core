@@ -56,7 +56,7 @@ class CheckPortAvailability:
         """
         Retrieve system/check_port_availability configuration.
 
-        Configuration for system/check-port-availability
+        Check whether a list of TCP port ranges is available for a certain service.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -142,7 +142,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Policy action (allow | deny).",
             "default": "",
-            "options": ["allow", "deny"],
+            "options": [{"help": "Allows traffic matching the policy.", "label": "Allow", "name": "allow"}, {"help": "Blocks traffic matching the policy.", "label": "Deny", "name": "deny"}],
         },
     },
     "layer3-ipv6-rules": {
@@ -194,7 +194,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Policy action (allow | deny).",
             "default": "",
-            "options": ["allow", "deny"],
+            "options": [{"help": "Allows traffic matching the policy.", "label": "Allow", "name": "allow"}, {"help": "Blocks traffic matching the policy.", "label": "Deny", "name": "deny"}],
         },
     },
 }

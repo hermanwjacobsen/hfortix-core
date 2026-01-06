@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FortiguardCategories:
     """
-    Monitor endpoint for webfilter/fortiguard-categories
+    Return FortiGuard web filter categories.
     
     Path: webfilter/fortiguard_categories
     Category: monitor

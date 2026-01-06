@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Mapping:
     """
-    Configuration for firewall/ippool/mapping
+    Get the list of IPv4 mappings for the specified IP pool.
     
     Path: firewall/ippool/mapping
     Category: monitor

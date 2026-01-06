@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["rogue", "accepted", "suppressed"]
+VALID_BODY_STATUS: Literal[{"description": "Rogue AP", "help": "Rogue AP.", "label": "Rogue", "name": "rogue"}, {"description": "Accepted AP", "help": "Accepted AP.", "label": "Accepted", "name": "accepted"}, {"description": "Suppressed AP", "help": "Suppressed AP.", "label": "Suppressed", "name": "suppressed"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

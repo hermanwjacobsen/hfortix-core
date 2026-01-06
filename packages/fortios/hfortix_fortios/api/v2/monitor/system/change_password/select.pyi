@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Select:
     """
-    Configuration for system/change-password/select
+    Save admin and guest-admin passwords. To be deprecated and replaced by the CMDB REST API.
     
     Path: system/change_password/select
     Category: monitor

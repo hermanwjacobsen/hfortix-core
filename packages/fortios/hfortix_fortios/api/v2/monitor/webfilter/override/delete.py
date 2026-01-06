@@ -56,7 +56,7 @@ class Delete:
         """
         Retrieve webfilter/override/delete configuration.
 
-        Configuration for webfilter/override/delete
+        Delete a configured webfilter override.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

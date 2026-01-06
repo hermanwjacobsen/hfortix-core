@@ -170,6 +170,7 @@ class SdnConnector:
         server_ca_cert: str | None = None,
         api_key: Any | None = None,
         ibm_region: str | None = None,
+        par_id: str | None = None,
         update_interval: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -270,6 +271,7 @@ class SdnConnector:
             server_ca_cert=server_ca_cert,
             api_key=api_key,
             ibm_region=ibm_region,
+            par_id=par_id,
             update_interval=update_interval,
             data=payload_dict,
         )
@@ -348,6 +350,7 @@ class SdnConnector:
         server_ca_cert: str | None = None,
         api_key: Any | None = None,
         ibm_region: str | None = None,
+        par_id: str | None = None,
         update_interval: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -450,6 +453,7 @@ class SdnConnector:
             server_ca_cert=server_ca_cert,
             api_key=api_key,
             ibm_region=ibm_region,
+            par_id=par_id,
             update_interval=update_interval,
             data=payload_dict,
         )

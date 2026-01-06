@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upgrade:
     """
-    Configuration for system/lte-modem/upgrade
+    Upgrade LTE modem firmware image on this device using uploaded files.
     
     Path: system/lte_modem/upgrade
     Category: monitor

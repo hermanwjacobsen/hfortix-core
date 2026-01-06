@@ -108,12 +108,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PROXY_INLINE_IPS = [
-    "disable",
-    "enable",
+    "disable",  # Do not allow inline IPS in proxy-mode policy.
+    "enable",  # Allow inline IPS in proxy-mode policy.
 ]
 VALID_BODY_HA_SESSION_PICKUP = [
-    "connectivity",
-    "security",
+    "connectivity",  # Prefer session continuity.
+    "security",  # Prefer session complete security.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -238,7 +238,7 @@ def validate_ips_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "proxy-inline-ips": "disable",  # Valid enum value
+        ...     "proxy-inline-ips": "{'name': 'disable', 'help': 'Do not allow inline IPS in proxy-mode policy.', 'label': 'Disable', 'description': 'Do not allow inline IPS in proxy-mode policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ips_settings_post(payload)
         >>> assert is_valid == True

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/cluster/state",
     "category": "monitor",
     "api_path": "system/cluster/state",
-    "help": "Configuration for system/cluster/state",
+    "help": "Get state of SLBC cluster slots.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

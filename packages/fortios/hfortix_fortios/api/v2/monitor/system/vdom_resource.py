@@ -56,7 +56,7 @@ class VdomResource:
         """
         Retrieve system/vdom_resource configuration.
 
-        Configuration for system/vdom-resource
+        Retrieve VDOM resource information, including CPU and memory usage.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

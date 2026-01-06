@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Anomaly:
     """
-    Monitor endpoint for ips/anomaly
+    Returns IPS anomaly list.
     
     Path: ips/anomaly
     Category: monitor

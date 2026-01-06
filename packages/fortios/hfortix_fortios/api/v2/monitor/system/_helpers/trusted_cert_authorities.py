@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/trusted_cert_authorities",
     "category": "monitor",
     "api_path": "system/trusted-cert-authorities",
-    "help": "Monitor endpoint for system/trusted-cert-authorities",
+    "help": "Get trusted certifiate authorities.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

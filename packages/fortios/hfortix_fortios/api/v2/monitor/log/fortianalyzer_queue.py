@@ -56,7 +56,7 @@ class FortianalyzerQueue:
         """
         Retrieve log/fortianalyzer_queue configuration.
 
-        Configuration for log/fortianalyzer-queue
+        Retrieve information on FortiAnalyzer's queue state. Note:- FortiAnalyzer logs are queued only if upload-option is realtime.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

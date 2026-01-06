@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for system/crash-log/download
+    Download system crash log.
     
     Path: system/crash_log/download
     Category: monitor

@@ -11,7 +11,7 @@ class IgmpSnoopingPayload(TypedDict, total=False):
         }
     """
     aging_time: NotRequired[int]  # Maximum number of seconds to retain a multicast snooping ent
-    flood_unknown_multicast: NotRequired[Literal["enable", "disable"]]  # Enable/disable unknown multicast flooding.
+    flood_unknown_multicast: NotRequired[Literal[{"description": "Enable unknown multicast flooding", "help": "Enable unknown multicast flooding.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast flooding", "help": "Disable unknown multicast flooding.", "label": "Disable", "name": "disable"}]]  # Enable/disable unknown multicast flooding.
     query_interval: NotRequired[int]  # Maximum time after which IGMP query will be sent (10 - 1200 
 
 
@@ -40,7 +40,7 @@ class IgmpSnooping:
         self,
         payload_dict: IgmpSnoopingPayload | None = ...,
         aging_time: int | None = ...,
-        flood_unknown_multicast: Literal["enable", "disable"] | None = ...,
+        flood_unknown_multicast: Literal[{"description": "Enable unknown multicast flooding", "help": "Enable unknown multicast flooding.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast flooding", "help": "Disable unknown multicast flooding.", "label": "Disable", "name": "disable"}] | None = ...,
         query_interval: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -51,7 +51,7 @@ class IgmpSnooping:
         self,
         payload_dict: IgmpSnoopingPayload | None = ...,
         aging_time: int | None = ...,
-        flood_unknown_multicast: Literal["enable", "disable"] | None = ...,
+        flood_unknown_multicast: Literal[{"description": "Enable unknown multicast flooding", "help": "Enable unknown multicast flooding.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast flooding", "help": "Disable unknown multicast flooding.", "label": "Disable", "name": "disable"}] | None = ...,
         query_interval: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

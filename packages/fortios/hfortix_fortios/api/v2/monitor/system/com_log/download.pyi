@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for system/com-log/download
+    Download com-log file (after file dump is complete).
     
     Path: system/com_log/download
     Category: monitor

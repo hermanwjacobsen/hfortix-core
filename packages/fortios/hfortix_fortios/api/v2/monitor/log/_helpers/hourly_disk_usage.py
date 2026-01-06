@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/hourly_disk_usage",
     "category": "monitor",
     "api_path": "log/hourly-disk-usage",
-    "help": "Monitor endpoint for log/hourly-disk-usage",
+    "help": "Return historic hourly disk usage in bytes.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

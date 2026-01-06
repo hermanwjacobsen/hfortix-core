@@ -117,8 +117,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TUNNEL_TYPE = [
-    "l2tpv3",
-    "gre",
+    "l2tpv3",  # L2TPV3 Ethernet Pseudowire.
+    "gre",  # GRE Ethernet tunnel.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -246,7 +246,7 @@ def validate_wireless_controller_wag_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "tunnel-type": "l2tpv3",  # Valid enum value
+        ...     "tunnel-type": "{'name': 'l2tpv3', 'help': 'L2TPV3 Ethernet Pseudowire.', 'label': 'L2Tpv3', 'description': 'L2TPV3 Ethernet Pseudowire'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_wag_profile_post(payload)
         >>> assert is_valid == True

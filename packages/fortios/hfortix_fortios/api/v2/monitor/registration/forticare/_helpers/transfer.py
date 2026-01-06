@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticare/transfer",
     "category": "monitor",
     "api_path": "registration/forticare/transfer",
-    "help": "Configuration for registration/forticare/transfer",
+    "help": "Transfer to a new FortiCare account.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

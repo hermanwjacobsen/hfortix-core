@@ -6,12 +6,12 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
-    from .import_setting import ImportSetting
+    from .import_ import Import
 
 
 class Ca:
     """Type stub for Ca."""
 
-    import_setting: ImportSetting
+    import_: Import
 
     def __init__(self, client: IHTTPClient) -> None: ...

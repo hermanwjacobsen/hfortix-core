@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Timezone:
     """
-    Monitor endpoint for system/timezone
+    Get world timezone and daylight saving time.
     
     Path: system/timezone
     Category: monitor

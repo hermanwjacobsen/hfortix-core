@@ -107,25 +107,25 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ALLOWACCESS = [
-    "ping",
-    "https",
-    "ssh",
-    "snmp",
-    "http",
-    "telnet",
-    "fgfm",
-    "radius-acct",
-    "probe-response",
-    "fabric",
-    "ftm",
+    "ping",  # PING access.
+    "https",  # HTTPS access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
+    "http",  # HTTP access.
+    "telnet",  # TELNET access.
+    "fgfm",  # FortiManager access.
+    "radius-acct",  # RADIUS accounting access.
+    "probe-response",  # Probe access.
+    "fabric",  # Security Fabric access.
+    "ftm",  # FTM access.
 ]
 VALID_BODY_AUTO_IP = [
-    "enable",
-    "disable",
+    "enable",  # Enable auto-ip status.
+    "disable",  # Disable auto-ip status.
 ]
 VALID_BODY_DHCP_SERVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable DHCP server.
+    "disable",  # Disable DHCP server.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -255,7 +255,7 @@ def validate_switch_controller_initial_config_template_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "allowaccess": "ping",  # Valid enum value
+        ...     "allowaccess": "{'name': 'ping', 'help': 'PING access.', 'label': 'Ping', 'description': 'PING access'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_initial_config_template_post(payload)
         >>> assert is_valid == True

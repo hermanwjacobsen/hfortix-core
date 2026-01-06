@@ -168,63 +168,63 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable EMS configuration and operation.
+    "disable",  # Disable EMS configuration and operation.
 ]
 VALID_BODY_DIRTY_REASON = [
-    "none",
-    "mismatched-ems-sn",
+    "none",  # FortiClient EMS entry not dirty.
+    "mismatched-ems-sn",  # FortiClient EMS entry dirty because EMS SN is mismatched with configured SN.
 ]
 VALID_BODY_FORTINETONE_CLOUD_AUTHENTICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable authentication of FortiClient EMS Cloud through FortiCloud account.
+    "disable",  # Disable authentication of FortiClient EMS Cloud through FortiCloud account.
 ]
 VALID_BODY_PULL_SYSINFO = [
-    "enable",
-    "disable",
+    "enable",  # Enable pulling FortiClient user SysInfo from EMS.
+    "disable",  # Disable pulling FortiClient user SysInfo from EMS.
 ]
 VALID_BODY_PULL_VULNERABILITIES = [
-    "enable",
-    "disable",
+    "enable",  # Enable pulling client vulnerabilities from EMS.
+    "disable",  # Disable pulling client vulnerabilities from EMS.
 ]
 VALID_BODY_PULL_TAGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable pulling FortiClient user tags from EMS.
+    "disable",  # Disable pulling FortiClient user tags from EMS.
 ]
 VALID_BODY_PULL_MALWARE_HASH = [
-    "enable",
-    "disable",
+    "enable",  # Enable pulling FortiClient malware hash from EMS.
+    "disable",  # Disable pulling FortiClient malware hash from EMS.
 ]
 VALID_BODY_CAPABILITIES = [
-    "fabric-auth",
-    "silent-approval",
-    "websocket",
-    "websocket-malware",
-    "push-ca-certs",
-    "common-tags-api",
-    "tenant-id",
-    "client-avatars",
-    "single-vdom-connector",
-    "fgt-sysinfo-api",
-    "ztna-server-info",
-    "used-tags",
+    "fabric-auth",  # Allow this FortiGate unit to load the authentication page provided by EMS to authenticate itself with EMS.
+    "silent-approval",  # Allow silent approval of non-root or FortiGate HA clusters on EMS in the Security Fabric.
+    "websocket",  # Enable/disable websockets for this FortiGate unit. Override behavior using websocket-override.
+    "websocket-malware",  # Allow this FortiGate unit to request malware hash notifications over websocket.
+    "push-ca-certs",  # Enable/disable syncing deep inspection certificates with EMS.
+    "common-tags-api",  # Can recieve tag information from New Common Tags API from EMS.
+    "tenant-id",  # Allow this FortiGate to retrieve Tenant-ID from EMS.
+    "client-avatars",  # Allow this FortiGate to retrieve avatars from EMS by fingerprint.
+    "single-vdom-connector",  # Allow this FortiGate to create a vdom connector to EMS.
+    "fgt-sysinfo-api",  # Allow this FortiGate to send additional info to EMS.
+    "ztna-server-info",  # Allow this FortiGate to send vdom's ZTNA server information to EMS.
+    "used-tags",  # Allow this FortiGate to send used tags information to EMS.
 ]
 VALID_BODY_SEND_TAGS_TO_ALL_VDOMS = [
-    "enable",
-    "disable",
+    "enable",  # Enable sending tags to all vdoms.
+    "disable",  # Disable sending tags to all vdoms.
 ]
 VALID_BODY_WEBSOCKET_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Do not override the WebSocket connection. Connect to WebSocket of this EMS server if it is capable (default).
+    "disable",  # Override the WebSocket connection. Do not connect to WebSocket even if EMS is capable of a WebSocket connection.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_TRUST_CA_CN = [
-    "enable",
-    "disable",
+    "enable",  # Trust EMS certificate CA & CN to automatically renew certificate.
+    "disable",  # Do not trust EMS certificate CA & CN to automatically renew certificate.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -354,7 +354,7 @@ def validate_endpoint_control_fctems_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable EMS configuration and operation.', 'label': 'Enable', 'description': 'Enable EMS configuration and operation'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_endpoint_control_fctems_post(payload)
         >>> assert is_valid == True

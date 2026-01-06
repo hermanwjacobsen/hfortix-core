@@ -13,7 +13,7 @@ class ApStatusPayload(TypedDict, total=False):
     id: NotRequired[int]  # AP ID.
     bssid: NotRequired[str]  # Access Point's (AP's) BSSID.
     ssid: NotRequired[str]  # Access Point's (AP's) SSID.
-    status: NotRequired[Literal["rogue", "accepted", "suppressed"]]  # Access Point's (AP's) status: rogue, accepted, or suppressed
+    status: NotRequired[Literal[{"description": "Rogue AP", "help": "Rogue AP.", "label": "Rogue", "name": "rogue"}, {"description": "Accepted AP", "help": "Accepted AP.", "label": "Accepted", "name": "accepted"}, {"description": "Suppressed AP", "help": "Suppressed AP.", "label": "Suppressed", "name": "suppressed"}]]  # Access Point's (AP's) status: rogue, accepted, or suppressed
 
 
 class ApStatus:
@@ -44,7 +44,7 @@ class ApStatus:
         id: int | None = ...,
         bssid: str | None = ...,
         ssid: str | None = ...,
-        status: Literal["rogue", "accepted", "suppressed"] | None = ...,
+        status: Literal[{"description": "Rogue AP", "help": "Rogue AP.", "label": "Rogue", "name": "rogue"}, {"description": "Accepted AP", "help": "Accepted AP.", "label": "Accepted", "name": "accepted"}, {"description": "Suppressed AP", "help": "Suppressed AP.", "label": "Suppressed", "name": "suppressed"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -56,7 +56,7 @@ class ApStatus:
         id: int | None = ...,
         bssid: str | None = ...,
         ssid: str | None = ...,
-        status: Literal["rogue", "accepted", "suppressed"] | None = ...,
+        status: Literal[{"description": "Rogue AP", "help": "Rogue AP.", "label": "Rogue", "name": "rogue"}, {"description": "Accepted AP", "help": "Accepted AP.", "label": "Accepted", "name": "accepted"}, {"description": "Suppressed AP", "help": "Suppressed AP.", "label": "Suppressed", "name": "suppressed"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

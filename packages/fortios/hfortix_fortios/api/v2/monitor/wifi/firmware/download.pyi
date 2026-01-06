@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for wifi/firmware/download
+    Download FortiAP firmware from FortiGuard to the FortiGate according to FortiAP image ID.
     
     Path: wifi/firmware/download
     Category: monitor

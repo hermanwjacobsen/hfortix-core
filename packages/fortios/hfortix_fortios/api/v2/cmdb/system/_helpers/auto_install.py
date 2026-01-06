@@ -100,12 +100,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTO_INSTALL_CONFIG = [
-    "enable",
-    "disable",
+    "enable",  # Enable config.
+    "disable",  # Disable config.
 ]
 VALID_BODY_AUTO_INSTALL_IMAGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable config.
+    "disable",  # Disable config.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -230,7 +230,7 @@ def validate_system_auto_install_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "auto-install-config": "enable",  # Valid enum value
+        ...     "auto-install-config": "{'name': 'enable', 'help': 'Enable config.', 'label': 'Enable', 'description': 'Enable config'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_auto_install_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Poe:
     """
-    Configuration for system/interface/poe
+    Retrieve PoE statistics for system interfaces.
     
     Path: system/interface/poe
     Category: monitor

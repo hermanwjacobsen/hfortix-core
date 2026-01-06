@@ -150,33 +150,33 @@ NESTED_SCHEMAS = {
             "help": "Service.",
             "required": True,
             "default": "https",
-            "options": ["http", "https"],
+            "options": [{"help": "HTTP.", "label": "Http", "name": "http"}, {"help": "HTTPS.", "label": "Https", "name": "https"}],
         },
         "ldb-method": {
             "type": "option",
             "help": "Method used to distribute sessions to real servers.",
             "default": "static",
-            "options": ["static", "round-robin", "weighted", "first-alive", "http-host"],
+            "options": [{"help": "Distribute to servers based on source IP.", "label": "Static", "name": "static"}, {"help": "Distribute to servers based on round-robin order.", "label": "Round Robin", "name": "round-robin"}, {"help": "Distribute to servers based on weight.", "label": "Weighted", "name": "weighted"}, {"help": "Distribute to the first server that is alive.", "label": "First Alive", "name": "first-alive"}, {"help": "Distribute to servers based on the host field in HTTP header.", "label": "Http Host", "name": "http-host"}],
         },
         "url-map-type": {
             "type": "option",
             "help": "Type of url-map.",
             "required": True,
             "default": "sub-string",
-            "options": ["sub-string", "wildcard", "regex"],
+            "options": [{"help": "Match the pattern if a string contains the sub-string.", "label": "Sub String", "name": "sub-string"}, {"help": "Match the pattern with wildcards.", "label": "Wildcard", "name": "wildcard"}, {"help": "Match the pattern with a regular expression.", "label": "Regex", "name": "regex"}],
         },
         "h2-support": {
             "type": "option",
             "help": "HTTP2 support, default=Enable.",
             "required": True,
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable HTTP2 support.", "label": "Enable", "name": "enable"}, {"help": "Disable HTTP2 support.", "label": "Disable", "name": "disable"}],
         },
         "h3-support": {
             "type": "option",
             "help": "HTTP3/QUIC support, default=Disable.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable HTTP3/QUIC support.", "label": "Enable", "name": "enable"}, {"help": "Disable HTTP3/QUIC support.", "label": "Disable", "name": "disable"}],
         },
         "quic": {
             "type": "string",
@@ -190,13 +190,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure how to make sure that clients connect to the same server every time they make a request that is part of the same session.",
             "default": "none",
-            "options": ["none", "http-cookie"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "HTTP cookie.", "label": "Http Cookie", "name": "http-cookie"}],
         },
         "http-cookie-domain-from-host": {
             "type": "option",
             "help": "Enable/disable use of HTTP cookie domain from host field in HTTP.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable use of HTTP cookie domain from the host field in HTTP (use http-cooke-domain setting).", "label": "Disable", "name": "disable"}, {"help": "Enable use of HTTP cookie domain from the host field in HTTP.", "label": "Enable", "name": "enable"}],
         },
         "http-cookie-domain": {
             "type": "string",
@@ -228,25 +228,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Control sharing of cookies across API Gateway. Use of same-ip means a cookie from one virtual server can be used by another. Disable stops cookie sharing.",
             "default": "same-ip",
-            "options": ["disable", "same-ip"],
+            "options": [{"help": "Only allow HTTP cookie to match this API Gateway.", "label": "Disable", "name": "disable"}, {"help": "Allow HTTP cookie to match any API Gateway with the same IP.", "label": "Same Ip", "name": "same-ip"}],
         },
         "https-cookie-secure": {
             "type": "option",
             "help": "Enable/disable verification that inserted HTTPS cookies are secure.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Do not mark the cookie as secure. Allows sharing the cookie between HTTP and HTTPS connections.", "label": "Disable", "name": "disable"}, {"help": "Mark the inserted cookie as secure. The cookie can only be used for HTTPS connections.", "label": "Enable", "name": "enable"}],
         },
         "ssl-dh-bits": {
             "type": "option",
             "help": "Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.",
             "default": "2048",
-            "options": ["768", "1024", "1536", "2048", "3072", "4096"],
+            "options": [{"help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}, {"help": "3072-bit Diffie-Hellman prime.", "label": "3072", "name": "3072"}, {"help": "4096-bit Diffie-Hellman prime.", "label": "4096", "name": "4096"}],
         },
         "ssl-algorithm": {
             "type": "option",
             "help": "Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.",
             "default": "high",
-            "options": ["high", "medium", "low"],
+            "options": [{"help": "High encryption. Allow only AES and ChaCha.", "label": "High", "name": "high"}, {"help": "Medium encryption. Allow AES, ChaCha, 3DES, and RC4.", "label": "Medium", "name": "medium"}, {"help": "Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.", "label": "Low", "name": "low"}],
         },
         "ssl-cipher-suites": {
             "type": "string",
@@ -256,19 +256,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Lowest SSL/TLS version acceptable from a server.",
             "default": "tls-1.1",
-            "options": ["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
         "ssl-max-version": {
             "type": "option",
             "help": "Highest SSL/TLS version acceptable from a server.",
             "default": "tls-1.3",
-            "options": ["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
         "ssl-renegotiation": {
             "type": "option",
             "help": "Enable/disable secure renegotiation to comply with RFC 5746.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable secure renegotiation.", "label": "Enable", "name": "enable"}, {"help": "Disable secure renegotiation.", "label": "Disable", "name": "disable"}],
         },
     },
     "api-gateway6": {
@@ -291,33 +291,33 @@ NESTED_SCHEMAS = {
             "help": "Service.",
             "required": True,
             "default": "https",
-            "options": ["http", "https"],
+            "options": [{"help": "HTTP.", "label": "Http", "name": "http"}, {"help": "HTTPS.", "label": "Https", "name": "https"}],
         },
         "ldb-method": {
             "type": "option",
             "help": "Method used to distribute sessions to real servers.",
             "default": "static",
-            "options": ["static", "round-robin", "weighted", "first-alive", "http-host"],
+            "options": [{"help": "Distribute to servers based on source IP.", "label": "Static", "name": "static"}, {"help": "Distribute to servers based on round-robin order.", "label": "Round Robin", "name": "round-robin"}, {"help": "Distribute to servers based on weight.", "label": "Weighted", "name": "weighted"}, {"help": "Distribute to the first server that is alive.", "label": "First Alive", "name": "first-alive"}, {"help": "Distribute to servers based on the host field in HTTP header.", "label": "Http Host", "name": "http-host"}],
         },
         "url-map-type": {
             "type": "option",
             "help": "Type of url-map.",
             "required": True,
             "default": "sub-string",
-            "options": ["sub-string", "wildcard", "regex"],
+            "options": [{"help": "Match the pattern if a string contains the sub-string.", "label": "Sub String", "name": "sub-string"}, {"help": "Match the pattern with wildcards.", "label": "Wildcard", "name": "wildcard"}, {"help": "Match the pattern with a regular expression.", "label": "Regex", "name": "regex"}],
         },
         "h2-support": {
             "type": "option",
             "help": "HTTP2 support, default=Enable.",
             "required": True,
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable HTTP2 support.", "label": "Enable", "name": "enable"}, {"help": "Disable HTTP2 support.", "label": "Disable", "name": "disable"}],
         },
         "h3-support": {
             "type": "option",
             "help": "HTTP3/QUIC support, default=Disable.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable HTTP3/QUIC support.", "label": "Enable", "name": "enable"}, {"help": "Disable HTTP3/QUIC support.", "label": "Disable", "name": "disable"}],
         },
         "quic": {
             "type": "string",
@@ -331,13 +331,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure how to make sure that clients connect to the same server every time they make a request that is part of the same session.",
             "default": "none",
-            "options": ["none", "http-cookie"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "HTTP cookie.", "label": "Http Cookie", "name": "http-cookie"}],
         },
         "http-cookie-domain-from-host": {
             "type": "option",
             "help": "Enable/disable use of HTTP cookie domain from host field in HTTP.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable use of HTTP cookie domain from the host field in HTTP (use http-cooke-domain setting).", "label": "Disable", "name": "disable"}, {"help": "Enable use of HTTP cookie domain from the host field in HTTP.", "label": "Enable", "name": "enable"}],
         },
         "http-cookie-domain": {
             "type": "string",
@@ -369,25 +369,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Control sharing of cookies across API Gateway. Use of same-ip means a cookie from one virtual server can be used by another. Disable stops cookie sharing.",
             "default": "same-ip",
-            "options": ["disable", "same-ip"],
+            "options": [{"help": "Only allow HTTP cookie to match this API Gateway.", "label": "Disable", "name": "disable"}, {"help": "Allow HTTP cookie to match any API Gateway with the same IP.", "label": "Same Ip", "name": "same-ip"}],
         },
         "https-cookie-secure": {
             "type": "option",
             "help": "Enable/disable verification that inserted HTTPS cookies are secure.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Do not mark the cookie as secure. Allows sharing the cookie between HTTP and HTTPS connections.", "label": "Disable", "name": "disable"}, {"help": "Mark the inserted cookie as secure. The cookie can only be used for HTTPS connections.", "label": "Enable", "name": "enable"}],
         },
         "ssl-dh-bits": {
             "type": "option",
             "help": "Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.",
             "default": "2048",
-            "options": ["768", "1024", "1536", "2048", "3072", "4096"],
+            "options": [{"help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}, {"help": "3072-bit Diffie-Hellman prime.", "label": "3072", "name": "3072"}, {"help": "4096-bit Diffie-Hellman prime.", "label": "4096", "name": "4096"}],
         },
         "ssl-algorithm": {
             "type": "option",
             "help": "Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.",
             "default": "high",
-            "options": ["high", "medium", "low"],
+            "options": [{"help": "High encryption. Allow only AES and ChaCha.", "label": "High", "name": "high"}, {"help": "Medium encryption. Allow AES, ChaCha, 3DES, and RC4.", "label": "Medium", "name": "medium"}, {"help": "Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.", "label": "Low", "name": "low"}],
         },
         "ssl-cipher-suites": {
             "type": "string",
@@ -397,19 +397,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Lowest SSL/TLS version acceptable from a server.",
             "default": "tls-1.1",
-            "options": ["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
         "ssl-max-version": {
             "type": "option",
             "help": "Highest SSL/TLS version acceptable from a server.",
             "default": "tls-1.3",
-            "options": ["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
         "ssl-renegotiation": {
             "type": "option",
             "help": "Enable/disable secure renegotiation to comply with RFC 5746.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable secure renegotiation.", "label": "Enable", "name": "enable"}, {"help": "Disable secure renegotiation.", "label": "Disable", "name": "disable"}],
         },
     },
 }
@@ -417,16 +417,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LOG_BLOCKED_TRAFFIC = [
-    "disable",
-    "enable",
+    "disable",  # Do not log all traffic denied by this ZTNA web-proxy.
+    "enable",  # Log all traffic denied by this ZTNA web-proxy.
 ]
 VALID_BODY_AUTH_PORTAL = [
-    "disable",
-    "enable",
+    "disable",  # Disable authentication portal.
+    "enable",  # Enable authentication portal.
 ]
 VALID_BODY_SVR_POOL_MULTIPLEX = [
-    "enable",
-    "disable",
+    "enable",  # Enable server pool multiplexing. Share connected server.
+    "disable",  # Disable server pool multiplexing. Do not share connected server.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -554,7 +554,7 @@ def validate_ztna_web_proxy_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "log-blocked-traffic": "disable",  # Valid enum value
+        ...     "log-blocked-traffic": "{'name': 'disable', 'help': 'Do not log all traffic denied by this ZTNA web-proxy.', 'label': 'Disable', 'description': 'Do not log all traffic denied by this ZTNA web-proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ztna_web_proxy_post(payload)
         >>> assert is_valid == True

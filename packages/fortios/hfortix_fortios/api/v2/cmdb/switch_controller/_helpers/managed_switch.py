@@ -65,6 +65,7 @@ FIELDS_WITH_DEFAULTS = {
     "poe-pre-standard-detection": "disable",
     "dhcp-server-access-list": "global",
     "poe-detection-type": 0,
+    "max-poe-budget": 0,
     "directly-connected": 0,
     "version": 0,
     "max-allowed-trunk-members": 0,
@@ -127,6 +128,7 @@ FIELD_TYPES = {
     "poe-pre-standard-detection": "option",  # Enable/disable PoE pre-standard detection.
     "dhcp-server-access-list": "option",  # DHCP snooping server access list.
     "poe-detection-type": "integer",  # PoE detection type for FortiSwitch.
+    "max-poe-budget": "integer",  # Max PoE budget for FortiSwitch.
     "directly-connected": "integer",  # Directly connected FortiSwitch.
     "version": "integer",  # FortiSwitch version.
     "max-allowed-trunk-members": "integer",  # FortiSwitch maximum allowed trunk members.
@@ -198,6 +200,7 @@ FIELD_DESCRIPTIONS = {
     "poe-pre-standard-detection": "Enable/disable PoE pre-standard detection.",
     "dhcp-server-access-list": "DHCP snooping server access list.",
     "poe-detection-type": "PoE detection type for FortiSwitch.",
+    "max-poe-budget": "Max PoE budget for FortiSwitch.",
     "directly-connected": "Directly connected FortiSwitch.",
     "version": "FortiSwitch version.",
     "max-allowed-trunk-members": "FortiSwitch maximum allowed trunk members.",
@@ -265,6 +268,7 @@ FIELD_CONSTRAINTS = {
     "access-profile": {"type": "string", "max_length": 31},
     "fsw-wan1-peer": {"type": "string", "max_length": 35},
     "poe-detection-type": {"type": "integer", "min": 0, "max": 255},
+    "max-poe-budget": {"type": "integer", "min": 0, "max": 65535},
     "directly-connected": {"type": "integer", "min": 0, "max": 1},
     "version": {"type": "integer", "min": 0, "max": 255},
     "max-allowed-trunk-members": {"type": "integer", "min": 0, "max": 255},
@@ -340,31 +344,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Switch port speed; default and available settings depend on hardware.",
             "default": "auto",
-            "options": ["10half", "10full", "100half", "100full", "1000full", "10000full", "auto", "1000auto", "1000full-fiber", "40000full", "auto-module", "100FX-half", "100FX-full", "100000full", "2500auto", "2500full", "25000full", "50000full", "10000cr", "10000sr", "100000sr4", "100000cr4", "40000sr4", "40000cr4", "40000auto", "25000cr", "25000sr", "50000cr", "50000sr", "5000auto"],
+            "options": [{"help": "10M half-duplex.", "label": "10Half", "name": "10half"}, {"help": "10M full-duplex.", "label": "10Full", "name": "10full"}, {"help": "100M half-duplex.", "label": "100Half", "name": "100half"}, {"help": "100M full-duplex.", "label": "100Full", "name": "100full"}, {"help": "1G full-duplex", "label": "1000Full", "name": "1000full"}, {"help": "10G full-duplex", "label": "10000Full", "name": "10000full"}, {"help": "Auto-negotiation.", "label": "Auto", "name": "auto"}, {"help": "Auto-negotiation (1G full-duplex only).", "label": "1000Auto", "name": "1000auto"}, {"help": "1G full-duplex (fiber SFPs only)", "label": "1000Full Fiber", "name": "1000full-fiber"}, {"help": "40G full-duplex", "label": "40000Full", "name": "40000full"}, {"help": "Auto Module.", "label": "Auto Module", "name": "auto-module"}, {"help": "100Mbps half-duplex.100Base-FX.", "label": "100Fx Half", "name": "100FX-half"}, {"help": "100Mbps full-duplex.100Base-FX.", "label": "100Fx Full", "name": "100FX-full"}, {"help": "100Gbps full-duplex.", "label": "100000Full", "name": "100000full"}, {"help": "Auto-Negotiation (2.5Gbps Only).", "label": "2500Auto", "name": "2500auto"}, {"help": "2.5Gbps full-duplex.", "label": "2500Full", "name": "2500full"}, {"help": "25Gbps full-duplex.", "label": "25000Full", "name": "25000full"}, {"help": "50Gbps full-duplex.", "label": "50000Full", "name": "50000full"}, {"help": "10Gbps copper interface.", "label": "10000Cr", "name": "10000cr"}, {"help": "10Gbps SFI interface.", "label": "10000Sr", "name": "10000sr"}, {"help": "100Gbps SFI interface.", "label": "100000Sr4", "name": "100000sr4"}, {"help": "100Gbps copper interface.", "label": "100000Cr4", "name": "100000cr4"}, {"help": "40Gbps SFI interface.", "label": "40000Sr4", "name": "40000sr4"}, {"help": "40Gbps copper interface.", "label": "40000Cr4", "name": "40000cr4"}, {"help": "Auto-Negotiation (40Gbps Only).", "label": "40000Auto", "name": "40000auto"}, {"help": "25Gbps copper interface.", "label": "25000Cr", "name": "25000cr"}, {"help": "25Gbps SFI interface.", "label": "25000Sr", "name": "25000sr"}, {"help": "50Gbps copper interface.", "label": "50000Cr", "name": "50000cr"}, {"help": "50Gbps SFI interface.", "label": "50000Sr", "name": "50000sr"}, {"help": "5Gbps full-duplex.", "label": "5000Auto", "name": "5000auto"}, {"help": "Auto-negotiation in SGMII mode.", "label": "Sgmii Auto", "name": "sgmii-auto"}],
         },
         "status": {
             "type": "option",
             "help": "Switch port admin status: up or down.",
             "default": "up",
-            "options": ["up", "down"],
+            "options": [{"help": "Set admin status up.", "label": "Up", "name": "up"}, {"help": "Set admin status down.", "label": "Down", "name": "down"}],
         },
         "poe-status": {
             "type": "option",
             "help": "Enable/disable PoE status.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable PoE status.", "label": "Enable", "name": "enable"}, {"help": "Disable PoE status.", "label": "Disable", "name": "disable"}],
         },
         "ip-source-guard": {
             "type": "option",
             "help": "Enable/disable IP source guard.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable IP source guard.", "label": "Disable", "name": "disable"}, {"help": "Enable IP source guard.", "label": "Enable", "name": "enable"}],
         },
         "ptp-status": {
             "type": "option",
             "help": "Enable/disable PTP policy on this FortiSwitch port.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable PTP policy.", "label": "Disable", "name": "disable"}, {"help": "Enable PTP policy.", "label": "Enable", "name": "enable"}],
         },
         "ptp-policy": {
             "type": "string",
@@ -376,13 +380,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LACP member select mode.",
             "default": "bandwidth",
-            "options": ["bandwidth", "count"],
+            "options": [{"help": "Member selection based on largest total bandwidth of links of similar speed.", "label": "Bandwidth", "name": "bandwidth"}, {"help": "Member selection based on largest count of similar link speed.", "label": "Count", "name": "count"}],
         },
         "flapguard": {
             "type": "option",
             "help": "Enable/disable flap guard.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable FlapGuard for this port.", "label": "Enable", "name": "enable"}, {"help": "Disable FlapGuard for this port.", "label": "Disable", "name": "disable"}],
         },
         "flap-rate": {
             "type": "integer",
@@ -409,13 +413,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable inter-operability with rapid PVST on this interface.",
             "default": "disabled",
-            "options": ["disabled", "enabled"],
+            "options": [{"help": "Disable inter-operability with rapid PVST on this interface.", "label": "Disabled", "name": "disabled"}, {"help": "Enable inter-operability with rapid PVST on this interface.", "label": "Enabled", "name": "enabled"}],
         },
         "poe-pre-standard-detection": {
             "type": "option",
             "help": "Enable/disable PoE pre-standard detection.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable PoE pre-standard detection.", "label": "Enable", "name": "enable"}, {"help": "Disable PoE pre-standard detection.", "label": "Disable", "name": "disable"}],
         },
         "port-number": {
             "type": "integer",
@@ -530,19 +534,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure PoE port mode.",
             "default": "ieee802-3at",
-            "options": ["ieee802-3af", "ieee802-3at", "ieee802-3bt"],
+            "options": [{"help": "IEEE802.3 AF.", "label": "Ieee802 3Af", "name": "ieee802-3af"}, {"help": "IEEE802.3 AT.", "label": "Ieee802 3At", "name": "ieee802-3at"}, {"help": "IEEE802.3 BT.", "label": "Ieee802 3Bt", "name": "ieee802-3bt"}],
         },
         "poe-port-priority": {
             "type": "option",
             "help": "Configure PoE port priority.",
             "default": "low-priority",
-            "options": ["critical-priority", "high-priority", "low-priority", "medium-priority"],
+            "options": [{"help": "Critical Priority.", "label": "Critical Priority", "name": "critical-priority"}, {"help": "High Priority.", "label": "High Priority", "name": "high-priority"}, {"help": "Low Priority.", "label": "Low Priority", "name": "low-priority"}, {"help": "Medium Priority.", "label": "Medium Priority", "name": "medium-priority"}],
         },
         "poe-port-power": {
             "type": "option",
             "help": "Configure PoE port power.",
             "default": "normal",
-            "options": ["normal", "perpetual", "perpetual-fast"],
+            "options": [{"help": "Power not delivered during boot.", "label": "Normal", "name": "normal"}, {"help": "Power delivered during soft reboot.", "label": "Perpetual", "name": "perpetual"}, {"help": "Early power delivered during cold boot.", "label": "Perpetual Fast", "name": "perpetual-fast"}],
         },
         "flags": {
             "type": "integer",
@@ -597,7 +601,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable all defined vlans on this port.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable all defined VLANs on this port.", "label": "Enable", "name": "enable"}, {"help": "Disable all defined VLANs on this port.", "label": "Disable", "name": "disable"}],
         },
         "allowed-vlans": {
             "type": "string",
@@ -611,13 +615,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Interface type: physical or trunk port.",
             "default": "physical",
-            "options": ["physical", "trunk"],
+            "options": [{"help": "Physical port.", "label": "Physical", "name": "physical"}, {"help": "Trunk port.", "label": "Trunk", "name": "trunk"}],
         },
         "access-mode": {
             "type": "option",
             "help": "Access mode of the port.",
             "default": "static",
-            "options": ["dynamic", "nac", "static"],
+            "options": [{"help": "Dynamic mode.", "label": "Dynamic", "name": "dynamic"}, {"help": "NAC mode.", "label": "Nac", "name": "nac"}, {"help": "Static mode.", "label": "Static", "name": "static"}],
         },
         "matched-dpp-policy": {
             "type": "string",
@@ -643,13 +647,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Trusted or untrusted DHCP-snooping interface.",
             "default": "untrusted",
-            "options": ["untrusted", "trusted"],
+            "options": [{"help": "Untrusted DHCP snooping interface.", "label": "Untrusted", "name": "untrusted"}, {"help": "Trusted DHCP snooping interface.", "label": "Trusted", "name": "trusted"}],
         },
         "dhcp-snoop-option82-trust": {
             "type": "option",
             "help": "Enable/disable allowance of DHCP with option-82 on untrusted interface.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable allowance of DHCP with option-82 on untrusted interface.", "label": "Enable", "name": "enable"}, {"help": "Disable allowance of DHCP with option-82 on untrusted interface.", "label": "Disable", "name": "disable"}],
         },
         "dhcp-snoop-option82-override": {
             "type": "string",
@@ -659,37 +663,37 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Trusted or untrusted dynamic ARP inspection.",
             "default": "untrusted",
-            "options": ["untrusted", "trusted"],
+            "options": [{"help": "Untrusted dynamic ARP inspection.", "label": "Untrusted", "name": "untrusted"}, {"help": "Trusted dynamic ARP inspection.", "label": "Trusted", "name": "trusted"}],
         },
         "igmp-snooping-flood-reports": {
             "type": "option",
             "help": "Enable/disable flooding of IGMP reports to this interface when igmp-snooping enabled.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable flooding of IGMP snooping reports to this interface.", "label": "Enable", "name": "enable"}, {"help": "Disable flooding of IGMP snooping reports to this interface.", "label": "Disable", "name": "disable"}],
         },
         "mcast-snooping-flood-traffic": {
             "type": "option",
             "help": "Enable/disable flooding of IGMP snooping traffic to this interface.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable flooding of IGMP snooping traffic to this interface.", "label": "Enable", "name": "enable"}, {"help": "Disable flooding of IGMP snooping traffic to this interface.", "label": "Disable", "name": "disable"}],
         },
         "stp-state": {
             "type": "option",
             "help": "Enable/disable Spanning Tree Protocol (STP) on this interface.",
             "default": "enabled",
-            "options": ["enabled", "disabled"],
+            "options": [{"help": "Enable STP on this interface.", "label": "Enabled", "name": "enabled"}, {"help": "Disable STP on this interface.", "label": "Disabled", "name": "disabled"}],
         },
         "stp-root-guard": {
             "type": "option",
             "help": "Enable/disable STP root guard on this interface.",
             "default": "disabled",
-            "options": ["enabled", "disabled"],
+            "options": [{"help": "Enable STP root-guard on this interface.", "label": "Enabled", "name": "enabled"}, {"help": "Disable STP root-guard on this interface.", "label": "Disabled", "name": "disabled"}],
         },
         "stp-bpdu-guard": {
             "type": "option",
             "help": "Enable/disable STP BPDU guard on this interface.",
             "default": "disabled",
-            "options": ["enabled", "disabled"],
+            "options": [{"help": "Enable STP BPDU guard on this interface.", "label": "Enabled", "name": "enabled"}, {"help": "Disable STP BPDU guard on this interface.", "label": "Disabled", "name": "disabled"}],
         },
         "stp-bpdu-guard-timeout": {
             "type": "integer",
@@ -702,19 +706,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this interface as an edge port, bridging connections between workstations and/or computers.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable this interface as an edge port.", "label": "Enable", "name": "enable"}, {"help": "Disable this interface as an edge port.", "label": "Disable", "name": "disable"}],
         },
         "discard-mode": {
             "type": "option",
             "help": "Configure discard mode for port.",
             "default": "none",
-            "options": ["none", "all-untagged", "all-tagged"],
+            "options": [{"help": "Discard disabled.", "label": "None", "name": "none"}, {"help": "Discard all frames that are untagged.", "label": "All Untagged", "name": "all-untagged"}, {"help": "Discard all frames that are tagged.", "label": "All Tagged", "name": "all-tagged"}],
         },
         "packet-sampler": {
             "type": "option",
             "help": "Enable/disable packet sampling on this interface.",
             "default": "disabled",
-            "options": ["enabled", "disabled"],
+            "options": [{"help": "Enable packet sampling on this interface.", "label": "Enabled", "name": "enabled"}, {"help": "Disable packet sampling on this interface.", "label": "Disabled", "name": "disabled"}],
         },
         "packet-sample-rate": {
             "type": "integer",
@@ -734,7 +738,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Packet sampling direction.",
             "default": "both",
-            "options": ["tx", "rx", "both"],
+            "options": [{"help": "Monitor transmitted traffic.", "label": "Tx", "name": "tx"}, {"help": "Monitor received traffic.", "label": "Rx", "name": "rx"}, {"help": "Monitor transmitted and received traffic.", "label": "Both", "name": "both"}],
         },
         "fec-capable": {
             "type": "integer",
@@ -747,13 +751,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "State of forward error correction.",
             "default": "detect-by-module",
-            "options": ["disabled", "cl74", "cl91", "detect-by-module"],
+            "options": [{"help": "Disable forward error correction.", "label": "Disabled", "name": "disabled"}, {"help": "Enable Clause 74 FC-FEC, which only applies to 25Gbps.", "label": "Cl74", "name": "cl74"}, {"help": "Enable Clause 91 RS-FEC, which only applies to 100Gbps.", "label": "Cl91", "name": "cl91"}, {"help": "FEC supported by module.", "label": "Detect By Module", "name": "detect-by-module"}],
         },
         "flow-control": {
             "type": "option",
             "help": "Flow control direction.",
             "default": "disable",
-            "options": ["disable", "tx", "rx", "both"],
+            "options": [{"help": "Disable flow control.", "label": "Disable", "name": "disable"}, {"help": "Enable flow control for transmission pause control frames.", "label": "Tx", "name": "tx"}, {"help": "Enable flow control for receive pause control frames.", "label": "Rx", "name": "rx"}, {"help": "Enable flow control for both transmission and receive pause control frames.", "label": "Both", "name": "both"}],
         },
         "pause-meter": {
             "type": "integer",
@@ -766,13 +770,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Resume threshold for resuming traffic on ingress port.",
             "default": "50%",
-            "options": ["75%", "50%", "25%"],
+            "options": [{"help": "Back pressure state won\u0027t be cleared until bucket count falls below 75% of pause threshold.", "label": "75%", "name": "75%"}, {"help": "Back pressure state won\u0027t be cleared until bucket count falls below 50% of pause threshold.", "label": "50%", "name": "50%"}, {"help": "Back pressure state won\u0027t be cleared until bucket count falls below 25% of pause threshold.", "label": "25%", "name": "25%"}],
         },
         "loop-guard": {
             "type": "option",
             "help": "Enable/disable loop-guard on this interface, an STP optimization used to prevent network loops.",
             "default": "disabled",
-            "options": ["enabled", "disabled"],
+            "options": [{"help": "Enable loop-guard on this interface.", "label": "Enabled", "name": "enabled"}, {"help": "Disable loop-guard on this interface.", "label": "Disabled", "name": "disabled"}],
         },
         "loop-guard-timeout": {
             "type": "integer",
@@ -826,13 +830,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable or disable sticky-mac on the interface.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable sticky mac on the interface.", "label": "Enable", "name": "enable"}, {"help": "Disable sticky mac on the interface.", "label": "Disable", "name": "disable"}],
         },
         "lldp-status": {
             "type": "option",
             "help": "LLDP transmit and receive status.",
             "default": "tx-rx",
-            "options": ["disable", "rx-only", "tx-only", "tx-rx"],
+            "options": [{"help": "Disable LLDP TX and RX.", "label": "Disable", "name": "disable"}, {"help": "Enable LLDP as RX only.", "label": "Rx Only", "name": "rx-only"}, {"help": "Enable LLDP as TX only.", "label": "Tx Only", "name": "tx-only"}, {"help": "Enable LLDP TX and RX.", "label": "Tx Rx", "name": "tx-rx"}],
         },
         "lldp-profile": {
             "type": "string",
@@ -855,7 +859,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/Disable allow ARP monitor.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable allow ARP monitor.", "label": "Disable", "name": "disable"}, {"help": "Enable allow ARP monitor.", "label": "Enable", "name": "enable"}],
         },
         "qnq": {
             "type": "string",
@@ -867,13 +871,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging for dynamic MAC address events.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable log MAC event for this interface.", "label": "Disable", "name": "disable"}, {"help": "Enable log MAC event for this interface.", "label": "Enable", "name": "enable"}],
         },
         "port-selection-criteria": {
             "type": "option",
             "help": "Algorithm for aggregate port selection.",
             "default": "src-dst-ip",
-            "options": ["src-mac", "dst-mac", "src-dst-mac", "src-ip", "dst-ip", "src-dst-ip"],
+            "options": [{"help": "Source MAC address.", "label": "Src Mac", "name": "src-mac"}, {"help": "Destination MAC address.", "label": "Dst Mac", "name": "dst-mac"}, {"help": "Source and destination MAC address.", "label": "Src Dst Mac", "name": "src-dst-mac"}, {"help": "Source IP address.", "label": "Src Ip", "name": "src-ip"}, {"help": "Destination IP address.", "label": "Dst Ip", "name": "dst-ip"}, {"help": "Source and destination IP address.", "label": "Src Dst Ip", "name": "src-dst-ip"}],
         },
         "description": {
             "type": "string",
@@ -885,31 +889,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "End Link Aggregation Control Protocol (LACP) messages every 30 seconds (slow) or every second (fast).",
             "default": "slow",
-            "options": ["slow", "fast"],
+            "options": [{"help": "Send LACP message every 30 seconds.", "label": "Slow", "name": "slow"}, {"help": "Send LACP message every second.", "label": "Fast", "name": "fast"}],
         },
         "mode": {
             "type": "option",
             "help": "LACP mode: ignore and do not send control messages, or negotiate 802.3ad aggregation passively or actively.",
             "default": "static",
-            "options": ["static", "lacp-passive", "lacp-active"],
+            "options": [{"help": "Static aggregation, do not send and ignore any control messages.", "label": "Static", "name": "static"}, {"help": "Passively use LACP to negotiate 802.3ad aggregation.", "label": "Lacp Passive", "name": "lacp-passive"}, {"help": "Actively use LACP to negotiate 802.3ad aggregation.", "label": "Lacp Active", "name": "lacp-active"}],
         },
         "bundle": {
             "type": "option",
             "help": "Enable/disable Link Aggregation Group (LAG) bundling for non-FortiLink interfaces.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable bundling.", "label": "Enable", "name": "enable"}, {"help": "Disable bundling.", "label": "Disable", "name": "disable"}],
         },
         "member-withdrawal-behavior": {
             "type": "option",
             "help": "Port behavior after it withdraws because of loss of control packets.",
             "default": "block",
-            "options": ["forward", "block"],
+            "options": [{"help": "Forward traffic.", "label": "Forward", "name": "forward"}, {"help": "Block traffic.", "label": "Block", "name": "block"}],
         },
         "mclag": {
             "type": "option",
             "help": "Enable/disable multi-chassis link aggregation (MCLAG).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable MCLAG.", "label": "Enable", "name": "enable"}, {"help": "Disable MCLAG.", "label": "Disable", "name": "disable"}],
         },
         "min-bundle": {
             "type": "integer",
@@ -960,7 +964,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to configure local STP settings that override global STP settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override global STP settings.", "label": "Enable", "name": "enable"}, {"help": "Use global STP settings.", "label": "Disable", "name": "disable"}],
         },
         "name": {
             "type": "string",
@@ -1022,7 +1026,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Priority.",
             "default": "32768",
-            "options": ["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344", "61440"],
+            "options": [{"help": "0.", "label": "0", "name": "0"}, {"help": "4096.", "label": "4096", "name": "4096"}, {"help": "8192.", "label": "8192", "name": "8192"}, {"help": "12288.", "label": "12288", "name": "12288"}, {"help": "16384.", "label": "16384", "name": "16384"}, {"help": "20480.", "label": "20480", "name": "20480"}, {"help": "24576.", "label": "24576", "name": "24576"}, {"help": "28672.", "label": "28672", "name": "28672"}, {"help": "32768.", "label": "32768", "name": "32768"}, {"help": "36864.", "label": "36864", "name": "36864"}, {"help": "40960.", "label": "40960", "name": "40960"}, {"help": "45056.", "label": "45056", "name": "45056"}, {"help": "49152.", "label": "49152", "name": "49152"}, {"help": "53248.", "label": "53248", "name": "53248"}, {"help": "57344.", "label": "57344", "name": "57344"}, {"help": "61440.", "label": "61440", "name": "61440"}],
         },
     },
     "snmp-sysinfo": {
@@ -1030,7 +1034,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SNMP.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SNMP.", "label": "Disable", "name": "disable"}, {"help": "Enable SNMP.", "label": "Enable", "name": "enable"}],
         },
         "engine-id": {
             "type": "string",
@@ -1100,7 +1104,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this SNMP community.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SNMP community.", "label": "Disable", "name": "disable"}, {"help": "Enable SNMP community.", "label": "Enable", "name": "enable"}],
         },
         "hosts": {
             "type": "string",
@@ -1110,7 +1114,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SNMP v1 queries.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SNMP v1 queries.", "label": "Disable", "name": "disable"}, {"help": "Enable SNMP v1 queries.", "label": "Enable", "name": "enable"}],
         },
         "query-v1-port": {
             "type": "integer",
@@ -1123,7 +1127,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SNMP v2c queries.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SNMP v2c queries.", "label": "Disable", "name": "disable"}, {"help": "Enable SNMP v2c queries.", "label": "Enable", "name": "enable"}],
         },
         "query-v2c-port": {
             "type": "integer",
@@ -1136,7 +1140,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SNMP v1 traps.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SNMP v1 traps.", "label": "Disable", "name": "disable"}, {"help": "Enable SNMP v1 traps.", "label": "Enable", "name": "enable"}],
         },
         "trap-v1-lport": {
             "type": "integer",
@@ -1156,7 +1160,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SNMP v2c traps.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SNMP v2c traps.", "label": "Disable", "name": "disable"}, {"help": "Enable SNMP v2c traps.", "label": "Enable", "name": "enable"}],
         },
         "trap-v2c-lport": {
             "type": "integer",
@@ -1176,7 +1180,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "SNMP notifications (traps) to send.",
             "default": "cpu-high mem-low log-full intf-ip ent-conf-change l2mac",
-            "options": ["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"],
+            "options": [{"help": "Send a trap when CPU usage too high.", "label": "Cpu High", "name": "cpu-high"}, {"help": "Send a trap when available memory is low.", "label": "Mem Low", "name": "mem-low"}, {"help": "Send a trap when log disk space becomes low.", "label": "Log Full", "name": "log-full"}, {"help": "Send a trap when an interface IP address is changed.", "label": "Intf Ip", "name": "intf-ip"}, {"help": "Send a trap when an entity MIB change occurs (RFC4133).", "label": "Ent Conf Change", "name": "ent-conf-change"}, {"help": "Send a trap for Learning event (add/delete/movefrom/moveto).", "label": "L2Mac", "name": "l2mac"}],
         },
     },
     "snmp-user": {
@@ -1190,7 +1194,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SNMP queries for this user.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SNMP queries for this user.", "label": "Disable", "name": "disable"}, {"help": "Enable SNMP queries for this user.", "label": "Enable", "name": "enable"}],
         },
         "query-port": {
             "type": "integer",
@@ -1203,13 +1207,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Security level for message authentication and encryption.",
             "default": "no-auth-no-priv",
-            "options": ["no-auth-no-priv", "auth-no-priv", "auth-priv"],
+            "options": [{"help": "Message with no authentication and no privacy (encryption).", "label": "No Auth No Priv", "name": "no-auth-no-priv"}, {"help": "Message with authentication but no privacy (encryption).", "label": "Auth No Priv", "name": "auth-no-priv"}, {"help": "Message with authentication and privacy (encryption).", "label": "Auth Priv", "name": "auth-priv"}],
         },
         "auth-proto": {
             "type": "option",
             "help": "Authentication protocol.",
             "default": "sha256",
-            "options": ["md5", "sha1", "sha224", "sha256", "sha384", "sha512"],
+            "options": [{"help": "HMAC-MD5-96 authentication protocol.", "label": "Md5", "name": "md5"}, {"help": "HMAC-SHA-1 authentication protocol.", "label": "Sha1", "name": "sha1"}, {"help": "HMAC-SHA-224 authentication protocol.", "label": "Sha224", "name": "sha224"}, {"help": "HMAC-SHA-256 authentication protocol.", "label": "Sha256", "name": "sha256"}, {"help": "HMAC-SHA-384 authentication protocol.", "label": "Sha384", "name": "sha384"}, {"help": "HMAC-SHA-512 authentication protocol.", "label": "Sha512", "name": "sha512"}],
         },
         "auth-pwd": {
             "type": "password",
@@ -1221,7 +1225,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Privacy (encryption) protocol.",
             "default": "aes128",
-            "options": ["aes128", "aes192", "aes192c", "aes256", "aes256c", "des"],
+            "options": [{"help": "CFB128-AES-128 symmetric encryption protocol.", "label": "Aes128", "name": "aes128"}, {"help": "CFB128-AES-192 symmetric encryption protocol.", "label": "Aes192", "name": "aes192"}, {"help": "CFB128-AES-192-C symmetric encryption protocol.", "label": "Aes192C", "name": "aes192c"}, {"help": "CFB128-AES-256 symmetric encryption protocol.", "label": "Aes256", "name": "aes256"}, {"help": "CFB128-AES-256-C symmetric encryption protocol.", "label": "Aes256C", "name": "aes256c"}, {"help": "CBC-DES symmetric encryption protocol.", "label": "Des", "name": "des"}],
         },
         "priv-pwd": {
             "type": "password",
@@ -1235,19 +1239,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to configure local logging settings that override global logging settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override global logging settings.", "label": "Enable", "name": "enable"}, {"help": "Use global logging settings.", "label": "Disable", "name": "disable"}],
         },
         "status": {
             "type": "option",
             "help": "Enable/disable adding FortiSwitch logs to the FortiGate event log.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Add FortiSwitch logs to the FortiGate event log.", "label": "Enable", "name": "enable"}, {"help": "Do not add FortiSwitch logs to the FortiGate event log.", "label": "Disable", "name": "disable"}],
         },
         "severity": {
             "type": "option",
             "help": "Severity of FortiSwitch logs that are added to the FortiGate event log.",
             "default": "notification",
-            "options": ["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"],
+            "options": [{"help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"help": "Alert level.", "label": "Alert", "name": "alert"}, {"help": "Critical level.", "label": "Critical", "name": "critical"}, {"help": "Error level.", "label": "Error", "name": "error"}, {"help": "Warning level.", "label": "Warning", "name": "warning"}, {"help": "Notification level.", "label": "Notification", "name": "notification"}, {"help": "Information level.", "label": "Information", "name": "information"}, {"help": "Debug level.", "label": "Debug", "name": "debug"}],
         },
     },
     "remote-log": {
@@ -1262,7 +1266,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging by FortiSwitch device to a remote syslog server.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable logging by FortiSwitch device to a remote syslog server.", "label": "Enable", "name": "enable"}, {"help": "Disable logging by FortiSwitch device to a remote syslog server.", "label": "Disable", "name": "disable"}],
         },
         "server": {
             "type": "string",
@@ -1282,19 +1286,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Severity of logs to be transferred to remote log server.",
             "default": "information",
-            "options": ["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"],
+            "options": [{"help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"help": "Alert level.", "label": "Alert", "name": "alert"}, {"help": "Critical level.", "label": "Critical", "name": "critical"}, {"help": "Error level.", "label": "Error", "name": "error"}, {"help": "Warning level.", "label": "Warning", "name": "warning"}, {"help": "Notification level.", "label": "Notification", "name": "notification"}, {"help": "Information level.", "label": "Information", "name": "information"}, {"help": "Debug level.", "label": "Debug", "name": "debug"}],
         },
         "csv": {
             "type": "option",
             "help": "Enable/disable comma-separated value (CSV) strings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable comma-separated value (CSV) strings.", "label": "Enable", "name": "enable"}, {"help": "Disable comma-separated value (CSV) strings.", "label": "Disable", "name": "disable"}],
         },
         "facility": {
             "type": "option",
             "help": "Facility to log to remote syslog server.",
             "default": "local7",
-            "options": ["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"],
+            "options": [{"help": "Kernel messages.", "label": "Kernel", "name": "kernel"}, {"help": "Random user-level messages.", "label": "User", "name": "user"}, {"help": "Mail system.", "label": "Mail", "name": "mail"}, {"help": "System daemons.", "label": "Daemon", "name": "daemon"}, {"help": "Security/authorization messages.", "label": "Auth", "name": "auth"}, {"help": "Messages generated internally by syslogd.", "label": "Syslog", "name": "syslog"}, {"help": "Line printer subsystem.", "label": "Lpr", "name": "lpr"}, {"help": "Network news subsystem.", "label": "News", "name": "news"}, {"help": "UUCP server messages.", "label": "Uucp", "name": "uucp"}, {"help": "Clock daemon.", "label": "Cron", "name": "cron"}, {"help": "Security/authorization messages (private).", "label": "Authpriv", "name": "authpriv"}, {"help": "FTP daemon.", "label": "Ftp", "name": "ftp"}, {"help": "NTP daemon.", "label": "Ntp", "name": "ntp"}, {"help": "Log audit.", "label": "Audit", "name": "audit"}, {"help": "Log alert.", "label": "Alert", "name": "alert"}, {"help": "Clock daemon.", "label": "Clock", "name": "clock"}, {"help": "Reserved for local use.", "label": "Local0", "name": "local0"}, {"help": "Reserved for local use.", "label": "Local1", "name": "local1"}, {"help": "Reserved for local use.", "label": "Local2", "name": "local2"}, {"help": "Reserved for local use.", "label": "Local3", "name": "local3"}, {"help": "Reserved for local use.", "label": "Local4", "name": "local4"}, {"help": "Reserved for local use.", "label": "Local5", "name": "local5"}, {"help": "Reserved for local use.", "label": "Local6", "name": "local6"}, {"help": "Reserved for local use.", "label": "Local7", "name": "local7"}],
         },
     },
     "storm-control": {
@@ -1302,7 +1306,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override global FortiSwitch storm control settings for this FortiSwitch.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override global storm control settings.", "label": "Enable", "name": "enable"}, {"help": "Use global storm control settings.", "label": "Disable", "name": "disable"}],
         },
         "rate": {
             "type": "integer",
@@ -1322,19 +1326,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable storm control to drop unknown unicast traffic.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Drop unknown unicast traffic.", "label": "Enable", "name": "enable"}, {"help": "Allow unknown unicast traffic.", "label": "Disable", "name": "disable"}],
         },
         "unknown-multicast": {
             "type": "option",
             "help": "Enable/disable storm control to drop unknown multicast traffic.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Drop unknown multicast traffic.", "label": "Enable", "name": "enable"}, {"help": "Allow unknown multicast traffic.", "label": "Disable", "name": "disable"}],
         },
         "broadcast": {
             "type": "option",
             "help": "Enable/disable storm control to drop broadcast traffic.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Drop broadcast traffic.", "label": "Enable", "name": "enable"}, {"help": "Allow broadcast traffic.", "label": "Disable", "name": "disable"}],
         },
     },
     "mirror": {
@@ -1348,13 +1352,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Active/inactive mirror configuration.",
             "default": "inactive",
-            "options": ["active", "inactive"],
+            "options": [{"help": "Activate mirror configuration.", "label": "Active", "name": "active"}, {"help": "Deactivate mirror configuration.", "label": "Inactive", "name": "inactive"}],
         },
         "switching-packet": {
             "type": "option",
             "help": "Enable/disable switching functionality when mirroring.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable switching functionality when mirroring.", "label": "Enable", "name": "enable"}, {"help": "Disable switching functionality when mirroring.", "label": "Disable", "name": "disable"}],
         },
         "dst": {
             "type": "string",
@@ -1383,7 +1387,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Type.",
             "default": "static",
-            "options": ["static", "sticky"],
+            "options": [{"help": "Static MAC.", "label": "Static", "name": "static"}, {"help": "Sticky MAC.", "label": "Sticky", "name": "sticky"}],
         },
         "vlan": {
             "type": "string",
@@ -1463,7 +1467,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable overriding the global IGMP snooping configuration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the global IGMP snooping configuration.", "label": "Enable", "name": "enable"}, {"help": "Use the global IGMP snooping configuration.", "label": "Disable", "name": "disable"}],
         },
         "aging-time": {
             "type": "integer",
@@ -1476,7 +1480,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable unknown multicast flooding.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable unknown multicast flooding.", "label": "Enable", "name": "enable"}, {"help": "Disable unknown multicast flooding.", "label": "Disable", "name": "disable"}],
         },
         "vlans": {
             "type": "string",
@@ -1488,13 +1492,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override global 802.1X settings on individual FortiSwitches.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override global 802.1X settings.", "label": "Enable", "name": "enable"}, {"help": "Use global 802.1X settings.", "label": "Disable", "name": "disable"}],
         },
         "link-down-auth": {
             "type": "option",
             "help": "Authentication state to set if a link is down.",
             "default": "set-unauth",
-            "options": ["set-unauth", "no-action"],
+            "options": [{"help": "Interface set to unauth when down. Reauthentication is needed.", "label": "Set Unauth", "name": "set-unauth"}, {"help": "Interface reauthentication is not needed.", "label": "No Action", "name": "no-action"}],
         },
         "reauth-period": {
             "type": "integer",
@@ -1521,37 +1525,37 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable or disable MAB reauthentication settings.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable MAB re-authentication setttings.", "label": "Disable", "name": "disable"}, {"help": "Enable MAB re-authentication setttings.", "label": "Enable", "name": "enable"}],
         },
         "mac-username-delimiter": {
             "type": "option",
             "help": "MAC authentication username delimiter (default = hyphen).",
             "default": "hyphen",
-            "options": ["colon", "hyphen", "none", "single-hyphen"],
+            "options": [{"help": "Use colon as delimiter for MAC auth username.", "label": "Colon", "name": "colon"}, {"help": "Use hyphen as delimiter for MAC auth username.", "label": "Hyphen", "name": "hyphen"}, {"help": "No delimiter for MAC auth username.", "label": "None", "name": "none"}, {"help": "Use single hyphen as delimiter for MAC auth username.", "label": "Single Hyphen", "name": "single-hyphen"}],
         },
         "mac-password-delimiter": {
             "type": "option",
             "help": "MAC authentication password delimiter (default = hyphen).",
             "default": "hyphen",
-            "options": ["colon", "hyphen", "none", "single-hyphen"],
+            "options": [{"help": "Use colon as delimiter for MAC auth password.", "label": "Colon", "name": "colon"}, {"help": "Use hyphen as delimiter for MAC auth password.", "label": "Hyphen", "name": "hyphen"}, {"help": "No delimiter for MAC auth password.", "label": "None", "name": "none"}, {"help": "Use single hyphen as delimiter for MAC auth password.", "label": "Single Hyphen", "name": "single-hyphen"}],
         },
         "mac-calling-station-delimiter": {
             "type": "option",
             "help": "MAC calling station delimiter (default = hyphen).",
             "default": "hyphen",
-            "options": ["colon", "hyphen", "none", "single-hyphen"],
+            "options": [{"help": "Use colon as delimiter for calling station.", "label": "Colon", "name": "colon"}, {"help": "Use hyphen as delimiter for calling station.", "label": "Hyphen", "name": "hyphen"}, {"help": "No delimiter for calling station.", "label": "None", "name": "none"}, {"help": "Use single hyphen as delimiter for calling station.", "label": "Single Hyphen", "name": "single-hyphen"}],
         },
         "mac-called-station-delimiter": {
             "type": "option",
             "help": "MAC called station delimiter (default = hyphen).",
             "default": "hyphen",
-            "options": ["colon", "hyphen", "none", "single-hyphen"],
+            "options": [{"help": "Use colon as delimiter for called station.", "label": "Colon", "name": "colon"}, {"help": "Use hyphen as delimiter for called station.", "label": "Hyphen", "name": "hyphen"}, {"help": "No delimiter for called station.", "label": "None", "name": "none"}, {"help": "Use single hyphen as delimiter for called station.", "label": "Single Hyphen", "name": "single-hyphen"}],
         },
         "mac-case": {
             "type": "option",
             "help": "MAC case (default = lowercase).",
             "default": "lowercase",
-            "options": ["lowercase", "uppercase"],
+            "options": [{"help": "Use lowercase MAC.", "label": "Lowercase", "name": "lowercase"}, {"help": "Use uppercase MAC.", "label": "Uppercase", "name": "uppercase"}],
         },
     },
     "router-vrf": {
@@ -1594,7 +1598,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Interface addressing mode.",
             "default": "static",
-            "options": ["static", "dhcp"],
+            "options": [{"help": "static addressing mode.", "label": "Static", "name": "static"}, {"help": "DHCP addressing mode.", "label": "Dhcp", "name": "dhcp"}],
         },
         "ip": {
             "type": "ipv4-classnet-host",
@@ -1606,13 +1610,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable interface status.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable interface.", "label": "Disable", "name": "disable"}, {"help": "Enable interface.", "label": "Enable", "name": "enable"}],
         },
         "allowaccess": {
             "type": "option",
             "help": "Permitted types of management access to this interface.",
             "default": "",
-            "options": ["ping", "https", "http", "ssh", "snmp", "telnet", "radius-acct"],
+            "options": [{"help": "PING.", "label": "Ping", "name": "ping"}, {"help": "HTTPS.", "label": "Https", "name": "https"}, {"help": "HTTP.", "label": "Http", "name": "http"}, {"help": "SSH.", "label": "Ssh", "name": "ssh"}, {"help": "SNMP.", "label": "Snmp", "name": "snmp"}, {"help": "TELNET.", "label": "Telnet", "name": "telnet"}, {"help": "RADIUS ACCOUNTING.", "label": "Radius Acct", "name": "radius-acct"}],
         },
         "vlan": {
             "type": "string",
@@ -1625,7 +1629,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Interface type.",
             "default": "vlan",
-            "options": ["vlan", "physical"],
+            "options": [{"help": "VLAN interface.", "label": "Vlan", "name": "vlan"}, {"help": "Physical interface.", "label": "Physical", "name": "physical"}],
         },
         "interface": {
             "type": "string",
@@ -1659,7 +1663,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable blackhole on this route.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable blackhole on this route.", "label": "Disable", "name": "disable"}, {"help": "Enable blackhole on this route.", "label": "Enable", "name": "enable"}],
         },
         "comment": {
             "type": "string",
@@ -1690,7 +1694,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable dynamic gateway.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable dynamic gateway on this route.", "label": "Disable", "name": "disable"}, {"help": "Disable dynamic gateway on this route.", "label": "Enable", "name": "enable"}],
         },
         "gateway": {
             "type": "ipv4-address",
@@ -1702,7 +1706,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable route status.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable route status.", "label": "Disable", "name": "disable"}, {"help": "Enable route status.", "label": "Enable", "name": "enable"}],
         },
         "vrf": {
             "type": "string",
@@ -1729,7 +1733,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this DHCP configuration.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Do not use this DHCP server configuration.", "label": "Disable", "name": "disable"}, {"help": "Use this DHCP server configuration.", "label": "Enable", "name": "enable"}],
         },
         "lease-time": {
             "type": "integer",
@@ -1742,7 +1746,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Options for assigning DNS servers to DHCP clients.",
             "default": "specify",
-            "options": ["local", "default", "specify"],
+            "options": [{"help": "IP address of the interface the DHCP server is added to becomes the client\u0027s DNS server IP address.", "label": "Local", "name": "local"}, {"help": "Clients are assigned the FortiGate\u0027s configured DNS servers.", "label": "Default", "name": "default"}, {"help": "Specify up to 3 DNS servers in the DHCP server configuration.", "label": "Specify", "name": "specify"}],
         },
         "dns-server1": {
             "type": "ipv4-address",
@@ -1763,7 +1767,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Options for assigning Network Time Protocol (NTP) servers to DHCP clients.",
             "default": "specify",
-            "options": ["local", "default", "specify"],
+            "options": [{"help": "IP address of the interface the DHCP server is added to becomes the client\u0027s NTP server IP address.", "label": "Local", "name": "local"}, {"help": "Clients are assigned the FortiGate\u0027s configured NTP servers.", "label": "Default", "name": "default"}, {"help": "Specify up to 3 NTP servers in the DHCP server configuration.", "label": "Specify", "name": "specify"}],
         },
         "ntp-server1": {
             "type": "ipv4-address",
@@ -1812,81 +1816,81 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PURDUE_LEVEL = [
-    "1",
-    "1.5",
-    "2",
-    "2.5",
-    "3",
-    "3.5",
-    "4",
-    "5",
-    "5.5",
+    "1",  # Level 1 - Basic Control
+    "1.5",  # Level 1.5
+    "2",  # Level 2 - Area Supervisory Control
+    "2.5",  # Level 2.5
+    "3",  # Level 3 - Operations & Control
+    "3.5",  # Level 3.5
+    "4",  # Level 4 - Business Planning & Logistics
+    "5",  # Level 5 - Enterprise Network
+    "5.5",  # Level 5.5
 ]
 VALID_BODY_FSW_WAN1_ADMIN = [
-    "discovered",
-    "disable",
-    "enable",
+    "discovered",  # Link waiting to be authorized.
+    "disable",  # Link unauthorized.
+    "enable",  # Link authorized.
 ]
 VALID_BODY_POE_PRE_STANDARD_DETECTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable PoE pre-standard detection.
+    "disable",  # Disable PoE pre-standard detection.
 ]
 VALID_BODY_DHCP_SERVER_ACCESS_LIST = [
-    "global",
-    "enable",
-    "disable",
+    "global",  # Use global setting for DHCP snooping server access list.
+    "enable",  # Override global setting and enable DHCP server access list.
+    "disable",  # Override global setting and disable DHCP server access list.
 ]
 VALID_BODY_MCLAG_IGMP_SNOOPING_AWARE = [
-    "enable",
-    "disable",
+    "enable",  # Enable MCLAG IGMP-snooping awareness.
+    "disable",  # Disable MCLAG IGMP-snooping awareness.
 ]
 VALID_BODY_PTP_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable PTP profile.
+    "enable",  # Enable PTP profile.
 ]
 VALID_BODY_RADIUS_NAS_IP_OVERRIDE = [
-    "disable",
-    "enable",
+    "disable",  # Disable radius-nas-ip-override.
+    "enable",  # Enable radius-nas-ip-override.
 ]
 VALID_BODY_ROUTE_OFFLOAD = [
-    "disable",
-    "enable",
+    "disable",  # Disable route offload.
+    "enable",  # Enable route offload.
 ]
 VALID_BODY_ROUTE_OFFLOAD_MCLAG = [
-    "disable",
-    "enable",
+    "disable",  # Disable route offload MCLAG.
+    "enable",  # Enable route offload MCLAG.
 ]
 VALID_BODY_TYPE = [
-    "virtual",
-    "physical",
+    "virtual",  # Switch is of type virtual.
+    "physical",  # Switch is of type physical.
 ]
 VALID_BODY_FIRMWARE_PROVISION = [
-    "enable",
-    "disable",
+    "enable",  # Enable firmware-provision.
+    "disable",  # Disable firmware-provision.
 ]
 VALID_BODY_FIRMWARE_PROVISION_LATEST = [
-    "disable",
-    "once",
+    "disable",  # Do not automatically provision the latest available firmware.
+    "once",  # Automatically attempt a one-time upgrade to the latest available firmware version.
 ]
 VALID_BODY_OVERRIDE_SNMP_SYSINFO = [
-    "disable",
-    "enable",
+    "disable",  # Use the global SNMP system information.
+    "enable",  # Override the global SNMP system information.
 ]
 VALID_BODY_OVERRIDE_SNMP_TRAP_THRESHOLD = [
-    "enable",
-    "disable",
+    "enable",  # Override the global SNMP trap threshold values.
+    "disable",  # Use the global SNMP trap threshold values.
 ]
 VALID_BODY_OVERRIDE_SNMP_COMMUNITY = [
-    "enable",
-    "disable",
+    "enable",  # Override the global SNMP communities.
+    "disable",  # Use the global SNMP communities.
 ]
 VALID_BODY_OVERRIDE_SNMP_USER = [
-    "enable",
-    "disable",
+    "enable",  # Override the global SNMPv3 users.
+    "disable",  # Use the global SNMPv3 users.
 ]
 VALID_BODY_QOS_DROP_POLICY = [
-    "taildrop",
-    "random-early-detection",
+    "taildrop",  # Taildrop policy.
+    "random-early-detection",  # Random early detection drop policy.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -2017,7 +2021,7 @@ def validate_switch_controller_managed_switch_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "switch-id": True,
-        ...     "purdue-level": "1",  # Valid enum value
+        ...     "purdue-level": "{'name': '1', 'help': 'Level 1 - Basic Control', 'label': '1', 'description': 'Level 1 - Basic Control    1'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_managed_switch_post(payload)
         >>> assert is_valid == True
@@ -2645,9 +2649,9 @@ SCHEMA_INFO = {
     "mkey": "switch-id",
     "mkey_type": "string",
     "help": "Configure FortiSwitch devices that are managed by this FortiGate.",
-    "total_fields": 67,
+    "total_fields": 68,
     "required_fields_count": 3,
-    "fields_with_defaults_count": 44,
+    "fields_with_defaults_count": 45,
 }
 
 

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Dynamic:
     """
-    Configuration for system/external-resource/dynamic
+    Push updates to the specified external resource.
     
     Path: system/external_resource/dynamic
     Category: monitor

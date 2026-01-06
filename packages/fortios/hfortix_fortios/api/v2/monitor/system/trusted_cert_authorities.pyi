@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TrustedCertAuthorities:
     """
-    Monitor endpoint for system/trusted-cert-authorities
+    Get trusted certifiate authorities.
     
     Path: system/trusted_cert_authorities
     Category: monitor

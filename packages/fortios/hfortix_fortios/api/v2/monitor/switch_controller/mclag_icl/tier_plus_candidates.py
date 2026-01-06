@@ -56,7 +56,7 @@ class TierPlusCandidates:
         """
         Retrieve switch_controller/mclag_icl/tier_plus_candidates configuration.
 
-        Configuration for switch-controller/mclag-icl/tier-plus-candidates
+        Find a pair of FortiSwitches that are eligible to form a tier 2/3 MC-LAG.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

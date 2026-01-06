@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_VENDOR: Literal["unknown", "google-cloud-kms"]
+VALID_BODY_VENDOR: Literal[{"description": "Unknown type of cloud service vendor", "help": "Unknown type of cloud service vendor.", "label": "Unknown", "name": "unknown"}, {"description": "Google Cloud KMS service", "help": "Google Cloud KMS service.", "label": "Google Cloud Kms", "name": "google-cloud-kms"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

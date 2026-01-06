@@ -12,8 +12,8 @@ class ShapingProfilePayload(TypedDict, total=False):
     """
     profile_name: str  # Shaping profile name.
     comment: NotRequired[str]  # Comment.
-    type: NotRequired[Literal["policing", "queuing"]]  # Select shaping profile type: policing / queuing.
-    npu_offloading: NotRequired[Literal["disable", "enable"]]  # Enable/disable NPU offloading.
+    type: NotRequired[Literal[{"description": "Enable policing mode", "help": "Enable policing mode.", "label": "Policing", "name": "policing"}, {"description": "Enable queuing mode", "help": "Enable queuing mode.", "label": "Queuing", "name": "queuing"}]]  # Select shaping profile type: policing / queuing.
+    npu_offloading: NotRequired[Literal[{"description": "Diable shaper offloading", "help": "Diable shaper offloading.", "label": "Disable", "name": "disable"}, {"description": "Enable shaper offloading", "help": "Enable shaper offloading.", "label": "Enable", "name": "enable"}]]  # Enable/disable NPU offloading.
     default_class_id: int  # Default class ID to handle unclassified packets (including a
     shaping_entries: NotRequired[list[dict[str, Any]]]  # Define shaping entries of this shaping profile.
 
@@ -45,8 +45,8 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
-        npu_offloading: Literal["disable", "enable"] | None = ...,
+        type: Literal[{"description": "Enable policing mode", "help": "Enable policing mode.", "label": "Policing", "name": "policing"}, {"description": "Enable queuing mode", "help": "Enable queuing mode.", "label": "Queuing", "name": "queuing"}] | None = ...,
+        npu_offloading: Literal[{"description": "Diable shaper offloading", "help": "Diable shaper offloading.", "label": "Disable", "name": "disable"}, {"description": "Enable shaper offloading", "help": "Enable shaper offloading.", "label": "Enable", "name": "enable"}] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -59,8 +59,8 @@ class ShapingProfile:
         payload_dict: ShapingProfilePayload | None = ...,
         profile_name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["policing", "queuing"] | None = ...,
-        npu_offloading: Literal["disable", "enable"] | None = ...,
+        type: Literal[{"description": "Enable policing mode", "help": "Enable policing mode.", "label": "Policing", "name": "policing"}, {"description": "Enable queuing mode", "help": "Enable queuing mode.", "label": "Queuing", "name": "queuing"}] | None = ...,
+        npu_offloading: Literal[{"description": "Diable shaper offloading", "help": "Diable shaper offloading.", "label": "Disable", "name": "disable"}, {"description": "Enable shaper offloading", "help": "Enable shaper offloading.", "label": "Enable", "name": "enable"}] | None = ...,
         default_class_id: int | None = ...,
         shaping_entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

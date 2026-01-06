@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/av_archive/download",
     "category": "monitor",
     "api_path": "log/av-archive/download",
-    "help": "Configuration for log/av-archive/download",
+    "help": "Download file quarantined by AntiVirus.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PortStatsReset:
     """
-    Configuration for switch-controller/managed-switch/port-stats-reset
+    Reset port statistics for a given FortiSwitch.
     
     Path: switch_controller/managed_switch/port_stats_reset
     Category: monitor

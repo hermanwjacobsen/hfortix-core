@@ -118,7 +118,7 @@ NESTED_SCHEMAS = {
             "help": "Enable/disable optional match.",
             "required": True,
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable optional match.", "label": "Enable", "name": "enable"}, {"help": "Disable optional match.", "label": "Disable", "name": "disable"}],
         },
     },
 }

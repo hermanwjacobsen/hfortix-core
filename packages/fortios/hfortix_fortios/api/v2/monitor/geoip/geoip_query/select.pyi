@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Select:
     """
-    Configuration for geoip/geoip-query/select
+    Retrieve location details for IPs queried against FortiGuard's geoip service.
     
     Path: geoip/geoip_query/select
     Category: monitor

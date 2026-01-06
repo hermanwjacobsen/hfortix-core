@@ -96,12 +96,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FABRIC_SYNC = [
-    "enable",
-    "disable",
+    "enable",  # Synchronize automation setting with security fabric.
+    "disable",  # Do not synchronize automation setting with security fabric.
 ]
 VALID_BODY_SECURE_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable secure running mode for automation.
+    "disable",  # Disable secure running mode for automation.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -226,7 +226,7 @@ def validate_automation_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "fabric-sync": "enable",  # Valid enum value
+        ...     "fabric-sync": "{'name': 'enable', 'help': 'Synchronize automation setting with security fabric.', 'label': 'Enable', 'description': 'Synchronize automation setting with security fabric'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_automation_setting_post(payload)
         >>> assert is_valid == True

@@ -1,15 +1,15 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MONITOR_ALL_MESSAGES: Literal["disable", "enable"]
-VALID_BODY_LOG_PACKET: Literal["disable", "enable"]
-VALID_BODY_TRACK_REQUESTS_ANSWERS: Literal["disable", "enable"]
-VALID_BODY_MISSING_REQUEST_ACTION: Literal["allow", "block", "reset", "monitor"]
-VALID_BODY_PROTOCOL_VERSION_INVALID: Literal["allow", "block", "reset", "monitor"]
-VALID_BODY_MESSAGE_LENGTH_INVALID: Literal["allow", "block", "reset", "monitor"]
-VALID_BODY_REQUEST_ERROR_FLAG_SET: Literal["allow", "block", "reset", "monitor"]
-VALID_BODY_CMD_FLAGS_RESERVE_SET: Literal["allow", "block", "reset", "monitor"]
-VALID_BODY_COMMAND_CODE_INVALID: Literal["allow", "block", "reset", "monitor"]
+VALID_BODY_MONITOR_ALL_MESSAGES: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Enable", "help": "Enable.", "label": "Enable", "name": "enable"}]
+VALID_BODY_LOG_PACKET: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Enable", "help": "Enable.", "label": "Enable", "name": "enable"}]
+VALID_BODY_TRACK_REQUESTS_ANSWERS: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Enable", "help": "Enable.", "label": "Enable", "name": "enable"}]
+VALID_BODY_MISSING_REQUEST_ACTION: Literal[{"description": "Allow or pass matching traffic", "help": "Allow or pass matching traffic.", "label": "Allow", "name": "allow"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"description": "Reset sessions for matching traffic", "help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}, {"description": "Allow and log matching traffic", "help": "Allow and log matching traffic.", "label": "Monitor", "name": "monitor"}]
+VALID_BODY_PROTOCOL_VERSION_INVALID: Literal[{"description": "Allow or pass matching traffic", "help": "Allow or pass matching traffic.", "label": "Allow", "name": "allow"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"description": "Reset sessions for matching traffic", "help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}, {"description": "Allow and log matching traffic", "help": "Allow and log matching traffic.", "label": "Monitor", "name": "monitor"}]
+VALID_BODY_MESSAGE_LENGTH_INVALID: Literal[{"description": "Allow or pass matching traffic", "help": "Allow or pass matching traffic.", "label": "Allow", "name": "allow"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"description": "Reset sessions for matching traffic", "help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}, {"description": "Allow and log matching traffic", "help": "Allow and log matching traffic.", "label": "Monitor", "name": "monitor"}]
+VALID_BODY_REQUEST_ERROR_FLAG_SET: Literal[{"description": "Allow or pass matching traffic", "help": "Allow or pass matching traffic.", "label": "Allow", "name": "allow"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"description": "Reset sessions for matching traffic", "help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}, {"description": "Allow and log matching traffic", "help": "Allow and log matching traffic.", "label": "Monitor", "name": "monitor"}]
+VALID_BODY_CMD_FLAGS_RESERVE_SET: Literal[{"description": "Allow or pass matching traffic", "help": "Allow or pass matching traffic.", "label": "Allow", "name": "allow"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"description": "Reset sessions for matching traffic", "help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}, {"description": "Allow and log matching traffic", "help": "Allow and log matching traffic.", "label": "Monitor", "name": "monitor"}]
+VALID_BODY_COMMAND_CODE_INVALID: Literal[{"description": "Allow or pass matching traffic", "help": "Allow or pass matching traffic.", "label": "Allow", "name": "allow"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"description": "Reset sessions for matching traffic", "help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}, {"description": "Allow and log matching traffic", "help": "Allow and log matching traffic.", "label": "Monitor", "name": "monitor"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

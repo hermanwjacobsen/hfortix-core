@@ -126,7 +126,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Peer wireless controller's priority (primary or secondary, default = primary).",
             "default": "primary",
-            "options": ["primary", "secondary"],
+            "options": [{"help": "Primary fast failover mode.", "label": "Primary", "name": "primary"}, {"help": "Secondary fast failover mode.", "label": "Secondary", "name": "secondary"}],
         },
     },
 }
@@ -134,17 +134,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_INTER_CONTROLLER_MODE = [
-    "disable",
-    "l2-roaming",
-    "1+1",
+    "disable",  # Disable inter-controller mode.
+    "l2-roaming",  # Enable layer 2 roaming support between inter-controllers.
+    "1+1",  # Enable 1+1 fast failover mode.
 ]
 VALID_BODY_L3_ROAMING = [
-    "enable",
-    "disable",
+    "enable",  # Enable layer 3 roaming.
+    "disable",  # Disable layer 3 roaming.
 ]
 VALID_BODY_INTER_CONTROLLER_PRI = [
-    "primary",
-    "secondary",
+    "primary",  # Primary fast failover mode.
+    "secondary",  # Secondary fast failover mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -269,7 +269,7 @@ def validate_wireless_controller_inter_controller_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "inter-controller-mode": "disable",  # Valid enum value
+        ...     "inter-controller-mode": "{'name': 'disable', 'help': 'Disable inter-controller mode.', 'label': 'Disable', 'description': 'Disable inter-controller mode'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_inter_controller_post(payload)
         >>> assert is_valid == True

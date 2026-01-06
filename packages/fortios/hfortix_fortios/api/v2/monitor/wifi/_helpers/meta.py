@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/meta",
     "category": "monitor",
     "api_path": "wifi/meta",
-    "help": "Configuration for wifi/meta",
+    "help": "Retrieve WiFi related meta data.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

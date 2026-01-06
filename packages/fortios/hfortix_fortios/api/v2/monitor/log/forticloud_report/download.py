@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve log/forticloud_report/download configuration.
 
-        Configuration for log/forticloud-report/download
+        Download PDF report from FortiCloud.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

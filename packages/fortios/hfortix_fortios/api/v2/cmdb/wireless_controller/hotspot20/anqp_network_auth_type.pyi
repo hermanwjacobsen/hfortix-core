@@ -11,7 +11,7 @@ class AnqpNetworkAuthTypePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Authentication type name.
-    auth_type: NotRequired[Literal["acceptance-of-terms", "online-enrollment", "http-redirection", "dns-redirection"]]  # Network authentication type.
+    auth_type: NotRequired[Literal[{"description": "Acceptance of terms and conditions", "help": "Acceptance of terms and conditions.", "label": "Acceptance Of Terms", "name": "acceptance-of-terms"}, {"description": "Online enrollment supported", "help": "Online enrollment supported.", "label": "Online Enrollment", "name": "online-enrollment"}, {"description": "HTTP and HTTPS redirection", "help": "HTTP and HTTPS redirection.", "label": "Http Redirection", "name": "http-redirection"}, {"description": "DNS redirection", "help": "DNS redirection.", "label": "Dns Redirection", "name": "dns-redirection"}]]  # Network authentication type.
     url: NotRequired[str]  # Redirect URL.
 
 
@@ -41,7 +41,7 @@ class AnqpNetworkAuthType:
         self,
         payload_dict: AnqpNetworkAuthTypePayload | None = ...,
         name: str | None = ...,
-        auth_type: Literal["acceptance-of-terms", "online-enrollment", "http-redirection", "dns-redirection"] | None = ...,
+        auth_type: Literal[{"description": "Acceptance of terms and conditions", "help": "Acceptance of terms and conditions.", "label": "Acceptance Of Terms", "name": "acceptance-of-terms"}, {"description": "Online enrollment supported", "help": "Online enrollment supported.", "label": "Online Enrollment", "name": "online-enrollment"}, {"description": "HTTP and HTTPS redirection", "help": "HTTP and HTTPS redirection.", "label": "Http Redirection", "name": "http-redirection"}, {"description": "DNS redirection", "help": "DNS redirection.", "label": "Dns Redirection", "name": "dns-redirection"}] | None = ...,
         url: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -52,7 +52,7 @@ class AnqpNetworkAuthType:
         self,
         payload_dict: AnqpNetworkAuthTypePayload | None = ...,
         name: str | None = ...,
-        auth_type: Literal["acceptance-of-terms", "online-enrollment", "http-redirection", "dns-redirection"] | None = ...,
+        auth_type: Literal[{"description": "Acceptance of terms and conditions", "help": "Acceptance of terms and conditions.", "label": "Acceptance Of Terms", "name": "acceptance-of-terms"}, {"description": "Online enrollment supported", "help": "Online enrollment supported.", "label": "Online Enrollment", "name": "online-enrollment"}, {"description": "HTTP and HTTPS redirection", "help": "HTTP and HTTPS redirection.", "label": "Http Redirection", "name": "http-redirection"}, {"description": "DNS redirection", "help": "DNS redirection.", "label": "Dns Redirection", "name": "dns-redirection"}] | None = ...,
         url: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

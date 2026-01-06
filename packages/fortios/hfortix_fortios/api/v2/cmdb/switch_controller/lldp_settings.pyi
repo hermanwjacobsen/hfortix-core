@@ -13,8 +13,8 @@ class LldpSettingsPayload(TypedDict, total=False):
     tx_hold: NotRequired[int]  # Number of tx-intervals before local LLDP data expires (1 - 1
     tx_interval: NotRequired[int]  # Frequency of LLDP PDU transmission from FortiSwitch (5 - 409
     fast_start_interval: NotRequired[int]  # Frequency of LLDP PDU transmission from FortiSwitch for the 
-    management_interface: NotRequired[Literal["internal", "mgmt"]]  # Primary management interface to be advertised in LLDP and CD
-    device_detection: NotRequired[Literal["disable", "enable"]]  # Enable/disable dynamic detection of LLDP neighbor devices fo
+    management_interface: NotRequired[Literal[{"description": "Use internal interface", "help": "Use internal interface.", "label": "Internal", "name": "internal"}, {"description": "Use management interface", "help": "Use management interface.", "label": "Mgmt", "name": "mgmt"}]]  # Primary management interface to be advertised in LLDP and CD
+    device_detection: NotRequired[Literal[{"description": "Disable dynamic detection of LLDP neighbor devices", "help": "Disable dynamic detection of LLDP neighbor devices.", "label": "Disable", "name": "disable"}, {"description": "Enable dynamic detection of LLDP neighbor devices", "help": "Enable dynamic detection of LLDP neighbor devices.", "label": "Enable", "name": "enable"}]]  # Enable/disable dynamic detection of LLDP neighbor devices fo
 
 
 class LldpSettings:
@@ -44,8 +44,8 @@ class LldpSettings:
         tx_hold: int | None = ...,
         tx_interval: int | None = ...,
         fast_start_interval: int | None = ...,
-        management_interface: Literal["internal", "mgmt"] | None = ...,
-        device_detection: Literal["disable", "enable"] | None = ...,
+        management_interface: Literal[{"description": "Use internal interface", "help": "Use internal interface.", "label": "Internal", "name": "internal"}, {"description": "Use management interface", "help": "Use management interface.", "label": "Mgmt", "name": "mgmt"}] | None = ...,
+        device_detection: Literal[{"description": "Disable dynamic detection of LLDP neighbor devices", "help": "Disable dynamic detection of LLDP neighbor devices.", "label": "Disable", "name": "disable"}, {"description": "Enable dynamic detection of LLDP neighbor devices", "help": "Enable dynamic detection of LLDP neighbor devices.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -57,8 +57,8 @@ class LldpSettings:
         tx_hold: int | None = ...,
         tx_interval: int | None = ...,
         fast_start_interval: int | None = ...,
-        management_interface: Literal["internal", "mgmt"] | None = ...,
-        device_detection: Literal["disable", "enable"] | None = ...,
+        management_interface: Literal[{"description": "Use internal interface", "help": "Use internal interface.", "label": "Internal", "name": "internal"}, {"description": "Use management interface", "help": "Use management interface.", "label": "Mgmt", "name": "mgmt"}] | None = ...,
+        device_detection: Literal[{"description": "Disable dynamic detection of LLDP neighbor devices", "help": "Disable dynamic detection of LLDP neighbor devices.", "label": "Disable", "name": "disable"}, {"description": "Enable dynamic detection of LLDP neighbor devices", "help": "Enable dynamic detection of LLDP neighbor devices.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

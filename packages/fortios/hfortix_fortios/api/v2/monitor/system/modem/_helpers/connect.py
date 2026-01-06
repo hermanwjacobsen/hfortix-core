@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/modem/connect",
     "category": "monitor",
     "api_path": "system/modem/connect",
-    "help": "Configuration for system/modem/connect",
+    "help": "Trigger a connect for the configured modem.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

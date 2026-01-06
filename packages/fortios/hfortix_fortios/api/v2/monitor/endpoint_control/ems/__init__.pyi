@@ -7,7 +7,9 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .cert_status import CertStatus
+    from .malware_hash import MalwareHash
     from .status import Status
+    from .status_summary import StatusSummary
     from .unverify_cert import UnverifyCert
     from .verify_cert import VerifyCert
 
@@ -16,7 +18,9 @@ class Ems:
     """Type stub for Ems."""
 
     cert_status: CertStatus
+    malware_hash: MalwareHash
     status: Status
+    status_summary: StatusSummary
     unverify_cert: UnverifyCert
     verify_cert: VerifyCert
 

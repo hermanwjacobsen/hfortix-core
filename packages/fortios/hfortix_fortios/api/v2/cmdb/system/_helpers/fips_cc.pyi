@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_KEY_GENERATION_SELF_TEST: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable FIPS-CC mode", "help": "Enable FIPS-CC mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FIPS-CC mode", "help": "Disable FIPS-CC mode.", "label": "Disable", "name": "disable"}]
+VALID_BODY_KEY_GENERATION_SELF_TEST: Literal[{"description": "Enable self tests after key generation", "help": "Enable self tests after key generation.", "label": "Enable", "name": "enable"}, {"description": "Disable self tests after key generation", "help": "Disable self tests after key generation.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

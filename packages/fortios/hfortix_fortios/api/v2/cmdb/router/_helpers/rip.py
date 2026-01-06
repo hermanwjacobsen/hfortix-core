@@ -165,14 +165,14 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "direction": {
             "type": "option",
             "help": "Distribute list direction.",
             "required": True,
             "default": "out",
-            "options": ["in", "out"],
+            "options": [{"help": "Filter incoming packets.", "label": "In", "name": "in"}, {"help": "Filter outgoing packets.", "label": "Out", "name": "out"}],
         },
         "listname": {
             "type": "string",
@@ -230,14 +230,14 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "direction": {
             "type": "option",
             "help": "Offset list direction.",
             "required": True,
             "default": "out",
-            "options": ["in", "out"],
+            "options": [{"help": "Filter incoming packets.", "label": "In", "name": "in"}, {"help": "Filter outgoing packets.", "label": "Out", "name": "out"}],
         },
         "access-list": {
             "type": "string",
@@ -282,7 +282,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "metric": {
             "type": "integer",
@@ -315,7 +315,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Authentication mode.",
             "default": "none",
-            "options": ["none", "text", "md5"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Text.", "label": "Text", "name": "text"}, {"help": "MD5.", "label": "Md5", "name": "md5"}],
         },
         "auth-string": {
             "type": "password",
@@ -326,31 +326,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Receive version.",
             "default": "",
-            "options": ["1", "2"],
+            "options": [{"help": "Version 1.", "label": "1", "name": "1"}, {"help": "Version 2.", "label": "2", "name": "2"}],
         },
         "send-version": {
             "type": "option",
             "help": "Send version.",
             "default": "",
-            "options": ["1", "2"],
+            "options": [{"help": "Version 1.", "label": "1", "name": "1"}, {"help": "Version 2.", "label": "2", "name": "2"}],
         },
         "send-version2-broadcast": {
             "type": "option",
             "help": "Enable/disable broadcast version 1 compatible packets.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable broadcasting.", "label": "Disable", "name": "disable"}, {"help": "Enable broadcasting.", "label": "Enable", "name": "enable"}],
         },
         "split-horizon-status": {
             "type": "option",
             "help": "Enable/disable split horizon.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "split-horizon": {
             "type": "option",
             "help": "Enable/disable split horizon.",
             "default": "poisoned",
-            "options": ["poisoned", "regular"],
+            "options": [{"help": "Poisoned.", "label": "Poisoned", "name": "poisoned"}, {"help": "Regular.", "label": "Regular", "name": "regular"}],
         },
         "flags": {
             "type": "integer",
@@ -365,12 +365,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DEFAULT_INFORMATION_ORIGINATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_VERSION = [
-    "1",
-    "2",
+    "1",  # Version 1.
+    "2",  # Version 2.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -495,7 +495,7 @@ def validate_router_rip_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "default-information-originate": "enable",  # Valid enum value
+        ...     "default-information-originate": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_rip_post(payload)
         >>> assert is_valid == True

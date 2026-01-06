@@ -56,7 +56,7 @@ class State:
         """
         Retrieve system/cluster/state configuration.
 
-        Configuration for system/cluster/state
+        Get state of SLBC cluster slots.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

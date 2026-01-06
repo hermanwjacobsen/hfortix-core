@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "videofilter/fortiguard_categories",
     "category": "monitor",
     "api_path": "videofilter/fortiguard-categories",
-    "help": "Monitor endpoint for videofilter/fortiguard-categories",
+    "help": "Return FortiGuard video filter categories.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

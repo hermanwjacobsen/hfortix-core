@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Meta:
     """
-    Configuration for sniffer/meta
+    Returns system limitations & meta information of packet capture feature.
     
     Path: sniffer/meta
     Category: service

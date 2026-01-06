@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MACHINE_LEARNING_DETECTION: Literal["enable", "monitor", "disable"]
-VALID_BODY_USE_EXTREME_DB: Literal["enable", "disable"]
-VALID_BODY_GRAYWARE: Literal["enable", "disable"]
-VALID_BODY_CACHE_INFECTED_RESULT: Literal["enable", "disable"]
+VALID_BODY_MACHINE_LEARNING_DETECTION: Literal[{"description": "Enable machine learning based malware detection", "help": "Enable machine learning based malware detection.", "label": "Enable", "name": "enable"}, {"description": "Enable machine learning based malware detection for monitoring only", "help": "Enable machine learning based malware detection for monitoring only.", "label": "Monitor", "name": "monitor"}, {"description": "Disable machine learning based malware detection", "help": "Disable machine learning based malware detection.", "label": "Disable", "name": "disable"}]
+VALID_BODY_USE_EXTREME_DB: Literal[{"description": "Enable extreme AVDB", "help": "Enable extreme AVDB.", "label": "Enable", "name": "enable"}, {"description": "Disable extreme AVDB", "help": "Disable extreme AVDB.", "label": "Disable", "name": "disable"}]
+VALID_BODY_GRAYWARE: Literal[{"description": "Enable grayware detection", "help": "Enable grayware detection.", "label": "Enable", "name": "enable"}, {"description": "Disable grayware detection", "help": "Disable grayware detection.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CACHE_INFECTED_RESULT: Literal[{"description": "Enable cache of infected scan results", "help": "Enable cache of infected scan results.", "label": "Enable", "name": "enable"}, {"description": "Disable cache of infected scan results", "help": "Disable cache of infected scan results.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

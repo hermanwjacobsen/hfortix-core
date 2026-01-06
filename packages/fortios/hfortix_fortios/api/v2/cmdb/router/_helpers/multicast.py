@@ -129,7 +129,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable allowing this router to become a bootstrap router (BSR).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Allow this router to function as a BSR.", "label": "Enable", "name": "enable"}, {"help": "Do not allow this router to function as a BSR.", "label": "Disable", "name": "disable"}],
         },
         "bsr-interface": {
             "type": "string",
@@ -155,19 +155,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable accept BSR quick refresh packets from neighbors.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Allow quick refresh packets.", "label": "Enable", "name": "enable"}, {"help": "Do not allow quick refresh packets.", "label": "Disable", "name": "disable"}],
         },
         "cisco-crp-prefix": {
             "type": "option",
             "help": "Enable/disable making candidate RP compatible with old Cisco IOS.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Do not allow sending group prefix of zero.", "label": "Enable", "name": "enable"}, {"help": "Allow sending group prefix of zero.", "label": "Disable", "name": "disable"}],
         },
         "cisco-register-checksum": {
             "type": "option",
             "help": "Checksum entire register packet(for old Cisco IOS compatibility).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "register checksum entire packet.", "label": "Enable", "name": "enable"}, {"help": "Do not register checksum entire packet.", "label": "Disable", "name": "disable"}],
         },
         "cisco-register-checksum-group": {
             "type": "string",
@@ -179,19 +179,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use only hash for RP selection (compatibility with old Cisco IOS).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Ignore RP-SET priority value.", "label": "Enable", "name": "enable"}, {"help": "Do not ignore RP-SET priority value.", "label": "Disable", "name": "disable"}],
         },
         "register-rp-reachability": {
             "type": "option",
             "help": "Enable/disable check RP is reachable before registering packets.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Check target RP is unicast reachable before registering.", "label": "Enable", "name": "enable"}, {"help": "Do not check RP unicast reachability.", "label": "Disable", "name": "disable"}],
         },
         "register-source": {
             "type": "option",
             "help": "Override source address in register packets.",
             "default": "disable",
-            "options": ["disable", "interface", "ip-address"],
+            "options": [{"help": "Use source address of RPF interface.", "label": "Disable", "name": "disable"}, {"help": "Use primary IP of an interface.", "label": "Interface", "name": "interface"}, {"help": "Use a local IP address.", "label": "Ip Address", "name": "ip-address"}],
         },
         "register-source-interface": {
             "type": "string",
@@ -229,7 +229,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable switching to source specific trees.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Switch to Source tree when available.", "label": "Enable", "name": "enable"}, {"help": "Do not switch to Source tree when available.", "label": "Disable", "name": "disable"}],
         },
         "spt-threshold-group": {
             "type": "string",
@@ -241,7 +241,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable source specific multicast.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Allow source specific multicast.", "label": "Enable", "name": "enable"}, {"help": "Do not allow source specific multicast.", "label": "Disable", "name": "disable"}],
         },
         "ssm-range": {
             "type": "string",
@@ -260,7 +260,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable use of SDWAN when checking RPF neighbor and sending of REG packet.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable use of SDWAN when checking RPF neighbor and sending of REG packet.", "label": "Enable", "name": "enable"}, {"help": "Disable use of SDWAN when checking RPF neighbor and sending of REG packet.", "label": "Disable", "name": "disable"}],
         },
         "rp-address": {
             "type": "string",
@@ -271,7 +271,7 @@ NESTED_SCHEMAS = {
         "vrf": {
             "type": "integer",
             "help": "VRF ID.",
-            "default": 1886221359,
+            "default": 0,
             "min_value": 1,
             "max_value": 511,
         },
@@ -279,7 +279,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable allowing this router to become a bootstrap router (BSR).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Allow this router to function as a BSR.", "label": "Enable", "name": "enable"}, {"help": "Do not allow this router to function as a BSR.", "label": "Disable", "name": "disable"}],
         },
         "bsr-interface": {
             "type": "string",
@@ -305,13 +305,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable accept BSR quick refresh packets from neighbors.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Allow quick refresh packets.", "label": "Enable", "name": "enable"}, {"help": "Do not allow quick refresh packets.", "label": "Disable", "name": "disable"}],
         },
         "cisco-crp-prefix": {
             "type": "option",
             "help": "Enable/disable making candidate RP compatible with old Cisco IOS.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Do not allow sending group prefix of zero.", "label": "Enable", "name": "enable"}, {"help": "Allow sending group prefix of zero.", "label": "Disable", "name": "disable"}],
         },
         "rp-address": {
             "type": "string",
@@ -336,19 +336,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "PIM operation mode.",
             "default": "sparse-mode",
-            "options": ["sparse-mode", "dense-mode"],
+            "options": [{"help": "sparse-mode", "label": "Sparse Mode", "name": "sparse-mode"}, {"help": "dense-mode", "label": "Dense Mode", "name": "dense-mode"}],
         },
         "passive": {
             "type": "option",
             "help": "Enable/disable listening to IGMP but not participating in PIM.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Listen only.", "label": "Enable", "name": "enable"}, {"help": "Participate in PIM.", "label": "Disable", "name": "disable"}],
         },
         "bfd": {
             "type": "option",
             "help": "Enable/disable Protocol Independent Multicast (PIM) Bidirectional Forwarding Detection (BFD).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable Protocol Independent Multicast (PIM) Bidirectional Forwarding Detection (BFD).", "label": "Enable", "name": "enable"}, {"help": "Disable Protocol Independent Multicast (PIM) Bidirectional Forwarding Detection (BFD).", "label": "Disable", "name": "disable"}],
         },
         "neighbour-filter": {
             "type": "string",
@@ -374,7 +374,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Exclude GenID from hello packets (compatibility with old Cisco IOS).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Do not send GenID.", "label": "Enable", "name": "enable"}, {"help": "Send GenID according to standard.", "label": "Disable", "name": "disable"}],
         },
         "dr-priority": {
             "type": "integer",
@@ -401,7 +401,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable compete to become RP in elections.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Compete for RP elections.", "label": "Enable", "name": "enable"}, {"help": "Do not compete for RP elections.", "label": "Disable", "name": "disable"}],
         },
         "rp-candidate-group": {
             "type": "string",
@@ -439,7 +439,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable fail back for RPF neighbor query.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable fail back for RPF neighbor query.", "label": "Enable", "name": "enable"}, {"help": "Disable fail back for RPF neighbor query.", "label": "Disable", "name": "disable"}],
         },
         "rpf-nbr-fail-back-filter": {
             "type": "string",
@@ -461,8 +461,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MULTICAST_ROUTING = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP multicast routing.
+    "disable",  # Disable IP multicast routing.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -587,7 +587,7 @@ def validate_router_multicast_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "multicast-routing": "enable",  # Valid enum value
+        ...     "multicast-routing": "{'name': 'enable', 'help': 'Enable IP multicast routing.', 'label': 'Enable', 'description': 'Enable IP multicast routing'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_multicast_post(payload)
         >>> assert is_valid == True

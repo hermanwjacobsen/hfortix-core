@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class DeregisterDevice:
     """
-    Configuration for registration/forticare/deregister-device
+    Deregister the FortiGate from a FortiCare account.
     
     Path: registration/forticare/deregister_device
     Category: monitor

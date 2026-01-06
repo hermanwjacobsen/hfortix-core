@@ -139,20 +139,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTHEN_TYPE = [
-    "mschap",
-    "chap",
-    "pap",
-    "ascii",
-    "auto",
+    "mschap",  # MSCHAP.
+    "chap",  # CHAP.
+    "pap",  # PAP.
+    "ascii",  # ASCII.
+    "auto",  # Use PAP, MSCHAP, and CHAP (in that order).
 ]
 VALID_BODY_AUTHORIZATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable TACACS+ authorization.
+    "disable",  # Disable TACACS+ authorization.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -283,7 +283,7 @@ def validate_user_tacacs_plus_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "authen-type": "mschap",  # Valid enum value
+        ...     "authen-type": "{'name': 'mschap', 'help': 'MSCHAP.', 'label': 'Mschap', 'description': 'MSCHAP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_tacacs_plus_post(payload)
         >>> assert is_valid == True

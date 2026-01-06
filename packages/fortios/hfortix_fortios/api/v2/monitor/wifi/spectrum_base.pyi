@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Spectrum:
     """
-    Configuration for wifi/spectrum
+    Retrieve spectrum analysis information for a specific FortiAP.
     
     Path: wifi/spectrum
     Category: monitor

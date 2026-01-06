@@ -56,7 +56,7 @@ class ForticloudReportList:
         """
         Retrieve log/forticloud_report_list configuration.
 
-        Configuration for log/forticloud-report-list
+        Get FortiCloud report list.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

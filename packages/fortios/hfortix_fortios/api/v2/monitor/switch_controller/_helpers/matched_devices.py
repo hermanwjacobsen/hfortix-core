@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/matched_devices",
     "category": "monitor",
     "api_path": "switch-controller/matched-devices",
-    "help": "Monitor endpoint for switch-controller/matched-devices",
+    "help": "Return a list of devices that match NAC and/or dynamic port policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

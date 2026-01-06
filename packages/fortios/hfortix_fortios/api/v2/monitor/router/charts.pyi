@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Charts:
     """
-    Configuration for router/charts
+    Retrieve routing chart statistics, including a map of interfaces and route types.
     
     Path: router/charts
     Category: monitor

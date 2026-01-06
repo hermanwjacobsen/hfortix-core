@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Transceivers:
     """
-    Configuration for system/interface/transceivers
+    Get a list of transceivers being used by the FortiGate.
     
     Path: system/interface/transceivers
     Category: monitor

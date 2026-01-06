@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RateBased:
     """
-    Monitor endpoint for ips/rate-based
+    Returns a list of rate-based signatures in IPS package.
     
     Path: ips/rate_based
     Category: monitor

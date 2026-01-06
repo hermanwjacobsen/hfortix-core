@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_HEADER: Literal["none", "http", "8bit"]
-VALID_BODY_FORMAT: Literal["none", "text", "html"]
+VALID_BODY_HEADER: Literal[{"description": "No header type", "help": "No header type.", "label": "None", "name": "none"}, {"description": "HTTP    8bit:8 bit", "help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}]
+VALID_BODY_FORMAT: Literal[{"description": "No format type", "help": "No format type.", "label": "None", "name": "none"}, {"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "HTML format", "help": "HTML format.", "label": "Html", "name": "html"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

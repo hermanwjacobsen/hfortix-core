@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LookupPolicy:
     """
-    Configuration for router/lookup-policy
+    Performs a route lookup by querying the policy routing table.
     
     Path: router/lookup_policy
     Category: monitor

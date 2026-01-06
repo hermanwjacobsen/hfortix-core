@@ -16,8 +16,8 @@ class VlanPolicyPayload(TypedDict, total=False):
     vlan: NotRequired[str]  # Native VLAN to be applied when using this VLAN policy.
     allowed_vlans: NotRequired[list[dict[str, Any]]]  # Allowed VLANs to be applied when using this VLAN policy.
     untagged_vlans: NotRequired[list[dict[str, Any]]]  # Untagged VLANs to be applied when using this VLAN policy.
-    allowed_vlans_all: NotRequired[Literal["enable", "disable"]]  # Enable/disable all defined VLANs when using this VLAN policy
-    discard_mode: NotRequired[Literal["none", "all-untagged", "all-tagged"]]  # Discard mode to be applied when using this VLAN policy.
+    allowed_vlans_all: NotRequired[Literal[{"description": "Enable all defined VLANs", "help": "Enable all defined VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable all defined VLANs", "help": "Disable all defined VLANs.", "label": "Disable", "name": "disable"}]]  # Enable/disable all defined VLANs when using this VLAN policy
+    discard_mode: NotRequired[Literal[{"description": "Discard disabled", "help": "Discard disabled.", "label": "None", "name": "none"}, {"description": "Discard all frames that are untagged", "help": "Discard all frames that are untagged.", "label": "All Untagged", "name": "all-untagged"}, {"description": "Discard all frames that are tagged", "help": "Discard all frames that are tagged.", "label": "All Tagged", "name": "all-tagged"}]]  # Discard mode to be applied when using this VLAN policy.
 
 
 class VlanPolicy:
@@ -51,8 +51,8 @@ class VlanPolicy:
         vlan: str | None = ...,
         allowed_vlans: list[dict[str, Any]] | None = ...,
         untagged_vlans: list[dict[str, Any]] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
+        allowed_vlans_all: Literal[{"description": "Enable all defined VLANs", "help": "Enable all defined VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable all defined VLANs", "help": "Disable all defined VLANs.", "label": "Disable", "name": "disable"}] | None = ...,
+        discard_mode: Literal[{"description": "Discard disabled", "help": "Discard disabled.", "label": "None", "name": "none"}, {"description": "Discard all frames that are untagged", "help": "Discard all frames that are untagged.", "label": "All Untagged", "name": "all-untagged"}, {"description": "Discard all frames that are tagged", "help": "Discard all frames that are tagged.", "label": "All Tagged", "name": "all-tagged"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -67,8 +67,8 @@ class VlanPolicy:
         vlan: str | None = ...,
         allowed_vlans: list[dict[str, Any]] | None = ...,
         untagged_vlans: list[dict[str, Any]] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
+        allowed_vlans_all: Literal[{"description": "Enable all defined VLANs", "help": "Enable all defined VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable all defined VLANs", "help": "Disable all defined VLANs.", "label": "Disable", "name": "disable"}] | None = ...,
+        discard_mode: Literal[{"description": "Discard disabled", "help": "Discard disabled.", "label": "None", "name": "none"}, {"description": "Discard all frames that are untagged", "help": "Discard all frames that are untagged.", "label": "All Untagged", "name": "all-untagged"}, {"description": "Discard all frames that are tagged", "help": "Discard all frames that are tagged.", "label": "All Tagged", "name": "all-tagged"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

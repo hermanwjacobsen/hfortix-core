@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RestoreStatus:
     """
-    Configuration for system/config/restore-status
+    Check the status of the restoring system configuration session.
     
     Path: system/config/restore_status
     Category: monitor

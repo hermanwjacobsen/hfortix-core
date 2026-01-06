@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for system/vmlicense/upload
+    Update VM license using uploaded file. Reboots immediately if successful.
     
     Path: system/vmlicense/upload
     Category: monitor

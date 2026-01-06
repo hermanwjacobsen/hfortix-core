@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_script",
     "category": "monitor",
     "api_path": "system/config-script",
-    "help": "Configuration for system/config-script",
+    "help": "Retrieve the information about config scripts.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

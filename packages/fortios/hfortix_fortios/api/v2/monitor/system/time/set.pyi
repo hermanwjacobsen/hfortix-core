@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Set:
     """
-    Configuration for system/time/set
+    Sets current system time stamp.
     
     Path: system/time/set
     Category: monitor

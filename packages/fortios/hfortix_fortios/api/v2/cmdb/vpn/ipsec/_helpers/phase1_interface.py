@@ -155,7 +155,7 @@ FIELDS_WITH_DEFAULTS = {
     "dpd-retryinterval": "",
     "npu-offload": "enable",
     "send-cert-chain": "enable",
-    "dhgrp": "14",
+    "dhgrp": "20",
     "addke1": "",
     "addke2": "",
     "addke3": "",
@@ -453,7 +453,7 @@ FIELD_TYPES = {
     "qkd-hybrid": "option",  # Enable/disable use of Quantum Key Distribution (QKD) hybrid 
     "qkd-profile": "string",  # Quantum Key Distribution (QKD) server profile.
     "transport": "option",  # Set IKE transport protocol.
-    "fortinet-esp": "option",  # Enable/disable Fortinet ESP encapsulaton.
+    "fortinet-esp": "option",  # Enable/disable Fortinet ESP encapsulation.
     "auto-transport-threshold": "integer",  # Timeout in seconds before falling back to next transport pro
     "remote-gw-match": "option",  # Set type of IPv4 remote gateway address matching.
     "remote-gw-subnet": "ipv4-classnet-any",  # IPv4 address and subnet mask.
@@ -656,7 +656,7 @@ FIELD_DESCRIPTIONS = {
     "qkd-hybrid": "Enable/disable use of Quantum Key Distribution (QKD) hybrid keys.",
     "qkd-profile": "Quantum Key Distribution (QKD) server profile.",
     "transport": "Set IKE transport protocol.",
-    "fortinet-esp": "Enable/disable Fortinet ESP encapsulaton.",
+    "fortinet-esp": "Enable/disable Fortinet ESP encapsulation.",
     "auto-transport-threshold": "Timeout in seconds before falling back to next transport protocol.",
     "remote-gw-match": "Set type of IPv4 remote gateway address matching.",
     "remote-gw-subnet": "IPv4 address and subnet mask.",
@@ -703,7 +703,7 @@ FIELD_CONSTRAINTS = {
     "priority": {"type": "integer", "min": 1, "max": 65535},
     "localid": {"type": "string", "max_length": 63},
     "negotiate-timeout": {"type": "integer", "min": 1, "max": 300},
-    "dpd-retrycount": {"type": "integer", "min": 0, "max": 10},
+    "dpd-retrycount": {"type": "integer", "min": 1, "max": 10},
     "eap-exclude-peergrp": {"type": "string", "max_length": 35},
     "ppk-identity": {"type": "string", "max_length": 35},
     "authusr": {"type": "string", "max_length": 64},
@@ -833,618 +833,618 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "static",
-    "dynamic",
-    "ddns",
+    "static",  # Remote VPN gateway has fixed IP address.
+    "dynamic",  # Remote VPN gateway has dynamic IP address.
+    "ddns",  # Remote VPN gateway has dynamic IP address and is a dynamic DNS client.
 ]
 VALID_BODY_IP_VERSION = [
-    "4",
-    "6",
+    "4",  # Use IPv4 addressing for gateways.
+    "6",  # Use IPv6 addressing for gateways.
 ]
 VALID_BODY_IKE_VERSION = [
-    "1",
-    "2",
+    "1",  # Use IKEv1 protocol.
+    "2",  # Use IKEv2 protocol.
 ]
 VALID_BODY_AUTHMETHOD = [
-    "psk",
-    "signature",
+    "psk",  # PSK authentication method.
+    "signature",  # Signature authentication method.
 ]
 VALID_BODY_AUTHMETHOD_REMOTE = [
-    "psk",
-    "signature",
+    "psk",  # PSK authentication method.
+    "signature",  # Signature authentication method.
 ]
 VALID_BODY_MODE = [
-    "aggressive",
-    "main",
+    "aggressive",  # Aggressive mode.
+    "main",  # Main mode.
 ]
 VALID_BODY_PEERTYPE = [
-    "any",
-    "one",
-    "dialup",
-    "peer",
-    "peergrp",
+    "any",  # Accept any peer ID.
+    "one",  # Accept this peer ID.
+    "dialup",  # Accept peer ID in dialup group.
+    "peer",  # Accept this peer certificate.
+    "peergrp",  # Accept this peer certificate group.
 ]
 VALID_BODY_MONITOR_HOLD_DOWN_TYPE = [
-    "immediate",
-    "delay",
-    "time",
+    "immediate",  # Fail back immediately after primary recovers.
+    "delay",  # Number of seconds to delay fail back after primary recovers.
+    "time",  # Specify a time at which to fail back after primary recovers.
 ]
 VALID_BODY_MONITOR_HOLD_DOWN_WEEKDAY = [
-    "everyday",
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
+    "everyday",  # Every Day.
+    "sunday",  # Sunday.
+    "monday",  # Monday.
+    "tuesday",  # Tuesday.
+    "wednesday",  # Wednesday.
+    "thursday",  # Thursday.
+    "friday",  # Friday.
+    "saturday",  # Saturday.
 ]
 VALID_BODY_NET_DEVICE = [
-    "enable",
-    "disable",
+    "enable",  # Create a kernel device for every tunnel.
+    "disable",  # Do not create a kernel device for tunnels.
 ]
 VALID_BODY_PASSIVE_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPsec passive mode.
+    "disable",  # Disable IPsec passive mode.
 ]
 VALID_BODY_EXCHANGE_INTERFACE_IP = [
-    "enable",
-    "disable",
+    "enable",  # Enable exchange of IPsec interface IP address.
+    "disable",  # Disable exchange of IPsec interface IP address.
 ]
 VALID_BODY_AGGREGATE_MEMBER = [
-    "enable",
-    "disable",
+    "enable",  # Enable use as an aggregate member.
+    "disable",  # Disable use as an aggregate member.
 ]
 VALID_BODY_PACKET_REDISTRIBUTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable packet redistribution.
+    "disable",  # Disable packet redistribution.
 ]
 VALID_BODY_PEER_EGRESS_SHAPING = [
-    "enable",
-    "disable",
+    "enable",  # Enable peer egress shaping.
+    "disable",  # Disable peer egress shaping.
 ]
 VALID_BODY_MODE_CFG = [
-    "disable",
-    "enable",
+    "disable",  # Disable Configuration Method.
+    "enable",  # Enable Configuration Method.
 ]
 VALID_BODY_MODE_CFG_ALLOW_CLIENT_SELECTOR = [
-    "disable",
-    "enable",
+    "disable",  # Mode-cfg client to use wildcard selectors.
+    "enable",  # Mode-cfg client to use custom selectors.
 ]
 VALID_BODY_ASSIGN_IP = [
-    "disable",
-    "enable",
+    "disable",  # Do not assign an IP address to the IPsec interface.
+    "enable",  # Assign an IP address to the IPsec interface.
 ]
 VALID_BODY_ASSIGN_IP_FROM = [
-    "range",
-    "usrgrp",
-    "dhcp",
-    "name",
+    "range",  # Assign IP address from locally defined range.
+    "usrgrp",  # Assign IP address via user group.
+    "dhcp",  # Assign IP address via DHCP.
+    "name",  # Assign IP address from firewall address or group.
 ]
 VALID_BODY_DNS_MODE = [
-    "manual",
-    "auto",
+    "manual",  # Manually configure DNS servers.
+    "auto",  # Use default DNS servers.
 ]
 VALID_BODY_UNITY_SUPPORT = [
-    "disable",
-    "enable",
+    "disable",  # Disable Cisco Unity Configuration Method Extensions.
+    "enable",  # Enable Cisco Unity Configuration Method Extensions.
 ]
 VALID_BODY_INCLUDE_LOCAL_LAN = [
-    "disable",
-    "enable",
+    "disable",  # Disable local LAN access on Unity clients.
+    "enable",  # Enable local LAN access on Unity clients.
 ]
 VALID_BODY_SAVE_PASSWORD = [
-    "disable",
-    "enable",
+    "disable",  # Disable saving XAuth username and password on VPN clients.
+    "enable",  # Enable saving XAuth username and password on VPN clients.
 ]
 VALID_BODY_CLIENT_AUTO_NEGOTIATE = [
-    "disable",
-    "enable",
+    "disable",  # Disable allowing the VPN client to bring up the tunnel when there is no traffic.
+    "enable",  # Enable allowing the VPN client to bring up the tunnel when there is no traffic.
 ]
 VALID_BODY_CLIENT_KEEP_ALIVE = [
-    "disable",
-    "enable",
+    "disable",  # Disable allowing the VPN client to keep the tunnel up when there is no traffic.
+    "enable",  # Enable allowing the VPN client to keep the tunnel up when there is no traffic.
 ]
 VALID_BODY_PROPOSAL = [
-    "des-md5",
-    "des-sha1",
-    "des-sha256",
-    "des-sha384",
-    "des-sha512",
-    "3des-md5",
-    "3des-sha1",
-    "3des-sha256",
-    "3des-sha384",
-    "3des-sha512",
-    "aes128-md5",
-    "aes128-sha1",
-    "aes128-sha256",
-    "aes128-sha384",
-    "aes128-sha512",
-    "aes128gcm-prfsha1",
-    "aes128gcm-prfsha256",
-    "aes128gcm-prfsha384",
-    "aes128gcm-prfsha512",
-    "aes192-md5",
-    "aes192-sha1",
-    "aes192-sha256",
-    "aes192-sha384",
-    "aes192-sha512",
-    "aes256-md5",
-    "aes256-sha1",
-    "aes256-sha256",
-    "aes256-sha384",
-    "aes256-sha512",
-    "aes256gcm-prfsha1",
-    "aes256gcm-prfsha256",
-    "aes256gcm-prfsha384",
-    "aes256gcm-prfsha512",
-    "chacha20poly1305-prfsha1",
-    "chacha20poly1305-prfsha256",
-    "chacha20poly1305-prfsha384",
-    "chacha20poly1305-prfsha512",
-    "aria128-md5",
-    "aria128-sha1",
-    "aria128-sha256",
-    "aria128-sha384",
-    "aria128-sha512",
-    "aria192-md5",
-    "aria192-sha1",
-    "aria192-sha256",
-    "aria192-sha384",
-    "aria192-sha512",
-    "aria256-md5",
-    "aria256-sha1",
-    "aria256-sha256",
-    "aria256-sha384",
-    "aria256-sha512",
-    "seed-md5",
-    "seed-sha1",
-    "seed-sha256",
-    "seed-sha384",
-    "seed-sha512",
+    "des-md5",  # des-md5
+    "des-sha1",  # des-sha1
+    "des-sha256",  # des-sha256
+    "des-sha384",  # des-sha384
+    "des-sha512",  # des-sha512
+    "3des-md5",  # 3des-md5
+    "3des-sha1",  # 3des-sha1
+    "3des-sha256",  # 3des-sha256
+    "3des-sha384",  # 3des-sha384
+    "3des-sha512",  # 3des-sha512
+    "aes128-md5",  # aes128-md5
+    "aes128-sha1",  # aes128-sha1
+    "aes128-sha256",  # aes128-sha256
+    "aes128-sha384",  # aes128-sha384
+    "aes128-sha512",  # aes128-sha512
+    "aes128gcm-prfsha1",  # aes128gcm-prfsha1
+    "aes128gcm-prfsha256",  # aes128gcm-prfsha256
+    "aes128gcm-prfsha384",  # aes128gcm-prfsha384
+    "aes128gcm-prfsha512",  # aes128gcm-prfsha512
+    "aes192-md5",  # aes192-md5
+    "aes192-sha1",  # aes192-sha1
+    "aes192-sha256",  # aes192-sha256
+    "aes192-sha384",  # aes192-sha384
+    "aes192-sha512",  # aes192-sha512
+    "aes256-md5",  # aes256-md5
+    "aes256-sha1",  # aes256-sha1
+    "aes256-sha256",  # aes256-sha256
+    "aes256-sha384",  # aes256-sha384
+    "aes256-sha512",  # aes256-sha512
+    "aes256gcm-prfsha1",  # aes256gcm-prfsha1
+    "aes256gcm-prfsha256",  # aes256gcm-prfsha256
+    "aes256gcm-prfsha384",  # aes256gcm-prfsha384
+    "aes256gcm-prfsha512",  # aes256gcm-prfsha512
+    "chacha20poly1305-prfsha1",  # chacha20poly1305-prfsha1
+    "chacha20poly1305-prfsha256",  # chacha20poly1305-prfsha256
+    "chacha20poly1305-prfsha384",  # chacha20poly1305-prfsha384
+    "chacha20poly1305-prfsha512",  # chacha20poly1305-prfsha512
+    "aria128-md5",  # aria128-md5
+    "aria128-sha1",  # aria128-sha1
+    "aria128-sha256",  # aria128-sha256
+    "aria128-sha384",  # aria128-sha384
+    "aria128-sha512",  # aria128-sha512
+    "aria192-md5",  # aria192-md5
+    "aria192-sha1",  # aria192-sha1
+    "aria192-sha256",  # aria192-sha256
+    "aria192-sha384",  # aria192-sha384
+    "aria192-sha512",  # aria192-sha512
+    "aria256-md5",  # aria256-md5
+    "aria256-sha1",  # aria256-sha1
+    "aria256-sha256",  # aria256-sha256
+    "aria256-sha384",  # aria256-sha384
+    "aria256-sha512",  # aria256-sha512
+    "seed-md5",  # seed-md5
+    "seed-sha1",  # seed-sha1
+    "seed-sha256",  # seed-sha256
+    "seed-sha384",  # seed-sha384
+    "seed-sha512",  # seed-sha512
 ]
 VALID_BODY_ADD_ROUTE = [
-    "disable",
-    "enable",
+    "disable",  # Do not add a route to destination of peer selector.
+    "enable",  # Add route to destination of peer selector.
 ]
 VALID_BODY_ADD_GW_ROUTE = [
-    "enable",
-    "disable",
+    "enable",  # Automatically add a route to the remote gateway.
+    "disable",  # Do not automatically add a route to the remote gateway.
 ]
 VALID_BODY_LOCALID_TYPE = [
-    "auto",
-    "fqdn",
-    "user-fqdn",
-    "keyid",
-    "address",
-    "asn1dn",
+    "auto",  # Select ID type automatically.
+    "fqdn",  # Use fully qualified domain name.
+    "user-fqdn",  # Use user fully qualified domain name.
+    "keyid",  # Use key-id string.
+    "address",  # Use local IP address.
+    "asn1dn",  # Use ASN.1 distinguished name.
 ]
 VALID_BODY_AUTO_NEGOTIATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic initiation of IKE SA negotiation.
+    "disable",  # Disable automatic initiation of IKE SA negotiation.
 ]
 VALID_BODY_FRAGMENTATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable intra-IKE fragmentation support on re-transmission.
+    "disable",  # Disable intra-IKE fragmentation support.
 ]
 VALID_BODY_IP_FRAGMENTATION = [
-    "pre-encapsulation",
-    "post-encapsulation",
+    "pre-encapsulation",  # Fragment before IPsec encapsulation.
+    "post-encapsulation",  # Fragment after IPsec encapsulation (RFC compliant).
 ]
 VALID_BODY_DPD = [
-    "disable",
-    "on-idle",
-    "on-demand",
+    "disable",  # Disable Dead Peer Detection.
+    "on-idle",  # Trigger Dead Peer Detection when IPsec is idle.
+    "on-demand",  # Trigger Dead Peer Detection when IPsec traffic is sent but no reply is received from the peer.
 ]
 VALID_BODY_NPU_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable NPU offloading.
+    "disable",  # Disable NPU offloading.
 ]
 VALID_BODY_SEND_CERT_CHAIN = [
-    "enable",
-    "disable",
+    "enable",  # Enable sending certificate chain.
+    "disable",  # Disable sending certificate chain.
 ]
 VALID_BODY_DHGRP = [
-    "1",
-    "2",
-    "5",
-    "14",
-    "15",
-    "16",
-    "17",
-    "18",
-    "19",
-    "20",
-    "21",
-    "27",
-    "28",
-    "29",
-    "30",
-    "31",
-    "32",
+    "1",  # DH Group 1.
+    "2",  # DH Group 2.
+    "5",  # DH Group 5.
+    "14",  # DH Group 14.
+    "15",  # DH Group 15.
+    "16",  # DH Group 16.
+    "17",  # DH Group 17.
+    "18",  # DH Group 18.
+    "19",  # DH Group 19.
+    "20",  # DH Group 20.
+    "21",  # DH Group 21.
+    "27",  # DH Group 27.
+    "28",  # DH Group 28.
+    "29",  # DH Group 29.
+    "30",  # DH Group 30.
+    "31",  # DH Group 31.
+    "32",  # DH Group 32.
 ]
 VALID_BODY_ADDKE1 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE2 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE3 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE4 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE5 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE6 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE7 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_SUITE_B = [
-    "disable",
-    "suite-b-gcm-128",
-    "suite-b-gcm-256",
+    "disable",  # Do not use UI suite.
+    "suite-b-gcm-128",  # Use Suite-B-GCM-128.
+    "suite-b-gcm-256",  # Use Suite-B-GCM-256.
 ]
 VALID_BODY_EAP = [
-    "enable",
-    "disable",
+    "enable",  # Enable IKEv2 EAP authentication.
+    "disable",  # Disable IKEv2 EAP authentication.
 ]
 VALID_BODY_EAP_IDENTITY = [
-    "use-id-payload",
-    "send-request",
+    "use-id-payload",  # Use IKEv2 IDi payload to resolve peer identity.
+    "send-request",  # Use EAP identity request to resolve peer identity.
 ]
 VALID_BODY_EAP_CERT_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable peer certificate authentication in addition to EAP if peer is a FortiClient endpoint.
+    "disable",  # Disable peer certificate authentication in addition to EAP if peer is a FortiClient endpoint.
 ]
 VALID_BODY_ACCT_VERIFY = [
-    "enable",
-    "disable",
+    "enable",  # Enable verification of RADIUS accounting record.
+    "disable",  # Disable verification of RADIUS accounting record.
 ]
 VALID_BODY_PPK = [
-    "disable",
-    "allow",
-    "require",
+    "disable",  # Disable use of IKEv2 Postquantum Preshared Key (PPK).
+    "allow",  # Allow, but do not require, use of IKEv2 Postquantum Preshared Key (PPK).
+    "require",  # Require use of IKEv2 Postquantum Preshared Key (PPK).
 ]
 VALID_BODY_WIZARD_TYPE = [
-    "custom",
-    "dialup-forticlient",
-    "dialup-ios",
-    "dialup-android",
-    "dialup-windows",
-    "dialup-cisco",
-    "static-fortigate",
-    "dialup-fortigate",
-    "static-cisco",
-    "dialup-cisco-fw",
-    "simplified-static-fortigate",
-    "hub-fortigate-auto-discovery",
-    "spoke-fortigate-auto-discovery",
-    "fabric-overlay-orchestrator",
+    "custom",  # Custom VPN configuration.
+    "dialup-forticlient",  # Dial Up - FortiClient Windows, Mac and Android.
+    "dialup-ios",  # Dial Up - iPhone / iPad Native IPsec Client.
+    "dialup-android",  # Dial Up - Android Native IPsec Client.
+    "dialup-windows",  # Dial Up - Windows Native IPsec Client.
+    "dialup-cisco",  # Dial Up - Cisco IPsec Client.
+    "static-fortigate",  # Site to Site - FortiGate.
+    "dialup-fortigate",  # Dial Up - FortiGate.
+    "static-cisco",  # Site to Site - Cisco.
+    "dialup-cisco-fw",  # Dialup Up - Cisco Firewall.
+    "simplified-static-fortigate",  # Site to Site - FortiGate (SD-WAN).
+    "hub-fortigate-auto-discovery",  # Hub role in a Hub-and-Spoke auto-discovery VPN.
+    "spoke-fortigate-auto-discovery",  # Spoke role in a Hub-and-Spoke auto-discovery VPN.
+    "fabric-overlay-orchestrator",  # Fabric Overlay Orchestrator.
 ]
 VALID_BODY_XAUTHTYPE = [
-    "disable",
-    "client",
-    "pap",
-    "chap",
-    "auto",
+    "disable",  # Disable.
+    "client",  # Enable as client.
+    "pap",  # Enable as server PAP.
+    "chap",  # Enable as server CHAP.
+    "auto",  # Enable as server auto.
 ]
 VALID_BODY_REAUTH = [
-    "disable",
-    "enable",
+    "disable",  # Disable IKE SA re-authentication.
+    "enable",  # Enable IKE SA re-authentication.
 ]
 VALID_BODY_GROUP_AUTHENTICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable IKEv2 IDi group authentication.
+    "disable",  # Disable IKEv2 IDi group authentication.
 ]
 VALID_BODY_MESH_SELECTOR_TYPE = [
-    "disable",
-    "subnet",
-    "host",
+    "disable",  # Disable.
+    "subnet",  # Enable addition of matching subnet selector.
+    "host",  # Enable addition of host to host selector.
 ]
 VALID_BODY_IDLE_TIMEOUT = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPsec tunnel idle timeout.
+    "disable",  # Disable IPsec tunnel idle timeout.
 ]
 VALID_BODY_SHARED_IDLE_TIMEOUT = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPsec tunnel shared idle timeout. The location-id attribute must be configured on both spokes. Shared idle timeout is supported only on IKEv2 since remote-location is availabe only for IKEv2.
+    "disable",  # Disable IPsec tunnel shared idle timeout.
 ]
 VALID_BODY_HA_SYNC_ESP_SEQNO = [
-    "enable",
-    "disable",
+    "enable",  # Enable HA syncing of ESP sequence numbers.
+    "disable",  # Disable HA syncing of ESP sequence numbers.
 ]
 VALID_BODY_FGSP_SYNC = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPsec syncing of tunnels to other cluster members.
+    "disable",  # Disable IPsec syncing of tunnels to other cluster members.
 ]
 VALID_BODY_INBOUND_DSCP_COPY = [
-    "enable",
-    "disable",
+    "enable",  # Enable copy the dscp in the ESP header to the inner IP Header.
+    "disable",  # Disable copy the dscp in the ESP header to the inner IP Header.
 ]
 VALID_BODY_AUTO_DISCOVERY_SENDER = [
-    "enable",
-    "disable",
+    "enable",  # Enable sending auto-discovery short-cut messages.
+    "disable",  # Disable sending auto-discovery short-cut messages.
 ]
 VALID_BODY_AUTO_DISCOVERY_RECEIVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable receiving auto-discovery short-cut messages.
+    "disable",  # Disable receiving auto-discovery short-cut messages.
 ]
 VALID_BODY_AUTO_DISCOVERY_FORWARDER = [
-    "enable",
-    "disable",
+    "enable",  # Enable forwarding auto-discovery short-cut messages.
+    "disable",  # Disable forwarding auto-discovery short-cut messages.
 ]
 VALID_BODY_AUTO_DISCOVERY_PSK = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of pre-shared-secret authentication for auto-discovery tunnels.
+    "disable",  # Disable use of authentication defined by 'authmethod' for auto-discovery tunnels.
 ]
 VALID_BODY_AUTO_DISCOVERY_SHORTCUTS = [
-    "independent",
-    "dependent",
+    "independent",  # Short-cut tunnels remain up if the parent tunnel goes down.
+    "dependent",  # Short-cut tunnels are brought down if the parent tunnel goes down.
 ]
 VALID_BODY_AUTO_DISCOVERY_CROSSOVER = [
-    "allow",
-    "block",
+    "allow",  # Allow set-up of short-cut tunnels between different network IDs.
+    "block",  # Block set-up of short-cut tunnels between different network IDs.
 ]
 VALID_BODY_AUTO_DISCOVERY_DIALUP_PLACEHOLDER = [
-    "disable",
-    "enable",
+    "disable",  # Disable placeholder restriction.
+    "enable",  # Enable placeholder restriction to only accept shortcut connections on this dial-up gateway.
 ]
 VALID_BODY_ENCAPSULATION = [
-    "none",
-    "gre",
-    "vxlan",
-    "vpn-id-ipip",
+    "none",  # No additional encapsulation.
+    "gre",  # GRE encapsulation.
+    "vxlan",  # VXLAN encapsulation.
+    "vpn-id-ipip",  # VPN ID with IPIP encapsulation.
 ]
 VALID_BODY_ENCAPSULATION_ADDRESS = [
-    "ike",
-    "ipv4",
-    "ipv6",
+    "ike",  # Use IKE/IPsec gateway addresses.
+    "ipv4",  # Specify separate GRE/VXLAN tunnel address.
+    "ipv6",  # Specify separate GRE/VXLAN tunnel address.
 ]
 VALID_BODY_NATTRAVERSAL = [
-    "enable",
-    "disable",
-    "forced",
+    "enable",  # Enable IPsec NAT traversal.
+    "disable",  # Disable IPsec NAT traversal.
+    "forced",  # Force IPsec NAT traversal on.
 ]
 VALID_BODY_ESN = [
-    "require",
-    "allow",
-    "disable",
+    "require",  # Require extended sequence number.
+    "allow",  # Allow extended sequence number.
+    "disable",  # Disable extended sequence number.
 ]
 VALID_BODY_CHILDLESS_IKE = [
-    "enable",
-    "disable",
+    "enable",  # Enable childless IKEv2 initiation (RFC 6023).
+    "disable",  # Disable childless IKEv2 initiation (RFC 6023).
 ]
 VALID_BODY_AZURE_AD_AUTOCONNECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable Azure AD Auto-Connect for FortiClient.
+    "disable",  # Disable Azure AD Auto-Connect for FortiClient.
 ]
 VALID_BODY_CLIENT_RESUME = [
-    "enable",
-    "disable",
+    "enable",  # Enable client session resumption.
+    "disable",  # Disable client session resumption.
 ]
 VALID_BODY_REKEY = [
-    "enable",
-    "disable",
+    "enable",  # Enable phase1 rekey.
+    "disable",  # Disable phase1 rekey.
 ]
 VALID_BODY_DIGITAL_SIGNATURE_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable IKEv2 Digital Signature Authentication (RFC 7427).
+    "disable",  # Disable IKEv2 Digital Signature Authentication (RFC 7427).
 ]
 VALID_BODY_SIGNATURE_HASH_ALG = [
-    "sha1",
-    "sha2-256",
-    "sha2-384",
-    "sha2-512",
+    "sha1",  # SHA1.
+    "sha2-256",  # SHA2-256.
+    "sha2-384",  # SHA2-384.
+    "sha2-512",  # SHA2-512.
 ]
 VALID_BODY_RSA_SIGNATURE_FORMAT = [
-    "pkcs1",
-    "pss",
+    "pkcs1",  # RSASSA PKCS#1 v1.5.
+    "pss",  # RSASSA Probabilistic Signature Scheme (PSS).
 ]
 VALID_BODY_RSA_SIGNATURE_HASH_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IKEv2 RSA signature hash algorithm override.
+    "disable",  # Disable IKEv2 RSA signature hash algorithm override.
 ]
 VALID_BODY_ENFORCE_UNIQUE_ID = [
-    "disable",
-    "keep-new",
-    "keep-old",
+    "disable",  # Disable peer ID uniqueness enforcement.
+    "keep-new",  # Enforce peer ID uniqueness, keep new connection if collision found.
+    "keep-old",  # Enforce peer ID uniqueness, keep old connection if collision found.
 ]
 VALID_BODY_CERT_ID_VALIDATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable cross validation of peer ID and the identity in the peer's certificate as specified in RFC 4945.
+    "disable",  # Disable cross validation of peer ID and the identity in the peer's certificate as specified in RFC 4945.
 ]
 VALID_BODY_FEC_EGRESS = [
-    "enable",
-    "disable",
+    "enable",  # Enable Forward Error Correction for egress IPsec traffic.
+    "disable",  # Disable Forward Error Correction for egress IPsec traffic.
 ]
 VALID_BODY_FEC_CODEC = [
-    "rs",
-    "xor",
+    "rs",  # Reed-Solomon FEC algorithm.
+    "xor",  # XOR FEC algorithm.
 ]
 VALID_BODY_FEC_INGRESS = [
-    "enable",
-    "disable",
+    "enable",  # Enable Forward Error Correction for ingress IPsec traffic.
+    "disable",  # Disable Forward Error Correction for ingress IPsec traffic.
 ]
 VALID_BODY_NETWORK_OVERLAY = [
-    "disable",
-    "enable",
+    "disable",  # Disable network overlays.
+    "enable",  # Enable network overlays.
 ]
 VALID_BODY_DEV_ID_NOTIFICATION = [
-    "disable",
-    "enable",
+    "disable",  # Disable device ID notification.
+    "enable",  # Enable device ID notification.
 ]
 VALID_BODY_LOOPBACK_ASYMROUTE = [
-    "enable",
-    "disable",
+    "enable",  # Allow ingress/egress IKE traffic to be routed over different interfaces.
+    "disable",  # Ingress/egress IKE traffic must be routed over the same interface.
 ]
 VALID_BODY_EXCHANGE_FGT_DEVICE_ID = [
-    "enable",
-    "disable",
+    "enable",  # Enable exchange of FortiGate device identifier.
+    "disable",  # Disable exchange of FortiGate device identifier.
 ]
 VALID_BODY_IPV6_AUTO_LINKLOCAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable mode-cfg auto configuration of IPv6 link-local address.
+    "disable",  # Disable mode-cfg auto configuration of IPv6 link-local address.
 ]
 VALID_BODY_EMS_SN_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable EMS serial number verification.
+    "disable",  # Disable EMS serial number verification.
 ]
 VALID_BODY_CERT_TRUST_STORE = [
-    "local",
-    "ems",
+    "local",  # Use local CA certificate.
+    "ems",  # Use EMS CA certificate.
 ]
 VALID_BODY_QKD = [
-    "disable",
-    "allow",
-    "require",
+    "disable",  # Disable use of a Quantum Key Distribution (QKD) server.
+    "allow",  # Allow, but do not require, use of a Quantum Key Distribution (QKD) server.
+    "require",  # Require use of a Quantum Key Distribution (QKD) server.
 ]
 VALID_BODY_QKD_HYBRID = [
-    "disable",
-    "allow",
-    "require",
+    "disable",  # Disable use of Quantum Key Distribution (QKD) hybrid keys.
+    "allow",  # Allow, but do not require, use of Quantum Key Distribution (QKD) hybrid keys.
+    "require",  # Require use of Quantum Key Distribution (QKD) hybrid keys.
 ]
 VALID_BODY_TRANSPORT = [
-    "udp",
-    "auto",
-    "tcp",
+    "udp",  # Use UDP transport for IKE.
+    "auto",  # Use AUTO transport for IKE.
+    "tcp",  # Use TCP transport for IKE.
 ]
 VALID_BODY_FORTINET_ESP = [
-    "enable",
-    "disable",
+    "enable",  # Enable Fortinet ESP encapsulation.
+    "disable",  # Disable Fortinet ESP encapsulation.
 ]
 VALID_BODY_REMOTE_GW_MATCH = [
-    "any",
-    "ipmask",
-    "iprange",
-    "geography",
-    "ztna",
+    "any",  # Match any IPv4 gateway address.
+    "ipmask",  # Match IPv4 gateway address and mask.
+    "iprange",  # Match IPv4 gateway address range.
+    "geography",  # Match IPv4 gateway address from a specified country.
+    "ztna",  # Match IPv4 gateway address against ZTNA posture tags.
 ]
 VALID_BODY_REMOTE_GW6_MATCH = [
-    "any",
-    "ipprefix",
-    "iprange",
-    "geography",
+    "any",  # Match any IPv6 gateway address.
+    "ipprefix",  # Match IPv6 gateway address and prefix.
+    "iprange",  # Match IPv6 gateway address range.
+    "geography",  # Match IPv6 gateway address from a specified country.
 ]
 VALID_BODY_CERT_PEER_USERNAME_VALIDATION = [
-    "none",
-    "othername",
-    "rfc822name",
-    "cn",
+    "none",  # Disable cross validation of peer username and the identity in the peer's certificate.
+    "othername",  # Validate principal name in SAN othername.
+    "rfc822name",  # Validate RFC822 email address in SAN.
+    "cn",  # Validate CN in subject.
 ]
 VALID_BODY_CERT_PEER_USERNAME_STRIP = [
-    "disable",
-    "enable",
+    "disable",  # Disable domain stripping on certificate identity.
+    "enable",  # Enable domain stripping on certificate identity.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1575,7 +1575,7 @@ def validate_vpn_ipsec_phase1_interface_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "type": "static",  # Valid enum value
+        ...     "type": "{'name': 'static', 'help': 'Remote VPN gateway has fixed IP address.', 'label': 'Static', 'description': 'Remote VPN gateway has fixed IP address'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_ipsec_phase1_interface_post(payload)
         >>> assert is_valid == True

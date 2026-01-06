@@ -123,31 +123,31 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable the explicit FTP proxy.
+    "disable",  # Disable the explicit FTP proxy.
 ]
 VALID_BODY_SEC_DEFAULT_ACTION = [
-    "accept",
-    "deny",
+    "accept",  # Accept requests. All explicit FTP proxy traffic is accepted whether there is an explicit FTP proxy policy or not
+    "deny",  # Deny requests unless there is a matching explicit FTP proxy policy.
 ]
 VALID_BODY_SERVER_DATA_MODE = [
-    "client",
-    "passive",
+    "client",  # Use the same transmission mode for client and server data sessions.
+    "passive",  # Use passive mode on server data session.
 ]
 VALID_BODY_SSL = [
-    "enable",
-    "disable",
+    "enable",  # Enable the explicit FTPS proxy.
+    "disable",  # Disable the explicit FTPS proxy.
 ]
 VALID_BODY_SSL_DH_BITS = [
-    "768",
-    "1024",
-    "1536",
-    "2048",
+    "768",  # 768-bit Diffie-Hellman prime.
+    "1024",  # 1024-bit Diffie-Hellman prime.
+    "1536",  # 1536-bit Diffie-Hellman prime.
+    "2048",  # 2048-bit Diffie-Hellman prime.
 ]
 VALID_BODY_SSL_ALGORITHM = [
-    "high",
-    "medium",
-    "low",
+    "high",  # High encryption. Allow only AES and ChaCha
+    "medium",  # Medium encryption. Allow AES, ChaCha, 3DES, and RC4.
+    "low",  # Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -272,7 +272,7 @@ def validate_ftp_proxy_explicit_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable the explicit FTP proxy.', 'label': 'Enable', 'description': 'Enable the explicit FTP proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ftp_proxy_explicit_post(payload)
         >>> assert is_valid == True

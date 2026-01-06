@@ -10,16 +10,16 @@ class PasswordPolicyGuestAdminPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable setting a password policy for locally defined
-    apply_to: NotRequired[Literal["guest-admin-password"]]  # Guest administrator to which this password policy applies.
-    minimum_length: NotRequired[int]  # Minimum password length (8 - 128, default = 8).
+    status: NotRequired[Literal[{"description": "Enable password policy", "help": "Enable password policy.", "label": "Enable", "name": "enable"}, {"description": "Disable password policy", "help": "Disable password policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable setting a password policy for locally defined
+    apply_to: NotRequired[Literal[{"description": "Apply to guest administrator password", "help": "Apply to guest administrator password.", "label": "Guest Admin Password", "name": "guest-admin-password"}]]  # Guest administrator to which this password policy applies.
+    minimum_length: NotRequired[int]  # Minimum password length (12 - 128, default = 12).
     min_lower_case_letter: NotRequired[int]  # Minimum number of lowercase characters in password (0 - 128,
     min_upper_case_letter: NotRequired[int]  # Minimum number of uppercase characters in password (0 - 128,
     min_non_alphanumeric: NotRequired[int]  # Minimum number of non-alphanumeric characters in password (0
     min_number: NotRequired[int]  # Minimum number of numeric characters in password (0 - 128, d
-    expire_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable password expiration.
+    expire_status: NotRequired[Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}]]  # Enable/disable password expiration.
     expire_day: NotRequired[int]  # Number of days after which passwords expire (1 - 999 days, d
-    reuse_password: NotRequired[Literal["enable", "disable"]]  # Enable/disable reuse of password.
+    reuse_password: NotRequired[Literal[{"description": "Administrators are allowed to reuse the same password up to a limit", "help": "Administrators are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Administrators must create a new password", "help": "Administrators must create a new password.", "label": "Disable", "name": "disable"}]]  # Enable/disable reuse of password.
     reuse_password_limit: NotRequired[int]  # Number of times passwords can be reused (0 - 20, default = 0
 
 
@@ -47,16 +47,16 @@ class PasswordPolicyGuestAdmin:
     def post(
         self,
         payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["guest-admin-password"] | None = ...,
+        status: Literal[{"description": "Enable password policy", "help": "Enable password policy.", "label": "Enable", "name": "enable"}, {"description": "Disable password policy", "help": "Disable password policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        apply_to: Literal[{"description": "Apply to guest administrator password", "help": "Apply to guest administrator password.", "label": "Guest Admin Password", "name": "guest-admin-password"}] | None = ...,
         minimum_length: int | None = ...,
         min_lower_case_letter: int | None = ...,
         min_upper_case_letter: int | None = ...,
         min_non_alphanumeric: int | None = ...,
         min_number: int | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_status: Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}] | None = ...,
         expire_day: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password: Literal[{"description": "Administrators are allowed to reuse the same password up to a limit", "help": "Administrators are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Administrators must create a new password", "help": "Administrators must create a new password.", "label": "Disable", "name": "disable"}] | None = ...,
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -66,16 +66,16 @@ class PasswordPolicyGuestAdmin:
     def put(
         self,
         payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["guest-admin-password"] | None = ...,
+        status: Literal[{"description": "Enable password policy", "help": "Enable password policy.", "label": "Enable", "name": "enable"}, {"description": "Disable password policy", "help": "Disable password policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        apply_to: Literal[{"description": "Apply to guest administrator password", "help": "Apply to guest administrator password.", "label": "Guest Admin Password", "name": "guest-admin-password"}] | None = ...,
         minimum_length: int | None = ...,
         min_lower_case_letter: int | None = ...,
         min_upper_case_letter: int | None = ...,
         min_non_alphanumeric: int | None = ...,
         min_number: int | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_status: Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}] | None = ...,
         expire_day: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password: Literal[{"description": "Administrators are allowed to reuse the same password up to a limit", "help": "Administrators are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Administrators must create a new password", "help": "Administrators must create a new password.", "label": "Disable", "name": "disable"}] | None = ...,
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

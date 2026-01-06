@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "sniffer/list",
     "category": "service",
     "api_path": "sniffer/list",
-    "help": "Monitor endpoint for sniffer/list",
+    "help": "Returns list of all packet captures and their status information.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -10,9 +10,9 @@ class FssoPollingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable FSSO Polling Mode.
+    status: NotRequired[Literal[{"description": "Enable FSSO Polling Mode", "help": "Enable FSSO Polling Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Polling Mode", "help": "Disable FSSO Polling Mode.", "label": "Disable", "name": "disable"}]]  # Enable/disable FSSO Polling Mode.
     listening_port: NotRequired[int]  # Listening port to accept clients (1 - 65535).
-    authentication: NotRequired[Literal["enable", "disable"]]  # Enable/disable FSSO Agent Authentication.
+    authentication: NotRequired[Literal[{"description": "Enable FSSO Agent Authentication", "help": "Enable FSSO Agent Authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Agent Authentication", "help": "Disable FSSO Agent Authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable FSSO Agent Authentication.
     auth_password: NotRequired[str]  # Password to connect to FSSO Agent.
 
 
@@ -40,9 +40,9 @@ class FssoPolling:
     def post(
         self,
         payload_dict: FssoPollingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable FSSO Polling Mode", "help": "Enable FSSO Polling Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Polling Mode", "help": "Disable FSSO Polling Mode.", "label": "Disable", "name": "disable"}] | None = ...,
         listening_port: int | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
+        authentication: Literal[{"description": "Enable FSSO Agent Authentication", "help": "Enable FSSO Agent Authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Agent Authentication", "help": "Disable FSSO Agent Authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         auth_password: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -52,9 +52,9 @@ class FssoPolling:
     def put(
         self,
         payload_dict: FssoPollingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable FSSO Polling Mode", "help": "Enable FSSO Polling Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Polling Mode", "help": "Disable FSSO Polling Mode.", "label": "Disable", "name": "disable"}] | None = ...,
         listening_port: int | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
+        authentication: Literal[{"description": "Enable FSSO Agent Authentication", "help": "Enable FSSO Agent Authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Agent Authentication", "help": "Disable FSSO Agent Authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         auth_password: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -56,7 +56,7 @@ class Start:
         """
         Retrieve network/debug_flow/start configuration.
 
-        Configuration for network/debug-flow/start
+        Start debug flow packet capture.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

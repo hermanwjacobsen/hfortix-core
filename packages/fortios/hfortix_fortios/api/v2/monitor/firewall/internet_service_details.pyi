@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InternetServiceDetails:
     """
-    Configuration for firewall/internet-service-details
+    List all details for a given Internet Service ID.
     
     Path: firewall/internet_service_details
     Category: monitor

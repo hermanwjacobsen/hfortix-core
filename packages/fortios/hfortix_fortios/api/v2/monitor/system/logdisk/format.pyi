@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Format:
     """
-    Configuration for system/logdisk/format
+    Format log disk.
     
     Path: system/logdisk/format
     Category: monitor

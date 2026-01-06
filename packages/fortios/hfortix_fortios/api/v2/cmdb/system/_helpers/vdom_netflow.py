@@ -125,7 +125,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Specify how to select outgoing interface to reach server.",
             "default": "auto",
-            "options": ["auto", "sdwan", "specify"],
+            "options": [{"help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}],
         },
         "interface": {
             "type": "string",
@@ -147,8 +147,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_VDOM_NETFLOW = [
-    "enable",
-    "disable",
+    "enable",  # Enable NetFlow per VDOM.
+    "disable",  # Disable NetFlow per VDOM.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -273,7 +273,7 @@ def validate_system_vdom_netflow_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "vdom-netflow": "enable",  # Valid enum value
+        ...     "vdom-netflow": "{'name': 'enable', 'help': 'Enable NetFlow per VDOM.', 'label': 'Enable', 'description': 'Enable NetFlow per VDOM'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_vdom_netflow_post(payload)
         >>> assert is_valid == True

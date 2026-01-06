@@ -10,7 +10,7 @@ class FtgdLocalCatPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the local category.
+    status: NotRequired[Literal[{"description": "Enable the local category", "help": "Enable the local category.", "label": "Enable", "name": "enable"}, {"description": "Disable the local category", "help": "Disable the local category.", "label": "Disable", "name": "disable"}]]  # Enable/disable the local category.
     id: NotRequired[int]  # Local category ID.
     desc: str  # Local category description.
 
@@ -40,7 +40,7 @@ class FtgdLocalCat:
     def post(
         self,
         payload_dict: FtgdLocalCatPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the local category", "help": "Enable the local category.", "label": "Enable", "name": "enable"}, {"description": "Disable the local category", "help": "Disable the local category.", "label": "Disable", "name": "disable"}] | None = ...,
         id: int | None = ...,
         desc: str | None = ...,
         vdom: str | bool | None = ...,
@@ -51,7 +51,7 @@ class FtgdLocalCat:
     def put(
         self,
         payload_dict: FtgdLocalCatPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the local category", "help": "Enable the local category.", "label": "Enable", "name": "enable"}, {"description": "Disable the local category", "help": "Disable the local category.", "label": "Disable", "name": "disable"}] | None = ...,
         id: int | None = ...,
         desc: str | None = ...,
         vdom: str | bool | None = ...,

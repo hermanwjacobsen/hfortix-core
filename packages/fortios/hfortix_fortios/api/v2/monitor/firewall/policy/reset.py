@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve firewall/policy/reset configuration.
 
-        Configuration for firewall/policy/reset
+        Reset traffic statistics for all firewall policies.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

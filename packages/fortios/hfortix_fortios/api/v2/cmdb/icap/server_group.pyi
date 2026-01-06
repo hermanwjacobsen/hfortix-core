@@ -11,7 +11,7 @@ class ServerGroupPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Configure an ICAP server group consisting one or multiple fo
-    ldb_method: NotRequired[Literal["weighted", "least-session", "active-passive"]]  # Load balance method.
+    ldb_method: NotRequired[Literal[{"description": "Load balance traffic to forward servers based on assigned weights", "help": "Load balance traffic to forward servers based on assigned weights.", "label": "Weighted", "name": "weighted"}, {"description": "Send new sessions to the server with lowest session count", "help": "Send new sessions to the server with lowest session count.", "label": "Least Session", "name": "least-session"}, {"description": "Send new sessions to active server with high weight", "help": "Send new sessions to active server with high weight.", "label": "Active Passive", "name": "active-passive"}]]  # Load balance method.
     server_list: NotRequired[list[dict[str, Any]]]  # Add ICAP servers to a list to form a server group. Optionall
 
 
@@ -41,7 +41,7 @@ class ServerGroup:
         self,
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
-        ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
+        ldb_method: Literal[{"description": "Load balance traffic to forward servers based on assigned weights", "help": "Load balance traffic to forward servers based on assigned weights.", "label": "Weighted", "name": "weighted"}, {"description": "Send new sessions to the server with lowest session count", "help": "Send new sessions to the server with lowest session count.", "label": "Least Session", "name": "least-session"}, {"description": "Send new sessions to active server with high weight", "help": "Send new sessions to active server with high weight.", "label": "Active Passive", "name": "active-passive"}] | None = ...,
         server_list: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -52,7 +52,7 @@ class ServerGroup:
         self,
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
-        ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
+        ldb_method: Literal[{"description": "Load balance traffic to forward servers based on assigned weights", "help": "Load balance traffic to forward servers based on assigned weights.", "label": "Weighted", "name": "weighted"}, {"description": "Send new sessions to the server with lowest session count", "help": "Send new sessions to the server with lowest session count.", "label": "Least Session", "name": "least-session"}, {"description": "Send new sessions to active server with high weight", "help": "Send new sessions to active server with high weight.", "label": "Active Passive", "name": "active-passive"}] | None = ...,
         server_list: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

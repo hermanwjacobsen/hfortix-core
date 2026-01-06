@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_revision/file",
     "category": "monitor",
     "api_path": "system/config-revision/file",
-    "help": "Configuration for system/config-revision/file",
+    "help": "Download a specific configuration revision.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

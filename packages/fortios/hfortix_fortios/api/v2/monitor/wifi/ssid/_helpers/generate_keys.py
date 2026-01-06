@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/ssid/generate_keys",
     "category": "monitor",
     "api_path": "wifi/ssid/generate-keys",
-    "help": "Configuration for wifi/ssid/generate-keys",
+    "help": "Generate pre-shared keys for specific multi pre-shared key profile.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

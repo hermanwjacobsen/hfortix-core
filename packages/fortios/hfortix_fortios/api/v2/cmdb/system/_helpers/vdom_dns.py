@@ -147,22 +147,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_VDOM_DNS = [
-    "enable",
-    "disable",
+    "enable",  # Enable configuring DNS servers for the current VDOM.
+    "disable",  # Disable configuring DNS servers for the current VDOM.
 ]
 VALID_BODY_PROTOCOL = [
-    "cleartext",
-    "dot",
-    "doh",
+    "cleartext",  # DNS over UDP/53, DNS over TCP/53.
+    "dot",  # DNS over TLS/853.
+    "doh",  # DNS over HTTPS/443.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_SERVER_SELECT_METHOD = [
-    "least-rtt",
-    "failover",
+    "least-rtt",  # Select servers based on least round trip time.
+    "failover",  # Select servers based on the order they are configured.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -289,7 +289,7 @@ def validate_system_vdom_dns_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "vdom-dns": "enable",  # Valid enum value
+        ...     "vdom-dns": "{'name': 'enable', 'help': 'Enable configuring DNS servers for the current VDOM.', 'label': 'Enable', 'description': 'Enable configuring DNS servers for the current VDOM'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_vdom_dns_post(payload)
         >>> assert is_valid == True

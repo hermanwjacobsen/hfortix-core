@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Delete:
     """
-    Configuration for webfilter/override/delete
+    Delete a configured webfilter override.
     
     Path: webfilter/override/delete
     Category: monitor

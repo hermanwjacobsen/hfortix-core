@@ -56,7 +56,7 @@ class EnableAppBandwidthTracking:
         """
         Retrieve system/traffic_history/enable_app_bandwidth_tracking configuration.
 
-        Configuration for system/traffic-history/enable-app-bandwidth-tracking
+        Enable FortiView application bandwidth tracking.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

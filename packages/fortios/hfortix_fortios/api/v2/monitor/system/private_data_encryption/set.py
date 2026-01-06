@@ -56,7 +56,7 @@ class Set:
         """
         Retrieve system/private_data_encryption/set configuration.
 
-        Configuration for system/private-data-encryption/set
+        Sets private data encryption. To be deprecated and replaced by the CMDB REST API.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

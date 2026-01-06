@@ -136,45 +136,45 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging to FortiCloud.
+    "disable",  # Disable logging to FortiCloud.
 ]
 VALID_BODY_UPLOAD_OPTION = [
-    "store-and-upload",
-    "realtime",
-    "1-minute",
-    "5-minute",
+    "store-and-upload",  # Log to the hard disk and then upload logs to FortiCloud.
+    "realtime",  # Log directly to FortiCloud in real time.
+    "1-minute",  # Log directly to FortiCloud at 1-minute intervals.
+    "5-minute",  # Log directly to FortiCloud at 5-minute intervals.
 ]
 VALID_BODY_UPLOAD_INTERVAL = [
-    "daily",
-    "weekly",
-    "monthly",
+    "daily",  # Upload log files to FortiCloud once a day.
+    "weekly",  # Upload log files to FortiCloud once a week.
+    "monthly",  # Upload log files to FortiCloud once a month.
 ]
 VALID_BODY_PRIORITY = [
-    "default",
-    "low",
+    "default",  # Set FortiCloud log transmission priority to default.
+    "low",  # Set FortiCloud log transmission priority to low.
 ]
 VALID_BODY_ACCESS_CONFIG = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiCloud access to configuration and data.
+    "disable",  # Disable FortiCloud access to configuration and data.
 ]
 VALID_BODY_ENC_ALGORITHM = [
-    "high-medium",
-    "high",
-    "low",
+    "high-medium",  # Encrypt logs using high and medium encryption.
+    "high",  # Encrypt logs using high encryption.
+    "low",  # Encrypt logs using low encryption.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -301,7 +301,7 @@ def validate_log_fortiguard_setting_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable logging to FortiCloud.', 'label': 'Enable', 'description': 'Enable logging to FortiCloud'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_fortiguard_setting_post(payload)
         >>> assert is_valid == True

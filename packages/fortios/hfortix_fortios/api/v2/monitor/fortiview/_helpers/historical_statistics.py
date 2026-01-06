@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "fortiview/historical_statistics",
     "category": "monitor",
     "api_path": "fortiview/historical-statistics",
-    "help": "Configuration for fortiview/historical-statistics",
+    "help": "Retrieve historical drill-down and summary data for FortiView.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

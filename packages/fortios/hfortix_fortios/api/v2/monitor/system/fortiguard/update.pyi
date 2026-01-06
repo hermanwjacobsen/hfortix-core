@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for system/fortiguard/update
+    Immediately update status for FortiGuard services.
     
     Path: system/fortiguard/update
     Category: monitor

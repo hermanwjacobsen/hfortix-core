@@ -142,7 +142,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "FortiGuard DNS filter options.",
             "default": "",
-            "options": ["error-allow", "ftgd-disable"],
+            "options": [{"help": "Allow all domains when FortiGuard DNS servers fail.", "label": "Error Allow", "name": "error-allow"}, {"help": "Disable FortiGuard DNS domain rating.", "label": "Ftgd Disable", "name": "ftgd-disable"}],
         },
         "filters": {
             "type": "string",
@@ -170,7 +170,7 @@ NESTED_SCHEMAS = {
             "help": "DNS translation type (IPv4 or IPv6).",
             "required": True,
             "default": "ipv4",
-            "options": ["ipv4", "ipv6"],
+            "options": [{"help": "IPv4 address type.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 address type.", "label": "Ipv6", "name": "ipv6"}],
         },
         "src": {
             "type": "ipv4-address",
@@ -191,7 +191,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this DNS translation entry.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable this DNS translation.", "label": "Enable", "name": "enable"}, {"help": "Disable this DNS translation.", "label": "Disable", "name": "disable"}],
         },
         "src6": {
             "type": "ipv6-address",
@@ -224,38 +224,38 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LOG_ALL_DOMAIN = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging of all domains visited.
+    "disable",  # Disable logging of all domains visited.
 ]
 VALID_BODY_SDNS_FTGD_ERR_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGuard SDNS rating error logging.
+    "disable",  # Disable FortiGuard SDNS rating error logging.
 ]
 VALID_BODY_SDNS_DOMAIN_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable domain filtering and botnet domain logging.
+    "disable",  # Disable domain filtering and botnet domain logging.
 ]
 VALID_BODY_BLOCK_ACTION = [
-    "block",
-    "redirect",
-    "block-sevrfail",
+    "block",  # Return NXDOMAIN for blocked domains.
+    "redirect",  # Redirect blocked domains to SDNS portal.
+    "block-sevrfail",  # Return SERVFAIL for blocked domains.
 ]
 VALID_BODY_BLOCK_BOTNET = [
-    "disable",
-    "enable",
+    "disable",  # Disable blocking botnet C&C DNS lookups.
+    "enable",  # Enable blocking botnet C&C DNS lookups.
 ]
 VALID_BODY_SAFE_SEARCH = [
-    "disable",
-    "enable",
+    "disable",  # Disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.
+    "enable",  # Enable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.
 ]
 VALID_BODY_YOUTUBE_RESTRICT = [
-    "strict",
-    "moderate",
-    "none",
+    "strict",  # Enable strict safe seach for YouTube.
+    "moderate",  # Enable moderate safe search for YouTube.
+    "none",  # Disable safe search for YouTube.
 ]
 VALID_BODY_STRIP_ECH = [
-    "disable",
-    "enable",
+    "disable",  # Disable removal of the encrypted client hello service parameter from supporting DNS RRs.
+    "enable",  # Enable removal of the encrypted client hello service parameter from supporting DNS RRs.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -385,7 +385,7 @@ def validate_dnsfilter_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "log-all-domain": "enable",  # Valid enum value
+        ...     "log-all-domain": "{'name': 'enable', 'help': 'Enable logging of all domains visited.', 'label': 'Enable', 'description': 'Enable logging of all domains visited'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_dnsfilter_profile_post(payload)
         >>> assert is_valid == True

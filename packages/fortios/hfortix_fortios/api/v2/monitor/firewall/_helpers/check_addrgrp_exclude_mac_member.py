@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/check_addrgrp_exclude_mac_member",
     "category": "monitor",
     "api_path": "firewall/check-addrgrp-exclude-mac-member",
-    "help": "Configuration for firewall/check-addrgrp-exclude-mac-member",
+    "help": "Check if the IPv4 or IPv6 address group should exclude mac address type member.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

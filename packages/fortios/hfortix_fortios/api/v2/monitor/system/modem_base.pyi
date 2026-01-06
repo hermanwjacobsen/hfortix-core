@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Modem:
     """
-    Configuration for system/modem
+    Retrieve statistics for internal/external configured modem.
     
     Path: system/modem
     Category: monitor

@@ -5,7 +5,7 @@ from .explicit import Explicit
 from .fast_fallback import FastFallback
 from .forward_server import ForwardServer
 from .forward_server_group import ForwardServerGroup
-from .global_setting import GlobalSetting
+from .global_ import Global
 from .isolator_server import IsolatorServer
 from .profile import Profile
 from .url_match import UrlMatch
@@ -17,7 +17,7 @@ __all__ = [
     "FastFallback",
     "ForwardServer",
     "ForwardServerGroup",
-    "GlobalSetting",
+    "Global",
     "IsolatorServer",
     "Profile",
     "UrlMatch",
@@ -40,7 +40,7 @@ class WebProxy:
         self.fast_fallback = FastFallback(client)
         self.forward_server = ForwardServer(client)
         self.forward_server_group = ForwardServerGroup(client)
-        self.global_setting = GlobalSetting(client)
+        self.global_ = Global(client)
         self.isolator_server = IsolatorServer(client)
         self.profile = Profile(client)
         self.url_match = UrlMatch(client)

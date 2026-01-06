@@ -14,11 +14,11 @@ class VneInterfacePayload(TypedDict, total=False):
     interface: str  # Interface name.
     ssl_certificate: str  # Name of local certificate for SSL connections.
     bmr_hostname: str  # BMR hostname.
-    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable tunnel ASIC offloading.
+    auto_asic_offload: Literal[{"description": "Enable auto ASIC offloading", "help": "Enable auto ASIC offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable ASIC offloading", "help": "Disable ASIC offloading.", "label": "Disable", "name": "disable"}]  # Enable/disable tunnel ASIC offloading.
     ipv4_address: NotRequired[str]  # Tunnel IPv4 address and netmask.
     br: str  # IPv6 address or FQDN of the border relay.
     update_url: str  # URL of provisioning server.
-    mode: Literal["map-e", "fixed-ip", "ds-lite"]  # VNE tunnel mode.
+    mode: Literal[{"description": "Map-e mode", "help": "Map-e mode.", "label": "Map E", "name": "map-e"}, {"description": "Fixed-ip mode", "help": "Fixed-ip mode.", "label": "Fixed Ip", "name": "fixed-ip"}, {"description": "DS-Lite mode", "help": "DS-Lite mode.", "label": "Ds Lite", "name": "ds-lite"}]  # VNE tunnel mode.
     http_username: NotRequired[str]  # HTTP authentication user name.
     http_password: NotRequired[str]  # HTTP authentication password.
 
@@ -52,11 +52,11 @@ class VneInterface:
         interface: str | None = ...,
         ssl_certificate: str | None = ...,
         bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable auto ASIC offloading", "help": "Enable auto ASIC offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable ASIC offloading", "help": "Disable ASIC offloading.", "label": "Disable", "name": "disable"}] | None = ...,
         ipv4_address: str | None = ...,
         br: str | None = ...,
         update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        mode: Literal[{"description": "Map-e mode", "help": "Map-e mode.", "label": "Map E", "name": "map-e"}, {"description": "Fixed-ip mode", "help": "Fixed-ip mode.", "label": "Fixed Ip", "name": "fixed-ip"}, {"description": "DS-Lite mode", "help": "DS-Lite mode.", "label": "Ds Lite", "name": "ds-lite"}] | None = ...,
         http_username: str | None = ...,
         http_password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -71,11 +71,11 @@ class VneInterface:
         interface: str | None = ...,
         ssl_certificate: str | None = ...,
         bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable auto ASIC offloading", "help": "Enable auto ASIC offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable ASIC offloading", "help": "Disable ASIC offloading.", "label": "Disable", "name": "disable"}] | None = ...,
         ipv4_address: str | None = ...,
         br: str | None = ...,
         update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
+        mode: Literal[{"description": "Map-e mode", "help": "Map-e mode.", "label": "Map E", "name": "map-e"}, {"description": "Fixed-ip mode", "help": "Fixed-ip mode.", "label": "Fixed Ip", "name": "fixed-ip"}, {"description": "DS-Lite mode", "help": "DS-Lite mode.", "label": "Ds Lite", "name": "ds-lite"}] | None = ...,
         http_username: str | None = ...,
         http_password: str | None = ...,
         vdom: str | bool | None = ...,

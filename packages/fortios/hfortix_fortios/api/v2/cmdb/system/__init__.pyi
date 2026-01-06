@@ -49,7 +49,7 @@ if TYPE_CHECKING:
     from .geneve import Geneve
     from .geoip_country import GeoipCountry
     from .geoip_override import GeoipOverride
-    from .global_setting import GlobalSetting
+    from .global_ import Global
     from .gre_tunnel import GreTunnel
     from .ha import Ha
     from .ha_monitor import HaMonitor
@@ -126,16 +126,15 @@ if TYPE_CHECKING:
     from .vne_interface import VneInterface
     from .vxlan import Vxlan
     from .wccp import Wccp
-    from .x3g_modem_custom import X3gModemCustom
     from .zone import Zone
     from .autoupdate import Autoupdate
     from .dhcp import Dhcp
     from .dhcp6 import Dhcp6
     from .lldp import Lldp
+    from .modem3g import Modem3g
     from .replacemsg import Replacemsg
     from .security_rating import SecurityRating
     from .snmp import Snmp
-    from .x3g_modem import X3gModem
 
 
 class System:
@@ -145,10 +144,10 @@ class System:
     dhcp: Dhcp
     dhcp6: Dhcp6
     lldp: Lldp
+    modem3g: Modem3g
     replacemsg: Replacemsg
     security_rating: SecurityRating
     snmp: Snmp
-    x3g_modem: X3gModem
     accprofile: Accprofile
     acme: Acme
     admin: Admin
@@ -192,7 +191,7 @@ class System:
     geneve: Geneve
     geoip_country: GeoipCountry
     geoip_override: GeoipOverride
-    global_setting: GlobalSetting
+    global_: Global
     gre_tunnel: GreTunnel
     ha: Ha
     ha_monitor: HaMonitor
@@ -269,7 +268,6 @@ class System:
     vne_interface: VneInterface
     vxlan: Vxlan
     wccp: Wccp
-    x3g_modem_custom: X3gModemCustom
     zone: Zone
 
     def __init__(self, client: IHTTPClient) -> None: ...

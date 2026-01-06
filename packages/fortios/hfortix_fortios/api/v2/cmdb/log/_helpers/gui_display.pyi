@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_RESOLVE_HOSTS: Literal["enable", "disable"]
-VALID_BODY_RESOLVE_APPS: Literal["enable", "disable"]
-VALID_BODY_FORTIVIEW_UNSCANNED_APPS: Literal["enable", "disable"]
+VALID_BODY_RESOLVE_HOSTS: Literal[{"description": "Enable resolving IP addresses to hostnames", "help": "Enable resolving IP addresses to hostnames.", "label": "Enable", "name": "enable"}, {"description": "Disable resolving IP addresses to hostnames", "help": "Disable resolving IP addresses to hostnames.", "label": "Disable", "name": "disable"}]
+VALID_BODY_RESOLVE_APPS: Literal[{"description": "Enable unknown applications on the GUI", "help": "Enable unknown applications on the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown applications on the GUI", "help": "Disable unknown applications on the GUI.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FORTIVIEW_UNSCANNED_APPS: Literal[{"description": "Enable showing unscanned traffic", "help": "Enable showing unscanned traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable showing unscanned traffic", "help": "Disable showing unscanned traffic.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

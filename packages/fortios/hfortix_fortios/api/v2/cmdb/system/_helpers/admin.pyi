@@ -1,18 +1,18 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_WILDCARD: Literal["enable", "disable"]
-VALID_BODY_REMOTE_AUTH: Literal["enable", "disable"]
-VALID_BODY_PEER_AUTH: Literal["enable", "disable"]
-VALID_BODY_ALLOW_REMOVE_ADMIN_SESSION: Literal["enable", "disable"]
-VALID_BODY_ACCPROFILE_OVERRIDE: Literal["enable", "disable"]
-VALID_BODY_VDOM_OVERRIDE: Literal["enable", "disable"]
-VALID_BODY_FORCE_PASSWORD_CHANGE: Literal["enable", "disable"]
-VALID_BODY_TWO_FACTOR: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"]
-VALID_BODY_TWO_FACTOR_AUTHENTICATION: Literal["fortitoken", "email", "sms"]
-VALID_BODY_TWO_FACTOR_NOTIFICATION: Literal["email", "sms"]
-VALID_BODY_SMS_SERVER: Literal["fortiguard", "custom"]
-VALID_BODY_GUEST_AUTH: Literal["disable", "enable"]
+VALID_BODY_REMOTE_AUTH: Literal[{"description": "Enable remote authentication", "help": "Enable remote authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable remote authentication", "help": "Disable remote authentication.", "label": "Disable", "name": "disable"}]
+VALID_BODY_WILDCARD: Literal[{"description": "Enable username wildcard", "help": "Enable username wildcard.", "label": "Enable", "name": "enable"}, {"description": "Disable username wildcard", "help": "Disable username wildcard.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PEER_AUTH: Literal[{"description": "Enable peer", "help": "Enable peer.", "label": "Enable", "name": "enable"}, {"description": "Disable peer", "help": "Disable peer.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ALLOW_REMOVE_ADMIN_SESSION: Literal[{"description": "Enable allow-remove option", "help": "Enable allow-remove option.", "label": "Enable", "name": "enable"}, {"description": "Disable allow-remove option", "help": "Disable allow-remove option.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ACCPROFILE_OVERRIDE: Literal[{"description": "Enable access profile override", "help": "Enable access profile override.", "label": "Enable", "name": "enable"}, {"description": "Disable access profile override", "help": "Disable access profile override.", "label": "Disable", "name": "disable"}]
+VALID_BODY_VDOM_OVERRIDE: Literal[{"description": "Enable VDOM override", "help": "Enable VDOM override.", "label": "Enable", "name": "enable"}, {"description": "Disable VDOM override", "help": "Disable VDOM override.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FORCE_PASSWORD_CHANGE: Literal[{"description": "Enable force password change on next login", "help": "Enable force password change on next login.", "label": "Enable", "name": "enable"}, {"description": "Disable force password change on next login", "help": "Disable force password change on next login.", "label": "Disable", "name": "disable"}]
+VALID_BODY_TWO_FACTOR: Literal[{"description": "Disable two-factor authentication", "help": "Disable two-factor authentication.", "label": "Disable", "name": "disable"}, {"description": "Use FortiToken or FortiToken mobile two-factor authentication", "help": "Use FortiToken or FortiToken mobile two-factor authentication.", "label": "Fortitoken", "name": "fortitoken"}, {"description": "FortiToken Cloud Service", "help": "FortiToken Cloud Service.", "label": "Fortitoken Cloud", "name": "fortitoken-cloud"}, {"description": "Send a two-factor authentication code to the configured email-to email address", "help": "Send a two-factor authentication code to the configured email-to email address.", "label": "Email", "name": "email"}, {"description": "Send a two-factor authentication code to the configured sms-server and sms-phone", "help": "Send a two-factor authentication code to the configured sms-server and sms-phone.", "label": "Sms", "name": "sms"}]
+VALID_BODY_TWO_FACTOR_AUTHENTICATION: Literal[{"description": "FortiToken authentication", "help": "FortiToken authentication.", "label": "Fortitoken", "name": "fortitoken"}, {"description": "Email one time password", "help": "Email one time password.", "label": "Email", "name": "email"}, {"description": "SMS one time password", "help": "SMS one time password.", "label": "Sms", "name": "sms"}]
+VALID_BODY_TWO_FACTOR_NOTIFICATION: Literal[{"description": "Email notification for activation code", "help": "Email notification for activation code.", "label": "Email", "name": "email"}, {"description": "SMS notification for activation code", "help": "SMS notification for activation code.", "label": "Sms", "name": "sms"}]
+VALID_BODY_SMS_SERVER: Literal[{"description": "Send SMS by FortiGuard", "help": "Send SMS by FortiGuard.", "label": "Fortiguard", "name": "fortiguard"}, {"description": "Send SMS by custom server", "help": "Send SMS by custom server.", "label": "Custom", "name": "custom"}]
+VALID_BODY_GUEST_AUTH: Literal[{"description": "Disable guest authentication", "help": "Disable guest authentication.", "label": "Disable", "name": "disable"}, {"description": "Enable guest authentication", "help": "Enable guest authentication.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -35,8 +35,8 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
-    "VALID_BODY_WILDCARD",
     "VALID_BODY_REMOTE_AUTH",
+    "VALID_BODY_WILDCARD",
     "VALID_BODY_PEER_AUTH",
     "VALID_BODY_ALLOW_REMOVE_ADMIN_SESSION",
     "VALID_BODY_ACCPROFILE_OVERRIDE",

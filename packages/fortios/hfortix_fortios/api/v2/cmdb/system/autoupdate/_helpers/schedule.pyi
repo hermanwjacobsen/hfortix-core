@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_FREQUENCY: Literal["every", "daily", "weekly", "automatic"]
-VALID_BODY_DAY: Literal["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FREQUENCY: Literal[{"description": "Time interval", "help": "Time interval.", "label": "Every", "name": "every"}, {"description": "Every day", "help": "Every day.", "label": "Daily", "name": "daily"}, {"description": "Every week", "help": "Every week.", "label": "Weekly", "name": "weekly"}, {"description": "Update automatically within every one hour period", "help": "Update automatically within every one hour period.", "label": "Automatic", "name": "automatic"}]
+VALID_BODY_DAY: Literal[{"description": "Update every Sunday", "help": "Update every Sunday.", "label": "Sunday", "name": "Sunday"}, {"description": "Update every Monday", "help": "Update every Monday.", "label": "Monday", "name": "Monday"}, {"description": "Update every Tuesday", "help": "Update every Tuesday.", "label": "Tuesday", "name": "Tuesday"}, {"description": "Update every Wednesday", "help": "Update every Wednesday.", "label": "Wednesday", "name": "Wednesday"}, {"description": "Update every Thursday", "help": "Update every Thursday.", "label": "Thursday", "name": "Thursday"}, {"description": "Update every Friday", "help": "Update every Friday.", "label": "Friday", "name": "Friday"}, {"description": "Update every Saturday", "help": "Update every Saturday.", "label": "Saturday", "name": "Saturday"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for wifi/firmware/upload
+    Upload FortiAP firmware to the management FortiGate and then push to target FortiAPs.
     
     Path: wifi/firmware/upload
     Category: monitor

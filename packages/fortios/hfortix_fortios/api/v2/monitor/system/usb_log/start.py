@@ -56,7 +56,7 @@ class Start:
         """
         Retrieve system/usb_log/start configuration.
 
-        Configuration for system/usb-log/start
+        Start backup of logs from current VDOM to USB drive.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

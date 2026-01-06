@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/local_in6",
     "category": "monitor",
     "api_path": "firewall/local-in6",
-    "help": "Configuration for firewall/local-in6",
+    "help": "List implicit and explicit IPv6 local-in firewall policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

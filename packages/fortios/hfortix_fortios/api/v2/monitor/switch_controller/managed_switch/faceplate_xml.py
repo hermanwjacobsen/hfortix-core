@@ -56,7 +56,7 @@ class FaceplateXml:
         """
         Retrieve switch_controller/managed_switch/faceplate_xml configuration.
 
-        Configuration for switch-controller/managed-switch/faceplate-xml
+        Retrieve XML for rendering FortiSwitch faceplate widget.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

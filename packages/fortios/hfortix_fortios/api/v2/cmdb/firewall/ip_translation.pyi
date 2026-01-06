@@ -11,7 +11,7 @@ class IpTranslationPayload(TypedDict, total=False):
         }
     """
     transid: NotRequired[int]  # IP translation ID.
-    type: NotRequired[Literal["SCTP"]]  # IP translation type (option: SCTP).
+    type: NotRequired[Literal[{"description": "SCTP", "help": "SCTP", "label": "Sctp", "name": "SCTP"}]]  # IP translation type (option: SCTP).
     startip: str  # First IPv4 address (inclusive) in the range of the addresses
     endip: str  # Final IPv4 address (inclusive) in the range of the addresses
     map_startip: str  # Address to be used as the starting point for translation in 
@@ -43,7 +43,7 @@ class IpTranslation:
         self,
         payload_dict: IpTranslationPayload | None = ...,
         transid: int | None = ...,
-        type: Literal["SCTP"] | None = ...,
+        type: Literal[{"description": "SCTP", "help": "SCTP", "label": "Sctp", "name": "SCTP"}] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         map_startip: str | None = ...,
@@ -56,7 +56,7 @@ class IpTranslation:
         self,
         payload_dict: IpTranslationPayload | None = ...,
         transid: int | None = ...,
-        type: Literal["SCTP"] | None = ...,
+        type: Literal[{"description": "SCTP", "help": "SCTP", "label": "Sctp", "name": "SCTP"}] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         map_startip: str | None = ...,

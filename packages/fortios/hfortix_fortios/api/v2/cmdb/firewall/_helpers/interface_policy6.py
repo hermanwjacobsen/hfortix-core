@@ -200,45 +200,45 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this policy.
+    "disable",  # Disable this policy.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "all",
-    "utm",
-    "disable",
+    "all",  # Log all sessions accepted or denied by this policy.
+    "utm",  # Log traffic that has a security profile applied to it.
+    "disable",  # Disable all logging for this policy.
 ]
 VALID_BODY_APPLICATION_LIST_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable application control
+    "disable",  # Disable application control
 ]
 VALID_BODY_IPS_SENSOR_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPS.
+    "disable",  # Disable IPS.
 ]
 VALID_BODY_DSRI = [
-    "enable",
-    "disable",
+    "enable",  # Enable DSRI.
+    "disable",  # Disable DSRI.
 ]
 VALID_BODY_AV_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable antivirus
+    "disable",  # Disable antivirus
 ]
 VALID_BODY_WEBFILTER_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable web filtering.
+    "disable",  # Disable web filtering.
 ]
 VALID_BODY_CASB_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable CASB.
+    "disable",  # Disable CASB.
 ]
 VALID_BODY_EMAILFILTER_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable Email filter.
+    "disable",  # Disable Email filter.
 ]
 VALID_BODY_DLP_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -369,7 +369,7 @@ def validate_firewall_interface_policy6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable this policy.', 'label': 'Enable', 'description': 'Enable this policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_interface_policy6_post(payload)
         >>> assert is_valid == True

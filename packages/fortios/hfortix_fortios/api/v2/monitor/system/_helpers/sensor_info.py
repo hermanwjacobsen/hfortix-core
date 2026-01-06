@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/sensor_info",
     "category": "monitor",
     "api_path": "system/sensor-info",
-    "help": "Configuration for system/sensor-info",
+    "help": "Retrieve system sensor status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

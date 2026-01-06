@@ -56,7 +56,7 @@ class ReadInfo:
         """
         Retrieve system/certificate/read_info configuration.
 
-        Configuration for system/certificate/read-info
+        Get certificate information from a certificate string.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

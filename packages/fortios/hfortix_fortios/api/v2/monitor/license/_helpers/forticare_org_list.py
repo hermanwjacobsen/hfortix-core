@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "license/forticare_org_list",
     "category": "monitor",
     "api_path": "license/forticare-org-list",
-    "help": "Configuration for license/forticare-org-list",
+    "help": "Get FortiCare organization size and industry lists.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

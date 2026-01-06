@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/managed_switch/port_stats_reset",
     "category": "monitor",
     "api_path": "switch-controller/managed-switch/port-stats-reset",
-    "help": "Configuration for switch-controller/managed-switch/port-stats-reset",
+    "help": "Reset port statistics for a given FortiSwitch.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

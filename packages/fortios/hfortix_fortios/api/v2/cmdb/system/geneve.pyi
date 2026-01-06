@@ -13,8 +13,8 @@ class GenevePayload(TypedDict, total=False):
     name: NotRequired[str]  # GENEVE device or interface name. Must be an unique interface
     interface: str  # Outgoing interface for GENEVE encapsulated traffic.
     vni: int  # GENEVE network ID.
-    type: Literal["ethernet", "ppp"]  # GENEVE type.
-    ip_version: Literal["ipv4-unicast", "ipv6-unicast"]  # IP version to use for the GENEVE interface and so for commun
+    type: Literal[{"description": "Internal packet includes Ethernet header", "help": "Internal packet includes Ethernet header.", "label": "Ethernet", "name": "ethernet"}, {"description": "Internal packet does not include Ethernet header", "help": "Internal packet does not include Ethernet header.", "label": "Ppp", "name": "ppp"}]  # GENEVE type.
+    ip_version: Literal[{"description": "Use IPv4 unicast addressing over the GENEVE", "help": "Use IPv4 unicast addressing over the GENEVE.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the GENEVE", "help": "Use IPv6 unicast addressing over the GENEVE.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}]  # IP version to use for the GENEVE interface and so for commun
     remote_ip: str  # IPv4 address of the GENEVE interface on the device at the re
     remote_ip6: str  # IPv6 IP address of the GENEVE interface on the device at the
     dstport: NotRequired[int]  # GENEVE destination port (1 - 65535, default = 6081).
@@ -48,8 +48,8 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
+        type: Literal[{"description": "Internal packet includes Ethernet header", "help": "Internal packet includes Ethernet header.", "label": "Ethernet", "name": "ethernet"}, {"description": "Internal packet does not include Ethernet header", "help": "Internal packet does not include Ethernet header.", "label": "Ppp", "name": "ppp"}] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 unicast addressing over the GENEVE", "help": "Use IPv4 unicast addressing over the GENEVE.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the GENEVE", "help": "Use IPv6 unicast addressing over the GENEVE.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
@@ -64,8 +64,8 @@ class Geneve:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
+        type: Literal[{"description": "Internal packet includes Ethernet header", "help": "Internal packet includes Ethernet header.", "label": "Ethernet", "name": "ethernet"}, {"description": "Internal packet does not include Ethernet header", "help": "Internal packet does not include Ethernet header.", "label": "Ppp", "name": "ppp"}] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 unicast addressing over the GENEVE", "help": "Use IPv4 unicast addressing over the GENEVE.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the GENEVE", "help": "Use IPv6 unicast addressing over the GENEVE.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}] | None = ...,
         remote_ip: str | None = ...,
         remote_ip6: str | None = ...,
         dstport: int | None = ...,

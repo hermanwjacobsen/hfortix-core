@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/fsck/start",
     "category": "monitor",
     "api_path": "system/fsck/start",
-    "help": "Configuration for system/fsck/start",
+    "help": "Set file system check flag so that it will be executed on next device reboot.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -110,7 +110,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Action taken when PPID is matched.",
             "default": "reset",
-            "options": ["pass", "reset", "replace"],
+            "options": [{"help": "Pass data chunk.", "label": "Pass", "name": "pass"}, {"help": "Reset SCTP session.", "label": "Reset", "name": "reset"}, {"help": "Replace data chunk.", "label": "Replace", "name": "replace"}],
         },
         "comment": {
             "type": "var-string",

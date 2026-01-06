@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "license/fortianalyzer_status",
     "category": "monitor",
     "api_path": "license/fortianalyzer-status",
-    "help": "Configuration for license/fortianalyzer-status",
+    "help": "Get current license & registration status for the connected FortiAnalyzer.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

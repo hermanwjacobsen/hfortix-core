@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "network/arp",
     "category": "monitor",
     "api_path": "network/arp",
-    "help": "Monitor endpoint for network/arp",
+    "help": "Get IPv4 ARP table.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

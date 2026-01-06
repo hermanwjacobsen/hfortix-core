@@ -56,7 +56,7 @@ class Modem:
         """
         Retrieve system/modem configuration.
 
-        Configuration for system/modem
+        Retrieve statistics for internal/external configured modem.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

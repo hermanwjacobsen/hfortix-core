@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UnverifyCert:
     """
-    Configuration for endpoint-control/ems/unverify-cert
+    Unverify EMS server certificate for a specific EMS.
     
     Path: endpoint_control/ems/unverify_cert
     Category: monitor

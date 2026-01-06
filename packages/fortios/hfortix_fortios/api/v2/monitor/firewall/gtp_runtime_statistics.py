@@ -56,7 +56,7 @@ class GtpRuntimeStatistics:
         """
         Retrieve firewall/gtp_runtime_statistics configuration.
 
-        Configuration for firewall/gtp-runtime-statistics
+        Retrieve runtime statistics for GTP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

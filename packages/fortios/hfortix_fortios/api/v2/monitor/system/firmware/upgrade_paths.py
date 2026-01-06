@@ -56,7 +56,7 @@ class UpgradePaths:
         """
         Retrieve system/firmware/upgrade_paths configuration.
 
-        Configuration for system/firmware/upgrade-paths
+        Retrieve a list of supported firmware upgrade paths.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

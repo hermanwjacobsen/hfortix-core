@@ -253,7 +253,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port-ssid": {
             "type": "string",
@@ -265,7 +265,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 1 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port1-ssid": {
             "type": "string",
@@ -277,7 +277,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 2 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port2-ssid": {
             "type": "string",
@@ -289,7 +289,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 3 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port3-ssid": {
             "type": "string",
@@ -301,7 +301,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 4 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port4-ssid": {
             "type": "string",
@@ -313,7 +313,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 5 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port5-ssid": {
             "type": "string",
@@ -325,7 +325,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 6 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port6-ssid": {
             "type": "string",
@@ -337,7 +337,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 7 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port7-ssid": {
             "type": "string",
@@ -349,7 +349,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "LAN port 8 mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP LAN port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP LAN port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP LAN port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port8-ssid": {
             "type": "string",
@@ -361,7 +361,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "ESL port mode.",
             "default": "offline",
-            "options": ["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"],
+            "options": [{"help": "Offline.", "label": "Offline", "name": "offline"}, {"help": "NAT WTP ESL port to WTP WAN port.", "label": "Nat To Wan", "name": "nat-to-wan"}, {"help": "Bridge WTP ESL port to WTP WAN port.", "label": "Bridge To Wan", "name": "bridge-to-wan"}, {"help": "Bridge WTP ESL port to SSID.", "label": "Bridge To Ssid", "name": "bridge-to-ssid"}],
         },
         "port-esl-ssid": {
             "type": "string",
@@ -375,25 +375,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override the WTP profile band setting.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile band setting.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile band setting.", "label": "Disable", "name": "disable"}],
         },
         "band": {
             "type": "option",
             "help": "WiFi band that Radio 1 operates on.",
             "default": "",
-            "options": ["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"],
+            "options": [{"help": "802.11a.", "label": "802.11A", "name": "802.11a"}, {"help": "802.11b.", "label": "802.11B", "name": "802.11b"}, {"help": "802.11g.", "label": "802.11G", "name": "802.11g"}, {"help": "802.11n (WiFi 4) at 2.4GHz.", "label": "802.11N 2G", "name": "802.11n-2G"}, {"help": "802.11n (WiFi 4) at 5GHz.", "label": "802.11N 5G", "name": "802.11n-5G"}, {"help": "802.11ac (WiFi 5) at 2.4GHz.", "label": "802.11Ac 2G", "name": "802.11ac-2G"}, {"help": "802.11ac (WiFi 5) at 5GHz.", "label": "802.11Ac 5G", "name": "802.11ac-5G"}, {"help": "802.11ax (WiFi 6) at 2.4GHz.", "label": "802.11Ax 2G", "name": "802.11ax-2G"}, {"help": "802.11ax (WiFi 6) at 5GHz.", "label": "802.11Ax 5G", "name": "802.11ax-5G"}, {"help": "802.11ax (WiFi 6) at 6GHz.", "label": "802.11Ax 6G", "name": "802.11ax-6G"}, {"help": "802.11be (WiFi 7) at 2.4GHz.", "label": "802.11Be 2G", "name": "802.11be-2G"}, {"help": "802.11be (WiFi 7) at 5GHz.", "label": "802.11Be 5G", "name": "802.11be-5G"}, {"help": "802.11be (WiFi 7) at 6GHz.", "label": "802.11Be 6G", "name": "802.11be-6G"}],
         },
         "override-txpower": {
             "type": "option",
             "help": "Enable to override the WTP profile power level configuration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile power level configuration.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile power level configuration.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-level": {
             "type": "option",
             "help": "Enable/disable automatic power-level adjustment to prevent co-channel interference (default = enable).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable automatic transmit power adjustment.", "label": "Enable", "name": "enable"}, {"help": "Disable automatic transmit power adjustment.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-high": {
             "type": "integer",
@@ -419,7 +419,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Set radio effective isotropic radiated power (EIRP) in dBm or by a percentage of the maximum EIRP (default = percentage). This power takes into account both radio transmit power and antenna gain. Higher power level settings may be constrained by local regulatory requirements and AP capabilities.",
             "default": "percentage",
-            "options": ["dBm", "percentage"],
+            "options": [{"help": "Set radio EIRP power in dBm.", "label": "Dbm", "name": "dBm"}, {"help": "Set radio EIRP power by percentage.", "label": "Percentage", "name": "percentage"}],
         },
         "power-level": {
             "type": "integer",
@@ -439,13 +439,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile Virtual Access Point (VAP) settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile VAP settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile VAP settings.", "label": "Disable", "name": "disable"}],
         },
         "vap-all": {
             "type": "option",
             "help": "Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).",
             "default": "tunnel",
-            "options": ["tunnel", "bridge", "manual"],
+            "options": [{"help": "Automatically select tunnel SSIDs.", "label": "Tunnel", "name": "tunnel"}, {"help": "Automatically select local-bridging SSIDs.", "label": "Bridge", "name": "bridge"}, {"help": "Manually select SSIDs.", "label": "Manual", "name": "manual"}],
         },
         "vaps": {
             "type": "string",
@@ -455,7 +455,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile channel settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile channel settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile channel settings.", "label": "Disable", "name": "disable"}],
         },
         "channel": {
             "type": "string",
@@ -465,7 +465,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Radio mode to be used for DRMA manual mode (default = ncf).",
             "default": "ncf",
-            "options": ["ap", "monitor", "ncf", "ncf-peek"],
+            "options": [{"help": "Set the radio to AP mode.", "label": "Ap", "name": "ap"}, {"help": "Set the radio to monitor mode", "label": "Monitor", "name": "monitor"}, {"help": "Select and set the radio mode based on NCF score.", "label": "Ncf", "name": "ncf"}, {"help": "Select the radio mode based on NCF score, but do not apply.", "label": "Ncf Peek", "name": "ncf-peek"}],
         },
     },
     "radio-2": {
@@ -473,25 +473,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override the WTP profile band setting.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile band setting.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile band setting.", "label": "Disable", "name": "disable"}],
         },
         "band": {
             "type": "option",
             "help": "WiFi band that Radio 2 operates on.",
             "default": "",
-            "options": ["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"],
+            "options": [{"help": "802.11a.", "label": "802.11A", "name": "802.11a"}, {"help": "802.11b.", "label": "802.11B", "name": "802.11b"}, {"help": "802.11g.", "label": "802.11G", "name": "802.11g"}, {"help": "802.11n (WiFi 4) at 2.4GHz.", "label": "802.11N 2G", "name": "802.11n-2G"}, {"help": "802.11n (WiFi 4) at 5GHz.", "label": "802.11N 5G", "name": "802.11n-5G"}, {"help": "802.11ac (WiFi 5) at 2.4GHz.", "label": "802.11Ac 2G", "name": "802.11ac-2G"}, {"help": "802.11ac (WiFi 5) at 5GHz.", "label": "802.11Ac 5G", "name": "802.11ac-5G"}, {"help": "802.11ax (WiFi 6) at 2.4GHz.", "label": "802.11Ax 2G", "name": "802.11ax-2G"}, {"help": "802.11ax (WiFi 6) at 5GHz.", "label": "802.11Ax 5G", "name": "802.11ax-5G"}, {"help": "802.11ax (WiFi 6) at 6GHz.", "label": "802.11Ax 6G", "name": "802.11ax-6G"}, {"help": "802.11be (WiFi 7) at 2.4GHz.", "label": "802.11Be 2G", "name": "802.11be-2G"}, {"help": "802.11be (WiFi 7) at 5GHz.", "label": "802.11Be 5G", "name": "802.11be-5G"}, {"help": "802.11be (WiFi 7) at 6GHz.", "label": "802.11Be 6G", "name": "802.11be-6G"}],
         },
         "override-txpower": {
             "type": "option",
             "help": "Enable to override the WTP profile power level configuration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile power level configuration.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile power level configuration.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-level": {
             "type": "option",
             "help": "Enable/disable automatic power-level adjustment to prevent co-channel interference (default = enable).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable automatic transmit power adjustment.", "label": "Enable", "name": "enable"}, {"help": "Disable automatic transmit power adjustment.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-high": {
             "type": "integer",
@@ -517,7 +517,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Set radio effective isotropic radiated power (EIRP) in dBm or by a percentage of the maximum EIRP (default = percentage). This power takes into account both radio transmit power and antenna gain. Higher power level settings may be constrained by local regulatory requirements and AP capabilities.",
             "default": "percentage",
-            "options": ["dBm", "percentage"],
+            "options": [{"help": "Set radio EIRP power in dBm.", "label": "Dbm", "name": "dBm"}, {"help": "Set radio EIRP power by percentage.", "label": "Percentage", "name": "percentage"}],
         },
         "power-level": {
             "type": "integer",
@@ -537,13 +537,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile Virtual Access Point (VAP) settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile VAP settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile VAP settings.", "label": "Disable", "name": "disable"}],
         },
         "vap-all": {
             "type": "option",
             "help": "Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).",
             "default": "tunnel",
-            "options": ["tunnel", "bridge", "manual"],
+            "options": [{"help": "Automatically select tunnel SSIDs.", "label": "Tunnel", "name": "tunnel"}, {"help": "Automatically select local-bridging SSIDs.", "label": "Bridge", "name": "bridge"}, {"help": "Manually select SSIDs.", "label": "Manual", "name": "manual"}],
         },
         "vaps": {
             "type": "string",
@@ -553,7 +553,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile channel settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile channel settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile channel settings.", "label": "Disable", "name": "disable"}],
         },
         "channel": {
             "type": "string",
@@ -563,7 +563,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Radio mode to be used for DRMA manual mode (default = ncf).",
             "default": "ncf",
-            "options": ["ap", "monitor", "ncf", "ncf-peek"],
+            "options": [{"help": "Set the radio to AP mode.", "label": "Ap", "name": "ap"}, {"help": "Set the radio to monitor mode", "label": "Monitor", "name": "monitor"}, {"help": "Select and set the radio mode based on NCF score.", "label": "Ncf", "name": "ncf"}, {"help": "Select the radio mode based on NCF score, but do not apply.", "label": "Ncf Peek", "name": "ncf-peek"}],
         },
     },
     "radio-3": {
@@ -571,25 +571,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override the WTP profile band setting.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile band setting.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile band setting.", "label": "Disable", "name": "disable"}],
         },
         "band": {
             "type": "option",
             "help": "WiFi band that Radio 3 operates on.",
             "default": "",
-            "options": ["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"],
+            "options": [{"help": "802.11a.", "label": "802.11A", "name": "802.11a"}, {"help": "802.11b.", "label": "802.11B", "name": "802.11b"}, {"help": "802.11g.", "label": "802.11G", "name": "802.11g"}, {"help": "802.11n (WiFi 4) at 2.4GHz.", "label": "802.11N 2G", "name": "802.11n-2G"}, {"help": "802.11n (WiFi 4) at 5GHz.", "label": "802.11N 5G", "name": "802.11n-5G"}, {"help": "802.11ac (WiFi 5) at 2.4GHz.", "label": "802.11Ac 2G", "name": "802.11ac-2G"}, {"help": "802.11ac (WiFi 5) at 5GHz.", "label": "802.11Ac 5G", "name": "802.11ac-5G"}, {"help": "802.11ax (WiFi 6) at 2.4GHz.", "label": "802.11Ax 2G", "name": "802.11ax-2G"}, {"help": "802.11ax (WiFi 6) at 5GHz.", "label": "802.11Ax 5G", "name": "802.11ax-5G"}, {"help": "802.11ax (WiFi 6) at 6GHz.", "label": "802.11Ax 6G", "name": "802.11ax-6G"}, {"help": "802.11be (WiFi 7) at 2.4GHz.", "label": "802.11Be 2G", "name": "802.11be-2G"}, {"help": "802.11be (WiFi 7) at 5GHz.", "label": "802.11Be 5G", "name": "802.11be-5G"}, {"help": "802.11be (WiFi 7) at 6GHz.", "label": "802.11Be 6G", "name": "802.11be-6G"}],
         },
         "override-txpower": {
             "type": "option",
             "help": "Enable to override the WTP profile power level configuration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile power level configuration.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile power level configuration.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-level": {
             "type": "option",
             "help": "Enable/disable automatic power-level adjustment to prevent co-channel interference (default = enable).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable automatic transmit power adjustment.", "label": "Enable", "name": "enable"}, {"help": "Disable automatic transmit power adjustment.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-high": {
             "type": "integer",
@@ -615,7 +615,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Set radio effective isotropic radiated power (EIRP) in dBm or by a percentage of the maximum EIRP (default = percentage). This power takes into account both radio transmit power and antenna gain. Higher power level settings may be constrained by local regulatory requirements and AP capabilities.",
             "default": "percentage",
-            "options": ["dBm", "percentage"],
+            "options": [{"help": "Set radio EIRP power in dBm.", "label": "Dbm", "name": "dBm"}, {"help": "Set radio EIRP power by percentage.", "label": "Percentage", "name": "percentage"}],
         },
         "power-level": {
             "type": "integer",
@@ -635,13 +635,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile Virtual Access Point (VAP) settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile VAP settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile VAP settings.", "label": "Disable", "name": "disable"}],
         },
         "vap-all": {
             "type": "option",
             "help": "Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).",
             "default": "tunnel",
-            "options": ["tunnel", "bridge", "manual"],
+            "options": [{"help": "Automatically select tunnel SSIDs.", "label": "Tunnel", "name": "tunnel"}, {"help": "Automatically select local-bridging SSIDs.", "label": "Bridge", "name": "bridge"}, {"help": "Manually select SSIDs.", "label": "Manual", "name": "manual"}],
         },
         "vaps": {
             "type": "string",
@@ -651,7 +651,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile channel settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile channel settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile channel settings.", "label": "Disable", "name": "disable"}],
         },
         "channel": {
             "type": "string",
@@ -661,7 +661,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Radio mode to be used for DRMA manual mode (default = ncf).",
             "default": "ncf",
-            "options": ["ap", "monitor", "ncf", "ncf-peek"],
+            "options": [{"help": "Set the radio to AP mode.", "label": "Ap", "name": "ap"}, {"help": "Set the radio to monitor mode", "label": "Monitor", "name": "monitor"}, {"help": "Select and set the radio mode based on NCF score.", "label": "Ncf", "name": "ncf"}, {"help": "Select the radio mode based on NCF score, but do not apply.", "label": "Ncf Peek", "name": "ncf-peek"}],
         },
     },
     "radio-4": {
@@ -669,25 +669,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override the WTP profile band setting.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile band setting.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile band setting.", "label": "Disable", "name": "disable"}],
         },
         "band": {
             "type": "option",
             "help": "WiFi band that Radio 4 operates on.",
             "default": "",
-            "options": ["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"],
+            "options": [{"help": "802.11a.", "label": "802.11A", "name": "802.11a"}, {"help": "802.11b.", "label": "802.11B", "name": "802.11b"}, {"help": "802.11g.", "label": "802.11G", "name": "802.11g"}, {"help": "802.11n (WiFi 4) at 2.4GHz.", "label": "802.11N 2G", "name": "802.11n-2G"}, {"help": "802.11n (WiFi 4) at 5GHz.", "label": "802.11N 5G", "name": "802.11n-5G"}, {"help": "802.11ac (WiFi 5) at 2.4GHz.", "label": "802.11Ac 2G", "name": "802.11ac-2G"}, {"help": "802.11ac (WiFi 5) at 5GHz.", "label": "802.11Ac 5G", "name": "802.11ac-5G"}, {"help": "802.11ax (WiFi 6) at 2.4GHz.", "label": "802.11Ax 2G", "name": "802.11ax-2G"}, {"help": "802.11ax (WiFi 6) at 5GHz.", "label": "802.11Ax 5G", "name": "802.11ax-5G"}, {"help": "802.11ax (WiFi 6) at 6GHz.", "label": "802.11Ax 6G", "name": "802.11ax-6G"}, {"help": "802.11be (WiFi 7) at 2.4GHz.", "label": "802.11Be 2G", "name": "802.11be-2G"}, {"help": "802.11be (WiFi 7) at 5GHz.", "label": "802.11Be 5G", "name": "802.11be-5G"}, {"help": "802.11be (WiFi 7) at 6GHz.", "label": "802.11Be 6G", "name": "802.11be-6G"}],
         },
         "override-txpower": {
             "type": "option",
             "help": "Enable to override the WTP profile power level configuration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override the WTP profile power level configuration.", "label": "Enable", "name": "enable"}, {"help": "Use the WTP profile power level configuration.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-level": {
             "type": "option",
             "help": "Enable/disable automatic power-level adjustment to prevent co-channel interference (default = enable).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable automatic transmit power adjustment.", "label": "Enable", "name": "enable"}, {"help": "Disable automatic transmit power adjustment.", "label": "Disable", "name": "disable"}],
         },
         "auto-power-high": {
             "type": "integer",
@@ -713,7 +713,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Set radio effective isotropic radiated power (EIRP) in dBm or by a percentage of the maximum EIRP (default = percentage). This power takes into account both radio transmit power and antenna gain. Higher power level settings may be constrained by local regulatory requirements and AP capabilities.",
             "default": "percentage",
-            "options": ["dBm", "percentage"],
+            "options": [{"help": "Set radio EIRP power in dBm.", "label": "Dbm", "name": "dBm"}, {"help": "Set radio EIRP power by percentage.", "label": "Percentage", "name": "percentage"}],
         },
         "power-level": {
             "type": "integer",
@@ -733,13 +733,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile Virtual Access Point (VAP) settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile VAP settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile VAP settings.", "label": "Disable", "name": "disable"}],
         },
         "vap-all": {
             "type": "option",
             "help": "Configure method for assigning SSIDs to this FortiAP (default = automatically assign tunnel SSIDs).",
             "default": "tunnel",
-            "options": ["tunnel", "bridge", "manual"],
+            "options": [{"help": "Automatically select tunnel SSIDs.", "label": "Tunnel", "name": "tunnel"}, {"help": "Automatically select local-bridging SSIDs.", "label": "Bridge", "name": "bridge"}, {"help": "Manually select SSIDs.", "label": "Manual", "name": "manual"}],
         },
         "vaps": {
             "type": "string",
@@ -749,7 +749,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to override WTP profile channel settings.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Override WTP profile channel settings.", "label": "Enable", "name": "enable"}, {"help": "Use WTP profile channel settings.", "label": "Disable", "name": "disable"}],
         },
         "channel": {
             "type": "string",
@@ -759,7 +759,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Radio mode to be used for DRMA manual mode (default = ncf).",
             "default": "ncf",
-            "options": ["ap", "monitor", "ncf", "ncf-peek"],
+            "options": [{"help": "Set the radio to AP mode.", "label": "Ap", "name": "ap"}, {"help": "Set the radio to monitor mode", "label": "Monitor", "name": "monitor"}, {"help": "Select and set the radio mode based on NCF score.", "label": "Ncf", "name": "ncf"}, {"help": "Select the radio mode based on NCF score, but do not apply.", "label": "Ncf Peek", "name": "ncf-peek"}],
         },
     },
 }
@@ -767,99 +767,99 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADMIN = [
-    "discovered",
-    "disable",
-    "enable",
+    "discovered",  # FortiGate wireless controller discovers the WTP, AP, or FortiAP though discovery or join request messages.
+    "disable",  # FortiGate wireless controller is configured to not provide service to this WTP.
+    "enable",  # FortiGate wireless controller is configured to provide service to this WTP.
 ]
 VALID_BODY_FIRMWARE_PROVISION_LATEST = [
-    "disable",
-    "once",
+    "disable",  # Do not automatically provision the latest available firmware.
+    "once",  # Automatically attempt a one-time upgrade to the latest available firmware version.
 ]
 VALID_BODY_OVERRIDE_LED_STATE = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile LED state.
+    "disable",  # Use the WTP profile LED state.
 ]
 VALID_BODY_LED_STATE = [
-    "enable",
-    "disable",
+    "enable",  # Allow the LEDs on this FortiAP to light.
+    "disable",  # Keep the LEDs on this FortiAP off.
 ]
 VALID_BODY_OVERRIDE_WAN_PORT_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile wan-port-mode.
+    "disable",  # Use the wan-port-mode in the WTP profile.
 ]
 VALID_BODY_WAN_PORT_MODE = [
-    "wan-lan",
-    "wan-only",
+    "wan-lan",  # Use the FortiAP WAN port as a LAN port.
+    "wan-only",  # Do not use the WAN port as a LAN port.
 ]
 VALID_BODY_OVERRIDE_IP_FRAGMENT = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile IP fragment prevention setting.
+    "disable",  # Use the WTP profile IP fragment prevention setting.
 ]
 VALID_BODY_IP_FRAGMENT_PREVENTING = [
-    "tcp-mss-adjust",
-    "icmp-unreachable",
+    "tcp-mss-adjust",  # TCP maximum segment size adjustment.
+    "icmp-unreachable",  # Drop packet and send ICMP Destination Unreachable
 ]
 VALID_BODY_OVERRIDE_SPLIT_TUNNEL = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile split tunneling setting.
+    "disable",  # Use the WTP profile split tunneling setting.
 ]
 VALID_BODY_SPLIT_TUNNELING_ACL_PATH = [
-    "tunnel",
-    "local",
+    "tunnel",  # Split tunneling ACL list traffic will be tunnel.
+    "local",  # Split tunneling ACL list traffic will be local NATed.
 ]
 VALID_BODY_SPLIT_TUNNELING_ACL_LOCAL_AP_SUBNET = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatically adding local subnetwork of FortiAP to split-tunneling ACL.
+    "disable",  # Disable automatically adding local subnetwork of FortiAP to split-tunneling ACL.
 ]
 VALID_BODY_OVERRIDE_LAN = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile LAN port setting.
+    "disable",  # Use the WTP profile LAN port setting.
 ]
 VALID_BODY_OVERRIDE_ALLOWACCESS = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile management access configuration.
+    "disable",  # Use the WTP profile management access configuration.
 ]
 VALID_BODY_ALLOWACCESS = [
-    "https",
-    "ssh",
-    "snmp",
+    "https",  # HTTPS access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
 ]
 VALID_BODY_OVERRIDE_LOGIN_PASSWD_CHANGE = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile login-password (administrator password) setting.
+    "disable",  # Use the the WTP profile login-password (administrator password) setting.
 ]
 VALID_BODY_LOGIN_PASSWD_CHANGE = [
-    "yes",
-    "default",
-    "no",
+    "yes",  # Change the managed WTP, FortiAP or AP's administrator password. Use the login-password option to set the password.
+    "default",  # Keep the managed WTP, FortiAP or AP's administrator password set to the factory default.
+    "no",  # Do not change the managed WTP, FortiAP or AP's administrator password.
 ]
 VALID_BODY_OVERRIDE_DEFAULT_MESH_ROOT = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile default mesh root SSID setting.
+    "disable",  # Use the WTP profile default mesh root SSID setting.
 ]
 VALID_BODY_DEFAULT_MESH_ROOT = [
-    "enable",
-    "disable",
+    "enable",  # Enable default mesh root SSID if it is not included by radio's SSID configuration.
+    "disable",  # Do not enable default mesh root SSID if it is not included by radio's SSID configuration.
 ]
 VALID_BODY_IMAGE_DOWNLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable WTP image download at join time.
+    "disable",  # Disable WTP image download at join time.
 ]
 VALID_BODY_MESH_BRIDGE_ENABLE = [
-    "default",
-    "enable",
-    "disable",
+    "default",  # Use mesh Ethernet bridge local setting on the WTP.
+    "enable",  # Turn on mesh Ethernet bridge on the WTP.
+    "disable",  # Turn off mesh Ethernet bridge on the WTP.
 ]
 VALID_BODY_PURDUE_LEVEL = [
-    "1",
-    "1.5",
-    "2",
-    "2.5",
-    "3",
-    "3.5",
-    "4",
-    "5",
-    "5.5",
+    "1",  # Level 1 - Basic Control
+    "1.5",  # Level 1.5
+    "2",  # Level 2 - Area Supervisory Control
+    "2.5",  # Level 2.5
+    "3",  # Level 3 - Operations & Control
+    "3.5",  # Level 3.5
+    "4",  # Level 4 - Business Planning & Logistics
+    "5",  # Level 5 - Enterprise Network
+    "5.5",  # Level 5.5
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -990,7 +990,7 @@ def validate_wireless_controller_wtp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "wtp-id": True,
-        ...     "admin": "discovered",  # Valid enum value
+        ...     "admin": "{'name': 'discovered', 'help': 'FortiGate wireless controller discovers the WTP, AP, or FortiAP though discovery or join request messages.', 'label': 'Discovered', 'description': 'FortiGate wireless controller discovers the WTP, AP, or FortiAP though discovery or join request messages'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_wtp_post(payload)
         >>> assert is_valid == True

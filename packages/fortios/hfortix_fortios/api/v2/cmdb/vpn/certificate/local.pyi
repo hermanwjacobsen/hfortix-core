@@ -18,22 +18,22 @@ class LocalPayload(TypedDict, total=False):
     csr: NotRequired[str]  # Certificate Signing Request.
     state: NotRequired[str]  # Certificate Signing Request State.
     scep_url: NotRequired[str]  # SCEP server URL.
-    range: NotRequired[Literal["global", "vdom"]]  # Either a global or VDOM IP address range for the certificate
-    source: NotRequired[Literal["factory", "user", "bundle"]]  # Certificate source type.
+    range: NotRequired[Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}]]  # Either a global or VDOM IP address range for the certificate
+    source: NotRequired[Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}]]  # Certificate source type.
     auto_regenerate_days: NotRequired[int]  # Number of days to wait before expiry of an updated local cer
     auto_regenerate_days_warning: NotRequired[int]  # Number of days to wait before an expiry warning message is g
     scep_password: NotRequired[str]  # SCEP server challenge password for auto-regeneration.
     ca_identifier: NotRequired[str]  # CA identifier of the CA server for signing via SCEP.
-    name_encoding: NotRequired[Literal["printable", "utf8"]]  # Name encoding method for auto-regeneration.
+    name_encoding: NotRequired[Literal[{"description": "Printable encoding (default)", "help": "Printable encoding (default).", "label": "Printable", "name": "printable"}, {"description": "UTF-8 encoding", "help": "UTF-8 encoding.", "label": "Utf8", "name": "utf8"}]]  # Name encoding method for auto-regeneration.
     source_ip: NotRequired[str]  # Source IP address for communications to the SCEP server.
     ike_localid: NotRequired[str]  # Local ID the FortiGate uses for authentication as a VPN clie
-    ike_localid_type: NotRequired[Literal["asn1dn", "fqdn"]]  # IKE local ID type.
-    enroll_protocol: NotRequired[Literal["none", "scep", "cmpv2", "acme2", "est"]]  # Certificate enrollment protocol.
-    private_key_retain: NotRequired[Literal["enable", "disable"]]  # Enable/disable retention of private key during SCEP renewal 
+    ike_localid_type: NotRequired[Literal[{"description": "ASN", "help": "ASN.1 distinguished name.", "label": "Asn1Dn", "name": "asn1dn"}, {"description": "Fully qualified domain name", "help": "Fully qualified domain name.", "label": "Fqdn", "name": "fqdn"}]]  # IKE local ID type.
+    enroll_protocol: NotRequired[Literal[{"description": "None (default)", "help": "None (default).", "label": "None", "name": "none"}, {"description": "Simple Certificate Enrollment Protocol", "help": "Simple Certificate Enrollment Protocol.", "label": "Scep", "name": "scep"}, {"description": "Certificate Management Protocol Version 2", "help": "Certificate Management Protocol Version 2.", "label": "Cmpv2", "name": "cmpv2"}, {"description": "Automated Certificate Management Environment Version 2", "help": "Automated Certificate Management Environment Version 2.", "label": "Acme2", "name": "acme2"}, {"description": "Enrollment over Secure Transport", "help": "Enrollment over Secure Transport.", "label": "Est", "name": "est"}]]  # Certificate enrollment protocol.
+    private_key_retain: NotRequired[Literal[{"description": "Keep the existing private key during SCEP renewal", "help": "Keep the existing private key during SCEP renewal.", "label": "Enable", "name": "enable"}, {"description": "Generate a new private key during SCEP renewal", "help": "Generate a new private key during SCEP renewal.", "label": "Disable", "name": "disable"}]]  # Enable/disable retention of private key during SCEP renewal 
     cmp_server: NotRequired[str]  # Address and port for CMP server (format = address:port).
     cmp_path: NotRequired[str]  # Path location inside CMP server.
     cmp_server_cert: NotRequired[str]  # CMP server certificate.
-    cmp_regeneration_method: NotRequired[Literal["keyupate", "renewal"]]  # CMP auto-regeneration method.
+    cmp_regeneration_method: NotRequired[Literal[{"description": "Key Update", "help": "Key Update.", "label": "Keyupate", "name": "keyupate"}, {"description": "Renewal", "help": "Renewal.", "label": "Renewal", "name": "renewal"}]]  # CMP auto-regeneration method.
     acme_ca_url: str  # The URL for the ACME CA server (Let's Encrypt is the default
     acme_domain: str  # A valid domain that resolves to this FortiGate unit.
     acme_email: str  # Contact email address that is required by some CAs like Lets
@@ -49,7 +49,7 @@ class LocalPayload(TypedDict, total=False):
     est_server_cert: NotRequired[str]  # EST server's certificate must be verifiable by this certific
     est_srp_username: NotRequired[str]  # EST SRP authentication username.
     est_srp_password: NotRequired[str]  # EST SRP authentication password.
-    est_regeneration_method: NotRequired[Literal["create-new-key", "use-existing-key"]]  # EST behavioral options during re-enrollment.
+    est_regeneration_method: NotRequired[Literal[{"description": "Create new private key during re-enrollment", "help": "Create new private key during re-enrollment.", "label": "Create New Key", "name": "create-new-key"}, {"description": "Reuse existing private key during re-enrollment", "help": "Reuse existing private key during re-enrollment.", "label": "Use Existing Key", "name": "use-existing-key"}]]  # EST behavioral options during re-enrollment.
     details: NotRequired[str]  # Print local certificate detailed information.
 
 
@@ -86,22 +86,22 @@ class Local:
         csr: str | None = ...,
         state: str | None = ...,
         scep_url: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
+        range: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}] | None = ...,
+        source: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}] | None = ...,
         auto_regenerate_days: int | None = ...,
         auto_regenerate_days_warning: int | None = ...,
         scep_password: str | None = ...,
         ca_identifier: str | None = ...,
-        name_encoding: Literal["printable", "utf8"] | None = ...,
+        name_encoding: Literal[{"description": "Printable encoding (default)", "help": "Printable encoding (default).", "label": "Printable", "name": "printable"}, {"description": "UTF-8 encoding", "help": "UTF-8 encoding.", "label": "Utf8", "name": "utf8"}] | None = ...,
         source_ip: str | None = ...,
         ike_localid: str | None = ...,
-        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
-        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
-        private_key_retain: Literal["enable", "disable"] | None = ...,
+        ike_localid_type: Literal[{"description": "ASN", "help": "ASN.1 distinguished name.", "label": "Asn1Dn", "name": "asn1dn"}, {"description": "Fully qualified domain name", "help": "Fully qualified domain name.", "label": "Fqdn", "name": "fqdn"}] | None = ...,
+        enroll_protocol: Literal[{"description": "None (default)", "help": "None (default).", "label": "None", "name": "none"}, {"description": "Simple Certificate Enrollment Protocol", "help": "Simple Certificate Enrollment Protocol.", "label": "Scep", "name": "scep"}, {"description": "Certificate Management Protocol Version 2", "help": "Certificate Management Protocol Version 2.", "label": "Cmpv2", "name": "cmpv2"}, {"description": "Automated Certificate Management Environment Version 2", "help": "Automated Certificate Management Environment Version 2.", "label": "Acme2", "name": "acme2"}, {"description": "Enrollment over Secure Transport", "help": "Enrollment over Secure Transport.", "label": "Est", "name": "est"}] | None = ...,
+        private_key_retain: Literal[{"description": "Keep the existing private key during SCEP renewal", "help": "Keep the existing private key during SCEP renewal.", "label": "Enable", "name": "enable"}, {"description": "Generate a new private key during SCEP renewal", "help": "Generate a new private key during SCEP renewal.", "label": "Disable", "name": "disable"}] | None = ...,
         cmp_server: str | None = ...,
         cmp_path: str | None = ...,
         cmp_server_cert: str | None = ...,
-        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        cmp_regeneration_method: Literal[{"description": "Key Update", "help": "Key Update.", "label": "Keyupate", "name": "keyupate"}, {"description": "Renewal", "help": "Renewal.", "label": "Renewal", "name": "renewal"}] | None = ...,
         acme_ca_url: str | None = ...,
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
@@ -117,7 +117,7 @@ class Local:
         est_server_cert: str | None = ...,
         est_srp_username: str | None = ...,
         est_srp_password: str | None = ...,
-        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        est_regeneration_method: Literal[{"description": "Create new private key during re-enrollment", "help": "Create new private key during re-enrollment.", "label": "Create New Key", "name": "create-new-key"}, {"description": "Reuse existing private key during re-enrollment", "help": "Reuse existing private key during re-enrollment.", "label": "Use Existing Key", "name": "use-existing-key"}] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -135,22 +135,22 @@ class Local:
         csr: str | None = ...,
         state: str | None = ...,
         scep_url: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
+        range: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}] | None = ...,
+        source: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}] | None = ...,
         auto_regenerate_days: int | None = ...,
         auto_regenerate_days_warning: int | None = ...,
         scep_password: str | None = ...,
         ca_identifier: str | None = ...,
-        name_encoding: Literal["printable", "utf8"] | None = ...,
+        name_encoding: Literal[{"description": "Printable encoding (default)", "help": "Printable encoding (default).", "label": "Printable", "name": "printable"}, {"description": "UTF-8 encoding", "help": "UTF-8 encoding.", "label": "Utf8", "name": "utf8"}] | None = ...,
         source_ip: str | None = ...,
         ike_localid: str | None = ...,
-        ike_localid_type: Literal["asn1dn", "fqdn"] | None = ...,
-        enroll_protocol: Literal["none", "scep", "cmpv2", "acme2", "est"] | None = ...,
-        private_key_retain: Literal["enable", "disable"] | None = ...,
+        ike_localid_type: Literal[{"description": "ASN", "help": "ASN.1 distinguished name.", "label": "Asn1Dn", "name": "asn1dn"}, {"description": "Fully qualified domain name", "help": "Fully qualified domain name.", "label": "Fqdn", "name": "fqdn"}] | None = ...,
+        enroll_protocol: Literal[{"description": "None (default)", "help": "None (default).", "label": "None", "name": "none"}, {"description": "Simple Certificate Enrollment Protocol", "help": "Simple Certificate Enrollment Protocol.", "label": "Scep", "name": "scep"}, {"description": "Certificate Management Protocol Version 2", "help": "Certificate Management Protocol Version 2.", "label": "Cmpv2", "name": "cmpv2"}, {"description": "Automated Certificate Management Environment Version 2", "help": "Automated Certificate Management Environment Version 2.", "label": "Acme2", "name": "acme2"}, {"description": "Enrollment over Secure Transport", "help": "Enrollment over Secure Transport.", "label": "Est", "name": "est"}] | None = ...,
+        private_key_retain: Literal[{"description": "Keep the existing private key during SCEP renewal", "help": "Keep the existing private key during SCEP renewal.", "label": "Enable", "name": "enable"}, {"description": "Generate a new private key during SCEP renewal", "help": "Generate a new private key during SCEP renewal.", "label": "Disable", "name": "disable"}] | None = ...,
         cmp_server: str | None = ...,
         cmp_path: str | None = ...,
         cmp_server_cert: str | None = ...,
-        cmp_regeneration_method: Literal["keyupate", "renewal"] | None = ...,
+        cmp_regeneration_method: Literal[{"description": "Key Update", "help": "Key Update.", "label": "Keyupate", "name": "keyupate"}, {"description": "Renewal", "help": "Renewal.", "label": "Renewal", "name": "renewal"}] | None = ...,
         acme_ca_url: str | None = ...,
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
@@ -166,7 +166,7 @@ class Local:
         est_server_cert: str | None = ...,
         est_srp_username: str | None = ...,
         est_srp_password: str | None = ...,
-        est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
+        est_regeneration_method: Literal[{"description": "Create new private key during re-enrollment", "help": "Create new private key during re-enrollment.", "label": "Create New Key", "name": "create-new-key"}, {"description": "Reuse existing private key during re-enrollment", "help": "Reuse existing private key during re-enrollment.", "label": "Use Existing Key", "name": "use-existing-key"}] | None = ...,
         details: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

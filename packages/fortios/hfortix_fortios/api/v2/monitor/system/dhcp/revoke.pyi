@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Revoke:
     """
-    Configuration for system/dhcp/revoke
+    Revoke IPv4 DHCP leases.
     
     Path: system/dhcp/revoke
     Category: monitor

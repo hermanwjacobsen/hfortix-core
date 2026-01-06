@@ -53,7 +53,7 @@ REQUIRED_FIELDS = [
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
     "status": "enable",
-    "frequency": "automatic",
+    "frequency": "daily",
     "time": "",
     "day": "Monday",
 }
@@ -99,23 +99,23 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_FREQUENCY = [
-    "every",
-    "daily",
-    "weekly",
-    "automatic",
+    "every",  # Time interval.
+    "daily",  # Every day.
+    "weekly",  # Every week.
+    "automatic",  # Update automatically within every one hour period.
 ]
 VALID_BODY_DAY = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "Sunday",  # Update every Sunday.
+    "Monday",  # Update every Monday.
+    "Tuesday",  # Update every Tuesday.
+    "Wednesday",  # Update every Wednesday.
+    "Thursday",  # Update every Thursday.
+    "Friday",  # Update every Friday.
+    "Saturday",  # Update every Saturday.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -242,7 +242,7 @@ def validate_system_autoupdate_schedule_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "time": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_autoupdate_schedule_post(payload)
         >>> assert is_valid == True

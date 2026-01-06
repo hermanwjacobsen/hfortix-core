@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InterferingAp:
     """
-    Monitor endpoint for wifi/interfering_ap
+    Retrieve a list of interfering APs for one FortiAP radio.
     
     Path: wifi/interfering_ap
     Category: monitor

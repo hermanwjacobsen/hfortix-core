@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_CACHE_EXEMPTION: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable exempting the matching URLs", "help": "Enable exempting the matching URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting the matching URLs", "help": "Disable exempting the matching URLs.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CACHE_EXEMPTION: Literal[{"description": "Enable exempting this URL pattern from caching", "help": "Enable exempting this URL pattern from caching.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting this URL pattern from caching", "help": "Disable exempting this URL pattern from caching.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

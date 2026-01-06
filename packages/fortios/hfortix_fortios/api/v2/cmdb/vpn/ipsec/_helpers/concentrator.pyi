@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SRC_CHECK: Literal["disable", "enable"]
+VALID_BODY_SRC_CHECK: Literal[{"description": "Ignore source selector when choosing tunnel", "help": "Ignore source selector when choosing tunnel.", "label": "Disable", "name": "disable"}, {"description": "Use source selector to choose tunnel", "help": "Use source selector to choose tunnel.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

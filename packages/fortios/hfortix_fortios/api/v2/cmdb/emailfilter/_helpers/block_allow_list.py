@@ -101,7 +101,7 @@ NESTED_SCHEMAS = {
             "help": "Enable/disable status.",
             "required": True,
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable status.", "label": "Enable", "name": "enable"}, {"help": "Disable status.", "label": "Disable", "name": "disable"}],
         },
         "id": {
             "type": "integer",
@@ -116,21 +116,21 @@ NESTED_SCHEMAS = {
             "help": "Entry type.",
             "required": True,
             "default": "ip",
-            "options": ["ip", "email-to", "email-from", "subject"],
+            "options": [{"help": "By IP address.", "label": "Ip", "name": "ip"}, {"help": "By email recipient.", "label": "Email To", "name": "email-to"}, {"help": "By email sender.", "label": "Email From", "name": "email-from"}, {"help": "By email subject.", "label": "Subject", "name": "subject"}],
         },
         "action": {
             "type": "option",
             "help": "Reject, mark as spam or good email.",
             "required": True,
             "default": "spam",
-            "options": ["reject", "spam", "clear"],
+            "options": [{"help": "Reject the connection.", "label": "Reject", "name": "reject"}, {"help": "Mark as spam email.", "label": "Spam", "name": "spam"}, {"help": "Mark as good email.", "label": "Clear", "name": "clear"}],
         },
         "addr-type": {
             "type": "option",
             "help": "IP address type.",
             "required": True,
             "default": "ipv4",
-            "options": ["ipv4", "ipv6"],
+            "options": [{"help": "IPv4 Address type.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 Address type.", "label": "Ipv6", "name": "ipv6"}],
         },
         "ip4-subnet": {
             "type": "ipv4-classnet",
@@ -149,7 +149,7 @@ NESTED_SCHEMAS = {
             "help": "Wildcard pattern or regular expression.",
             "required": True,
             "default": "wildcard",
-            "options": ["wildcard", "regexp"],
+            "options": [{"help": "Wildcard pattern.", "label": "Wildcard", "name": "wildcard"}, {"help": "Perl regular expression.", "label": "Regexp", "name": "regexp"}],
         },
         "pattern": {
             "type": "string",

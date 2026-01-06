@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CentralSnatMap:
     """
-    Monitor endpoint for firewall/central-snat-map
+    List traffic statistics for firewall central SNAT policies.
     
     Path: firewall/central_snat_map
     Category: monitor

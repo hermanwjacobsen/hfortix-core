@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upgrade:
     """
-    Configuration for extender-controller/extender/upgrade
+    Upgrade FortiExtender.
     
     Path: extender_controller/extender/upgrade
     Category: monitor

@@ -56,7 +56,7 @@ class CertNameAvailable:
         """
         Retrieve vpn_certificate/cert_name_available configuration.
 
-        Configuration for vpn-certificate/cert-name-available
+        Check if the local certificate name is available to use.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

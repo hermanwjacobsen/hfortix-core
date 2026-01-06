@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Meta:
     """
-    Configuration for wifi/meta
+    Retrieve WiFi related meta data.
     
     Path: wifi/meta
     Category: monitor

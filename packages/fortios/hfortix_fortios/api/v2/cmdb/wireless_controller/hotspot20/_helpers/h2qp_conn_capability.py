@@ -123,59 +123,59 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ICMP_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_FTP_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_SSH_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_HTTP_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_TLS_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_PPTP_VPN_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_VOIP_TCP_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_VOIP_UDP_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_IKEV2_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_IKEV2_XX_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_BODY_ESP_PORT = [
-    "closed",
-    "open",
-    "unknown",
+    "closed",  # The port is not open for communication.
+    "open",  # The port is open for communication.
+    "unknown",  # The port may or may not be open for communication.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -303,7 +303,7 @@ def validate_wireless_controller_hotspot20_h2qp_conn_capability_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "icmp-port": "closed",  # Valid enum value
+        ...     "icmp-port": "{'name': 'closed', 'help': 'The port is not open for communication.', 'label': 'Closed', 'description': 'The port is not open for communication'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_conn_capability_post(payload)
         >>> assert is_valid == True

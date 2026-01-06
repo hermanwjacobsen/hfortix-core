@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Test:
     """
-    Configuration for user/tacacs-plus/test
+    Test the connectivity of the given TACACS+ server.
     
     Path: user/tacacs_plus/test
     Category: monitor

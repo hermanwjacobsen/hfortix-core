@@ -3,14 +3,11 @@ FortiOS MONITOR - Virtual_wan sladb
 
 Configuration endpoint for managing monitor virtual_wan/sladb objects.
 
-📖 **Read-Only Reference Table**
-   This endpoint provides read-only reference data (e.g., geography, timezone).
-   - GET operations return all available data
-   - POST/PUT/DELETE operations are not supported
-   - Querying by identifier returns all items (filter is ignored)
-
 API Endpoints:
     GET    /monitor/virtual_wan/sladb
+    POST   /monitor/virtual_wan/sladb
+    PUT    /monitor/virtual_wan/sladb/{identifier}
+    DELETE /monitor/virtual_wan/sladb/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
@@ -20,9 +17,10 @@ Example Usage:
     >>> items = fgt.api.monitor.virtual_wan_sladb.get()
 
 Important:
-    - This is a **read-only** endpoint (reference data only)
-    - Use **GET** to retrieve available options
-    - Creation/modification/deletion not supported
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -38,9 +36,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,
     is_success,
 )
-
-# Import cache for readonly reference data
-from hfortix_core.cache import readonly_cache
 
 
 class Sladb:
@@ -61,7 +56,7 @@ class Sladb:
         """
         Retrieve virtual_wan/sladb configuration.
 
-        Monitor endpoint for virtual-wan/sladb
+        Retrieve the Service Level Agreement Database downloaded from FortiGuard.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -102,20 +97,6 @@ class Sladb:
             - delete(): Remove virtual_wan/sladb object
             - exists(): Check if object exists
         """
-        # Check cache for readonly reference data (24hr TTL)
-        cache_key = f"monitor/virtual_wan/sladb"
-        
-        # Only use cache for full list queries (no identifier, no filters)
-        is_list_query = name is None and not payload_dict and not kwargs
-        
-        if is_list_query:
-            cached_data = readonly_cache.get(cache_key)
-            if cached_data is not None:
-                # Return cached data
-                if raw_json:
-                    return cached_data
-                return cached_data
-        
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
@@ -124,20 +105,9 @@ class Sladb:
             endpoint = "/virtual-wan/sladb"
         
         params.update(kwargs)
-        
-        # Fetch data and cache if this is a list query
-        response = self._client.get(
+        return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
-        
-        # Cache the response for list queries
-        if is_list_query:
-            if isinstance(response, dict):
-                readonly_cache.set(cache_key, response)
-            # For async responses, we can't cache easily without awaiting
-            # User will benefit from cache on subsequent sync calls
-        
-        return response
 
 
 

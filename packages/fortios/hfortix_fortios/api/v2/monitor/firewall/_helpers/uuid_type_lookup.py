@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/uuid_type_lookup",
     "category": "monitor",
     "api_path": "firewall/uuid-type-lookup",
-    "help": "Configuration for firewall/uuid-type-lookup",
+    "help": "Retrieve a mapping of UUIDs to their firewall object type for given UUIDs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

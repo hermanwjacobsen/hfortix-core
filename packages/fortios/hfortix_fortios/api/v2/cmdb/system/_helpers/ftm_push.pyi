@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PROXY: Literal["enable", "disable"]
-VALID_BODY_STATUS: Literal["enable", "disable"]
+VALID_BODY_PROXY: Literal[{"description": "Enable communication to the proxy server in FortiGuard configuration", "help": "Enable communication to the proxy server in FortiGuard configuration.", "label": "Enable", "name": "enable"}, {"description": "Disable communication to the proxy server in FortiGuard configuration", "help": "Disable communication to the proxy server in FortiGuard configuration.", "label": "Disable", "name": "disable"}]
+VALID_BODY_STATUS: Literal[{"description": "Enable FortiToken Mobile push services", "help": "Enable FortiToken Mobile push services.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiToken Mobile push services", "help": "Disable FortiToken Mobile push services.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

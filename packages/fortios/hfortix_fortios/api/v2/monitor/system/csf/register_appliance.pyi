@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RegisterAppliance:
     """
-    Configuration for system/csf/register-appliance
+    Register appliance to Security Fabric.
     
     Path: system/csf/register_appliance
     Category: monitor

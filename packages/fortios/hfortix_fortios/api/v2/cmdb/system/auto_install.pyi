@@ -10,8 +10,8 @@ class AutoInstallPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    auto_install_config: NotRequired[Literal["enable", "disable"]]  # Enable/disable auto install the config in USB disk.
-    auto_install_image: NotRequired[Literal["enable", "disable"]]  # Enable/disable auto install the image in USB disk.
+    auto_install_config: NotRequired[Literal[{"description": "Enable config", "help": "Enable config.", "label": "Enable", "name": "enable"}, {"description": "Disable config", "help": "Disable config.", "label": "Disable", "name": "disable"}]]  # Enable/disable auto install the config in USB disk.
+    auto_install_image: NotRequired[Literal[{"description": "Enable config", "help": "Enable config.", "label": "Enable", "name": "enable"}, {"description": "Disable config", "help": "Disable config.", "label": "Disable", "name": "disable"}]]  # Enable/disable auto install the image in USB disk.
     default_config_file: NotRequired[str]  # Default config file name in USB disk.
     default_image_file: NotRequired[str]  # Default image file name in USB disk.
 
@@ -40,8 +40,8 @@ class AutoInstall:
     def post(
         self,
         payload_dict: AutoInstallPayload | None = ...,
-        auto_install_config: Literal["enable", "disable"] | None = ...,
-        auto_install_image: Literal["enable", "disable"] | None = ...,
+        auto_install_config: Literal[{"description": "Enable config", "help": "Enable config.", "label": "Enable", "name": "enable"}, {"description": "Disable config", "help": "Disable config.", "label": "Disable", "name": "disable"}] | None = ...,
+        auto_install_image: Literal[{"description": "Enable config", "help": "Enable config.", "label": "Enable", "name": "enable"}, {"description": "Disable config", "help": "Disable config.", "label": "Disable", "name": "disable"}] | None = ...,
         default_config_file: str | None = ...,
         default_image_file: str | None = ...,
         vdom: str | bool | None = ...,
@@ -52,8 +52,8 @@ class AutoInstall:
     def put(
         self,
         payload_dict: AutoInstallPayload | None = ...,
-        auto_install_config: Literal["enable", "disable"] | None = ...,
-        auto_install_image: Literal["enable", "disable"] | None = ...,
+        auto_install_config: Literal[{"description": "Enable config", "help": "Enable config.", "label": "Enable", "name": "enable"}, {"description": "Disable config", "help": "Disable config.", "label": "Disable", "name": "disable"}] | None = ...,
+        auto_install_image: Literal[{"description": "Enable config", "help": "Enable config.", "label": "Enable", "name": "enable"}, {"description": "Disable config", "help": "Disable config.", "label": "Disable", "name": "disable"}] | None = ...,
         default_config_file: str | None = ...,
         default_image_file: str | None = ...,
         vdom: str | bool | None = ...,

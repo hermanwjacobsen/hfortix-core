@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_TYPE: Literal["built-in", "customized"]
-VALID_BODY_CATEGORY: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]
-VALID_BODY_MATCH_STRATEGY: Literal["and", "or"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_TYPE: Literal[{"description": "Built-in CASB user-activity", "help": "Built-in CASB user-activity.", "label": "Built In", "name": "built-in"}, {"description": "User customized CASB user-activity", "help": "User customized CASB user-activity.", "label": "Customized", "name": "customized"}]
+VALID_BODY_CATEGORY: Literal[{"description": "Activity control", "help": "Activity control.", "label": "Activity Control", "name": "activity-control"}, {"description": "Tenant control", "help": "Tenant control.", "label": "Tenant Control", "name": "tenant-control"}, {"description": "Domain control", "help": "Domain control.", "label": "Domain Control", "name": "domain-control"}, {"description": "Safe search control", "help": "Safe search control.", "label": "Safe Search Control", "name": "safe-search-control"}, {"description": "Advanced tenant control", "help": "Advanced tenant control.", "label": "Advanced Tenant Control", "name": "advanced-tenant-control"}, {"description": "User customized category", "help": "User customized category.", "label": "Other", "name": "other"}]
+VALID_BODY_MATCH_STRATEGY: Literal[{"description": "Match user activity using a logical AND operator", "help": "Match user activity using a logical AND operator.", "label": "And", "name": "and"}, {"description": "Match user activity using a logical OR operator", "help": "Match user activity using a logical OR operator.", "label": "Or", "name": "or"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

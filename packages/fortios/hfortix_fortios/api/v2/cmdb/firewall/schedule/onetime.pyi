@@ -18,7 +18,7 @@ class OnetimePayload(TypedDict, total=False):
     end_utc: NotRequired[str]  # Schedule end date and time, in epoch format.
     color: NotRequired[int]  # Color of icon on the GUI.
     expiration_days: NotRequired[int]  # Write an event log message this many days before the schedul
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Onetime:
@@ -54,7 +54,7 @@ class Onetime:
         end_utc: str | None = ...,
         color: int | None = ...,
         expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -71,7 +71,7 @@ class Onetime:
         end_utc: str | None = ...,
         color: int | None = ...,
         expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

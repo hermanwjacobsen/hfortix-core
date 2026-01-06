@@ -1,17 +1,17 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_LOG_BLOCKED_TRAFFIC: Literal["disable", "enable"]
-VALID_BODY_AUTH_PORTAL: Literal["disable", "enable"]
-VALID_BODY_DISPLAY_BOOKMARK: Literal["enable", "disable"]
-VALID_BODY_FOCUS_BOOKMARK: Literal["enable", "disable"]
-VALID_BODY_DISPLAY_STATUS: Literal["enable", "disable"]
-VALID_BODY_DISPLAY_HISTORY: Literal["enable", "disable"]
-VALID_BODY_POLICY_AUTH_SSO: Literal["enable", "disable"]
-VALID_BODY_THEME: Literal["jade", "neutrino", "mariner", "graphite", "melongene", "jet-stream", "security-fabric", "dark-matter", "onyx", "eclipse"]
-VALID_BODY_CLIPBOARD: Literal["enable", "disable"]
-VALID_BODY_FORTICLIENT_DOWNLOAD: Literal["enable", "disable"]
-VALID_BODY_CUSTOMIZE_FORTICLIENT_DOWNLOAD_URL: Literal["enable", "disable"]
+VALID_BODY_LOG_BLOCKED_TRAFFIC: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}]
+VALID_BODY_AUTH_PORTAL: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}]
+VALID_BODY_DISPLAY_BOOKMARK: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FOCUS_BOOKMARK: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DISPLAY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DISPLAY_HISTORY: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_POLICY_AUTH_SSO: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_THEME: Literal[{"description": "Jade theme", "help": "Jade theme.", "label": "Jade", "name": "jade"}, {"description": "Neutrino theme", "help": "Neutrino theme.", "label": "Neutrino", "name": "neutrino"}, {"description": "Mariner theme", "help": "Mariner theme.", "label": "Mariner", "name": "mariner"}, {"description": "Graphite theme", "help": "Graphite theme.", "label": "Graphite", "name": "graphite"}, {"description": "Melongene theme", "help": "Melongene theme.", "label": "Melongene", "name": "melongene"}, {"description": "Jet Stream theme", "help": "Jet Stream theme.", "label": "Jet Stream", "name": "jet-stream"}, {"description": "Security Fabric theme", "help": "Security Fabric theme.", "label": "Security Fabric", "name": "security-fabric"}, {"description": "Dark Matter theme", "help": "Dark Matter theme.", "label": "Dark Matter", "name": "dark-matter"}, {"description": "Onyx theme", "help": "Onyx theme.", "label": "Onyx", "name": "onyx"}, {"description": "Eclipse theme", "help": "Eclipse theme.", "label": "Eclipse", "name": "eclipse"}]
+VALID_BODY_CLIPBOARD: Literal[{"description": "Enable support of RDP/VNC clipboard", "help": "Enable support of RDP/VNC clipboard.", "label": "Enable", "name": "enable"}, {"description": "Disable support of RDP/VNC clipboard", "help": "Disable support of RDP/VNC clipboard.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FORTICLIENT_DOWNLOAD: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CUSTOMIZE_FORTICLIENT_DOWNLOAD_URL: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

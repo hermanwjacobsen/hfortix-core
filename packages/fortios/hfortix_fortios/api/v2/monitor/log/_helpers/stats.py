@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/stats",
     "category": "monitor",
     "api_path": "log/stats",
-    "help": "Monitor endpoint for log/stats",
+    "help": "Return number of logs sent by category per day for a specific log device.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/managed_ap/led_blink",
     "category": "monitor",
     "api_path": "wifi/managed_ap/led-blink",
-    "help": "Configuration for wifi/managed_ap/led-blink",
+    "help": "Turn a managed FortiAP's LED blinking on or off.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

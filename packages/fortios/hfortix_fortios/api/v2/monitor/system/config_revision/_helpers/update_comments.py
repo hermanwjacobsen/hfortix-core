@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_revision/update_comments",
     "category": "monitor",
     "api_path": "system/config-revision/update-comments",
-    "help": "Configuration for system/config-revision/update-comments",
+    "help": "Updates comments for a system configuration file.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

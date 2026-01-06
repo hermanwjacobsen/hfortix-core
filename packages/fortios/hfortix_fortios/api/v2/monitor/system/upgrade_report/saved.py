@@ -56,7 +56,7 @@ class Saved:
         """
         Retrieve system/upgrade_report/saved configuration.
 
-        Configuration for system/upgrade-report/saved
+        Get the last generated upgrade report.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

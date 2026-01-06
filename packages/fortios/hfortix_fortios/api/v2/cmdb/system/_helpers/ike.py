@@ -144,13 +144,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -165,13 +165,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -186,13 +186,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -207,13 +207,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -228,13 +228,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -249,13 +249,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -270,13 +270,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -291,13 +291,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -312,13 +312,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -333,13 +333,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -354,13 +354,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -375,13 +375,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -396,13 +396,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -417,13 +417,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -438,13 +438,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -459,13 +459,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -480,13 +480,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Use software (CPU) or hardware (CPX) to perform calculations for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["software", "hardware", "global"],
+            "options": [{"help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}, {"help": "Use global dh-mode setting.", "label": "Global", "name": "global"}],
         },
         "keypair-cache": {
             "type": "option",
             "help": "Configure custom key pair cache size for this Diffie-Hellman group.",
             "default": "global",
-            "options": ["global", "custom"],
+            "options": [{"help": "Use global Diffie-Hellman key pair cache setting.", "label": "Global", "name": "global"}, {"help": "Use custom Diffie-Hellman key pair cache setting.", "label": "Custom", "name": "custom"}],
         },
         "keypair-count": {
             "type": "integer",
@@ -501,20 +501,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DH_MULTIPROCESS = [
-    "enable",
-    "disable",
+    "enable",  # Enable multiprocess Diffie-Hellman for IKE.
+    "disable",  # Disable multiprocess Diffie-Hellman for IKE.
 ]
 VALID_BODY_DH_MODE = [
-    "software",
-    "hardware",
+    "software",  # Prefer CPU to perform Diffie-Hellman calculations.
+    "hardware",  # Prefer CPX to perform Diffie-Hellman calculations.
 ]
 VALID_BODY_DH_KEYPAIR_CACHE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Diffie-Hellman key pair cache.
+    "disable",  # Disable Diffie-Hellman key pair cache.
 ]
 VALID_BODY_DH_KEYPAIR_THROTTLE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Diffie-Hellman key pair cache CPU throttling.
+    "disable",  # Disable Diffie-Hellman key pair cache CPU throttling.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -639,7 +639,7 @@ def validate_system_ike_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "dh-multiprocess": "enable",  # Valid enum value
+        ...     "dh-multiprocess": "{'name': 'enable', 'help': 'Enable multiprocess Diffie-Hellman for IKE.', 'label': 'Enable', 'description': 'Enable multiprocess Diffie-Hellman for IKE'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ike_post(payload)
         >>> assert is_valid == True

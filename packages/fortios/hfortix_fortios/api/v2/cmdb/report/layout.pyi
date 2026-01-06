@@ -15,14 +15,14 @@ class LayoutPayload(TypedDict, total=False):
     subtitle: NotRequired[str]  # Report subtitle.
     description: NotRequired[str]  # Description.
     style_theme: str  # Report style theme.
-    options: NotRequired[Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"]]  # Report layout options.
-    format: NotRequired[Literal["pdf"]]  # Report format.
-    schedule_type: NotRequired[Literal["demand", "daily", "weekly"]]  # Report schedule type.
-    day: NotRequired[Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]]  # Schedule days of week to generate report.
+    options: NotRequired[Literal[{"description": "Include table of content in the report", "help": "Include table of content in the report.", "label": "Include Table Of Content", "name": "include-table-of-content"}, {"description": "Prepend heading with auto numbering", "help": "Prepend heading with auto numbering.", "label": "Auto Numbering Heading", "name": "auto-numbering-heading"}, {"description": "Auto add heading for each chart", "help": "Auto add heading for each chart.", "label": "View Chart As Heading", "name": "view-chart-as-heading"}, {"description": "Show HTML navigation bar before each heading", "help": "Show HTML navigation bar before each heading.", "label": "Show Html Navbar Before Heading", "name": "show-html-navbar-before-heading"}, {"description": "Use this option if you need none of the above options", "help": "Use this option if you need none of the above options.", "label": "Dummy Option", "name": "dummy-option"}]]  # Report layout options.
+    format: NotRequired[Literal[{"description": "PDF", "help": "PDF.", "label": "Pdf", "name": "pdf"}]]  # Report format.
+    schedule_type: NotRequired[Literal[{"description": "Run on demand", "help": "Run on demand.", "label": "Demand", "name": "demand"}, {"description": "Schedule daily", "help": "Schedule daily.", "label": "Daily", "name": "daily"}, {"description": "Schedule weekly", "help": "Schedule weekly.", "label": "Weekly", "name": "weekly"}]]  # Report schedule type.
+    day: NotRequired[Literal[{"description": "Sunday", "help": "Sunday.", "label": "Sunday", "name": "sunday"}, {"description": "Monday", "help": "Monday.", "label": "Monday", "name": "monday"}, {"description": "Tuesday", "help": "Tuesday.", "label": "Tuesday", "name": "tuesday"}, {"description": "Wednesday", "help": "Wednesday.", "label": "Wednesday", "name": "wednesday"}, {"description": "Thursday", "help": "Thursday.", "label": "Thursday", "name": "thursday"}, {"description": "Friday", "help": "Friday.", "label": "Friday", "name": "friday"}, {"description": "Saturday", "help": "Saturday.", "label": "Saturday", "name": "saturday"}]]  # Schedule days of week to generate report.
     time: NotRequired[str]  # Schedule time to generate report (format = hh:mm).
-    cutoff_option: NotRequired[Literal["run-time", "custom"]]  # Cutoff-option is either run-time or custom.
+    cutoff_option: NotRequired[Literal[{"description": "Run time", "help": "Run time.", "label": "Run Time", "name": "run-time"}, {"description": "Custom", "help": "Custom.", "label": "Custom", "name": "custom"}]]  # Cutoff-option is either run-time or custom.
     cutoff_time: NotRequired[str]  # Custom cutoff time to generate report (format = hh:mm).
-    email_send: NotRequired[Literal["enable", "disable"]]  # Enable/disable sending emails after reports are generated.
+    email_send: NotRequired[Literal[{"description": "Enable sending emails after generating reports", "help": "Enable sending emails after generating reports.", "label": "Enable", "name": "enable"}, {"description": "Disable sending emails after generating reports", "help": "Disable sending emails after generating reports.", "label": "Disable", "name": "disable"}]]  # Enable/disable sending emails after reports are generated.
     email_recipients: NotRequired[str]  # Email recipients for generated reports.
     max_pdf_report: NotRequired[int]  # Maximum number of PDF reports to keep at one time (oldest re
     page: NotRequired[str]  # Configure report page.
@@ -59,14 +59,14 @@ class Layout:
         subtitle: str | None = ...,
         description: str | None = ...,
         style_theme: str | None = ...,
-        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | None = ...,
-        format: Literal["pdf"] | None = ...,
-        schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        options: Literal[{"description": "Include table of content in the report", "help": "Include table of content in the report.", "label": "Include Table Of Content", "name": "include-table-of-content"}, {"description": "Prepend heading with auto numbering", "help": "Prepend heading with auto numbering.", "label": "Auto Numbering Heading", "name": "auto-numbering-heading"}, {"description": "Auto add heading for each chart", "help": "Auto add heading for each chart.", "label": "View Chart As Heading", "name": "view-chart-as-heading"}, {"description": "Show HTML navigation bar before each heading", "help": "Show HTML navigation bar before each heading.", "label": "Show Html Navbar Before Heading", "name": "show-html-navbar-before-heading"}, {"description": "Use this option if you need none of the above options", "help": "Use this option if you need none of the above options.", "label": "Dummy Option", "name": "dummy-option"}] | None = ...,
+        format: Literal[{"description": "PDF", "help": "PDF.", "label": "Pdf", "name": "pdf"}] | None = ...,
+        schedule_type: Literal[{"description": "Run on demand", "help": "Run on demand.", "label": "Demand", "name": "demand"}, {"description": "Schedule daily", "help": "Schedule daily.", "label": "Daily", "name": "daily"}, {"description": "Schedule weekly", "help": "Schedule weekly.", "label": "Weekly", "name": "weekly"}] | None = ...,
+        day: Literal[{"description": "Sunday", "help": "Sunday.", "label": "Sunday", "name": "sunday"}, {"description": "Monday", "help": "Monday.", "label": "Monday", "name": "monday"}, {"description": "Tuesday", "help": "Tuesday.", "label": "Tuesday", "name": "tuesday"}, {"description": "Wednesday", "help": "Wednesday.", "label": "Wednesday", "name": "wednesday"}, {"description": "Thursday", "help": "Thursday.", "label": "Thursday", "name": "thursday"}, {"description": "Friday", "help": "Friday.", "label": "Friday", "name": "friday"}, {"description": "Saturday", "help": "Saturday.", "label": "Saturday", "name": "saturday"}] | None = ...,
         time: str | None = ...,
-        cutoff_option: Literal["run-time", "custom"] | None = ...,
+        cutoff_option: Literal[{"description": "Run time", "help": "Run time.", "label": "Run Time", "name": "run-time"}, {"description": "Custom", "help": "Custom.", "label": "Custom", "name": "custom"}] | None = ...,
         cutoff_time: str | None = ...,
-        email_send: Literal["enable", "disable"] | None = ...,
+        email_send: Literal[{"description": "Enable sending emails after generating reports", "help": "Enable sending emails after generating reports.", "label": "Enable", "name": "enable"}, {"description": "Disable sending emails after generating reports", "help": "Disable sending emails after generating reports.", "label": "Disable", "name": "disable"}] | None = ...,
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
@@ -84,14 +84,14 @@ class Layout:
         subtitle: str | None = ...,
         description: str | None = ...,
         style_theme: str | None = ...,
-        options: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"] | None = ...,
-        format: Literal["pdf"] | None = ...,
-        schedule_type: Literal["demand", "daily", "weekly"] | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
+        options: Literal[{"description": "Include table of content in the report", "help": "Include table of content in the report.", "label": "Include Table Of Content", "name": "include-table-of-content"}, {"description": "Prepend heading with auto numbering", "help": "Prepend heading with auto numbering.", "label": "Auto Numbering Heading", "name": "auto-numbering-heading"}, {"description": "Auto add heading for each chart", "help": "Auto add heading for each chart.", "label": "View Chart As Heading", "name": "view-chart-as-heading"}, {"description": "Show HTML navigation bar before each heading", "help": "Show HTML navigation bar before each heading.", "label": "Show Html Navbar Before Heading", "name": "show-html-navbar-before-heading"}, {"description": "Use this option if you need none of the above options", "help": "Use this option if you need none of the above options.", "label": "Dummy Option", "name": "dummy-option"}] | None = ...,
+        format: Literal[{"description": "PDF", "help": "PDF.", "label": "Pdf", "name": "pdf"}] | None = ...,
+        schedule_type: Literal[{"description": "Run on demand", "help": "Run on demand.", "label": "Demand", "name": "demand"}, {"description": "Schedule daily", "help": "Schedule daily.", "label": "Daily", "name": "daily"}, {"description": "Schedule weekly", "help": "Schedule weekly.", "label": "Weekly", "name": "weekly"}] | None = ...,
+        day: Literal[{"description": "Sunday", "help": "Sunday.", "label": "Sunday", "name": "sunday"}, {"description": "Monday", "help": "Monday.", "label": "Monday", "name": "monday"}, {"description": "Tuesday", "help": "Tuesday.", "label": "Tuesday", "name": "tuesday"}, {"description": "Wednesday", "help": "Wednesday.", "label": "Wednesday", "name": "wednesday"}, {"description": "Thursday", "help": "Thursday.", "label": "Thursday", "name": "thursday"}, {"description": "Friday", "help": "Friday.", "label": "Friday", "name": "friday"}, {"description": "Saturday", "help": "Saturday.", "label": "Saturday", "name": "saturday"}] | None = ...,
         time: str | None = ...,
-        cutoff_option: Literal["run-time", "custom"] | None = ...,
+        cutoff_option: Literal[{"description": "Run time", "help": "Run time.", "label": "Run Time", "name": "run-time"}, {"description": "Custom", "help": "Custom.", "label": "Custom", "name": "custom"}] | None = ...,
         cutoff_time: str | None = ...,
-        email_send: Literal["enable", "disable"] | None = ...,
+        email_send: Literal[{"description": "Enable sending emails after generating reports", "help": "Enable sending emails after generating reports.", "label": "Enable", "name": "enable"}, {"description": "Disable sending emails after generating reports", "help": "Disable sending emails after generating reports.", "label": "Disable", "name": "disable"}] | None = ...,
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,

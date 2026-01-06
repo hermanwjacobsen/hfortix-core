@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_SEC_DEFAULT_ACTION: Literal["accept", "deny"]
-VALID_BODY_SERVER_DATA_MODE: Literal["client", "passive"]
-VALID_BODY_SSL: Literal["enable", "disable"]
-VALID_BODY_SSL_DH_BITS: Literal["768", "1024", "1536", "2048"]
-VALID_BODY_SSL_ALGORITHM: Literal["high", "medium", "low"]
+VALID_BODY_STATUS: Literal[{"description": "Enable the explicit FTP proxy", "help": "Enable the explicit FTP proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTP proxy", "help": "Disable the explicit FTP proxy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SEC_DEFAULT_ACTION: Literal[{"description": "Accept requests", "help": "Accept requests. All explicit FTP proxy traffic is accepted whether there is an explicit FTP proxy policy or not", "label": "Accept", "name": "accept"}, {"help": "Deny requests unless there is a matching explicit FTP proxy policy.", "label": "Deny", "name": "deny"}]
+VALID_BODY_SERVER_DATA_MODE: Literal[{"description": "Use the same transmission mode for client and server data sessions", "help": "Use the same transmission mode for client and server data sessions.", "label": "Client", "name": "client"}, {"description": "Use passive mode on server data session", "help": "Use passive mode on server data session.", "label": "Passive", "name": "passive"}]
+VALID_BODY_SSL: Literal[{"description": "Enable the explicit FTPS proxy", "help": "Enable the explicit FTPS proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTPS proxy", "help": "Disable the explicit FTPS proxy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SSL_DH_BITS: Literal[{"description": "768-bit Diffie-Hellman prime", "help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"description": "1024-bit Diffie-Hellman prime", "help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"description": "1536-bit Diffie-Hellman prime", "help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"description": "2048-bit Diffie-Hellman prime", "help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}]
+VALID_BODY_SSL_ALGORITHM: Literal[{"description": "High encryption", "help": "High encryption. Allow only AES and ChaCha", "label": "High", "name": "high"}, {"help": "Medium encryption. Allow AES, ChaCha, 3DES, and RC4.", "label": "Medium", "name": "medium"}, {"description": "Low encryption", "help": "Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.", "label": "Low", "name": "low"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

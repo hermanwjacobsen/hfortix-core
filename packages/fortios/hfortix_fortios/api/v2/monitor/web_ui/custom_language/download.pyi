@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for web-ui/custom-language/download
+    Download a custom language file.
     
     Path: web_ui/custom_language/download
     Category: monitor

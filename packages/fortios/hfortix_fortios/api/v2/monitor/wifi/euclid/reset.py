@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve wifi/euclid/reset configuration.
 
-        Configuration for wifi/euclid/reset
+        Reset presence analytics statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

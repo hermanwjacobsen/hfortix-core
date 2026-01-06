@@ -12,9 +12,9 @@ class MpskProfilePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # MPSK profile name.
     mpsk_concurrent_clients: NotRequired[int]  # Maximum number of concurrent clients that connect using the 
-    mpsk_external_server_auth: NotRequired[Literal["enable", "disable"]]  # Enable/Disable MPSK external server authentication (default 
+    mpsk_external_server_auth: NotRequired[Literal[{"description": "Enable MPSK external server authentication", "help": "Enable MPSK external server authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable MPSK external server authentication", "help": "Disable MPSK external server authentication.", "label": "Disable", "name": "disable"}]]  # Enable/Disable MPSK external server authentication (default 
     mpsk_external_server: NotRequired[str]  # RADIUS server to be used to authenticate MPSK users.
-    mpsk_type: NotRequired[Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"]]  # Select the security type of keys for this profile.
+    mpsk_type: NotRequired[Literal[{"description": "WPA2 personal", "help": "WPA2 personal.", "label": "Wpa2 Personal", "name": "wpa2-personal"}, {"description": "WPA3 SAE", "help": "WPA3 SAE.", "label": "Wpa3 Sae", "name": "wpa3-sae"}, {"description": "WPA3 SAE transition", "help": "WPA3 SAE transition.", "label": "Wpa3 Sae Transition", "name": "wpa3-sae-transition"}]]  # Select the security type of keys for this profile.
     mpsk_group: NotRequired[list[dict[str, Any]]]  # List of multiple PSK groups.
 
 
@@ -45,9 +45,9 @@ class MpskProfile:
         payload_dict: MpskProfilePayload | None = ...,
         name: str | None = ...,
         mpsk_concurrent_clients: int | None = ...,
-        mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
+        mpsk_external_server_auth: Literal[{"description": "Enable MPSK external server authentication", "help": "Enable MPSK external server authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable MPSK external server authentication", "help": "Disable MPSK external server authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         mpsk_external_server: str | None = ...,
-        mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
+        mpsk_type: Literal[{"description": "WPA2 personal", "help": "WPA2 personal.", "label": "Wpa2 Personal", "name": "wpa2-personal"}, {"description": "WPA3 SAE", "help": "WPA3 SAE.", "label": "Wpa3 Sae", "name": "wpa3-sae"}, {"description": "WPA3 SAE transition", "help": "WPA3 SAE transition.", "label": "Wpa3 Sae Transition", "name": "wpa3-sae-transition"}] | None = ...,
         mpsk_group: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -59,9 +59,9 @@ class MpskProfile:
         payload_dict: MpskProfilePayload | None = ...,
         name: str | None = ...,
         mpsk_concurrent_clients: int | None = ...,
-        mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
+        mpsk_external_server_auth: Literal[{"description": "Enable MPSK external server authentication", "help": "Enable MPSK external server authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable MPSK external server authentication", "help": "Disable MPSK external server authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         mpsk_external_server: str | None = ...,
-        mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
+        mpsk_type: Literal[{"description": "WPA2 personal", "help": "WPA2 personal.", "label": "Wpa2 Personal", "name": "wpa2-personal"}, {"description": "WPA3 SAE", "help": "WPA3 SAE.", "label": "Wpa3 Sae", "name": "wpa3-sae"}, {"description": "WPA3 SAE transition", "help": "WPA3 SAE transition.", "label": "Wpa3 Sae Transition", "name": "wpa3-sae-transition"}] | None = ...,
         mpsk_group: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

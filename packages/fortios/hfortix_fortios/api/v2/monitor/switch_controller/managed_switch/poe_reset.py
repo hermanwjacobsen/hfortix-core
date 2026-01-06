@@ -56,7 +56,7 @@ class PoeReset:
         """
         Retrieve switch_controller/managed_switch/poe_reset configuration.
 
-        Configuration for switch-controller/managed-switch/poe-reset
+        Reset PoE on a given FortiSwitch's port.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

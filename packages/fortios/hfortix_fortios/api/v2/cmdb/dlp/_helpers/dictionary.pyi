@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MATCH_TYPE: Literal["match-all", "match-any"]
-VALID_BODY_MATCH_AROUND: Literal["enable", "disable"]
+VALID_BODY_MATCH_TYPE: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}]
+VALID_BODY_MATCH_AROUND: Literal[{"description": "Enable match-around support", "help": "Enable match-around support.", "label": "Enable", "name": "enable"}, {"description": "Disable match-around support", "help": "Disable match-around support.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

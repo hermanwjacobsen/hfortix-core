@@ -137,38 +137,38 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiSandbox.
+    "disable",  # Disable FortiSandbox.
 ]
 VALID_BODY_FORTICLOUD = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiSandbox Cloud.
+    "disable",  # Disable FortiSandbox Cloud.
 ]
 VALID_BODY_INLINE_SCAN = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiSandbox inline scan.
+    "disable",  # Disable FortiSandbox inline scan.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_ENC_ALGORITHM = [
-    "default",
-    "high",
-    "low",
+    "default",  # SSL communication with high and medium encryption algorithms.
+    "high",  # SSL communication with high encryption algorithms.
+    "low",  # SSL communication with low encryption algorithms.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_CERTIFICATE_VERIFICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable identity verification of FortiSandbox by use of certificate.
+    "disable",  # Disable identity verification of FortiSandbox by use of certificate.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -296,7 +296,7 @@ def validate_system_fortisandbox_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable FortiSandbox.', 'label': 'Enable', 'description': 'Enable FortiSandbox'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_fortisandbox_post(payload)
         >>> assert is_valid == True

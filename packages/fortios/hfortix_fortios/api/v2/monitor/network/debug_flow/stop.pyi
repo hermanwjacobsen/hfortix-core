@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stop:
     """
-    Configuration for network/debug-flow/stop
+    Stop debug flow packet capture.
     
     Path: network/debug_flow/stop
     Category: monitor

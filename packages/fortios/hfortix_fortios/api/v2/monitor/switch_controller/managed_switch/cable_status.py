@@ -56,7 +56,7 @@ class CableStatus:
         """
         Retrieve switch_controller/managed_switch/cable_status configuration.
 
-        Configuration for switch-controller/managed-switch/cable-status
+        Diagnose cable information for a port. Virtual FortiSwitches and FortiLink ports are not supported.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wanopt/peer_stats",
     "category": "monitor",
     "api_path": "wanopt/peer_stats",
-    "help": "Configuration for wanopt/peer_stats",
+    "help": "Retrieve a list of WAN opt peer statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

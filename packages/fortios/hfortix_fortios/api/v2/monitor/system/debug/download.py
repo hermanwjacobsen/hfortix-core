@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve system/debug/download configuration.
 
-        Configuration for system/debug/download
+        Download debug report for technical support.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

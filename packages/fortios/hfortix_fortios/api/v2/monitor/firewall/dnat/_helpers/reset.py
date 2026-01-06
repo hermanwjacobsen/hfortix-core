@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/dnat/reset",
     "category": "monitor",
     "api_path": "firewall/dnat/reset",
-    "help": "Configuration for firewall/dnat/reset",
+    "help": "Reset hit count statistics for all firewall virtual IPs/servers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

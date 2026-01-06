@@ -11,7 +11,7 @@ class ProxyAddrgrpPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Address group name.
-    type: NotRequired[Literal["src", "dst"]]  # Source or destination address group type.
+    type: NotRequired[Literal[{"description": "Source group", "help": "Source group.", "label": "Src", "name": "src"}, {"description": "Destination group", "help": "Destination group.", "label": "Dst", "name": "dst"}]]  # Source or destination address group type.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
     member: list[dict[str, Any]]  # Members of address group.
     color: NotRequired[int]  # Integer value to determine the color of the icon in the GUI 
@@ -45,7 +45,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type: Literal[{"description": "Source group", "help": "Source group.", "label": "Src", "name": "src"}, {"description": "Destination group", "help": "Destination group.", "label": "Dst", "name": "dst"}] | None = ...,
         uuid: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
         color: int | None = ...,
@@ -60,7 +60,7 @@ class ProxyAddrgrp:
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
+        type: Literal[{"description": "Source group", "help": "Source group.", "label": "Src", "name": "src"}, {"description": "Destination group", "help": "Destination group.", "label": "Dst", "name": "dst"}] | None = ...,
         uuid: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
         color: int | None = ...,

@@ -10,15 +10,15 @@ class NtpPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ntpsync: NotRequired[Literal["enable", "disable"]]  # Enable/disable setting the FortiGate system time by synchron
-    type: NotRequired[Literal["fortiguard", "custom"]]  # Use the FortiGuard NTP server or any other available NTP Ser
+    ntpsync: NotRequired[Literal[{"description": "Enable synchronization with NTP Server", "help": "Enable synchronization with NTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with NTP Server", "help": "Disable synchronization with NTP Server.", "label": "Disable", "name": "disable"}]]  # Enable/disable setting the FortiGate system time by synchron
+    type: NotRequired[Literal[{"description": "Use the FortiGuard NTP server", "help": "Use the FortiGuard NTP server.", "label": "Fortiguard", "name": "fortiguard"}, {"description": "Use any other available NTP server", "help": "Use any other available NTP server.", "label": "Custom", "name": "custom"}]]  # Use the FortiGuard NTP server or any other available NTP Ser
     syncinterval: NotRequired[int]  # NTP synchronization interval (1 - 1440 min).
     ntpserver: NotRequired[list[dict[str, Any]]]  # Configure the FortiGate to connect to any available third-pa
     source_ip: NotRequired[str]  # Source IP address for communication to the NTP server.
     source_ip6: NotRequired[str]  # Source IPv6 address for communication to the NTP server.
-    server_mode: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiGate NTP Server Mode. Your FortiGate bec
-    authentication: NotRequired[Literal["enable", "disable"]]  # Enable/disable authentication.
-    key_type: NotRequired[Literal["MD5", "SHA1", "SHA256"]]  # Key type for authentication (MD5, SHA1, SHA256).
+    server_mode: NotRequired[Literal[{"description": "Enable FortiGate NTP Server Mode", "help": "Enable FortiGate NTP Server Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate NTP Server Mode", "help": "Disable FortiGate NTP Server Mode.", "label": "Disable", "name": "disable"}]]  # Enable/disable FortiGate NTP Server Mode. Your FortiGate bec
+    authentication: NotRequired[Literal[{"description": "Enable authentication", "help": "Enable authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable authentication", "help": "Disable authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable authentication.
+    key_type: NotRequired[Literal[{"description": "Use MD5 to authenticate the message", "help": "Use MD5 to authenticate the message.", "label": "Md5", "name": "MD5"}, {"description": "Use SHA1 to authenticate the message", "help": "Use SHA1 to authenticate the message.", "label": "Sha1", "name": "SHA1"}, {"description": "Use SHA256 to authenticate the message", "help": "Use SHA256 to authenticate the message.", "label": "Sha256", "name": "SHA256"}]]  # Key type for authentication (MD5, SHA1, SHA256).
     key: str  # Key for authentication.
     key_id: int  # Key ID for authentication.
     interface: NotRequired[list[dict[str, Any]]]  # FortiGate interface(s) with NTP server mode enabled. Devices
@@ -48,15 +48,15 @@ class Ntp:
     def post(
         self,
         payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        ntpsync: Literal[{"description": "Enable synchronization with NTP Server", "help": "Enable synchronization with NTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with NTP Server", "help": "Disable synchronization with NTP Server.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Use the FortiGuard NTP server", "help": "Use the FortiGuard NTP server.", "label": "Fortiguard", "name": "fortiguard"}, {"description": "Use any other available NTP server", "help": "Use any other available NTP server.", "label": "Custom", "name": "custom"}] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
+        server_mode: Literal[{"description": "Enable FortiGate NTP Server Mode", "help": "Enable FortiGate NTP Server Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate NTP Server Mode", "help": "Disable FortiGate NTP Server Mode.", "label": "Disable", "name": "disable"}] | None = ...,
+        authentication: Literal[{"description": "Enable authentication", "help": "Enable authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable authentication", "help": "Disable authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        key_type: Literal[{"description": "Use MD5 to authenticate the message", "help": "Use MD5 to authenticate the message.", "label": "Md5", "name": "MD5"}, {"description": "Use SHA1 to authenticate the message", "help": "Use SHA1 to authenticate the message.", "label": "Sha1", "name": "SHA1"}, {"description": "Use SHA256 to authenticate the message", "help": "Use SHA256 to authenticate the message.", "label": "Sha256", "name": "SHA256"}] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
         interface: list[dict[str, Any]] | None = ...,
@@ -68,15 +68,15 @@ class Ntp:
     def put(
         self,
         payload_dict: NtpPayload | None = ...,
-        ntpsync: Literal["enable", "disable"] | None = ...,
-        type: Literal["fortiguard", "custom"] | None = ...,
+        ntpsync: Literal[{"description": "Enable synchronization with NTP Server", "help": "Enable synchronization with NTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with NTP Server", "help": "Disable synchronization with NTP Server.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Use the FortiGuard NTP server", "help": "Use the FortiGuard NTP server.", "label": "Fortiguard", "name": "fortiguard"}, {"description": "Use any other available NTP server", "help": "Use any other available NTP server.", "label": "Custom", "name": "custom"}] | None = ...,
         syncinterval: int | None = ...,
         ntpserver: list[dict[str, Any]] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
+        server_mode: Literal[{"description": "Enable FortiGate NTP Server Mode", "help": "Enable FortiGate NTP Server Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate NTP Server Mode", "help": "Disable FortiGate NTP Server Mode.", "label": "Disable", "name": "disable"}] | None = ...,
+        authentication: Literal[{"description": "Enable authentication", "help": "Enable authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable authentication", "help": "Disable authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        key_type: Literal[{"description": "Use MD5 to authenticate the message", "help": "Use MD5 to authenticate the message.", "label": "Md5", "name": "MD5"}, {"description": "Use SHA1 to authenticate the message", "help": "Use SHA1 to authenticate the message.", "label": "Sha1", "name": "SHA1"}, {"description": "Use SHA256 to authenticate the message", "help": "Use SHA256 to authenticate the message.", "label": "Sha256", "name": "SHA256"}] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
         interface: list[dict[str, Any]] | None = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Interface:
     """
-    Monitor endpoint for system/interface/kernel-interfaces
+    Retrieve statistics for all system interfaces.
     
     Path: system/interface
     Category: monitor

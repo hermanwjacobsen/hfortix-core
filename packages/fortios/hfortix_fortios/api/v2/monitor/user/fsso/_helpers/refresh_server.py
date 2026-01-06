@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/fsso/refresh_server",
     "category": "monitor",
     "api_path": "user/fsso/refresh-server",
-    "help": "Configuration for user/fsso/refresh-server",
+    "help": "Refresh remote agent group list for all fsso agents.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

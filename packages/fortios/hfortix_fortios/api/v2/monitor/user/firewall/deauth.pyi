@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Deauth:
     """
-    Configuration for user/firewall/deauth
+    Deauthenticate single, multiple, or all firewall users.
     
     Path: user/firewall/deauth
     Category: monitor

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/firmware/download",
     "category": "monitor",
     "api_path": "wifi/firmware/download",
-    "help": "Configuration for wifi/firmware/download",
+    "help": "Download FortiAP firmware from FortiGuard to the FortiGate according to FortiAP image ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -56,7 +56,7 @@ class Migrate:
         """
         Retrieve registration/forticloud/migrate configuration.
 
-        Configuration for registration/forticloud/migrate
+        Migrate standalone FortiGate Cloud account to FortiCloud.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

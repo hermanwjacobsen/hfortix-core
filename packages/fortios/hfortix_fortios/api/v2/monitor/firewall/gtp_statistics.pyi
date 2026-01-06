@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GtpStatistics:
     """
-    Configuration for firewall/gtp-statistics
+    Retrieve statistics for GTP.
     
     Path: firewall/gtp_statistics
     Category: monitor

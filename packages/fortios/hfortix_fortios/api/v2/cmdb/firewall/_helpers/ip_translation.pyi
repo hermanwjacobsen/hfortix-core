@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["SCTP"]
+VALID_BODY_TYPE: Literal[{"description": "SCTP", "help": "SCTP", "label": "Sctp", "name": "SCTP"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

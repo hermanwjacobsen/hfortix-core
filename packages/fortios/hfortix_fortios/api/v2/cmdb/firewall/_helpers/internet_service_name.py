@@ -109,8 +109,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "default",
-    "location",
+    "default",  # Automatically generated Internet Service.
+    "location",  # Geography location based Internet Service.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -238,7 +238,7 @@ def validate_firewall_internet_service_name_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "type": "default",  # Valid enum value
+        ...     "type": "{'name': 'default', 'help': 'Automatically generated Internet Service.', 'label': 'Default', 'description': 'Automatically generated Internet Service'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_internet_service_name_post(payload)
         >>> assert is_valid == True

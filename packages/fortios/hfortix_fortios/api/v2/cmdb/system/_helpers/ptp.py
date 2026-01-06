@@ -124,7 +124,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "End to end delay detection or peer to peer delay detection.",
             "default": "E2E",
-            "options": ["E2E", "P2P"],
+            "options": [{"help": "End to end delay detection.", "label": "E2E", "name": "E2E"}, {"help": "Peer to peer delay detection.", "label": "P2P", "name": "P2P"}],
         },
     },
 }
@@ -132,20 +132,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable synchronization with PTP Server.
+    "disable",  # Disable synchronization with PTP Server.
 ]
 VALID_BODY_MODE = [
-    "multicast",
-    "hybrid",
+    "multicast",  # Send PTP packets with multicast.
+    "hybrid",  # Send PTP packets with unicast and multicast.
 ]
 VALID_BODY_DELAY_MECHANISM = [
-    "E2E",
-    "P2P",
+    "E2E",  # End to end delay detection.
+    "P2P",  # Peer to peer delay detection.
 ]
 VALID_BODY_SERVER_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGate PTP server mode.
+    "disable",  # Disable FortiGate PTP server mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -272,7 +272,7 @@ def validate_system_ptp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable synchronization with PTP Server.', 'label': 'Enable', 'description': 'Enable synchronization with PTP Server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ptp_post(payload)
         >>> assert is_valid == True

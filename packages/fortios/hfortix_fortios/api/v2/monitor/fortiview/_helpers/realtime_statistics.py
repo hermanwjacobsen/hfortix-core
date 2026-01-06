@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "fortiview/realtime_statistics",
     "category": "monitor",
     "api_path": "fortiview/realtime-statistics",
-    "help": "Configuration for fortiview/realtime-statistics",
+    "help": "Retrieve realtime drill-down and summary data for FortiView.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

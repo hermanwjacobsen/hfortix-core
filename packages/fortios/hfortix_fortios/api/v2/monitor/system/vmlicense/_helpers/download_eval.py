@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/vmlicense/download_eval",
     "category": "monitor",
     "api_path": "system/vmlicense/download-eval",
-    "help": "Configuration for system/vmlicense/download-eval",
+    "help": "Download Evaluation VM License and reboot immediately if successful.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

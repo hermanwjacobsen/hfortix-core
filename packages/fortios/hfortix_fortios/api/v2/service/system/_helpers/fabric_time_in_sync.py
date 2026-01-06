@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/fabric_time_in_sync",
     "category": "service",
     "api_path": "system/fabric-time-in-sync",
-    "help": "Configuration for system/fabric-time-in-sync",
+    "help": "Checks whether the other FortiGate device's time in the Security Fabric is in sync with the specified utc timestamp (in seconds)",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

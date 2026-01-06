@@ -10,9 +10,9 @@ class Dns64Payload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable DNS64 (default = disable).
+    status: NotRequired[Literal[{"description": "Enable DNS64", "help": "Enable DNS64.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS64", "help": "Disable DNS64.", "label": "Disable", "name": "disable"}]]  # Enable/disable DNS64 (default = disable).
     dns64_prefix: str  # DNS64 prefix must be ::/96 (default = 64:ff9b::/96).
-    always_synthesize_aaaa_record: NotRequired[Literal["enable", "disable"]]  # Enable/disable AAAA record synthesis (default = enable).
+    always_synthesize_aaaa_record: NotRequired[Literal[{"description": "Enable AAAA record synthesis", "help": "Enable AAAA record synthesis.", "label": "Enable", "name": "enable"}, {"description": "Disable AAAA record synthesis", "help": "Disable AAAA record synthesis.", "label": "Disable", "name": "disable"}]]  # Enable/disable AAAA record synthesis (default = enable).
 
 
 class Dns64:
@@ -39,9 +39,9 @@ class Dns64:
     def post(
         self,
         payload_dict: Dns64Payload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable DNS64", "help": "Enable DNS64.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS64", "help": "Disable DNS64.", "label": "Disable", "name": "disable"}] | None = ...,
         dns64_prefix: str | None = ...,
-        always_synthesize_aaaa_record: Literal["enable", "disable"] | None = ...,
+        always_synthesize_aaaa_record: Literal[{"description": "Enable AAAA record synthesis", "help": "Enable AAAA record synthesis.", "label": "Enable", "name": "enable"}, {"description": "Disable AAAA record synthesis", "help": "Disable AAAA record synthesis.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -50,9 +50,9 @@ class Dns64:
     def put(
         self,
         payload_dict: Dns64Payload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable DNS64", "help": "Enable DNS64.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS64", "help": "Disable DNS64.", "label": "Disable", "name": "disable"}] | None = ...,
         dns64_prefix: str | None = ...,
-        always_synthesize_aaaa_record: Literal["enable", "disable"] | None = ...,
+        always_synthesize_aaaa_record: Literal[{"description": "Enable AAAA record synthesis", "help": "Enable AAAA record synthesis.", "label": "Enable", "name": "enable"}, {"description": "Disable AAAA record synthesis", "help": "Disable AAAA record synthesis.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

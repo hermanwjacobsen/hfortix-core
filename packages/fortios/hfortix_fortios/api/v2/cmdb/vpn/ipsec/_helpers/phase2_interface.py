@@ -62,7 +62,7 @@ FIELDS_WITH_DEFAULTS = {
     "dhcp-ipsec": "disable",
     "proposal": "",
     "pfs": "enable",
-    "dhgrp": "14",
+    "dhgrp": "20",
     "addke1": "",
     "addke2": "",
     "addke3": "",
@@ -258,303 +258,303 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DHCP_IPSEC = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PROPOSAL = [
-    "null-md5",
-    "null-sha1",
-    "null-sha256",
-    "null-sha384",
-    "null-sha512",
-    "des-null",
-    "des-md5",
-    "des-sha1",
-    "des-sha256",
-    "des-sha384",
-    "des-sha512",
-    "3des-null",
-    "3des-md5",
-    "3des-sha1",
-    "3des-sha256",
-    "3des-sha384",
-    "3des-sha512",
-    "aes128-null",
-    "aes128-md5",
-    "aes128-sha1",
-    "aes128-sha256",
-    "aes128-sha384",
-    "aes128-sha512",
-    "aes128gcm",
-    "aes192-null",
-    "aes192-md5",
-    "aes192-sha1",
-    "aes192-sha256",
-    "aes192-sha384",
-    "aes192-sha512",
-    "aes256-null",
-    "aes256-md5",
-    "aes256-sha1",
-    "aes256-sha256",
-    "aes256-sha384",
-    "aes256-sha512",
-    "aes256gcm",
-    "chacha20poly1305",
-    "aria128-null",
-    "aria128-md5",
-    "aria128-sha1",
-    "aria128-sha256",
-    "aria128-sha384",
-    "aria128-sha512",
-    "aria192-null",
-    "aria192-md5",
-    "aria192-sha1",
-    "aria192-sha256",
-    "aria192-sha384",
-    "aria192-sha512",
-    "aria256-null",
-    "aria256-md5",
-    "aria256-sha1",
-    "aria256-sha256",
-    "aria256-sha384",
-    "aria256-sha512",
-    "seed-null",
-    "seed-md5",
-    "seed-sha1",
-    "seed-sha256",
-    "seed-sha384",
-    "seed-sha512",
+    "null-md5",  # null-md5
+    "null-sha1",  # null-sha1
+    "null-sha256",  # null-sha256
+    "null-sha384",  # null-sha384
+    "null-sha512",  # null-sha512
+    "des-null",  # des-null
+    "des-md5",  # des-md5
+    "des-sha1",  # des-sha1
+    "des-sha256",  # des-sha256
+    "des-sha384",  # des-sha384
+    "des-sha512",  # des-sha512
+    "3des-null",  # 3des-null
+    "3des-md5",  # 3des-md5
+    "3des-sha1",  # 3des-sha1
+    "3des-sha256",  # 3des-sha256
+    "3des-sha384",  # 3des-sha384
+    "3des-sha512",  # 3des-sha512
+    "aes128-null",  # aes128-null
+    "aes128-md5",  # aes128-md5
+    "aes128-sha1",  # aes128-sha1
+    "aes128-sha256",  # aes128-sha256
+    "aes128-sha384",  # aes128-sha384
+    "aes128-sha512",  # aes128-sha512
+    "aes128gcm",  # aes128gcm
+    "aes192-null",  # aes192-null
+    "aes192-md5",  # aes192-md5
+    "aes192-sha1",  # aes192-sha1
+    "aes192-sha256",  # aes192-sha256
+    "aes192-sha384",  # aes192-sha384
+    "aes192-sha512",  # aes192-sha512
+    "aes256-null",  # aes256-null
+    "aes256-md5",  # aes256-md5
+    "aes256-sha1",  # aes256-sha1
+    "aes256-sha256",  # aes256-sha256
+    "aes256-sha384",  # aes256-sha384
+    "aes256-sha512",  # aes256-sha512
+    "aes256gcm",  # aes256gcm
+    "chacha20poly1305",  # chacha20poly1305
+    "aria128-null",  # aria128-null
+    "aria128-md5",  # aria128-md5
+    "aria128-sha1",  # aria128-sha1
+    "aria128-sha256",  # aria128-sha256
+    "aria128-sha384",  # aria128-sha384
+    "aria128-sha512",  # aria128-sha512
+    "aria192-null",  # aria192-null
+    "aria192-md5",  # aria192-md5
+    "aria192-sha1",  # aria192-sha1
+    "aria192-sha256",  # aria192-sha256
+    "aria192-sha384",  # aria192-sha384
+    "aria192-sha512",  # aria192-sha512
+    "aria256-null",  # aria256-null
+    "aria256-md5",  # aria256-md5
+    "aria256-sha1",  # aria256-sha1
+    "aria256-sha256",  # aria256-sha256
+    "aria256-sha384",  # aria256-sha384
+    "aria256-sha512",  # aria256-sha512
+    "seed-null",  # seed-null
+    "seed-md5",  # seed-md5
+    "seed-sha1",  # seed-sha1
+    "seed-sha256",  # seed-sha256
+    "seed-sha384",  # seed-sha384
+    "seed-sha512",  # seed-sha512
 ]
 VALID_BODY_PFS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DHGRP = [
-    "1",
-    "2",
-    "5",
-    "14",
-    "15",
-    "16",
-    "17",
-    "18",
-    "19",
-    "20",
-    "21",
-    "27",
-    "28",
-    "29",
-    "30",
-    "31",
-    "32",
+    "1",  # DH Group 1.
+    "2",  # DH Group 2.
+    "5",  # DH Group 5.
+    "14",  # DH Group 14.
+    "15",  # DH Group 15.
+    "16",  # DH Group 16.
+    "17",  # DH Group 17.
+    "18",  # DH Group 18.
+    "19",  # DH Group 19.
+    "20",  # DH Group 20.
+    "21",  # DH Group 21.
+    "27",  # DH Group 27.
+    "28",  # DH Group 28.
+    "29",  # DH Group 29.
+    "30",  # DH Group 30.
+    "31",  # DH Group 31.
+    "32",  # DH Group 32.
 ]
 VALID_BODY_ADDKE1 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE2 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE3 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE4 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE5 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE6 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_ADDKE7 = [
-    "0",
-    "35",
-    "36",
-    "37",
-    "1080",
-    "1081",
-    "1082",
-    "1083",
-    "1084",
-    "1085",
-    "1089",
-    "1090",
-    "1091",
-    "1092",
-    "1093",
-    "1094",
+    "0",  # NONE.
+    "35",  # ML-KEM-512.
+    "36",  # ML-KEM-768.
+    "37",  # ML-KEM-1024.
+    "1080",  # KYBER512.
+    "1081",  # KYBER768.
+    "1082",  # KYBER1024.
+    "1083",  # FRODO L1.
+    "1084",  # FRODO L3.
+    "1085",  # FRODO L5.
+    "1089",  # BIKE L1.
+    "1090",  # BIKE L3.
+    "1091",  # BIKE L5.
+    "1092",  # HQC128.
+    "1093",  # HQC192.
+    "1094",  # HQC256.
 ]
 VALID_BODY_REPLAY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_KEEPALIVE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_AUTO_NEGOTIATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ADD_ROUTE = [
-    "phase1",
-    "enable",
-    "disable",
+    "phase1",  # Add route according to phase1 add-route setting.
+    "enable",  # Add route for remote proxy ID.
+    "disable",  # Do not add route for remote proxy ID.
 ]
 VALID_BODY_INBOUND_DSCP_COPY = [
-    "phase1",
-    "enable",
-    "disable",
+    "phase1",  # copy the DCSP in the ESP header to the inner IP Header according to the phase1 inbound_dscp_copy setting.
+    "enable",  # Enable copying of the DSCP in the ESP header to the inner IP header.
+    "disable",  # Disable copying of the DSCP in the ESP header to the inner IP header.
 ]
 VALID_BODY_AUTO_DISCOVERY_SENDER = [
-    "phase1",
-    "enable",
-    "disable",
+    "phase1",  # Send short-cut messages according to the phase1 auto-discovery-sender setting.
+    "enable",  # Enable sending auto-discovery short-cut messages.
+    "disable",  # Disable sending auto-discovery short-cut messages.
 ]
 VALID_BODY_AUTO_DISCOVERY_FORWARDER = [
-    "phase1",
-    "enable",
-    "disable",
+    "phase1",  # Forward short-cut messages according to the phase1 auto-discovery-forwarder setting.
+    "enable",  # Enable forwarding auto-discovery short-cut messages.
+    "disable",  # Disable forwarding auto-discovery short-cut messages.
 ]
 VALID_BODY_KEYLIFE_TYPE = [
-    "seconds",
-    "kbs",
-    "both",
+    "seconds",  # Key life in seconds.
+    "kbs",  # Key life in kilobytes.
+    "both",  # Key life both.
 ]
 VALID_BODY_SINGLE_SOURCE = [
-    "enable",
-    "disable",
+    "enable",  # Only single source IP will be accepted.
+    "disable",  # Source IP range will be accepted.
 ]
 VALID_BODY_ROUTE_OVERLAP = [
-    "use-old",
-    "use-new",
-    "allow",
+    "use-old",  # Use the old route and do not add the new route.
+    "use-new",  # Delete the old route and add the new route.
+    "allow",  # Allow overlapping routes.
 ]
 VALID_BODY_ENCAPSULATION = [
-    "tunnel-mode",
-    "transport-mode",
+    "tunnel-mode",  # Use tunnel mode encapsulation.
+    "transport-mode",  # Use transport mode encapsulation.
 ]
 VALID_BODY_L2TP = [
-    "enable",
-    "disable",
+    "enable",  # Enable L2TP over IPsec.
+    "disable",  # Disable L2TP over IPsec.
 ]
 VALID_BODY_INITIATOR_TS_NARROW = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DIFFSERV = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SRC_ADDR_TYPE = [
-    "subnet",
-    "range",
-    "ip",
-    "name",
-    "subnet6",
-    "range6",
-    "ip6",
-    "name6",
+    "subnet",  # IPv4 subnet.
+    "range",  # IPv4 range.
+    "ip",  # IPv4 IP.
+    "name",  # IPv4 firewall address or group name.
+    "subnet6",  # IPv6 subnet.
+    "range6",  # IPv6 range.
+    "ip6",  # IPv6 IP.
+    "name6",  # IPv6 firewall address or group name.
 ]
 VALID_BODY_DST_ADDR_TYPE = [
-    "subnet",
-    "range",
-    "ip",
-    "name",
-    "subnet6",
-    "range6",
-    "ip6",
-    "name6",
+    "subnet",  # IPv4 subnet.
+    "range",  # IPv4 range.
+    "ip",  # IPv4 IP.
+    "name",  # IPv4 firewall address or group name.
+    "subnet6",  # IPv6 subnet.
+    "range6",  # IPv6 range.
+    "ip6",  # IPv6 IP.
+    "name6",  # IPv6 firewall address or group name.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -685,7 +685,7 @@ def validate_vpn_ipsec_phase2_interface_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "phase1name": True,
-        ...     "dhcp-ipsec": "enable",  # Valid enum value
+        ...     "dhcp-ipsec": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_ipsec_phase2_interface_post(payload)
         >>> assert is_valid == True

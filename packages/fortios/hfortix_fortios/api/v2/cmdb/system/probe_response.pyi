@@ -12,9 +12,9 @@ class ProbeResponsePayload(TypedDict, total=False):
     """
     port: NotRequired[int]  # Port number to response.
     http_probe_value: NotRequired[str]  # Value to respond to the monitoring server.
-    ttl_mode: NotRequired[Literal["reinit", "decrease", "retain"]]  # Mode for TWAMP packet TTL modification.
-    mode: NotRequired[Literal["none", "http-probe", "twamp"]]  # SLA response mode.
-    security_mode: NotRequired[Literal["none", "authentication"]]  # TWAMP responder security mode.
+    ttl_mode: NotRequired[Literal[{"description": "Reinitialize TTL", "help": "Reinitialize TTL.", "label": "Reinit", "name": "reinit"}, {"description": "Decrease TTL", "help": "Decrease TTL.", "label": "Decrease", "name": "decrease"}, {"description": "Retain TTL", "help": "Retain TTL.", "label": "Retain", "name": "retain"}]]  # Mode for TWAMP packet TTL modification.
+    mode: NotRequired[Literal[{"description": "Disable probe", "help": "Disable probe.", "label": "None", "name": "none"}, {"description": "HTTP probe", "help": "HTTP probe.", "label": "Http Probe", "name": "http-probe"}, {"description": "Two way active measurement protocol", "help": "Two way active measurement protocol.", "label": "Twamp", "name": "twamp"}]]  # SLA response mode.
+    security_mode: NotRequired[Literal[{"description": "Unauthenticated mode", "help": "Unauthenticated mode.", "label": "None", "name": "none"}, {"description": "Authenticated mode", "help": "Authenticated mode.", "label": "Authentication", "name": "authentication"}]]  # TWAMP responder security mode.
     password: NotRequired[str]  # TWAMP responder password in authentication mode.
     timeout: NotRequired[int]  # An inactivity timer for a twamp test session.
 
@@ -45,9 +45,9 @@ class ProbeResponse:
         payload_dict: ProbeResponsePayload | None = ...,
         port: int | None = ...,
         http_probe_value: str | None = ...,
-        ttl_mode: Literal["reinit", "decrease", "retain"] | None = ...,
-        mode: Literal["none", "http-probe", "twamp"] | None = ...,
-        security_mode: Literal["none", "authentication"] | None = ...,
+        ttl_mode: Literal[{"description": "Reinitialize TTL", "help": "Reinitialize TTL.", "label": "Reinit", "name": "reinit"}, {"description": "Decrease TTL", "help": "Decrease TTL.", "label": "Decrease", "name": "decrease"}, {"description": "Retain TTL", "help": "Retain TTL.", "label": "Retain", "name": "retain"}] | None = ...,
+        mode: Literal[{"description": "Disable probe", "help": "Disable probe.", "label": "None", "name": "none"}, {"description": "HTTP probe", "help": "HTTP probe.", "label": "Http Probe", "name": "http-probe"}, {"description": "Two way active measurement protocol", "help": "Two way active measurement protocol.", "label": "Twamp", "name": "twamp"}] | None = ...,
+        security_mode: Literal[{"description": "Unauthenticated mode", "help": "Unauthenticated mode.", "label": "None", "name": "none"}, {"description": "Authenticated mode", "help": "Authenticated mode.", "label": "Authentication", "name": "authentication"}] | None = ...,
         password: str | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,
@@ -60,9 +60,9 @@ class ProbeResponse:
         payload_dict: ProbeResponsePayload | None = ...,
         port: int | None = ...,
         http_probe_value: str | None = ...,
-        ttl_mode: Literal["reinit", "decrease", "retain"] | None = ...,
-        mode: Literal["none", "http-probe", "twamp"] | None = ...,
-        security_mode: Literal["none", "authentication"] | None = ...,
+        ttl_mode: Literal[{"description": "Reinitialize TTL", "help": "Reinitialize TTL.", "label": "Reinit", "name": "reinit"}, {"description": "Decrease TTL", "help": "Decrease TTL.", "label": "Decrease", "name": "decrease"}, {"description": "Retain TTL", "help": "Retain TTL.", "label": "Retain", "name": "retain"}] | None = ...,
+        mode: Literal[{"description": "Disable probe", "help": "Disable probe.", "label": "None", "name": "none"}, {"description": "HTTP probe", "help": "HTTP probe.", "label": "Http Probe", "name": "http-probe"}, {"description": "Two way active measurement protocol", "help": "Two way active measurement protocol.", "label": "Twamp", "name": "twamp"}] | None = ...,
+        security_mode: Literal[{"description": "Unauthenticated mode", "help": "Unauthenticated mode.", "label": "None", "name": "none"}, {"description": "Authenticated mode", "help": "Authenticated mode.", "label": "Authentication", "name": "authentication"}] | None = ...,
         password: str | None = ...,
         timeout: int | None = ...,
         vdom: str | bool | None = ...,

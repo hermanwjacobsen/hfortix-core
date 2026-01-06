@@ -111,7 +111,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable exemption.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable exemption.", "label": "Enable", "name": "enable"}, {"help": "Disable exemption.", "label": "Disable", "name": "disable"}],
         },
         "rule": {
             "type": "string",
@@ -127,19 +127,19 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SEVERITY = [
-    "info",
-    "low",
-    "medium",
-    "high",
-    "critical",
+    "info",  # info
+    "low",  # low
+    "medium",  # medium
+    "high",  # high
+    "critical",  # critical
 ]
 VALID_BODY_ACTION = [
-    "pass",
-    "block",
+    "pass",  # Allows session that match the profile.
+    "block",  # Blocks sessions that match the profile.
 ]
 VALID_BODY_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging.
+    "disable",  # Disable logging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -269,7 +269,7 @@ def validate_virtual_patch_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "severity": "info",  # Valid enum value
+        ...     "severity": "{'name': 'info', 'help': 'info', 'label': 'Info', 'description': 'info    low:low    medium:medium    high:high    critical:critical'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_virtual_patch_profile_post(payload)
         >>> assert is_valid == True

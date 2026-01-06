@@ -123,52 +123,52 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MONITOR_ALL_MESSAGES = [
-    "disable",
-    "enable",
+    "disable",  # Disable.
+    "enable",  # Enable.
 ]
 VALID_BODY_LOG_PACKET = [
-    "disable",
-    "enable",
+    "disable",  # Disable.
+    "enable",  # Enable.
 ]
 VALID_BODY_TRACK_REQUESTS_ANSWERS = [
-    "disable",
-    "enable",
+    "disable",  # Disable.
+    "enable",  # Enable.
 ]
 VALID_BODY_MISSING_REQUEST_ACTION = [
-    "allow",
-    "block",
-    "reset",
-    "monitor",
+    "allow",  # Allow or pass matching traffic.
+    "block",  # Block or drop matching traffic.
+    "reset",  # Reset sessions for matching traffic.
+    "monitor",  # Allow and log matching traffic.
 ]
 VALID_BODY_PROTOCOL_VERSION_INVALID = [
-    "allow",
-    "block",
-    "reset",
-    "monitor",
+    "allow",  # Allow or pass matching traffic.
+    "block",  # Block or drop matching traffic.
+    "reset",  # Reset sessions for matching traffic.
+    "monitor",  # Allow and log matching traffic.
 ]
 VALID_BODY_MESSAGE_LENGTH_INVALID = [
-    "allow",
-    "block",
-    "reset",
-    "monitor",
+    "allow",  # Allow or pass matching traffic.
+    "block",  # Block or drop matching traffic.
+    "reset",  # Reset sessions for matching traffic.
+    "monitor",  # Allow and log matching traffic.
 ]
 VALID_BODY_REQUEST_ERROR_FLAG_SET = [
-    "allow",
-    "block",
-    "reset",
-    "monitor",
+    "allow",  # Allow or pass matching traffic.
+    "block",  # Block or drop matching traffic.
+    "reset",  # Reset sessions for matching traffic.
+    "monitor",  # Allow and log matching traffic.
 ]
 VALID_BODY_CMD_FLAGS_RESERVE_SET = [
-    "allow",
-    "block",
-    "reset",
-    "monitor",
+    "allow",  # Allow or pass matching traffic.
+    "block",  # Block or drop matching traffic.
+    "reset",  # Reset sessions for matching traffic.
+    "monitor",  # Allow and log matching traffic.
 ]
 VALID_BODY_COMMAND_CODE_INVALID = [
-    "allow",
-    "block",
-    "reset",
-    "monitor",
+    "allow",  # Allow or pass matching traffic.
+    "block",  # Block or drop matching traffic.
+    "reset",  # Reset sessions for matching traffic.
+    "monitor",  # Allow and log matching traffic.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -298,7 +298,7 @@ def validate_diameter_filter_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "monitor-all-messages": "disable",  # Valid enum value
+        ...     "monitor-all-messages": "{'name': 'disable', 'help': 'Disable.', 'label': 'Disable', 'description': 'Disable'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_diameter_filter_profile_post(payload)
         >>> assert is_valid == True

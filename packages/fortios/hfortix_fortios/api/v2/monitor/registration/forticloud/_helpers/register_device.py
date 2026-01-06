@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticloud/register_device",
     "category": "monitor",
     "api_path": "registration/forticloud/register-device",
-    "help": "Configuration for registration/forticloud/register-device",
+    "help": "Register a device to FortiCloud through FortiGate. Currently FortiSwitches, FortiAPs and FortiExtenders are supported.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

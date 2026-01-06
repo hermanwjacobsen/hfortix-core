@@ -13,10 +13,10 @@ class AddressPayload(TypedDict, total=False):
     name: NotRequired[str]  # Address name.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
     subnet: NotRequired[str]  # IP address and subnet mask of address.
-    type: NotRequired[Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"]]  # Type of address.
+    type: NotRequired[Literal[{"description": "Standard IPv4 address with subnet mask", "help": "Standard IPv4 address with subnet mask.", "label": "Ipmask", "name": "ipmask"}, {"description": "Range of IPv4 addresses between two specified addresses (inclusive)", "help": "Range of IPv4 addresses between two specified addresses (inclusive).", "label": "Iprange", "name": "iprange"}, {"description": "Fully Qualified Domain Name address", "help": "Fully Qualified Domain Name address.", "label": "Fqdn", "name": "fqdn"}, {"description": "IP addresses from a specified country", "help": "IP addresses from a specified country.", "label": "Geography", "name": "geography"}, {"description": "Standard IPv4 using a wildcard subnet mask", "help": "Standard IPv4 using a wildcard subnet mask.", "label": "Wildcard", "name": "wildcard"}, {"description": "Dynamic address object", "help": "Dynamic address object.", "label": "Dynamic", "name": "dynamic"}, {"description": "IP and subnet of interface", "help": "IP and subnet of interface.", "label": "Interface Subnet", "name": "interface-subnet"}, {"description": "Range of MAC addresses", "help": "Range of MAC addresses.", "label": "Mac", "name": "mac"}, {"description": "route-tag addresses", "help": "route-tag addresses.", "label": "Route Tag", "name": "route-tag"}]]  # Type of address.
     route_tag: NotRequired[int]  # route-tag address.
-    sub_type: NotRequired[Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"]]  # Sub-type of address.
-    clearpass_spt: NotRequired[Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"]]  # SPT (System Posture Token) value.
+    sub_type: NotRequired[Literal[{"description": "SDN address", "help": "SDN address.", "label": "Sdn", "name": "sdn"}, {"description": "ClearPass SPT (System Posture Token) address", "help": "ClearPass SPT (System Posture Token) address.", "label": "Clearpass Spt", "name": "clearpass-spt"}, {"description": "FSSO address", "help": "FSSO address.", "label": "Fsso", "name": "fsso"}, {"description": "RSSO address", "help": "RSSO address.", "label": "Rsso", "name": "rsso"}, {"description": "FortiClient EMS tag", "help": "FortiClient EMS tag.", "label": "Ems Tag", "name": "ems-tag"}, {"description": "FortiVoice tag", "help": "FortiVoice tag.", "label": "Fortivoice Tag", "name": "fortivoice-tag"}, {"description": "FortiNAC tag", "help": "FortiNAC tag.", "label": "Fortinac Tag", "name": "fortinac-tag"}, {"description": "Switch Controller NAC policy tag", "help": "Switch Controller NAC policy tag.", "label": "Swc Tag", "name": "swc-tag"}, {"description": "Device address", "help": "Device address.", "label": "Device Identification", "name": "device-identification"}, {"description": "External resource", "help": "External resource.", "label": "External Resource", "name": "external-resource"}, {"description": "Tag from EOL product", "help": "Tag from EOL product.", "label": "Obsolete", "name": "obsolete"}]]  # Sub-type of address.
+    clearpass_spt: NotRequired[Literal[{"description": "UNKNOWN", "help": "UNKNOWN.", "label": "Unknown", "name": "unknown"}, {"description": "HEALTHY", "help": "HEALTHY.", "label": "Healthy", "name": "healthy"}, {"description": "QUARANTINE", "help": "QUARANTINE.", "label": "Quarantine", "name": "quarantine"}, {"description": "CHECKUP", "help": "CHECKUP.", "label": "Checkup", "name": "checkup"}, {"description": "TRANSIENT", "help": "TRANSIENT.", "label": "Transient", "name": "transient"}, {"description": "INFECTED", "help": "INFECTED.", "label": "Infected", "name": "infected"}]]  # SPT (System Posture Token) value.
     macaddr: NotRequired[list[dict[str, Any]]]  # Multiple MAC address ranges.
     start_ip: NotRequired[str]  # First IP address (inclusive) in the range for the address.
     end_ip: NotRequired[str]  # Final IP address (inclusive) in the range for the address.
@@ -36,7 +36,7 @@ class AddressPayload(TypedDict, total=False):
     sdn_tag: NotRequired[str]  # SDN Tag.
     policy_group: NotRequired[str]  # Policy group name.
     obj_tag: NotRequired[str]  # Tag of dynamic address object.
-    obj_type: NotRequired[Literal["ip", "mac"]]  # Object type.
+    obj_type: NotRequired[Literal[{"description": "IP address", "help": "IP address.", "label": "Ip", "name": "ip"}, {"description": "MAC address", "help": "MAC address", "label": "Mac", "name": "mac"}]]  # Object type.
     tag_detection_level: NotRequired[str]  # Tag detection level of dynamic address object.
     tag_type: NotRequired[str]  # Tag type of dynamic address object.
     hw_vendor: NotRequired[str]  # Dynamic address matching hardware vendor.
@@ -47,13 +47,14 @@ class AddressPayload(TypedDict, total=False):
     associated_interface: NotRequired[str]  # Network interface associated with address.
     color: NotRequired[int]  # Color of icon on the GUI.
     filter: str  # Match criteria filter.
-    sdn_addr_type: NotRequired[Literal["private", "public", "all"]]  # Type of addresses to collect.
-    node_ip_only: NotRequired[Literal["enable", "disable"]]  # Enable/disable collection of node addresses only in Kubernet
+    sdn_addr_type: NotRequired[Literal[{"description": "Collect private addresses only", "help": "Collect private addresses only.", "label": "Private", "name": "private"}, {"description": "Collect public addresses only", "help": "Collect public addresses only.", "label": "Public", "name": "public"}, {"description": "Collect both public and private addresses", "help": "Collect both public and private addresses.", "label": "All", "name": "all"}]]  # Type of addresses to collect.
+    node_ip_only: NotRequired[Literal[{"description": "Enable collection of node addresses only in Kubernetes", "help": "Enable collection of node addresses only in Kubernetes.", "label": "Enable", "name": "enable"}, {"description": "Disable collection of node addresses only in Kubernetes", "help": "Disable collection of node addresses only in Kubernetes.", "label": "Disable", "name": "disable"}]]  # Enable/disable collection of node addresses only in Kubernet
     obj_id: NotRequired[str]  # Object ID for NSX.
     list: NotRequired[list[dict[str, Any]]]  # IP address list.
     tagging: NotRequired[list[dict[str, Any]]]  # Config object tagging.
-    allow_routing: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of this address in routing configurations
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    allow_routing: NotRequired[Literal[{"description": "Enable use of this address in routing configurations", "help": "Enable use of this address in routing configurations.", "label": "Enable", "name": "enable"}, {"description": "Disable use of this address in routing configurations", "help": "Disable use of this address in routing configurations.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of this address in routing configurations
+    passive_fqdn_learning: NotRequired[Literal[{"description": "Disable passive learning of FQDNs", "help": "Disable passive learning of FQDNs.", "label": "Disable", "name": "disable"}, {"description": "Enable passive learning of FQDNs", "help": "Enable passive learning of FQDNs.", "label": "Enable", "name": "enable"}]]  # Enable/disable passive learning of FQDNs.  When enabled, the
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Address:
@@ -84,10 +85,10 @@ class Address:
         name: str | None = ...,
         uuid: str | None = ...,
         subnet: str | None = ...,
-        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = ...,
+        type: Literal[{"description": "Standard IPv4 address with subnet mask", "help": "Standard IPv4 address with subnet mask.", "label": "Ipmask", "name": "ipmask"}, {"description": "Range of IPv4 addresses between two specified addresses (inclusive)", "help": "Range of IPv4 addresses between two specified addresses (inclusive).", "label": "Iprange", "name": "iprange"}, {"description": "Fully Qualified Domain Name address", "help": "Fully Qualified Domain Name address.", "label": "Fqdn", "name": "fqdn"}, {"description": "IP addresses from a specified country", "help": "IP addresses from a specified country.", "label": "Geography", "name": "geography"}, {"description": "Standard IPv4 using a wildcard subnet mask", "help": "Standard IPv4 using a wildcard subnet mask.", "label": "Wildcard", "name": "wildcard"}, {"description": "Dynamic address object", "help": "Dynamic address object.", "label": "Dynamic", "name": "dynamic"}, {"description": "IP and subnet of interface", "help": "IP and subnet of interface.", "label": "Interface Subnet", "name": "interface-subnet"}, {"description": "Range of MAC addresses", "help": "Range of MAC addresses.", "label": "Mac", "name": "mac"}, {"description": "route-tag addresses", "help": "route-tag addresses.", "label": "Route Tag", "name": "route-tag"}] | None = ...,
         route_tag: int | None = ...,
-        sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = ...,
-        clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = ...,
+        sub_type: Literal[{"description": "SDN address", "help": "SDN address.", "label": "Sdn", "name": "sdn"}, {"description": "ClearPass SPT (System Posture Token) address", "help": "ClearPass SPT (System Posture Token) address.", "label": "Clearpass Spt", "name": "clearpass-spt"}, {"description": "FSSO address", "help": "FSSO address.", "label": "Fsso", "name": "fsso"}, {"description": "RSSO address", "help": "RSSO address.", "label": "Rsso", "name": "rsso"}, {"description": "FortiClient EMS tag", "help": "FortiClient EMS tag.", "label": "Ems Tag", "name": "ems-tag"}, {"description": "FortiVoice tag", "help": "FortiVoice tag.", "label": "Fortivoice Tag", "name": "fortivoice-tag"}, {"description": "FortiNAC tag", "help": "FortiNAC tag.", "label": "Fortinac Tag", "name": "fortinac-tag"}, {"description": "Switch Controller NAC policy tag", "help": "Switch Controller NAC policy tag.", "label": "Swc Tag", "name": "swc-tag"}, {"description": "Device address", "help": "Device address.", "label": "Device Identification", "name": "device-identification"}, {"description": "External resource", "help": "External resource.", "label": "External Resource", "name": "external-resource"}, {"description": "Tag from EOL product", "help": "Tag from EOL product.", "label": "Obsolete", "name": "obsolete"}] | None = ...,
+        clearpass_spt: Literal[{"description": "UNKNOWN", "help": "UNKNOWN.", "label": "Unknown", "name": "unknown"}, {"description": "HEALTHY", "help": "HEALTHY.", "label": "Healthy", "name": "healthy"}, {"description": "QUARANTINE", "help": "QUARANTINE.", "label": "Quarantine", "name": "quarantine"}, {"description": "CHECKUP", "help": "CHECKUP.", "label": "Checkup", "name": "checkup"}, {"description": "TRANSIENT", "help": "TRANSIENT.", "label": "Transient", "name": "transient"}, {"description": "INFECTED", "help": "INFECTED.", "label": "Infected", "name": "infected"}] | None = ...,
         macaddr: list[dict[str, Any]] | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -107,7 +108,7 @@ class Address:
         sdn_tag: str | None = ...,
         policy_group: str | None = ...,
         obj_tag: str | None = ...,
-        obj_type: Literal["ip", "mac"] | None = ...,
+        obj_type: Literal[{"description": "IP address", "help": "IP address.", "label": "Ip", "name": "ip"}, {"description": "MAC address", "help": "MAC address", "label": "Mac", "name": "mac"}] | None = ...,
         tag_detection_level: str | None = ...,
         tag_type: str | None = ...,
         hw_vendor: str | None = ...,
@@ -118,13 +119,14 @@ class Address:
         associated_interface: str | None = ...,
         color: int | None = ...,
         filter: str | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        node_ip_only: Literal["enable", "disable"] | None = ...,
+        sdn_addr_type: Literal[{"description": "Collect private addresses only", "help": "Collect private addresses only.", "label": "Private", "name": "private"}, {"description": "Collect public addresses only", "help": "Collect public addresses only.", "label": "Public", "name": "public"}, {"description": "Collect both public and private addresses", "help": "Collect both public and private addresses.", "label": "All", "name": "all"}] | None = ...,
+        node_ip_only: Literal[{"description": "Enable collection of node addresses only in Kubernetes", "help": "Enable collection of node addresses only in Kubernetes.", "label": "Enable", "name": "enable"}, {"description": "Disable collection of node addresses only in Kubernetes", "help": "Disable collection of node addresses only in Kubernetes.", "label": "Disable", "name": "disable"}] | None = ...,
         obj_id: str | None = ...,
         list: list[dict[str, Any]] | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
-        allow_routing: Literal["enable", "disable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        allow_routing: Literal[{"description": "Enable use of this address in routing configurations", "help": "Enable use of this address in routing configurations.", "label": "Enable", "name": "enable"}, {"description": "Disable use of this address in routing configurations", "help": "Disable use of this address in routing configurations.", "label": "Disable", "name": "disable"}] | None = ...,
+        passive_fqdn_learning: Literal[{"description": "Disable passive learning of FQDNs", "help": "Disable passive learning of FQDNs.", "label": "Disable", "name": "disable"}, {"description": "Enable passive learning of FQDNs", "help": "Enable passive learning of FQDNs.", "label": "Enable", "name": "enable"}] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -136,10 +138,10 @@ class Address:
         name: str | None = ...,
         uuid: str | None = ...,
         subnet: str | None = ...,
-        type: Literal["ipmask", "iprange", "fqdn", "geography", "wildcard", "dynamic", "interface-subnet", "mac", "route-tag"] | None = ...,
+        type: Literal[{"description": "Standard IPv4 address with subnet mask", "help": "Standard IPv4 address with subnet mask.", "label": "Ipmask", "name": "ipmask"}, {"description": "Range of IPv4 addresses between two specified addresses (inclusive)", "help": "Range of IPv4 addresses between two specified addresses (inclusive).", "label": "Iprange", "name": "iprange"}, {"description": "Fully Qualified Domain Name address", "help": "Fully Qualified Domain Name address.", "label": "Fqdn", "name": "fqdn"}, {"description": "IP addresses from a specified country", "help": "IP addresses from a specified country.", "label": "Geography", "name": "geography"}, {"description": "Standard IPv4 using a wildcard subnet mask", "help": "Standard IPv4 using a wildcard subnet mask.", "label": "Wildcard", "name": "wildcard"}, {"description": "Dynamic address object", "help": "Dynamic address object.", "label": "Dynamic", "name": "dynamic"}, {"description": "IP and subnet of interface", "help": "IP and subnet of interface.", "label": "Interface Subnet", "name": "interface-subnet"}, {"description": "Range of MAC addresses", "help": "Range of MAC addresses.", "label": "Mac", "name": "mac"}, {"description": "route-tag addresses", "help": "route-tag addresses.", "label": "Route Tag", "name": "route-tag"}] | None = ...,
         route_tag: int | None = ...,
-        sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = ...,
-        clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = ...,
+        sub_type: Literal[{"description": "SDN address", "help": "SDN address.", "label": "Sdn", "name": "sdn"}, {"description": "ClearPass SPT (System Posture Token) address", "help": "ClearPass SPT (System Posture Token) address.", "label": "Clearpass Spt", "name": "clearpass-spt"}, {"description": "FSSO address", "help": "FSSO address.", "label": "Fsso", "name": "fsso"}, {"description": "RSSO address", "help": "RSSO address.", "label": "Rsso", "name": "rsso"}, {"description": "FortiClient EMS tag", "help": "FortiClient EMS tag.", "label": "Ems Tag", "name": "ems-tag"}, {"description": "FortiVoice tag", "help": "FortiVoice tag.", "label": "Fortivoice Tag", "name": "fortivoice-tag"}, {"description": "FortiNAC tag", "help": "FortiNAC tag.", "label": "Fortinac Tag", "name": "fortinac-tag"}, {"description": "Switch Controller NAC policy tag", "help": "Switch Controller NAC policy tag.", "label": "Swc Tag", "name": "swc-tag"}, {"description": "Device address", "help": "Device address.", "label": "Device Identification", "name": "device-identification"}, {"description": "External resource", "help": "External resource.", "label": "External Resource", "name": "external-resource"}, {"description": "Tag from EOL product", "help": "Tag from EOL product.", "label": "Obsolete", "name": "obsolete"}] | None = ...,
+        clearpass_spt: Literal[{"description": "UNKNOWN", "help": "UNKNOWN.", "label": "Unknown", "name": "unknown"}, {"description": "HEALTHY", "help": "HEALTHY.", "label": "Healthy", "name": "healthy"}, {"description": "QUARANTINE", "help": "QUARANTINE.", "label": "Quarantine", "name": "quarantine"}, {"description": "CHECKUP", "help": "CHECKUP.", "label": "Checkup", "name": "checkup"}, {"description": "TRANSIENT", "help": "TRANSIENT.", "label": "Transient", "name": "transient"}, {"description": "INFECTED", "help": "INFECTED.", "label": "Infected", "name": "infected"}] | None = ...,
         macaddr: list[dict[str, Any]] | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -159,7 +161,7 @@ class Address:
         sdn_tag: str | None = ...,
         policy_group: str | None = ...,
         obj_tag: str | None = ...,
-        obj_type: Literal["ip", "mac"] | None = ...,
+        obj_type: Literal[{"description": "IP address", "help": "IP address.", "label": "Ip", "name": "ip"}, {"description": "MAC address", "help": "MAC address", "label": "Mac", "name": "mac"}] | None = ...,
         tag_detection_level: str | None = ...,
         tag_type: str | None = ...,
         hw_vendor: str | None = ...,
@@ -170,13 +172,14 @@ class Address:
         associated_interface: str | None = ...,
         color: int | None = ...,
         filter: str | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        node_ip_only: Literal["enable", "disable"] | None = ...,
+        sdn_addr_type: Literal[{"description": "Collect private addresses only", "help": "Collect private addresses only.", "label": "Private", "name": "private"}, {"description": "Collect public addresses only", "help": "Collect public addresses only.", "label": "Public", "name": "public"}, {"description": "Collect both public and private addresses", "help": "Collect both public and private addresses.", "label": "All", "name": "all"}] | None = ...,
+        node_ip_only: Literal[{"description": "Enable collection of node addresses only in Kubernetes", "help": "Enable collection of node addresses only in Kubernetes.", "label": "Enable", "name": "enable"}, {"description": "Disable collection of node addresses only in Kubernetes", "help": "Disable collection of node addresses only in Kubernetes.", "label": "Disable", "name": "disable"}] | None = ...,
         obj_id: str | None = ...,
         list: list[dict[str, Any]] | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
-        allow_routing: Literal["enable", "disable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        allow_routing: Literal[{"description": "Enable use of this address in routing configurations", "help": "Enable use of this address in routing configurations.", "label": "Enable", "name": "enable"}, {"description": "Disable use of this address in routing configurations", "help": "Disable use of this address in routing configurations.", "label": "Disable", "name": "disable"}] | None = ...,
+        passive_fqdn_learning: Literal[{"description": "Disable passive learning of FQDNs", "help": "Disable passive learning of FQDNs.", "label": "Disable", "name": "disable"}, {"description": "Enable passive learning of FQDNs", "help": "Enable passive learning of FQDNs.", "label": "Enable", "name": "enable"}] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

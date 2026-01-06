@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Enable", "name": "enable"}, {"description": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webfilter/malicious_urls",
     "category": "monitor",
     "api_path": "webfilter/malicious-urls",
-    "help": "Configuration for webfilter/malicious-urls/stat",
+    "help": "List all URLs in FortiSandbox malicious URL database.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

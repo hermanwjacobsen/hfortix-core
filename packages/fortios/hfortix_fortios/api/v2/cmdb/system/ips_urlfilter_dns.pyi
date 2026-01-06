@@ -11,8 +11,8 @@ class IpsUrlfilterDnsPayload(TypedDict, total=False):
         }
     """
     address: NotRequired[str]  # DNS server IP address.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable using this DNS server for IPS URL filter DNS 
-    ipv6_capability: NotRequired[Literal["enable", "disable"]]  # Enable/disable this server for IPv6 queries.
+    status: NotRequired[Literal[{"description": "Enable this DNS server for IPS URL filter DNS queries", "help": "Enable this DNS server for IPS URL filter DNS queries.", "label": "Enable", "name": "enable"}, {"description": "Disable this DNS server for IPS URL filter DNS queries", "help": "Disable this DNS server for IPS URL filter DNS queries.", "label": "Disable", "name": "disable"}]]  # Enable/disable using this DNS server for IPS URL filter DNS 
+    ipv6_capability: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable this server for IPv6 queries.
 
 
 class IpsUrlfilterDns:
@@ -41,8 +41,8 @@ class IpsUrlfilterDns:
         self,
         payload_dict: IpsUrlfilterDnsPayload | None = ...,
         address: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ipv6_capability: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this DNS server for IPS URL filter DNS queries", "help": "Enable this DNS server for IPS URL filter DNS queries.", "label": "Enable", "name": "enable"}, {"description": "Disable this DNS server for IPS URL filter DNS queries", "help": "Disable this DNS server for IPS URL filter DNS queries.", "label": "Disable", "name": "disable"}] | None = ...,
+        ipv6_capability: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -52,8 +52,8 @@ class IpsUrlfilterDns:
         self,
         payload_dict: IpsUrlfilterDnsPayload | None = ...,
         address: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ipv6_capability: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this DNS server for IPS URL filter DNS queries", "help": "Enable this DNS server for IPS URL filter DNS queries.", "label": "Enable", "name": "enable"}, {"description": "Disable this DNS server for IPS URL filter DNS queries", "help": "Disable this DNS server for IPS URL filter DNS queries.", "label": "Disable", "name": "disable"}] | None = ...,
+        ipv6_capability: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

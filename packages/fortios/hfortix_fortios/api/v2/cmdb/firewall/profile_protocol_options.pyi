@@ -13,8 +13,8 @@ class ProfileProtocolOptionsPayload(TypedDict, total=False):
     name: str  # Name.
     comment: NotRequired[str]  # Optional comments.
     replacemsg_group: NotRequired[str]  # Name of the replacement message group to be used.
-    oversize_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging for antivirus oversize file blocking.
-    switching_protocols_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging for HTTP/HTTPS switching protocols.
+    oversize_log: NotRequired[Literal[{"description": "Disable logging for antivirus oversize file blocking", "help": "Disable logging for antivirus oversize file blocking.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for antivirus oversize file blocking", "help": "Enable logging for antivirus oversize file blocking.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging for antivirus oversize file blocking.
+    switching_protocols_log: NotRequired[Literal[{"description": "Disable logging for HTTP/HTTPS switching protocols", "help": "Disable logging for HTTP/HTTPS switching protocols.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for HTTP/HTTPS switching protocols", "help": "Enable logging for HTTP/HTTPS switching protocols.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging for HTTP/HTTPS switching protocols.
     http: NotRequired[str]  # Configure HTTP protocol options.
     ftp: NotRequired[str]  # Configure FTP protocol options.
     imap: NotRequired[str]  # Configure IMAP protocol options.
@@ -26,7 +26,7 @@ class ProfileProtocolOptionsPayload(TypedDict, total=False):
     dns: NotRequired[str]  # Configure DNS protocol options.
     cifs: NotRequired[str]  # Configure CIFS protocol options.
     mail_signature: NotRequired[str]  # Configure Mail signature.
-    rpc_over_http: NotRequired[Literal["enable", "disable"]]  # Enable/disable inspection of RPC over HTTP.
+    rpc_over_http: NotRequired[Literal[{"description": "Enable inspection of RPC over HTTP", "help": "Enable inspection of RPC over HTTP.", "label": "Enable", "name": "enable"}, {"description": "Disable inspection of RPC over HTTP", "help": "Disable inspection of RPC over HTTP.", "label": "Disable", "name": "disable"}]]  # Enable/disable inspection of RPC over HTTP.
 
 
 class ProfileProtocolOptions:
@@ -57,8 +57,8 @@ class ProfileProtocolOptions:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        oversize_log: Literal["disable", "enable"] | None = ...,
-        switching_protocols_log: Literal["disable", "enable"] | None = ...,
+        oversize_log: Literal[{"description": "Disable logging for antivirus oversize file blocking", "help": "Disable logging for antivirus oversize file blocking.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for antivirus oversize file blocking", "help": "Enable logging for antivirus oversize file blocking.", "label": "Enable", "name": "enable"}] | None = ...,
+        switching_protocols_log: Literal[{"description": "Disable logging for HTTP/HTTPS switching protocols", "help": "Disable logging for HTTP/HTTPS switching protocols.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for HTTP/HTTPS switching protocols", "help": "Enable logging for HTTP/HTTPS switching protocols.", "label": "Enable", "name": "enable"}] | None = ...,
         http: str | None = ...,
         ftp: str | None = ...,
         imap: str | None = ...,
@@ -70,7 +70,7 @@ class ProfileProtocolOptions:
         dns: str | None = ...,
         cifs: str | None = ...,
         mail_signature: str | None = ...,
-        rpc_over_http: Literal["enable", "disable"] | None = ...,
+        rpc_over_http: Literal[{"description": "Enable inspection of RPC over HTTP", "help": "Enable inspection of RPC over HTTP.", "label": "Enable", "name": "enable"}, {"description": "Disable inspection of RPC over HTTP", "help": "Disable inspection of RPC over HTTP.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -82,8 +82,8 @@ class ProfileProtocolOptions:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        oversize_log: Literal["disable", "enable"] | None = ...,
-        switching_protocols_log: Literal["disable", "enable"] | None = ...,
+        oversize_log: Literal[{"description": "Disable logging for antivirus oversize file blocking", "help": "Disable logging for antivirus oversize file blocking.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for antivirus oversize file blocking", "help": "Enable logging for antivirus oversize file blocking.", "label": "Enable", "name": "enable"}] | None = ...,
+        switching_protocols_log: Literal[{"description": "Disable logging for HTTP/HTTPS switching protocols", "help": "Disable logging for HTTP/HTTPS switching protocols.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for HTTP/HTTPS switching protocols", "help": "Enable logging for HTTP/HTTPS switching protocols.", "label": "Enable", "name": "enable"}] | None = ...,
         http: str | None = ...,
         ftp: str | None = ...,
         imap: str | None = ...,
@@ -95,7 +95,7 @@ class ProfileProtocolOptions:
         dns: str | None = ...,
         cifs: str | None = ...,
         mail_signature: str | None = ...,
-        rpc_over_http: Literal["enable", "disable"] | None = ...,
+        rpc_over_http: Literal[{"description": "Enable inspection of RPC over HTTP", "help": "Enable inspection of RPC over HTTP.", "label": "Enable", "name": "enable"}, {"description": "Disable inspection of RPC over HTTP", "help": "Disable inspection of RPC over HTTP.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

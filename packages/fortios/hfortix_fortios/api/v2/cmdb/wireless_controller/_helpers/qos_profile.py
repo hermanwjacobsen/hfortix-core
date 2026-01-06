@@ -199,32 +199,32 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_BURST = [
-    "enable",
-    "disable",
+    "enable",  # Enable client rate burst.
+    "disable",  # Disable client rate burst.
 ]
 VALID_BODY_WMM = [
-    "enable",
-    "disable",
+    "enable",  # Enable WiFi multi-media (WMM) control.
+    "disable",  # Disable WiFi multi-media (WMM) control.
 ]
 VALID_BODY_WMM_UAPSD = [
-    "enable",
-    "disable",
+    "enable",  # Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.
+    "disable",  # Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.
 ]
 VALID_BODY_CALL_ADMISSION_CONTROL = [
-    "enable",
-    "disable",
+    "enable",  # Enable WMM call admission control.
+    "disable",  # Disable WMM call admission control.
 ]
 VALID_BODY_BANDWIDTH_ADMISSION_CONTROL = [
-    "enable",
-    "disable",
+    "enable",  # Enable WMM bandwidth admission control.
+    "disable",  # Disable WMM bandwidth admission control.
 ]
 VALID_BODY_DSCP_WMM_MAPPING = [
-    "enable",
-    "disable",
+    "enable",  # Enable Differentiated Services Code Point (DSCP) mapping.
+    "disable",  # Disable Differentiated Services Code Point (DSCP) mapping.
 ]
 VALID_BODY_WMM_DSCP_MARKING = [
-    "enable",
-    "disable",
+    "enable",  # Enable WMM Differentiated Services Code Point (DSCP) marking.
+    "disable",  # Disable WMM Differentiated Services Code Point (DSCP) marking.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -352,7 +352,7 @@ def validate_wireless_controller_qos_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "burst": "enable",  # Valid enum value
+        ...     "burst": "{'name': 'enable', 'help': 'Enable client rate burst.', 'label': 'Enable', 'description': 'Enable client rate burst'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_qos_profile_post(payload)
         >>> assert is_valid == True

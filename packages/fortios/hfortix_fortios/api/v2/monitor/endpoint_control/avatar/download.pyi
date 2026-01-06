@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for endpoint-control/avatar/download
+    Download an endpoint avatar image.
     
     Path: endpoint_control/avatar/download
     Category: monitor

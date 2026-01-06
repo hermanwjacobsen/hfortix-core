@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SetTier1:
     """
-    Configuration for switch-controller/mclag-icl/set-tier1
+    Setup a tier-1 MC-LAG link between a pair of FortiSwitches.
     
     Path: switch_controller/mclag_icl/set_tier1
     Category: monitor

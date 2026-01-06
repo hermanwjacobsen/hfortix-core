@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve webcache/stats/reset configuration.
 
-        Configuration for webcache/stats/reset
+        Reset all webcache statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

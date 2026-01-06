@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for switch-controller/fsw-firmware/download
+    Download FortiSwitch firmware from FortiGuard to the FortiGate according to FortiSwitch image ID.
     
     Path: switch_controller/fsw_firmware/download
     Category: monitor

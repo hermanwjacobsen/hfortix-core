@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FactoryReset:
     """
-    Configuration for switch-controller/managed-switch/factory-reset
+    Send 'Factory Reset' command to a given FortiSwitch.
     
     Path: switch_controller/managed_switch/factory_reset
     Category: monitor

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/dnat/clear_counters",
     "category": "monitor",
     "api_path": "firewall/dnat/clear-counters",
-    "help": "Configuration for firewall/dnat/clear-counters",
+    "help": "Reset hit count statistics for one or more firewall virtual IP/server by ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/acquired_dns",
     "category": "monitor",
     "api_path": "system/acquired-dns",
-    "help": "Monitor endpoint for system/acquired-dns",
+    "help": "Retrieve a list of interfaces and their acquired DNS servers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

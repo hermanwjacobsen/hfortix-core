@@ -56,7 +56,7 @@ class FabricTimeInSync:
         """
         Retrieve system/fabric_time_in_sync configuration.
 
-        Configuration for system/fabric-time-in-sync
+        Checks whether the other FortiGate device's time in the Security Fabric is in sync with the specified utc timestamp (in seconds)
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

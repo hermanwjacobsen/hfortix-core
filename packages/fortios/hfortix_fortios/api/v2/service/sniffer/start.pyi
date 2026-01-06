@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Start:
     """
-    Configuration for sniffer/start
+    Creates a new packet capture and starts it.
     
     Path: sniffer/start
     Category: service

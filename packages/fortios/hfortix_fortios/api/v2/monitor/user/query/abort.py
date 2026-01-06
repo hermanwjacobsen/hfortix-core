@@ -56,7 +56,7 @@ class Abort:
         """
         Retrieve user/query/abort configuration.
 
-        Configuration for user/query/abort
+        Abort a running user device unified query.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

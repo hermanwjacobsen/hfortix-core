@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CableStatus:
     """
-    Configuration for switch-controller/managed-switch/cable-status
+    Diagnose cable information for a port. Virtual FortiSwitches and FortiLink ports are not supported.
     
     Path: switch_controller/managed_switch/cable_status
     Category: monitor

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MULTICAST_ROUTING: Literal["enable", "disable"]
+VALID_BODY_MULTICAST_ROUTING: Literal[{"description": "Enable IP multicast routing", "help": "Enable IP multicast routing.", "label": "Enable", "name": "enable"}, {"description": "Disable IP multicast routing", "help": "Disable IP multicast routing.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

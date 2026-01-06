@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RegionImage:
     """
-    Configuration for wifi/region-image
+    Retrieves a floorplan/region image from a configured FortiAP region.
     
     Path: wifi/region_image
     Category: monitor

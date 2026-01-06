@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearCounters:
     """
-    Configuration for firewall/central-snat-map/clear-counters
+    Reset traffic statistics for one or more firewall central SNAT policy by policy ID.
     
     Path: firewall/central_snat_map/clear_counters
     Category: monitor

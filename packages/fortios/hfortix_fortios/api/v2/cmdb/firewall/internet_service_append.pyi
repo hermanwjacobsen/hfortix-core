@@ -10,7 +10,7 @@ class InternetServiceAppendPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    addr_mode: NotRequired[Literal["ipv4", "ipv6", "both"]]  # Address mode (IPv4 or IPv6).
+    addr_mode: NotRequired[Literal[{"description": "IPv4 mode", "help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 mode", "help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}, {"description": "Both IPv4 and IPv6 mode", "help": "Both IPv4 and IPv6 mode.", "label": "Both", "name": "both"}]]  # Address mode (IPv4 or IPv6).
     match_port: NotRequired[int]  # Matching TCP/UDP/SCTP destination port (0 to 65535, 0 means 
     append_port: NotRequired[int]  # Appending TCP/UDP/SCTP destination port (1 to 65535).
 
@@ -39,7 +39,7 @@ class InternetServiceAppend:
     def post(
         self,
         payload_dict: InternetServiceAppendPayload | None = ...,
-        addr_mode: Literal["ipv4", "ipv6", "both"] | None = ...,
+        addr_mode: Literal[{"description": "IPv4 mode", "help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 mode", "help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}, {"description": "Both IPv4 and IPv6 mode", "help": "Both IPv4 and IPv6 mode.", "label": "Both", "name": "both"}] | None = ...,
         match_port: int | None = ...,
         append_port: int | None = ...,
         vdom: str | bool | None = ...,
@@ -50,7 +50,7 @@ class InternetServiceAppend:
     def put(
         self,
         payload_dict: InternetServiceAppendPayload | None = ...,
-        addr_mode: Literal["ipv4", "ipv6", "both"] | None = ...,
+        addr_mode: Literal[{"description": "IPv4 mode", "help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 mode", "help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}, {"description": "Both IPv4 and IPv6 mode", "help": "Both IPv4 and IPv6 mode.", "label": "Both", "name": "both"}] | None = ...,
         match_port: int | None = ...,
         append_port: int | None = ...,
         vdom: str | bool | None = ...,

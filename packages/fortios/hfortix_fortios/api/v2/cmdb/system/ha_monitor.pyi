@@ -10,7 +10,7 @@ class HaMonitorPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    monitor_vlan: NotRequired[Literal["enable", "disable"]]  # Enable/disable monitor VLAN interfaces.
+    monitor_vlan: NotRequired[Literal[{"description": "Enable monitor VLAN interfaces", "help": "Enable monitor VLAN interfaces.", "label": "Enable", "name": "enable"}, {"description": "Disable monitor VLAN interfaces", "help": "Disable monitor VLAN interfaces.", "label": "Disable", "name": "disable"}]]  # Enable/disable monitor VLAN interfaces.
     vlan_hb_interval: NotRequired[int]  # Configure heartbeat interval (seconds).
     vlan_hb_lost_threshold: NotRequired[int]  # VLAN lost heartbeat threshold (1 - 60).
 
@@ -39,7 +39,7 @@ class HaMonitor:
     def post(
         self,
         payload_dict: HaMonitorPayload | None = ...,
-        monitor_vlan: Literal["enable", "disable"] | None = ...,
+        monitor_vlan: Literal[{"description": "Enable monitor VLAN interfaces", "help": "Enable monitor VLAN interfaces.", "label": "Enable", "name": "enable"}, {"description": "Disable monitor VLAN interfaces", "help": "Disable monitor VLAN interfaces.", "label": "Disable", "name": "disable"}] | None = ...,
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
         vdom: str | bool | None = ...,
@@ -50,7 +50,7 @@ class HaMonitor:
     def put(
         self,
         payload_dict: HaMonitorPayload | None = ...,
-        monitor_vlan: Literal["enable", "disable"] | None = ...,
+        monitor_vlan: Literal[{"description": "Enable monitor VLAN interfaces", "help": "Enable monitor VLAN interfaces.", "label": "Enable", "name": "enable"}, {"description": "Disable monitor VLAN interfaces", "help": "Disable monitor VLAN interfaces.", "label": "Disable", "name": "disable"}] | None = ...,
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
         vdom: str | bool | None = ...,

@@ -56,7 +56,7 @@ class MonitorSensor:
         """
         Retrieve system/monitor_sensor configuration.
 
-        Configuration for system/monitor-sensor
+        Retrieve monitor sensor status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

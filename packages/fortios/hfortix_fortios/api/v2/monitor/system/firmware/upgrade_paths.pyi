@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UpgradePaths:
     """
-    Configuration for system/firmware/upgrade-paths
+    Retrieve a list of supported firmware upgrade paths.
     
     Path: system/firmware/upgrade_paths
     Category: monitor

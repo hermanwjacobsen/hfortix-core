@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearCounters:
     """
-    Configuration for firewall/multicast-policy6/clear_counters
+    Reset traffic statistics for one or more firewall IPv6 multicast policies by policy ID.
     
     Path: firewall/multicast_policy6/clear_counters
     Category: monitor

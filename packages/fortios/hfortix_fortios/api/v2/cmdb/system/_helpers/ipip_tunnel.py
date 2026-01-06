@@ -107,12 +107,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_USE_SDWAN = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of SD-WAN to reach remote gateway.
+    "enable",  # Enable use of SD-WAN to reach remote gateway.
 ]
 VALID_BODY_AUTO_ASIC_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable auto ASIC offloading.
+    "disable",  # Disable ASIC offloading.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -242,7 +242,7 @@ def validate_system_ipip_tunnel_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "use-sdwan": "disable",  # Valid enum value
+        ...     "use-sdwan": "{'name': 'disable', 'help': 'Disable use of SD-WAN to reach remote gateway.', 'label': 'Disable', 'description': 'Disable use of SD-WAN to reach remote gateway'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ipip_tunnel_post(payload)
         >>> assert is_valid == True

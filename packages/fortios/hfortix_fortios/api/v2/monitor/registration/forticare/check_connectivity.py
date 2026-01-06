@@ -56,7 +56,7 @@ class CheckConnectivity:
         """
         Retrieve registration/forticare/check_connectivity configuration.
 
-        Configuration for registration/forticare/check-connectivity
+        Check connectivity to FortiCare servers.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

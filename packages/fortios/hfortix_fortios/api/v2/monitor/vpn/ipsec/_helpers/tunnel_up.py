@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn/ipsec/tunnel_up",
     "category": "monitor",
     "api_path": "vpn/ipsec/tunnel_up",
-    "help": "Configuration for vpn/ipsec/tunnel_up",
+    "help": "Bring up a specific IPsec VPN tunnel.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -12,9 +12,9 @@ class ExemptListPayload(TypedDict, total=False):
     """
     name: str  # Table entry name.
     comment: NotRequired[str]  # Comment.
-    hash_type: NotRequired[Literal["md5", "sha1", "sha256"]]  # Hash type.
+    hash_type: NotRequired[Literal[{"description": "MD5 hash value (32 characters in length)", "help": "MD5 hash value (32 characters in length).", "label": "Md5", "name": "md5"}, {"description": "SHA1 hash value (40 characters in length)", "help": "SHA1 hash value (40 characters in length).", "label": "Sha1", "name": "sha1"}, {"description": "SHA256 hash value (64 characters in length)", "help": "SHA256 hash value (64 characters in length).", "label": "Sha256", "name": "sha256"}]]  # Hash type.
     hash: str  # Hash value to be matched.
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable table entry.
+    status: NotRequired[Literal[{"description": "Disable AV exempt-list table entry", "help": "Disable AV exempt-list table entry.", "label": "Disable", "name": "disable"}, {"description": "Enable AV exempt-list table entry", "help": "Enable AV exempt-list table entry.", "label": "Enable", "name": "enable"}]]  # Enable/disable table entry.
 
 
 class ExemptList:
@@ -44,9 +44,9 @@ class ExemptList:
         payload_dict: ExemptListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
+        hash_type: Literal[{"description": "MD5 hash value (32 characters in length)", "help": "MD5 hash value (32 characters in length).", "label": "Md5", "name": "md5"}, {"description": "SHA1 hash value (40 characters in length)", "help": "SHA1 hash value (40 characters in length).", "label": "Sha1", "name": "sha1"}, {"description": "SHA256 hash value (64 characters in length)", "help": "SHA256 hash value (64 characters in length).", "label": "Sha256", "name": "sha256"}] | None = ...,
         hash: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable AV exempt-list table entry", "help": "Disable AV exempt-list table entry.", "label": "Disable", "name": "disable"}, {"description": "Enable AV exempt-list table entry", "help": "Enable AV exempt-list table entry.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -57,9 +57,9 @@ class ExemptList:
         payload_dict: ExemptListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        hash_type: Literal["md5", "sha1", "sha256"] | None = ...,
+        hash_type: Literal[{"description": "MD5 hash value (32 characters in length)", "help": "MD5 hash value (32 characters in length).", "label": "Md5", "name": "md5"}, {"description": "SHA1 hash value (40 characters in length)", "help": "SHA1 hash value (40 characters in length).", "label": "Sha1", "name": "sha1"}, {"description": "SHA256 hash value (64 characters in length)", "help": "SHA256 hash value (64 characters in length).", "label": "Sha256", "name": "sha256"}] | None = ...,
         hash: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable AV exempt-list table entry", "help": "Disable AV exempt-list table entry.", "label": "Disable", "name": "disable"}, {"description": "Enable AV exempt-list table entry", "help": "Enable AV exempt-list table entry.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

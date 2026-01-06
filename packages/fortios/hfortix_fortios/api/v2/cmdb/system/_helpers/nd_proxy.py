@@ -99,8 +99,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable neighbor discovery proxy.
+    "disable",  # Disable neighbor discovery proxy.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -225,7 +225,7 @@ def validate_system_nd_proxy_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable neighbor discovery proxy.', 'label': 'Enable', 'description': 'Enable neighbor discovery proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_nd_proxy_post(payload)
         >>> assert is_valid == True

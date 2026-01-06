@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ChangePassword:
     """
-    Configuration for user/local/change-password
+    Change password for local user.
     
     Path: user/local/change_password
     Category: monitor

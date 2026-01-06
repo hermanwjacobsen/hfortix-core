@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class MatchedDevices:
     """
-    Monitor endpoint for wifi/matched-devices
+    Return a list of devices that match NAC WiFi settings.
     
     Path: wifi/matched_devices
     Category: monitor

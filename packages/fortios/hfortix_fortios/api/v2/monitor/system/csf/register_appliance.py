@@ -56,7 +56,7 @@ class RegisterAppliance:
         """
         Retrieve system/csf/register_appliance configuration.
 
-        Configuration for system/csf/register-appliance
+        Register appliance to Security Fabric.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

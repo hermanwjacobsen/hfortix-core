@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Address6Dynamic:
     """
-    Configuration for firewall/address6-dynamic
+    List of IPv6 Fabric Connector address objects and the IPs they resolve to.
     
     Path: firewall/address6_dynamic
     Category: monitor

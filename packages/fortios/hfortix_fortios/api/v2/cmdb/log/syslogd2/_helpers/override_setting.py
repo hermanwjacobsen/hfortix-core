@@ -172,73 +172,73 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Log to remote syslog server.
+    "disable",  # Do not log to remote syslog server.
 ]
 VALID_BODY_MODE = [
-    "udp",
-    "legacy-reliable",
-    "reliable",
+    "udp",  # Enable syslogging over UDP.
+    "legacy-reliable",  # Enable legacy reliable syslogging by RFC3195 (Reliable Delivery for Syslog).
+    "reliable",  # Enable reliable syslogging by RFC6587 (Transmission of Syslog Messages over TCP).
 ]
 VALID_BODY_USE_MANAGEMENT_VDOM = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of management VDOM as source VDOM.
+    "disable",  # Use the current VDOM as source VDOM.
 ]
 VALID_BODY_FACILITY = [
-    "kernel",
-    "user",
-    "mail",
-    "daemon",
-    "auth",
-    "syslog",
-    "lpr",
-    "news",
-    "uucp",
-    "cron",
-    "authpriv",
-    "ftp",
-    "ntp",
-    "audit",
-    "alert",
-    "clock",
-    "local0",
-    "local1",
-    "local2",
-    "local3",
-    "local4",
-    "local5",
-    "local6",
-    "local7",
+    "kernel",  # Kernel messages.
+    "user",  # Random user-level messages.
+    "mail",  # Mail system.
+    "daemon",  # System daemons.
+    "auth",  # Security/authorization messages.
+    "syslog",  # Messages generated internally by syslog.
+    "lpr",  # Line printer subsystem.
+    "news",  # Network news subsystem.
+    "uucp",  # Network news subsystem.
+    "cron",  # Clock daemon.
+    "authpriv",  # Security/authorization messages (private).
+    "ftp",  # FTP daemon.
+    "ntp",  # NTP daemon.
+    "audit",  # Log audit.
+    "alert",  # Log alert.
+    "clock",  # Clock daemon.
+    "local0",  # Reserved for local use.
+    "local1",  # Reserved for local use.
+    "local2",  # Reserved for local use.
+    "local3",  # Reserved for local use.
+    "local4",  # Reserved for local use.
+    "local5",  # Reserved for local use.
+    "local6",  # Reserved for local use.
+    "local7",  # Reserved for local use.
 ]
 VALID_BODY_FORMAT = [
-    "default",
-    "csv",
-    "cef",
-    "rfc5424",
-    "json",
+    "default",  # Syslog format.
+    "csv",  # CSV (Comma Separated Values) format.
+    "cef",  # CEF (Common Event Format) format.
+    "rfc5424",  # Syslog RFC5424 format.
+    "json",  # JSON (JavaScript Object Notation) format.
 ]
 VALID_BODY_PRIORITY = [
-    "default",
-    "low",
+    "default",  # Set Syslog transmission priority to default.
+    "low",  # Set Syslog transmission priority to low.
 ]
 VALID_BODY_ENC_ALGORITHM = [
-    "high-medium",
-    "high",
-    "low",
-    "disable",
+    "high-medium",  # SSL communication with high and medium encryption algorithms.
+    "high",  # SSL communication with high encryption algorithms.
+    "low",  # SSL communication with low encryption algorithms.
+    "disable",  # Disable SSL communication.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -366,7 +366,7 @@ def validate_log_syslogd2_override_setting_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Log to remote syslog server.', 'label': 'Enable', 'description': 'Log to remote syslog server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_syslogd2_override_setting_post(payload)
         >>> assert is_valid == True

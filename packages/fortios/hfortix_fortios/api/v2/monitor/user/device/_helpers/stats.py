@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/device/stats",
     "category": "monitor",
     "api_path": "user/device/stats",
-    "help": "Configuration for user/device/stats",
+    "help": "Retrieve user devices stats from device store by given stat item.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

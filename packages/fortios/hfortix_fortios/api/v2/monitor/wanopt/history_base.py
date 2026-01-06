@@ -56,7 +56,7 @@ class History:
         """
         Retrieve wanopt/history configuration.
 
-        Configuration for wanopt/history
+        Retrieve WAN opt. statistics history.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

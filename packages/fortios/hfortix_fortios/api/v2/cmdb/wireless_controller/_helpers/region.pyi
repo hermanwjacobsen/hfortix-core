@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_GRAYSCALE: Literal["enable", "disable"]
+VALID_BODY_GRAYSCALE: Literal[{"description": "Enable region image grayscale", "help": "Enable region image grayscale.", "label": "Enable", "name": "enable"}, {"description": "Disable region image grayscale", "help": "Disable region image grayscale.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

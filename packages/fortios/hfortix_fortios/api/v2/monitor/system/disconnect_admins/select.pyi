@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Select:
     """
-    Configuration for system/disconnect-admins/select
+    Disconnects logged in administrators.
     
     Path: system/disconnect_admins/select
     Category: monitor

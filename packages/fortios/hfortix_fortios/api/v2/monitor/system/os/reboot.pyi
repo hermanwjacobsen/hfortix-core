@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reboot:
     """
-    Configuration for system/os/reboot
+    Immediately reboot this device.
     
     Path: system/os/reboot
     Category: monitor

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/managed_ap/set_status",
     "category": "monitor",
     "api_path": "wifi/managed_ap/set_status",
-    "help": "Configuration for wifi/managed_ap/set_status",
+    "help": "Update administrative state for a given FortiAP (enable or disable authorization).",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

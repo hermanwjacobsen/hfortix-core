@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Shutdown:
     """
-    Configuration for system/os/shutdown
+    Immediately shutdown this device.
     
     Path: system/os/shutdown
     Category: monitor

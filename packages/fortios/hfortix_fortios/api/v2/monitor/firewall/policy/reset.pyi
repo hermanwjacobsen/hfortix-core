@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for firewall/policy/reset
+    Reset traffic statistics for all firewall policies.
     
     Path: firewall/policy/reset
     Category: monitor

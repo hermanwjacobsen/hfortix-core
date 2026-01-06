@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/traffic_history/top_applications",
     "category": "monitor",
     "api_path": "system/traffic-history/top-applications",
-    "help": "Configuration for system/traffic-history/top-applications",
+    "help": "Retrieve top FortiView applications traffic stats by bandwidth.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -132,13 +132,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PARALLEL_PROCESS_OVERRIDE = [
-    "disable",
-    "enable",
+    "disable",  # Disable maximum parallel process override.
+    "enable",  # Enable maximum parallel process override.
 ]
 VALID_BODY_TUNNEL_MODE = [
-    "compatible",
-    "moderate",
-    "strict",
+    "compatible",  # Least restrictive. Supports the lowest levels of security but highest compatibility between all FortiSwitch and FortiGate devices. 3rd party certificates permitted.
+    "moderate",  # Moderate level of security. 3rd party certificates permitted.
+    "strict",  # Highest level of security requirements. If enabled, the FortiGate device follows the same security mode requirements as in FIPS/CC mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -263,7 +263,7 @@ def validate_switch_controller_system_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "parallel-process-override": "disable",  # Valid enum value
+        ...     "parallel-process-override": "{'name': 'disable', 'help': 'Disable maximum parallel process override.', 'label': 'Disable', 'description': 'Disable maximum parallel process override'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_system_post(payload)
         >>> assert is_valid == True

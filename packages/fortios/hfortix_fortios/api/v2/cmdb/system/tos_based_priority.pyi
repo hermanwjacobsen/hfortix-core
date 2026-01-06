@@ -12,7 +12,7 @@ class TosBasedPriorityPayload(TypedDict, total=False):
     """
     id: NotRequired[int]  # Item ID.
     tos: NotRequired[int]  # Value of the ToS byte in the IP datagram header (0-15, 8: mi
-    priority: NotRequired[Literal["low", "medium", "high"]]  # ToS based priority level to low, medium or high (these prior
+    priority: NotRequired[Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}]]  # ToS based priority level to low, medium or high (these prior
 
 
 class TosBasedPriority:
@@ -42,7 +42,7 @@ class TosBasedPriority:
         payload_dict: TosBasedPriorityPayload | None = ...,
         id: int | None = ...,
         tos: int | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
+        priority: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -53,7 +53,7 @@ class TosBasedPriority:
         payload_dict: TosBasedPriorityPayload | None = ...,
         id: int | None = ...,
         tos: int | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
+        priority: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

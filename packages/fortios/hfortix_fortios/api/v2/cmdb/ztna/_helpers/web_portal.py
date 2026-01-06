@@ -167,56 +167,56 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LOG_BLOCKED_TRAFFIC = [
-    "disable",
-    "enable",
+    "disable",  # Do not log all traffic denied by this ZTNA web-proxy.
+    "enable",  # Log all traffic denied by this ZTNA web-proxy.
 ]
 VALID_BODY_AUTH_PORTAL = [
-    "disable",
-    "enable",
+    "disable",  # Disable authentication portal.
+    "enable",  # Enable authentication portal.
 ]
 VALID_BODY_DISPLAY_BOOKMARK = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_FOCUS_BOOKMARK = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DISPLAY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DISPLAY_HISTORY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_POLICY_AUTH_SSO = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_THEME = [
-    "jade",
-    "neutrino",
-    "mariner",
-    "graphite",
-    "melongene",
-    "jet-stream",
-    "security-fabric",
-    "dark-matter",
-    "onyx",
-    "eclipse",
+    "jade",  # Jade theme.
+    "neutrino",  # Neutrino theme.
+    "mariner",  # Mariner theme.
+    "graphite",  # Graphite theme.
+    "melongene",  # Melongene theme.
+    "jet-stream",  # Jet Stream theme.
+    "security-fabric",  # Security Fabric theme.
+    "dark-matter",  # Dark Matter theme.
+    "onyx",  # Onyx theme.
+    "eclipse",  # Eclipse theme.
 ]
 VALID_BODY_CLIPBOARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable support of RDP/VNC clipboard.
+    "disable",  # Disable support of RDP/VNC clipboard.
 ]
 VALID_BODY_FORTICLIENT_DOWNLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_CUSTOMIZE_FORTICLIENT_DOWNLOAD_URL = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -344,7 +344,7 @@ def validate_ztna_web_portal_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "log-blocked-traffic": "disable",  # Valid enum value
+        ...     "log-blocked-traffic": "{'name': 'disable', 'help': 'Do not log all traffic denied by this ZTNA web-proxy.', 'label': 'Disable', 'description': 'Do not log all traffic denied by this ZTNA web-proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ztna_web_portal_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class VerifyCert:
     """
-    Configuration for endpoint-control/ems/verify-cert
+    Verify EMS server certificate for a specific EMS.
     
     Path: endpoint_control/ems/verify_cert
     Category: monitor

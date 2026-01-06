@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stats:
     """
-    Monitor endpoint for log/stats
+    Return number of logs sent by category per day for a specific log device.
     
     Path: log/stats
     Category: monitor

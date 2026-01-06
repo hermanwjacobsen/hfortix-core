@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Statistics:
     """
-    Configuration for wifi/statistics
+    Retrieve aggregated FortiAP statistics.
     
     Path: wifi/statistics
     Category: monitor

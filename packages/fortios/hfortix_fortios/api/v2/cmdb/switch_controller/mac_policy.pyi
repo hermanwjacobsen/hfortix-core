@@ -15,10 +15,10 @@ class MacPolicyPayload(TypedDict, total=False):
     fortilink: str  # FortiLink interface for which this MAC policy belongs to.
     vlan: NotRequired[str]  # Ingress traffic VLAN assignment for the MAC address matching
     traffic_policy: NotRequired[str]  # Traffic policy to be applied when using this MAC policy.
-    count: NotRequired[Literal["disable", "enable"]]  # Enable/disable packet count on the NAC device.
-    bounce_port_link: NotRequired[Literal["disable", "enable"]]  # Enable/disable bouncing (administratively bring the link dow
+    count: NotRequired[Literal[{"description": "Enable packet count on the NAC device", "help": "Enable packet count on the NAC device.", "label": "Disable", "name": "disable"}, {"description": "Disable packet count on the NAC device", "help": "Disable packet count on the NAC device.", "label": "Enable", "name": "enable"}]]  # Enable/disable packet count on the NAC device.
+    bounce_port_link: NotRequired[Literal[{"description": "Disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied", "help": "Disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.", "label": "Disable", "name": "disable"}, {"description": "Enable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied", "help": "Enable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.", "label": "Enable", "name": "enable"}]]  # Enable/disable bouncing (administratively bring the link dow
     bounce_port_duration: NotRequired[int]  # Bounce duration in seconds of a switch port where this mac-p
-    poe_reset: NotRequired[Literal["disable", "enable"]]  # Enable/disable POE reset of a switch port where this mac-pol
+    poe_reset: NotRequired[Literal[{"description": "Disable POE reset of a switch port where this mac-policy is applied", "help": "Disable POE reset of a switch port where this mac-policy is applied.", "label": "Disable", "name": "disable"}, {"description": "Enable POE reset of a switch port where this mac-policy is applied", "help": "Enable POE reset of a switch port where this mac-policy is applied.", "label": "Enable", "name": "enable"}]]  # Enable/disable POE reset of a switch port where this mac-pol
 
 
 class MacPolicy:
@@ -51,10 +51,10 @@ class MacPolicy:
         fortilink: str | None = ...,
         vlan: str | None = ...,
         traffic_policy: str | None = ...,
-        count: Literal["disable", "enable"] | None = ...,
-        bounce_port_link: Literal["disable", "enable"] | None = ...,
+        count: Literal[{"description": "Enable packet count on the NAC device", "help": "Enable packet count on the NAC device.", "label": "Disable", "name": "disable"}, {"description": "Disable packet count on the NAC device", "help": "Disable packet count on the NAC device.", "label": "Enable", "name": "enable"}] | None = ...,
+        bounce_port_link: Literal[{"description": "Disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied", "help": "Disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.", "label": "Disable", "name": "disable"}, {"description": "Enable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied", "help": "Enable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.", "label": "Enable", "name": "enable"}] | None = ...,
         bounce_port_duration: int | None = ...,
-        poe_reset: Literal["disable", "enable"] | None = ...,
+        poe_reset: Literal[{"description": "Disable POE reset of a switch port where this mac-policy is applied", "help": "Disable POE reset of a switch port where this mac-policy is applied.", "label": "Disable", "name": "disable"}, {"description": "Enable POE reset of a switch port where this mac-policy is applied", "help": "Enable POE reset of a switch port where this mac-policy is applied.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -68,10 +68,10 @@ class MacPolicy:
         fortilink: str | None = ...,
         vlan: str | None = ...,
         traffic_policy: str | None = ...,
-        count: Literal["disable", "enable"] | None = ...,
-        bounce_port_link: Literal["disable", "enable"] | None = ...,
+        count: Literal[{"description": "Enable packet count on the NAC device", "help": "Enable packet count on the NAC device.", "label": "Disable", "name": "disable"}, {"description": "Disable packet count on the NAC device", "help": "Disable packet count on the NAC device.", "label": "Enable", "name": "enable"}] | None = ...,
+        bounce_port_link: Literal[{"description": "Disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied", "help": "Disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.", "label": "Disable", "name": "disable"}, {"description": "Enable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied", "help": "Enable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.", "label": "Enable", "name": "enable"}] | None = ...,
         bounce_port_duration: int | None = ...,
-        poe_reset: Literal["disable", "enable"] | None = ...,
+        poe_reset: Literal[{"description": "Disable POE reset of a switch port where this mac-policy is applied", "help": "Disable POE reset of a switch port where this mac-policy is applied.", "label": "Disable", "name": "disable"}, {"description": "Enable POE reset of a switch port where this mac-policy is applied", "help": "Enable POE reset of a switch port where this mac-policy is applied.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

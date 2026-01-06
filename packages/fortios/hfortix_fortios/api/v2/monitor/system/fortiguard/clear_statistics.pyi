@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearStatistics:
     """
-    Configuration for system/fortiguard/clear-statistics
+    Immediately clear all FortiGuard statistics.
     
     Path: system/fortiguard/clear_statistics
     Category: monitor

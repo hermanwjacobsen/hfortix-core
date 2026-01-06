@@ -210,7 +210,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable use of base64 encoding of HTTP content.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable use of base64 encoding of HTTP content.", "label": "Disable", "name": "disable"}, {"help": "Enable use of base64 encoding of HTTP content.", "label": "Enable", "name": "enable"}],
         },
     },
     "respmod-forward-rules": {
@@ -235,10 +235,10 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Action to be taken for ICAP server.",
             "default": "forward",
-            "options": ["forward", "bypass"],
+            "options": [{"help": "Forward request to ICAP server when this rule is matched.", "label": "Forward", "name": "forward"}, {"help": "Don\u0027t forward request to ICAP server when this rule is matched.", "label": "Bypass", "name": "bypass"}],
         },
         "http-resp-status-code": {
-            "type": "integer",
+            "type": "string",
             "help": "HTTP response status code.",
         },
     },
@@ -247,74 +247,74 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_REQUEST = [
-    "disable",
-    "enable",
+    "disable",  # Disable HTTP request passing to ICAP server.
+    "enable",  # Enable HTTP request passing to ICAP server.
 ]
 VALID_BODY_RESPONSE = [
-    "disable",
-    "enable",
+    "disable",  # Disable HTTP response passing to ICAP server.
+    "enable",  # Enable HTTP response passing to ICAP server.
 ]
 VALID_BODY_FILE_TRANSFER = [
-    "ssh",
-    "ftp",
+    "ssh",  # Forward file transfer with SSH protocol to ICAP server for further processing.
+    "ftp",  # Forward file transfer with FTP protocol to ICAP server for further processing.
 ]
 VALID_BODY_STREAMING_CONTENT_BYPASS = [
-    "disable",
-    "enable",
+    "disable",  # Disable bypassing of ICAP server for streaming content.
+    "enable",  # Enable bypassing of ICAP server for streaming content.
 ]
 VALID_BODY_OCR_ONLY = [
-    "disable",
-    "enable",
+    "disable",  # Disable this FortiGate unit to submit only OCR interested content to the ICAP server.
+    "enable",  # Enable this FortiGate unit to submit only OCR interested content to the ICAP server.
 ]
 VALID_BODY_204_RESPONSE = [
-    "disable",
-    "enable",
+    "disable",  # Disable allowance of 204 response from ICAP server.
+    "enable",  # Enable allowance of 204 response from ICAP server.
 ]
 VALID_BODY_PREVIEW = [
-    "disable",
-    "enable",
+    "disable",  # Disable preview of data to ICAP server.
+    "enable",  # Enable preview of data to ICAP server.
 ]
 VALID_BODY_REQUEST_FAILURE = [
-    "error",
-    "bypass",
+    "error",  # Error.
+    "bypass",  # Bypass.
 ]
 VALID_BODY_RESPONSE_FAILURE = [
-    "error",
-    "bypass",
+    "error",  # Error.
+    "bypass",  # Bypass.
 ]
 VALID_BODY_FILE_TRANSFER_FAILURE = [
-    "error",
-    "bypass",
+    "error",  # Error.
+    "bypass",  # Bypass.
 ]
 VALID_BODY_METHODS = [
-    "delete",
-    "get",
-    "head",
-    "options",
-    "post",
-    "put",
-    "trace",
-    "connect",
-    "other",
+    "delete",  # Forward HTTP request or response with DELETE method to ICAP server for further processing.
+    "get",  # Forward HTTP request or response with GET method to ICAP server for further processing.
+    "head",  # Forward HTTP request or response with HEAD method to ICAP server for further processing.
+    "options",  # Forward HTTP request or response with OPTIONS method to ICAP server for further processing.
+    "post",  # Forward HTTP request or response with POST method to ICAP server for further processing.
+    "put",  # Forward HTTP request or response with PUT method to ICAP server for further processing.
+    "trace",  # Forward HTTP request or response with TRACE method to ICAP server for further processing.
+    "connect",  # Forward HTTP request or response with CONNECT method to ICAP server for further processing.
+    "other",  # Forward HTTP request or response with All other methods to ICAP server for further processing.
 ]
 VALID_BODY_RESPONSE_REQ_HDR = [
-    "disable",
-    "enable",
+    "disable",  # Do not add req-hdr for response modification (respmod) processing.
+    "enable",  # Add req-hdr for response modification (respmod) processing.
 ]
 VALID_BODY_RESPMOD_DEFAULT_ACTION = [
-    "forward",
-    "bypass",
+    "forward",  # Forward response to ICAP server unless a rule specifies not to.
+    "bypass",  # Don't forward request to ICAP server unless a rule specifies to forward the request.
 ]
 VALID_BODY_ICAP_BLOCK_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable UTM log when infection found.
+    "enable",  # Enable UTM log when infection found.
 ]
 VALID_BODY_CHUNK_ENCAP = [
-    "disable",
-    "enable",
+    "disable",  # Do not encapsulate chunked data.
+    "enable",  # Encapsulate chunked data into a new chunk.
 ]
 VALID_BODY_EXTENSION_FEATURE = [
-    "scan-progress",
+    "scan-progress",  # Support X-Scan-Progress-Interval ICAP header.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -445,7 +445,7 @@ def validate_icap_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "request-server": True,
-        ...     "request": "disable",  # Valid enum value
+        ...     "request": "{'name': 'disable', 'help': 'Disable HTTP request passing to ICAP server.', 'label': 'Disable', 'description': 'Disable HTTP request passing to ICAP server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_icap_profile_post(payload)
         >>> assert is_valid == True

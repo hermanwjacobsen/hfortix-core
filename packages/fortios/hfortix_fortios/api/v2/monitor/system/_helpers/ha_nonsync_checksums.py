@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ha_nonsync_checksums",
     "category": "monitor",
     "api_path": "system/ha-nonsync-checksums",
-    "help": "Monitor endpoint for system/ha-nonsync-checksums",
+    "help": "List of HA non-sync checksums for members of HA cluster.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

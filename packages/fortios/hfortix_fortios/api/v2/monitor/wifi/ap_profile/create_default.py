@@ -56,7 +56,7 @@ class CreateDefault:
         """
         Retrieve wifi/ap_profile/create_default configuration.
 
-        Configuration for wifi/ap-profile/create-default
+        Create a default FortiAP profile for the specified platform.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

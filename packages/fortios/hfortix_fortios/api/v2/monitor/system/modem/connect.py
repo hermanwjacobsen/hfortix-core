@@ -56,7 +56,7 @@ class Connect:
         """
         Retrieve system/modem/connect configuration.
 
-        Configuration for system/modem/connect
+        Trigger a connect for the configured modem.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

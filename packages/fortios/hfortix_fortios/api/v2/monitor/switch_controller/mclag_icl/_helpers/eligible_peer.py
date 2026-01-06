@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/mclag_icl/eligible_peer",
     "category": "monitor",
     "api_path": "switch-controller/mclag-icl/eligible-peer",
-    "help": "Configuration for switch-controller/mclag-icl/eligible-peer",
+    "help": "Find a pair of FortiSwitches that are eligible to form a tier-1 MC-LAG.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

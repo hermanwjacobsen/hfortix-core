@@ -1,13 +1,13 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_BURST: Literal["enable", "disable"]
-VALID_BODY_WMM: Literal["enable", "disable"]
-VALID_BODY_WMM_UAPSD: Literal["enable", "disable"]
-VALID_BODY_CALL_ADMISSION_CONTROL: Literal["enable", "disable"]
-VALID_BODY_BANDWIDTH_ADMISSION_CONTROL: Literal["enable", "disable"]
-VALID_BODY_DSCP_WMM_MAPPING: Literal["enable", "disable"]
-VALID_BODY_WMM_DSCP_MARKING: Literal["enable", "disable"]
+VALID_BODY_BURST: Literal[{"description": "Enable client rate burst", "help": "Enable client rate burst.", "label": "Enable", "name": "enable"}, {"description": "Disable client rate burst", "help": "Disable client rate burst.", "label": "Disable", "name": "disable"}]
+VALID_BODY_WMM: Literal[{"description": "Enable WiFi multi-media (WMM) control", "help": "Enable WiFi multi-media (WMM) control.", "label": "Enable", "name": "enable"}, {"description": "Disable WiFi multi-media (WMM) control", "help": "Disable WiFi multi-media (WMM) control.", "label": "Disable", "name": "disable"}]
+VALID_BODY_WMM_UAPSD: Literal[{"description": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CALL_ADMISSION_CONTROL: Literal[{"description": "Enable WMM call admission control", "help": "Enable WMM call admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM call admission control", "help": "Disable WMM call admission control.", "label": "Disable", "name": "disable"}]
+VALID_BODY_BANDWIDTH_ADMISSION_CONTROL: Literal[{"description": "Enable WMM bandwidth admission control", "help": "Enable WMM bandwidth admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM bandwidth admission control", "help": "Disable WMM bandwidth admission control.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DSCP_WMM_MAPPING: Literal[{"description": "Enable Differentiated Services Code Point (DSCP) mapping", "help": "Enable Differentiated Services Code Point (DSCP) mapping.", "label": "Enable", "name": "enable"}, {"description": "Disable Differentiated Services Code Point (DSCP) mapping", "help": "Disable Differentiated Services Code Point (DSCP) mapping.", "label": "Disable", "name": "disable"}]
+VALID_BODY_WMM_DSCP_MARKING: Literal[{"description": "Enable WMM Differentiated Services Code Point (DSCP) marking", "help": "Enable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Differentiated Services Code Point (DSCP) marking", "help": "Disable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

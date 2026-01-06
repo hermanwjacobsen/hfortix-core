@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "fortiview/realtime_proxy_statistics",
     "category": "monitor",
     "api_path": "fortiview/realtime-proxy-statistics",
-    "help": "Configuration for fortiview/realtime-proxy-statistics",
+    "help": "Retrieve realtime drill-down and summary data for proxy session FortiView statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

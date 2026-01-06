@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/object/usage",
     "category": "monitor",
     "api_path": "system/object/usage",
-    "help": "Configuration for system/object/usage",
+    "help": "Retrieve all objects that are currently using as well as objects that can use the given object.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

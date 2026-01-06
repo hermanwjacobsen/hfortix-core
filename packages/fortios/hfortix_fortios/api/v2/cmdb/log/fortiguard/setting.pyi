@@ -10,19 +10,19 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging to FortiCloud.
-    upload_option: NotRequired[Literal["store-and-upload", "realtime", "1-minute", "5-minute"]]  # Configure how log messages are sent to FortiCloud.
-    upload_interval: NotRequired[Literal["daily", "weekly", "monthly"]]  # Frequency of uploading log files to FortiCloud.
+    status: NotRequired[Literal[{"description": "Enable logging to FortiCloud", "help": "Enable logging to FortiCloud.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to FortiCloud", "help": "Disable logging to FortiCloud.", "label": "Disable", "name": "disable"}]]  # Enable/disable logging to FortiCloud.
+    upload_option: NotRequired[Literal[{"description": "Log to the hard disk and then upload logs to FortiCloud", "help": "Log to the hard disk and then upload logs to FortiCloud.", "label": "Store And Upload", "name": "store-and-upload"}, {"description": "Log directly to FortiCloud in real time", "help": "Log directly to FortiCloud in real time.", "label": "Realtime", "name": "realtime"}, {"description": "Log directly to FortiCloud at 1-minute intervals", "help": "Log directly to FortiCloud at 1-minute intervals.", "label": "1 Minute", "name": "1-minute"}, {"description": "Log directly to FortiCloud at 5-minute intervals", "help": "Log directly to FortiCloud at 5-minute intervals.", "label": "5 Minute", "name": "5-minute"}]]  # Configure how log messages are sent to FortiCloud.
+    upload_interval: NotRequired[Literal[{"description": "Upload log files to FortiCloud once a day", "help": "Upload log files to FortiCloud once a day.", "label": "Daily", "name": "daily"}, {"description": "Upload log files to FortiCloud once a week", "help": "Upload log files to FortiCloud once a week.", "label": "Weekly", "name": "weekly"}, {"description": "Upload log files to FortiCloud once a month", "help": "Upload log files to FortiCloud once a month.", "label": "Monthly", "name": "monthly"}]]  # Frequency of uploading log files to FortiCloud.
     upload_day: NotRequired[str]  # Day of week to roll logs.
     upload_time: NotRequired[str]  # Time of day to roll logs (hh:mm).
-    priority: NotRequired[Literal["default", "low"]]  # Set log transmission priority.
+    priority: NotRequired[Literal[{"description": "Set FortiCloud log transmission priority to default", "help": "Set FortiCloud log transmission priority to default.", "label": "Default", "name": "default"}, {"description": "Set FortiCloud log transmission priority to low", "help": "Set FortiCloud log transmission priority to low.", "label": "Low", "name": "low"}]]  # Set log transmission priority.
     max_log_rate: NotRequired[int]  # FortiCloud maximum log rate in MBps (0 = unlimited).
-    access_config: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiCloud access to configuration and data.
-    enc_algorithm: NotRequired[Literal["high-medium", "high", "low"]]  # Configure the level of SSL protection for secure communicati
-    ssl_min_proto_version: NotRequired[Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]]  # Minimum supported protocol version for SSL/TLS connections (
+    access_config: NotRequired[Literal[{"description": "Enable FortiCloud access to configuration and data", "help": "Enable FortiCloud access to configuration and data.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiCloud access to configuration and data", "help": "Disable FortiCloud access to configuration and data.", "label": "Disable", "name": "disable"}]]  # Enable/disable FortiCloud access to configuration and data.
+    enc_algorithm: NotRequired[Literal[{"description": "Encrypt logs using high and medium encryption", "help": "Encrypt logs using high and medium encryption.", "label": "High Medium", "name": "high-medium"}, {"description": "Encrypt logs using high encryption", "help": "Encrypt logs using high encryption.", "label": "High", "name": "high"}, {"description": "Encrypt logs using low encryption", "help": "Encrypt logs using low encryption.", "label": "Low", "name": "low"}]]  # Configure the level of SSL protection for secure communicati
+    ssl_min_proto_version: NotRequired[Literal[{"description": "Follow system global setting", "help": "Follow system global setting.", "label": "Default", "name": "default"}, {"description": "SSLv3", "help": "SSLv3.", "label": "Sslv3", "name": "SSLv3"}, {"description": "TLSv1", "help": "TLSv1.", "label": "Tlsv1", "name": "TLSv1"}, {"description": "TLSv1", "help": "TLSv1.1.", "label": "Tlsv1 1", "name": "TLSv1-1"}, {"description": "TLSv1", "help": "TLSv1.2.", "label": "Tlsv1 2", "name": "TLSv1-2"}, {"description": "TLSv1", "help": "TLSv1.3.", "label": "Tlsv1 3", "name": "TLSv1-3"}]]  # Minimum supported protocol version for SSL/TLS connections (
     conn_timeout: NotRequired[int]  # FortiGate Cloud connection timeout in seconds.
     source_ip: NotRequired[str]  # Source IP address used to connect FortiCloud.
-    interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
+    interface_select_method: NotRequired[Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]]  # Specify how to select outgoing interface to reach server.
     interface: str  # Specify outgoing interface to reach server.
     vrf_select: NotRequired[int]  # VRF ID used for connection to server.
 
@@ -51,19 +51,19 @@ class Setting:
     def post(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
-        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        status: Literal[{"description": "Enable logging to FortiCloud", "help": "Enable logging to FortiCloud.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to FortiCloud", "help": "Disable logging to FortiCloud.", "label": "Disable", "name": "disable"}] | None = ...,
+        upload_option: Literal[{"description": "Log to the hard disk and then upload logs to FortiCloud", "help": "Log to the hard disk and then upload logs to FortiCloud.", "label": "Store And Upload", "name": "store-and-upload"}, {"description": "Log directly to FortiCloud in real time", "help": "Log directly to FortiCloud in real time.", "label": "Realtime", "name": "realtime"}, {"description": "Log directly to FortiCloud at 1-minute intervals", "help": "Log directly to FortiCloud at 1-minute intervals.", "label": "1 Minute", "name": "1-minute"}, {"description": "Log directly to FortiCloud at 5-minute intervals", "help": "Log directly to FortiCloud at 5-minute intervals.", "label": "5 Minute", "name": "5-minute"}] | None = ...,
+        upload_interval: Literal[{"description": "Upload log files to FortiCloud once a day", "help": "Upload log files to FortiCloud once a day.", "label": "Daily", "name": "daily"}, {"description": "Upload log files to FortiCloud once a week", "help": "Upload log files to FortiCloud once a week.", "label": "Weekly", "name": "weekly"}, {"description": "Upload log files to FortiCloud once a month", "help": "Upload log files to FortiCloud once a month.", "label": "Monthly", "name": "monthly"}] | None = ...,
         upload_day: str | None = ...,
         upload_time: str | None = ...,
-        priority: Literal["default", "low"] | None = ...,
+        priority: Literal[{"description": "Set FortiCloud log transmission priority to default", "help": "Set FortiCloud log transmission priority to default.", "label": "Default", "name": "default"}, {"description": "Set FortiCloud log transmission priority to low", "help": "Set FortiCloud log transmission priority to low.", "label": "Low", "name": "low"}] | None = ...,
         max_log_rate: int | None = ...,
-        access_config: Literal["enable", "disable"] | None = ...,
-        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        access_config: Literal[{"description": "Enable FortiCloud access to configuration and data", "help": "Enable FortiCloud access to configuration and data.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiCloud access to configuration and data", "help": "Disable FortiCloud access to configuration and data.", "label": "Disable", "name": "disable"}] | None = ...,
+        enc_algorithm: Literal[{"description": "Encrypt logs using high and medium encryption", "help": "Encrypt logs using high and medium encryption.", "label": "High Medium", "name": "high-medium"}, {"description": "Encrypt logs using high encryption", "help": "Encrypt logs using high encryption.", "label": "High", "name": "high"}, {"description": "Encrypt logs using low encryption", "help": "Encrypt logs using low encryption.", "label": "Low", "name": "low"}] | None = ...,
+        ssl_min_proto_version: Literal[{"description": "Follow system global setting", "help": "Follow system global setting.", "label": "Default", "name": "default"}, {"description": "SSLv3", "help": "SSLv3.", "label": "Sslv3", "name": "SSLv3"}, {"description": "TLSv1", "help": "TLSv1.", "label": "Tlsv1", "name": "TLSv1"}, {"description": "TLSv1", "help": "TLSv1.1.", "label": "Tlsv1 1", "name": "TLSv1-1"}, {"description": "TLSv1", "help": "TLSv1.2.", "label": "Tlsv1 2", "name": "TLSv1-2"}, {"description": "TLSv1", "help": "TLSv1.3.", "label": "Tlsv1 3", "name": "TLSv1-3"}] | None = ...,
         conn_timeout: int | None = ...,
         source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
@@ -74,19 +74,19 @@ class Setting:
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        upload_option: Literal["store-and-upload", "realtime", "1-minute", "5-minute"] | None = ...,
-        upload_interval: Literal["daily", "weekly", "monthly"] | None = ...,
+        status: Literal[{"description": "Enable logging to FortiCloud", "help": "Enable logging to FortiCloud.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to FortiCloud", "help": "Disable logging to FortiCloud.", "label": "Disable", "name": "disable"}] | None = ...,
+        upload_option: Literal[{"description": "Log to the hard disk and then upload logs to FortiCloud", "help": "Log to the hard disk and then upload logs to FortiCloud.", "label": "Store And Upload", "name": "store-and-upload"}, {"description": "Log directly to FortiCloud in real time", "help": "Log directly to FortiCloud in real time.", "label": "Realtime", "name": "realtime"}, {"description": "Log directly to FortiCloud at 1-minute intervals", "help": "Log directly to FortiCloud at 1-minute intervals.", "label": "1 Minute", "name": "1-minute"}, {"description": "Log directly to FortiCloud at 5-minute intervals", "help": "Log directly to FortiCloud at 5-minute intervals.", "label": "5 Minute", "name": "5-minute"}] | None = ...,
+        upload_interval: Literal[{"description": "Upload log files to FortiCloud once a day", "help": "Upload log files to FortiCloud once a day.", "label": "Daily", "name": "daily"}, {"description": "Upload log files to FortiCloud once a week", "help": "Upload log files to FortiCloud once a week.", "label": "Weekly", "name": "weekly"}, {"description": "Upload log files to FortiCloud once a month", "help": "Upload log files to FortiCloud once a month.", "label": "Monthly", "name": "monthly"}] | None = ...,
         upload_day: str | None = ...,
         upload_time: str | None = ...,
-        priority: Literal["default", "low"] | None = ...,
+        priority: Literal[{"description": "Set FortiCloud log transmission priority to default", "help": "Set FortiCloud log transmission priority to default.", "label": "Default", "name": "default"}, {"description": "Set FortiCloud log transmission priority to low", "help": "Set FortiCloud log transmission priority to low.", "label": "Low", "name": "low"}] | None = ...,
         max_log_rate: int | None = ...,
-        access_config: Literal["enable", "disable"] | None = ...,
-        enc_algorithm: Literal["high-medium", "high", "low"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
+        access_config: Literal[{"description": "Enable FortiCloud access to configuration and data", "help": "Enable FortiCloud access to configuration and data.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiCloud access to configuration and data", "help": "Disable FortiCloud access to configuration and data.", "label": "Disable", "name": "disable"}] | None = ...,
+        enc_algorithm: Literal[{"description": "Encrypt logs using high and medium encryption", "help": "Encrypt logs using high and medium encryption.", "label": "High Medium", "name": "high-medium"}, {"description": "Encrypt logs using high encryption", "help": "Encrypt logs using high encryption.", "label": "High", "name": "high"}, {"description": "Encrypt logs using low encryption", "help": "Encrypt logs using low encryption.", "label": "Low", "name": "low"}] | None = ...,
+        ssl_min_proto_version: Literal[{"description": "Follow system global setting", "help": "Follow system global setting.", "label": "Default", "name": "default"}, {"description": "SSLv3", "help": "SSLv3.", "label": "Sslv3", "name": "SSLv3"}, {"description": "TLSv1", "help": "TLSv1.", "label": "Tlsv1", "name": "TLSv1"}, {"description": "TLSv1", "help": "TLSv1.1.", "label": "Tlsv1 1", "name": "TLSv1-1"}, {"description": "TLSv1", "help": "TLSv1.2.", "label": "Tlsv1 2", "name": "TLSv1-2"}, {"description": "TLSv1", "help": "TLSv1.3.", "label": "Tlsv1 3", "name": "TLSv1-3"}] | None = ...,
         conn_timeout: int | None = ...,
         source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,

@@ -102,21 +102,21 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MACHINE_LEARNING_DETECTION = [
-    "enable",
-    "monitor",
-    "disable",
+    "enable",  # Enable machine learning based malware detection.
+    "monitor",  # Enable machine learning based malware detection for monitoring only.
+    "disable",  # Disable machine learning based malware detection.
 ]
 VALID_BODY_USE_EXTREME_DB = [
-    "enable",
-    "disable",
+    "enable",  # Enable extreme AVDB.
+    "disable",  # Disable extreme AVDB.
 ]
 VALID_BODY_GRAYWARE = [
-    "enable",
-    "disable",
+    "enable",  # Enable grayware detection.
+    "disable",  # Disable grayware detection.
 ]
 VALID_BODY_CACHE_INFECTED_RESULT = [
-    "enable",
-    "disable",
+    "enable",  # Enable cache of infected scan results.
+    "disable",  # Disable cache of infected scan results.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -241,7 +241,7 @@ def validate_antivirus_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "machine-learning-detection": "enable",  # Valid enum value
+        ...     "machine-learning-detection": "{'name': 'enable', 'help': 'Enable machine learning based malware detection.', 'label': 'Enable', 'description': 'Enable machine learning based malware detection'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_antivirus_settings_post(payload)
         >>> assert is_valid == True

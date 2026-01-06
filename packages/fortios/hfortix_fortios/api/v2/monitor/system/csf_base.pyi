@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Csf:
     """
-    Monitor endpoint for system/csf/pending-authorizations
+    Retrieve a full tree of downstream FortiGates registered to the Security Fabric.
     
     Path: system/csf
     Category: monitor

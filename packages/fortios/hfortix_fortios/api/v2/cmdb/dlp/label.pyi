@@ -11,8 +11,8 @@ class LabelPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Name of table containing the label.
-    type: NotRequired[Literal["mpip", "fortidata"]]  # Label type.
-    mpip_type: NotRequired[Literal["remote", "local"]]  # MPIP label type.
+    type: NotRequired[Literal[{"description": "Microsoft Purview Information Protection", "help": "Microsoft Purview Information Protection.", "label": "Mpip", "name": "mpip"}, {"help": "FortiData.", "label": "Fortidata", "name": "fortidata"}]]  # Label type.
+    mpip_type: NotRequired[Literal[{"description": "Remotely fetched MPIP labels", "help": "Remotely fetched MPIP labels.", "label": "Remote", "name": "remote"}, {"description": "Locally configured MPIP labels", "help": "Locally configured MPIP labels.", "label": "Local", "name": "local"}]]  # MPIP label type.
     connector: NotRequired[str]  # Name of SDN connector.
     comment: NotRequired[str]  # Optional comments.
     entries: list[dict[str, Any]]  # DLP label entries.
@@ -44,8 +44,8 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
-        mpip_type: Literal["remote", "local"] | None = ...,
+        type: Literal[{"description": "Microsoft Purview Information Protection", "help": "Microsoft Purview Information Protection.", "label": "Mpip", "name": "mpip"}, {"help": "FortiData.", "label": "Fortidata", "name": "fortidata"}] | None = ...,
+        mpip_type: Literal[{"description": "Remotely fetched MPIP labels", "help": "Remotely fetched MPIP labels.", "label": "Remote", "name": "remote"}, {"description": "Locally configured MPIP labels", "help": "Locally configured MPIP labels.", "label": "Local", "name": "local"}] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: list[dict[str, Any]] | None = ...,
@@ -58,8 +58,8 @@ class Label:
         self,
         payload_dict: LabelPayload | None = ...,
         name: str | None = ...,
-        type: Literal["mpip", "fortidata"] | None = ...,
-        mpip_type: Literal["remote", "local"] | None = ...,
+        type: Literal[{"description": "Microsoft Purview Information Protection", "help": "Microsoft Purview Information Protection.", "label": "Mpip", "name": "mpip"}, {"help": "FortiData.", "label": "Fortidata", "name": "fortidata"}] | None = ...,
+        mpip_type: Literal[{"description": "Remotely fetched MPIP labels", "help": "Remotely fetched MPIP labels.", "label": "Remote", "name": "remote"}, {"description": "Locally configured MPIP labels", "help": "Locally configured MPIP labels.", "label": "Local", "name": "local"}] | None = ...,
         connector: str | None = ...,
         comment: str | None = ...,
         entries: list[dict[str, Any]] | None = ...,

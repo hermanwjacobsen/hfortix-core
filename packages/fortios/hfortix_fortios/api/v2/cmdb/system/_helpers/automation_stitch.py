@@ -139,7 +139,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Required in action chain.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Required in action chain.", "label": "Enable", "name": "enable"}, {"help": "Not required in action chain.", "label": "Disable", "name": "disable"}],
         },
     },
     "destination": {
@@ -156,12 +156,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable stitch.
+    "disable",  # Disable stitch.
 ]
 VALID_BODY_CONDITION_LOGIC = [
-    "and",
-    "or",
+    "and",  # All specified conditions must be met.
+    "or",  # At least one specified condition needs to be met.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -291,7 +291,7 @@ def validate_system_automation_stitch_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "trigger": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable stitch.', 'label': 'Enable', 'description': 'Enable stitch'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_automation_stitch_post(payload)
         >>> assert is_valid == True

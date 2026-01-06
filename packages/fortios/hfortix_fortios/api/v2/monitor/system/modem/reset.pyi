@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for system/modem/reset
+    Reset statistics for internal/external configured modem.
     
     Path: system/modem/reset
     Category: monitor

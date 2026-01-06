@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaBackupHbUsed:
     """
-    Configuration for system/ha-backup-hb-used
+    Get HA backup heartbeat interface usage.
     
     Path: system/ha_backup_hb_used
     Category: monitor

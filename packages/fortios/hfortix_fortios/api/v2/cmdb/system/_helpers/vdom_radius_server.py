@@ -98,8 +98,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable the RSSO RADIUS server for this VDOM.
+    "disable",  # Disable the RSSO RADIUS server for this VDOM.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -229,7 +229,7 @@ def validate_system_vdom_radius_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "radius-server-vdom": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable the RSSO RADIUS server for this VDOM.', 'label': 'Enable', 'description': 'Enable the RSSO RADIUS server for this VDOM'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_vdom_radius_server_post(payload)
         >>> assert is_valid == True

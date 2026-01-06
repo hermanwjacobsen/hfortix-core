@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PoeReset:
     """
-    Configuration for switch-controller/managed-switch/poe-reset
+    Reset PoE on a given FortiSwitch's port.
     
     Path: switch_controller/managed_switch/poe_reset
     Category: monitor

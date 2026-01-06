@@ -63,6 +63,7 @@ FIELDS_WITH_DEFAULTS = {
     "cert-auth-cookie": "enable",
     "transaction-based": "disable",
     "web-portal": "enable",
+    "session-logout": "disable",
 }
 
 # ============================================================================
@@ -99,6 +100,7 @@ FIELD_TYPES = {
     "transaction-based": "option",  # Enable/disable transaction based authentication (default = d
     "web-portal": "option",  # Enable/disable web portal for proxy transparent policy (defa
     "comments": "var-string",  # Comment.
+    "session-logout": "option",  # Enable/disable logout of a user from the current session.
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -121,6 +123,7 @@ FIELD_DESCRIPTIONS = {
     "transaction-based": "Enable/disable transaction based authentication (default = disable).",
     "web-portal": "Enable/disable web portal for proxy transparent policy (default = enable).",
     "comments": "Comment.",
+    "session-logout": "Enable/disable logout of a user from the current session.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -182,39 +185,43 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this authentication rule.
+    "disable",  # Disable this authentication rule.
 ]
 VALID_BODY_PROTOCOL = [
-    "http",
-    "ftp",
-    "socks",
-    "ssh",
-    "ztna-portal",
+    "http",  # HTTP traffic is matched and authentication is required.
+    "ftp",  # FTP traffic is matched and authentication is required.
+    "socks",  # SOCKS traffic is matched and authentication is required.
+    "ssh",  # SSH traffic is matched and authentication is required.
+    "ztna-portal",  # ZTNA portal traffic is matched and authentication is required.
 ]
 VALID_BODY_IP_BASED = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP-based authentication.
+    "disable",  # Disable IP-based authentication.
 ]
 VALID_BODY_WEB_AUTH_COOKIE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Web authentication cookie.
+    "disable",  # Disable Web authentication cookie.
 ]
 VALID_BODY_CORS_STATEFUL = [
-    "enable",
-    "disable",
+    "enable",  # Enable allowance of CORS access
+    "disable",  # Disable allowance of CORS access
 ]
 VALID_BODY_CERT_AUTH_COOKIE = [
-    "enable",
-    "disable",
+    "enable",  # Enable device certificate as authentication cookie.
+    "disable",  # Disable device certificate as authentication cookie.
 ]
 VALID_BODY_TRANSACTION_BASED = [
-    "enable",
-    "disable",
+    "enable",  # Enable transaction based authentication.
+    "disable",  # Disable transaction based authentication.
 ]
 VALID_BODY_WEB_PORTAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable web-portal.
+    "disable",  # Disable web-portal.
+]
+VALID_BODY_SESSION_LOGOUT = [
+    "enable",  # Enable logout of a user from the current session.
+    "disable",  # Disable logout of a user from the current session.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -342,7 +349,7 @@ def validate_authentication_rule_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable this authentication rule.', 'label': 'Enable', 'description': 'Enable this authentication rule'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_authentication_rule_post(payload)
         >>> assert is_valid == True
@@ -445,6 +452,16 @@ def validate_authentication_rule_post(
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WEB_PORTAL)}"
             error_msg += f"\n  → Example: web-portal='{{ VALID_BODY_WEB_PORTAL[0] }}'"
             return (False, error_msg)
+    if "session-logout" in payload:
+        value = payload["session-logout"]
+        if value not in VALID_BODY_SESSION_LOGOUT:
+            desc = FIELD_DESCRIPTIONS.get("session-logout", "")
+            error_msg = f"Invalid value for 'session-logout': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SESSION_LOGOUT)}"
+            error_msg += f"\n  → Example: session-logout='{{ VALID_BODY_SESSION_LOGOUT[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -528,6 +545,13 @@ def validate_authentication_rule_put(
             return (
                 False,
                 f"Invalid value for 'web-portal'='{value}'. Must be one of: {', '.join(VALID_BODY_WEB_PORTAL)}",
+            )
+    if "session-logout" in payload:
+        value = payload["session-logout"]
+        if value not in VALID_BODY_SESSION_LOGOUT:
+            return (
+                False,
+                f"Invalid value for 'session-logout'='{value}'. Must be one of: {', '.join(VALID_BODY_SESSION_LOGOUT)}",
             )
 
     return (True, None)
@@ -817,9 +841,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure Authentication Rules.",
-    "total_fields": 18,
+    "total_fields": 19,
     "required_fields_count": 0,
-    "fields_with_defaults_count": 12,
+    "fields_with_defaults_count": 13,
 }
 
 

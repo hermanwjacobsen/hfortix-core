@@ -12,7 +12,7 @@ class WagProfilePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Tunnel profile name.
     comment: NotRequired[str]  # Comment.
-    tunnel_type: NotRequired[Literal["l2tpv3", "gre"]]  # Tunnel type.
+    tunnel_type: NotRequired[Literal[{"description": "L2TPV3 Ethernet Pseudowire", "help": "L2TPV3 Ethernet Pseudowire.", "label": "L2Tpv3", "name": "l2tpv3"}, {"description": "GRE Ethernet tunnel", "help": "GRE Ethernet tunnel.", "label": "Gre", "name": "gre"}]]  # Tunnel type.
     wag_ip: NotRequired[str]  # IP Address of the wireless access gateway.
     wag_port: NotRequired[int]  # UDP port of the wireless access gateway.
     ping_interval: NotRequired[int]  # Interval between two tunnel monitoring echo packets (1 - 655
@@ -48,7 +48,7 @@ class WagProfile:
         payload_dict: WagProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        tunnel_type: Literal["l2tpv3", "gre"] | None = ...,
+        tunnel_type: Literal[{"description": "L2TPV3 Ethernet Pseudowire", "help": "L2TPV3 Ethernet Pseudowire.", "label": "L2Tpv3", "name": "l2tpv3"}, {"description": "GRE Ethernet tunnel", "help": "GRE Ethernet tunnel.", "label": "Gre", "name": "gre"}] | None = ...,
         wag_ip: str | None = ...,
         wag_port: int | None = ...,
         ping_interval: int | None = ...,
@@ -65,7 +65,7 @@ class WagProfile:
         payload_dict: WagProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        tunnel_type: Literal["l2tpv3", "gre"] | None = ...,
+        tunnel_type: Literal[{"description": "L2TPV3 Ethernet Pseudowire", "help": "L2TPV3 Ethernet Pseudowire.", "label": "L2Tpv3", "name": "l2tpv3"}, {"description": "GRE Ethernet tunnel", "help": "GRE Ethernet tunnel.", "label": "Gre", "name": "gre"}] | None = ...,
         wag_ip: str | None = ...,
         wag_port: int | None = ...,
         ping_interval: int | None = ...,

@@ -11,33 +11,34 @@ class AccprofilePayload(TypedDict, total=False):
         }
     """
     name: str  # Profile name.
-    scope: NotRequired[Literal["vdom", "global"]]  # Scope of admin access: global or specific VDOM(s).
+    scope: NotRequired[Literal[{"description": "VDOM access", "help": "VDOM access.", "label": "Vdom", "name": "vdom"}, {"description": "Global access", "help": "Global access.", "label": "Global", "name": "global"}]]  # Scope of admin access: global or specific VDOM(s).
     comments: NotRequired[str]  # Comment.
-    secfabgrp: NotRequired[Literal["none", "read", "read-write"]]  # Security Fabric.
-    ftviewgrp: NotRequired[Literal["none", "read", "read-write"]]  # FortiView.
-    authgrp: NotRequired[Literal["none", "read", "read-write"]]  # Administrator access to Users and Devices.
-    sysgrp: NotRequired[Literal["none", "read", "read-write", "custom"]]  # System Configuration.
-    netgrp: NotRequired[Literal["none", "read", "read-write", "custom"]]  # Network Configuration.
-    loggrp: NotRequired[Literal["none", "read", "read-write", "custom"]]  # Administrator access to Logging and Reporting including view
-    fwgrp: NotRequired[Literal["none", "read", "read-write", "custom"]]  # Administrator access to the Firewall configuration.
-    vpngrp: NotRequired[Literal["none", "read", "read-write"]]  # Administrator access to IPsec, SSL, PPTP, and L2TP VPN.
-    utmgrp: NotRequired[Literal["none", "read", "read-write", "custom"]]  # Administrator access to Security Profiles.
-    wanoptgrp: NotRequired[Literal["none", "read", "read-write"]]  # Administrator access to WAN Opt & Cache.
-    wifi: NotRequired[Literal["none", "read", "read-write"]]  # Administrator access to the WiFi controller and Switch contr
+    secfabgrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}]]  # Security Fabric.
+    ftviewgrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}]]  # FortiView.
+    authgrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}]]  # Administrator access to Users and Devices.
+    sysgrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}]]  # System Configuration.
+    netgrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}]]  # Network Configuration.
+    loggrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}]]  # Administrator access to Logging and Reporting including view
+    fwgrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}]]  # Administrator access to the Firewall configuration.
+    vpngrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}]]  # Administrator access to IPsec, SSL, PPTP, and L2TP VPN.
+    utmgrp: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}]]  # Administrator access to Security Profiles.
+    wanoptgrp: NotRequired[Literal[{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}]]  # Administrator access to WAN Opt & Cache.
+    wifi: NotRequired[Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}]]  # Administrator access to the WiFi controller and Switch contr
     netgrp_permission: NotRequired[str]  # Custom network permission.
     sysgrp_permission: NotRequired[str]  # Custom system permission.
     fwgrp_permission: NotRequired[str]  # Custom firewall permission.
     loggrp_permission: NotRequired[str]  # Custom Log & Report permission.
     utmgrp_permission: NotRequired[str]  # Custom Security Profile permissions.
-    admintimeout_override: NotRequired[Literal["enable", "disable"]]  # Enable/disable overriding the global administrator idle time
+    secfabgrp_permission: NotRequired[str]  # Custom Security Fabric permissions.
+    admintimeout_override: NotRequired[Literal[{"description": "Enable overriding the global administrator idle timeout", "help": "Enable overriding the global administrator idle timeout.", "label": "Enable", "name": "enable"}, {"description": "Disable overriding the global administrator idle timeout", "help": "Disable overriding the global administrator idle timeout.", "label": "Disable", "name": "disable"}]]  # Enable/disable overriding the global administrator idle time
     admintimeout: NotRequired[int]  # Administrator timeout for this access profile (0 - 480 min, 
-    cli_diagnose: NotRequired[Literal["enable", "disable"]]  # Enable/disable permission to run diagnostic commands.
-    cli_get: NotRequired[Literal["enable", "disable"]]  # Enable/disable permission to run get commands.
-    cli_show: NotRequired[Literal["enable", "disable"]]  # Enable/disable permission to run show commands.
-    cli_exec: NotRequired[Literal["enable", "disable"]]  # Enable/disable permission to run execute commands.
-    cli_config: NotRequired[Literal["enable", "disable"]]  # Enable/disable permission to run config commands.
-    system_execute_ssh: NotRequired[Literal["enable", "disable"]]  # Enable/disable permission to execute SSH commands.
-    system_execute_telnet: NotRequired[Literal["enable", "disable"]]  # Enable/disable permission to execute TELNET commands.
+    cli_diagnose: NotRequired[Literal[{"description": "Enable permission to run diagnostic commands", "help": "Enable permission to run diagnostic commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run diagnostic commands", "help": "Disable permission to run diagnostic commands.", "label": "Disable", "name": "disable"}]]  # Enable/disable permission to run diagnostic commands.
+    cli_get: NotRequired[Literal[{"description": "Enable permission to run get commands", "help": "Enable permission to run get commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run get commands", "help": "Disable permission to run get commands.", "label": "Disable", "name": "disable"}]]  # Enable/disable permission to run get commands.
+    cli_show: NotRequired[Literal[{"description": "Enable permission to run show commands", "help": "Enable permission to run show commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run show commands", "help": "Disable permission to run show commands.", "label": "Disable", "name": "disable"}]]  # Enable/disable permission to run show commands.
+    cli_exec: NotRequired[Literal[{"description": "Enable permission to run execute commands", "help": "Enable permission to run execute commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run execute commands", "help": "Disable permission to run execute commands.", "label": "Disable", "name": "disable"}]]  # Enable/disable permission to run execute commands.
+    cli_config: NotRequired[Literal[{"description": "Enable permission to run config commands", "help": "Enable permission to run config commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run config commands", "help": "Disable permission to run config commands.", "label": "Disable", "name": "disable"}]]  # Enable/disable permission to run config commands.
+    system_execute_ssh: NotRequired[Literal[{"description": "Enable permission to execute SSH commands", "help": "Enable permission to execute SSH commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to execute SSH commands", "help": "Disable permission to execute SSH commands.", "label": "Disable", "name": "disable"}]]  # Enable/disable permission to execute SSH commands.
+    system_execute_telnet: NotRequired[Literal[{"description": "Enable permission to execute TELNET commands", "help": "Enable permission to execute TELNET commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to execute TELNET commands", "help": "Disable permission to execute TELNET commands.", "label": "Disable", "name": "disable"}]]  # Enable/disable permission to execute TELNET commands.
 
 
 class Accprofile:
@@ -66,33 +67,34 @@ class Accprofile:
         self,
         payload_dict: AccprofilePayload | None = ...,
         name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
+        scope: Literal[{"description": "VDOM access", "help": "VDOM access.", "label": "Vdom", "name": "vdom"}, {"description": "Global access", "help": "Global access.", "label": "Global", "name": "global"}] | None = ...,
         comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
+        secfabgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        ftviewgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        authgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        sysgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        netgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        loggrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        fwgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        vpngrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        utmgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        wanoptgrp: Literal[{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        wifi: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
         netgrp_permission: str | None = ...,
         sysgrp_permission: str | None = ...,
         fwgrp_permission: str | None = ...,
         loggrp_permission: str | None = ...,
         utmgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
+        secfabgrp_permission: str | None = ...,
+        admintimeout_override: Literal[{"description": "Enable overriding the global administrator idle timeout", "help": "Enable overriding the global administrator idle timeout.", "label": "Enable", "name": "enable"}, {"description": "Disable overriding the global administrator idle timeout", "help": "Disable overriding the global administrator idle timeout.", "label": "Disable", "name": "disable"}] | None = ...,
         admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
+        cli_diagnose: Literal[{"description": "Enable permission to run diagnostic commands", "help": "Enable permission to run diagnostic commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run diagnostic commands", "help": "Disable permission to run diagnostic commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_get: Literal[{"description": "Enable permission to run get commands", "help": "Enable permission to run get commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run get commands", "help": "Disable permission to run get commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_show: Literal[{"description": "Enable permission to run show commands", "help": "Enable permission to run show commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run show commands", "help": "Disable permission to run show commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_exec: Literal[{"description": "Enable permission to run execute commands", "help": "Enable permission to run execute commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run execute commands", "help": "Disable permission to run execute commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_config: Literal[{"description": "Enable permission to run config commands", "help": "Enable permission to run config commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run config commands", "help": "Disable permission to run config commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        system_execute_ssh: Literal[{"description": "Enable permission to execute SSH commands", "help": "Enable permission to execute SSH commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to execute SSH commands", "help": "Disable permission to execute SSH commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        system_execute_telnet: Literal[{"description": "Enable permission to execute TELNET commands", "help": "Enable permission to execute TELNET commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to execute TELNET commands", "help": "Disable permission to execute TELNET commands.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -102,33 +104,34 @@ class Accprofile:
         self,
         payload_dict: AccprofilePayload | None = ...,
         name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
+        scope: Literal[{"description": "VDOM access", "help": "VDOM access.", "label": "Vdom", "name": "vdom"}, {"description": "Global access", "help": "Global access.", "label": "Global", "name": "global"}] | None = ...,
         comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
+        secfabgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        ftviewgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        authgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        sysgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        netgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        loggrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        fwgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        vpngrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        utmgrp: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}, {"description": "Customized access", "help": "Customized access.", "label": "Custom", "name": "custom"}] | None = ...,
+        wanoptgrp: Literal[{"help": "No access.", "label": "None", "name": "none"}, {"help": "Read access.", "label": "Read", "name": "read"}, {"help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
+        wifi: Literal[{"description": "No access", "help": "No access.", "label": "None", "name": "none"}, {"description": "Read access", "help": "Read access.", "label": "Read", "name": "read"}, {"description": "Read/write access", "help": "Read/write access.", "label": "Read Write", "name": "read-write"}] | None = ...,
         netgrp_permission: str | None = ...,
         sysgrp_permission: str | None = ...,
         fwgrp_permission: str | None = ...,
         loggrp_permission: str | None = ...,
         utmgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
+        secfabgrp_permission: str | None = ...,
+        admintimeout_override: Literal[{"description": "Enable overriding the global administrator idle timeout", "help": "Enable overriding the global administrator idle timeout.", "label": "Enable", "name": "enable"}, {"description": "Disable overriding the global administrator idle timeout", "help": "Disable overriding the global administrator idle timeout.", "label": "Disable", "name": "disable"}] | None = ...,
         admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
+        cli_diagnose: Literal[{"description": "Enable permission to run diagnostic commands", "help": "Enable permission to run diagnostic commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run diagnostic commands", "help": "Disable permission to run diagnostic commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_get: Literal[{"description": "Enable permission to run get commands", "help": "Enable permission to run get commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run get commands", "help": "Disable permission to run get commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_show: Literal[{"description": "Enable permission to run show commands", "help": "Enable permission to run show commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run show commands", "help": "Disable permission to run show commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_exec: Literal[{"description": "Enable permission to run execute commands", "help": "Enable permission to run execute commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run execute commands", "help": "Disable permission to run execute commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        cli_config: Literal[{"description": "Enable permission to run config commands", "help": "Enable permission to run config commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to run config commands", "help": "Disable permission to run config commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        system_execute_ssh: Literal[{"description": "Enable permission to execute SSH commands", "help": "Enable permission to execute SSH commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to execute SSH commands", "help": "Disable permission to execute SSH commands.", "label": "Disable", "name": "disable"}] | None = ...,
+        system_execute_telnet: Literal[{"description": "Enable permission to execute TELNET commands", "help": "Enable permission to execute TELNET commands.", "label": "Enable", "name": "enable"}, {"description": "Disable permission to execute TELNET commands", "help": "Disable permission to execute TELNET commands.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

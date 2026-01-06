@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/sdn_connector/update",
     "category": "monitor",
     "api_path": "system/sdn-connector/update",
-    "help": "Configuration for system/sdn-connector/update",
+    "help": "Update an SDN connector's connection status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

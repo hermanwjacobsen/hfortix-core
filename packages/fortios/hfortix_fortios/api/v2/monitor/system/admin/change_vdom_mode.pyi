@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ChangeVdomMode:
     """
-    Configuration for system/admin/change-vdom-mode
+    Switch between VDOM modes.
     
     Path: system/admin/change_vdom_mode
     Category: monitor

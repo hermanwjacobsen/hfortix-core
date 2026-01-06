@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/fortiguard/test_availability",
     "category": "monitor",
     "api_path": "system/fortiguard/test-availability",
-    "help": "Configuration for system/fortiguard/test-availability",
+    "help": "Test availability of FortiGuard services.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

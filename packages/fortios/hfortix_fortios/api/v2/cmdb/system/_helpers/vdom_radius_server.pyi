@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable the RSSO RADIUS server for this VDOM", "help": "Enable the RSSO RADIUS server for this VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable the RSSO RADIUS server for this VDOM", "help": "Disable the RSSO RADIUS server for this VDOM.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

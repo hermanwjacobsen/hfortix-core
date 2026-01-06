@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_IP_LOCAL_LEARNING: Literal["enable", "disable"]
-VALID_BODY_ARP_SUPPRESSION: Literal["enable", "disable"]
+VALID_BODY_IP_LOCAL_LEARNING: Literal[{"description": "Enable IP address local learning", "help": "Enable IP address local learning.", "label": "Enable", "name": "enable"}, {"description": "Disable IP address local learning", "help": "Disable IP address local learning.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ARP_SUPPRESSION: Literal[{"description": "Enable ARP suppression", "help": "Enable ARP suppression.", "label": "Enable", "name": "enable"}, {"description": "Disable ARP suppression", "help": "Disable ARP suppression.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

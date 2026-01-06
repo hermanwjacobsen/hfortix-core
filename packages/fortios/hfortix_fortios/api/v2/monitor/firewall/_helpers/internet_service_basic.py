@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/internet_service_basic",
     "category": "monitor",
     "api_path": "firewall/internet-service-basic",
-    "help": "Monitor endpoint for firewall/internet-service-basic",
+    "help": "List internet services with basic information.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

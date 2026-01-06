@@ -56,7 +56,7 @@ class Update:
         """
         Retrieve system/com_log/update configuration.
 
-        Configuration for system/com-log/update
+        Fetch system com-log file dump progress.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

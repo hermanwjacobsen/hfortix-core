@@ -56,7 +56,7 @@ class TestAvailability:
         """
         Retrieve system/fortiguard/test_availability configuration.
 
-        Configuration for system/fortiguard/test-availability
+        Test availability of FortiGuard services.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

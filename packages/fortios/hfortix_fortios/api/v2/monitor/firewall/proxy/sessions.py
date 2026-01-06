@@ -56,7 +56,7 @@ class Sessions:
         """
         Retrieve firewall/proxy/sessions configuration.
 
-        Configuration for firewall/proxy/sessions
+        List all active proxy sessions (optionally filtered).
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

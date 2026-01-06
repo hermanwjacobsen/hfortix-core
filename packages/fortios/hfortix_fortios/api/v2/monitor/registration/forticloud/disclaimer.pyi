@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Disclaimer:
     """
-    Configuration for registration/forticloud/disclaimer
+    Retrieve the FortiCloud disclaimer.
     
     Path: registration/forticloud/disclaimer
     Category: monitor

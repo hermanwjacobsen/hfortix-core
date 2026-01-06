@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TxRx:
     """
-    Configuration for switch-controller/managed-switch/tx-rx
+    Retrieve the transceiver Tx and Rx power for a specific port.
     
     Path: switch_controller/managed_switch/tx_rx
     Category: monitor

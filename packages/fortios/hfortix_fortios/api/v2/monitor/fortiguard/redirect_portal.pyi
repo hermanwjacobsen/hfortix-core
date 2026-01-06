@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RedirectPortal:
     """
-    Configuration for fortiguard/redirect-portal
+    Retrieve the FortiGuard redirect portal IP.
     
     Path: fortiguard/redirect_portal
     Category: monitor

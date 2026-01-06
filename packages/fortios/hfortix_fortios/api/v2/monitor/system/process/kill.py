@@ -56,7 +56,7 @@ class Kill:
         """
         Retrieve system/process/kill configuration.
 
-        Configuration for system/process/kill
+        Kill a running process.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

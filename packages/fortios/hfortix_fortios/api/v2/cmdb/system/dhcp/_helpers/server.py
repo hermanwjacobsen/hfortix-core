@@ -268,7 +268,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served with this range.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable VCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable VCI matching.", "label": "Enable", "name": "enable"}],
         },
         "vci-string": {
             "type": "string",
@@ -278,7 +278,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable user class identifier (UCI) matching. When enabled only DHCP requests with a matching UCI are served with this range.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable UCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable UCI matching.", "label": "Enable", "name": "enable"}],
         },
         "uci-string": {
             "type": "string",
@@ -322,7 +322,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "DHCP option type.",
             "default": "hex",
-            "options": ["hex", "string", "ip", "fqdn"],
+            "options": [{"help": "DHCP option in hex.", "label": "Hex", "name": "hex"}, {"help": "DHCP option in string.", "label": "String", "name": "string"}, {"help": "DHCP option in IP.", "label": "Ip", "name": "ip"}, {"help": "DHCP option in domain search option format.", "label": "Fqdn", "name": "fqdn"}],
         },
         "value": {
             "type": "string",
@@ -339,7 +339,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served with this option.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable VCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable VCI matching.", "label": "Enable", "name": "enable"}],
         },
         "vci-string": {
             "type": "string",
@@ -349,7 +349,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable user class identifier (UCI) matching. When enabled only DHCP requests with a matching UCI are served with this option.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable UCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable UCI matching.", "label": "Enable", "name": "enable"}],
         },
         "uci-string": {
             "type": "string",
@@ -390,7 +390,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served with this range.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable VCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable VCI matching.", "label": "Enable", "name": "enable"}],
         },
         "vci-string": {
             "type": "string",
@@ -400,7 +400,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable user class identifier (UCI) matching. When enabled only DHCP requests with a matching UCI are served with this range.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable UCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable UCI matching.", "label": "Enable", "name": "enable"}],
         },
         "uci-string": {
             "type": "string",
@@ -427,7 +427,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "DHCP reserved-address type.",
             "default": "mac",
-            "options": ["mac", "option82"],
+            "options": [{"help": "Match with MAC address.", "label": "Mac", "name": "mac"}, {"help": "Match with DHCP option 82.", "label": "Option82", "name": "option82"}],
         },
         "ip": {
             "type": "ipv4-address",
@@ -445,13 +445,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Options for the DHCP server to configure the client with the reserved MAC address.",
             "default": "reserved",
-            "options": ["assign", "block", "reserved"],
+            "options": [{"help": "Configure the client with this MAC address like any other client.", "label": "Assign", "name": "assign"}, {"help": "Block the DHCP server from assigning IP settings to the client with this MAC address.", "label": "Block", "name": "block"}, {"help": "Assign the reserved IP address to the client with this MAC address.", "label": "Reserved", "name": "reserved"}],
         },
         "circuit-id-type": {
             "type": "option",
             "help": "DHCP option type.",
             "default": "string",
-            "options": ["hex", "string"],
+            "options": [{"help": "DHCP option in hex.", "label": "Hex", "name": "hex"}, {"help": "DHCP option in string.", "label": "String", "name": "string"}],
         },
         "circuit-id": {
             "type": "string",
@@ -463,7 +463,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "DHCP option type.",
             "default": "string",
-            "options": ["hex", "string"],
+            "options": [{"help": "DHCP option in hex.", "label": "Hex", "name": "hex"}, {"help": "DHCP option in string.", "label": "String", "name": "string"}],
         },
         "remote-id": {
             "type": "string",
@@ -482,75 +482,75 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Do not use this DHCP server configuration.
+    "enable",  # Use this DHCP server configuration.
 ]
 VALID_BODY_MAC_ACL_DEFAULT_ACTION = [
-    "assign",
-    "block",
+    "assign",  # Allow the DHCP server to assign IP settings to clients on the MAC access control list.
+    "block",  # Block the DHCP server from assigning IP settings to clients on the MAC access control list.
 ]
 VALID_BODY_FORTICLIENT_ON_NET_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable FortiClient On-Net Status.
+    "enable",  # Enable FortiClient On-Net Status.
 ]
 VALID_BODY_DNS_SERVICE = [
-    "local",
-    "default",
-    "specify",
+    "local",  # IP address of the interface the DHCP server is added to becomes the client's DNS server IP address.
+    "default",  # Clients are assigned the FortiGate's configured DNS servers.
+    "specify",  # Specify up to 3 DNS servers in the DHCP server configuration.
 ]
 VALID_BODY_WIFI_AC_SERVICE = [
-    "specify",
-    "local",
+    "specify",  # Specify up to 3 WiFi Access Controllers in the DHCP server configuration.
+    "local",  # IP address of the interface the DHCP server is added to becomes the client's WiFi Access Controller IP address.
 ]
 VALID_BODY_NTP_SERVICE = [
-    "local",
-    "default",
-    "specify",
+    "local",  # IP address of the interface the DHCP server is added to becomes the client's NTP server IP address.
+    "default",  # Clients are assigned the FortiGate's configured NTP servers.
+    "specify",  # Specify up to 3 NTP servers in the DHCP server configuration.
 ]
 VALID_BODY_TIMEZONE_OPTION = [
-    "disable",
-    "default",
-    "specify",
+    "disable",  # Do not set the client's time zone.
+    "default",  # Clients are assigned the FortiGate's configured time zone.
+    "specify",  # Specify the time zone to be assigned to DHCP clients.
 ]
 VALID_BODY_SERVER_TYPE = [
-    "regular",
-    "ipsec",
+    "regular",  # Regular DHCP service.
+    "ipsec",  # DHCP over IPsec service.
 ]
 VALID_BODY_IP_MODE = [
-    "range",
-    "usrgrp",
+    "range",  # Use range defined by start-ip/end-ip to assign client IP.
+    "usrgrp",  # Use user-group defined method to assign client IP.
 ]
 VALID_BODY_AUTO_CONFIGURATION = [
-    "disable",
-    "enable",
+    "disable",  # Disable auto configuration.
+    "enable",  # Enable auto configuration.
 ]
 VALID_BODY_DHCP_SETTINGS_FROM_FORTIIPAM = [
-    "disable",
-    "enable",
+    "disable",  # Disable populating of DHCP server settings from FortiIPAM.
+    "enable",  # Enable populating of DHCP server settings from FortiIPAM.
 ]
 VALID_BODY_AUTO_MANAGED_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of this DHCP server once this interface has been assigned an IP address from FortiIPAM.
+    "enable",  # Enable use of this DHCP server once this interface has been assigned an IP address from FortiIPAM.
 ]
 VALID_BODY_DDNS_UPDATE = [
-    "disable",
-    "enable",
+    "disable",  # Disable DDNS update for DHCP.
+    "enable",  # Enable DDNS update for DHCP.
 ]
 VALID_BODY_DDNS_UPDATE_OVERRIDE = [
-    "disable",
-    "enable",
+    "disable",  # Disable DDNS update override for DHCP.
+    "enable",  # Enable DDNS update override for DHCP.
 ]
 VALID_BODY_DDNS_AUTH = [
-    "disable",
-    "tsig",
+    "disable",  # Disable DDNS authentication.
+    "tsig",  # TSIG based on RFC2845.
 ]
 VALID_BODY_VCI_MATCH = [
-    "disable",
-    "enable",
+    "disable",  # Disable VCI matching.
+    "enable",  # Enable VCI matching.
 ]
 VALID_BODY_SHARED_SUBNET = [
-    "disable",
-    "enable",
+    "disable",  # Disable shared subnet.
+    "enable",  # Enable shared subnet.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -681,7 +681,7 @@ def validate_system_dhcp_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Do not use this DHCP server configuration.', 'label': 'Disable', 'description': 'Do not use this DHCP server configuration'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_dhcp_server_post(payload)
         >>> assert is_valid == True

@@ -12,7 +12,7 @@ class DscpBasedPriorityPayload(TypedDict, total=False):
     """
     id: NotRequired[int]  # Item ID.
     ds: NotRequired[int]  # DSCP(DiffServ) DS value (0 - 63).
-    priority: NotRequired[Literal["low", "medium", "high"]]  # DSCP based priority level.
+    priority: NotRequired[Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}]]  # DSCP based priority level.
 
 
 class DscpBasedPriority:
@@ -42,7 +42,7 @@ class DscpBasedPriority:
         payload_dict: DscpBasedPriorityPayload | None = ...,
         id: int | None = ...,
         ds: int | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
+        priority: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -53,7 +53,7 @@ class DscpBasedPriority:
         payload_dict: DscpBasedPriorityPayload | None = ...,
         id: int | None = ...,
         ds: int | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
+        priority: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

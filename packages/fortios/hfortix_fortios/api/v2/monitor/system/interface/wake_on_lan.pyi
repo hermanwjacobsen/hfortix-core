@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class WakeOnLan:
     """
-    Configuration for system/interface/wake-on-lan
+    Send wake on lan packet to device.
     
     Path: system/interface/wake_on_lan
     Category: monitor

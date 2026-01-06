@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Restore:
     """
-    Configuration for system/config/restore
+    Restore system configuration from uploaded file or from USB.
     
     Path: system/config/restore
     Category: monitor

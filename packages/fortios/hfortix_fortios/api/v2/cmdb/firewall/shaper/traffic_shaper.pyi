@@ -13,17 +13,17 @@ class TrafficShaperPayload(TypedDict, total=False):
     name: NotRequired[str]  # Traffic shaper name.
     guaranteed_bandwidth: NotRequired[int]  # Amount of bandwidth guaranteed for this shaper (0 - 80000000
     maximum_bandwidth: NotRequired[int]  # Upper bandwidth limit enforced by this shaper (0 - 80000000)
-    bandwidth_unit: NotRequired[Literal["kbps", "mbps", "gbps"]]  # Unit of measurement for guaranteed and maximum bandwidth for
-    priority: NotRequired[Literal["low", "medium", "high"]]  # Higher priority traffic is more likely to be forwarded witho
-    per_policy: NotRequired[Literal["disable", "enable"]]  # Enable/disable applying a separate shaper for each policy. F
-    diffserv: NotRequired[Literal["enable", "disable"]]  # Enable/disable changing the DiffServ setting applied to traf
+    bandwidth_unit: NotRequired[Literal[{"description": "Kilobits per second", "help": "Kilobits per second.", "label": "Kbps", "name": "kbps"}, {"description": "Megabits per second", "help": "Megabits per second.", "label": "Mbps", "name": "mbps"}, {"description": "Gigabits per second", "help": "Gigabits per second.", "label": "Gbps", "name": "gbps"}]]  # Unit of measurement for guaranteed and maximum bandwidth for
+    priority: NotRequired[Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}]]  # Higher priority traffic is more likely to be forwarded witho
+    per_policy: NotRequired[Literal[{"description": "All referring policies share one traffic shaper", "help": "All referring policies share one traffic shaper.", "label": "Disable", "name": "disable"}, {"description": "Each referring policy has its own traffic shaper", "help": "Each referring policy has its own traffic shaper.", "label": "Enable", "name": "enable"}]]  # Enable/disable applying a separate shaper for each policy. F
+    diffserv: NotRequired[Literal[{"description": "Enable setting traffic DiffServ", "help": "Enable setting traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting traffic DiffServ", "help": "Disable setting traffic DiffServ.", "label": "Disable", "name": "disable"}]]  # Enable/disable changing the DiffServ setting applied to traf
     diffservcode: NotRequired[str]  # DiffServ setting to be applied to traffic accepted by this s
-    dscp_marking_method: NotRequired[Literal["multi-stage", "static"]]  # Select DSCP marking method.
+    dscp_marking_method: NotRequired[Literal[{"description": "Multistage marking", "help": "Multistage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}]]  # Select DSCP marking method.
     exceed_bandwidth: NotRequired[int]  # Exceed bandwidth used for DSCP/VLAN CoS multi-stage marking.
     exceed_dscp: NotRequired[str]  # DSCP mark for traffic in guaranteed-bandwidth and exceed-ban
     maximum_dscp: NotRequired[str]  # DSCP mark for traffic in exceed-bandwidth and maximum-bandwi
-    cos_marking: NotRequired[Literal["enable", "disable"]]  # Enable/disable VLAN CoS marking.
-    cos_marking_method: NotRequired[Literal["multi-stage", "static"]]  # Select VLAN CoS marking method.
+    cos_marking: NotRequired[Literal[{"description": "Enable VLAN CoS marking", "help": "Enable VLAN CoS marking.", "label": "Enable", "name": "enable"}, {"description": "Disable VLAN CoS marking", "help": "Disable VLAN CoS marking.", "label": "Disable", "name": "disable"}]]  # Enable/disable VLAN CoS marking.
+    cos_marking_method: NotRequired[Literal[{"description": "Multi stage marking", "help": "Multi stage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}]]  # Select VLAN CoS marking method.
     cos: NotRequired[str]  # VLAN CoS mark.
     exceed_cos: NotRequired[str]  # VLAN CoS mark for traffic in [guaranteed-bandwidth, exceed-b
     maximum_cos: NotRequired[str]  # VLAN CoS mark for traffic in [exceed-bandwidth, maximum-band
@@ -59,17 +59,17 @@ class TrafficShaper:
         name: str | None = ...,
         guaranteed_bandwidth: int | None = ...,
         maximum_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
-        per_policy: Literal["disable", "enable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
+        bandwidth_unit: Literal[{"description": "Kilobits per second", "help": "Kilobits per second.", "label": "Kbps", "name": "kbps"}, {"description": "Megabits per second", "help": "Megabits per second.", "label": "Mbps", "name": "mbps"}, {"description": "Gigabits per second", "help": "Gigabits per second.", "label": "Gbps", "name": "gbps"}] | None = ...,
+        priority: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}] | None = ...,
+        per_policy: Literal[{"description": "All referring policies share one traffic shaper", "help": "All referring policies share one traffic shaper.", "label": "Disable", "name": "disable"}, {"description": "Each referring policy has its own traffic shaper", "help": "Each referring policy has its own traffic shaper.", "label": "Enable", "name": "enable"}] | None = ...,
+        diffserv: Literal[{"description": "Enable setting traffic DiffServ", "help": "Enable setting traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting traffic DiffServ", "help": "Disable setting traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
         diffservcode: str | None = ...,
-        dscp_marking_method: Literal["multi-stage", "static"] | None = ...,
+        dscp_marking_method: Literal[{"description": "Multistage marking", "help": "Multistage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}] | None = ...,
         exceed_bandwidth: int | None = ...,
         exceed_dscp: str | None = ...,
         maximum_dscp: str | None = ...,
-        cos_marking: Literal["enable", "disable"] | None = ...,
-        cos_marking_method: Literal["multi-stage", "static"] | None = ...,
+        cos_marking: Literal[{"description": "Enable VLAN CoS marking", "help": "Enable VLAN CoS marking.", "label": "Enable", "name": "enable"}, {"description": "Disable VLAN CoS marking", "help": "Disable VLAN CoS marking.", "label": "Disable", "name": "disable"}] | None = ...,
+        cos_marking_method: Literal[{"description": "Multi stage marking", "help": "Multi stage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}] | None = ...,
         cos: str | None = ...,
         exceed_cos: str | None = ...,
         maximum_cos: str | None = ...,
@@ -86,17 +86,17 @@ class TrafficShaper:
         name: str | None = ...,
         guaranteed_bandwidth: int | None = ...,
         maximum_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
-        priority: Literal["low", "medium", "high"] | None = ...,
-        per_policy: Literal["disable", "enable"] | None = ...,
-        diffserv: Literal["enable", "disable"] | None = ...,
+        bandwidth_unit: Literal[{"description": "Kilobits per second", "help": "Kilobits per second.", "label": "Kbps", "name": "kbps"}, {"description": "Megabits per second", "help": "Megabits per second.", "label": "Mbps", "name": "mbps"}, {"description": "Gigabits per second", "help": "Gigabits per second.", "label": "Gbps", "name": "gbps"}] | None = ...,
+        priority: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}] | None = ...,
+        per_policy: Literal[{"description": "All referring policies share one traffic shaper", "help": "All referring policies share one traffic shaper.", "label": "Disable", "name": "disable"}, {"description": "Each referring policy has its own traffic shaper", "help": "Each referring policy has its own traffic shaper.", "label": "Enable", "name": "enable"}] | None = ...,
+        diffserv: Literal[{"description": "Enable setting traffic DiffServ", "help": "Enable setting traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting traffic DiffServ", "help": "Disable setting traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
         diffservcode: str | None = ...,
-        dscp_marking_method: Literal["multi-stage", "static"] | None = ...,
+        dscp_marking_method: Literal[{"description": "Multistage marking", "help": "Multistage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}] | None = ...,
         exceed_bandwidth: int | None = ...,
         exceed_dscp: str | None = ...,
         maximum_dscp: str | None = ...,
-        cos_marking: Literal["enable", "disable"] | None = ...,
-        cos_marking_method: Literal["multi-stage", "static"] | None = ...,
+        cos_marking: Literal[{"description": "Enable VLAN CoS marking", "help": "Enable VLAN CoS marking.", "label": "Enable", "name": "enable"}, {"description": "Disable VLAN CoS marking", "help": "Disable VLAN CoS marking.", "label": "Disable", "name": "disable"}] | None = ...,
+        cos_marking_method: Literal[{"description": "Multi stage marking", "help": "Multi stage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}] | None = ...,
         cos: str | None = ...,
         exceed_cos: str | None = ...,
         maximum_cos: str | None = ...,

@@ -56,7 +56,7 @@ class GlobalResources:
         """
         Retrieve system/global_resources configuration.
 
-        Configuration for system/global-resources
+        Retrieve current usage of global resources as well as both the default and user configured maximum values.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

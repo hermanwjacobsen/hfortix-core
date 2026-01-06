@@ -155,19 +155,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
         "action": {
             "type": "option",
             "help": "Action for spam email.",
             "default": "tag",
-            "options": ["pass", "tag"],
+            "options": [{"help": "Allow spam email to pass through.", "label": "Pass", "name": "pass"}, {"help": "Tag spam email with configured text in subject or header.", "label": "Tag", "name": "tag"}],
         },
         "tag-type": {
             "type": "option",
             "help": "Tag subject or header for spam email.",
             "default": "subject spaminfo",
-            "options": ["subject", "header", "spaminfo"],
+            "options": [{"help": "Prepend text to spam email subject.", "label": "Subject", "name": "subject"}, {"help": "Append a user defined mime header to spam email.", "label": "Header", "name": "header"}, {"help": "Append spam info to spam email header.", "label": "Spaminfo", "name": "spaminfo"}],
         },
         "tag-msg": {
             "type": "string",
@@ -181,19 +181,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
         "action": {
             "type": "option",
             "help": "Action for spam email.",
             "default": "tag",
-            "options": ["pass", "tag"],
+            "options": [{"help": "Allow spam email to pass through.", "label": "Pass", "name": "pass"}, {"help": "Tag spam email with configured text in subject or header.", "label": "Tag", "name": "tag"}],
         },
         "tag-type": {
             "type": "option",
             "help": "Tag subject or header for spam email.",
             "default": "subject spaminfo",
-            "options": ["subject", "header", "spaminfo"],
+            "options": [{"help": "Prepend text to spam email subject.", "label": "Subject", "name": "subject"}, {"help": "Append a user defined mime header to spam email.", "label": "Header", "name": "header"}, {"help": "Append spam info to spam email header.", "label": "Spaminfo", "name": "spaminfo"}],
         },
         "tag-msg": {
             "type": "string",
@@ -207,19 +207,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
         "action": {
             "type": "option",
             "help": "Action for spam email.",
             "default": "discard",
-            "options": ["pass", "tag", "discard"],
+            "options": [{"help": "Allow spam email to pass through.", "label": "Pass", "name": "pass"}, {"help": "Tag spam email with configured text in subject or header.", "label": "Tag", "name": "tag"}, {"help": "Discard (block) spam email.", "label": "Discard", "name": "discard"}],
         },
         "tag-type": {
             "type": "option",
             "help": "Tag subject or header for spam email.",
             "default": "subject spaminfo",
-            "options": ["subject", "header", "spaminfo"],
+            "options": [{"help": "Prepend text to spam email subject.", "label": "Subject", "name": "subject"}, {"help": "Append a user defined mime header to spam email.", "label": "Header", "name": "header"}, {"help": "Append spam info to spam email header.", "label": "Spaminfo", "name": "spaminfo"}],
         },
         "tag-msg": {
             "type": "string",
@@ -231,13 +231,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SMTP email header IP checks for spamfsip, spamrbl, and spambal filters.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SMTP email header IP checks for spamfsip, spamrbl, and spambal filters.", "label": "Disable", "name": "disable"}, {"help": "Enable SMTP email header IP checks for spamfsip, spamrbl, and spambal filters.", "label": "Enable", "name": "enable"}],
         },
         "local-override": {
             "type": "option",
             "help": "Enable/disable local filter to override SMTP remote check result.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable local filter to override SMTP remote check result.", "label": "Disable", "name": "disable"}, {"help": "Enable local filter to override SMTP remote check result.", "label": "Enable", "name": "enable"}],
         },
     },
     "mapi": {
@@ -245,13 +245,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
         "action": {
             "type": "option",
             "help": "Action for spam email.",
             "default": "pass",
-            "options": ["pass", "discard"],
+            "options": [{"help": "Allow spam email to pass through.", "label": "Pass", "name": "pass"}, {"help": "Discard (block) spam email.", "label": "Discard", "name": "discard"}],
         },
     },
     "msn-hotmail": {
@@ -259,7 +259,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
     },
     "yahoo-mail": {
@@ -267,7 +267,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
     },
     "gmail": {
@@ -275,7 +275,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
     },
     "other-webmails": {
@@ -283,7 +283,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging of all email traffic.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of all email traffic.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of all email traffic.", "label": "Enable", "name": "enable"}],
         },
     },
 }
@@ -291,37 +291,37 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FEATURE_SET = [
-    "flow",
-    "proxy",
+    "flow",  # Flow feature set.
+    "proxy",  # Proxy feature set.
 ]
 VALID_BODY_SPAM_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable spam logging for email filtering.
+    "enable",  # Enable spam logging for email filtering.
 ]
 VALID_BODY_SPAM_LOG_FORTIGUARD_RESPONSE = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging FortiGuard spam response.
+    "enable",  # Enable logging FortiGuard spam response.
 ]
 VALID_BODY_SPAM_FILTERING = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_EXTERNAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_OPTIONS = [
-    "bannedword",
-    "spambal",
-    "spamfsip",
-    "spamfssubmit",
-    "spamfschksum",
-    "spamfsurl",
-    "spamhelodns",
-    "spamraddrdns",
-    "spamrbl",
-    "spamhdrcheck",
-    "spamfsphish",
+    "bannedword",  # Content block.
+    "spambal",  # Block/allow list.
+    "spamfsip",  # Email IP address FortiGuard AntiSpam block list check.
+    "spamfssubmit",  # Add FortiGuard AntiSpam spam submission text.
+    "spamfschksum",  # Email checksum FortiGuard AntiSpam check.
+    "spamfsurl",  # Email content URL FortiGuard AntiSpam check.
+    "spamhelodns",  # Email helo/ehlo domain DNS check.
+    "spamraddrdns",  # Email return address DNS check.
+    "spamrbl",  # Email DNSBL & ORBL check.
+    "spamhdrcheck",  # Email mime header check.
+    "spamfsphish",  # Email content phishing URL FortiGuard AntiSpam check.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -451,7 +451,7 @@ def validate_emailfilter_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "feature-set": "flow",  # Valid enum value
+        ...     "feature-set": "{'name': 'flow', 'help': 'Flow feature set.', 'label': 'Flow', 'description': 'Flow feature set'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_emailfilter_profile_post(payload)
         >>> assert is_valid == True

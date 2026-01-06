@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/time/set",
     "category": "monitor",
     "api_path": "system/time/set",
-    "help": "Configuration for system/time/set",
+    "help": "Sets current system time stamp.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

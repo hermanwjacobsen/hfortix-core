@@ -96,22 +96,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MGMT_ALLOWACCESS = [
-    "https",
-    "ping",
-    "ssh",
-    "snmp",
-    "http",
-    "telnet",
-    "radius-acct",
+    "https",  # HTTPS access.
+    "ping",  # PING access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
+    "http",  # HTTP access.
+    "telnet",  # TELNET access.
+    "radius-acct",  # RADIUS accounting access.
 ]
 VALID_BODY_INTERNAL_ALLOWACCESS = [
-    "https",
-    "ping",
-    "ssh",
-    "snmp",
-    "http",
-    "telnet",
-    "radius-acct",
+    "https",  # HTTPS access.
+    "ping",  # PING access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
+    "http",  # HTTP access.
+    "telnet",  # TELNET access.
+    "radius-acct",  # RADIUS accounting access.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -239,7 +239,7 @@ def validate_switch_controller_security_policy_local_access_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "mgmt-allowaccess": "https",  # Valid enum value
+        ...     "mgmt-allowaccess": "{'name': 'https', 'help': 'HTTPS access.', 'label': 'Https', 'description': 'HTTPS access'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_security_policy_local_access_post(payload)
         >>> assert is_valid == True

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["fortigate", "ha-cluster"]
+VALID_BODY_TYPE: Literal[{"description": "FortiGate set as destination", "help": "FortiGate set as destination.", "label": "Fortigate", "name": "fortigate"}, {"description": "HA cluster set as destination", "help": "HA cluster set as destination.", "label": "Ha Cluster", "name": "ha-cluster"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

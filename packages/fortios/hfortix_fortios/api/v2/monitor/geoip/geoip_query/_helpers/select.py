@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "geoip/geoip_query/select",
     "category": "monitor",
     "api_path": "geoip/geoip-query/select",
-    "help": "Configuration for geoip/geoip-query/select",
+    "help": "Retrieve location details for IPs queried against FortiGuard's geoip service.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

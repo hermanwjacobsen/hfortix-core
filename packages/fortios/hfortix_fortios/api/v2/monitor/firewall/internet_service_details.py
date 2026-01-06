@@ -56,7 +56,7 @@ class InternetServiceDetails:
         """
         Retrieve firewall/internet_service_details configuration.
 
-        Configuration for firewall/internet-service-details
+        List all details for a given Internet Service ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

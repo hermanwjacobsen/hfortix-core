@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearCounters:
     """
-    Configuration for firewall/security-policy/clear_counters
+    Reset traffic statistics for one or more security policies by policy ID.
     
     Path: firewall/security_policy/clear_counters
     Category: monitor

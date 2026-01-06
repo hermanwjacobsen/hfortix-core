@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OPTIONAL_VLANS: Literal["enable", "disable"]
+VALID_BODY_OPTIONAL_VLANS: Literal[{"description": "Enable auto-generated VLANs", "help": "Enable auto-generated VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-generated VLANs", "help": "Disable auto-generated VLANs.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -56,7 +56,7 @@ class Update:
         """
         Retrieve switch_controller/managed_switch/update configuration.
 
-        Configuration for switch-controller/managed-switch/update
+        Update administrative state for a given FortiSwitch (enable or disable authorization).
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

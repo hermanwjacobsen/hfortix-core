@@ -56,7 +56,7 @@ class Charts:
         """
         Retrieve router/charts configuration.
 
-        Configuration for router/charts
+        Retrieve routing chart statistics, including a map of interfaces and route types.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

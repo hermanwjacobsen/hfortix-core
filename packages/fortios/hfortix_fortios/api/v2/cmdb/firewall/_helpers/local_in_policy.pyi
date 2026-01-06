@@ -1,16 +1,16 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_HA_MGMT_INTF_ONLY: Literal["enable", "disable"]
-VALID_BODY_SRCADDR_NEGATE: Literal["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE_SRC: Literal["enable", "disable"]
-VALID_BODY_DSTADDR_NEGATE: Literal["enable", "disable"]
-VALID_BODY_ACTION: Literal["accept", "deny"]
-VALID_BODY_SERVICE_NEGATE: Literal["enable", "disable"]
-VALID_BODY_INTERNET_SERVICE_SRC_NEGATE: Literal["enable", "disable"]
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_VIRTUAL_PATCH: Literal["enable", "disable"]
-VALID_BODY_LOGTRAFFIC: Literal["enable", "disable"]
+VALID_BODY_HA_MGMT_INTF_ONLY: Literal[{"description": "Enable dedicating HA management interface only for local-in policy", "help": "Enable dedicating HA management interface only for local-in policy.", "label": "Enable", "name": "enable"}, {"description": "Disable dedicating HA management interface only for local-in policy", "help": "Disable dedicating HA management interface only for local-in policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SRCADDR_NEGATE: Literal[{"description": "Enable source address negate", "help": "Enable source address negate.", "label": "Enable", "name": "enable"}, {"description": "Disable source address negate", "help": "Disable source address negate.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INTERNET_SERVICE_SRC: Literal[{"description": "Enable use of Internet Services source in local-in policy", "help": "Enable use of Internet Services source in local-in policy.", "label": "Enable", "name": "enable"}, {"description": "Disable use of Internet Services source in local-in policy", "help": "Disable use of Internet Services source in local-in policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DSTADDR_NEGATE: Literal[{"description": "Enable destination address negate", "help": "Enable destination address negate.", "label": "Enable", "name": "enable"}, {"description": "Disable destination address negate", "help": "Disable destination address negate.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ACTION: Literal[{"description": "Allow traffic matching this policy", "help": "Allow traffic matching this policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching this policy", "help": "Deny or block traffic matching this policy.", "label": "Deny", "name": "deny"}]
+VALID_BODY_SERVICE_NEGATE: Literal[{"description": "Enable negated service match", "help": "Enable negated service match.", "label": "Enable", "name": "enable"}, {"description": "Disable negated service match", "help": "Disable negated service match.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INTERNET_SERVICE_SRC_NEGATE: Literal[{"description": "Enable negated Internet Service source match", "help": "Enable negated Internet Service source match.", "label": "Enable", "name": "enable"}, {"description": "Disable negated Internet Service source match", "help": "Disable negated Internet Service source match.", "label": "Disable", "name": "disable"}]
+VALID_BODY_STATUS: Literal[{"description": "Enable this local-in policy", "help": "Enable this local-in policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this local-in policy", "help": "Disable this local-in policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_VIRTUAL_PATCH: Literal[{"description": "Enable virtual patching", "help": "Enable virtual patching.", "label": "Enable", "name": "enable"}, {"description": "Disable virtual patching", "help": "Disable virtual patching.", "label": "Disable", "name": "disable"}]
+VALID_BODY_LOGTRAFFIC: Literal[{"description": "Enable local-in traffic logging", "help": "Enable local-in traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable local-in traffic logging", "help": "Disable local-in traffic logging.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

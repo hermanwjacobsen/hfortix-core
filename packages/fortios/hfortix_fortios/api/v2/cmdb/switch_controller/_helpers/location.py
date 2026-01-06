@@ -311,14 +311,14 @@ NESTED_SCHEMAS = {
             "help": "Configure the unit for which the altitude is to (m = meters, f = floors of a building).",
             "required": True,
             "default": "m",
-            "options": ["m", "f"],
+            "options": [{"help": "set altitude unit meters", "label": "M", "name": "m"}, {"help": "set altitude unit floors", "label": "F", "name": "f"}],
         },
         "datum": {
             "type": "option",
             "help": "WGS84, NAD83, NAD83/MLLW.",
             "required": True,
             "default": "WGS84",
-            "options": ["WGS84", "NAD83", "NAD83/MLLW"],
+            "options": [{"help": "set coordinates datum WGS84", "label": "Wgs84", "name": "WGS84"}, {"help": "set coordinates datum NAD83", "label": "Nad83", "name": "NAD83"}, {"help": "set coordinates datum NAD83/MLLW", "label": "Nad83/Mllw", "name": "NAD83/MLLW"}],
         },
         "latitude": {
             "type": "string",

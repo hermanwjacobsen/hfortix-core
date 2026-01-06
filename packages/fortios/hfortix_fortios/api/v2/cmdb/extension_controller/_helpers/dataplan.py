@@ -158,37 +158,37 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MODEM_ID = [
-    "modem1",
-    "modem2",
-    "all",
+    "modem1",  # Modem one.
+    "modem2",  # Modem two.
+    "all",  # All modems.
 ]
 VALID_BODY_TYPE = [
-    "carrier",
-    "slot",
-    "iccid",
-    "generic",
+    "carrier",  # Assign by SIM carrier.
+    "slot",  # Assign to SIM slot 1 or 2.
+    "iccid",  # Assign to a specific SIM by ICCID.
+    "generic",  # Compatible with any SIM. Assigned if no other dataplan matches the chosen SIM.
 ]
 VALID_BODY_SLOT = [
-    "sim1",
-    "sim2",
+    "sim1",  # Sim slot one.
+    "sim2",  # Sim slot two.
 ]
 VALID_BODY_AUTH_TYPE = [
-    "none",
-    "pap",
-    "chap",
+    "none",  # No authentication.
+    "pap",  # PAP.
+    "chap",  # CHAP.
 ]
 VALID_BODY_PDN = [
-    "ipv4-only",
-    "ipv6-only",
-    "ipv4-ipv6",
+    "ipv4-only",  # IPv4 only PDN activation.
+    "ipv6-only",  # IPv6 only PDN activation.
+    "ipv4-ipv6",  # Both IPv4 and IPv6 PDN activations.
 ]
 VALID_BODY_OVERAGE = [
-    "disable",
-    "enable",
+    "disable",  # Disable dataplan overage detection.
+    "enable",  # Enable dataplan overage detection.
 ]
 VALID_BODY_PRIVATE_NETWORK = [
-    "disable",
-    "enable",
+    "disable",  # Disable dataplan private network support.
+    "enable",  # Enable dataplan private network support.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -319,7 +319,7 @@ def validate_extension_controller_dataplan_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "slot": True,
-        ...     "modem-id": "modem1",  # Valid enum value
+        ...     "modem-id": "{'name': 'modem1', 'help': 'Modem one.', 'label': 'Modem1', 'description': 'Modem one'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_extension_controller_dataplan_post(payload)
         >>> assert is_valid == True

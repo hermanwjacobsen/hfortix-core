@@ -11,7 +11,7 @@ class CloudServicePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Name.
-    vendor: NotRequired[Literal["unknown", "google-cloud-kms"]]  # Cloud service vendor.
+    vendor: NotRequired[Literal[{"description": "Unknown type of cloud service vendor", "help": "Unknown type of cloud service vendor.", "label": "Unknown", "name": "unknown"}, {"description": "Google Cloud KMS service", "help": "Google Cloud KMS service.", "label": "Google Cloud Kms", "name": "google-cloud-kms"}]]  # Cloud service vendor.
     traffic_vdom: NotRequired[str]  # Vdom used to communicate with cloud service.
     gck_service_account: NotRequired[str]  # Service account (e.g. "account-id@sampledomain.com").
     gck_private_key: NotRequired[str]  # Service account private key in PEM format (e.g. "-----BEGIN 
@@ -45,7 +45,7 @@ class CloudService:
         self,
         payload_dict: CloudServicePayload | None = ...,
         name: str | None = ...,
-        vendor: Literal["unknown", "google-cloud-kms"] | None = ...,
+        vendor: Literal[{"description": "Unknown type of cloud service vendor", "help": "Unknown type of cloud service vendor.", "label": "Unknown", "name": "unknown"}, {"description": "Google Cloud KMS service", "help": "Google Cloud KMS service.", "label": "Google Cloud Kms", "name": "google-cloud-kms"}] | None = ...,
         traffic_vdom: str | None = ...,
         gck_service_account: str | None = ...,
         gck_private_key: str | None = ...,
@@ -60,7 +60,7 @@ class CloudService:
         self,
         payload_dict: CloudServicePayload | None = ...,
         name: str | None = ...,
-        vendor: Literal["unknown", "google-cloud-kms"] | None = ...,
+        vendor: Literal[{"description": "Unknown type of cloud service vendor", "help": "Unknown type of cloud service vendor.", "label": "Unknown", "name": "unknown"}, {"description": "Google Cloud KMS service", "help": "Google Cloud KMS service.", "label": "Google Cloud Kms", "name": "google-cloud-kms"}] | None = ...,
         traffic_vdom: str | None = ...,
         gck_service_account: str | None = ...,
         gck_private_key: str | None = ...,

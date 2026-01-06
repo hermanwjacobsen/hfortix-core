@@ -114,8 +114,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PAC_DATA = [
-    "enable",
-    "disable",
+    "enable",  # Enable parsing PAC data in the ticket.
+    "disable",  # Disable parsing PAC data in the ticket.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -246,7 +246,7 @@ def validate_user_krb_keytab_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "principal": True,
-        ...     "pac-data": "enable",  # Valid enum value
+        ...     "pac-data": "{'name': 'enable', 'help': 'Enable parsing PAC data in the ticket.', 'label': 'Enable', 'description': 'Enable parsing PAC data in the ticket'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_krb_keytab_post(payload)
         >>> assert is_valid == True

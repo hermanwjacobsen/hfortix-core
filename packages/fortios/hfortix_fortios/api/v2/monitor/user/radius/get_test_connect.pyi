@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GetTestConnect:
     """
-    Configuration for user/radius/get-test-connect
+    Test the connectivity of the given RADIUS server and, optionally, the validity of a username & password.
     
     Path: user/radius/get_test_connect
     Category: monitor

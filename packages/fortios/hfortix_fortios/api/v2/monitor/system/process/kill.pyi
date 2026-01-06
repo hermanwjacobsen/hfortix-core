@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Kill:
     """
-    Configuration for system/process/kill
+    Kill a running process.
     
     Path: system/process/kill
     Category: monitor

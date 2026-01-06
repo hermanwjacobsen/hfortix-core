@@ -116,13 +116,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_UTM_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable UTM logging.
+    "disable",  # Disable UTM logging.
 ]
 VALID_BODY_SCAN_BOTNET_CONNECTIONS = [
-    "disable",
-    "monitor",
-    "block",
+    "disable",  # Do not scan connections to botnet servers.
+    "monitor",  # Log connections to botnet servers.
+    "block",  # Block connections to botnet servers.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -250,7 +250,7 @@ def validate_wireless_controller_utm_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "utm-log": "enable",  # Valid enum value
+        ...     "utm-log": "{'name': 'enable', 'help': 'Enable UTM logging.', 'label': 'Enable', 'description': 'Enable UTM logging'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_utm_profile_post(payload)
         >>> assert is_valid == True

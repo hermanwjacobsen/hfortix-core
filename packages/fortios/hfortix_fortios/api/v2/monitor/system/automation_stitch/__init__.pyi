@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
+    from .stats import Stats
     from .test import Test
     from .webhook import Webhook
 
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
 class AutomationStitch:
     """Type stub for AutomationStitch."""
 
+    stats: Stats
     test: Test
     webhook: Webhook
 

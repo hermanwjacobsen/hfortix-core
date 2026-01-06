@@ -56,7 +56,7 @@ class NpuHpe:
         """
         Retrieve monitoring/npu_hpe configuration.
 
-        Configuration for monitoring/npu-hpe
+        Configuration for monitoring/npu_hpe
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -120,7 +120,7 @@ class NpuHpe:
         """
         Update existing monitoring/npu_hpe object.
 
-        Configuration for monitoring/npu-hpe
+        Configuration for monitoring/npu_hpe
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ThumbnailFile:
     """
-    Configuration for user/info/thumbnail-file
+    Get user info thumbnail by given file name.
     
     Path: user/info/thumbnail_file
     Category: monitor

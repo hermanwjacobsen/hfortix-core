@@ -163,13 +163,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IPsec tunnel synchronization.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable IPsec tunnel synchronization.", "label": "Enable", "name": "enable"}, {"help": "Disable IPsec tunnel synchronization.", "label": "Disable", "name": "disable"}],
         },
         "secondary-add-ipsec-routes": {
             "type": "option",
             "help": "Enable/disable IKE route announcement on the backup unit.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Add IKE routes to the backup unit.", "label": "Enable", "name": "enable"}, {"help": "Do not add IKE routes to the backup unit.", "label": "Disable", "name": "disable"}],
         },
         "session-sync-filter": {
             "type": "string",
@@ -228,24 +228,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LAYER2_CONNECTION = [
-    "available",
-    "unavailable",
+    "available",  # There exist layer 2 connections among FGSP members.
+    "unavailable",  # There does not exist layer 2 connection among FGSP members.
 ]
 VALID_BODY_ENCRYPTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable encryption when synchronizing sessions.
+    "disable",  # Disable encryption when synchronizing sessions.
 ]
 VALID_BODY_ASYMMETRIC_TRAFFIC_CONTROL = [
-    "cps-preferred",
-    "strict-anti-replay",
+    "cps-preferred",  # Connection per second (CPS) preferred.
+    "strict-anti-replay",  # Strict anti-replay check.
 ]
 VALID_BODY_HELPER_TRAFFIC_BOUNCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable helper related traffic bounce.
+    "disable",  # Disable helper related traffic bounce.
 ]
 VALID_BODY_UTM_TRAFFIC_BOUNCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable UTM related traffic bounce.
+    "disable",  # Disable UTM related traffic bounce.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -372,7 +372,7 @@ def validate_system_standalone_cluster_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "psksecret": True,
-        ...     "layer2-connection": "available",  # Valid enum value
+        ...     "layer2-connection": "{'name': 'available', 'help': 'There exist layer 2 connections among FGSP members.', 'label': 'Available', 'description': 'There exist layer 2 connections among FGSP members'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_standalone_cluster_post(payload)
         >>> assert is_valid == True

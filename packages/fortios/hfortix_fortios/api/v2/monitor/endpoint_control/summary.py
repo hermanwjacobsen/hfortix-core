@@ -56,7 +56,7 @@ class Summary:
         """
         Retrieve endpoint_control/summary configuration.
 
-        Configuration for endpoint-control/summary
+        Summary of FortiClient endpoint records.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

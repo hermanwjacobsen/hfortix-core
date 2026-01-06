@@ -56,7 +56,7 @@ class Update:
         """
         Retrieve system/fortiguard/update configuration.
 
-        Configuration for system/fortiguard/update
+        Immediately update status for FortiGuard services.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Select:
     """
-    Configuration for user/password-policy-conform/select
+    Check if password adheres to local user password policy.
     
     Path: user/password_policy_conform/select
     Category: monitor

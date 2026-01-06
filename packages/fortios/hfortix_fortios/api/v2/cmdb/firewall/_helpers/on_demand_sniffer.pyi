@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_NON_IP_PACKET: Literal["enable", "disable"]
+VALID_BODY_NON_IP_PACKET: Literal[{"description": "Enable non-IP packets to be included capture", "help": "Enable non-IP packets to be included capture.", "label": "Enable", "name": "enable"}, {"description": "Disable non-IP packets to be included in capture", "help": "Disable non-IP packets to be included in capture.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

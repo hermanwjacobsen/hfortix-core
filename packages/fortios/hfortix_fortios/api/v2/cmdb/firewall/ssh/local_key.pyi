@@ -14,7 +14,7 @@ class LocalKeyPayload(TypedDict, total=False):
     password: NotRequired[str]  # Password for SSH private key.
     private_key: str  # SSH proxy private key, encrypted with a password.
     public_key: str  # SSH proxy public key.
-    source: NotRequired[Literal["built-in", "user"]]  # SSH proxy local key source type.
+    source: NotRequired[Literal[{"description": "Built-in SSH proxy local keys", "help": "Built-in SSH proxy local keys.", "label": "Built In", "name": "built-in"}, {"description": "User imported SSH proxy local keys", "help": "User imported SSH proxy local keys.", "label": "User", "name": "user"}]]  # SSH proxy local key source type.
 
 
 class LocalKey:
@@ -46,7 +46,7 @@ class LocalKey:
         password: str | None = ...,
         private_key: str | None = ...,
         public_key: str | None = ...,
-        source: Literal["built-in", "user"] | None = ...,
+        source: Literal[{"description": "Built-in SSH proxy local keys", "help": "Built-in SSH proxy local keys.", "label": "Built In", "name": "built-in"}, {"description": "User imported SSH proxy local keys", "help": "User imported SSH proxy local keys.", "label": "User", "name": "user"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -59,7 +59,7 @@ class LocalKey:
         password: str | None = ...,
         private_key: str | None = ...,
         public_key: str | None = ...,
-        source: Literal["built-in", "user"] | None = ...,
+        source: Literal[{"description": "Built-in SSH proxy local keys", "help": "Built-in SSH proxy local keys.", "label": "Built In", "name": "built-in"}, {"description": "User imported SSH proxy local keys", "help": "User imported SSH proxy local keys.", "label": "User", "name": "user"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

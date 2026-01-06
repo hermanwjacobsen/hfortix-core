@@ -56,7 +56,7 @@ class EligiblePeer:
         """
         Retrieve switch_controller/mclag_icl/eligible_peer configuration.
 
-        Configuration for switch-controller/mclag-icl/eligible-peer
+        Find a pair of FortiSwitches that are eligible to form a tier-1 MC-LAG.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

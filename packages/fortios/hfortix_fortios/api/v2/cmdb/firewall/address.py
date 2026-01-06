@@ -161,6 +161,7 @@ class Address:
         list: str | list | None = None,
         tagging: str | list | None = None,
         allow_routing: str | None = None,
+        passive_fqdn_learning: str | None = None,
         fabric_object: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -252,6 +253,7 @@ class Address:
             list=list,
             tagging=tagging,
             allow_routing=allow_routing,
+            passive_fqdn_learning=passive_fqdn_learning,
             fabric_object=fabric_object,
             data=payload_dict,
         )
@@ -321,6 +323,7 @@ class Address:
         list: str | list | None = None,
         tagging: str | list | None = None,
         allow_routing: str | None = None,
+        passive_fqdn_learning: str | None = None,
         fabric_object: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -414,6 +417,7 @@ class Address:
             list=list,
             tagging=tagging,
             allow_routing=allow_routing,
+            passive_fqdn_learning=passive_fqdn_learning,
             fabric_object=fabric_object,
             data=payload_dict,
         )

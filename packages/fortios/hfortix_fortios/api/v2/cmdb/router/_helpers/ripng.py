@@ -164,14 +164,14 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "direction": {
             "type": "option",
             "help": "Distribute list direction.",
             "required": True,
             "default": "out",
-            "options": ["in", "out"],
+            "options": [{"help": "Filter incoming packets.", "label": "In", "name": "in"}, {"help": "Filter outgoing packets.", "label": "Out", "name": "out"}],
         },
         "listname": {
             "type": "string",
@@ -250,14 +250,14 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "direction": {
             "type": "option",
             "help": "Offset list direction.",
             "required": True,
             "default": "out",
-            "options": ["in", "out"],
+            "options": [{"help": "Filter incoming packets.", "label": "In", "name": "in"}, {"help": "Filter outgoing packets.", "label": "Out", "name": "out"}],
         },
         "access-list6": {
             "type": "string",
@@ -302,7 +302,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "metric": {
             "type": "integer",
@@ -329,13 +329,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable split horizon.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "split-horizon": {
             "type": "option",
             "help": "Enable/disable split horizon.",
             "default": "poisoned",
-            "options": ["poisoned", "regular"],
+            "options": [{"help": "Poisoned.", "label": "Poisoned", "name": "poisoned"}, {"help": "Regular.", "label": "Regular", "name": "regular"}],
         },
         "flags": {
             "type": "integer",
@@ -350,8 +350,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DEFAULT_INFORMATION_ORIGINATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -476,7 +476,7 @@ def validate_router_ripng_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "default-information-originate": "enable",  # Valid enum value
+        ...     "default-information-originate": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_ripng_post(payload)
         >>> assert is_valid == True

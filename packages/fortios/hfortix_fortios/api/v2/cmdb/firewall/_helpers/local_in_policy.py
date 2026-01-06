@@ -233,44 +233,44 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_HA_MGMT_INTF_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # Enable dedicating HA management interface only for local-in policy.
+    "disable",  # Disable dedicating HA management interface only for local-in policy.
 ]
 VALID_BODY_SRCADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable source address negate.
+    "disable",  # Disable source address negate.
 ]
 VALID_BODY_INTERNET_SERVICE_SRC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Services source in local-in policy.
+    "disable",  # Disable use of Internet Services source in local-in policy.
 ]
 VALID_BODY_DSTADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable destination address negate.
+    "disable",  # Disable destination address negate.
 ]
 VALID_BODY_ACTION = [
-    "accept",
-    "deny",
+    "accept",  # Allow traffic matching this policy.
+    "deny",  # Deny or block traffic matching this policy.
 ]
 VALID_BODY_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated service match.
+    "disable",  # Disable negated service match.
 ]
 VALID_BODY_INTERNET_SERVICE_SRC_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated Internet Service source match.
+    "disable",  # Disable negated Internet Service source match.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this local-in policy.
+    "disable",  # Disable this local-in policy.
 ]
 VALID_BODY_VIRTUAL_PATCH = [
-    "enable",
-    "disable",
+    "enable",  # Enable virtual patching.
+    "disable",  # Disable virtual patching.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-in traffic logging.
+    "disable",  # Disable local-in traffic logging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -401,7 +401,7 @@ def validate_firewall_local_in_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "intf": True,
-        ...     "ha-mgmt-intf-only": "enable",  # Valid enum value
+        ...     "ha-mgmt-intf-only": "{'name': 'enable', 'help': 'Enable dedicating HA management interface only for local-in policy.', 'label': 'Enable', 'description': 'Enable dedicating HA management interface only for local-in policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_local_in_policy_post(payload)
         >>> assert is_valid == True

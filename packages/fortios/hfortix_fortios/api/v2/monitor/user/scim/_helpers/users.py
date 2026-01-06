@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/scim/users",
     "category": "monitor",
     "api_path": "user/scim/users",
-    "help": "Configuration for user/scim/users",
+    "help": "Get SCIM client users.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

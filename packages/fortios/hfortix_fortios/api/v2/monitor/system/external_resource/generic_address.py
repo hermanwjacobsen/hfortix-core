@@ -56,7 +56,7 @@ class GenericAddress:
         """
         Retrieve system/external_resource/generic_address configuration.
 
-        Configuration for system/external-resource/generic-address
+        Push JSON data to the specified external resource.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

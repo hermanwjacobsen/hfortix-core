@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve firewall/multicast_policy6/reset configuration.
 
-        Configuration for firewall/multicast-policy6/reset
+        Reset traffic statistics for all IPv6 firewall multicast policies.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

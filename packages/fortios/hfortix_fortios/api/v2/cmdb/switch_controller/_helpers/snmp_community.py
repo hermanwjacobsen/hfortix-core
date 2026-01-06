@@ -155,32 +155,32 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable SNMP community.
+    "enable",  # Enable SNMP community.
 ]
 VALID_BODY_QUERY_V1_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable SNMP v1 queries.
+    "enable",  # Enable SNMP v1 queries.
 ]
 VALID_BODY_QUERY_V2C_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable SNMP v2c queries.
+    "enable",  # Enable SNMP v2c queries.
 ]
 VALID_BODY_TRAP_V1_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable SNMP v1 traps.
+    "enable",  # Enable SNMP v1 traps.
 ]
 VALID_BODY_TRAP_V2C_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable SNMP v2c traps.
+    "enable",  # Enable SNMP v2c traps.
 ]
 VALID_BODY_EVENTS = [
-    "cpu-high",
-    "mem-low",
-    "log-full",
-    "intf-ip",
-    "ent-conf-change",
-    "l2mac",
+    "cpu-high",  # Send a trap when CPU usage too high.
+    "mem-low",  # Send a trap when available memory is low.
+    "log-full",  # Send a trap when log disk space becomes low.
+    "intf-ip",  # Send a trap when an interface IP address is changed.
+    "ent-conf-change",  # Send a trap when an entity MIB change occurs (RFC4133).
+    "l2mac",  # Send a trap for Learning event (add/delete/movefrom/moveto).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -310,7 +310,7 @@ def validate_switch_controller_snmp_community_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Disable SNMP community.', 'label': 'Disable', 'description': 'Disable SNMP community'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_snmp_community_post(payload)
         >>> assert is_valid == True

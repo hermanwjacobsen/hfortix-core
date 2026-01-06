@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/logdisk/format",
     "category": "monitor",
     "api_path": "system/logdisk/format",
-    "help": "Configuration for system/logdisk/format",
+    "help": "Format log disk.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -54,7 +54,7 @@ class FortianalyzerAnomaly:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get anomaly logs."""
-        return self._client.get("/log/fortianalyzer/anomaly/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/anomaly/raw", **kwargs)
 
 
 class FortianalyzerAppCtrl:
@@ -68,7 +68,7 @@ class FortianalyzerAppCtrl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get app_ctrl logs."""
-        return self._client.get("/log/fortianalyzer/app-ctrl/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/app-ctrl/raw", **kwargs)
 
 
 class FortianalyzerAppCtrlArchive:
@@ -81,7 +81,7 @@ class FortianalyzerAppCtrlArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/fortianalyzer/app-ctrl/archive", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/app-ctrl/archive", **kwargs)
 
 
 class FortianalyzerAppCtrlArchiveDownload:
@@ -94,7 +94,7 @@ class FortianalyzerAppCtrlArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/fortianalyzer/app-ctrl/archive-download", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/app-ctrl/archive-download", **kwargs)
 
 
 class FortianalyzerCifs:
@@ -106,7 +106,7 @@ class FortianalyzerCifs:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get cifs logs."""
-        return self._client.get("/log/fortianalyzer/cifs/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/cifs/raw", **kwargs)
 
 
 class FortianalyzerDlp:
@@ -118,7 +118,7 @@ class FortianalyzerDlp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dlp logs."""
-        return self._client.get("/log/fortianalyzer/dlp/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/dlp/raw", **kwargs)
 
 
 class FortianalyzerDns:
@@ -130,7 +130,7 @@ class FortianalyzerDns:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dns logs."""
-        return self._client.get("/log/fortianalyzer/dns/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/dns/raw", **kwargs)
 
 
 class FortianalyzerEmailfilter:
@@ -142,7 +142,7 @@ class FortianalyzerEmailfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get emailfilter logs."""
-        return self._client.get("/log/fortianalyzer/emailfilter/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/emailfilter/raw", **kwargs)
 
 
 class FortianalyzerEvent:
@@ -175,7 +175,7 @@ class FortianalyzerEventComplianceCheck:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get compliance-check event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventConnector:
@@ -188,7 +188,7 @@ class FortianalyzerEventConnector:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get connector event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventEndpoint:
@@ -201,7 +201,7 @@ class FortianalyzerEventEndpoint:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get endpoint event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventFortiextender:
@@ -214,7 +214,7 @@ class FortianalyzerEventFortiextender:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiextender event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventHa:
@@ -227,7 +227,7 @@ class FortianalyzerEventHa:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ha event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventRouter:
@@ -240,7 +240,7 @@ class FortianalyzerEventRouter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get router event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventSecurityRating:
@@ -253,7 +253,7 @@ class FortianalyzerEventSecurityRating:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get security-rating event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventSystem:
@@ -266,7 +266,7 @@ class FortianalyzerEventSystem:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get system event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventUser:
@@ -279,7 +279,7 @@ class FortianalyzerEventUser:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get user event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventVpn:
@@ -292,7 +292,7 @@ class FortianalyzerEventVpn:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get vpn event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventWad:
@@ -305,7 +305,7 @@ class FortianalyzerEventWad:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wad event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerEventWireless:
@@ -318,7 +318,7 @@ class FortianalyzerEventWireless:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wireless event logs."""
-        return self._client.get(f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerFileFilter:
@@ -330,7 +330,7 @@ class FortianalyzerFileFilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get file_filter logs."""
-        return self._client.get("/log/fortianalyzer/file-filter/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/file-filter/raw", **kwargs)
 
 
 class FortianalyzerGtp:
@@ -342,7 +342,7 @@ class FortianalyzerGtp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get gtp logs."""
-        return self._client.get("/log/fortianalyzer/gtp/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/gtp/raw", **kwargs)
 
 
 class FortianalyzerIps:
@@ -356,7 +356,7 @@ class FortianalyzerIps:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ips logs."""
-        return self._client.get("/log/fortianalyzer/ips/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/ips/raw", **kwargs)
 
 
 class FortianalyzerIpsArchive:
@@ -369,7 +369,7 @@ class FortianalyzerIpsArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/fortianalyzer/ips/archive", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/ips/archive", **kwargs)
 
 
 class FortianalyzerIpsArchiveDownload:
@@ -382,7 +382,7 @@ class FortianalyzerIpsArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/fortianalyzer/ips/archive-download", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/ips/archive-download", **kwargs)
 
 
 class FortianalyzerSsh:
@@ -394,7 +394,7 @@ class FortianalyzerSsh:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssh logs."""
-        return self._client.get("/log/fortianalyzer/ssh/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/ssh/raw", **kwargs)
 
 
 class FortianalyzerSsl:
@@ -406,7 +406,7 @@ class FortianalyzerSsl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssl logs."""
-        return self._client.get("/log/fortianalyzer/ssl/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/ssl/raw", **kwargs)
 
 
 class FortianalyzerTraffic:
@@ -433,7 +433,7 @@ class FortianalyzerTrafficFortiview:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiview traffic logs."""
-        return self._client.get(f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerTrafficForward:
@@ -446,7 +446,7 @@ class FortianalyzerTrafficForward:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get forward traffic logs."""
-        return self._client.get(f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerTrafficLocal:
@@ -459,7 +459,7 @@ class FortianalyzerTrafficLocal:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get local traffic logs."""
-        return self._client.get(f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerTrafficMulticast:
@@ -472,7 +472,7 @@ class FortianalyzerTrafficMulticast:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get multicast traffic logs."""
-        return self._client.get(f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerTrafficSniffer:
@@ -485,7 +485,7 @@ class FortianalyzerTrafficSniffer:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get sniffer traffic logs."""
-        return self._client.get(f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerTrafficThreat:
@@ -498,7 +498,7 @@ class FortianalyzerTrafficThreat:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get threat traffic logs."""
-        return self._client.get(f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
 class FortianalyzerVirus:
@@ -510,7 +510,7 @@ class FortianalyzerVirus:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get virus logs."""
-        return self._client.get("/log/fortianalyzer/virus/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/virus/raw", **kwargs)
 
 
 class FortianalyzerVoip:
@@ -522,7 +522,7 @@ class FortianalyzerVoip:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get voip logs."""
-        return self._client.get("/log/fortianalyzer/voip/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/voip/raw", **kwargs)
 
 
 class FortianalyzerWaf:
@@ -534,7 +534,7 @@ class FortianalyzerWaf:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get waf logs."""
-        return self._client.get("/log/fortianalyzer/waf/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/waf/raw", **kwargs)
 
 
 class FortianalyzerWebfilter:
@@ -546,4 +546,4 @@ class FortianalyzerWebfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get webfilter logs."""
-        return self._client.get("/log/fortianalyzer/webfilter/raw", **kwargs)
+        return self._client.get("log", "/log/fortianalyzer/webfilter/raw", **kwargs)

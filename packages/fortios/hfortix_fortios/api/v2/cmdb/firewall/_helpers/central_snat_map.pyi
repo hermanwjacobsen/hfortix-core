@@ -1,13 +1,13 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_TYPE: Literal["ipv4", "ipv6"]
-VALID_BODY_NAT: Literal["disable", "enable"]
-VALID_BODY_NAT46: Literal["enable", "disable"]
-VALID_BODY_NAT64: Literal["enable", "disable"]
-VALID_BODY_PORT_PRESERVE: Literal["enable", "disable"]
-VALID_BODY_PORT_RANDOM: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_TYPE: Literal[{"description": "Perform IPv4 source NAT", "help": "Perform IPv4 source NAT.", "label": "Ipv4", "name": "ipv4"}, {"description": "Perform IPv6 source NAT", "help": "Perform IPv6 source NAT.", "label": "Ipv6", "name": "ipv6"}]
+VALID_BODY_NAT: Literal[{"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}, {"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}]
+VALID_BODY_NAT46: Literal[{"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}]
+VALID_BODY_NAT64: Literal[{"description": "Enable NAT64", "help": "Enable NAT64.", "label": "Enable", "name": "enable"}, {"description": "Disable NAT64", "help": "Disable NAT64.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PORT_PRESERVE: Literal[{"description": "Use the original source port if it has not been used", "help": "Use the original source port if it has not been used.", "label": "Enable", "name": "enable"}, {"description": "Source NAT always changes the source port", "help": "Source NAT always changes the source port.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PORT_RANDOM: Literal[{"description": "Enable random source port selection for source NAT", "help": "Enable random source port selection for source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable random source port selection for source NAT", "help": "Disable random source port selection for source NAT.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

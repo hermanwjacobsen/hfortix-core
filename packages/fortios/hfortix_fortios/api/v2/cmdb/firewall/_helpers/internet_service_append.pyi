@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ADDR_MODE: Literal["ipv4", "ipv6", "both"]
+VALID_BODY_ADDR_MODE: Literal[{"description": "IPv4 mode", "help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 mode", "help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}, {"description": "Both IPv4 and IPv6 mode", "help": "Both IPv4 and IPv6 mode.", "label": "Both", "name": "both"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

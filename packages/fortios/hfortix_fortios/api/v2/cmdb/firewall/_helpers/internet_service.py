@@ -132,13 +132,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DIRECTION = [
-    "src",
-    "dst",
-    "both",
+    "src",  # As source in the firewall policy.
+    "dst",  # As destination in the firewall policy.
+    "both",  # Both directions in the firewall policy.
 ]
 VALID_BODY_DATABASE = [
-    "isdb",
-    "irdb",
+    "isdb",  # Internet Service Database.
+    "irdb",  # Internet RRR Database.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -266,7 +266,7 @@ def validate_firewall_internet_service_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "direction": "src",  # Valid enum value
+        ...     "direction": "{'name': 'src', 'help': 'As source in the firewall policy.', 'label': 'Src', 'description': 'As source in the firewall policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_internet_service_post(payload)
         >>> assert is_valid == True

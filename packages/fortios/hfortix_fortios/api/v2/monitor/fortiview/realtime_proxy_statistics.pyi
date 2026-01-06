@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RealtimeProxyStatistics:
     """
-    Configuration for fortiview/realtime-proxy-statistics
+    Retrieve realtime drill-down and summary data for proxy session FortiView statistics.
     
     Path: fortiview/realtime_proxy_statistics
     Category: monitor

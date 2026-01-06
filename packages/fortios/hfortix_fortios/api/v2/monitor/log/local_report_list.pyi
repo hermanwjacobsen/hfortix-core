@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LocalReportList:
     """
-    Monitor endpoint for log/local-report-list
+    Get local reports list.
     
     Path: log/local_report_list
     Category: monitor

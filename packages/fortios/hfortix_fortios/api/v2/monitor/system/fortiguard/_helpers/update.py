@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/fortiguard/update",
     "category": "monitor",
     "api_path": "system/fortiguard/update",
-    "help": "Configuration for system/fortiguard/update",
+    "help": "Immediately update status for FortiGuard services.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PROXY_AUTH: Literal["enable", "disable"]
+VALID_BODY_PROXY_AUTH: Literal[{"description": "Users are authenticated by proxy daemon", "help": "Users are authenticated by proxy daemon.", "label": "Enable", "name": "enable"}, {"description": "Users are not authenticated by proxy daemon", "help": "Users are not authenticated by proxy daemon.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

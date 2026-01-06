@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Push:
     """
-    Configuration for wifi/firmware/push
+    Push FortiAP firmware to the given device.
     
     Path: wifi/firmware/push
     Category: monitor

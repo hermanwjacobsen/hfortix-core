@@ -56,7 +56,7 @@ class BackupDetails:
         """
         Retrieve system/fortimanager/backup_details configuration.
 
-        Configuration for system/fortimanager/backup-details
+        Get the properties of a FortiManager object.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

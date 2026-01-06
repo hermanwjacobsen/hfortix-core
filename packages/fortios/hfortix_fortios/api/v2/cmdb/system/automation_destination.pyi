@@ -11,7 +11,7 @@ class AutomationDestinationPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Name.
-    type: NotRequired[Literal["fortigate", "ha-cluster"]]  # Destination type.
+    type: NotRequired[Literal[{"description": "FortiGate set as destination", "help": "FortiGate set as destination.", "label": "Fortigate", "name": "fortigate"}, {"description": "HA cluster set as destination", "help": "HA cluster set as destination.", "label": "Ha Cluster", "name": "ha-cluster"}]]  # Destination type.
     destination: NotRequired[list[dict[str, Any]]]  # Destinations.
     ha_group_id: NotRequired[int]  # Cluster group ID set for this destination (default = 0).
 
@@ -42,7 +42,7 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type: Literal[{"description": "FortiGate set as destination", "help": "FortiGate set as destination.", "label": "Fortigate", "name": "fortigate"}, {"description": "HA cluster set as destination", "help": "HA cluster set as destination.", "label": "Ha Cluster", "name": "ha-cluster"}] | None = ...,
         destination: list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,
@@ -54,7 +54,7 @@ class AutomationDestination:
         self,
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
-        type: Literal["fortigate", "ha-cluster"] | None = ...,
+        type: Literal[{"description": "FortiGate set as destination", "help": "FortiGate set as destination.", "label": "Fortigate", "name": "fortigate"}, {"description": "HA cluster set as destination", "help": "HA cluster set as destination.", "label": "Ha Cluster", "name": "ha-cluster"}] | None = ...,
         destination: list[dict[str, Any]] | None = ...,
         ha_group_id: int | None = ...,
         vdom: str | bool | None = ...,

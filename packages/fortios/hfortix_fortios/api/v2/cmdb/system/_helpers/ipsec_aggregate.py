@@ -105,11 +105,11 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ALGORITHM = [
-    "L3",
-    "L4",
-    "round-robin",
-    "redundant",
-    "weighted-round-robin",
+    "L3",  # Use layer 3 address for distribution.
+    "L4",  # Use layer 4 information for distribution.
+    "round-robin",  # Per-packet round-robin distribution.
+    "redundant",  # Use first tunnel that is up for all traffic.
+    "weighted-round-robin",  # Weighted round-robin distribution.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -239,7 +239,7 @@ def validate_system_ipsec_aggregate_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "member": True,
-        ...     "algorithm": "L3",  # Valid enum value
+        ...     "algorithm": "{'name': 'L3', 'help': 'Use layer 3 address for distribution.', 'label': 'L3', 'description': 'Use layer 3 address for distribution'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ipsec_aggregate_post(payload)
         >>> assert is_valid == True

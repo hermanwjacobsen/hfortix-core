@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UsbLog:
     """
-    Configuration for system/usb-log
+    Retrieve information about connected USB drives, including estimated log sizes.
     
     Path: system/usb_log
     Category: monitor

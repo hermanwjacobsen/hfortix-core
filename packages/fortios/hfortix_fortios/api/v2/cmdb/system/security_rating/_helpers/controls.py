@@ -96,12 +96,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DISPLAY_REPORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable displaying the Security Rating control in the default report.
+    "disable",  # Disable displaying the Security Rating control in the default report.
 ]
 VALID_BODY_DISPLAY_INSIGHT = [
-    "enable",
-    "disable",
+    "enable",  # Enable displaying the Security Rating control as an insight across the GUI.
+    "disable",  # Disable displaying the Security Rating control as an insight across the GUI.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -229,7 +229,7 @@ def validate_system_security_rating_controls_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "display-report": "enable",  # Valid enum value
+        ...     "display-report": "{'name': 'enable', 'help': 'Enable displaying the Security Rating control in the default report.', 'label': 'Enable', 'description': 'Enable displaying the Security Rating control in the default report'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_security_rating_controls_post(payload)
         >>> assert is_valid == True

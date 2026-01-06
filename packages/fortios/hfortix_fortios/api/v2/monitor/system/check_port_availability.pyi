@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CheckPortAvailability:
     """
-    Configuration for system/check-port-availability
+    Check whether a list of TCP port ranges is available for a certain service.
     
     Path: system/check_port_availability
     Category: monitor

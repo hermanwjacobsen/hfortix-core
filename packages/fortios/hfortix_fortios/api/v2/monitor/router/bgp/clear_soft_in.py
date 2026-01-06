@@ -56,7 +56,7 @@ class ClearSoftIn:
         """
         Retrieve router/bgp/clear_soft_in configuration.
 
-        Configuration for router/bgp/clear-soft-in
+        Inbound soft-reconfiguration for BGP peers.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

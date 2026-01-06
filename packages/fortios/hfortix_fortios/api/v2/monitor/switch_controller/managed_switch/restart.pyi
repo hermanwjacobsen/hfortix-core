@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Restart:
     """
-    Configuration for switch-controller/managed-switch/restart
+    Restart a given FortiSwitch.
     
     Path: switch_controller/managed_switch/restart
     Category: monitor

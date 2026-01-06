@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class NpuHpe:
     """
-    Configuration for monitoring/npu-hpe
+    Configuration for monitoring/npu_hpe
     
     Path: monitoring/npu_hpe
     Category: cmdb

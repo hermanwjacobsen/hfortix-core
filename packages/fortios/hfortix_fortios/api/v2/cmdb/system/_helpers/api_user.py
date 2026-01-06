@@ -135,7 +135,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Trusthost type.",
             "default": "ipv4-trusthost",
-            "options": ["ipv4-trusthost", "ipv6-trusthost"],
+            "options": [{"help": "IPv4 trusthost.", "label": "Ipv4 Trusthost", "name": "ipv4-trusthost"}, {"help": "IPv6 trusthost.", "label": "Ipv6 Trusthost", "name": "ipv6-trusthost"}],
         },
         "ipv4-trusthost": {
             "type": "ipv4-classnet",
@@ -153,8 +153,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PEER_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable peer.
+    "disable",  # Disable peer.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -285,7 +285,7 @@ def validate_system_api_user_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "accprofile": True,
-        ...     "peer-auth": "enable",  # Valid enum value
+        ...     "peer-auth": "{'name': 'enable', 'help': 'Enable peer.', 'label': 'Enable', 'description': 'Enable peer'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_api_user_post(payload)
         >>> assert is_valid == True

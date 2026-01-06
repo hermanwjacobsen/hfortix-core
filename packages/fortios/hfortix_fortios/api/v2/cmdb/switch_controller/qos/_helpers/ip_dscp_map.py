@@ -112,13 +112,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Differentiated service.",
             "default": "",
-            "options": ["CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "EF", "CS6", "CS7"],
+            "options": [{"help": "DSCP CS0.", "label": "Cs0", "name": "CS0"}, {"help": "DSCP CS1.", "label": "Cs1", "name": "CS1"}, {"help": "DSCP AF11.", "label": "Af11", "name": "AF11"}, {"help": "DSCP AF12.", "label": "Af12", "name": "AF12"}, {"help": "DSCP AF13.", "label": "Af13", "name": "AF13"}, {"help": "DSCP CS2.", "label": "Cs2", "name": "CS2"}, {"help": "DSCP AF21.", "label": "Af21", "name": "AF21"}, {"help": "DSCP AF22.", "label": "Af22", "name": "AF22"}, {"help": "DSCP AF23.", "label": "Af23", "name": "AF23"}, {"help": "DSCP CS3.", "label": "Cs3", "name": "CS3"}, {"help": "DSCP AF31.", "label": "Af31", "name": "AF31"}, {"help": "DSCP AF32.", "label": "Af32", "name": "AF32"}, {"help": "DSCP AF33.", "label": "Af33", "name": "AF33"}, {"help": "DSCP CS4.", "label": "Cs4", "name": "CS4"}, {"help": "DSCP AF41.", "label": "Af41", "name": "AF41"}, {"help": "DSCP AF42.", "label": "Af42", "name": "AF42"}, {"help": "DSCP AF43.", "label": "Af43", "name": "AF43"}, {"help": "DSCP CS5.", "label": "Cs5", "name": "CS5"}, {"help": "DSCP EF.", "label": "Ef", "name": "EF"}, {"help": "DSCP CS6.", "label": "Cs6", "name": "CS6"}, {"help": "DSCP CS7.", "label": "Cs7", "name": "CS7"}],
         },
         "ip-precedence": {
             "type": "option",
             "help": "IP Precedence.",
             "default": "",
-            "options": ["network-control", "internetwork-control", "critic-ecp", "flashoverride", "flash", "immediate", "priority", "routine"],
+            "options": [{"help": "Network control.", "label": "Network Control", "name": "network-control"}, {"help": "Internetwork control.", "label": "Internetwork Control", "name": "internetwork-control"}, {"help": "Critic ECP.", "label": "Critic Ecp", "name": "critic-ecp"}, {"help": "Flash override.", "label": "Flashoverride", "name": "flashoverride"}, {"help": "Flash.", "label": "Flash", "name": "flash"}, {"help": "Immediate.", "label": "Immediate", "name": "immediate"}, {"help": "Priority.", "label": "Priority", "name": "priority"}, {"help": "Routine.", "label": "Routine", "name": "routine"}],
         },
         "value": {
             "type": "user",

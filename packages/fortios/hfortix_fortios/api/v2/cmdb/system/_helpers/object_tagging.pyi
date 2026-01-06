@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ADDRESS: Literal["disable", "mandatory", "optional"]
-VALID_BODY_DEVICE: Literal["disable", "mandatory", "optional"]
-VALID_BODY_INTERFACE: Literal["disable", "mandatory", "optional"]
-VALID_BODY_MULTIPLE: Literal["enable", "disable"]
+VALID_BODY_ADDRESS: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}]
+VALID_BODY_DEVICE: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}]
+VALID_BODY_INTERFACE: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}]
+VALID_BODY_MULTIPLE: Literal[{"description": "Enable multi-tagging", "help": "Enable multi-tagging.", "label": "Enable", "name": "enable"}, {"description": "Disable multi-tagging", "help": "Disable multi-tagging.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

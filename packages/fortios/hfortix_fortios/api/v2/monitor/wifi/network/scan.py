@@ -56,7 +56,7 @@ class Scan:
         """
         Retrieve wifi/network/scan configuration.
 
-        Configuration for wifi/network/scan
+        When FortiWiFi is in client mode, start a scan for local WiFi networks.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

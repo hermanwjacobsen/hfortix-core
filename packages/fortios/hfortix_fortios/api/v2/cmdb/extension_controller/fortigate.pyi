@@ -12,7 +12,7 @@ class FortigatePayload(TypedDict, total=False):
     """
     name: str  # FortiGate entry name.
     id: str  # FortiGate serial number.
-    authorized: Literal["discovered", "disable", "enable"]  # Enable/disable FortiGate administration.
+    authorized: Literal[{"description": "Controller discovered this FortiGate", "help": "Controller discovered this FortiGate.", "label": "Discovered", "name": "discovered"}, {"description": "Controller is configured to not provide service to this FortiGate", "help": "Controller is configured to not provide service to this FortiGate.", "label": "Disable", "name": "disable"}, {"description": "Controller is configured to provide service to this FortiGate", "help": "Controller is configured to provide service to this FortiGate.", "label": "Enable", "name": "enable"}]  # Enable/disable FortiGate administration.
     hostname: NotRequired[str]  # FortiGate hostname.
     description: NotRequired[str]  # Description.
     vdom: NotRequired[int]  # VDOM.
@@ -47,7 +47,7 @@ class Fortigate:
         payload_dict: FortigatePayload | None = ...,
         name: str | None = ...,
         id: str | None = ...,
-        authorized: Literal["discovered", "disable", "enable"] | None = ...,
+        authorized: Literal[{"description": "Controller discovered this FortiGate", "help": "Controller discovered this FortiGate.", "label": "Discovered", "name": "discovered"}, {"description": "Controller is configured to not provide service to this FortiGate", "help": "Controller is configured to not provide service to this FortiGate.", "label": "Disable", "name": "disable"}, {"description": "Controller is configured to provide service to this FortiGate", "help": "Controller is configured to provide service to this FortiGate.", "label": "Enable", "name": "enable"}] | None = ...,
         hostname: str | None = ...,
         description: str | None = ...,
         device_id: int | None = ...,
@@ -62,7 +62,7 @@ class Fortigate:
         payload_dict: FortigatePayload | None = ...,
         name: str | None = ...,
         id: str | None = ...,
-        authorized: Literal["discovered", "disable", "enable"] | None = ...,
+        authorized: Literal[{"description": "Controller discovered this FortiGate", "help": "Controller discovered this FortiGate.", "label": "Discovered", "name": "discovered"}, {"description": "Controller is configured to not provide service to this FortiGate", "help": "Controller is configured to not provide service to this FortiGate.", "label": "Disable", "name": "disable"}, {"description": "Controller is configured to provide service to this FortiGate", "help": "Controller is configured to provide service to this FortiGate.", "label": "Enable", "name": "enable"}] | None = ...,
         hostname: str | None = ...,
         description: str | None = ...,
         device_id: int | None = ...,

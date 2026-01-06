@@ -154,32 +154,37 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADVERTISING = [
-    "ibeacon",
-    "eddystone-uid",
-    "eddystone-url",
+    "ibeacon",  # iBeacon advertising.
+    "eddystone-uid",  # Eddystone UID advertising.
+    "eddystone-url",  # Eddystone URL advertising.
 ]
 VALID_BODY_TXPOWER = [
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
+    "0",  # Transmit power level 0 (-21 dBm)
+    "1",  # Transmit power level 1 (-18 dBm)
+    "2",  # Transmit power level 2 (-15 dBm)
+    "3",  # Transmit power level 3 (-12 dBm)
+    "4",  # Transmit power level 4 (-9 dBm)
+    "5",  # Transmit power level 5 (-6 dBm)
+    "6",  # Transmit power level 6 (-3 dBm)
+    "7",  # Transmit power level 7 (0 dBm)
+    "8",  # Transmit power level 8 (1 dBm)
+    "9",  # Transmit power level 9 (2 dBm)
+    "10",  # Transmit power level 10 (3 dBm)
+    "11",  # Transmit power level 11 (4 dBm)
+    "12",  # Transmit power level 12 (5 dBm)
+    "13",  # Transmit power level 13 (8 dBm)
+    "14",  # Transmit power level 14 (11 dBm)
+    "15",  # Transmit power level 15 (14 dBm)
+    "16",  # Transmit power level 16 (17 dBm)
+    "17",  # Transmit power level 17 (20 dBm)
 ]
 VALID_BODY_BLE_SCANNING = [
-    "enable",
-    "disable",
+    "enable",  # Enable BLE scanning.
+    "disable",  # Disable BLE scanning.
 ]
 VALID_BODY_SCAN_TYPE = [
-    "active",
-    "passive",
+    "active",  # Active BLE scanning.
+    "passive",  # Passive BLE scanning.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -307,7 +312,7 @@ def validate_wireless_controller_ble_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "advertising": "ibeacon",  # Valid enum value
+        ...     "advertising": "{'name': 'ibeacon', 'help': 'iBeacon advertising.', 'label': 'Ibeacon', 'description': 'iBeacon advertising'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_ble_profile_post(payload)
         >>> assert is_valid == True

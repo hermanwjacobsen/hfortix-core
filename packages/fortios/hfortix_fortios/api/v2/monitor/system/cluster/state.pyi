@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class State:
     """
-    Configuration for system/cluster/state
+    Get state of SLBC cluster slots.
     
     Path: system/cluster/state
     Category: monitor

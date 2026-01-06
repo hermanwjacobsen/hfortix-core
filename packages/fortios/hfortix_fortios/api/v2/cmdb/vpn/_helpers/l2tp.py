@@ -118,16 +118,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ENFORCE_IPSEC = [
-    "enable",
-    "disable",
+    "enable",  # Enable enforce-ipsec
+    "disable",  # Disable enforce-ipsec
 ]
 VALID_BODY_COMPRESS = [
-    "enable",
-    "disable",
+    "enable",  # Enable compress
+    "disable",  # Disable compress
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -254,7 +254,7 @@ def validate_vpn_l2tp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "usrgrp": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_l2tp_post(payload)
         >>> assert is_valid == True

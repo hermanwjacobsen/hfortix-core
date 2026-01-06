@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ConfigScript:
     """
-    Configuration for system/config-script
+    Retrieve the information about config scripts.
     
     Path: system/config_script
     Category: monitor

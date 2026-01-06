@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Refresh:
     """
-    Configuration for azure/application-list/refresh
+    Update the Azure application list data or get the status of an update.
     
     Path: azure/application_list/refresh
     Category: monitor

@@ -8,12 +8,7 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .acme_certificate_status import AcmeCertificateStatus
     from .acquired_dns import AcquiredDns
-    from .automation_action import AutomationAction
     from .available_certificates import AvailableCertificates
-    from .available_interfaces import AvailableInterfaces
-    from .botnet import Botnet
-    from .botnet_domains import BotnetDomains
-    from .central_management import CentralManagement
     from .check_port_availability import CheckPortAvailability
     from .current_admins import CurrentAdmins
     from .global_resources import GlobalResources
@@ -28,13 +23,10 @@ if TYPE_CHECKING:
     from .interface_connected_admins_info import InterfaceConnectedAdminsInfo
     from .ipconf import Ipconf
     from .link_monitor import LinkMonitor
+    from .modem3g import Modem3g
     from .monitor_sensor import MonitorSensor
-    from .ntp import Ntp
-    from .performance import Performance
     from .resolve_fqdn import ResolveFqdn
-    from .resource import Resource
     from .running_processes import RunningProcesses
-    from .sandbox import Sandbox
     from .sensor_info import SensorInfo
     from .status import Status
     from .storage import Storage
@@ -43,10 +35,14 @@ if TYPE_CHECKING:
     from .vdom_link import VdomLink
     from .vdom_resource import VdomResource
     from .vm_information import VmInformation
-    from .x3g_modem import X3gModem
     from .admin import Admin
     from .api_user import ApiUser
+    from .automation_action import AutomationAction
     from .automation_stitch import AutomationStitch
+    from .available_interfaces import AvailableInterfaces
+    from .botnet import Botnet
+    from .botnet_domains import BotnetDomains
+    from .central_management import CentralManagement
     from .certificate import Certificate
     from .change_password import ChangePassword
     from .cluster import Cluster
@@ -74,11 +70,16 @@ if TYPE_CHECKING:
     from .logdisk import Logdisk
     from .lte_modem import LteModem
     from .modem import Modem
+    from .modem5g import Modem5g
+    from .ntp import Ntp
     from .object import Object
     from .os import Os
     from .password_policy_conform import PasswordPolicyConform
+    from .performance import Performance
     from .private_data_encryption import PrivateDataEncryption
     from .process import Process
+    from .resource import Resource
+    from .sandbox import Sandbox
     from .sdn_connector import SdnConnector
     from .time import Time
     from .traffic_history import TrafficHistory
@@ -86,7 +87,6 @@ if TYPE_CHECKING:
     from .usb_device import UsbDevice
     from .usb_log import UsbLog
     from .vmlicense import Vmlicense
-    from .x5g_modem import X5gModem
 
 
 class System:
@@ -94,7 +94,12 @@ class System:
 
     admin: Admin
     api_user: ApiUser
+    automation_action: AutomationAction
     automation_stitch: AutomationStitch
+    available_interfaces: AvailableInterfaces
+    botnet: Botnet
+    botnet_domains: BotnetDomains
+    central_management: CentralManagement
     certificate: Certificate
     change_password: ChangePassword
     cluster: Cluster
@@ -122,11 +127,16 @@ class System:
     logdisk: Logdisk
     lte_modem: LteModem
     modem: Modem
+    modem5g: Modem5g
+    ntp: Ntp
     object: Object
     os: Os
     password_policy_conform: PasswordPolicyConform
+    performance: Performance
     private_data_encryption: PrivateDataEncryption
     process: Process
+    resource: Resource
+    sandbox: Sandbox
     sdn_connector: SdnConnector
     time: Time
     traffic_history: TrafficHistory
@@ -134,15 +144,9 @@ class System:
     usb_device: UsbDevice
     usb_log: UsbLog
     vmlicense: Vmlicense
-    x5g_modem: X5gModem
     acme_certificate_status: AcmeCertificateStatus
     acquired_dns: AcquiredDns
-    automation_action: AutomationAction
     available_certificates: AvailableCertificates
-    available_interfaces: AvailableInterfaces
-    botnet: Botnet
-    botnet_domains: BotnetDomains
-    central_management: CentralManagement
     check_port_availability: CheckPortAvailability
     current_admins: CurrentAdmins
     global_resources: GlobalResources
@@ -157,13 +161,10 @@ class System:
     interface_connected_admins_info: InterfaceConnectedAdminsInfo
     ipconf: Ipconf
     link_monitor: LinkMonitor
+    modem3g: Modem3g
     monitor_sensor: MonitorSensor
-    ntp: Ntp
-    performance: Performance
     resolve_fqdn: ResolveFqdn
-    resource: Resource
     running_processes: RunningProcesses
-    sandbox: Sandbox
     sensor_info: SensorInfo
     status: Status
     storage: Storage
@@ -172,6 +173,5 @@ class System:
     vdom_link: VdomLink
     vdom_resource: VdomResource
     vm_information: VmInformation
-    x3g_modem: X3gModem
 
     def __init__(self, client: IHTTPClient) -> None: ...

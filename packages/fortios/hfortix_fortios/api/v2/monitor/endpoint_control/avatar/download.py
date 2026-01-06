@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve endpoint_control/avatar/download configuration.
 
-        Configuration for endpoint-control/avatar/download
+        Download an endpoint avatar image.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

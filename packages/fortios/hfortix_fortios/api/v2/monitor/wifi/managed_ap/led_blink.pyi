@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LedBlink:
     """
-    Configuration for wifi/managed_ap/led-blink
+    Turn a managed FortiAP's LED blinking on or off.
     
     Path: wifi/managed_ap/led_blink
     Category: monitor

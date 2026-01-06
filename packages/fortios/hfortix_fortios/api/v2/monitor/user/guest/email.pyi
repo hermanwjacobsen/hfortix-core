@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Email:
     """
-    Configuration for user/guest/email
+    Sent guest login details via email.
     
     Path: user/guest/email
     Category: monitor

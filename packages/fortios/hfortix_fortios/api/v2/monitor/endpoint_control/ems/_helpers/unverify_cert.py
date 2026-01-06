@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/ems/unverify_cert",
     "category": "monitor",
     "api_path": "endpoint-control/ems/unverify-cert",
-    "help": "Configuration for endpoint-control/ems/unverify-cert",
+    "help": "Unverify EMS server certificate for a specific EMS.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

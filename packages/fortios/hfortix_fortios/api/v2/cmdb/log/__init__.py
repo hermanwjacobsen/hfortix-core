@@ -12,9 +12,9 @@ from . import syslogd
 from . import syslogd2
 from . import syslogd3
 from . import syslogd4
-from . import tacacs_plus_accounting
-from . import tacacs_plus_accounting2
-from . import tacacs_plus_accounting3
+from . import tacacs_plusaccounting
+from . import tacacs_plusaccounting2
+from . import tacacs_plusaccounting3
 from . import webtrends
 from .custom_field import CustomField
 from .eventfilter import Eventfilter
@@ -40,9 +40,9 @@ __all__ = [
     "Syslogd2",
     "Syslogd3",
     "Syslogd4",
-    "TacacsPlusAccounting",
-    "TacacsPlusAccounting2",
-    "TacacsPlusAccounting3",
+    "TacacsPlusaccounting",
+    "TacacsPlusaccounting2",
+    "TacacsPlusaccounting3",
     "ThreatWeight",
     "Webtrends",
 ]
@@ -69,9 +69,9 @@ class Log:
         self.syslogd2 = syslogd2.Syslogd2(client)
         self.syslogd3 = syslogd3.Syslogd3(client)
         self.syslogd4 = syslogd4.Syslogd4(client)
-        self.tacacs_plus_accounting = tacacs_plus_accounting.TacacsPlusAccounting(client)
-        self.tacacs_plus_accounting2 = tacacs_plus_accounting2.TacacsPlusAccounting2(client)
-        self.tacacs_plus_accounting3 = tacacs_plus_accounting3.TacacsPlusAccounting3(client)
+        self.tacacs_plusaccounting = tacacs_plusaccounting.TacacsPlusaccounting(client)
+        self.tacacs_plusaccounting2 = tacacs_plusaccounting2.TacacsPlusaccounting2(client)
+        self.tacacs_plusaccounting3 = tacacs_plusaccounting3.TacacsPlusaccounting3(client)
         self.webtrends = webtrends.Webtrends(client)
         self.custom_field = CustomField(client)
         self.eventfilter = Eventfilter(client)

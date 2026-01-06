@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Extender:
     """
-    Monitor endpoint for extender-controller/extender
+    Retrieve statistics for specific configured FortiExtender units.
     
     Path: extender_controller/extender
     Category: monitor

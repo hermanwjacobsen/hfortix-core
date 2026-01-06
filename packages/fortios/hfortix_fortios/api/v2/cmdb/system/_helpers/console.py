@@ -92,12 +92,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OUTPUT = [
-    "standard",
-    "more",
+    "standard",  # Standard output.
+    "more",  # More page output.
 ]
 VALID_BODY_LOGIN = [
-    "enable",
-    "disable",
+    "enable",  # Console login enable.
+    "disable",  # Console login disable.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -222,7 +222,7 @@ def validate_system_console_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "output": "standard",  # Valid enum value
+        ...     "output": "{'name': 'standard', 'help': 'Standard output.', 'label': 'Standard', 'description': 'Standard output'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_console_post(payload)
         >>> assert is_valid == True

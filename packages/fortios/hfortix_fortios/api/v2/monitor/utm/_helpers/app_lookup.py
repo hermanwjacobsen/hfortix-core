@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "utm/app_lookup",
     "category": "monitor",
     "api_path": "utm/app-lookup",
-    "help": "Configuration for utm/app-lookup",
+    "help": "Query ISDB to resolve hosts to application control entries.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

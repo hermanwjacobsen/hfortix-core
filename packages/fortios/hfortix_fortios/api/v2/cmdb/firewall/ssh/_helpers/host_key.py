@@ -115,27 +115,27 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "trusted",
-    "revoked",
+    "trusted",  # The public key is trusted.
+    "revoked",  # The public key is revoked.
 ]
 VALID_BODY_TYPE = [
-    "RSA",
-    "DSA",
-    "ECDSA",
-    "ED25519",
-    "RSA-CA",
-    "DSA-CA",
-    "ECDSA-CA",
-    "ED25519-CA",
+    "RSA",  # The type of the public key is RSA.
+    "DSA",  # The type of the public key is DSA.
+    "ECDSA",  # The type of the public key is ECDSA.
+    "ED25519",  # The type of the public key is ED25519.
+    "RSA-CA",  # The type of the public key is from RSA CA.
+    "DSA-CA",  # The type of the public key is from DSA CA.
+    "ECDSA-CA",  # The type of the public key is from ECDSA CA.
+    "ED25519-CA",  # The type of the public key is from ED25519 CA.
 ]
 VALID_BODY_NID = [
-    "256",
-    "384",
-    "521",
+    "256",  # The NID is ecdsa-sha2-nistp256.
+    "384",  # The NID is ecdsa-sha2-nistp384.
+    "521",  # The NID is ecdsa-sha2-nistp521.
 ]
 VALID_BODY_USAGE = [
-    "transparent-proxy",
-    "access-proxy",
+    "transparent-proxy",  # Transparent proxy uses this public key to validate server.
+    "access-proxy",  # Access proxy uses this public key to validate server.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -263,7 +263,7 @@ def validate_firewall_ssh_host_key_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "trusted",  # Valid enum value
+        ...     "status": "{'name': 'trusted', 'help': 'The public key is trusted.', 'label': 'Trusted', 'description': 'The public key is trusted'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ssh_host_key_post(payload)
         >>> assert is_valid == True

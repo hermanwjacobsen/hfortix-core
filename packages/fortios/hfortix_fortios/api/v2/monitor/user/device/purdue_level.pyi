@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PurdueLevel:
     """
-    Configuration for user/device/purdue-level
+    Update the Purdue level of device from device store.
     
     Path: user/device/purdue_level
     Category: monitor

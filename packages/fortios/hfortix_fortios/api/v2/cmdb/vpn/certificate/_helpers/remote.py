@@ -100,13 +100,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_RANGE = [
-    "global",
-    "vdom",
+    "global",  # Global range.
+    "vdom",  # VDOM IP address range.
 ]
 VALID_BODY_SOURCE = [
-    "factory",
-    "user",
-    "bundle",
+    "factory",  # Factory installed certificate.
+    "user",  # User generated certificate.
+    "bundle",  # Bundle file certificate.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -236,7 +236,7 @@ def validate_vpn_certificate_remote_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "range": "global",  # Valid enum value
+        ...     "range": "{'name': 'global', 'help': 'Global range.', 'label': 'Global', 'description': 'Global range'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_certificate_remote_post(payload)
         >>> assert is_valid == True

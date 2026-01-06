@@ -56,7 +56,7 @@ class RedirectPortal:
         """
         Retrieve fortiguard/redirect_portal configuration.
 
-        Configuration for fortiguard/redirect-portal
+        Retrieve the FortiGuard redirect portal IP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

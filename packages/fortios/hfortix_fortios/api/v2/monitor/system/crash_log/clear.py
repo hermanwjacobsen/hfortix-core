@@ -56,7 +56,7 @@ class Clear:
         """
         Retrieve system/crash_log/clear configuration.
 
-        Configuration for system/crash-log/clear
+        Clear system crash log.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

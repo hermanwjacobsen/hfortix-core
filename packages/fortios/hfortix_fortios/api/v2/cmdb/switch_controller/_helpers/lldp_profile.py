@@ -151,7 +151,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable or disable this TLV.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Do not transmit this network policy TLV.", "label": "Disable", "name": "disable"}, {"help": "Transmit this TLV if a VLAN has been addded to the port.", "label": "Enable", "name": "enable"}],
         },
         "vlan-intf": {
             "type": "string",
@@ -163,7 +163,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable VLAN assignment when this profile is applied on managed FortiSwitch port.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable VLAN assignment when this profile is applied on port.", "label": "Disable", "name": "disable"}, {"help": "Enable VLAN assignment when this profile is applied on port.", "label": "Enable", "name": "enable"}],
         },
         "priority": {
             "type": "integer",
@@ -191,7 +191,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable or disable this TLV.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Do not transmit this location service TLV.", "label": "Disable", "name": "disable"}, {"help": "Transmit this location service TLV.", "label": "Enable", "name": "enable"}],
         },
         "sys-location-id": {
             "type": "string",
@@ -231,35 +231,35 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MED_TLVS = [
-    "inventory-management",
-    "network-policy",
-    "power-management",
-    "location-identification",
+    "inventory-management",  # Inventory management TLVs.
+    "network-policy",  # Network policy TLVs.
+    "power-management",  # Power manangement TLVs.
+    "location-identification",  # Location identificaion TLVs.
 ]
 VALID_BODY_802_1_TLVS = [
-    "port-vlan-id",
+    "port-vlan-id",  # Port native VLAN TLV.
 ]
 VALID_BODY_802_3_TLVS = [
-    "max-frame-size",
-    "power-negotiation",
+    "max-frame-size",  # Maximum frame size TLV.
+    "power-negotiation",  # PoE+ classification TLV.
 ]
 VALID_BODY_AUTO_ISL = [
-    "disable",
-    "enable",
+    "disable",  # Disable automatic MCLAG inter chassis link.
+    "enable",  # Enable automatic MCLAG inter chassis link.
 ]
 VALID_BODY_AUTO_MCLAG_ICL = [
-    "disable",
-    "enable",
+    "disable",  # Disable auto inter-switch-LAG.
+    "enable",  # Enable auto inter-switch-LAG.
 ]
 VALID_BODY_AUTO_ISL_AUTH = [
-    "legacy",
-    "strict",
-    "relax",
+    "legacy",  # No auto inter-switch-LAG authentication.
+    "strict",  # Strict auto inter-switch-LAG authentication.
+    "relax",  # Relax auto inter-switch-LAG authentication.
 ]
 VALID_BODY_AUTO_ISL_AUTH_ENCRYPT = [
-    "none",
-    "mixed",
-    "must",
+    "none",  # No auto inter-switch-LAG encryption.
+    "mixed",  # Mixed auto inter-switch-LAG encryption.
+    "must",  # Must auto inter-switch-LAG encryption.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -387,7 +387,7 @@ def validate_switch_controller_lldp_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "med-tlvs": "inventory-management",  # Valid enum value
+        ...     "med-tlvs": "{'name': 'inventory-management', 'help': 'Inventory management TLVs.', 'label': 'Inventory Management', 'description': 'Inventory management TLVs'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_lldp_profile_post(payload)
         >>> assert is_valid == True

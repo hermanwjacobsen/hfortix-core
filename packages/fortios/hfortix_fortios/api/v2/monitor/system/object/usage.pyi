@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Usage:
     """
-    Configuration for system/object/usage
+    Retrieve all objects that are currently using as well as objects that can use the given object.
     
     Path: system/object/usage
     Category: monitor

@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["default", "fortinac"]
-VALID_BODY_LDAP_POLL: Literal["enable", "disable"]
-VALID_BODY_SSL: Literal["enable", "disable"]
-VALID_BODY_SSL_SERVER_HOST_IP_CHECK: Literal["enable", "disable"]
-VALID_BODY_INTERFACE_SELECT_METHOD: Literal["auto", "sdwan", "specify"]
+VALID_BODY_TYPE: Literal[{"description": "All other unspecified types of servers", "help": "All other unspecified types of servers.", "label": "Default", "name": "default"}, {"description": "FortiNAC server", "help": "FortiNAC server.", "label": "Fortinac", "name": "fortinac"}]
+VALID_BODY_LDAP_POLL: Literal[{"description": "Enable automatic fetching of groups from LDAP server", "help": "Enable automatic fetching of groups from LDAP server.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic fetching of groups from LDAP server", "help": "Disable automatic fetching of groups from LDAP server.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SSL: Literal[{"description": "Enable use of SSL", "help": "Enable use of SSL.", "label": "Enable", "name": "enable"}, {"description": "Disable use of SSL", "help": "Disable use of SSL.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SSL_SERVER_HOST_IP_CHECK: Literal[{"description": "Enable server host/IP verification", "help": "Enable server host/IP verification.", "label": "Enable", "name": "enable"}, {"description": "Disable server host/IP verification", "help": "Disable server host/IP verification.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INTERFACE_SELECT_METHOD: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -56,7 +56,7 @@ class Disassociate:
         """
         Retrieve wifi/client/disassociate configuration.
 
-        Configuration for wifi/client/disassociate
+        Disassociate a WiFi client from the FortiAP it's currently connected to. The client will need to reassociate with the same FortiAP or another to resume connectivity.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

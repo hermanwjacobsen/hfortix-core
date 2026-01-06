@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Backup:
     """
-    Configuration for system/config/backup
+    Backup system config
     
     Path: system/config/backup
     Category: monitor

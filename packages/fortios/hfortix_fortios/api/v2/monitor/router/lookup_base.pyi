@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Lookup:
     """
-    Configuration for router/lookup
+    Performs a route lookup by querying the routing table.
     
     Path: router/lookup
     Category: monitor

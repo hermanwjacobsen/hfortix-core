@@ -11,10 +11,10 @@ class ObjectTaggingPayload(TypedDict, total=False):
         }
     """
     category: NotRequired[str]  # Tag Category.
-    address: NotRequired[Literal["disable", "mandatory", "optional"]]  # Address.
-    device: NotRequired[Literal["disable", "mandatory", "optional"]]  # Device.
-    interface: NotRequired[Literal["disable", "mandatory", "optional"]]  # Interface.
-    multiple: NotRequired[Literal["enable", "disable"]]  # Allow multiple tag selection.
+    address: NotRequired[Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}]]  # Address.
+    device: NotRequired[Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}]]  # Device.
+    interface: NotRequired[Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}]]  # Interface.
+    multiple: NotRequired[Literal[{"description": "Enable multi-tagging", "help": "Enable multi-tagging.", "label": "Enable", "name": "enable"}, {"description": "Disable multi-tagging", "help": "Disable multi-tagging.", "label": "Disable", "name": "disable"}]]  # Allow multiple tag selection.
     color: NotRequired[int]  # Color of icon on the GUI.
     tags: NotRequired[list[dict[str, Any]]]  # Tags.
 
@@ -45,10 +45,10 @@ class ObjectTagging:
         self,
         payload_dict: ObjectTaggingPayload | None = ...,
         category: str | None = ...,
-        address: Literal["disable", "mandatory", "optional"] | None = ...,
-        device: Literal["disable", "mandatory", "optional"] | None = ...,
-        interface: Literal["disable", "mandatory", "optional"] | None = ...,
-        multiple: Literal["enable", "disable"] | None = ...,
+        address: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}] | None = ...,
+        device: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}] | None = ...,
+        interface: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}] | None = ...,
+        multiple: Literal[{"description": "Enable multi-tagging", "help": "Enable multi-tagging.", "label": "Enable", "name": "enable"}, {"description": "Disable multi-tagging", "help": "Disable multi-tagging.", "label": "Disable", "name": "disable"}] | None = ...,
         color: int | None = ...,
         tags: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -60,10 +60,10 @@ class ObjectTagging:
         self,
         payload_dict: ObjectTaggingPayload | None = ...,
         category: str | None = ...,
-        address: Literal["disable", "mandatory", "optional"] | None = ...,
-        device: Literal["disable", "mandatory", "optional"] | None = ...,
-        interface: Literal["disable", "mandatory", "optional"] | None = ...,
-        multiple: Literal["enable", "disable"] | None = ...,
+        address: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}] | None = ...,
+        device: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}] | None = ...,
+        interface: Literal[{"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}] | None = ...,
+        multiple: Literal[{"description": "Enable multi-tagging", "help": "Enable multi-tagging.", "label": "Enable", "name": "enable"}, {"description": "Disable multi-tagging", "help": "Disable multi-tagging.", "label": "Disable", "name": "disable"}] | None = ...,
         color: int | None = ...,
         tags: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

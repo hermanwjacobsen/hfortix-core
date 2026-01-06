@@ -109,9 +109,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DB_MODE = [
-    "stop-adding",
-    "remove-modified-then-oldest",
-    "remove-oldest",
+    "stop-adding",  # Stop adding entries.
+    "remove-modified-then-oldest",  # Remove modified chunks first, then oldest file entries.
+    "remove-oldest",  # Remove the oldest files first.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -236,7 +236,7 @@ def validate_dlp_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "db-mode": "stop-adding",  # Valid enum value
+        ...     "db-mode": "{'name': 'stop-adding', 'help': 'Stop adding entries.', 'label': 'Stop Adding'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_dlp_settings_post(payload)
         >>> assert is_valid == True

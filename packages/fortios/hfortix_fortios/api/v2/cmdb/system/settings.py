@@ -116,6 +116,7 @@ class Settings:
         comments: str | None = None,
         vdom_type: str | None = None,
         lan_extension_controller_addr: str | None = None,
+        lan_extension_controller_port: int | None = None,
         opmode: str | None = None,
         ngfw_mode: str | None = None,
         http_external_dest: str | None = None,
@@ -134,7 +135,7 @@ class Settings:
         bfd_dont_enforce_src_port: str | None = None,
         utf8_spam_tagging: str | None = None,
         wccp_cache_engine: str | None = None,
-        vpn_stats_log: str | None = None,
+        vpn_stats_log: str | list | None = None,
         vpn_stats_period: int | None = None,
         v4_ecmp_mode: str | None = None,
         mac_ttl: int | None = None,
@@ -145,8 +146,8 @@ class Settings:
         dhcp_proxy_interface_select_method: str | None = None,
         dhcp_proxy_interface: str | None = None,
         dhcp_proxy_vrf_select: int | None = None,
-        dhcp_server_ip: str | None = None,
-        dhcp6_server_ip: str | None = None,
+        dhcp_server_ip: str | list | None = None,
+        dhcp6_server_ip: str | list | None = None,
         central_nat: str | None = None,
         gui_default_policy_columns: str | list | None = None,
         lldp_reception: str | None = None,
@@ -172,8 +173,8 @@ class Settings:
         sip_nat_trace: str | None = None,
         h323_direct_model: str | None = None,
         status: str | None = None,
-        sip_tcp_port: int | None = None,
-        sip_udp_port: int | None = None,
+        sip_tcp_port: int | list | None = None,
+        sip_udp_port: int | list | None = None,
         sip_ssl_port: int | None = None,
         sccp_port: int | None = None,
         multicast_forward: str | None = None,
@@ -268,8 +269,8 @@ class Settings:
             comments: VDOM comments.
             vdom_type: Vdom type (traffic, lan-extension or admin).
             lan_extension_controller_addr: Controller IP address or FQDN to connect.
+            lan_extension_controller_port: Controller port to connect.
             opmode: Firewall operation mode (NAT or Transparent).
-            ngfw_mode: Next Generation Firewall (NGFW) mode.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             **kwargs: Additional parameters
@@ -304,6 +305,7 @@ class Settings:
             comments=comments,
             vdom_type=vdom_type,
             lan_extension_controller_addr=lan_extension_controller_addr,
+            lan_extension_controller_port=lan_extension_controller_port,
             opmode=opmode,
             ngfw_mode=ngfw_mode,
             http_external_dest=http_external_dest,

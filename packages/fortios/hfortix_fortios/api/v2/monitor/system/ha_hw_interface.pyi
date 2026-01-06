@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaHwInterface:
     """
-    Configuration for system/ha-hw-interface
+    Get HA NPU hardware interface status.
     
     Path: system/ha_hw_interface
     Category: monitor

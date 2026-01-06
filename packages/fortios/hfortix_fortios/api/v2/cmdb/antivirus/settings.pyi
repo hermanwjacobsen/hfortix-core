@@ -10,11 +10,11 @@ class SettingsPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    machine_learning_detection: NotRequired[Literal["enable", "monitor", "disable"]]  # Use machine learning based malware detection.
-    use_extreme_db: NotRequired[Literal["enable", "disable"]]  # Enable/disable the use of Extreme AVDB.
-    grayware: NotRequired[Literal["enable", "disable"]]  # Enable/disable grayware detection when an AntiVirus profile 
+    machine_learning_detection: NotRequired[Literal[{"description": "Enable machine learning based malware detection", "help": "Enable machine learning based malware detection.", "label": "Enable", "name": "enable"}, {"description": "Enable machine learning based malware detection for monitoring only", "help": "Enable machine learning based malware detection for monitoring only.", "label": "Monitor", "name": "monitor"}, {"description": "Disable machine learning based malware detection", "help": "Disable machine learning based malware detection.", "label": "Disable", "name": "disable"}]]  # Use machine learning based malware detection.
+    use_extreme_db: NotRequired[Literal[{"description": "Enable extreme AVDB", "help": "Enable extreme AVDB.", "label": "Enable", "name": "enable"}, {"description": "Disable extreme AVDB", "help": "Disable extreme AVDB.", "label": "Disable", "name": "disable"}]]  # Enable/disable the use of Extreme AVDB.
+    grayware: NotRequired[Literal[{"description": "Enable grayware detection", "help": "Enable grayware detection.", "label": "Enable", "name": "enable"}, {"description": "Disable grayware detection", "help": "Disable grayware detection.", "label": "Disable", "name": "disable"}]]  # Enable/disable grayware detection when an AntiVirus profile 
     override_timeout: NotRequired[int]  # Override the large file scan timeout value in seconds (30 - 
-    cache_infected_result: NotRequired[Literal["enable", "disable"]]  # Enable/disable cache of infected scan results (default = ena
+    cache_infected_result: NotRequired[Literal[{"description": "Enable cache of infected scan results", "help": "Enable cache of infected scan results.", "label": "Enable", "name": "enable"}, {"description": "Disable cache of infected scan results", "help": "Disable cache of infected scan results.", "label": "Disable", "name": "disable"}]]  # Enable/disable cache of infected scan results (default = ena
 
 
 class Settings:
@@ -41,11 +41,11 @@ class Settings:
     def post(
         self,
         payload_dict: SettingsPayload | None = ...,
-        machine_learning_detection: Literal["enable", "monitor", "disable"] | None = ...,
-        use_extreme_db: Literal["enable", "disable"] | None = ...,
-        grayware: Literal["enable", "disable"] | None = ...,
+        machine_learning_detection: Literal[{"description": "Enable machine learning based malware detection", "help": "Enable machine learning based malware detection.", "label": "Enable", "name": "enable"}, {"description": "Enable machine learning based malware detection for monitoring only", "help": "Enable machine learning based malware detection for monitoring only.", "label": "Monitor", "name": "monitor"}, {"description": "Disable machine learning based malware detection", "help": "Disable machine learning based malware detection.", "label": "Disable", "name": "disable"}] | None = ...,
+        use_extreme_db: Literal[{"description": "Enable extreme AVDB", "help": "Enable extreme AVDB.", "label": "Enable", "name": "enable"}, {"description": "Disable extreme AVDB", "help": "Disable extreme AVDB.", "label": "Disable", "name": "disable"}] | None = ...,
+        grayware: Literal[{"description": "Enable grayware detection", "help": "Enable grayware detection.", "label": "Enable", "name": "enable"}, {"description": "Disable grayware detection", "help": "Disable grayware detection.", "label": "Disable", "name": "disable"}] | None = ...,
         override_timeout: int | None = ...,
-        cache_infected_result: Literal["enable", "disable"] | None = ...,
+        cache_infected_result: Literal[{"description": "Enable cache of infected scan results", "help": "Enable cache of infected scan results.", "label": "Enable", "name": "enable"}, {"description": "Disable cache of infected scan results", "help": "Disable cache of infected scan results.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -54,11 +54,11 @@ class Settings:
     def put(
         self,
         payload_dict: SettingsPayload | None = ...,
-        machine_learning_detection: Literal["enable", "monitor", "disable"] | None = ...,
-        use_extreme_db: Literal["enable", "disable"] | None = ...,
-        grayware: Literal["enable", "disable"] | None = ...,
+        machine_learning_detection: Literal[{"description": "Enable machine learning based malware detection", "help": "Enable machine learning based malware detection.", "label": "Enable", "name": "enable"}, {"description": "Enable machine learning based malware detection for monitoring only", "help": "Enable machine learning based malware detection for monitoring only.", "label": "Monitor", "name": "monitor"}, {"description": "Disable machine learning based malware detection", "help": "Disable machine learning based malware detection.", "label": "Disable", "name": "disable"}] | None = ...,
+        use_extreme_db: Literal[{"description": "Enable extreme AVDB", "help": "Enable extreme AVDB.", "label": "Enable", "name": "enable"}, {"description": "Disable extreme AVDB", "help": "Disable extreme AVDB.", "label": "Disable", "name": "disable"}] | None = ...,
+        grayware: Literal[{"description": "Enable grayware detection", "help": "Enable grayware detection.", "label": "Enable", "name": "enable"}, {"description": "Disable grayware detection", "help": "Disable grayware detection.", "label": "Disable", "name": "disable"}] | None = ...,
         override_timeout: int | None = ...,
-        cache_infected_result: Literal["enable", "disable"] | None = ...,
+        cache_infected_result: Literal[{"description": "Enable cache of infected scan results", "help": "Enable cache of infected scan results.", "label": "Enable", "name": "enable"}, {"description": "Disable cache of infected scan results", "help": "Disable cache of infected scan results.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

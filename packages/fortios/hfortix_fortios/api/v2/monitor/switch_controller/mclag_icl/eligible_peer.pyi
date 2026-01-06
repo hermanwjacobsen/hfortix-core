@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class EligiblePeer:
     """
-    Configuration for switch-controller/mclag-icl/eligible-peer
+    Find a pair of FortiSwitches that are eligible to form a tier-1 MC-LAG.
     
     Path: switch_controller/mclag_icl/eligible_peer
     Category: monitor

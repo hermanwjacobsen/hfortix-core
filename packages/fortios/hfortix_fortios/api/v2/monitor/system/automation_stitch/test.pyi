@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Test:
     """
-    Configuration for system/automation-stitch/test
+    Triggers an automation stitch for testing purposes.
     
     Path: system/automation_stitch/test
     Category: monitor

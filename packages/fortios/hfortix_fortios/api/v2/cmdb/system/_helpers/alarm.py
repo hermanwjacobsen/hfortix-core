@@ -191,12 +191,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable alarm.
+    "disable",  # Disable alarm.
 ]
 VALID_BODY_AUDIBLE = [
-    "enable",
-    "disable",
+    "enable",  # Enable audible alarm.
+    "disable",  # Disable audible alarm.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -321,7 +321,7 @@ def validate_system_alarm_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable alarm.', 'label': 'Enable', 'description': 'Enable alarm'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_alarm_post(payload)
         >>> assert is_valid == True

@@ -56,7 +56,7 @@ class Close:
         """
         Retrieve firewall/session/close configuration.
 
-        Configuration for firewall/session/close
+        Close a single firewall session that matches all provided criteria.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

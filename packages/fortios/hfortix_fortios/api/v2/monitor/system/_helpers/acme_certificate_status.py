@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/acme_certificate_status",
     "category": "monitor",
     "api_path": "system/acme-certificate-status",
-    "help": "Configuration for system/acme-certificate-status",
+    "help": "Get ACME certificate status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

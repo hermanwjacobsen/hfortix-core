@@ -103,8 +103,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SOURCE = [
-    "built-in",
-    "user",
+    "built-in",  # Built-in SSH proxy local keys.
+    "user",  # User imported SSH proxy local keys.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -235,7 +235,7 @@ def validate_firewall_ssh_local_ca_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "private-key": True,
-        ...     "source": "built-in",  # Valid enum value
+        ...     "source": "{'name': 'built-in', 'help': 'Built-in SSH proxy local keys.', 'label': 'Built In', 'description': 'Built-in SSH proxy local keys'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ssh_local_ca_post(payload)
         >>> assert is_valid == True

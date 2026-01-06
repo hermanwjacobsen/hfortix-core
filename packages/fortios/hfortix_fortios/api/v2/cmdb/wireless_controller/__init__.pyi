@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .arrp_profile import ArrpProfile
     from .ble_profile import BleProfile
     from .bonjour_profile import BonjourProfile
-    from .global_setting import GlobalSetting
+    from .global_ import Global
     from .inter_controller import InterController
     from .log import Log
     from .lw_profile import LwProfile
@@ -46,7 +46,7 @@ class WirelessController:
     arrp_profile: ArrpProfile
     ble_profile: BleProfile
     bonjour_profile: BonjourProfile
-    global_setting: GlobalSetting
+    global_: Global
     inter_controller: InterController
     log: Log
     lw_profile: LwProfile

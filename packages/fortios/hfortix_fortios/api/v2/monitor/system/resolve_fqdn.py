@@ -56,7 +56,7 @@ class ResolveFqdn:
         """
         Retrieve system/resolve_fqdn configuration.
 
-        Configuration for system/resolve-fqdn
+        Resolves the provided FQDNs to FQDN -> IP mappings.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

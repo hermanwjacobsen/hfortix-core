@@ -12,14 +12,14 @@ class ScimPayload(TypedDict, total=False):
     """
     name: str  # SCIM client name.
     id: NotRequired[int]  # SCIM client ID.
-    status: Literal["enable", "disable"]  # Enable/disable System for Cross-domain Identity Management (
+    status: Literal[{"description": "Enable System for Cross-domain Identity Management (SCIM)", "help": "Enable System for Cross-domain Identity Management (SCIM).", "label": "Enable", "name": "enable"}, {"description": "Disable System for Cross-domain Identity Management (SCIM)", "help": "Disable System for Cross-domain Identity Management (SCIM).", "label": "Disable", "name": "disable"}]  # Enable/disable System for Cross-domain Identity Management (
     base_url: NotRequired[str]  # Server URL to receive SCIM create, read, update, delete (CRU
-    auth_method: NotRequired[Literal["token", "base"]]  # TLS client authentication methods (default = bearer token).
+    auth_method: NotRequired[Literal[{"description": "Bearer token", "help": "Bearer token.", "label": "Token", "name": "token"}, {"description": "Base", "help": "Base.", "label": "Base", "name": "base"}]]  # TLS client authentication methods (default = bearer token).
     token_certificate: NotRequired[str]  # Certificate for token verification.
     secret: NotRequired[str]  # Secret for token verification or base authentication.
     certificate: NotRequired[str]  # Certificate for client verification during TLS handshake.
-    client_identity_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable client identity check.
-    cascade: NotRequired[Literal["disable", "enable"]]  # Enable/disable to follow SCIM users/groups changes in IDP.
+    client_identity_check: NotRequired[Literal[{"description": "Enable client identity check", "help": "Enable client identity check.", "label": "Enable", "name": "enable"}, {"description": "Disable client identity check", "help": "Disable client identity check.", "label": "Disable", "name": "disable"}]]  # Enable/disable client identity check.
+    cascade: NotRequired[Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}]]  # Enable/disable to follow SCIM users/groups changes in IDP.
 
 
 class Scim:
@@ -49,14 +49,14 @@ class Scim:
         payload_dict: ScimPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable System for Cross-domain Identity Management (SCIM)", "help": "Enable System for Cross-domain Identity Management (SCIM).", "label": "Enable", "name": "enable"}, {"description": "Disable System for Cross-domain Identity Management (SCIM)", "help": "Disable System for Cross-domain Identity Management (SCIM).", "label": "Disable", "name": "disable"}] | None = ...,
         base_url: str | None = ...,
-        auth_method: Literal["token", "base"] | None = ...,
+        auth_method: Literal[{"description": "Bearer token", "help": "Bearer token.", "label": "Token", "name": "token"}, {"description": "Base", "help": "Base.", "label": "Base", "name": "base"}] | None = ...,
         token_certificate: str | None = ...,
         secret: str | None = ...,
         certificate: str | None = ...,
-        client_identity_check: Literal["enable", "disable"] | None = ...,
-        cascade: Literal["disable", "enable"] | None = ...,
+        client_identity_check: Literal[{"description": "Enable client identity check", "help": "Enable client identity check.", "label": "Enable", "name": "enable"}, {"description": "Disable client identity check", "help": "Disable client identity check.", "label": "Disable", "name": "disable"}] | None = ...,
+        cascade: Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -67,14 +67,14 @@ class Scim:
         payload_dict: ScimPayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable System for Cross-domain Identity Management (SCIM)", "help": "Enable System for Cross-domain Identity Management (SCIM).", "label": "Enable", "name": "enable"}, {"description": "Disable System for Cross-domain Identity Management (SCIM)", "help": "Disable System for Cross-domain Identity Management (SCIM).", "label": "Disable", "name": "disable"}] | None = ...,
         base_url: str | None = ...,
-        auth_method: Literal["token", "base"] | None = ...,
+        auth_method: Literal[{"description": "Bearer token", "help": "Bearer token.", "label": "Token", "name": "token"}, {"description": "Base", "help": "Base.", "label": "Base", "name": "base"}] | None = ...,
         token_certificate: str | None = ...,
         secret: str | None = ...,
         certificate: str | None = ...,
-        client_identity_check: Literal["enable", "disable"] | None = ...,
-        cascade: Literal["disable", "enable"] | None = ...,
+        client_identity_check: Literal[{"description": "Enable client identity check", "help": "Enable client identity check.", "label": "Enable", "name": "enable"}, {"description": "Disable client identity check", "help": "Disable client identity check.", "label": "Disable", "name": "disable"}] | None = ...,
+        cascade: Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

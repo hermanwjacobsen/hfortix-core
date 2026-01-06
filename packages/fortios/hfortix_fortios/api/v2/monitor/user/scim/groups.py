@@ -56,7 +56,7 @@ class Groups:
         """
         Retrieve user/scim/groups configuration.
 
-        Configuration for user/scim/groups
+        Get SCIM client group-names.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

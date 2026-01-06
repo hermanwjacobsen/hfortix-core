@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ipam/utilization",
     "category": "monitor",
     "api_path": "system/ipam/utilization",
-    "help": "Configuration for system/ipam/utilization",
+    "help": "Retrieve IP utilization for IPAM.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

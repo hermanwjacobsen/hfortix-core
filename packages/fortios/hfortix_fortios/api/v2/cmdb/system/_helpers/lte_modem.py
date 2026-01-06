@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/lte_modem",
     "category": "cmdb",
     "api_path": "system/lte-modem",
-    "help": "Configuration for system/lte-modem",
+    "help": "Configuration for system/lte_modem",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

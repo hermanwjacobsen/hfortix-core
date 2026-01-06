@@ -122,13 +122,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Critical option.",
             "default": "no",
-            "options": ["no", "yes"],
+            "options": [{"help": "Certificate extension, server ignores the unsupported certificate extension.", "label": "No", "name": "no"}, {"help": "Critical option, server refuses to authorize if it cannnot recognize the critical option.", "label": "Yes", "name": "yes"}],
         },
         "type": {
             "type": "option",
             "help": "Type of certificate extension.",
             "default": "fixed",
-            "options": ["fixed", "user"],
+            "options": [{"help": "Fixed certificate extension entry.", "label": "Fixed", "name": "fixed"}, {"help": "Certificate extension entry filled with authenticated username.", "label": "User", "name": "user"}],
         },
         "data": {
             "type": "string",
@@ -142,28 +142,28 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SOURCE_ADDRESS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PERMIT_X11_FORWARDING = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PERMIT_AGENT_FORWARDING = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PERMIT_PORT_FORWARDING = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PERMIT_PTY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PERMIT_USER_RC = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -293,7 +293,7 @@ def validate_firewall_access_proxy_ssh_client_cert_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "auth-ca": True,
-        ...     "source-address": "enable",  # Valid enum value
+        ...     "source-address": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_access_proxy_ssh_client_cert_post(payload)
         >>> assert is_valid == True

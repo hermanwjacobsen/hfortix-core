@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CreateDefault:
     """
-    Configuration for wifi/ap-profile/create-default
+    Create a default FortiAP profile for the specified platform.
     
     Path: wifi/ap_profile/create_default
     Category: monitor

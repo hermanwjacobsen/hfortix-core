@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/fabric_admin_lockout_exists_on_firmware_update",
     "category": "service",
     "api_path": "system/fabric-admin-lockout-exists-on-firmware-update",
-    "help": "Configuration for system/fabric-admin-lockout-exists-on-firmware-update",
+    "help": "Check if there exists a FortiGate in the Fabric that has an administrative user that will get locked out if firmware is updated to a version that does not support safer passwords.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

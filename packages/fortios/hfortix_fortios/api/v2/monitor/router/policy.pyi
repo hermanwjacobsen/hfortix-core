@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Policy:
     """
-    Monitor endpoint for router/policy
+    Retrieve a list of active IPv4 policy routes.
     
     Path: router/policy
     Category: monitor

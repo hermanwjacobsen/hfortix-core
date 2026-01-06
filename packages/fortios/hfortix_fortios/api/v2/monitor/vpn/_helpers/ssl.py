@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn/ssl",
     "category": "monitor",
     "api_path": "vpn/ssl",
-    "help": "Configuration for vpn/ssl/stats",
+    "help": "Retrieve a list of all Agentless VPN sessions and sub-sessions.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

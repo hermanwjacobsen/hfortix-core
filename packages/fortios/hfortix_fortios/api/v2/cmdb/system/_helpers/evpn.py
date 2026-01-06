@@ -120,12 +120,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_IP_LOCAL_LEARNING = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP address local learning.
+    "disable",  # Disable IP address local learning.
 ]
 VALID_BODY_ARP_SUPPRESSION = [
-    "enable",
-    "disable",
+    "enable",  # Enable ARP suppression.
+    "disable",  # Disable ARP suppression.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -253,7 +253,7 @@ def validate_system_evpn_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ip-local-learning": "enable",  # Valid enum value
+        ...     "ip-local-learning": "{'name': 'enable', 'help': 'Enable IP address local learning.', 'label': 'Enable', 'description': 'Enable IP address local learning'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_evpn_post(payload)
         >>> assert is_valid == True

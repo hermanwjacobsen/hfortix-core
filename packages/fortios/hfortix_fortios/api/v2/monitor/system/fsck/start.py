@@ -56,7 +56,7 @@ class Start:
         """
         Retrieve system/fsck/start configuration.
 
-        Configuration for system/fsck/start
+        Set file system check flag so that it will be executed on next device reboot.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

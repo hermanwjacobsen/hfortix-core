@@ -158,50 +158,50 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PORTS_DEFINED = [
-    "source",
-    "destination",
+    "source",  # Source port match.
+    "destination",  # Destination port match.
 ]
 VALID_BODY_SERVER_TYPE = [
-    "forward",
-    "proxy",
+    "forward",  # Forward server.
+    "proxy",  # Proxy server.
 ]
 VALID_BODY_AUTHENTICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable MD5 authentication.
+    "disable",  # Disable MD5 authentication.
 ]
 VALID_BODY_FORWARD_METHOD = [
-    "GRE",
-    "L2",
-    "any",
+    "GRE",  # GRE encapsulation.
+    "L2",  # L2 rewrite.
+    "any",  # GRE or L2.
 ]
 VALID_BODY_CACHE_ENGINE_METHOD = [
-    "GRE",
-    "L2",
+    "GRE",  # GRE encapsulation.
+    "L2",  # L2 rewrite.
 ]
 VALID_BODY_SERVICE_TYPE = [
-    "auto",
-    "standard",
-    "dynamic",
+    "auto",  # auto
+    "standard",  # Standard service.
+    "dynamic",  # Dynamic service.
 ]
 VALID_BODY_PRIMARY_HASH = [
-    "src-ip",
-    "dst-ip",
-    "src-port",
-    "dst-port",
+    "src-ip",  # Source IP hash.
+    "dst-ip",  # Destination IP hash.
+    "src-port",  # Source port hash.
+    "dst-port",  # Destination port hash.
 ]
 VALID_BODY_ASSIGNMENT_BUCKET_FORMAT = [
-    "wccp-v2",
-    "cisco-implementation",
+    "wccp-v2",  # WCCP-v2 bucket format.
+    "cisco-implementation",  # Cisco bucket format.
 ]
 VALID_BODY_RETURN_METHOD = [
-    "GRE",
-    "L2",
-    "any",
+    "GRE",  # GRE encapsulation.
+    "L2",  # L2 rewrite.
+    "any",  # GRE or L2.
 ]
 VALID_BODY_ASSIGNMENT_METHOD = [
-    "HASH",
-    "MASK",
-    "any",
+    "HASH",  # HASH assignment method.
+    "MASK",  # MASK assignment method.
+    "any",  # HASH or MASK.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -329,7 +329,7 @@ def validate_system_wccp_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ports-defined": "source",  # Valid enum value
+        ...     "ports-defined": "{'name': 'source', 'help': 'Source port match.', 'label': 'Source', 'description': 'Source port match'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_wccp_post(payload)
         >>> assert is_valid == True

@@ -56,7 +56,7 @@ class LteModem:
         """
         Retrieve system/lte_modem configuration.
 
-        Configuration for system/lte-modem
+        Configuration for system/lte_modem
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -120,7 +120,7 @@ class LteModem:
         """
         Update existing system/lte_modem object.
 
-        Configuration for system/lte-modem
+        Configuration for system/lte_modem
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).

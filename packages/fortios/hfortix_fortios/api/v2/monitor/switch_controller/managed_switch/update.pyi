@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for switch-controller/managed-switch/update
+    Update administrative state for a given FortiSwitch (enable or disable authorization).
     
     Path: switch_controller/managed_switch/update
     Category: monitor

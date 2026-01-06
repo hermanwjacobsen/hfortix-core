@@ -56,7 +56,7 @@ class LocalIn6:
         """
         Retrieve firewall/local_in6 configuration.
 
-        Configuration for firewall/local-in6
+        List implicit and explicit IPv6 local-in firewall policies.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

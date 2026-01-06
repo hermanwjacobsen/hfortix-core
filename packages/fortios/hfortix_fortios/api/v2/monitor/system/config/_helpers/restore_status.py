@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config/restore_status",
     "category": "monitor",
     "api_path": "system/config/restore-status",
-    "help": "Configuration for system/config/restore-status",
+    "help": "Check the status of the restoring system configuration session.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

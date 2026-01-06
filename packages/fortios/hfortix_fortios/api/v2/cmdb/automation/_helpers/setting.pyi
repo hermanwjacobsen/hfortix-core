@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_FABRIC_SYNC: Literal["enable", "disable"]
-VALID_BODY_SECURE_MODE: Literal["enable", "disable"]
+VALID_BODY_FABRIC_SYNC: Literal[{"description": "Synchronize automation setting with security fabric", "help": "Synchronize automation setting with security fabric.", "label": "Enable", "name": "enable"}, {"description": "Do not synchronize automation setting with security fabric", "help": "Do not synchronize automation setting with security fabric.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SECURE_MODE: Literal[{"description": "Enable secure running mode for automation", "help": "Enable secure running mode for automation.", "label": "Enable", "name": "enable"}, {"description": "Disable secure running mode for automation", "help": "Disable secure running mode for automation.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/address_fqdns",
     "category": "monitor",
     "api_path": "firewall/address-fqdns",
-    "help": "Monitor endpoint for firewall/address-fqdns",
+    "help": "List of FQDN address objects and the IPs they resolved to.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

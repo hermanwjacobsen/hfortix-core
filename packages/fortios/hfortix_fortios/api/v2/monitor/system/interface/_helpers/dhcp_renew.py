@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/interface/dhcp_renew",
     "category": "monitor",
     "api_path": "system/interface/dhcp-renew",
-    "help": "Configuration for system/interface/dhcp-renew",
+    "help": "Renew DHCP lease of an interface.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

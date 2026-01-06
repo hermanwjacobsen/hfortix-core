@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for system/vmlicense/download
+    Download Flex-VM license and reboot immediately if successful.
     
     Path: system/vmlicense/download
     Category: monitor

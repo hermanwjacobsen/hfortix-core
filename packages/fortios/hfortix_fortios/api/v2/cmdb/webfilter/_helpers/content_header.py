@@ -106,7 +106,7 @@ NESTED_SCHEMAS = {
             "help": "Action to take for this content type.",
             "required": True,
             "default": "allow",
-            "options": ["block", "allow", "exempt"],
+            "options": [{"help": "Block content type.", "label": "Block", "name": "block"}, {"help": "Allow content type.", "label": "Allow", "name": "allow"}, {"help": "Exempt content type.", "label": "Exempt", "name": "exempt"}],
         },
         "category": {
             "type": "user",

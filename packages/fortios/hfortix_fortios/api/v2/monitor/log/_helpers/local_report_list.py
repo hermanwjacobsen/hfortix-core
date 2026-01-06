@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/local_report_list",
     "category": "monitor",
     "api_path": "log/local-report-list",
-    "help": "Monitor endpoint for log/local-report-list",
+    "help": "Get local reports list.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

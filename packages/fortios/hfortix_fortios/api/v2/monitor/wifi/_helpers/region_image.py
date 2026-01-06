@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/region_image",
     "category": "monitor",
     "api_path": "wifi/region-image",
-    "help": "Configuration for wifi/region-image",
+    "help": "Retrieves a floorplan/region image from a configured FortiAP region.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

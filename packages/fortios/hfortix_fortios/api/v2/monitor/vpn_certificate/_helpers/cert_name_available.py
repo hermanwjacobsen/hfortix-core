@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn_certificate/cert_name_available",
     "category": "monitor",
     "api_path": "vpn-certificate/cert-name-available",
-    "help": "Configuration for vpn-certificate/cert-name-available",
+    "help": "Check if the local certificate name is available to use.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

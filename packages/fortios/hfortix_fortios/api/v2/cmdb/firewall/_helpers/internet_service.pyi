@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_DIRECTION: Literal["src", "dst", "both"]
-VALID_BODY_DATABASE: Literal["isdb", "irdb"]
+VALID_BODY_DIRECTION: Literal[{"description": "As source in the firewall policy", "help": "As source in the firewall policy.", "label": "Src", "name": "src"}, {"description": "As destination in the firewall policy", "help": "As destination in the firewall policy.", "label": "Dst", "name": "dst"}, {"description": "Both directions in the firewall policy", "help": "Both directions in the firewall policy.", "label": "Both", "name": "both"}]
+VALID_BODY_DATABASE: Literal[{"description": "Internet Service Database", "help": "Internet Service Database.", "label": "Isdb", "name": "isdb"}, {"description": "Internet RRR Database", "help": "Internet RRR Database.", "label": "Irdb", "name": "irdb"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

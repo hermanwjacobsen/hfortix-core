@@ -113,7 +113,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable LAN segment feature on the FortiLink interface.",
             "default": "disabled",
-            "options": ["enabled", "disabled"],
+            "options": [{"help": "Enable lan-segment on this interface.", "label": "Enabled", "name": "enabled"}, {"help": "Disable lan-segment on this interface.", "label": "Disabled", "name": "disabled"}],
         },
         "nac-lan-interface": {
             "type": "string",
@@ -146,13 +146,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LINK_DOWN_FLUSH = [
-    "disable",
-    "enable",
+    "disable",  # Disable clearing NAC and dynamic devices on a switch port when link down event happens.
+    "enable",  # Enable clearing NAC and dynamic devices on a switch port when link down event happens.
 ]
 VALID_BODY_ACCESS_VLAN_MODE = [
-    "legacy",
-    "fail-open",
-    "fail-close",
+    "legacy",  # Backward compatible behavior.
+    "fail-open",  # When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points.
+    "fail-close",  # When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -280,7 +280,7 @@ def validate_switch_controller_fortilink_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "link-down-flush": "disable",  # Valid enum value
+        ...     "link-down-flush": "{'name': 'disable', 'help': 'Disable clearing NAC and dynamic devices on a switch port when link down event happens.', 'label': 'Disable', 'description': 'Disable clearing NAC and dynamic devices on a switch port when link down event happens'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_fortilink_settings_post(payload)
         >>> assert is_valid == True

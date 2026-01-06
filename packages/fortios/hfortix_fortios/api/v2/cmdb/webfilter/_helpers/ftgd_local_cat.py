@@ -98,8 +98,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable the local category.
+    "disable",  # Disable the local category.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -229,7 +229,7 @@ def validate_webfilter_ftgd_local_cat_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "desc": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable the local category.', 'label': 'Enable', 'description': 'Enable the local category'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_webfilter_ftgd_local_cat_post(payload)
         >>> assert is_valid == True

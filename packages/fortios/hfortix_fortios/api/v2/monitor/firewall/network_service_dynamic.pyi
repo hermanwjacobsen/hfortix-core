@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class NetworkServiceDynamic:
     """
-    Configuration for firewall/network-service-dynamic
+    List of dynamic network service IP address and port pairs.
     
     Path: firewall/network_service_dynamic
     Category: monitor

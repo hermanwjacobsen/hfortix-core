@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve webproxy/pacfile/download configuration.
 
-        Configuration for webproxy/pacfile/download
+        Download webproxy PAC file.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

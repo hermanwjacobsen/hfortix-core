@@ -107,67 +107,67 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SSH_KEX_ALGO = [
-    "diffie-hellman-group1-sha1",
-    "diffie-hellman-group14-sha1",
-    "diffie-hellman-group14-sha256",
-    "diffie-hellman-group16-sha512",
-    "diffie-hellman-group18-sha512",
-    "diffie-hellman-group-exchange-sha1",
-    "diffie-hellman-group-exchange-sha256",
-    "curve25519-sha256@libssh.org",
-    "ecdh-sha2-nistp256",
-    "ecdh-sha2-nistp384",
-    "ecdh-sha2-nistp521",
+    "diffie-hellman-group1-sha1",  # diffie-hellman-group1-sha1
+    "diffie-hellman-group14-sha1",  # diffie-hellman-group14-sha1
+    "diffie-hellman-group14-sha256",  # diffie-hellman-group14-sha256
+    "diffie-hellman-group16-sha512",  # diffie-hellman-group16-sha512
+    "diffie-hellman-group18-sha512",  # diffie-hellman-group18-sha512
+    "diffie-hellman-group-exchange-sha1",  # diffie-hellman-group-exchange-sha1
+    "diffie-hellman-group-exchange-sha256",  # diffie-hellman-group-exchange-sha256
+    "curve25519-sha256@libssh.org",  # curve25519-sha256@libssh.org
+    "ecdh-sha2-nistp256",  # ecdh-sha2-nistp256
+    "ecdh-sha2-nistp384",  # ecdh-sha2-nistp384
+    "ecdh-sha2-nistp521",  # ecdh-sha2-nistp521
 ]
 VALID_BODY_SSH_ENC_ALGO = [
-    "chacha20-poly1305@openssh.com",
-    "aes128-ctr",
-    "aes192-ctr",
-    "aes256-ctr",
-    "arcfour256",
-    "arcfour128",
-    "aes128-cbc",
-    "3des-cbc",
-    "blowfish-cbc",
-    "cast128-cbc",
-    "aes192-cbc",
-    "aes256-cbc",
-    "arcfour",
-    "rijndael-cbc@lysator.liu.se",
-    "aes128-gcm@openssh.com",
-    "aes256-gcm@openssh.com",
+    "chacha20-poly1305@openssh.com",  # chacha20-poly1305@openssh.com
+    "aes128-ctr",  # aes128-ctr
+    "aes192-ctr",  # aes192-ctr
+    "aes256-ctr",  # aes256-ctr
+    "arcfour256",  # arcfour256
+    "arcfour128",  # arcfour128
+    "aes128-cbc",  # aes128-cbc
+    "3des-cbc",  # 3des-cbc
+    "blowfish-cbc",  # blowfish-cbc
+    "cast128-cbc",  # cast128-cbc
+    "aes192-cbc",  # aes192-cbc
+    "aes256-cbc",  # aes256-cbc
+    "arcfour",  # arcfour
+    "rijndael-cbc@lysator.liu.se",  # rijndael-cbc@lysator.liu.se
+    "aes128-gcm@openssh.com",  # aes128-gcm@openssh.com
+    "aes256-gcm@openssh.com",  # aes256-gcm@openssh.com
 ]
 VALID_BODY_SSH_MAC_ALGO = [
-    "hmac-md5",
-    "hmac-md5-etm@openssh.com",
-    "hmac-md5-96",
-    "hmac-md5-96-etm@openssh.com",
-    "hmac-sha1",
-    "hmac-sha1-etm@openssh.com",
-    "hmac-sha2-256",
-    "hmac-sha2-256-etm@openssh.com",
-    "hmac-sha2-512",
-    "hmac-sha2-512-etm@openssh.com",
-    "hmac-ripemd160",
-    "hmac-ripemd160@openssh.com",
-    "hmac-ripemd160-etm@openssh.com",
-    "umac-64@openssh.com",
-    "umac-128@openssh.com",
-    "umac-64-etm@openssh.com",
-    "umac-128-etm@openssh.com",
+    "hmac-md5",  # hmac-md5
+    "hmac-md5-etm@openssh.com",  # hmac-md5-etm@openssh.com
+    "hmac-md5-96",  # hmac-md5-96
+    "hmac-md5-96-etm@openssh.com",  # hmac-md5-96-etm@openssh.com
+    "hmac-sha1",  # hmac-sha1
+    "hmac-sha1-etm@openssh.com",  # hmac-sha1-etm@openssh.com
+    "hmac-sha2-256",  # hmac-sha2-256
+    "hmac-sha2-256-etm@openssh.com",  # hmac-sha2-256-etm@openssh.com
+    "hmac-sha2-512",  # hmac-sha2-512
+    "hmac-sha2-512-etm@openssh.com",  # hmac-sha2-512-etm@openssh.com
+    "hmac-ripemd160",  # hmac-ripemd160
+    "hmac-ripemd160@openssh.com",  # hmac-ripemd160@openssh.com
+    "hmac-ripemd160-etm@openssh.com",  # hmac-ripemd160-etm@openssh.com
+    "umac-64@openssh.com",  # umac-64@openssh.com
+    "umac-128@openssh.com",  # umac-128@openssh.com
+    "umac-64-etm@openssh.com",  # umac-64-etm@openssh.com
+    "umac-128-etm@openssh.com",  # umac-128-etm@openssh.com
 ]
 VALID_BODY_SSH_HSK_ALGO = [
-    "ssh-rsa",
-    "ecdsa-sha2-nistp521",
-    "ecdsa-sha2-nistp384",
-    "ecdsa-sha2-nistp256",
-    "rsa-sha2-256",
-    "rsa-sha2-512",
-    "ssh-ed25519",
+    "ssh-rsa",  # ssh-rsa
+    "ecdsa-sha2-nistp521",  # ecdsa-sha2-nistp521
+    "ecdsa-sha2-nistp384",  # ecdsa-sha2-nistp384
+    "ecdsa-sha2-nistp256",  # ecdsa-sha2-nistp256
+    "rsa-sha2-256",  # rsa-sha2-256
+    "rsa-sha2-512",  # rsa-sha2-512
+    "ssh-ed25519",  # ssh-ed25519
 ]
 VALID_BODY_SSH_HSK_OVERRIDE = [
-    "disable",
-    "enable",
+    "disable",  # Disable SSH host key override in SSH daemon.
+    "enable",  # Enable SSH host key override in SSH daemon.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -294,7 +294,7 @@ def validate_system_ssh_config_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "ssh-hsk": True,
-        ...     "ssh-kex-algo": "diffie-hellman-group1-sha1",  # Valid enum value
+        ...     "ssh-kex-algo": "{'name': 'diffie-hellman-group1-sha1', 'help': 'diffie-hellman-group1-sha1', 'label': 'Diffie Hellman Group1 Sha1', 'description': 'diffie-hellman-group1-sha1    diffie-hellman-group14-sha1:diffie-hellman-group14-sha1    diffie-hellman-group14-sha256:diffie-hellman-group14-sha256    diffie-hellman-group16-sha512:diffie-hellman-group16-sha512    diffie-hellman-group18-sha512:diffie-hellman-group18-sha512    diffie-hellman-group-exchange-sha1:diffie-hellman-group-exchange-sha1    diffie-hellman-group-exchange-sha256:diffie-hellman-group-exchange-sha256    curve25519-sha256@libssh'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ssh_config_post(payload)
         >>> assert is_valid == True

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/internet_service_details",
     "category": "monitor",
     "api_path": "firewall/internet-service-details",
-    "help": "Configuration for firewall/internet-service-details",
+    "help": "List all details for a given Internet Service ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -110,6 +110,7 @@ FIELDS_WITH_DEFAULTS = {
     "radius-server": "",
     "nas-filter-rule": "disable",
     "domain-name-stripping": "disable",
+    "mlo": "disable",
     "local-standalone": "disable",
     "local-standalone-nat": "disable",
     "ip": "0.0.0.0 0.0.0.0",
@@ -156,7 +157,7 @@ FIELDS_WITH_DEFAULTS = {
     "probe-resp-suppression": "disable",
     "probe-resp-threshold": "-80",
     "radio-sensitivity": "disable",
-    "quarantine": "enable",
+    "quarantine": "disable",
     "radio-5g-threshold": "-76",
     "radio-2g-threshold": "-79",
     "vlan-pooling": "disable",
@@ -292,6 +293,7 @@ FIELD_TYPES = {
     "radius-server": "string",  # RADIUS server to be used to authenticate WiFi users.
     "nas-filter-rule": "option",  # Enable/disable NAS filter rule support (default = disable).
     "domain-name-stripping": "option",  # Enable/disable stripping domain name from identity (default 
+    "mlo": "option",  # Enable/disable WiFi7 Multi-Link-Operation (default = disable
     "local-standalone": "option",  # Enable/disable AP local standalone (default = disable).
     "local-standalone-nat": "option",  # Enable/disable AP local standalone NAT mode.
     "ip": "ipv4-classnet-host",  # IP address and subnet mask for the local standalone NAT subn
@@ -343,7 +345,7 @@ FIELD_TYPES = {
     "probe-resp-suppression": "option",  # Enable/disable probe response suppression (to ignore weak si
     "probe-resp-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP re
     "radio-sensitivity": "option",  # Enable/disable software radio sensitivity (to ignore weak si
-    "quarantine": "option",  # Enable/disable station quarantine (default = enable).
+    "quarantine": "option",  # Enable/disable station quarantine (default = disable).
     "radio-5g-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP re
     "radio-2g-threshold": "string",  # Minimum signal level/threshold in dBm required for the AP re
     "vlan-name": "string",  # Table for mapping VLAN name to VLAN ID.
@@ -467,6 +469,7 @@ FIELD_DESCRIPTIONS = {
     "radius-server": "RADIUS server to be used to authenticate WiFi users.",
     "nas-filter-rule": "Enable/disable NAS filter rule support (default = disable).",
     "domain-name-stripping": "Enable/disable stripping domain name from identity (default = disable).",
+    "mlo": "Enable/disable WiFi7 Multi-Link-Operation (default = disable).",
     "local-standalone": "Enable/disable AP local standalone (default = disable).",
     "local-standalone-nat": "Enable/disable AP local standalone NAT mode.",
     "ip": "IP address and subnet mask for the local standalone NAT subnet.",
@@ -518,7 +521,7 @@ FIELD_DESCRIPTIONS = {
     "probe-resp-suppression": "Enable/disable probe response suppression (to ignore weak signals) (default = disable).",
     "probe-resp-threshold": "Minimum signal level/threshold in dBm required for the AP response to probe requests (-95 to -20, default = -80).",
     "radio-sensitivity": "Enable/disable software radio sensitivity (to ignore weak signals) (default = disable).",
-    "quarantine": "Enable/disable station quarantine (default = enable).",
+    "quarantine": "Enable/disable station quarantine (default = disable).",
     "radio-5g-threshold": "Minimum signal level/threshold in dBm required for the AP response to receive a packet in 5G band(-95 to -20, default = -76).",
     "radio-2g-threshold": "Minimum signal level/threshold in dBm required for the AP response to receive a packet in 2.4G band (-95 to -20, default = -79).",
     "vlan-name": "Table for mapping VLAN name to VLAN ID.",
@@ -743,515 +746,519 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PRE_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable pre-authentication.
+    "disable",  # Disable pre-authentication.
 ]
 VALID_BODY_EXTERNAL_PRE_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable pre-authentication with external APs.
+    "disable",  # Disable pre-authentication with external APs.
 ]
 VALID_BODY_MESH_BACKHAUL = [
-    "enable",
-    "disable",
+    "enable",  # Enable mesh backhaul.
+    "disable",  # Disable mesh backhaul.
 ]
 VALID_BODY_BROADCAST_SSID = [
-    "enable",
-    "disable",
+    "enable",  # Enable broadcasting the SSID.
+    "disable",  # Disable broadcasting the SSID.
 ]
 VALID_BODY_SECURITY = [
-    "open",
-    "wep64",
-    "wep128",
-    "wpa-personal",
-    "wpa-enterprise",
-    "wpa-only-personal",
-    "wpa-only-enterprise",
-    "wpa2-only-personal",
-    "wpa2-only-enterprise",
-    "wpa3-enterprise",
-    "wpa3-only-enterprise",
-    "wpa3-enterprise-transition",
-    "wpa3-sae",
-    "wpa3-sae-transition",
-    "owe",
-    "osen",
+    "open",  # Open.
+    "wep64",  # WEP 64-bit.
+    "wep128",  # WEP 128-bit.
+    "wpa-personal",  # WPA/WPA2 personal.
+    "wpa-enterprise",  # WPA/WPA2 enterprise.
+    "wpa-only-personal",  # WPA personal.
+    "wpa-only-enterprise",  # WPA enterprise.
+    "wpa2-only-personal",  # WPA2 personal.
+    "wpa2-only-enterprise",  # WPA2 enterprise.
+    "wpa3-enterprise",  # WPA3 enterprise with 192-bit encryption and PMF mandatory.
+    "wpa3-only-enterprise",  # WPA3 enterprise with PMF mandatory.
+    "wpa3-enterprise-transition",  # WPA3 enterprise with PMF optional.
+    "wpa3-sae",  # WPA3 SAE.
+    "wpa3-sae-transition",  # WPA3 SAE transition.
+    "owe",  # Opportunistic wireless encryption.
+    "osen",  # OSEN.
 ]
 VALID_BODY_PMF = [
-    "disable",
-    "enable",
-    "optional",
+    "disable",  # Disable PMF completely.
+    "enable",  # Enable PMF but deny clients without PMF.
+    "optional",  # Enable PMF and allow clients without PMF.
 ]
 VALID_BODY_BEACON_PROTECTION = [
-    "disable",
-    "enable",
+    "disable",  # Disable beacon protection.
+    "enable",  # Enable beacon protection.
 ]
 VALID_BODY_OKC = [
-    "disable",
-    "enable",
+    "disable",  # Disable Opportunistic Key Caching (OKC).
+    "enable",  # Enable Opportunistic Key Caching (OKC).
 ]
 VALID_BODY_MBO = [
-    "disable",
-    "enable",
+    "disable",  # Disable Multiband Operation (MBO).
+    "enable",  # Enable Multiband Operation (MBO).
 ]
 VALID_BODY_MBO_CELL_DATA_CONN_PREF = [
-    "excluded",
-    "prefer-not",
-    "prefer-use",
+    "excluded",  # Wi-Fi Agile Multiband AP does not want the Wi-Fi Agile Multiband STA to use the cellular data connection.
+    "prefer-not",  # Wi-Fi Agile Multiband AP prefers the Wi-Fi Agile Multiband STA should not use cellular data connection.
+    "prefer-use",  # Wi-Fi Agile Multiband AP prefers the Wi-Fi Agile Multiband STA should use cellular data connection.
 ]
 VALID_BODY_80211K = [
-    "disable",
-    "enable",
+    "disable",  # Disable 802.11k assisted roaming.
+    "enable",  # Enable 802.11k assisted roaming.
 ]
 VALID_BODY_80211V = [
-    "disable",
-    "enable",
+    "disable",  # Disable 802.11v assisted roaming.
+    "enable",  # Enable 802.11v assisted roaming.
 ]
 VALID_BODY_NEIGHBOR_REPORT_DUAL_BAND = [
-    "disable",
-    "enable",
+    "disable",  # Disable dual-band neighbor report.
+    "enable",  # Enable dual-band neighbor report.
 ]
 VALID_BODY_FAST_BSS_TRANSITION = [
-    "disable",
-    "enable",
+    "disable",  # Disable 802.11r Fast BSS Transition (FT).
+    "enable",  # Enable 802.11r Fast BSS Transition (FT).
 ]
 VALID_BODY_FT_OVER_DS = [
-    "disable",
-    "enable",
+    "disable",  # Disable FT over the Distribution System (DS).
+    "enable",  # Enable FT over the Distribution System (DS).
 ]
 VALID_BODY_SAE_GROUPS = [
-    "19",
-    "20",
-    "21",
+    "19",  # DH Group 19.
+    "20",  # DH Group 20.
+    "21",  # DH Group 21.
 ]
 VALID_BODY_OWE_GROUPS = [
-    "19",
-    "20",
-    "21",
+    "19",  # DH Group 19.
+    "20",  # DH Group 20.
+    "21",  # DH Group 21.
 ]
 VALID_BODY_OWE_TRANSITION = [
-    "disable",
-    "enable",
+    "disable",  # Disable OWE transition mode support.
+    "enable",  # Enable OWE transition mode support.
 ]
 VALID_BODY_ADDITIONAL_AKMS = [
-    "akm6",
-    "akm24",
+    "akm6",  # Use AKM suite employing PSK_SHA256.
+    "akm24",  # Use AKM suite employing SAE_EXT.
 ]
 VALID_BODY_EAPOL_KEY_RETRIES = [
-    "disable",
-    "enable",
+    "disable",  # Disable retransmission of EAPOL-Key frames (message 3/4 and group message 1/2).
+    "enable",  # Enable retransmission of EAPOL-Key frames (message 3/4 and group message 1/2).
 ]
 VALID_BODY_TKIP_COUNTER_MEASURE = [
-    "enable",
-    "disable",
+    "enable",  # Enable TKIP counter measure.
+    "disable",  # Disable TKIP counter measure.
 ]
 VALID_BODY_EXTERNAL_WEB_FORMAT = [
-    "auto-detect",
-    "no-query-string",
-    "partial-query-string",
+    "auto-detect",  # Automatically detect if "external-web" URL has any query parameter.
+    "no-query-string",  # "external-web" URL does not have any query parameter.
+    "partial-query-string",  # "external-web" URL has some query parameters.
 ]
 VALID_BODY_MAC_USERNAME_DELIMITER = [
-    "hyphen",
-    "single-hyphen",
-    "colon",
-    "none",
+    "hyphen",  # Use hyphen as delimiter for MAC auth username.
+    "single-hyphen",  # Use single hyphen as delimiter for MAC auth username.
+    "colon",  # Use colon as delimiter for MAC auth username.
+    "none",  # No delimiter for MAC auth username.
 ]
 VALID_BODY_MAC_PASSWORD_DELIMITER = [
-    "hyphen",
-    "single-hyphen",
-    "colon",
-    "none",
+    "hyphen",  # Use hyphen as delimiter for MAC auth password.
+    "single-hyphen",  # Use single hyphen as delimiter for MAC auth password.
+    "colon",  # Use colon as delimiter for MAC auth password.
+    "none",  # No delimiter for MAC auth password.
 ]
 VALID_BODY_MAC_CALLING_STATION_DELIMITER = [
-    "hyphen",
-    "single-hyphen",
-    "colon",
-    "none",
+    "hyphen",  # Use hyphen as delimiter for calling station.
+    "single-hyphen",  # Use single hyphen as delimiter for calling station.
+    "colon",  # Use colon as delimiter for calling station.
+    "none",  # No delimiter for calling station.
 ]
 VALID_BODY_MAC_CALLED_STATION_DELIMITER = [
-    "hyphen",
-    "single-hyphen",
-    "colon",
-    "none",
+    "hyphen",  # Use hyphen as delimiter for called station.
+    "single-hyphen",  # Use single hyphen as delimiter for called station.
+    "colon",  # Use colon as delimiter for called station.
+    "none",  # No delimiter for called station.
 ]
 VALID_BODY_MAC_CASE = [
-    "uppercase",
-    "lowercase",
+    "uppercase",  # Use uppercase MAC.
+    "lowercase",  # Use lowercase MAC.
 ]
 VALID_BODY_CALLED_STATION_ID_TYPE = [
-    "mac",
-    "ip",
-    "apname",
+    "mac",  # Use MAC:SSID format.
+    "ip",  # Use IP:SSID format.
+    "apname",  # Use APName:SSID format.
 ]
 VALID_BODY_MAC_AUTH_BYPASS = [
-    "enable",
-    "disable",
+    "enable",  # Enable MAC authentication bypass.
+    "disable",  # Disable MAC authentication bypass.
 ]
 VALID_BODY_RADIUS_MAC_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable RADIUS-based MAC authentication.
+    "disable",  # Disable RADIUS-based MAC authentication.
 ]
 VALID_BODY_RADIUS_MAC_MPSK_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable RADIUS-based MAC authentication for MPSK authentication.
+    "disable",  # Disable RADIUS-based MAC authentication for MPSK authentication.
 ]
 VALID_BODY_AUTH = [
-    "radius",
-    "usergroup",
+    "radius",  # Use a RADIUS server to authenticate clients.
+    "usergroup",  # Use a firewall usergroup to authenticate clients.
 ]
 VALID_BODY_ENCRYPT = [
-    "TKIP",
-    "AES",
-    "TKIP-AES",
+    "TKIP",  # Use TKIP encryption.
+    "AES",  # Use AES encryption.
+    "TKIP-AES",  # Use TKIP and AES encryption.
 ]
 VALID_BODY_SAE_H2E_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # Enable WPA3 SAE-H2E-only.
+    "disable",  # Disable WPA3 SAE-H2E-only.
 ]
 VALID_BODY_SAE_HNP_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # Enable WPA3 SAE-HNP-only.
+    "disable",  # Disable WPA3 SAE-HNP-only.
 ]
 VALID_BODY_SAE_PK = [
-    "enable",
-    "disable",
+    "enable",  # Enable WPA3 SAE-PK.
+    "disable",  # Disable WPA3 SAE-PK.
 ]
 VALID_BODY_AKM24_ONLY = [
-    "disable",
-    "enable",
+    "disable",  # Disable WPA3 SAE using group-dependent hash only.
+    "enable",  # Enable WPA3 SAE using group-dependent hash only.
 ]
 VALID_BODY_NAS_FILTER_RULE = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAS filter rule for RADIUS server.
+    "disable",  # Disable NAS filter rule for RADIUS server.
 ]
 VALID_BODY_DOMAIN_NAME_STRIPPING = [
-    "disable",
-    "enable",
+    "disable",  # Disable stripping domain name from identity.
+    "enable",  # Enable stripping domain name from identity.
+]
+VALID_BODY_MLO = [
+    "disable",  # Disable WiFi7 Multi-Link-Operation.
+    "enable",  # Enable WiFi7 Multi-Link-Operation.
 ]
 VALID_BODY_LOCAL_STANDALONE = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP local standalone.
+    "disable",  # Disable AP local standalone.
 ]
 VALID_BODY_LOCAL_STANDALONE_NAT = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP local standalone NAT mode.
+    "disable",  # Disable AP local standalone NAT mode.
 ]
 VALID_BODY_LOCAL_STANDALONE_DNS = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP local standalone DNS.
+    "disable",  # Disable AP local standalone DNS.
 ]
 VALID_BODY_LOCAL_LAN_PARTITION = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP local LAN segregation.
+    "disable",  # Disable AP local LAN segregation.
 ]
 VALID_BODY_LOCAL_BRIDGING = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP local VAP to Ethernet bridging.
+    "disable",  # Disable AP local VAP to Ethernet bridging.
 ]
 VALID_BODY_LOCAL_LAN = [
-    "allow",
-    "deny",
+    "allow",  # Allow traffic destined for a Class A, B, or C private IP address.
+    "deny",  # Deny traffic destined for a Class A, B, or C private IP address.
 ]
 VALID_BODY_LOCAL_AUTHENTICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP local authentication.
+    "disable",  # Disable AP local authentication.
 ]
 VALID_BODY_CAPTIVE_PORTAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable captive portal.
+    "disable",  # Disable captive portal.
 ]
 VALID_BODY_CAPTIVE_NETWORK_ASSISTANT_BYPASS = [
-    "enable",
-    "disable",
+    "enable",  # Enable captive bypass.
+    "disable",  # Disable captive bypass.
 ]
 VALID_BODY_PORTAL_TYPE = [
-    "auth",
-    "auth+disclaimer",
-    "disclaimer",
-    "email-collect",
-    "cmcc",
-    "cmcc-macauth",
-    "auth-mac",
-    "external-auth",
-    "external-macauth",
+    "auth",  # Portal for authentication.
+    "auth+disclaimer",  # Portal for authentication and disclaimer.
+    "disclaimer",  # Portal for disclaimer.
+    "email-collect",  # Portal for email collection.
+    "cmcc",  # Portal for CMCC.
+    "cmcc-macauth",  # Portal for CMCC and MAC authentication.
+    "auth-mac",  # Portal for authentication and MAC authentication.
+    "external-auth",  # Portal for external portal authentication.
+    "external-macauth",  # Portal for external portal MAC authentication.
 ]
 VALID_BODY_INTRA_VAP_PRIVACY = [
-    "enable",
-    "disable",
+    "enable",  # Enable intra-SSID privacy.
+    "disable",  # Disable intra-SSID privacy.
 ]
 VALID_BODY_LDPC = [
-    "disable",
-    "rx",
-    "tx",
-    "rxtx",
+    "disable",  # Disable LDPC.
+    "rx",  # Enable LDPC when receiving traffic.
+    "tx",  # Enable LDPC when transmitting traffic.
+    "rxtx",  # Enable LDPC when both receiving and transmitting traffic.
 ]
 VALID_BODY_HIGH_EFFICIENCY = [
-    "enable",
-    "disable",
+    "enable",  # Enable 802.11ax high efficiency.
+    "disable",  # Disable 802.11ax high efficiency.
 ]
 VALID_BODY_TARGET_WAKE_TIME = [
-    "enable",
-    "disable",
+    "enable",  # Enable 802.11ax target wake time.
+    "disable",  # Disable 802.11ax target wake time.
 ]
 VALID_BODY_PORT_MACAUTH = [
-    "disable",
-    "radius",
-    "address-group",
+    "disable",  # Disable LAN port MAC authentication.
+    "radius",  # Enable LAN port RADIUS-based MAC authentication.
+    "address-group",  # Enable LAN port address-group based MAC authentication.
 ]
 VALID_BODY_BSS_COLOR_PARTIAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable 802.11ax partial BSS color.
+    "disable",  # Disable 802.11ax partial BSS color.
 ]
 VALID_BODY_SPLIT_TUNNELING = [
-    "enable",
-    "disable",
+    "enable",  # Enable split tunneling.
+    "disable",  # Disable split tunneling.
 ]
 VALID_BODY_NAC = [
-    "enable",
-    "disable",
+    "enable",  # Enable network access control.
+    "disable",  # Disable network access control.
 ]
 VALID_BODY_VLAN_AUTO = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic management of SSID VLAN interface.
+    "disable",  # Disable automatic management of SSID VLAN interface.
 ]
 VALID_BODY_DYNAMIC_VLAN = [
-    "enable",
-    "disable",
+    "enable",  # Enable dynamic VLAN assignment.
+    "disable",  # Disable dynamic VLAN assignment.
 ]
 VALID_BODY_CAPTIVE_PORTAL_FW_ACCOUNTING = [
-    "enable",
-    "disable",
+    "enable",  # Enable RADIUS accounting for captive portal firewall authentication session.
+    "disable",  # Disable RADIUS accounting for captive portal firewall authentication session.
 ]
 VALID_BODY_MULTICAST_RATE = [
-    "0",
-    "6000",
-    "12000",
-    "24000",
+    "0",  # Use the default multicast rate.
+    "6000",  # 6 Mbps.
+    "12000",  # 12 Mbps.
+    "24000",  # 24 Mbps.
 ]
 VALID_BODY_MULTICAST_ENHANCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable multicast enhancement.
+    "disable",  # Disable multicast enhancement.
 ]
 VALID_BODY_IGMP_SNOOPING = [
-    "enable",
-    "disable",
+    "enable",  # Enable IGMP snooping.
+    "disable",  # Disable IGMP snooping.
 ]
 VALID_BODY_DHCP_ADDRESS_ENFORCEMENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable DHCP enforcement, data from clients that have not completed the DHCP process will be blocked.
+    "disable",  # Disable DHCP enforcement, clients can access the network without DHCP process.
 ]
 VALID_BODY_BROADCAST_SUPPRESSION = [
-    "dhcp-up",
-    "dhcp-down",
-    "dhcp-starvation",
-    "dhcp-ucast",
-    "arp-known",
-    "arp-unknown",
-    "arp-reply",
-    "arp-poison",
-    "arp-proxy",
-    "netbios-ns",
-    "netbios-ds",
-    "ipv6",
-    "all-other-mc",
-    "all-other-bc",
+    "dhcp-up",  # Suppress broadcast uplink DHCP messages.
+    "dhcp-down",  # Suppress broadcast downlink DHCP messages.
+    "dhcp-starvation",  # Suppress broadcast DHCP starvation req messages.
+    "dhcp-ucast",  # Convert downlink broadcast DHCP messages to unicast messages.
+    "arp-known",  # Suppress broadcast ARP for known wireless clients.
+    "arp-unknown",  # Suppress broadcast ARP for unknown wireless clients.
+    "arp-reply",  # Suppress broadcast ARP reply from wireless clients.
+    "arp-poison",  # Suppress ARP poison messages from wireless clients.
+    "arp-proxy",  # Reply ARP requests for wireless clients as a proxy.
+    "netbios-ns",  # Suppress NetBIOS name services packets with UDP port 137.
+    "netbios-ds",  # Suppress NetBIOS datagram services packets with UDP port 138.
+    "ipv6",  # Suppress IPv6 packets.
+    "all-other-mc",  # Suppress all other multicast messages.
+    "all-other-bc",  # Suppress all other broadcast messages.
 ]
 VALID_BODY_IPV6_RULES = [
-    "drop-icmp6ra",
-    "drop-icmp6rs",
-    "drop-llmnr6",
-    "drop-icmp6mld2",
-    "drop-dhcp6s",
-    "drop-dhcp6c",
-    "ndp-proxy",
-    "drop-ns-dad",
-    "drop-ns-nondad",
+    "drop-icmp6ra",  # Drop ICMP6 Router Advertisement (RA) packets that originate from wireless clients.
+    "drop-icmp6rs",  # Drop ICMP6 Router Solicitation (RS) packets to be sent to wireless clients.
+    "drop-llmnr6",  # Drop Link-Local Multicast Name Resolution (LLMNR) packets
+    "drop-icmp6mld2",  # Drop ICMP6 Multicast Listener Report V2 (MLD2) packets
+    "drop-dhcp6s",  # Drop DHCP6 server generated packets that originate from wireless clients.
+    "drop-dhcp6c",  # Drop DHCP6 client generated packets to be sent to wireless clients.
+    "ndp-proxy",  # Enable IPv6 ndp proxy - send back na on behalf of the client and drop the ns.
+    "drop-ns-dad",  # Drop ICMP6 NS-DAD when target address is not found in ndp proxy cache.
+    "drop-ns-nondad",  # Drop ICMP6 NS-NonDAD when target address is not found in ndp proxy cache.
 ]
 VALID_BODY_MU_MIMO = [
-    "enable",
-    "disable",
+    "enable",  # Enable Multi-user MIMO.
+    "disable",  # Disable Multi-user MIMO.
 ]
 VALID_BODY_PROBE_RESP_SUPPRESSION = [
-    "enable",
-    "disable",
+    "enable",  # Enable probe response suppression.
+    "disable",  # Disable probe response suppression.
 ]
 VALID_BODY_RADIO_SENSITIVITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable software radio sensitivity.
+    "disable",  # Disable software radio sensitivity.
 ]
 VALID_BODY_QUARANTINE = [
-    "enable",
-    "disable",
+    "enable",  # Enable station quarantine.
+    "disable",  # Disable station quarantine.
 ]
 VALID_BODY_VLAN_POOLING = [
-    "wtp-group",
-    "round-robin",
-    "hash",
-    "disable",
+    "wtp-group",  # Enable VLAN pooling with VLAN assignment by wtp-group.
+    "round-robin",  # Enable VLAN pooling with round-robin VLAN assignment.
+    "hash",  # Enable VLAN pooling with hash-based VLAN assignment.
+    "disable",  # Disable VLAN pooling.
 ]
 VALID_BODY_DHCP_OPTION43_INSERTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable insertion of DHCP option 43.
+    "disable",  # Disable insertion of DHCP option 43.
 ]
 VALID_BODY_DHCP_OPTION82_INSERTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable DHCP option 82 insert.
+    "disable",  # Disable DHCP option 82 insert.
 ]
 VALID_BODY_DHCP_OPTION82_CIRCUIT_ID_INSERTION = [
-    "style-1",
-    "style-2",
-    "style-3",
-    "disable",
+    "style-1",  # ASCII string composed of AP-MAC;SSID;SSID-TYPE. For example, "xx:xx:xx:xx:xx:xx;wifi;s".
+    "style-2",  # ASCII string composed of AP-MAC. For example, "xx:xx:xx:xx:xx:xx".
+    "style-3",  # ASCII string composed of NETWORK-TYPE:WTPPROF-NAME:VLAN:SSID:AP-MODEL:AP-HOSTNAME:AP-MAC. For example,"WLAN:FAPS221E-default:100:wifi:PS221E:FortiAP-S221E:xx:xx:xx:xx:xx:xx".
+    "disable",  # Disable DHCP option 82 circuit-id insert.
 ]
 VALID_BODY_DHCP_OPTION82_REMOTE_ID_INSERTION = [
-    "style-1",
-    "disable",
+    "style-1",  # ASCII string in the format "xx:xx:xx:xx:xx:xx" containing MAC address of client device.
+    "disable",  # Disable DHCP option 82 remote-id insert.
 ]
 VALID_BODY_PTK_REKEY = [
-    "enable",
-    "disable",
+    "enable",  # Enable PTK rekey for WPA-Enterprise security.
+    "disable",  # Disable PTK rekey for WPA-Enterprise security.
 ]
 VALID_BODY_GTK_REKEY = [
-    "enable",
-    "disable",
+    "enable",  # Enable GTK rekey for WPA security.
+    "disable",  # Disable GTK rekey for WPA security.
 ]
 VALID_BODY_EAP_REAUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable EAP re-authentication for WPA-Enterprise security.
+    "disable",  # Disable EAP re-authentication for WPA-Enterprise security.
 ]
 VALID_BODY_ROAMING_ACCT_INTERIM_UPDATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable using accounting interim update on roaming for WPA-Enterprise security.
+    "disable",  # Disable using accounting interim update on roaming for WPA-Enterprise security.
 ]
 VALID_BODY_RATES_11A = [
-    "6",
-    "6-basic",
-    "9",
-    "9-basic",
-    "12",
-    "12-basic",
-    "18",
-    "18-basic",
-    "24",
-    "24-basic",
-    "36",
-    "36-basic",
-    "48",
-    "48-basic",
-    "54",
-    "54-basic",
+    "6",  # 6 Mbps supported rate.
+    "6-basic",  # 6 Mbps BSS basic rate.
+    "9",  # 9 Mbps supported rate.
+    "9-basic",  # 9 Mbps BSS basic rate.
+    "12",  # 12 Mbps supported rate.
+    "12-basic",  # 12 Mbps BSS basic rate.
+    "18",  # 18 Mbps supported rate.
+    "18-basic",  # 18 Mbps BSS basic rate.
+    "24",  # 24 Mbps supported rate.
+    "24-basic",  # 24 Mbps BSS basic rate.
+    "36",  # 36 Mbps supported rate.
+    "36-basic",  # 36 Mbps BSS basic rate.
+    "48",  # 48 Mbps supported rate.
+    "48-basic",  # 48 Mbps BSS basic rate.
+    "54",  # 54 Mbps supported rate.
+    "54-basic",  # 54 Mbps BSS basic rate.
 ]
 VALID_BODY_RATES_11BG = [
-    "1",
-    "1-basic",
-    "2",
-    "2-basic",
-    "5.5",
-    "5.5-basic",
-    "11",
-    "11-basic",
-    "6",
-    "6-basic",
-    "9",
-    "9-basic",
-    "12",
-    "12-basic",
-    "18",
-    "18-basic",
-    "24",
-    "24-basic",
-    "36",
-    "36-basic",
-    "48",
-    "48-basic",
-    "54",
-    "54-basic",
+    "1",  # 1 Mbps supported rate.
+    "1-basic",  # 1 Mbps BSS basic rate.
+    "2",  # 2 Mbps supported rate.
+    "2-basic",  # 2 Mbps BSS basic rate.
+    "5.5",  # 5.5 Mbps supported rate.
+    "5.5-basic",  # 5.5 Mbps BSS basic rate.
+    "11",  # 11 Mbps supported rate.
+    "11-basic",  # 11 Mbps BSS basic rate.
+    "6",  # 6 Mbps supported rate.
+    "6-basic",  # 6 Mbps BSS basic rate.
+    "9",  # 9 Mbps supported rate.
+    "9-basic",  # 9 Mbps BSS basic rate.
+    "12",  # 12 Mbps supported rate.
+    "12-basic",  # 12 Mbps BSS basic rate.
+    "18",  # 18 Mbps supported rate.
+    "18-basic",  # 18 Mbps BSS basic rate.
+    "24",  # 24 Mbps supported rate.
+    "24-basic",  # 24 Mbps BSS basic rate.
+    "36",  # 36 Mbps supported rate.
+    "36-basic",  # 36 Mbps BSS basic rate.
+    "48",  # 48 Mbps supported rate.
+    "48-basic",  # 48 Mbps BSS basic rate.
+    "54",  # 54 Mbps supported rate.
+    "54-basic",  # 54 Mbps BSS basic rate.
 ]
 VALID_BODY_RATES_11N_SS12 = [
-    "mcs0/1",
-    "mcs1/1",
-    "mcs2/1",
-    "mcs3/1",
-    "mcs4/1",
-    "mcs5/1",
-    "mcs6/1",
-    "mcs7/1",
-    "mcs8/2",
-    "mcs9/2",
-    "mcs10/2",
-    "mcs11/2",
-    "mcs12/2",
-    "mcs13/2",
-    "mcs14/2",
-    "mcs15/2",
+    "mcs0/1",  # Data rate for MCS index 0 with 1 spatial stream.
+    "mcs1/1",  # Data rate for MCS index 1 with 1 spatial stream.
+    "mcs2/1",  # Data rate for MCS index 2 with 1 spatial stream.
+    "mcs3/1",  # Data rate for MCS index 3 with 1 spatial stream.
+    "mcs4/1",  # Data rate for MCS index 4 with 1 spatial stream.
+    "mcs5/1",  # Data rate for MCS index 5 with 1 spatial stream.
+    "mcs6/1",  # Data rate for MCS index 6 with 1 spatial stream.
+    "mcs7/1",  # Data rate for MCS index 7 with 1 spatial stream.
+    "mcs8/2",  # Data rate for MCS index 8 with 2 spatial streams.
+    "mcs9/2",  # Data rate for MCS index 9 with 2 spatial streams.
+    "mcs10/2",  # Data rate for MCS index 10 with 2 spatial streams.
+    "mcs11/2",  # Data rate for MCS index 11 with 2 spatial streams.
+    "mcs12/2",  # Data rate for MCS index 12 with 2 spatial streams.
+    "mcs13/2",  # Data rate for MCS index 13 with 2 spatial streams.
+    "mcs14/2",  # Data rate for MCS index 14 with 2 spatial streams.
+    "mcs15/2",  # Data rate for MCS index 15 with 2 spatial streams.
 ]
 VALID_BODY_RATES_11N_SS34 = [
-    "mcs16/3",
-    "mcs17/3",
-    "mcs18/3",
-    "mcs19/3",
-    "mcs20/3",
-    "mcs21/3",
-    "mcs22/3",
-    "mcs23/3",
-    "mcs24/4",
-    "mcs25/4",
-    "mcs26/4",
-    "mcs27/4",
-    "mcs28/4",
-    "mcs29/4",
-    "mcs30/4",
-    "mcs31/4",
+    "mcs16/3",  # Data rate for MCS index 16 with 3 spatial streams.
+    "mcs17/3",  # Data rate for MCS index 17 with 3 spatial streams.
+    "mcs18/3",  # Data rate for MCS index 18 with 3 spatial streams.
+    "mcs19/3",  # Data rate for MCS index 19 with 3 spatial streams.
+    "mcs20/3",  # Data rate for MCS index 20 with 3 spatial streams.
+    "mcs21/3",  # Data rate for MCS index 21 with 3 spatial streams.
+    "mcs22/3",  # Data rate for MCS index 22 with 3 spatial streams.
+    "mcs23/3",  # Data rate for MCS index 23 with 3 spatial streams.
+    "mcs24/4",  # Data rate for MCS index 24 with 4 spatial streams.
+    "mcs25/4",  # Data rate for MCS index 25 with 4 spatial streams.
+    "mcs26/4",  # Data rate for MCS index 26 with 4 spatial streams.
+    "mcs27/4",  # Data rate for MCS index 27 with 4 spatial streams.
+    "mcs28/4",  # Data rate for MCS index 28 with 4 spatial streams.
+    "mcs29/4",  # Data rate for MCS index 29 with 4 spatial streams.
+    "mcs30/4",  # Data rate for MCS index 30 with 4 spatial streams.
+    "mcs31/4",  # Data rate for MCS index 31 with 4 spatial streams.
 ]
 VALID_BODY_UTM_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_UTM_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable UTM logging.
+    "disable",  # Disable UTM logging.
 ]
 VALID_BODY_SCAN_BOTNET_CONNECTIONS = [
-    "disable",
-    "monitor",
-    "block",
+    "disable",  # Do not scan connections to botnet servers.
+    "monitor",  # Log connections to botnet servers.
+    "block",  # Block connections to botnet servers.
 ]
 VALID_BODY_ADDRESS_GROUP_POLICY = [
-    "disable",
-    "allow",
-    "deny",
+    "disable",  # Disable MAC address filtering policy for MAC addresses that are in the address-group
+    "allow",  # Allow clients with MAC addresses that are in the address-group.
+    "deny",  # Block clients with MAC addresses that are in the address-group.
 ]
 VALID_BODY_STICKY_CLIENT_REMOVE = [
-    "enable",
-    "disable",
+    "enable",  # Enable sticky client remove.
+    "disable",  # Disable sticky client remove.
 ]
 VALID_BODY_BSTM_DISASSOCIATION_IMMINENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable BSTM disassociation imminent.
+    "disable",  # Disable BSTM disassociation imminent.
 ]
 VALID_BODY_BEACON_ADVERTISING = [
-    "name",
-    "model",
-    "serial-number",
+    "name",  # AP name.
+    "model",  # AP model abbreviation.
+    "serial-number",  # AP serial number.
 ]
 VALID_BODY_OSEN = [
-    "enable",
-    "disable",
+    "enable",  # Enable OSEN auth.
+    "disable",  # Disable OSEN auth.
 ]
 VALID_BODY_APPLICATION_DETECTION_ENGINE = [
-    "enable",
-    "disable",
+    "enable",  # Enable application detection engine.
+    "disable",  # Disable application detection engine.
 ]
 VALID_BODY_APPLICATION_DSCP_MARKING = [
-    "enable",
-    "disable",
+    "enable",  # Enable application based DSCP marking.
+    "disable",  # Disable application based DSCP marking.
 ]
 VALID_BODY_L3_ROAMING = [
-    "enable",
-    "disable",
+    "enable",  # Enable layer 3 roaming.
+    "disable",  # Disable layer 3 roaming.
 ]
 VALID_BODY_L3_ROAMING_MODE = [
-    "direct",
-    "indirect",
+    "direct",  # Layer 3 roaming traffic is passed between home AP and guest AP directly.
+    "indirect",  # Layer 3 roaming traffic is passed between home AP and guest AP through controllers.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1381,7 +1388,7 @@ def validate_wireless_controller_vap_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "pre-auth": "enable",  # Valid enum value
+        ...     "pre-auth": "{'name': 'enable', 'help': 'Enable pre-authentication.', 'label': 'Enable', 'description': 'Enable pre-authentication'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_vap_post(payload)
         >>> assert is_valid == True
@@ -1793,6 +1800,16 @@ def validate_wireless_controller_vap_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DOMAIN_NAME_STRIPPING)}"
             error_msg += f"\n  → Example: domain-name-stripping='{{ VALID_BODY_DOMAIN_NAME_STRIPPING[0] }}'"
+            return (False, error_msg)
+    if "mlo" in payload:
+        value = payload["mlo"]
+        if value not in VALID_BODY_MLO:
+            desc = FIELD_DESCRIPTIONS.get("mlo", "")
+            error_msg = f"Invalid value for 'mlo': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MLO)}"
+            error_msg += f"\n  → Example: mlo='{{ VALID_BODY_MLO[0] }}'"
             return (False, error_msg)
     if "local-standalone" in payload:
         value = payload["local-standalone"]
@@ -2655,6 +2672,13 @@ def validate_wireless_controller_vap_put(
                 False,
                 f"Invalid value for 'domain-name-stripping'='{value}'. Must be one of: {', '.join(VALID_BODY_DOMAIN_NAME_STRIPPING)}",
             )
+    if "mlo" in payload:
+        value = payload["mlo"]
+        if value not in VALID_BODY_MLO:
+            return (
+                False,
+                f"Invalid value for 'mlo'='{value}'. Must be one of: {', '.join(VALID_BODY_MLO)}",
+            )
     if "local-standalone" in payload:
         value = payload["local-standalone"]
         if value not in VALID_BODY_LOCAL_STANDALONE:
@@ -3335,9 +3359,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure Virtual Access Points (VAPs).",
-    "total_fields": 171,
+    "total_fields": 172,
     "required_fields_count": 1,
-    "fields_with_defaults_count": 159,
+    "fields_with_defaults_count": 160,
 }
 
 

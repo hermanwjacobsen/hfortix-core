@@ -129,14 +129,14 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable override rule.
+    "disable",  # Disable override rule.
 ]
 VALID_BODY_SCOPE = [
-    "user",
-    "user-group",
-    "ip",
-    "ip6",
+    "user",  # Override the specified user.
+    "user-group",  # Override the specified user group.
+    "ip",  # Override the specified IP address.
+    "ip6",  # Override the specified IPv6 address.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -267,7 +267,7 @@ def validate_webfilter_override_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "user": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable override rule.', 'label': 'Enable', 'description': 'Enable override rule'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_webfilter_override_post(payload)
         >>> assert is_valid == True

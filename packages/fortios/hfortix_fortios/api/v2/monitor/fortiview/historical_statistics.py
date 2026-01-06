@@ -56,7 +56,7 @@ class HistoricalStatistics:
         """
         Retrieve fortiview/historical_statistics configuration.
 
-        Configuration for fortiview/historical-statistics
+        Retrieve historical drill-down and summary data for FortiView.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

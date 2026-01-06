@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for system/hscalefw-license/upload
+    Update Hyperscale firewall license for hardware acceleration using license key.
     
     Path: system/hscalefw_license/upload
     Category: monitor

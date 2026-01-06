@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/collected_email",
     "category": "monitor",
     "api_path": "user/collected-email",
-    "help": "Monitor endpoint for user/collected-email",
+    "help": "List email addresses collected from captive portal.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

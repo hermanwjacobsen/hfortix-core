@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/firmware/upload",
     "category": "monitor",
     "api_path": "wifi/firmware/upload",
-    "help": "Configuration for wifi/firmware/upload",
+    "help": "Upload FortiAP firmware to the management FortiGate and then push to target FortiAPs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

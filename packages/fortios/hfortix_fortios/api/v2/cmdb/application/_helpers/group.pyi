@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["application", "filter"]
-VALID_BODY_POPULARITY: Literal["1", "2", "3", "4", "5"]
+VALID_BODY_TYPE: Literal[{"description": "Application ID", "help": "Application ID.", "label": "Application", "name": "application"}, {"description": "Application filter", "help": "Application filter.", "label": "Filter", "name": "filter"}]
+VALID_BODY_POPULARITY: Literal[{"description": "Popularity level 1", "help": "Popularity level 1.", "label": "1", "name": "1"}, {"description": "Popularity level 2", "help": "Popularity level 2.", "label": "2", "name": "2"}, {"description": "Popularity level 3", "help": "Popularity level 3.", "label": "3", "name": "3"}, {"description": "Popularity level 4", "help": "Popularity level 4.", "label": "4", "name": "4"}, {"description": "Popularity level 5", "help": "Popularity level 5.", "label": "5", "name": "5"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

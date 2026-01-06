@@ -143,41 +143,41 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_CONNECT_PROTOCOL = [
-    "rpc-over-tcp",
-    "rpc-over-http",
-    "rpc-over-https",
+    "rpc-over-tcp",  # Connect using RPC-over-TCP. Use for MS Exchange 2010 and earlier versions. Supported in MS Exchange 2013.
+    "rpc-over-http",  # Connect using RPC-over-HTTP. Use for MS Exchange 2016 and later versions. Supported in MS Exchange 2013.
+    "rpc-over-https",  # Connect using RPC-over-HTTPS. Use for MS Exchange 2016 and later versions. Supported in MS Exchange 2013.
 ]
 VALID_BODY_VALIDATE_SERVER_CERTIFICATE = [
-    "disable",
-    "enable",
+    "disable",  # Disable validation of server certificate.
+    "enable",  # Enable validation of server certificate.
 ]
 VALID_BODY_AUTH_TYPE = [
-    "spnego",
-    "ntlm",
-    "kerberos",
+    "spnego",  # Negotiate authentication.
+    "ntlm",  # NTLM authentication.
+    "kerberos",  # Kerberos authentication.
 ]
 VALID_BODY_AUTH_LEVEL = [
-    "connect",
-    "call",
-    "packet",
-    "integrity",
-    "privacy",
+    "connect",  # RPC authentication level 'connect'.
+    "call",  # RPC authentication level 'call'.
+    "packet",  # RPC authentication level 'packet'.
+    "integrity",  # RPC authentication level 'integrity'.
+    "privacy",  # RPC authentication level 'privacy'.
 ]
 VALID_BODY_HTTP_AUTH_TYPE = [
-    "basic",
-    "ntlm",
+    "basic",  # Basic HTTP authentication.
+    "ntlm",  # NTLM HTTP authentication.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_AUTO_DISCOVER_KDC = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic discovery of KDC IP addresses.
+    "disable",  # Disable automatic discovery of KDC IP addresses.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -308,7 +308,7 @@ def validate_user_exchange_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server-name": True,
-        ...     "connect-protocol": "rpc-over-tcp",  # Valid enum value
+        ...     "connect-protocol": "{'name': 'rpc-over-tcp', 'help': 'Connect using RPC-over-TCP. Use for MS Exchange 2010 and earlier versions. Supported in MS Exchange 2013.', 'label': 'Rpc Over Tcp', 'description': 'Connect using RPC-over-TCP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_exchange_post(payload)
         >>> assert is_valid == True

@@ -3,14 +3,11 @@ FortiOS MONITOR - Endpoint_control record_list
 
 Configuration endpoint for managing monitor endpoint_control/record_list objects.
 
-📖 **Read-Only Reference Table**
-   This endpoint provides read-only reference data (e.g., geography, timezone).
-   - GET operations return all available data
-   - POST/PUT/DELETE operations are not supported
-   - Querying by identifier returns all items (filter is ignored)
-
 API Endpoints:
     GET    /monitor/endpoint_control/record_list
+    POST   /monitor/endpoint_control/record_list
+    PUT    /monitor/endpoint_control/record_list/{identifier}
+    DELETE /monitor/endpoint_control/record_list/{identifier}
 
 Example Usage:
     >>> from hfortix_fortios import FortiOS
@@ -20,9 +17,10 @@ Example Usage:
     >>> items = fgt.api.monitor.endpoint_control_record_list.get()
 
 Important:
-    - This is a **read-only** endpoint (reference data only)
-    - Use **GET** to retrieve available options
-    - Creation/modification/deletion not supported
+    - Use **POST** to create new objects
+    - Use **PUT** to update existing objects
+    - Use **GET** to retrieve configuration
+    - Use **DELETE** to remove objects
 """
 
 from __future__ import annotations
@@ -38,9 +36,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,
     is_success,
 )
-
-# Import cache for readonly reference data
-from hfortix_core.cache import readonly_cache
 
 
 class RecordList:
@@ -61,7 +56,7 @@ class RecordList:
         """
         Retrieve endpoint_control/record_list configuration.
 
-        Monitor endpoint for endpoint-control/record-list
+        List endpoint records. This should only be used when you need to retrieve endpoint information from FortiEMS.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -102,20 +97,6 @@ class RecordList:
             - delete(): Remove endpoint_control/record_list object
             - exists(): Check if object exists
         """
-        # Check cache for readonly reference data (24hr TTL)
-        cache_key = f"monitor/endpoint_control/record_list"
-        
-        # Only use cache for full list queries (no identifier, no filters)
-        is_list_query = name is None and not payload_dict and not kwargs
-        
-        if is_list_query:
-            cached_data = readonly_cache.get(cache_key)
-            if cached_data is not None:
-                # Return cached data
-                if raw_json:
-                    return cached_data
-                return cached_data
-        
         params = payload_dict.copy() if payload_dict else {}
         
         if name:
@@ -124,20 +105,9 @@ class RecordList:
             endpoint = "/endpoint-control/record-list"
         
         params.update(kwargs)
-        
-        # Fetch data and cache if this is a list query
-        response = self._client.get(
+        return self._client.get(
             "monitor", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
-        
-        # Cache the response for list queries
-        if is_list_query:
-            if isinstance(response, dict):
-                readonly_cache.set(cache_key, response)
-            # For async responses, we can't cache easily without awaiting
-            # User will benefit from cache on subsequent sync calls
-        
-        return response
 
 
 

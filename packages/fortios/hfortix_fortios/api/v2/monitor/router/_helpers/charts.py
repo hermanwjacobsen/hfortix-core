@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/charts",
     "category": "monitor",
     "api_path": "router/charts",
-    "help": "Configuration for router/charts",
+    "help": "Retrieve routing chart statistics, including a map of interfaces and route types.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

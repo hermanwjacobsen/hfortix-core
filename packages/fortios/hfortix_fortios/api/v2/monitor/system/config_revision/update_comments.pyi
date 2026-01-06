@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UpdateComments:
     """
-    Configuration for system/config-revision/update-comments
+    Updates comments for a system configuration file.
     
     Path: system/config_revision/update_comments
     Category: monitor

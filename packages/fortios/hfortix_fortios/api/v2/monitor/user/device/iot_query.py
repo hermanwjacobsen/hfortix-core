@@ -56,7 +56,7 @@ class IotQuery:
         """
         Retrieve user/device/iot_query configuration.
 
-        Configuration for user/device/iot-query
+        Retrieve IoT/OT information for a given device from user device store.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SOURCE_ADDRESS: Literal["enable", "disable"]
-VALID_BODY_PERMIT_X11_FORWARDING: Literal["enable", "disable"]
-VALID_BODY_PERMIT_AGENT_FORWARDING: Literal["enable", "disable"]
-VALID_BODY_PERMIT_PORT_FORWARDING: Literal["enable", "disable"]
-VALID_BODY_PERMIT_PTY: Literal["enable", "disable"]
-VALID_BODY_PERMIT_USER_RC: Literal["enable", "disable"]
+VALID_BODY_SOURCE_ADDRESS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PERMIT_X11_FORWARDING: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PERMIT_AGENT_FORWARDING: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PERMIT_PORT_FORWARDING: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PERMIT_PTY: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PERMIT_USER_RC: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

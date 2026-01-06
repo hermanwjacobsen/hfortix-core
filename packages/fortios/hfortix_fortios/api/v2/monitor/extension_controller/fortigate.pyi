@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Fortigate:
     """
-    Configuration for extension-controller/fortigate
+    Retrieve statistics for configured FortiGate LAN Extension Connectors.
     
     Path: extension_controller/fortigate
     Category: monitor

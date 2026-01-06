@@ -11,7 +11,7 @@ class ProfilePayload(TypedDict, total=False):
         }
     """
     name: str  # Profile name.
-    feature_set: NotRequired[Literal["ips", "voipd"]]  # IPS or voipd (SIP-ALG) inspection feature set.
+    feature_set: NotRequired[Literal[{"description": "IPS Engine feature set for ips-voip-filter", "help": "IPS Engine feature set for ips-voip-filter.", "label": "Ips", "name": "ips"}, {"description": "SIP ALG feature set for voip-profile", "help": "SIP ALG feature set for voip-profile.", "label": "Voipd", "name": "voipd"}]]  # IPS or voipd (SIP-ALG) inspection feature set.
     comment: NotRequired[str]  # Comment.
     sip: NotRequired[str]  # SIP.
     sccp: NotRequired[str]  # SCCP.
@@ -44,7 +44,7 @@ class Profile:
         self,
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
-        feature_set: Literal["ips", "voipd"] | None = ...,
+        feature_set: Literal[{"description": "IPS Engine feature set for ips-voip-filter", "help": "IPS Engine feature set for ips-voip-filter.", "label": "Ips", "name": "ips"}, {"description": "SIP ALG feature set for voip-profile", "help": "SIP ALG feature set for voip-profile.", "label": "Voipd", "name": "voipd"}] | None = ...,
         comment: str | None = ...,
         sip: str | None = ...,
         sccp: str | None = ...,
@@ -58,7 +58,7 @@ class Profile:
         self,
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
-        feature_set: Literal["ips", "voipd"] | None = ...,
+        feature_set: Literal[{"description": "IPS Engine feature set for ips-voip-filter", "help": "IPS Engine feature set for ips-voip-filter.", "label": "Ips", "name": "ips"}, {"description": "SIP ALG feature set for voip-profile", "help": "SIP ALG feature set for voip-profile.", "label": "Voipd", "name": "voipd"}] | None = ...,
         comment: str | None = ...,
         sip: str | None = ...,
         sccp: str | None = ...,

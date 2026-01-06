@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_IP_MODE: Literal["range", "usrgrp"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_IP_MODE: Literal[{"description": "PPTP client IP from manual config (range from sip to eip)", "help": "PPTP client IP from manual config (range from sip to eip).", "label": "Range", "name": "range"}, {"description": "PPTP client IP from user-group defined server", "help": "PPTP client IP from user-group defined server.", "label": "Usrgrp", "name": "usrgrp"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

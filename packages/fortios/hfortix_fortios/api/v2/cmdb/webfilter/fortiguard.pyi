@@ -10,18 +10,18 @@ class FortiguardPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    cache_mode: NotRequired[Literal["ttl", "db-ver"]]  # Cache entry expiration mode.
-    cache_prefix_match: NotRequired[Literal["enable", "disable"]]  # Enable/disable prefix matching in the cache.
+    cache_mode: NotRequired[Literal[{"description": "Expire cache items by time-to-live", "help": "Expire cache items by time-to-live.", "label": "Ttl", "name": "ttl"}, {"description": "Expire cache items when the server DB version changes", "help": "Expire cache items when the server DB version changes.", "label": "Db Ver", "name": "db-ver"}]]  # Cache entry expiration mode.
+    cache_prefix_match: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable prefix matching in the cache.
     cache_mem_permille: NotRequired[int]  # Maximum permille of available memory allocated to caching (1
     ovrd_auth_port_http: NotRequired[int]  # Port to use for FortiGuard Web Filter HTTP override authenti
     ovrd_auth_port_https: NotRequired[int]  # Port to use for FortiGuard Web Filter HTTPS override authent
     ovrd_auth_port_https_flow: NotRequired[int]  # Port to use for FortiGuard Web Filter HTTPS override authent
     ovrd_auth_port_warning: NotRequired[int]  # Port to use for FortiGuard Web Filter Warning override authe
-    ovrd_auth_https: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of HTTPS for override authentication.
-    warn_auth_https: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of HTTPS for warning and authentication.
-    close_ports: NotRequired[Literal["enable", "disable"]]  # Close ports used for HTTP/HTTPS override authentication and 
+    ovrd_auth_https: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of HTTPS for override authentication.
+    warn_auth_https: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of HTTPS for warning and authentication.
+    close_ports: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Close ports used for HTTP/HTTPS override authentication and 
     request_packet_size_limit: NotRequired[int]  # Limit size of URL request packets sent to FortiGuard server 
-    embed_image: NotRequired[Literal["enable", "disable"]]  # Enable/disable embedding images into replacement messages (d
+    embed_image: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable embedding images into replacement messages (d
 
 
 class Fortiguard:
@@ -48,18 +48,18 @@ class Fortiguard:
     def post(
         self,
         payload_dict: FortiguardPayload | None = ...,
-        cache_mode: Literal["ttl", "db-ver"] | None = ...,
-        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mode: Literal[{"description": "Expire cache items by time-to-live", "help": "Expire cache items by time-to-live.", "label": "Ttl", "name": "ttl"}, {"description": "Expire cache items when the server DB version changes", "help": "Expire cache items when the server DB version changes.", "label": "Db Ver", "name": "db-ver"}] | None = ...,
+        cache_prefix_match: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         cache_mem_permille: int | None = ...,
         ovrd_auth_port_http: int | None = ...,
         ovrd_auth_port_https: int | None = ...,
         ovrd_auth_port_https_flow: int | None = ...,
         ovrd_auth_port_warning: int | None = ...,
-        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
-        warn_auth_https: Literal["enable", "disable"] | None = ...,
-        close_ports: Literal["enable", "disable"] | None = ...,
+        ovrd_auth_https: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        warn_auth_https: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        close_ports: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         request_packet_size_limit: int | None = ...,
-        embed_image: Literal["enable", "disable"] | None = ...,
+        embed_image: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -68,18 +68,18 @@ class Fortiguard:
     def put(
         self,
         payload_dict: FortiguardPayload | None = ...,
-        cache_mode: Literal["ttl", "db-ver"] | None = ...,
-        cache_prefix_match: Literal["enable", "disable"] | None = ...,
+        cache_mode: Literal[{"description": "Expire cache items by time-to-live", "help": "Expire cache items by time-to-live.", "label": "Ttl", "name": "ttl"}, {"description": "Expire cache items when the server DB version changes", "help": "Expire cache items when the server DB version changes.", "label": "Db Ver", "name": "db-ver"}] | None = ...,
+        cache_prefix_match: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         cache_mem_permille: int | None = ...,
         ovrd_auth_port_http: int | None = ...,
         ovrd_auth_port_https: int | None = ...,
         ovrd_auth_port_https_flow: int | None = ...,
         ovrd_auth_port_warning: int | None = ...,
-        ovrd_auth_https: Literal["enable", "disable"] | None = ...,
-        warn_auth_https: Literal["enable", "disable"] | None = ...,
-        close_ports: Literal["enable", "disable"] | None = ...,
+        ovrd_auth_https: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        warn_auth_https: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        close_ports: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         request_packet_size_limit: int | None = ...,
-        embed_image: Literal["enable", "disable"] | None = ...,
+        embed_image: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -59,6 +59,7 @@ FIELDS_WITH_DEFAULTS = {
     "start": "",
     "end": "",
     "day": "none",
+    "label-day": "none",
     "color": 0,
     "fabric-object": "disable",
 }
@@ -84,6 +85,7 @@ FIELD_TYPES = {
     "start": "user",  # Time of day to start the schedule, format hh:mm.
     "end": "user",  # Time of day to end the schedule, format hh:mm.
     "day": "option",  # One or more days of the week on which the schedule is valid.
+    "label-day": "option",  # Configure a window during the time of day in which the sched
     "color": "integer",  # Color of icon on the GUI.
     "fabric-object": "option",  # Security Fabric global object setting.
 }
@@ -95,6 +97,7 @@ FIELD_DESCRIPTIONS = {
     "start": "Time of day to start the schedule, format hh:mm.",
     "end": "Time of day to end the schedule, format hh:mm.",
     "day": "One or more days of the week on which the schedule is valid. Separate the names of the days with a space.",
+    "label-day": "Configure a window during the time of day in which the schedule job is executed.",
     "color": "Color of icon on the GUI.",
     "fabric-object": "Security Fabric global object setting.",
 }
@@ -112,18 +115,29 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DAY = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "none",
+    "sunday",  # Sunday.
+    "monday",  # Monday.
+    "tuesday",  # Tuesday.
+    "wednesday",  # Wednesday.
+    "thursday",  # Thursday.
+    "friday",  # Friday.
+    "saturday",  # Saturday.
+    "none",  # None.
+]
+VALID_BODY_LABEL_DAY = [
+    "none",  # None.
+    "over-night",  # 1 AM - 4 AM
+    "early-morning",  # 4 AM - 7 AM.
+    "morning",  # 7 AM - 10 AM.
+    "midday",  # 10 AM - 1 PM.
+    "afternoon",  # 1 PM - 4 PM.
+    "evening",  # 4 PM - 7 PM.
+    "night",  # 7 PM - 10 PM.
+    "late-night",  # 10 PM - 1 AM.
 ]
 VALID_BODY_FABRIC_OBJECT = [
-    "enable",
-    "disable",
+    "enable",  # Object is set as a security fabric-wide global object.
+    "disable",  # Object is local to this security fabric member.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -254,7 +268,7 @@ def validate_firewall_schedule_recurring_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "day": "sunday",  # Valid enum value
+        ...     "day": "{'name': 'sunday', 'help': 'Sunday.', 'label': 'Sunday', 'description': 'Sunday'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_schedule_recurring_post(payload)
         >>> assert is_valid == True
@@ -286,6 +300,16 @@ def validate_firewall_schedule_recurring_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DAY)}"
             error_msg += f"\n  → Example: day='{{ VALID_BODY_DAY[0] }}'"
+            return (False, error_msg)
+    if "label-day" in payload:
+        value = payload["label-day"]
+        if value not in VALID_BODY_LABEL_DAY:
+            desc = FIELD_DESCRIPTIONS.get("label-day", "")
+            error_msg = f"Invalid value for 'label-day': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LABEL_DAY)}"
+            error_msg += f"\n  → Example: label-day='{{ VALID_BODY_LABEL_DAY[0] }}'"
             return (False, error_msg)
     if "fabric-object" in payload:
         value = payload["fabric-object"]
@@ -331,6 +355,13 @@ def validate_firewall_schedule_recurring_put(
             return (
                 False,
                 f"Invalid value for 'day'='{value}'. Must be one of: {', '.join(VALID_BODY_DAY)}",
+            )
+    if "label-day" in payload:
+        value = payload["label-day"]
+        if value not in VALID_BODY_LABEL_DAY:
+            return (
+                False,
+                f"Invalid value for 'label-day'='{value}'. Must be one of: {', '.join(VALID_BODY_LABEL_DAY)}",
             )
     if "fabric-object" in payload:
         value = payload["fabric-object"]
@@ -627,9 +658,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Recurring schedule configuration.",
-    "total_fields": 7,
+    "total_fields": 8,
     "required_fields_count": 3,
-    "fields_with_defaults_count": 7,
+    "fields_with_defaults_count": 8,
 }
 
 

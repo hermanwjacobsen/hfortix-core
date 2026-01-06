@@ -56,7 +56,7 @@ class Create:
         """
         Retrieve web_ui/custom_language/create configuration.
 
-        Configuration for web-ui/custom-language/create
+        Upload custom language file to this Fortigate.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

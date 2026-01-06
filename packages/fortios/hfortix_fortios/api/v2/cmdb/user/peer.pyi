@@ -11,17 +11,17 @@ class PeerPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Peer name.
-    mandatory_ca_verify: NotRequired[Literal["enable", "disable"]]  # Determine what happens to the peer if the CA certificate is 
+    mandatory_ca_verify: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Determine what happens to the peer if the CA certificate is 
     ca: NotRequired[str]  # Name of the CA certificate.
     subject: NotRequired[str]  # Peer certificate name constraints.
     cn: NotRequired[str]  # Peer certificate common name.
-    cn_type: NotRequired[Literal["string", "email", "FQDN", "ipv4", "ipv6"]]  # Peer certificate common name type.
-    mfa_mode: NotRequired[Literal["none", "password", "subject-identity"]]  # MFA mode for remote peer authentication/authorization.
+    cn_type: NotRequired[Literal[{"description": "Normal string", "help": "Normal string.", "label": "String", "name": "string"}, {"description": "Email address", "help": "Email address.", "label": "Email", "name": "email"}, {"description": "Fully Qualified Domain Name", "help": "Fully Qualified Domain Name.", "label": "Fqdn", "name": "FQDN"}, {"description": "IPv4 address", "help": "IPv4 address.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 address", "help": "IPv6 address.", "label": "Ipv6", "name": "ipv6"}]]  # Peer certificate common name type.
+    mfa_mode: NotRequired[Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "Specified username/password", "help": "Specified username/password.", "label": "Password", "name": "password"}, {"description": "Subject identity extracted from certificate", "help": "Subject identity extracted from certificate.", "label": "Subject Identity", "name": "subject-identity"}]]  # MFA mode for remote peer authentication/authorization.
     mfa_server: NotRequired[str]  # Name of a remote authenticator. Performs client access right
     mfa_username: NotRequired[str]  # Unified username for remote authentication.
     mfa_password: NotRequired[str]  # Unified password for remote authentication. This field may b
     ocsp_override_server: NotRequired[str]  # Online Certificate Status Protocol (OCSP) server for certifi
-    two_factor: NotRequired[Literal["enable", "disable"]]  # Enable/disable two-factor authentication, applying certifica
+    two_factor: NotRequired[Literal[{"description": "Enable 2-factor authentication", "help": "Enable 2-factor authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable 2-factor authentication", "help": "Disable 2-factor authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable two-factor authentication, applying certifica
     passwd: NotRequired[str]  # Peer's password used for two-factor authentication.
 
 
@@ -51,17 +51,17 @@ class Peer:
         self,
         payload_dict: PeerPayload | None = ...,
         name: str | None = ...,
-        mandatory_ca_verify: Literal["enable", "disable"] | None = ...,
+        mandatory_ca_verify: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         ca: str | None = ...,
         subject: str | None = ...,
         cn: str | None = ...,
-        cn_type: Literal["string", "email", "FQDN", "ipv4", "ipv6"] | None = ...,
-        mfa_mode: Literal["none", "password", "subject-identity"] | None = ...,
+        cn_type: Literal[{"description": "Normal string", "help": "Normal string.", "label": "String", "name": "string"}, {"description": "Email address", "help": "Email address.", "label": "Email", "name": "email"}, {"description": "Fully Qualified Domain Name", "help": "Fully Qualified Domain Name.", "label": "Fqdn", "name": "FQDN"}, {"description": "IPv4 address", "help": "IPv4 address.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 address", "help": "IPv6 address.", "label": "Ipv6", "name": "ipv6"}] | None = ...,
+        mfa_mode: Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "Specified username/password", "help": "Specified username/password.", "label": "Password", "name": "password"}, {"description": "Subject identity extracted from certificate", "help": "Subject identity extracted from certificate.", "label": "Subject Identity", "name": "subject-identity"}] | None = ...,
         mfa_server: str | None = ...,
         mfa_username: str | None = ...,
         mfa_password: str | None = ...,
         ocsp_override_server: str | None = ...,
-        two_factor: Literal["enable", "disable"] | None = ...,
+        two_factor: Literal[{"description": "Enable 2-factor authentication", "help": "Enable 2-factor authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable 2-factor authentication", "help": "Disable 2-factor authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -72,17 +72,17 @@ class Peer:
         self,
         payload_dict: PeerPayload | None = ...,
         name: str | None = ...,
-        mandatory_ca_verify: Literal["enable", "disable"] | None = ...,
+        mandatory_ca_verify: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         ca: str | None = ...,
         subject: str | None = ...,
         cn: str | None = ...,
-        cn_type: Literal["string", "email", "FQDN", "ipv4", "ipv6"] | None = ...,
-        mfa_mode: Literal["none", "password", "subject-identity"] | None = ...,
+        cn_type: Literal[{"description": "Normal string", "help": "Normal string.", "label": "String", "name": "string"}, {"description": "Email address", "help": "Email address.", "label": "Email", "name": "email"}, {"description": "Fully Qualified Domain Name", "help": "Fully Qualified Domain Name.", "label": "Fqdn", "name": "FQDN"}, {"description": "IPv4 address", "help": "IPv4 address.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 address", "help": "IPv6 address.", "label": "Ipv6", "name": "ipv6"}] | None = ...,
+        mfa_mode: Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "Specified username/password", "help": "Specified username/password.", "label": "Password", "name": "password"}, {"description": "Subject identity extracted from certificate", "help": "Subject identity extracted from certificate.", "label": "Subject Identity", "name": "subject-identity"}] | None = ...,
         mfa_server: str | None = ...,
         mfa_username: str | None = ...,
         mfa_password: str | None = ...,
         ocsp_override_server: str | None = ...,
-        two_factor: Literal["enable", "disable"] | None = ...,
+        two_factor: Literal[{"description": "Enable 2-factor authentication", "help": "Enable 2-factor authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable 2-factor authentication", "help": "Disable 2-factor authentication.", "label": "Disable", "name": "disable"}] | None = ...,
         passwd: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

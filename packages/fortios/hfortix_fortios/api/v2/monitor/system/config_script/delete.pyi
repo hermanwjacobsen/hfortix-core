@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Delete:
     """
-    Configuration for system/config-script/delete
+    Delete the history of config scripts.
     
     Path: system/config_script/delete
     Category: monitor

@@ -56,7 +56,7 @@ class ClearUsers:
         """
         Retrieve user/banned/clear_users configuration.
 
-        Configuration for user/banned/clear_users
+        Immediately clear a list of specific banned users by IP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

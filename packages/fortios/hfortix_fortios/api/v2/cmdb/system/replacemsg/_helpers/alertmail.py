@@ -99,14 +99,14 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_HEADER = [
-    "none",
-    "http",
-    "8bit",
+    "none",  # No header type.
+    "http",  # HTTP
+    "8bit",  # 8 bit.
 ]
 VALID_BODY_FORMAT = [
-    "none",
-    "text",
-    "html",
+    "none",  # No format type.
+    "text",  # Text format.
+    "html",  # HTML format.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -236,7 +236,7 @@ def validate_system_replacemsg_alertmail_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "msg-type": True,
-        ...     "header": "none",  # Valid enum value
+        ...     "header": "{'name': 'none', 'help': 'No header type.', 'label': 'None', 'description': 'No header type'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_replacemsg_alertmail_post(payload)
         >>> assert is_valid == True

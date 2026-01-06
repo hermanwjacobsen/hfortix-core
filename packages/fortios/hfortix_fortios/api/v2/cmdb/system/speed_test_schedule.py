@@ -130,10 +130,17 @@ class SpeedTestSchedule:
         update_shaper: str | None = None,
         update_inbandwidth: str | None = None,
         update_outbandwidth: str | None = None,
+        update_interface_shaping: str | None = None,
         update_inbandwidth_maximum: int | None = None,
         update_inbandwidth_minimum: int | None = None,
         update_outbandwidth_maximum: int | None = None,
         update_outbandwidth_minimum: int | None = None,
+        expected_inbandwidth_minimum: int | None = None,
+        expected_inbandwidth_maximum: int | None = None,
+        expected_outbandwidth_minimum: int | None = None,
+        expected_outbandwidth_maximum: int | None = None,
+        retries: int | None = None,
+        retry_pause: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -148,7 +155,7 @@ class SpeedTestSchedule:
             interface: Interface name.
             status: Enable/disable scheduled speed test.
             diffserv: DSCP used for speed test.
-            server_name: Speed test server name.
+            server_name: Speed test server name in system.speed-test-server list or leave it as empty to choose default server "FTNT_Auto".
             mode: Protocol Auto(default), TCP or UDP used for speed test.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
@@ -193,10 +200,17 @@ class SpeedTestSchedule:
             update_shaper=update_shaper,
             update_inbandwidth=update_inbandwidth,
             update_outbandwidth=update_outbandwidth,
+            update_interface_shaping=update_interface_shaping,
             update_inbandwidth_maximum=update_inbandwidth_maximum,
             update_inbandwidth_minimum=update_inbandwidth_minimum,
             update_outbandwidth_maximum=update_outbandwidth_maximum,
             update_outbandwidth_minimum=update_outbandwidth_minimum,
+            expected_inbandwidth_minimum=expected_inbandwidth_minimum,
+            expected_inbandwidth_maximum=expected_inbandwidth_maximum,
+            expected_outbandwidth_minimum=expected_outbandwidth_minimum,
+            expected_outbandwidth_maximum=expected_outbandwidth_maximum,
+            retries=retries,
+            retry_pause=retry_pause,
             data=payload_dict,
         )
         
@@ -234,10 +248,17 @@ class SpeedTestSchedule:
         update_shaper: str | None = None,
         update_inbandwidth: str | None = None,
         update_outbandwidth: str | None = None,
+        update_interface_shaping: str | None = None,
         update_inbandwidth_maximum: int | None = None,
         update_inbandwidth_minimum: int | None = None,
         update_outbandwidth_maximum: int | None = None,
         update_outbandwidth_minimum: int | None = None,
+        expected_inbandwidth_minimum: int | None = None,
+        expected_inbandwidth_maximum: int | None = None,
+        expected_outbandwidth_minimum: int | None = None,
+        expected_outbandwidth_maximum: int | None = None,
+        retries: int | None = None,
+        retry_pause: int | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -252,7 +273,7 @@ class SpeedTestSchedule:
             interface: Interface name.
             status: Enable/disable scheduled speed test.
             diffserv: DSCP used for speed test.
-            server_name: Speed test server name.
+            server_name: Speed test server name in system.speed-test-server list or leave it as empty to choose default server "FTNT_Auto".
             mode: Protocol Auto(default), TCP or UDP used for speed test.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
@@ -299,10 +320,17 @@ class SpeedTestSchedule:
             update_shaper=update_shaper,
             update_inbandwidth=update_inbandwidth,
             update_outbandwidth=update_outbandwidth,
+            update_interface_shaping=update_interface_shaping,
             update_inbandwidth_maximum=update_inbandwidth_maximum,
             update_inbandwidth_minimum=update_inbandwidth_minimum,
             update_outbandwidth_maximum=update_outbandwidth_maximum,
             update_outbandwidth_minimum=update_outbandwidth_minimum,
+            expected_inbandwidth_minimum=expected_inbandwidth_minimum,
+            expected_inbandwidth_maximum=expected_inbandwidth_maximum,
+            expected_outbandwidth_minimum=expected_outbandwidth_minimum,
+            expected_outbandwidth_maximum=expected_outbandwidth_maximum,
+            retries=retries,
+            retry_pause=retry_pause,
             data=payload_dict,
         )
 

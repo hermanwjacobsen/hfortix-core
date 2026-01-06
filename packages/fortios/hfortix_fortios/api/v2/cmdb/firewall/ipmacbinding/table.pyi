@@ -14,7 +14,7 @@ class TablePayload(TypedDict, total=False):
     ip: str  # IPv4 address portion of the pair (format: xxx.xxx.xxx.xxx).
     mac: NotRequired[str]  # MAC address portion of the pair (format = xx:xx:xx:xx:xx:xx 
     name: NotRequired[str]  # Name of the pair (optional, default = no name).
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this IP-mac binding pair.
+    status: NotRequired[Literal[{"description": "Enable this IP-mac binding pair", "help": "Enable this IP-mac binding pair.", "label": "Enable", "name": "enable"}, {"description": "Disable this IP-mac binding pair", "help": "Disable this IP-mac binding pair.", "label": "Disable", "name": "disable"}]]  # Enable/disable this IP-mac binding pair.
 
 
 class Table:
@@ -46,7 +46,7 @@ class Table:
         ip: str | None = ...,
         mac: str | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this IP-mac binding pair", "help": "Enable this IP-mac binding pair.", "label": "Enable", "name": "enable"}, {"description": "Disable this IP-mac binding pair", "help": "Disable this IP-mac binding pair.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -59,7 +59,7 @@ class Table:
         ip: str | None = ...,
         mac: str | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this IP-mac binding pair", "help": "Enable this IP-mac binding pair.", "label": "Enable", "name": "enable"}, {"description": "Disable this IP-mac binding pair", "help": "Disable this IP-mac binding pair.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

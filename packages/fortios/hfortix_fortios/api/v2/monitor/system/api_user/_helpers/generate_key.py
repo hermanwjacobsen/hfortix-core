@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/api_user/generate_key",
     "category": "monitor",
     "api_path": "system/api-user/generate-key",
-    "help": "Configuration for system/api-user/generate-key",
+    "help": "Generate a new api-key for the specified api-key-auth admin. The old api-key will be replaced. The response contains the only chance to read the new api-key plaintext in the api_key field.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

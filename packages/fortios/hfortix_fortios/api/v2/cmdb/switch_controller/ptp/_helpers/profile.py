@@ -111,22 +111,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MODE = [
-    "transparent-e2e",
-    "transparent-p2p",
+    "transparent-e2e",  # End-to-end transparent clock.
+    "transparent-p2p",  # Peer-to-peer transparent clock.
 ]
 VALID_BODY_PTP_PROFILE = [
-    "C37.238-2017",
+    "C37.238-2017",  # C37.238-2017 power profile.
 ]
 VALID_BODY_TRANSPORT = [
-    "l2-mcast",
+    "l2-mcast",  # L2 multicast.
 ]
 VALID_BODY_PDELAY_REQ_INTERVAL = [
-    "1sec",
-    "2sec",
-    "4sec",
-    "8sec",
-    "16sec",
-    "32sec",
+    "1sec",  # 1 sec.
+    "2sec",  # 2 sec.
+    "4sec",  # 4 sec.
+    "8sec",  # 8 sec.
+    "16sec",  # 16 sec.
+    "32sec",  # 32 sec.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -256,7 +256,7 @@ def validate_switch_controller_ptp_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "mode": "transparent-e2e",  # Valid enum value
+        ...     "mode": "{'name': 'transparent-e2e', 'help': 'End-to-end transparent clock.', 'label': 'Transparent E2E', 'description': 'End-to-end transparent clock'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_ptp_profile_post(payload)
         >>> assert is_valid == True

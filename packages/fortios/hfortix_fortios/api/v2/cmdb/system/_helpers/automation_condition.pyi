@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_CONDITION_TYPE: Literal["cpu", "memory", "vpn"]
-VALID_BODY_VPN_TUNNEL_STATE: Literal["tunnel-up", "tunnel-down"]
+VALID_BODY_CONDITION_TYPE: Literal[{"description": "CPU usage condition,    memory:Memory usage condition,    vpn:VPN state condition", "help": "CPU usage condition,", "label": "Cpu", "name": "cpu"}, {"help": "Memory usage condition,", "label": "Memory", "name": "memory"}, {"help": "VPN state condition.", "label": "Vpn", "name": "vpn"}]
+VALID_BODY_VPN_TUNNEL_STATE: Literal[{"description": "VPN tunnel is up", "help": "VPN tunnel is up.", "label": "Tunnel Up", "name": "tunnel-up"}, {"description": "VPN tunnel is down", "help": "VPN tunnel is down.", "label": "Tunnel Down", "name": "tunnel-down"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

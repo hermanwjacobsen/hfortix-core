@@ -56,7 +56,7 @@ class Status:
         """
         Retrieve license/status configuration.
 
-        Configuration for license/status
+        Get current license & registration status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

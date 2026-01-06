@@ -56,7 +56,7 @@ class AddLicense:
         """
         Retrieve registration/forticare/add_license configuration.
 
-        Configuration for registration/forticare/add-license
+        Add a FortiCare license.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "virtual_wan/sladb",
     "category": "monitor",
     "api_path": "virtual-wan/sladb",
-    "help": "Monitor endpoint for virtual-wan/sladb",
+    "help": "Retrieve the Service Level Agreement Database downloaded from FortiGuard.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

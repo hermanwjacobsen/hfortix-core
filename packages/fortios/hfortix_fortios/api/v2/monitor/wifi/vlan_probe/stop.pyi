@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stop:
     """
-    Configuration for wifi/vlan-probe/stop
+    Stop a VLAN probe.
     
     Path: wifi/vlan_probe/stop
     Category: monitor

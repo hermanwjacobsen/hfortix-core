@@ -56,7 +56,7 @@ class UpdateGlobalLabel:
         """
         Retrieve firewall/policy/update_global_label configuration.
 
-        Configuration for firewall/policy/update-global-label
+        Update the global-label of group starting with the provided leading policy ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

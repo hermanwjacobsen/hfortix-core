@@ -67,6 +67,7 @@ FIELDS_WITH_DEFAULTS = {
     "cifs": "enable",
     "switch-controller": "enable",
     "rest-api": "enable",
+    "web-svc": "enable",
     "webproxy": "enable",
 }
 
@@ -102,6 +103,7 @@ FIELD_TYPES = {
     "cifs": "option",  # Enable/disable CIFS logging.
     "switch-controller": "option",  # Enable/disable Switch-Controller logging.
     "rest-api": "option",  # Enable/disable REST API logging.
+    "web-svc": "option",  # Enable/disable web-svc performance logging.
     "webproxy": "option",  # Enable/disable web proxy event logging.
 }
 
@@ -123,6 +125,7 @@ FIELD_DESCRIPTIONS = {
     "cifs": "Enable/disable CIFS logging.",
     "switch-controller": "Enable/disable Switch-Controller logging.",
     "rest-api": "Enable/disable REST API logging.",
+    "web-svc": "Enable/disable web-svc performance logging.",
     "webproxy": "Enable/disable web proxy event logging.",
 }
 
@@ -137,72 +140,76 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_EVENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable event logging.
+    "disable",  # Disable event logging.
 ]
 VALID_BODY_SYSTEM = [
-    "enable",
-    "disable",
+    "enable",  # Enable system event logging.
+    "disable",  # Disable system event logging.
 ]
 VALID_BODY_VPN = [
-    "enable",
-    "disable",
+    "enable",  # Enable VPN event logging.
+    "disable",  # Disable VPN event logging.
 ]
 VALID_BODY_USER = [
-    "enable",
-    "disable",
+    "enable",  # Enable user authentication event logging.
+    "disable",  # Disable user authentication event logging.
 ]
 VALID_BODY_ROUTER = [
-    "enable",
-    "disable",
+    "enable",  # Enable router event logging.
+    "disable",  # Disable router event logging.
 ]
 VALID_BODY_WIRELESS_ACTIVITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable wireless event logging.
+    "disable",  # Disable wireless event logging.
 ]
 VALID_BODY_WAN_OPT = [
-    "enable",
-    "disable",
+    "enable",  # Enable WAN optimization event logging.
+    "disable",  # Disable WAN optimization event logging.
 ]
 VALID_BODY_ENDPOINT = [
-    "enable",
-    "disable",
+    "enable",  # Enable endpoint event logging.
+    "disable",  # Disable endpoint event logging.
 ]
 VALID_BODY_HA = [
-    "enable",
-    "disable",
+    "enable",  # Enable ha event logging.
+    "disable",  # Disable ha event logging.
 ]
 VALID_BODY_SECURITY_RATING = [
-    "enable",
-    "disable",
+    "enable",  # Enable Security Fabric audit result logging.
+    "disable",  # Disable Security Fabric audit result logging.
 ]
 VALID_BODY_FORTIEXTENDER = [
-    "enable",
-    "disable",
+    "enable",  # Enable Forti-Extender logging.
+    "disable",  # Disable Forti-Extender logging.
 ]
 VALID_BODY_CONNECTOR = [
-    "enable",
-    "disable",
+    "enable",  # Enable SDN connector logging.
+    "disable",  # Disable SDN connector logging.
 ]
 VALID_BODY_SDWAN = [
-    "enable",
-    "disable",
+    "enable",  # Enable SD-WAN logging.
+    "disable",  # Disable SD-WAN logging.
 ]
 VALID_BODY_CIFS = [
-    "enable",
-    "disable",
+    "enable",  # Enable CIFS logging.
+    "disable",  # Disable CIFS logging.
 ]
 VALID_BODY_SWITCH_CONTROLLER = [
-    "enable",
-    "disable",
+    "enable",  # Enable Switch-Controller logging.
+    "disable",  # Disable Switch-Controller logging.
 ]
 VALID_BODY_REST_API = [
-    "enable",
-    "disable",
+    "enable",  # Enable REST API logging.
+    "disable",  # Disable REST API logging.
+]
+VALID_BODY_WEB_SVC = [
+    "enable",  # Enable web-svc daemon logging.
+    "disable",  # Disable web-svc daemon logging.
 ]
 VALID_BODY_WEBPROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable Web Proxy event logging.
+    "disable",  # Disable Web Proxy event logging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -327,7 +334,7 @@ def validate_log_eventfilter_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "event": "enable",  # Valid enum value
+        ...     "event": "{'name': 'enable', 'help': 'Enable event logging.', 'label': 'Enable', 'description': 'Enable event logging'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_eventfilter_post(payload)
         >>> assert is_valid == True
@@ -510,6 +517,16 @@ def validate_log_eventfilter_post(
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REST_API)}"
             error_msg += f"\n  → Example: rest-api='{{ VALID_BODY_REST_API[0] }}'"
             return (False, error_msg)
+    if "web-svc" in payload:
+        value = payload["web-svc"]
+        if value not in VALID_BODY_WEB_SVC:
+            desc = FIELD_DESCRIPTIONS.get("web-svc", "")
+            error_msg = f"Invalid value for 'web-svc': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WEB_SVC)}"
+            error_msg += f"\n  → Example: web-svc='{{ VALID_BODY_WEB_SVC[0] }}'"
+            return (False, error_msg)
     if "webproxy" in payload:
         value = payload["webproxy"]
         if value not in VALID_BODY_WEBPROXY:
@@ -659,6 +676,13 @@ def validate_log_eventfilter_put(
             return (
                 False,
                 f"Invalid value for 'rest-api'='{value}'. Must be one of: {', '.join(VALID_BODY_REST_API)}",
+            )
+    if "web-svc" in payload:
+        value = payload["web-svc"]
+        if value not in VALID_BODY_WEB_SVC:
+            return (
+                False,
+                f"Invalid value for 'web-svc'='{value}'. Must be one of: {', '.join(VALID_BODY_WEB_SVC)}",
             )
     if "webproxy" in payload:
         value = payload["webproxy"]
@@ -953,9 +977,9 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "log/eventfilter",
     "help": "Configure log event filters.",
-    "total_fields": 17,
+    "total_fields": 18,
     "required_fields_count": 0,
-    "fields_with_defaults_count": 17,
+    "fields_with_defaults_count": 18,
 }
 
 

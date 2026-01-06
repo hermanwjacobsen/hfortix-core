@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/fsw_firmware/download",
     "category": "monitor",
     "api_path": "switch-controller/fsw-firmware/download",
-    "help": "Configuration for switch-controller/fsw-firmware/download",
+    "help": "Download FortiSwitch firmware from FortiGuard to the FortiGate according to FortiSwitch image ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

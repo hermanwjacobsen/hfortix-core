@@ -122,6 +122,7 @@ class Profile:
         header_client_ip: str | None = None,
         header_via_request: str | None = None,
         header_via_response: str | None = None,
+        header_client_cert: str | None = None,
         header_x_forwarded_for: str | None = None,
         header_x_forwarded_client_cert: str | None = None,
         header_front_end_https: str | None = None,
@@ -145,7 +146,7 @@ class Profile:
             header_client_ip: Action to take on the HTTP client-IP header in forwarded requests: forwards (pass), adds, or removes the HTTP header.
             header_via_request: Action to take on the HTTP via header in forwarded requests: forwards (pass), adds, or removes the HTTP header.
             header_via_response: Action to take on the HTTP via header in forwarded responses: forwards (pass), adds, or removes the HTTP header.
-            header_x_forwarded_for: Action to take on the HTTP x-forwarded-for header in forwarded requests: forwards (pass), adds, or removes the HTTP header.
+            header_client_cert: Action to take on the HTTP Client-Cert/Client-Cert-Chain headers in forwarded responses: forwards (pass), adds, or removes the HTTP header.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             **kwargs: Additional parameters
@@ -181,6 +182,7 @@ class Profile:
             header_client_ip=header_client_ip,
             header_via_request=header_via_request,
             header_via_response=header_via_response,
+            header_client_cert=header_client_cert,
             header_x_forwarded_for=header_x_forwarded_for,
             header_x_forwarded_client_cert=header_x_forwarded_client_cert,
             header_front_end_https=header_front_end_https,
@@ -218,6 +220,7 @@ class Profile:
         header_client_ip: str | None = None,
         header_via_request: str | None = None,
         header_via_response: str | None = None,
+        header_client_cert: str | None = None,
         header_x_forwarded_for: str | None = None,
         header_x_forwarded_client_cert: str | None = None,
         header_front_end_https: str | None = None,
@@ -241,7 +244,7 @@ class Profile:
             header_client_ip: Action to take on the HTTP client-IP header in forwarded requests: forwards (pass), adds, or removes the HTTP header.
             header_via_request: Action to take on the HTTP via header in forwarded requests: forwards (pass), adds, or removes the HTTP header.
             header_via_response: Action to take on the HTTP via header in forwarded responses: forwards (pass), adds, or removes the HTTP header.
-            header_x_forwarded_for: Action to take on the HTTP x-forwarded-for header in forwarded requests: forwards (pass), adds, or removes the HTTP header.
+            header_client_cert: Action to take on the HTTP Client-Cert/Client-Cert-Chain headers in forwarded responses: forwards (pass), adds, or removes the HTTP header.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             **kwargs: Additional parameters
@@ -279,6 +282,7 @@ class Profile:
             header_client_ip=header_client_ip,
             header_via_request=header_via_request,
             header_via_response=header_via_response,
+            header_client_cert=header_client_cert,
             header_x_forwarded_for=header_x_forwarded_for,
             header_x_forwarded_client_cert=header_x_forwarded_client_cert,
             header_front_end_https=header_front_end_https,

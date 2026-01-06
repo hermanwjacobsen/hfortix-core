@@ -56,7 +56,7 @@ class Update:
         """
         Retrieve web_ui/custom_language/update configuration.
 
-        Configuration for web-ui/custom-language/update
+        Update custom language file to this Fortigate.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

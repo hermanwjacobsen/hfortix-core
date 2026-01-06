@@ -56,7 +56,7 @@ class ThumbnailFile:
         """
         Retrieve user/info/thumbnail_file configuration.
 
-        Configuration for user/info/thumbnail-file
+        Get user info thumbnail by given file name.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

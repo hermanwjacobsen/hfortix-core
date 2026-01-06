@@ -14,8 +14,8 @@ class SearchEnginePayload(TypedDict, total=False):
     hostname: NotRequired[str]  # Hostname (regular expression).
     url: NotRequired[str]  # URL (regular expression).
     query: NotRequired[str]  # Code used to prefix a query (must end with an equals charact
-    safesearch: NotRequired[Literal["disable", "url", "header", "translate", "yt-pattern", "yt-scan", "yt-video", "yt-channel"]]  # Safe search method. You can disable safe search, add the saf
-    charset: NotRequired[Literal["utf-8", "gb2312"]]  # Search engine charset.
+    safesearch: NotRequired[Literal[{"description": "Site does not support safe search", "help": "Site does not support safe search.", "label": "Disable", "name": "disable"}, {"description": "Safe search selected with a parameter in the URL", "help": "Safe search selected with a parameter in the URL.", "label": "Url", "name": "url"}, {"description": "Safe search selected by search header (i", "help": "Safe search selected by search header (i.e. youtube.edu).", "label": "Header", "name": "header"}, {"description": "Perform URL FortiGuard check on translated URL", "help": "Perform URL FortiGuard check on translated URL.", "label": "Translate", "name": "translate"}, {"description": "Pattern to match YouTube channel ID", "help": "Pattern to match YouTube channel ID.", "label": "Yt Pattern", "name": "yt-pattern"}, {"description": "Perform IPS scan", "help": "Perform IPS scan.", "label": "Yt Scan", "name": "yt-scan"}, {"description": "Pattern to match YouTube video name", "help": "Pattern to match YouTube video name.", "label": "Yt Video", "name": "yt-video"}, {"description": "Pattern to match YouTube channel name", "help": "Pattern to match YouTube channel name.", "label": "Yt Channel", "name": "yt-channel"}]]  # Safe search method. You can disable safe search, add the saf
+    charset: NotRequired[Literal[{"description": "UTF-8 encoding", "help": "UTF-8 encoding.", "label": "Utf 8", "name": "utf-8"}, {"description": "GB2312 encoding", "help": "GB2312 encoding.", "label": "Gb2312", "name": "gb2312"}]]  # Search engine charset.
     safesearch_str: NotRequired[str]  # Safe search parameter used in the URL in URL mode. In transl
 
 
@@ -48,8 +48,8 @@ class SearchEngine:
         hostname: str | None = ...,
         url: str | None = ...,
         query: str | None = ...,
-        safesearch: Literal["disable", "url", "header", "translate", "yt-pattern", "yt-scan", "yt-video", "yt-channel"] | None = ...,
-        charset: Literal["utf-8", "gb2312"] | None = ...,
+        safesearch: Literal[{"description": "Site does not support safe search", "help": "Site does not support safe search.", "label": "Disable", "name": "disable"}, {"description": "Safe search selected with a parameter in the URL", "help": "Safe search selected with a parameter in the URL.", "label": "Url", "name": "url"}, {"description": "Safe search selected by search header (i", "help": "Safe search selected by search header (i.e. youtube.edu).", "label": "Header", "name": "header"}, {"description": "Perform URL FortiGuard check on translated URL", "help": "Perform URL FortiGuard check on translated URL.", "label": "Translate", "name": "translate"}, {"description": "Pattern to match YouTube channel ID", "help": "Pattern to match YouTube channel ID.", "label": "Yt Pattern", "name": "yt-pattern"}, {"description": "Perform IPS scan", "help": "Perform IPS scan.", "label": "Yt Scan", "name": "yt-scan"}, {"description": "Pattern to match YouTube video name", "help": "Pattern to match YouTube video name.", "label": "Yt Video", "name": "yt-video"}, {"description": "Pattern to match YouTube channel name", "help": "Pattern to match YouTube channel name.", "label": "Yt Channel", "name": "yt-channel"}] | None = ...,
+        charset: Literal[{"description": "UTF-8 encoding", "help": "UTF-8 encoding.", "label": "Utf 8", "name": "utf-8"}, {"description": "GB2312 encoding", "help": "GB2312 encoding.", "label": "Gb2312", "name": "gb2312"}] | None = ...,
         safesearch_str: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -63,8 +63,8 @@ class SearchEngine:
         hostname: str | None = ...,
         url: str | None = ...,
         query: str | None = ...,
-        safesearch: Literal["disable", "url", "header", "translate", "yt-pattern", "yt-scan", "yt-video", "yt-channel"] | None = ...,
-        charset: Literal["utf-8", "gb2312"] | None = ...,
+        safesearch: Literal[{"description": "Site does not support safe search", "help": "Site does not support safe search.", "label": "Disable", "name": "disable"}, {"description": "Safe search selected with a parameter in the URL", "help": "Safe search selected with a parameter in the URL.", "label": "Url", "name": "url"}, {"description": "Safe search selected by search header (i", "help": "Safe search selected by search header (i.e. youtube.edu).", "label": "Header", "name": "header"}, {"description": "Perform URL FortiGuard check on translated URL", "help": "Perform URL FortiGuard check on translated URL.", "label": "Translate", "name": "translate"}, {"description": "Pattern to match YouTube channel ID", "help": "Pattern to match YouTube channel ID.", "label": "Yt Pattern", "name": "yt-pattern"}, {"description": "Perform IPS scan", "help": "Perform IPS scan.", "label": "Yt Scan", "name": "yt-scan"}, {"description": "Pattern to match YouTube video name", "help": "Pattern to match YouTube video name.", "label": "Yt Video", "name": "yt-video"}, {"description": "Pattern to match YouTube channel name", "help": "Pattern to match YouTube channel name.", "label": "Yt Channel", "name": "yt-channel"}] | None = ...,
+        charset: Literal[{"description": "UTF-8 encoding", "help": "UTF-8 encoding.", "label": "Utf 8", "name": "utf-8"}, {"description": "GB2312 encoding", "help": "GB2312 encoding.", "label": "Gb2312", "name": "gb2312"}] | None = ...,
         safesearch_str: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

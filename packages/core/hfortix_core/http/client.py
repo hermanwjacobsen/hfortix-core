@@ -1222,8 +1222,35 @@ class HTTPClient(BaseHTTPClient):
                         ),
                     )
 
-                # Parse JSON response
-                json_response = res.json()
+                # Check content type to determine if response is JSON
+                content_type = res.headers.get("content-type", "").lower()
+                is_json_response = "application/json" in content_type
+                
+                # Parse JSON response or return raw content for non-JSON responses
+                if is_json_response:
+                    try:
+                        json_response = res.json()
+                    except Exception as json_err:
+                        # If JSON parsing fails, log warning and return text
+                        logger.warning(
+                            f"Failed to parse JSON response: {json_err}",
+                            extra=self._log_context(
+                                request_id=request_id,
+                                endpoint=full_path,
+                                content_type=content_type,
+                            ),
+                        )
+                        # Return text content as fallback
+                        return {"content": res.text, "http_status": res.status_code}
+                else:
+                    # Non-JSON response (e.g., file download, binary data)
+                    # Return content with metadata
+                    json_response = {
+                        "content": res.content,
+                        "content_type": content_type,
+                        "http_status": res.status_code,
+                        "status": "success",
+                    }
 
                 # Restore original timeout if we changed it
                 if endpoint_timeout:

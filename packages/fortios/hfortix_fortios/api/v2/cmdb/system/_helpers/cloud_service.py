@@ -91,7 +91,7 @@ FIELD_DESCRIPTIONS = {
     "vendor": "Cloud service vendor.",
     "traffic-vdom": "Vdom used to communicate with cloud service.",
     "gck-service-account": "Service account (e.g. \"account-id@sampledomain.com\").",
-    "gck-private-key": "Service account private key in PEM format (e.g. \"-----BEGIN PRIVATE KEY-----\ ...\").",
+    "gck-private-key": "Service account private key in PEM format (e.g. \"-----BEGIN PRIVATE KEY-----\\ ...\").",
     "gck-keyid": "Key id, also referred as \"kid\".",
     "gck-access-token-lifetime": "Lifetime of automatically generated access tokens in minutes (default is 60 minutes).",
 }
@@ -113,8 +113,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_VENDOR = [
-    "unknown",
-    "google-cloud-kms",
+    "unknown",  # Unknown type of cloud service vendor.
+    "google-cloud-kms",  # Google Cloud KMS service.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -242,7 +242,7 @@ def validate_system_cloud_service_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "vendor": "unknown",  # Valid enum value
+        ...     "vendor": "{'name': 'unknown', 'help': 'Unknown type of cloud service vendor.', 'label': 'Unknown', 'description': 'Unknown type of cloud service vendor'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_cloud_service_post(payload)
         >>> assert is_valid == True

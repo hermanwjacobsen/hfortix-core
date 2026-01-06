@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Users:
     """
-    Configuration for user/scim/users
+    Get SCIM client users.
     
     Path: user/scim/users
     Category: monitor

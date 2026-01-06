@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Query:
     """
-    Monitor endpoint for user/device/query
+    Retrieve user devices from user device store. List all the user devices if there is no filter set.
     
     Path: user/device/query
     Category: monitor

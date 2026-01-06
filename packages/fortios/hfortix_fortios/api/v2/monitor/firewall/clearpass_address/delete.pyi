@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Delete:
     """
-    Configuration for firewall/clearpass-address/delete
+    Delete ClearPass address with SPT (System Posture Token) value.
     
     Path: firewall/clearpass_address/delete
     Category: monitor

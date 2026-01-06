@@ -106,22 +106,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MODE = [
-    "recursive",
-    "non-recursive",
-    "forward-only",
-    "resolver",
+    "recursive",  # Shadow DNS database and forward.
+    "non-recursive",  # Public DNS database only.
+    "forward-only",  # Forward only.
+    "resolver",  # Recursive resolver mode.
 ]
 VALID_BODY_DOH = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS over HTTPS.
+    "disable",  # Disable DNS over HTTPS.
 ]
 VALID_BODY_DOH3 = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS over HTTP3/QUIC.
+    "disable",  # Disable DNS over HTTP3/QUIC.
 ]
 VALID_BODY_DOQ = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS over QUIC.
+    "disable",  # Disable DNS over QUIC.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -249,7 +249,7 @@ def validate_system_dns_server_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "mode": "recursive",  # Valid enum value
+        ...     "mode": "{'name': 'recursive', 'help': 'Shadow DNS database and forward.', 'label': 'Recursive', 'description': 'Shadow DNS database and forward'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_dns_server_post(payload)
         >>> assert is_valid == True

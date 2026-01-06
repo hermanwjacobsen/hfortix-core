@@ -11,8 +11,8 @@ class SettingPayload(TypedDict, total=False):
         }
     """
     max_concurrent_stitches: NotRequired[int]  # Maximum number of automation stitches that are allowed to ru
-    fabric_sync: NotRequired[Literal["enable", "disable"]]  # Enable/disable synchronization of automation settings with s
-    secure_mode: NotRequired[Literal["enable", "disable"]]  # Enable/disable secure running mode for automation.
+    fabric_sync: NotRequired[Literal[{"description": "Synchronize automation setting with security fabric", "help": "Synchronize automation setting with security fabric.", "label": "Enable", "name": "enable"}, {"description": "Do not synchronize automation setting with security fabric", "help": "Do not synchronize automation setting with security fabric.", "label": "Disable", "name": "disable"}]]  # Enable/disable synchronization of automation settings with s
+    secure_mode: NotRequired[Literal[{"description": "Enable secure running mode for automation", "help": "Enable secure running mode for automation.", "label": "Enable", "name": "enable"}, {"description": "Disable secure running mode for automation", "help": "Disable secure running mode for automation.", "label": "Disable", "name": "disable"}]]  # Enable/disable secure running mode for automation.
 
 
 class Setting:
@@ -40,8 +40,8 @@ class Setting:
         self,
         payload_dict: SettingPayload | None = ...,
         max_concurrent_stitches: int | None = ...,
-        fabric_sync: Literal["enable", "disable"] | None = ...,
-        secure_mode: Literal["enable", "disable"] | None = ...,
+        fabric_sync: Literal[{"description": "Synchronize automation setting with security fabric", "help": "Synchronize automation setting with security fabric.", "label": "Enable", "name": "enable"}, {"description": "Do not synchronize automation setting with security fabric", "help": "Do not synchronize automation setting with security fabric.", "label": "Disable", "name": "disable"}] | None = ...,
+        secure_mode: Literal[{"description": "Enable secure running mode for automation", "help": "Enable secure running mode for automation.", "label": "Enable", "name": "enable"}, {"description": "Disable secure running mode for automation", "help": "Disable secure running mode for automation.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -51,8 +51,8 @@ class Setting:
         self,
         payload_dict: SettingPayload | None = ...,
         max_concurrent_stitches: int | None = ...,
-        fabric_sync: Literal["enable", "disable"] | None = ...,
-        secure_mode: Literal["enable", "disable"] | None = ...,
+        fabric_sync: Literal[{"description": "Synchronize automation setting with security fabric", "help": "Synchronize automation setting with security fabric.", "label": "Enable", "name": "enable"}, {"description": "Do not synchronize automation setting with security fabric", "help": "Do not synchronize automation setting with security fabric.", "label": "Disable", "name": "disable"}] | None = ...,
+        secure_mode: Literal[{"description": "Enable secure running mode for automation", "help": "Enable secure running mode for automation.", "label": "Enable", "name": "enable"}, {"description": "Disable secure running mode for automation", "help": "Disable secure running mode for automation.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

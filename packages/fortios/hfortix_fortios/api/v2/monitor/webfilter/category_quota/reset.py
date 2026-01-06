@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve webfilter/category_quota/reset configuration.
 
-        Configuration for webfilter/category-quota/reset
+        Reset webfilter quota for user or IP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

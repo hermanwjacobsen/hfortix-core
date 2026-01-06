@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Select:
     """
-    Configuration for utm/rating-lookup/select
+    Lookup FortiGuard rating for a specific URL.
     
     Path: utm/rating_lookup/select
     Category: monitor

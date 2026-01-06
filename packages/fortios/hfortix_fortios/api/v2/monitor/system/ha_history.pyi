@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaHistory:
     """
-    Configuration for system/ha-history
+    Get HA cluster historical logs.
     
     Path: system/ha_history
     Category: monitor

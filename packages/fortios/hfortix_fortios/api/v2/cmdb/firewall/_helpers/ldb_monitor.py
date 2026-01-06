@@ -135,15 +135,15 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "ping",
-    "tcp",
-    "http",
-    "https",
-    "dns",
+    "ping",  # PING health monitor.
+    "tcp",  # TCP-connect health monitor.
+    "http",  # HTTP-GET health monitor.
+    "https",  # HTTP-GET health monitor with SSL.
+    "dns",  # DNS health monitor.
 ]
 VALID_BODY_DNS_PROTOCOL = [
-    "udp",
-    "tcp",
+    "udp",  # UDP.
+    "tcp",  # TCP.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -273,7 +273,7 @@ def validate_firewall_ldb_monitor_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "type": True,
-        ...     "type": "ping",  # Valid enum value
+        ...     "type": "{'name': 'ping', 'help': 'PING health monitor.', 'label': 'Ping', 'description': 'PING health monitor'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ldb_monitor_post(payload)
         >>> assert is_valid == True

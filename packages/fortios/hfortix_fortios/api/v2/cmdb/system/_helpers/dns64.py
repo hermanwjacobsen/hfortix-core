@@ -95,12 +95,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS64.
+    "disable",  # Disable DNS64.
 ]
 VALID_BODY_ALWAYS_SYNTHESIZE_AAAA_RECORD = [
-    "enable",
-    "disable",
+    "enable",  # Enable AAAA record synthesis.
+    "disable",  # Disable AAAA record synthesis.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -225,7 +225,7 @@ def validate_system_dns64_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable DNS64.', 'label': 'Enable', 'description': 'Enable DNS64'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_dns64_post(payload)
         >>> assert is_valid == True

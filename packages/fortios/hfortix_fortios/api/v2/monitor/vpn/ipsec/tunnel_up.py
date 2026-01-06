@@ -56,7 +56,7 @@ class TunnelUp:
         """
         Retrieve vpn/ipsec/tunnel_up configuration.
 
-        Configuration for vpn/ipsec/tunnel_up
+        Bring up a specific IPsec VPN tunnel.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

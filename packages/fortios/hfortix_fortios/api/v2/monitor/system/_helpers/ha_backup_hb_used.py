@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ha_backup_hb_used",
     "category": "monitor",
     "api_path": "system/ha-backup-hb-used",
-    "help": "Configuration for system/ha-backup-hb-used",
+    "help": "Get HA backup heartbeat interface usage.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -56,7 +56,7 @@ class ClearSoftOut:
         """
         Retrieve router/bgp/clear_soft_out configuration.
 
-        Configuration for router/bgp/clear-soft-out
+        Outbound soft-reconfiguration for BGP peers.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

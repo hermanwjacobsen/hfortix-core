@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_MODE: Literal["multicast", "hybrid"]
-VALID_BODY_DELAY_MECHANISM: Literal["E2E", "P2P"]
-VALID_BODY_SERVER_MODE: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable synchronization with PTP Server", "help": "Enable synchronization with PTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with PTP Server", "help": "Disable synchronization with PTP Server.", "label": "Disable", "name": "disable"}]
+VALID_BODY_MODE: Literal[{"description": "Send PTP packets with multicast", "help": "Send PTP packets with multicast.", "label": "Multicast", "name": "multicast"}, {"description": "Send PTP packets with unicast and multicast", "help": "Send PTP packets with unicast and multicast.", "label": "Hybrid", "name": "hybrid"}]
+VALID_BODY_DELAY_MECHANISM: Literal[{"description": "End to end delay detection", "help": "End to end delay detection.", "label": "E2E", "name": "E2E"}, {"description": "Peer to peer delay detection", "help": "Peer to peer delay detection.", "label": "P2P", "name": "P2P"}]
+VALID_BODY_SERVER_MODE: Literal[{"description": "Enable FortiGate PTP server mode", "help": "Enable FortiGate PTP server mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate PTP server mode", "help": "Disable FortiGate PTP server mode.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

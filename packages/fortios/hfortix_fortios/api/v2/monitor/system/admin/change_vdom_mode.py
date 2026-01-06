@@ -56,7 +56,7 @@ class ChangeVdomMode:
         """
         Retrieve system/admin/change_vdom_mode configuration.
 
-        Configuration for system/admin/change-vdom-mode
+        Switch between VDOM modes.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve wifi/region_image/upload configuration.
 
-        Configuration for wifi/region-image/upload
+        Saves a floorplan/region image to an existing region.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

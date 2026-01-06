@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/guest/email",
     "category": "monitor",
     "api_path": "user/guest/email",
-    "help": "Configuration for user/guest/email",
+    "help": "Sent guest login details via email.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_AUTH_TYPE: Literal["acceptance-of-terms", "online-enrollment", "http-redirection", "dns-redirection"]
+VALID_BODY_AUTH_TYPE: Literal[{"description": "Acceptance of terms and conditions", "help": "Acceptance of terms and conditions.", "label": "Acceptance Of Terms", "name": "acceptance-of-terms"}, {"description": "Online enrollment supported", "help": "Online enrollment supported.", "label": "Online Enrollment", "name": "online-enrollment"}, {"description": "HTTP and HTTPS redirection", "help": "HTTP and HTTPS redirection.", "label": "Http Redirection", "name": "http-redirection"}, {"description": "DNS redirection", "help": "DNS redirection.", "label": "Dns Redirection", "name": "dns-redirection"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -15,7 +15,7 @@ class Address6TemplatePayload(TypedDict, total=False):
     ip6: str  # IPv6 address prefix.
     subnet_segment_count: int  # Number of IPv6 subnet segments.
     subnet_segment: NotRequired[list[dict[str, Any]]]  # IPv6 subnet segments.
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Address6Template:
@@ -48,7 +48,7 @@ class Address6Template:
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
         subnet_segment: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -62,7 +62,7 @@ class Address6Template:
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
         subnet_segment: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -14,22 +14,22 @@ class MulticastPolicyPayload(TypedDict, total=False):
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
     name: NotRequired[str]  # Policy name.
     comments: NotRequired[str]  # Comment.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this policy.
+    status: NotRequired[Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable this policy.
     srcintf: str  # Source interface name.
     dstintf: str  # Destination interface name.
     srcaddr: list[dict[str, Any]]  # Source address objects.
     dstaddr: list[dict[str, Any]]  # Destination address objects.
-    snat: NotRequired[Literal["enable", "disable"]]  # Enable/disable substitution of the outgoing interface IP add
+    snat: NotRequired[Literal[{"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}]]  # Enable/disable substitution of the outgoing interface IP add
     snat_ip: NotRequired[str]  # IPv4 address to be used as the source address for NATed traf
     dnat: NotRequired[str]  # IPv4 DNAT address used for multicast destination addresses.
-    action: NotRequired[Literal["accept", "deny"]]  # Accept or deny traffic matching the policy.
+    action: NotRequired[Literal[{"description": "Accept traffic matching the policy", "help": "Accept traffic matching the policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching the policy", "help": "Deny or block traffic matching the policy.", "label": "Deny", "name": "deny"}]]  # Accept or deny traffic matching the policy.
     protocol: NotRequired[int]  # Integer value for the protocol type as defined by IANA (0 - 
     start_port: NotRequired[int]  # Integer value for starting TCP/UDP/SCTP destination port in 
     end_port: NotRequired[int]  # Integer value for ending TCP/UDP/SCTP destination port in ra
-    utm_status: NotRequired[Literal["enable", "disable"]]  # Enable to add an IPS security profile to the policy.
+    utm_status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable to add an IPS security profile to the policy.
     ips_sensor: NotRequired[str]  # Name of an existing IPS sensor.
-    logtraffic: NotRequired[Literal["all", "utm", "disable"]]  # Enable or disable logging. Log all sessions or security prof
-    auto_asic_offload: NotRequired[Literal["enable", "disable"]]  # Enable/disable offloading policy traffic for hardware accele
+    logtraffic: NotRequired[Literal[{"description": "Enable logging traffic accepted by this policy", "help": "Enable logging traffic accepted by this policy.", "label": "All", "name": "all"}, {"description": "Log traffic that has a security profile applied to it", "help": "Log traffic that has a security profile applied to it.", "label": "Utm", "name": "utm"}, {"description": "Disable all logging for this policy", "help": "Disable all logging for this policy.", "label": "Disable", "name": "disable"}]]  # Enable or disable logging. Log all sessions or security prof
+    auto_asic_offload: NotRequired[Literal[{"description": "Enable hardware acceleration offloading", "help": "Enable hardware acceleration offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable offloading for hardware acceleration", "help": "Disable offloading for hardware acceleration.", "label": "Disable", "name": "disable"}]]  # Enable/disable offloading policy traffic for hardware accele
     traffic_shaper: NotRequired[str]  # Traffic shaper to apply to traffic forwarded by the multicas
 
 
@@ -62,22 +62,22 @@ class MulticastPolicy:
         uuid: str | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
-        snat: Literal["enable", "disable"] | None = ...,
+        snat: Literal[{"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
+        action: Literal[{"description": "Accept traffic matching the policy", "help": "Accept traffic matching the policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching the policy", "help": "Deny or block traffic matching the policy.", "label": "Deny", "name": "deny"}] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
         end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
+        utm_status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal[{"description": "Enable logging traffic accepted by this policy", "help": "Enable logging traffic accepted by this policy.", "label": "All", "name": "all"}, {"description": "Log traffic that has a security profile applied to it", "help": "Log traffic that has a security profile applied to it.", "label": "Utm", "name": "utm"}, {"description": "Disable all logging for this policy", "help": "Disable all logging for this policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable hardware acceleration offloading", "help": "Enable hardware acceleration offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable offloading for hardware acceleration", "help": "Disable offloading for hardware acceleration.", "label": "Disable", "name": "disable"}] | None = ...,
         traffic_shaper: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -91,22 +91,22 @@ class MulticastPolicy:
         uuid: str | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
-        snat: Literal["enable", "disable"] | None = ...,
+        snat: Literal[{"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
+        action: Literal[{"description": "Accept traffic matching the policy", "help": "Accept traffic matching the policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching the policy", "help": "Deny or block traffic matching the policy.", "label": "Deny", "name": "deny"}] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
         end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
+        utm_status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal[{"description": "Enable logging traffic accepted by this policy", "help": "Enable logging traffic accepted by this policy.", "label": "All", "name": "all"}, {"description": "Log traffic that has a security profile applied to it", "help": "Log traffic that has a security profile applied to it.", "label": "Utm", "name": "utm"}, {"description": "Disable all logging for this policy", "help": "Disable all logging for this policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable hardware acceleration offloading", "help": "Enable hardware acceleration offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable offloading for hardware acceleration", "help": "Disable offloading for hardware acceleration.", "label": "Disable", "name": "disable"}] | None = ...,
         traffic_shaper: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

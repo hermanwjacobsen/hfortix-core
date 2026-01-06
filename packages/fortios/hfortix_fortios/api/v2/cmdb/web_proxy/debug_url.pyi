@@ -12,8 +12,8 @@ class DebugUrlPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Debug URL name.
     url_pattern: str  # URL exemption pattern.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this URL exemption.
-    exact: NotRequired[Literal["enable", "disable"]]  # Enable/disable matching the exact path.
+    status: NotRequired[Literal[{"description": "Enable this URL exemption", "help": "Enable this URL exemption.", "label": "Enable", "name": "enable"}, {"description": "Disable this URL exemption", "help": "Disable this URL exemption.", "label": "Disable", "name": "disable"}]]  # Enable/disable this URL exemption.
+    exact: NotRequired[Literal[{"description": "Enable matching the exact path", "help": "Enable matching the exact path.", "label": "Enable", "name": "enable"}, {"description": "Disable matching the exact path", "help": "Disable matching the exact path.", "label": "Disable", "name": "disable"}]]  # Enable/disable matching the exact path.
 
 
 class DebugUrl:
@@ -43,8 +43,8 @@ class DebugUrl:
         payload_dict: DebugUrlPayload | None = ...,
         name: str | None = ...,
         url_pattern: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        exact: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this URL exemption", "help": "Enable this URL exemption.", "label": "Enable", "name": "enable"}, {"description": "Disable this URL exemption", "help": "Disable this URL exemption.", "label": "Disable", "name": "disable"}] | None = ...,
+        exact: Literal[{"description": "Enable matching the exact path", "help": "Enable matching the exact path.", "label": "Enable", "name": "enable"}, {"description": "Disable matching the exact path", "help": "Disable matching the exact path.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -55,8 +55,8 @@ class DebugUrl:
         payload_dict: DebugUrlPayload | None = ...,
         name: str | None = ...,
         url_pattern: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        exact: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this URL exemption", "help": "Enable this URL exemption.", "label": "Enable", "name": "enable"}, {"description": "Disable this URL exemption", "help": "Disable this URL exemption.", "label": "Disable", "name": "disable"}] | None = ...,
+        exact: Literal[{"description": "Enable matching the exact path", "help": "Enable matching the exact path.", "label": "Enable", "name": "enable"}, {"description": "Disable matching the exact path", "help": "Disable matching the exact path.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -96,12 +96,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_VCLUSTER = [
-    "vcluster1",
-    "vcluster2",
+    "vcluster1",  # Virtual cluster 1.
+    "vcluster2",  # Virtual cluster 2.
 ]
 VALID_BODY_TYPE = [
-    "ppp",
-    "ethernet",
+    "ppp",  # PPP VDOM link.
+    "ethernet",  # Ethernet VDOM link.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -229,7 +229,7 @@ def validate_system_vdom_link_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "vcluster": "vcluster1",  # Valid enum value
+        ...     "vcluster": "{'name': 'vcluster1', 'help': 'Virtual cluster 1.', 'label': 'Vcluster1', 'description': 'Virtual cluster 1'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_vdom_link_post(payload)
         >>> assert is_valid == True

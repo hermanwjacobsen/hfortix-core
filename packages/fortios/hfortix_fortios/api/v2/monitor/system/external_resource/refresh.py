@@ -56,7 +56,7 @@ class Refresh:
         """
         Retrieve system/external_resource/refresh configuration.
 
-        Configuration for system/external-resource/refresh
+        Fetch the external resource file and refresh status for the specified external resource.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

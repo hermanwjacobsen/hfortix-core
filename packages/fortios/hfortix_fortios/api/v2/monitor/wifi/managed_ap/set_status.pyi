@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SetStatus:
     """
-    Configuration for wifi/managed_ap/set_status
+    Update administrative state for a given FortiAP (enable or disable authorization).
     
     Path: wifi/managed_ap/set_status
     Category: monitor

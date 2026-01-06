@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FaceplateXml:
     """
-    Configuration for switch-controller/managed-switch/faceplate-xml
+    Retrieve XML for rendering FortiSwitch faceplate widget.
     
     Path: switch_controller/managed_switch/faceplate_xml
     Category: monitor

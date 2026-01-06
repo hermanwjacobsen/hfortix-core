@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Push:
     """
-    Configuration for switch-controller/fsw-firmware/push
+    Push FortiSwitch firmware to the given device.
     
     Path: switch_controller/fsw_firmware/push
     Category: monitor

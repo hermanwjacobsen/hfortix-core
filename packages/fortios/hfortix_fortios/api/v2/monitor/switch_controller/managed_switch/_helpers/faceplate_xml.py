@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/managed_switch/faceplate_xml",
     "category": "monitor",
     "api_path": "switch-controller/managed-switch/faceplate-xml",
-    "help": "Configuration for switch-controller/managed-switch/faceplate-xml",
+    "help": "Retrieve XML for rendering FortiSwitch faceplate widget.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

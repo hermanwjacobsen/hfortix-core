@@ -10,8 +10,8 @@ class SwitchLogPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable adding FortiSwitch logs to FortiGate event lo
-    severity: NotRequired[Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]]  # Severity of FortiSwitch logs that are added to the FortiGate
+    status: NotRequired[Literal[{"description": "Add FortiSwitch logs to FortiGate event log", "help": "Add FortiSwitch logs to FortiGate event log.", "label": "Enable", "name": "enable"}, {"description": "Do not add  FortiSwitch logs to FortiGate event log", "help": "Do not add  FortiSwitch logs to FortiGate event log.", "label": "Disable", "name": "disable"}]]  # Enable/disable adding FortiSwitch logs to FortiGate event lo
+    severity: NotRequired[Literal[{"description": "Emergency level", "help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"description": "Alert level", "help": "Alert level.", "label": "Alert", "name": "alert"}, {"description": "Critical level", "help": "Critical level.", "label": "Critical", "name": "critical"}, {"description": "Error level", "help": "Error level.", "label": "Error", "name": "error"}, {"description": "Warning level", "help": "Warning level.", "label": "Warning", "name": "warning"}, {"description": "Notification level", "help": "Notification level.", "label": "Notification", "name": "notification"}, {"description": "Information level", "help": "Information level.", "label": "Information", "name": "information"}, {"description": "Debug level", "help": "Debug level.", "label": "Debug", "name": "debug"}]]  # Severity of FortiSwitch logs that are added to the FortiGate
 
 
 class SwitchLog:
@@ -38,8 +38,8 @@ class SwitchLog:
     def post(
         self,
         payload_dict: SwitchLogPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        status: Literal[{"description": "Add FortiSwitch logs to FortiGate event log", "help": "Add FortiSwitch logs to FortiGate event log.", "label": "Enable", "name": "enable"}, {"description": "Do not add  FortiSwitch logs to FortiGate event log", "help": "Do not add  FortiSwitch logs to FortiGate event log.", "label": "Disable", "name": "disable"}] | None = ...,
+        severity: Literal[{"description": "Emergency level", "help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"description": "Alert level", "help": "Alert level.", "label": "Alert", "name": "alert"}, {"description": "Critical level", "help": "Critical level.", "label": "Critical", "name": "critical"}, {"description": "Error level", "help": "Error level.", "label": "Error", "name": "error"}, {"description": "Warning level", "help": "Warning level.", "label": "Warning", "name": "warning"}, {"description": "Notification level", "help": "Notification level.", "label": "Notification", "name": "notification"}, {"description": "Information level", "help": "Information level.", "label": "Information", "name": "information"}, {"description": "Debug level", "help": "Debug level.", "label": "Debug", "name": "debug"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -48,8 +48,8 @@ class SwitchLog:
     def put(
         self,
         payload_dict: SwitchLogPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
+        status: Literal[{"description": "Add FortiSwitch logs to FortiGate event log", "help": "Add FortiSwitch logs to FortiGate event log.", "label": "Enable", "name": "enable"}, {"description": "Do not add  FortiSwitch logs to FortiGate event log", "help": "Do not add  FortiSwitch logs to FortiGate event log.", "label": "Disable", "name": "disable"}] | None = ...,
+        severity: Literal[{"description": "Emergency level", "help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"description": "Alert level", "help": "Alert level.", "label": "Alert", "name": "alert"}, {"description": "Critical level", "help": "Critical level.", "label": "Critical", "name": "critical"}, {"description": "Error level", "help": "Error level.", "label": "Error", "name": "error"}, {"description": "Warning level", "help": "Warning level.", "label": "Warning", "name": "warning"}, {"description": "Notification level", "help": "Notification level.", "label": "Notification", "name": "notification"}, {"description": "Information level", "help": "Information level.", "label": "Information", "name": "information"}, {"description": "Debug level", "help": "Debug level.", "label": "Debug", "name": "debug"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

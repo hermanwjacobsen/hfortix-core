@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class StationCapability:
     """
-    Monitor endpoint for wifi/station-capability
+    Retrieve a list of stations and their capability to connect to detected access points.
     
     Path: wifi/station_capability
     Category: monitor

@@ -56,7 +56,7 @@ class Refresh:
         """
         Retrieve azure/application_list/refresh configuration.
 
-        Configuration for azure/application-list/refresh
+        Update the Azure application list data or get the status of an update.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

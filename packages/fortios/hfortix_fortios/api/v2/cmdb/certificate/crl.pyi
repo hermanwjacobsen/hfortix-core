@@ -12,8 +12,8 @@ class CrlPayload(TypedDict, total=False):
     """
     name: str  # Name.
     crl: NotRequired[str]  # Certificate Revocation List as a PEM file.
-    range: NotRequired[Literal["global", "vdom"]]  # Either global or VDOM IP address range for the certificate.
-    source: NotRequired[Literal["factory", "user", "bundle"]]  # Certificate source type.
+    range: NotRequired[Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}]]  # Either global or VDOM IP address range for the certificate.
+    source: NotRequired[Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}]]  # Certificate source type.
     update_vdom: NotRequired[str]  # VDOM for CRL update.
     ldap_server: NotRequired[str]  # LDAP server name for CRL auto-update.
     ldap_username: NotRequired[str]  # LDAP server user name.
@@ -52,8 +52,8 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
+        range: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}] | None = ...,
+        source: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
         ldap_username: str | None = ...,
@@ -73,8 +73,8 @@ class Crl:
         payload_dict: CrlPayload | None = ...,
         name: str | None = ...,
         crl: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
+        range: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}] | None = ...,
+        source: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}] | None = ...,
         update_vdom: str | None = ...,
         ldap_server: str | None = ...,
         ldap_username: str | None = ...,

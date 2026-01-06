@@ -56,7 +56,7 @@ class Webhook:
         """
         Retrieve system/automation_stitch/webhook configuration.
 
-        Configuration for system/automation-stitch/webhook
+        Triggers an incoming webhook for an automation stitch.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

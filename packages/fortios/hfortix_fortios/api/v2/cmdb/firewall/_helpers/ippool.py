@@ -108,7 +108,7 @@ FIELD_TYPES = {
     "num-blocks-per-user": "integer",  # Number of addresses blocks that can be used by a user (1 to 
     "pba-timeout": "integer",  # Port block allocation timeout (seconds).
     "pba-interim-log": "integer",  # Port block allocation interim logging interval (600 - 86400 
-    "permit-any-host": "option",  # Enable/disable full cone NAT.
+    "permit-any-host": "option",  # Enable/disable fullcone NAT. Accept UDP packets from any hos
     "arp-reply": "option",  # Enable/disable replying to ARP requests when an IP Pool is a
     "arp-intf": "string",  # Select an interface from available options that will reply t
     "associated-interface": "string",  # Associated interface name.
@@ -139,7 +139,7 @@ FIELD_DESCRIPTIONS = {
     "num-blocks-per-user": "Number of addresses blocks that can be used by a user (1 to 128, default = 8).",
     "pba-timeout": "Port block allocation timeout (seconds).",
     "pba-interim-log": "Port block allocation interim logging interval (600 - 86400 seconds, default = 0 which disables interim logging).",
-    "permit-any-host": "Enable/disable full cone NAT.",
+    "permit-any-host": "Enable/disable fullcone NAT. Accept UDP packets from any host.",
     "arp-reply": "Enable/disable replying to ARP requests when an IP Pool is added to a policy (default = enable).",
     "arp-intf": "Select an interface from available options that will reply to ARP requests. (If blank, any is selected).",
     "associated-interface": "Associated interface name.",
@@ -180,33 +180,33 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "overload",
-    "one-to-one",
-    "fixed-port-range",
-    "port-block-allocation",
+    "overload",  # IP addresses in the IP pool can be shared by clients.
+    "one-to-one",  # One to one mapping.
+    "fixed-port-range",  # Fixed port range.
+    "port-block-allocation",  # Port block allocation.
 ]
 VALID_BODY_PERMIT_ANY_HOST = [
-    "disable",
-    "enable",
+    "disable",  # Disable full cone NAT.
+    "enable",  # Enable full cone NAT.
 ]
 VALID_BODY_ARP_REPLY = [
-    "disable",
-    "enable",
+    "disable",  # Disable ARP reply.
+    "enable",  # Enable ARP reply.
 ]
 VALID_BODY_NAT64 = [
-    "disable",
-    "enable",
+    "disable",  # Disable DNAT64.
+    "enable",  # Enable DNAT64.
 ]
 VALID_BODY_ADD_NAT64_ROUTE = [
-    "disable",
-    "enable",
+    "disable",  # Disable adding NAT64 route.
+    "enable",  # Enable adding NAT64 route.
 ]
 VALID_BODY_PRIVILEGED_PORT_USE_PBA = [
-    "disable",
-    "enable",
+    "disable",  # Select new nat port for privileged source ports from priviliged range 512-1023.
+    "enable",  # Select new nat port for privileged source ports from client's port block
 ]
 VALID_BODY_SUBNET_BROADCAST_IN_IPPOOL = [
-    "disable",
+    "disable",  # Do not include the subnetwork address and broadcast IP address in the NAT64 IP pool.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -334,7 +334,7 @@ def validate_firewall_ippool_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "type": "overload",  # Valid enum value
+        ...     "type": "{'name': 'overload', 'help': 'IP addresses in the IP pool can be shared by clients.', 'label': 'Overload'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ippool_post(payload)
         >>> assert is_valid == True

@@ -10,12 +10,12 @@ from . import guest
 from . import info
 from . import local
 from . import password_policy_conform
+from . import proxy
 from . import query
 from . import radius
 from . import scim
 from . import tacacs_plus
 from .collected_email import CollectedEmail
-from .proxy import Proxy
 
 __all__ = [
     "Banned",
@@ -57,9 +57,9 @@ class User:
         self.info = info.Info(client)
         self.local = local.Local(client)
         self.password_policy_conform = password_policy_conform.PasswordPolicyConform(client)
+        self.proxy = proxy.Proxy(client)
         self.query = query.Query(client)
         self.radius = radius.Radius(client)
         self.scim = scim.Scim(client)
         self.tacacs_plus = tacacs_plus.TacacsPlus(client)
         self.collected_email = CollectedEmail(client)
-        self.proxy = Proxy(client)

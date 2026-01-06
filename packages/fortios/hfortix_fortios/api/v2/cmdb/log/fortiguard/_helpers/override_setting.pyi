@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OVERRIDE: Literal["enable", "disable"]
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_UPLOAD_OPTION: Literal["store-and-upload", "realtime", "1-minute", "5-minute"]
-VALID_BODY_UPLOAD_INTERVAL: Literal["daily", "weekly", "monthly"]
-VALID_BODY_PRIORITY: Literal["default", "low"]
-VALID_BODY_ACCESS_CONFIG: Literal["enable", "disable"]
+VALID_BODY_OVERRIDE: Literal[{"description": "Override FortiCloud logging settings", "help": "Override FortiCloud logging settings.", "label": "Enable", "name": "enable"}, {"description": "Use global FortiCloud logging settings", "help": "Use global FortiCloud logging settings.", "label": "Disable", "name": "disable"}]
+VALID_BODY_STATUS: Literal[{"description": "Enable logging to FortiCloud", "help": "Enable logging to FortiCloud.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to FortiCloud", "help": "Disable logging to FortiCloud.", "label": "Disable", "name": "disable"}]
+VALID_BODY_UPLOAD_OPTION: Literal[{"description": "Log to the hard disk and then upload logs to FortiCloud", "help": "Log to the hard disk and then upload logs to FortiCloud.", "label": "Store And Upload", "name": "store-and-upload"}, {"description": "Log directly to FortiCloud in real time", "help": "Log directly to FortiCloud in real time.", "label": "Realtime", "name": "realtime"}, {"description": "Log directly to FortiCloud at 1-minute intervals", "help": "Log directly to FortiCloud at 1-minute intervals.", "label": "1 Minute", "name": "1-minute"}, {"description": "Log directly to FortiCloud at 5-minute intervals", "help": "Log directly to FortiCloud at 5-minute intervals.", "label": "5 Minute", "name": "5-minute"}]
+VALID_BODY_UPLOAD_INTERVAL: Literal[{"description": "Upload log files to FortiCloud once a day", "help": "Upload log files to FortiCloud once a day.", "label": "Daily", "name": "daily"}, {"description": "Upload log files to FortiCloud once a week", "help": "Upload log files to FortiCloud once a week.", "label": "Weekly", "name": "weekly"}, {"description": "Upload log files to FortiCloud once a month", "help": "Upload log files to FortiCloud once a month.", "label": "Monthly", "name": "monthly"}]
+VALID_BODY_PRIORITY: Literal[{"description": "Set FortiCloud log transmission priority to default", "help": "Set FortiCloud log transmission priority to default.", "label": "Default", "name": "default"}, {"description": "Set FortiCloud log transmission priority to low", "help": "Set FortiCloud log transmission priority to low.", "label": "Low", "name": "low"}]
+VALID_BODY_ACCESS_CONFIG: Literal[{"description": "Enable FortiCloud access to configuration and data", "help": "Enable FortiCloud access to configuration and data.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiCloud access to configuration and data", "help": "Disable FortiCloud access to configuration and data.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

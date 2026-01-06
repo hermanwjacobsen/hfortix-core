@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Arp:
     """
-    Monitor endpoint for network/arp
+    Get IPv4 ARP table.
     
     Path: network/arp
     Category: monitor

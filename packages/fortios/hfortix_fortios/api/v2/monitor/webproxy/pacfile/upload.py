@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve webproxy/pacfile/upload configuration.
 
-        Configuration for webproxy/pacfile/upload
+        Upload webproxy PAC file.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

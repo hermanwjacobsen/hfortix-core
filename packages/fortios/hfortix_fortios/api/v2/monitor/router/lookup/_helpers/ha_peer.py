@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/lookup/ha_peer",
     "category": "monitor",
     "api_path": "router/lookup/ha-peer",
-    "help": "Configuration for router/lookup/ha-peer",
+    "help": "Performs a route lookup by querying the routing table of an HA peer.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

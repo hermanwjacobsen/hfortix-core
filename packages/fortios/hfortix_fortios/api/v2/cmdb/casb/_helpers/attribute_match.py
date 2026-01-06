@@ -107,7 +107,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "CASB attribute match rule strategy.",
             "default": "and",
-            "options": ["and", "or"],
+            "options": [{"help": "Match attribute using a logical AND operator.", "label": "And", "name": "and"}, {"help": "Match attribute using a logical OR operator.", "label": "Or", "name": "or"}],
         },
         "rule": {
             "type": "string",
@@ -119,8 +119,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MATCH_STRATEGY = [
-    "and",
-    "or",
+    "or",  # Match when any rule is satisfied.
+    "and",  # Match when all rules are satisfied.
+    "subset",  # Match when extracted attributes are found within defined rules.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -250,7 +251,7 @@ def validate_casb_attribute_match_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "application": True,
-        ...     "match-strategy": "and",  # Valid enum value
+        ...     "match-strategy": "{'name': 'or', 'help': 'Match when any rule is satisfied.', 'label': 'Or', 'description': 'Match when any rule is satisfied'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_casb_attribute_match_post(payload)
         >>> assert is_valid == True

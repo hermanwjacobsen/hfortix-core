@@ -56,7 +56,7 @@ class InternetServiceMatch:
         """
         Retrieve firewall/internet_service_match configuration.
 
-        Configuration for firewall/internet-service-match
+        List internet services that exist at a given IP or Subnet.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

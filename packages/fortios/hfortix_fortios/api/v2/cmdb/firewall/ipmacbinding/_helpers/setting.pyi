@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_BINDTHROUGHFW: Literal["enable", "disable"]
-VALID_BODY_BINDTOFW: Literal["enable", "disable"]
-VALID_BODY_UNDEFINEDHOST: Literal["allow", "block"]
+VALID_BODY_BINDTHROUGHFW: Literal[{"description": "Enable IP/MAC binding for packets that would normally go through the firewall", "help": "Enable IP/MAC binding for packets that would normally go through the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go through the firewall", "help": "Disable IP/MAC binding for packets that would normally go through the firewall.", "label": "Disable", "name": "disable"}]
+VALID_BODY_BINDTOFW: Literal[{"description": "Enable IP/MAC binding for packets that would normally go to the firewall", "help": "Enable IP/MAC binding for packets that would normally go to the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go to the firewall", "help": "Disable IP/MAC binding for packets that would normally go to the firewall.", "label": "Disable", "name": "disable"}]
+VALID_BODY_UNDEFINEDHOST: Literal[{"description": "Allow packets from MAC addresses not in the IP/MAC list", "help": "Allow packets from MAC addresses not in the IP/MAC list.", "label": "Allow", "name": "allow"}, {"description": "Block packets from MAC addresses not in the IP/MAC list", "help": "Block packets from MAC addresses not in the IP/MAC list.", "label": "Block", "name": "block"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -56,7 +56,7 @@ class Select:
         """
         Retrieve utm/rating_lookup/select configuration.
 
-        Configuration for utm/rating-lookup/select
+        Lookup FortiGuard rating for a specific URL.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

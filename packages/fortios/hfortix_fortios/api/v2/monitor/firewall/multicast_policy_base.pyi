@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class MulticastPolicy:
     """
-    Monitor endpoint for firewall/multicast-policy
+    List traffic statistics for IPv4 firewall multicast policies.
     
     Path: firewall/multicast_policy
     Category: monitor

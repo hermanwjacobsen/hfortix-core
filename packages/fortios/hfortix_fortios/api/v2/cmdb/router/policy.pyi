@@ -12,14 +12,14 @@ class PolicyPayload(TypedDict, total=False):
     """
     seq_num: NotRequired[int]  # Sequence number(1-65535).
     input_device: NotRequired[list[dict[str, Any]]]  # Incoming interface name.
-    input_device_negate: NotRequired[Literal["enable", "disable"]]  # Enable/disable negation of input device match.
+    input_device_negate: NotRequired[Literal[{"description": "Enable negation of input device match", "help": "Enable negation of input device match.", "label": "Enable", "name": "enable"}, {"description": "Disable negation of input device match", "help": "Disable negation of input device match.", "label": "Disable", "name": "disable"}]]  # Enable/disable negation of input device match.
     src: NotRequired[list[dict[str, Any]]]  # Source IP and mask (x.x.x.x/x).
     srcaddr: NotRequired[list[dict[str, Any]]]  # Source address name.
-    src_negate: NotRequired[Literal["enable", "disable"]]  # Enable/disable negating source address match.
+    src_negate: NotRequired[Literal[{"description": "Enable source address negation", "help": "Enable source address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable source address negation", "help": "Disable source address negation.", "label": "Disable", "name": "disable"}]]  # Enable/disable negating source address match.
     dst: NotRequired[list[dict[str, Any]]]  # Destination IP and mask (x.x.x.x/x).
     dstaddr: NotRequired[list[dict[str, Any]]]  # Destination address name.
-    dst_negate: NotRequired[Literal["enable", "disable"]]  # Enable/disable negating destination address match.
-    action: NotRequired[Literal["deny", "permit"]]  # Action of the policy route.
+    dst_negate: NotRequired[Literal[{"description": "Enable destination address negation", "help": "Enable destination address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable destination address negation", "help": "Disable destination address negation.", "label": "Disable", "name": "disable"}]]  # Enable/disable negating destination address match.
+    action: NotRequired[Literal[{"description": "Do not search policy route table", "help": "Do not search policy route table.", "label": "Deny", "name": "deny"}, {"description": "Use this policy route for forwarding", "help": "Use this policy route for forwarding.", "label": "Permit", "name": "permit"}]]  # Action of the policy route.
     protocol: NotRequired[int]  # Protocol number (0 - 255).
     start_port: NotRequired[int]  # Start destination port number (0 - 65535).
     end_port: NotRequired[int]  # End destination port number (0 - 65535).
@@ -29,7 +29,7 @@ class PolicyPayload(TypedDict, total=False):
     output_device: NotRequired[str]  # Outgoing interface name.
     tos: NotRequired[str]  # Type of service bit pattern.
     tos_mask: NotRequired[str]  # Type of service evaluated bits.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this policy route.
+    status: NotRequired[Literal[{"description": "Enable this policy route", "help": "Enable this policy route.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy route", "help": "Disable this policy route.", "label": "Disable", "name": "disable"}]]  # Enable/disable this policy route.
     comments: NotRequired[str]  # Optional comments.
     internet_service_id: NotRequired[list[dict[str, Any]]]  # Destination Internet Service ID.
     internet_service_custom: NotRequired[list[dict[str, Any]]]  # Custom Destination Internet Service name.
@@ -65,14 +65,14 @@ class Policy:
         payload_dict: PolicyPayload | None = ...,
         seq_num: int | None = ...,
         input_device: list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
+        input_device_negate: Literal[{"description": "Enable negation of input device match", "help": "Enable negation of input device match.", "label": "Enable", "name": "enable"}, {"description": "Disable negation of input device match", "help": "Disable negation of input device match.", "label": "Disable", "name": "disable"}] | None = ...,
         src: list[dict[str, Any]] | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
+        src_negate: Literal[{"description": "Enable source address negation", "help": "Enable source address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable source address negation", "help": "Disable source address negation.", "label": "Disable", "name": "disable"}] | None = ...,
         dst: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
+        dst_negate: Literal[{"description": "Enable destination address negation", "help": "Enable destination address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable destination address negation", "help": "Disable destination address negation.", "label": "Disable", "name": "disable"}] | None = ...,
+        action: Literal[{"description": "Do not search policy route table", "help": "Do not search policy route table.", "label": "Deny", "name": "deny"}, {"description": "Use this policy route for forwarding", "help": "Use this policy route for forwarding.", "label": "Permit", "name": "permit"}] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
         end_port: int | None = ...,
@@ -82,7 +82,7 @@ class Policy:
         output_device: str | None = ...,
         tos: str | None = ...,
         tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy route", "help": "Enable this policy route.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy route", "help": "Disable this policy route.", "label": "Disable", "name": "disable"}] | None = ...,
         comments: str | None = ...,
         internet_service_id: list[dict[str, Any]] | None = ...,
         internet_service_custom: list[dict[str, Any]] | None = ...,
@@ -99,14 +99,14 @@ class Policy:
         payload_dict: PolicyPayload | None = ...,
         seq_num: int | None = ...,
         input_device: list[dict[str, Any]] | None = ...,
-        input_device_negate: Literal["enable", "disable"] | None = ...,
+        input_device_negate: Literal[{"description": "Enable negation of input device match", "help": "Enable negation of input device match.", "label": "Enable", "name": "enable"}, {"description": "Disable negation of input device match", "help": "Disable negation of input device match.", "label": "Disable", "name": "disable"}] | None = ...,
         src: list[dict[str, Any]] | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
-        src_negate: Literal["enable", "disable"] | None = ...,
+        src_negate: Literal[{"description": "Enable source address negation", "help": "Enable source address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable source address negation", "help": "Disable source address negation.", "label": "Disable", "name": "disable"}] | None = ...,
         dst: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
-        dst_negate: Literal["enable", "disable"] | None = ...,
-        action: Literal["deny", "permit"] | None = ...,
+        dst_negate: Literal[{"description": "Enable destination address negation", "help": "Enable destination address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable destination address negation", "help": "Disable destination address negation.", "label": "Disable", "name": "disable"}] | None = ...,
+        action: Literal[{"description": "Do not search policy route table", "help": "Do not search policy route table.", "label": "Deny", "name": "deny"}, {"description": "Use this policy route for forwarding", "help": "Use this policy route for forwarding.", "label": "Permit", "name": "permit"}] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
         end_port: int | None = ...,
@@ -116,7 +116,7 @@ class Policy:
         output_device: str | None = ...,
         tos: str | None = ...,
         tos_mask: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy route", "help": "Enable this policy route.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy route", "help": "Disable this policy route.", "label": "Disable", "name": "disable"}] | None = ...,
         comments: str | None = ...,
         internet_service_id: list[dict[str, Any]] | None = ...,
         internet_service_custom: list[dict[str, Any]] | None = ...,

@@ -56,7 +56,7 @@ class Stop:
         """
         Retrieve wifi/spectrum/stop configuration.
 
-        Configuration for wifi/spectrum/stop
+        Stop spectrum analysis for a specific FortiAP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve firewall/central_snat_map/reset configuration.
 
-        Configuration for firewall/central-snat-map/reset
+        Reset traffic statistics for all firewall central SNAT policies.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

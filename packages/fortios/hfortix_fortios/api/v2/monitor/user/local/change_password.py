@@ -56,7 +56,7 @@ class ChangePassword:
         """
         Retrieve user/local/change_password configuration.
 
-        Configuration for user/local/change-password
+        Change password for local user.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

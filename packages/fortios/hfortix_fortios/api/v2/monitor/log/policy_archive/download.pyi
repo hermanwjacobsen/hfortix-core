@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for log/policy-archive/download
+    Download policy-based packet capture archive.
     
     Path: log/policy_archive/download
     Category: monitor

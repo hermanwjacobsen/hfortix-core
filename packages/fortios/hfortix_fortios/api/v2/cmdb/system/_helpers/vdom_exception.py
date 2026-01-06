@@ -107,50 +107,50 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OBJECT = [
-    "log.fortianalyzer.setting",
-    "log.fortianalyzer.override-setting",
-    "log.fortianalyzer2.setting",
-    "log.fortianalyzer2.override-setting",
-    "log.fortianalyzer3.setting",
-    "log.fortianalyzer3.override-setting",
-    "log.fortianalyzer-cloud.setting",
-    "log.fortianalyzer-cloud.override-setting",
-    "log.syslogd.setting",
-    "log.syslogd.override-setting",
-    "log.syslogd2.setting",
-    "log.syslogd2.override-setting",
-    "log.syslogd3.setting",
-    "log.syslogd3.override-setting",
-    "log.syslogd4.setting",
-    "log.syslogd4.override-setting",
-    "system.gre-tunnel",
-    "system.central-management",
-    "system.csf",
-    "user.radius",
-    "system.interface",
-    "vpn.ipsec.phase1-interface",
-    "vpn.ipsec.phase2-interface",
-    "router.bgp",
-    "router.route-map",
-    "router.prefix-list",
-    "firewall.ippool",
-    "firewall.ippool6",
-    "router.static",
-    "router.static6",
-    "firewall.vip",
-    "firewall.vip6",
-    "system.sdwan",
-    "system.saml",
-    "router.policy",
-    "router.policy6",
-    "log.syslogd.setting",
-    "log.syslogd.override-setting",
-    "firewall.address",
+    "log.fortianalyzer.setting",  # log.fortianalyzer.setting
+    "log.fortianalyzer.override-setting",  # log.fortianalyzer.override-setting
+    "log.fortianalyzer2.setting",  # log.fortianalyzer2.setting
+    "log.fortianalyzer2.override-setting",  # log.fortianalyzer2.override-setting
+    "log.fortianalyzer3.setting",  # log.fortianalyzer3.setting
+    "log.fortianalyzer3.override-setting",  # log.fortianalyzer3.override-setting
+    "log.fortianalyzer-cloud.setting",  # log.fortianalyzer-cloud.setting
+    "log.fortianalyzer-cloud.override-setting",  # log.fortianalyzer-cloud.override-setting
+    "log.syslogd.setting",  # log.syslogd.setting
+    "log.syslogd.override-setting",  # log.syslogd.override-setting
+    "log.syslogd2.setting",  # log.syslogd2.setting
+    "log.syslogd2.override-setting",  # log.syslogd2.override-setting
+    "log.syslogd3.setting",  # log.syslogd3.setting
+    "log.syslogd3.override-setting",  # log.syslogd3.override-setting
+    "log.syslogd4.setting",  # log.syslogd4.setting
+    "log.syslogd4.override-setting",  # log.syslogd4.override-setting
+    "system.gre-tunnel",  # system.gre-tunnel
+    "system.central-management",  # system.central-management
+    "system.csf",  # system.csf
+    "user.radius",  # user.radius
+    "system.interface",  # system.interface
+    "vpn.ipsec.phase1-interface",  # vpn.ipsec.phase1-interface
+    "vpn.ipsec.phase2-interface",  # vpn.ipsec.phase2-interface
+    "router.bgp",  # router.bgp
+    "router.route-map",  # router.route-map
+    "router.prefix-list",  # router.prefix-list
+    "firewall.ippool",  # firewall.ippool
+    "firewall.ippool6",  # firewall.ippool6
+    "router.static",  # router.static
+    "router.static6",  # router.static6
+    "firewall.vip",  # firewall.vip
+    "firewall.vip6",  # firewall.vip6
+    "system.sdwan",  # system.sdwan
+    "system.saml",  # system.saml
+    "router.policy",  # router.policy
+    "router.policy6",  # router.policy6
+    "log.syslogd.setting",  # log.syslogd.setting
+    "log.syslogd.override-setting",  # log.syslogd.override-setting
+    "firewall.address",  # firewall.address
 ]
 VALID_BODY_SCOPE = [
-    "all",
-    "inclusive",
-    "exclusive",
+    "all",  # Object configuration independent for all VDOMs.
+    "inclusive",  # Object configuration independent for the listed VDOMs. Other VDOMs use the global configuration.
+    "exclusive",  # Use the global object configuration for the listed VDOMs. Other VDOMs can be configured independently.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -280,7 +280,7 @@ def validate_system_vdom_exception_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "object": True,
-        ...     "object": "log.fortianalyzer.setting",  # Valid enum value
+        ...     "object": "{'name': 'log.fortianalyzer.setting', 'help': 'log.fortianalyzer.setting', 'label': 'Log.Fortianalyzer.Setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_vdom_exception_post(payload)
         >>> assert is_valid == True

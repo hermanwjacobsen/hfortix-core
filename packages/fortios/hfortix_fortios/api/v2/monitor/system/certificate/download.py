@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve system/certificate/download configuration.
 
-        Configuration for system/certificate/download
+        Download certificate.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

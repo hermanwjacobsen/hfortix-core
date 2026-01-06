@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/multicast_policy6",
     "category": "monitor",
     "api_path": "firewall/multicast-policy6",
-    "help": "Monitor endpoint for firewall/multicast-policy6",
+    "help": "List traffic statistics for IPv6 firewall multicast policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

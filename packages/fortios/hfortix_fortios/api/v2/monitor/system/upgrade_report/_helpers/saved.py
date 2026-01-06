@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/upgrade_report/saved",
     "category": "monitor",
     "api_path": "system/upgrade-report/saved",
-    "help": "Configuration for system/upgrade-report/saved",
+    "help": "Get the last generated upgrade report.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

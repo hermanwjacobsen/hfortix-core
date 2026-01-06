@@ -131,13 +131,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ALLOWED_VLANS_ALL = [
-    "enable",
-    "disable",
+    "enable",  # Enable all defined VLANs.
+    "disable",  # Disable all defined VLANs.
 ]
 VALID_BODY_DISCARD_MODE = [
-    "none",
-    "all-untagged",
-    "all-tagged",
+    "none",  # Discard disabled.
+    "all-untagged",  # Discard all frames that are untagged.
+    "all-tagged",  # Discard all frames that are tagged.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -267,7 +267,7 @@ def validate_switch_controller_vlan_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "fortilink": True,
-        ...     "allowed-vlans-all": "enable",  # Valid enum value
+        ...     "allowed-vlans-all": "{'name': 'enable', 'help': 'Enable all defined VLANs.', 'label': 'Enable', 'description': 'Enable all defined VLANs'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_vlan_policy_post(payload)
         >>> assert is_valid == True

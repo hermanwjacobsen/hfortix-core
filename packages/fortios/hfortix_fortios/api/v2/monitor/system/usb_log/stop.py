@@ -56,7 +56,7 @@ class Stop:
         """
         Retrieve system/usb_log/stop configuration.
 
-        Configuration for system/usb-log/stop
+        Stop backup of logs to USB drive.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

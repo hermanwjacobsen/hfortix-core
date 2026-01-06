@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_LOG_VIOLATIONS: Literal["enable", "disable"]
+VALID_BODY_LOG_VIOLATIONS: Literal[{"description": "Enable log violations for IP source guard logging", "help": "Enable log violations for IP source guard logging.", "label": "Enable", "name": "enable"}, {"description": "Disable log violations for IP source guard logging", "help": "Disable log violations for IP source guard logging.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

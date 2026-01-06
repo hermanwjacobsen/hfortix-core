@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class VmInformation:
     """
-    Configuration for system/vm-information
+    Get VM information.
     
     Path: system/vm_information
     Category: monitor

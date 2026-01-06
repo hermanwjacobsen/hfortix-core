@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PerIpShaper:
     """
-    Configuration for firewall/per-ip-shaper
+    List of statistics for configured firewall per-IP traffic shapers.
     
     Path: firewall/per_ip_shaper
     Category: monitor

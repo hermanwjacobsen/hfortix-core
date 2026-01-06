@@ -138,36 +138,36 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_IP_VERSION = [
-    "4",
-    "6",
+    "4",  # Use IPv4 addressing for gateways.
+    "6",  # Use IPv6 addressing for gateways.
 ]
 VALID_BODY_ADDR_TYPE = [
-    "4",
-    "6",
+    "4",  # Use IPv4 addressing for IP packets.
+    "6",  # Use IPv6 addressing for IP packets.
 ]
 VALID_BODY_AUTH_ALG = [
-    "null",
-    "md5",
-    "sha1",
-    "sha256",
-    "sha384",
-    "sha512",
+    "null",  # null
+    "md5",  # md5
+    "sha1",  # sha1
+    "sha256",  # sha256
+    "sha384",  # sha384
+    "sha512",  # sha512
 ]
 VALID_BODY_ENC_ALG = [
-    "null",
-    "des",
-    "3des",
-    "aes128",
-    "aes192",
-    "aes256",
-    "aria128",
-    "aria192",
-    "aria256",
-    "seed",
+    "null",  # null
+    "des",  # des
+    "3des",  # 3des
+    "aes128",  # aes128
+    "aes192",  # aes192
+    "aes256",  # aes256
+    "aria128",  # aria128
+    "aria192",  # aria192
+    "aria256",  # aria256
+    "seed",  # seed
 ]
 VALID_BODY_NPU_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable NPU offloading.
+    "disable",  # Disable NPU offloading.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -298,7 +298,7 @@ def validate_vpn_ipsec_manualkey_interface_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "ip-version": "4",  # Valid enum value
+        ...     "ip-version": "{'name': '4', 'help': 'Use IPv4 addressing for gateways.', 'label': '4', 'description': 'Use IPv4 addressing for gateways'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_ipsec_manualkey_interface_post(payload)
         >>> assert is_valid == True

@@ -102,7 +102,7 @@ NESTED_SCHEMAS = {
             "help": "Permit or deny route-based operations, based on the route's AS_PATH attribute.",
             "required": True,
             "default": "",
-            "options": ["deny", "permit"],
+            "options": [{"help": "Deny route-based operations.", "label": "Deny", "name": "deny"}, {"help": "Permit route-based operations.", "label": "Permit", "name": "permit"}],
         },
         "regexp": {
             "type": "string",

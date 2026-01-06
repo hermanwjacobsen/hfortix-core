@@ -233,40 +233,40 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_RANGE = [
-    "global",
-    "vdom",
+    "global",  # Global range.
+    "vdom",  # VDOM IP address range.
 ]
 VALID_BODY_SOURCE = [
-    "factory",
-    "user",
-    "bundle",
+    "factory",  # Factory installed certificate.
+    "user",  # User generated certificate.
+    "bundle",  # Bundle file certificate.
 ]
 VALID_BODY_NAME_ENCODING = [
-    "printable",
-    "utf8",
+    "printable",  # Printable encoding (default).
+    "utf8",  # UTF-8 encoding.
 ]
 VALID_BODY_IKE_LOCALID_TYPE = [
-    "asn1dn",
-    "fqdn",
+    "asn1dn",  # ASN.1 distinguished name.
+    "fqdn",  # Fully qualified domain name.
 ]
 VALID_BODY_ENROLL_PROTOCOL = [
-    "none",
-    "scep",
-    "cmpv2",
-    "acme2",
-    "est",
+    "none",  # None (default).
+    "scep",  # Simple Certificate Enrollment Protocol.
+    "cmpv2",  # Certificate Management Protocol Version 2.
+    "acme2",  # Automated Certificate Management Environment Version 2.
+    "est",  # Enrollment over Secure Transport.
 ]
 VALID_BODY_PRIVATE_KEY_RETAIN = [
-    "enable",
-    "disable",
+    "enable",  # Keep the existing private key during SCEP renewal.
+    "disable",  # Generate a new private key during SCEP renewal.
 ]
 VALID_BODY_CMP_REGENERATION_METHOD = [
-    "keyupate",
-    "renewal",
+    "keyupate",  # Key Update.
+    "renewal",  # Renewal.
 ]
 VALID_BODY_EST_REGENERATION_METHOD = [
-    "create-new-key",
-    "use-existing-key",
+    "create-new-key",  # Create new private key during re-enrollment.
+    "use-existing-key",  # Reuse existing private key during re-enrollment.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -397,7 +397,7 @@ def validate_vpn_certificate_local_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "range": "global",  # Valid enum value
+        ...     "range": "{'name': 'global', 'help': 'Global range.', 'label': 'Global', 'description': 'Global range'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_certificate_local_post(payload)
         >>> assert is_valid == True

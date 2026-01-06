@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Cfm:
     """
-    Configuration for ethernet-oam/cfm
+    Configuration for ethernet_oam/cfm
     
     Path: ethernet_oam/cfm
     Category: cmdb

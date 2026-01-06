@@ -114,19 +114,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable policy.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable policy.", "label": "Enable", "name": "enable"}, {"help": "Disable policy.", "label": "Disable", "name": "disable"}],
         },
         "category": {
             "type": "option",
             "help": "Category of Dynamic port policy.",
             "default": "device",
-            "options": ["device", "interface-tag"],
+            "options": [{"help": "Device category.", "label": "Device", "name": "device"}, {"help": "Interface Tag category.", "label": "Interface Tag", "name": "interface-tag"}],
         },
         "match-type": {
             "type": "option",
             "help": "Match and retain the devices based on the type.",
             "default": "dynamic",
-            "options": ["dynamic", "override"],
+            "options": [{"help": "Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline.", "label": "Dynamic", "name": "dynamic"}, {"help": "Matched devices will be retained until the match-period.", "label": "Override", "name": "override"}],
         },
         "match-period": {
             "type": "integer",
@@ -139,7 +139,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Options to remove the matched override devices.",
             "default": "default",
-            "options": ["default", "link-down"],
+            "options": [{"help": "Remove the matched override devices based on the match period.", "label": "Default", "name": "default"}, {"help": "Remove the matched override devices based on switch port link down event.", "label": "Link Down", "name": "link-down"}],
         },
         "interface-tags": {
             "type": "string",
@@ -203,7 +203,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable bouncing (administratively bring the link down, up) of a switch port where this policy is applied. Helps to clear and reassign VLAN from lldp-profile.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable bouncing (administratively bring the link down, up) of a switch port where this policy is applied.", "label": "Disable", "name": "disable"}, {"help": "Enable bouncing (administratively bring the link down, up) of a switch port where this policy is applied.", "label": "Enable", "name": "enable"}],
         },
         "bounce-port-duration": {
             "type": "integer",
@@ -216,7 +216,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable POE reset of a switch port where this policy is applied.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable POE reset of a switch port where this policy is applied.", "label": "Disable", "name": "disable"}, {"help": "Enable POE reset of a switch port where this policy is applied.", "label": "Enable", "name": "enable"}],
         },
     },
 }

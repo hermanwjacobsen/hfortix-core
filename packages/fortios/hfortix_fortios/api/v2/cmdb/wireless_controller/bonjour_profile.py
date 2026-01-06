@@ -56,7 +56,7 @@ class BonjourProfile:
         """
         Retrieve wireless_controller/bonjour_profile configuration.
 
-        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connnect to networks using Bonjour.
+        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connect to networks using Bonjour.
 
         Args:
             name: String identifier to retrieve specific object.
@@ -129,7 +129,7 @@ class BonjourProfile:
         """
         Update existing wireless_controller/bonjour_profile object.
 
-        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connnect to networks using Bonjour.
+        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connect to networks using Bonjour.
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
@@ -208,7 +208,7 @@ class BonjourProfile:
         """
         Create new wireless_controller/bonjour_profile object.
 
-        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connnect to networks using Bonjour.
+        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connect to networks using Bonjour.
 
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
@@ -281,7 +281,7 @@ class BonjourProfile:
         """
         Delete wireless_controller/bonjour_profile object.
 
-        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connnect to networks using Bonjour.
+        Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connect to networks using Bonjour.
 
         Args:
             name: Primary key identifier

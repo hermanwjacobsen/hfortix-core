@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/installer",
     "category": "monitor",
     "api_path": "endpoint-control/installer",
-    "help": "Monitor endpoint for endpoint-control/installer",
+    "help": "List available FortiClient installers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

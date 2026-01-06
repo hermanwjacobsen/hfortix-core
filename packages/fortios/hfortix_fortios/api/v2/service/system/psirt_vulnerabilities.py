@@ -56,7 +56,7 @@ class PsirtVulnerabilities:
         """
         Retrieve system/psirt_vulnerabilities configuration.
 
-        Configuration for system/psirt-vulnerabilities
+        Retrieve a list of N number of PSIRT advisories that the Security Fabric is vulnerable to for a given severity.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

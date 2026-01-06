@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Webhook:
     """
-    Configuration for system/automation-stitch/webhook
+    Triggers an incoming webhook for an automation stitch.
     
     Path: system/automation_stitch/webhook
     Category: monitor

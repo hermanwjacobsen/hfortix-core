@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HistoricDailyRemoteLogs:
     """
-    Configuration for log/historic-daily-remote-logs
+    Returns the amount of logs in bytes sent daily to a remote logging service (FortiCloud or FortiAnalyzer).
     
     Path: log/historic_daily_remote_logs
     Category: monitor

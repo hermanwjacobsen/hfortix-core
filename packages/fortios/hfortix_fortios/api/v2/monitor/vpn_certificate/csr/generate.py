@@ -56,7 +56,7 @@ class Generate:
         """
         Retrieve vpn_certificate/csr/generate configuration.
 
-        Configuration for vpn-certificate/csr/generate
+        Generate a certificate signing request (CSR) and a private key. The CSR can be retrieved / downloaded from CLI, GUI and REST API.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

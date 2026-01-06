@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InternetServiceFqdnIconIds:
     """
-    Configuration for firewall/internet-service-fqdn-icon-ids
+    Map of internet service FQDN icon IDs.
     
     Path: firewall/internet_service_fqdn_icon_ids
     Category: monitor

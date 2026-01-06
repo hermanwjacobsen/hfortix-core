@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/isl_lockdown/update",
     "category": "monitor",
     "api_path": "switch-controller/isl-lockdown/update",
-    "help": "Configuration for switch-controller/isl-lockdown/update",
+    "help": "Enable/disable ISL lockdown.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

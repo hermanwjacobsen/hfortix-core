@@ -105,7 +105,7 @@ NESTED_SCHEMAS = {
             "help": "Permit or deny route-based operations, based on the route's COMMUNITY attribute.",
             "required": True,
             "default": "",
-            "options": ["deny", "permit"],
+            "options": [{"help": "Deny route-based operations.", "label": "Deny", "name": "deny"}, {"help": "Permit or allow route-based operations.", "label": "Permit", "name": "permit"}],
         },
         "regexp": {
             "type": "string",
@@ -127,8 +127,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "standard",
-    "expanded",
+    "standard",  # Standard community list type.
+    "expanded",  # Expanded community list type.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -258,7 +258,7 @@ def validate_router_community_list_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "type": "standard",  # Valid enum value
+        ...     "type": "{'name': 'standard', 'help': 'Standard community list type.', 'label': 'Standard', 'description': 'Standard community list type'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_community_list_post(payload)
         >>> assert is_valid == True

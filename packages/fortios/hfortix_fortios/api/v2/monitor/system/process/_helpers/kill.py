@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/process/kill",
     "category": "monitor",
     "api_path": "system/process/kill",
-    "help": "Configuration for system/process/kill",
+    "help": "Kill a running process.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

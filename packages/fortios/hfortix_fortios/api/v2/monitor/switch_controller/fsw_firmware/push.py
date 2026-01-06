@@ -56,7 +56,7 @@ class Push:
         """
         Retrieve switch_controller/fsw_firmware/push configuration.
 
-        Configuration for switch-controller/fsw-firmware/push
+        Push FortiSwitch firmware to the given device.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -108,8 +108,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_WILDCARD_VLAN = [
-    "enable",
-    "disable",
+    "enable",  # Enable wildcard VLAN.
+    "disable",  # Disable wildcard VLAN.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -239,7 +239,7 @@ def validate_system_virtual_wire_pair_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "member": True,
-        ...     "wildcard-vlan": "enable",  # Valid enum value
+        ...     "wildcard-vlan": "{'name': 'enable', 'help': 'Enable wildcard VLAN.', 'label': 'Enable', 'description': 'Enable wildcard VLAN'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_virtual_wire_pair_post(payload)
         >>> assert is_valid == True

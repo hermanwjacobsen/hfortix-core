@@ -56,7 +56,7 @@ class PerIpShaper:
         """
         Retrieve firewall/per_ip_shaper configuration.
 
-        Configuration for firewall/per-ip-shaper
+        List of statistics for configured firewall per-IP traffic shapers.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

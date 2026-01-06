@@ -12,7 +12,7 @@ class ConcentratorPayload(TypedDict, total=False):
     """
     id: NotRequired[int]  # Concentrator ID (1 - 65535).
     name: NotRequired[str]  # Concentrator name.
-    src_check: NotRequired[Literal["disable", "enable"]]  # Enable to check source address of phase 2 selector. Disable 
+    src_check: NotRequired[Literal[{"description": "Ignore source selector when choosing tunnel", "help": "Ignore source selector when choosing tunnel.", "label": "Disable", "name": "disable"}, {"description": "Use source selector to choose tunnel", "help": "Use source selector to choose tunnel.", "label": "Enable", "name": "enable"}]]  # Enable to check source address of phase 2 selector. Disable 
     member: NotRequired[list[dict[str, Any]]]  # Names of up to 3 VPN tunnels to add to the concentrator.
 
 
@@ -43,7 +43,7 @@ class Concentrator:
         payload_dict: ConcentratorPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        src_check: Literal["disable", "enable"] | None = ...,
+        src_check: Literal[{"description": "Ignore source selector when choosing tunnel", "help": "Ignore source selector when choosing tunnel.", "label": "Disable", "name": "disable"}, {"description": "Use source selector to choose tunnel", "help": "Use source selector to choose tunnel.", "label": "Enable", "name": "enable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -55,7 +55,7 @@ class Concentrator:
         payload_dict: ConcentratorPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        src_check: Literal["disable", "enable"] | None = ...,
+        src_check: Literal[{"description": "Ignore source selector when choosing tunnel", "help": "Ignore source selector when choosing tunnel.", "label": "Disable", "name": "disable"}, {"description": "Use source selector to choose tunnel", "help": "Use source selector to choose tunnel.", "label": "Enable", "name": "enable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

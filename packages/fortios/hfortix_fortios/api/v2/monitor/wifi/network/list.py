@@ -56,7 +56,7 @@ class List:
         """
         Retrieve wifi/network/list configuration.
 
-        Configuration for wifi/network/list
+        When FortiWiFi is in client mode, retrieve list of local WiFi networks.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/statistics",
     "category": "monitor",
     "api_path": "router/statistics",
-    "help": "Configuration for router/statistics",
+    "help": "Retrieve routing table statistics, including number of matched routes.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

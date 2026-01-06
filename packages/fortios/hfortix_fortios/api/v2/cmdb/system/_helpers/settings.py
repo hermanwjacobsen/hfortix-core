@@ -56,6 +56,7 @@ REQUIRED_FIELDS = [
 FIELDS_WITH_DEFAULTS = {
     "vdom-type": "traffic",
     "lan-extension-controller-addr": "",
+    "lan-extension-controller-port": 5246,
     "opmode": "nat",
     "ngfw-mode": "profile-based",
     "http-external-dest": "fortiweb",
@@ -214,6 +215,7 @@ FIELD_TYPES = {
     "comments": "var-string",  # VDOM comments.
     "vdom-type": "option",  # Vdom type (traffic, lan-extension or admin).
     "lan-extension-controller-addr": "string",  # Controller IP address or FQDN to connect.
+    "lan-extension-controller-port": "integer",  # Controller port to connect.
     "opmode": "option",  # Firewall operation mode (NAT or Transparent).
     "ngfw-mode": "option",  # Next Generation Firewall (NGFW) mode.
     "http-external-dest": "option",  # Offload HTTP traffic to FortiWeb or FortiCache.
@@ -359,6 +361,7 @@ FIELD_DESCRIPTIONS = {
     "comments": "VDOM comments.",
     "vdom-type": "Vdom type (traffic, lan-extension or admin).",
     "lan-extension-controller-addr": "Controller IP address or FQDN to connect.",
+    "lan-extension-controller-port": "Controller port to connect.",
     "opmode": "Firewall operation mode (NAT or Transparent).",
     "ngfw-mode": "Next Generation Firewall (NGFW) mode.",
     "http-external-dest": "Offload HTTP traffic to FortiWeb or FortiCache.",
@@ -502,6 +505,7 @@ FIELD_DESCRIPTIONS = {
 # Field constraints (string lengths, integer ranges)
 FIELD_CONSTRAINTS = {
     "lan-extension-controller-addr": {"type": "string", "max_length": 255},
+    "lan-extension-controller-port": {"type": "integer", "min": 1024, "max": 65535},
     "device": {"type": "string", "max_length": 35},
     "bfd-desired-min-tx": {"type": "integer", "min": 1, "max": 100000},
     "bfd-required-min-rx": {"type": "integer", "min": 1, "max": 100000},
@@ -538,458 +542,458 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_VDOM_TYPE = [
-    "traffic",
-    "lan-extension",
-    "admin",
+    "traffic",  # Change to traffic VDOM
+    "lan-extension",  # Change to lan-extension VDOM
+    "admin",  # Change to admin VDOM
 ]
 VALID_BODY_OPMODE = [
-    "nat",
-    "transparent",
+    "nat",  # Change to NAT mode.
+    "transparent",  # Change to transparent mode.
 ]
 VALID_BODY_NGFW_MODE = [
-    "profile-based",
-    "policy-based",
+    "profile-based",  # Application and web-filtering are configured using profiles applied to policy entries.
+    "policy-based",  # Application and web-filtering are configured as policy match conditions.
 ]
 VALID_BODY_HTTP_EXTERNAL_DEST = [
-    "fortiweb",
-    "forticache",
+    "fortiweb",  # Offload HTTP traffic to FortiWeb for Web Application Firewall inspection.
+    "forticache",  # Offload HTTP traffic to FortiCache for external web caching and WAN optimization.
 ]
 VALID_BODY_FIREWALL_SESSION_DIRTY = [
-    "check-all",
-    "check-new",
-    "check-policy-option",
+    "check-all",  # All sessions affected by a firewall policy change are flushed from the session table. When new packets are received they are re-evaluated by stateful inspection and re-added to the session table.
+    "check-new",  # Established sessions for changed firewall policies continue without being affected by the policy configuration change. New sessions are evaluated according to the new firewall policy configuration.
+    "check-policy-option",  # Sessions are managed individually depending on the firewall policy. Some sessions may restart. Some may continue.
 ]
 VALID_BODY_BFD = [
-    "enable",
-    "disable",
+    "enable",  # Enable Bi-directional Forwarding Detection (BFD) on all interfaces.
+    "disable",  # Disable Bi-directional Forwarding Detection (BFD) on all interfaces.
 ]
 VALID_BODY_BFD_DONT_ENFORCE_SRC_PORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable verifying the source port of BFD Packets.
+    "disable",  # Disable verifying the source port of BFD Packets.
 ]
 VALID_BODY_UTF8_SPAM_TAGGING = [
-    "enable",
-    "disable",
+    "enable",  # Convert antispam tags to UTF-8.
+    "disable",  # Do not convert antispam tags.
 ]
 VALID_BODY_WCCP_CACHE_ENGINE = [
-    "enable",
-    "disable",
+    "enable",  # Enable WCCP cache engine.
+    "disable",  # Disable WCCP cache engine.
 ]
 VALID_BODY_VPN_STATS_LOG = [
-    "ipsec",
-    "pptp",
-    "l2tp",
-    "ssl",
+    "ipsec",  # IPsec.
+    "pptp",  # PPTP.
+    "l2tp",  # L2TP.
+    "ssl",  # SSL.
 ]
 VALID_BODY_V4_ECMP_MODE = [
-    "source-ip-based",
-    "weight-based",
-    "usage-based",
-    "source-dest-ip-based",
+    "source-ip-based",  # Select next hop based on source IP.
+    "weight-based",  # Select next hop based on weight.
+    "usage-based",  # Select next hop based on usage.
+    "source-dest-ip-based",  # Select next hop based on both source and destination IPs.
 ]
 VALID_BODY_FW_SESSION_HAIRPIN = [
-    "enable",
-    "disable",
+    "enable",  # Perform a policy check every time.
+    "disable",  # Perform a policy check only the first time the session is received.
 ]
 VALID_BODY_PRP_TRAILER_ACTION = [
-    "enable",
-    "disable",
+    "enable",  # Try to keep PRP trailer.
+    "disable",  # Trim PRP trailer.
 ]
 VALID_BODY_SNAT_HAIRPIN_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable SNAT for VIP hairpin traffic.
+    "disable",  # Disable SNAT for VIP hairpin traffic.
 ]
 VALID_BODY_DHCP_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable the DHCP proxy.
+    "disable",  # Disable the DHCP proxy.
 ]
 VALID_BODY_DHCP_PROXY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_CENTRAL_NAT = [
-    "enable",
-    "disable",
+    "enable",  # Enable central NAT.
+    "disable",  # Disable central NAT.
 ]
 VALID_BODY_LLDP_RECEPTION = [
-    "enable",
-    "disable",
-    "global",
+    "enable",  # Enable LLDP reception for this VDOM.
+    "disable",  # Disable LLDP reception for this VDOM.
+    "global",  # Use the global LLDP reception configuration for this VDOM.
 ]
 VALID_BODY_LLDP_TRANSMISSION = [
-    "enable",
-    "disable",
-    "global",
+    "enable",  # Enable LLDP transmission for this VDOM.
+    "disable",  # Disable LLDP transmission for this VDOM.
+    "global",  # Use the global LLDP transmission configuration for this VDOM.
 ]
 VALID_BODY_LINK_DOWN_ACCESS = [
-    "enable",
-    "disable",
+    "enable",  # Allow link down access traffic.
+    "disable",  # Block link down access traffic.
 ]
 VALID_BODY_NAT46_GENERATE_IPV6_FRAGMENT_HEADER = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAT46 IPv6 fragment header generation.
+    "disable",  # Disable NAT46 IPv6 fragment header generation.
 ]
 VALID_BODY_NAT46_FORCE_IPV4_PACKET_FORWARDING = [
-    "enable",
-    "disable",
+    "enable",  # Enable mandatory IPv4 packet forwarding when IPv4 DF is set to 1.
+    "disable",  # Disable mandatory IPv4 packet forwarding when IPv4 DF is set to 1.
 ]
 VALID_BODY_NAT64_FORCE_IPV6_PACKET_FORWARDING = [
-    "enable",
-    "disable",
+    "enable",  # Enable mandatory IPv6 packet forwarding
+    "disable",  # Disable mandatory IPv6 packet forwarding
 ]
 VALID_BODY_DETECT_UNKNOWN_ESP = [
-    "enable",
-    "disable",
+    "enable",  # Enable detection of unknown ESP packets and drop the ESP packet if it's unknown.
+    "disable",  # Disable detection of unknown ESP packets.
 ]
 VALID_BODY_INTREE_SES_BEST_ROUTE = [
-    "force",
-    "disable",
+    "force",  # Force the intree session to always use the best route.
+    "disable",  # Don't force the intree session to always use the best route.
 ]
 VALID_BODY_AUXILIARY_SESSION = [
-    "enable",
-    "disable",
+    "enable",  # Enable auxiliary session for this VDOM.
+    "disable",  # Disable auxiliary session for this VDOM.
 ]
 VALID_BODY_ASYMROUTE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv4 asymmetric routing.
+    "disable",  # Disable IPv4 asymmetric routing.
 ]
 VALID_BODY_ASYMROUTE_ICMP = [
-    "enable",
-    "disable",
+    "enable",  # Enable ICMP asymmetric routing.
+    "disable",  # Disable ICMP asymmetric routing.
 ]
 VALID_BODY_TCP_SESSION_WITHOUT_SYN = [
-    "enable",
-    "disable",
+    "enable",  # Allow TCP session without SYN flags.
+    "disable",  # Do not allow TCP session without SYN flags.
 ]
 VALID_BODY_SES_DENIED_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Include denied sessions in the session table.
+    "disable",  # Do not add denied sessions to the session table.
 ]
 VALID_BODY_SES_DENIED_MULTICAST_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Include denied multicast sessions in the session table.
+    "disable",  # Do not add denied multicast sessions to the session table.
 ]
 VALID_BODY_STRICT_SRC_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable strict source verification.
+    "disable",  # Disable strict source verification.
 ]
 VALID_BODY_ALLOW_LINKDOWN_PATH = [
-    "enable",
-    "disable",
+    "enable",  # Allow link down path.
+    "disable",  # Do not allow link down path.
 ]
 VALID_BODY_ASYMROUTE6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable asymmetric IPv6 routing.
+    "disable",  # Disable asymmetric IPv6 routing.
 ]
 VALID_BODY_ASYMROUTE6_ICMP = [
-    "enable",
-    "disable",
+    "enable",  # Enable asymmetric ICMPv6 routing.
+    "disable",  # Disable asymmetric ICMPv6 routing.
 ]
 VALID_BODY_SCTP_SESSION_WITHOUT_INIT = [
-    "enable",
-    "disable",
+    "enable",  # Enable SCTP session creation without SCTP INIT.
+    "disable",  # Disable SCTP session creation without SCTP INIT.
 ]
 VALID_BODY_SIP_EXPECTATION = [
-    "enable",
-    "disable",
+    "enable",  # Allow SIP session helper to create an expectation for port 5060.
+    "disable",  # Prevent SIP session helper from creating an expectation for port 5060.
 ]
 VALID_BODY_SIP_NAT_TRACE = [
-    "enable",
-    "disable",
+    "enable",  # Record the original SIP source IP address when NAT is used.
+    "disable",  # Do not record the original SIP source IP address when NAT is used.
 ]
 VALID_BODY_H323_DIRECT_MODEL = [
-    "disable",
-    "enable",
+    "disable",  # Disable H323 direct model.
+    "enable",  # Enable H323 direct model.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this VDOM.
+    "disable",  # Disable this VDOM.
 ]
 VALID_BODY_MULTICAST_FORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable multicast forwarding.
+    "disable",  # Disable multicast forwarding.
 ]
 VALID_BODY_MULTICAST_TTL_NOTCHANGE = [
-    "enable",
-    "disable",
+    "enable",  # The multicast TTL is not changed.
+    "disable",  # The multicast TTL may be changed.
 ]
 VALID_BODY_MULTICAST_SKIP_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Allowing multicast traffic through the FortiGate without creating a multicast firewall policy.
+    "disable",  # Require a multicast policy to allow multicast traffic to pass through the FortiGate.
 ]
 VALID_BODY_ALLOW_SUBNET_OVERLAP = [
-    "enable",
-    "disable",
+    "enable",  # Enable overlapping subnets.
+    "disable",  # Disable overlapping subnets.
 ]
 VALID_BODY_DENY_TCP_WITH_ICMP = [
-    "enable",
-    "disable",
+    "enable",  # Deny TCP with ICMP.
+    "disable",  # Disable denying TCP with ICMP.
 ]
 VALID_BODY_EMAIL_PORTAL_CHECK_DNS = [
-    "disable",
-    "enable",
+    "disable",  # Disable email address checking with DNS.
+    "enable",  # Enable email address checking with DNS.
 ]
 VALID_BODY_DEFAULT_VOIP_ALG_MODE = [
-    "proxy-based",
-    "kernel-helper-based",
+    "proxy-based",  # Use a default proxy-based VoIP ALG.
+    "kernel-helper-based",  # Use the SIP session helper.
 ]
 VALID_BODY_GUI_ICAP = [
-    "enable",
-    "disable",
+    "enable",  # Enable ICAP on the GUI.
+    "disable",  # Disable ICAP on the GUI.
 ]
 VALID_BODY_GUI_IMPLICIT_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Enable implicit firewall policies on the GUI.
+    "disable",  # Disable implicit firewall policies on the GUI.
 ]
 VALID_BODY_GUI_DNS_DATABASE = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS database settings on the GUI.
+    "disable",  # Disable DNS database settings on the GUI.
 ]
 VALID_BODY_GUI_LOAD_BALANCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable server load balancing on the GUI.
+    "disable",  # Disable server load balancing on the GUI.
 ]
 VALID_BODY_GUI_MULTICAST_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Enable multicast firewall policies on the GUI.
+    "disable",  # Disable multicast firewall policies on the GUI.
 ]
 VALID_BODY_GUI_DOS_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Enable DoS policies on the GUI.
+    "disable",  # Disable DoS policies on the GUI.
 ]
 VALID_BODY_GUI_OBJECT_COLORS = [
-    "enable",
-    "disable",
+    "enable",  # Enable object colors on the GUI.
+    "disable",  # Disable object colors on the GUI.
 ]
 VALID_BODY_GUI_ROUTE_TAG_ADDRESS_CREATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable route-tag addresses on the GUI.
+    "disable",  # Disable route-tag addresses on the GUI.
 ]
 VALID_BODY_GUI_VOIP_PROFILE = [
-    "enable",
-    "disable",
+    "enable",  # Enable VoIP profiles on the GUI.
+    "disable",  # Disable VoIP profiles on the GUI.
 ]
 VALID_BODY_GUI_AP_PROFILE = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiAP profiles on the GUI.
+    "disable",  # Disable FortiAP profiles on the GUI.
 ]
 VALID_BODY_GUI_SECURITY_PROFILE_GROUP = [
-    "enable",
-    "disable",
+    "enable",  # Enable Security Profile Groups on the GUI.
+    "disable",  # Disable Security Profile Groups on the GUI.
 ]
 VALID_BODY_GUI_LOCAL_IN_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Enable Local-In policies on the GUI.
+    "disable",  # Disable Local-In policies on the GUI.
 ]
 VALID_BODY_GUI_WANOPT_CACHE = [
-    "enable",
-    "disable",
+    "enable",  # Enable WAN Optimization and Web Caching on the GUI.
+    "disable",  # Disable WAN Optimization and Web Caching on the GUI.
 ]
 VALID_BODY_GUI_EXPLICIT_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable the explicit proxy on the GUI.
+    "disable",  # Disable the explicit proxy on the GUI.
 ]
 VALID_BODY_GUI_DYNAMIC_ROUTING = [
-    "enable",
-    "disable",
+    "enable",  # Enable dynamic routing on the GUI.
+    "disable",  # Disable dynamic routing on the GUI.
 ]
 VALID_BODY_GUI_SSLVPN_PERSONAL_BOOKMARKS = [
-    "enable",
-    "disable",
+    "enable",  # Enable SSL-VPN personal bookmark management on the GUI.
+    "disable",  # Disable SSL-VPN personal bookmark management on the GUI.
 ]
 VALID_BODY_GUI_SSLVPN_REALMS = [
-    "enable",
-    "disable",
+    "enable",  # Enable SSL-VPN realms on the GUI.
+    "disable",  # Disable SSL-VPN realms on the GUI.
 ]
 VALID_BODY_GUI_POLICY_BASED_IPSEC = [
-    "enable",
-    "disable",
+    "enable",  # Enable policy-based IPsec VPN on the GUI.
+    "disable",  # Disable policy-based IPsec VPN on the GUI.
 ]
 VALID_BODY_GUI_THREAT_WEIGHT = [
-    "enable",
-    "disable",
+    "enable",  # Enable threat weight on the GUI.
+    "disable",  # Disable threat weight on the GUI.
 ]
 VALID_BODY_GUI_SPAMFILTER = [
-    "enable",
-    "disable",
+    "enable",  # Enable Antispam on the GUI.
+    "disable",  # Disable Antispam on the GUI.
 ]
 VALID_BODY_GUI_FILE_FILTER = [
-    "enable",
-    "disable",
+    "enable",  # Enable File-filter on the GUI.
+    "disable",  # Disable File-filter on the GUI.
 ]
 VALID_BODY_GUI_APPLICATION_CONTROL = [
-    "enable",
-    "disable",
+    "enable",  # Enable application control on the GUI.
+    "disable",  # Disable application control on the GUI.
 ]
 VALID_BODY_GUI_IPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPS on the GUI.
+    "disable",  # Disable IPS on the GUI.
 ]
 VALID_BODY_GUI_DHCP_ADVANCED = [
-    "enable",
-    "disable",
+    "enable",  # Enable advanced DHCP options on the GUI.
+    "disable",  # Disable advanced DHCP options on the GUI.
 ]
 VALID_BODY_GUI_VPN = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPsec VPN settings pages on the GUI.
+    "disable",  # Disable IPsec VPN settings pages on the GUI.
 ]
 VALID_BODY_GUI_SSLVPN = [
-    "enable",
-    "disable",
+    "enable",  # Enable SSL-VPN settings pages on the GUI.
+    "disable",  # Disable SSL-VPN settings pages on the GUI.
 ]
 VALID_BODY_GUI_WIRELESS_CONTROLLER = [
-    "enable",
-    "disable",
+    "enable",  # Enable the wireless controller on the GUI.
+    "disable",  # Disable the wireless controller on the GUI.
 ]
 VALID_BODY_GUI_ADVANCED_WIRELESS_FEATURES = [
-    "enable",
-    "disable",
+    "enable",  # Enable advanced wireless features in GUI.
+    "disable",  # Disable advanced wireless features in GUI.
 ]
 VALID_BODY_GUI_SWITCH_CONTROLLER = [
-    "enable",
-    "disable",
+    "enable",  # Enable the switch controller on the GUI.
+    "disable",  # Disable the switch controller on the GUI.
 ]
 VALID_BODY_GUI_FORTIAP_SPLIT_TUNNELING = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiAP split tunneling on the GUI.
+    "disable",  # Disable FortiAP split tunneling on the GUI.
 ]
 VALID_BODY_GUI_WEBFILTER_ADVANCED = [
-    "enable",
-    "disable",
+    "enable",  # Enable advanced web filtering on the GUI.
+    "disable",  # Disable advanced web filtering on the GUI.
 ]
 VALID_BODY_GUI_TRAFFIC_SHAPING = [
-    "enable",
-    "disable",
+    "enable",  # Enable traffic shaping on the GUI.
+    "disable",  # Disable traffic shaping on the GUI.
 ]
 VALID_BODY_GUI_WAN_LOAD_BALANCING = [
-    "enable",
-    "disable",
+    "enable",  # Enable SD-WAN on the GUI.
+    "disable",  # Disable SD-WAN on the GUI.
 ]
 VALID_BODY_GUI_ANTIVIRUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable AntiVirus on the GUI.
+    "disable",  # Disable AntiVirus on the GUI.
 ]
 VALID_BODY_GUI_WEBFILTER = [
-    "enable",
-    "disable",
+    "enable",  # Enable Web filtering on the GUI.
+    "disable",  # Disable Web filtering on the GUI.
 ]
 VALID_BODY_GUI_VIDEOFILTER = [
-    "enable",
-    "disable",
+    "enable",  # Enable Video filtering on the GUI.
+    "disable",  # Disable Video filtering on the GUI.
 ]
 VALID_BODY_GUI_DNSFILTER = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS Filtering on the GUI.
+    "disable",  # Disable DNS Filtering on the GUI.
 ]
 VALID_BODY_GUI_WAF_PROFILE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Web Application Firewall on the GUI.
+    "disable",  # Disable Web Application Firewall on the GUI.
 ]
 VALID_BODY_GUI_DLP_PROFILE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Data Loss Prevention on the GUI.
+    "disable",  # Disable Data Loss Prevention on the GUI.
 ]
 VALID_BODY_GUI_DLP_ADVANCED = [
-    "enable",
-    "disable",
+    "enable",  # Enable Show advanced DLP expressions on the GUI.
+    "disable",  # Disable Show advanced DLP expressions on the GUI.
 ]
 VALID_BODY_GUI_VIRTUAL_PATCH_PROFILE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Virtual Patching on the GUI.
+    "disable",  # Disable Virtual Patching on the GUI.
 ]
 VALID_BODY_GUI_CASB = [
-    "enable",
-    "disable",
+    "enable",  # Enable Inline-CASB on the GUI.
+    "disable",  # Disable Inline-CASB on the GUI.
 ]
 VALID_BODY_GUI_FORTIEXTENDER_CONTROLLER = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiExtender on the GUI.
+    "disable",  # Disable FortiExtender on the GUI.
 ]
 VALID_BODY_GUI_ADVANCED_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Enable advanced policy configuration on the GUI.
+    "disable",  # Disable advanced policy configuration on the GUI.
 ]
 VALID_BODY_GUI_ALLOW_UNNAMED_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Enable the requirement for policy naming on the GUI.
+    "disable",  # Disable the requirement for policy naming on the GUI.
 ]
 VALID_BODY_GUI_EMAIL_COLLECTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable email collection on the GUI.
+    "disable",  # Disable email collection on the GUI.
 ]
 VALID_BODY_GUI_MULTIPLE_INTERFACE_POLICY = [
-    "enable",
-    "disable",
+    "enable",  # Enable adding multiple interfaces to a policy on the GUI.
+    "disable",  # Disable adding multiple interfaces to a policy on the GUI.
 ]
 VALID_BODY_GUI_POLICY_DISCLAIMER = [
-    "enable",
-    "disable",
+    "enable",  # Enable policy disclaimer on the GUI.
+    "disable",  # Disable policy disclaimer on the GUI.
 ]
 VALID_BODY_GUI_ZTNA = [
-    "enable",
-    "disable",
+    "enable",  # Enable Zero Trust Network Access features on the GUI.
+    "disable",  # Disable Zero Trust Network Access features on the GUI.
 ]
 VALID_BODY_GUI_OT = [
-    "enable",
-    "disable",
+    "enable",  # Enable Operational technology features on the GUI.
+    "disable",  # Disable Operational technology features on the GUI.
 ]
 VALID_BODY_GUI_DYNAMIC_DEVICE_OS_ID = [
-    "enable",
-    "disable",
+    "enable",  # Enable Create dynamic addresses to manage known devices.
+    "disable",  # Disable Create dynamic addresses to manage known devices.
 ]
 VALID_BODY_GUI_GTP = [
-    "enable",
-    "disable",
+    "enable",  # Enable Manage general radio packet service (GPRS) protocols on the GUI.
+    "disable",  # Disable Manage general radio packet service (GPRS) protocols on the GUI.
 ]
 VALID_BODY_IKE_SESSION_RESUME = [
-    "enable",
-    "disable",
+    "enable",  # Enable IKEv2 session resumption (RFC 5723).
+    "disable",  # Disable IKEv2 session resumption (RFC 5723).
 ]
 VALID_BODY_IKE_QUICK_CRASH_DETECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable IKE quick crash detection (RFC 6290).
+    "disable",  # Disable IKE quick crash detection (RFC 6290).
 ]
 VALID_BODY_IKE_DN_FORMAT = [
-    "with-space",
-    "no-space",
+    "with-space",  # Format IKE ASN.1 Distinguished Names with spaces between attribute names and values.
+    "no-space",  # Format IKE ASN.1 Distinguished Names without spaces between attribute names and values.
 ]
 VALID_BODY_IKE_POLICY_ROUTE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IKE Policy Based Routing (PBR).
+    "disable",  # Disable IKE Policy Based Routing (PBR).
 ]
 VALID_BODY_IKE_DETAILED_EVENT_LOGS = [
-    "disable",
-    "enable",
+    "disable",  # Generate brief log for IKE events.
+    "enable",  # Generate detail log for IKE events.
 ]
 VALID_BODY_BLOCK_LAND_ATTACK = [
-    "disable",
-    "enable",
+    "disable",  # Do not block land attack.
+    "enable",  # Block land attack.
 ]
 VALID_BODY_DEFAULT_APP_PORT_AS_SERVICE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_FQDN_SESSION_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable dirty session check caused by FQDN updates.
+    "disable",  # Disable dirty session check caused by FQDN updates.
 ]
 VALID_BODY_EXT_RESOURCE_SESSION_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable dirty session check caused by external resource updates.
+    "disable",  # Disable dirty session check caused by external resource updates.
 ]
 VALID_BODY_DYN_ADDR_SESSION_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable dirty session check caused by dynamic address updates.
+    "disable",  # Disable dirty session check caused by dynamic address updates.
 ]
 VALID_BODY_GUI_ENFORCE_CHANGE_SUMMARY = [
-    "disable",
-    "require",
-    "optional",
+    "disable",  # No change summary requirement.
+    "require",  # Change summary required.
+    "optional",  # Change summary optional.
 ]
 VALID_BODY_INTERNET_SERVICE_DATABASE_CACHE = [
-    "disable",
-    "enable",
+    "disable",  # Disable Internet Service database caching.
+    "enable",  # Enable Internet Service database caching.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1117,7 +1121,7 @@ def validate_system_settings_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "manageip": True,
-        ...     "vdom-type": "traffic",  # Valid enum value
+        ...     "vdom-type": "{'name': 'traffic', 'help': 'Change to traffic VDOM', 'label': 'Traffic', 'description': 'Change to traffic VDOM    lan-extension:Change to lan-extension VDOM    admin:Change to admin VDOM'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_settings_post(payload)
         >>> assert is_valid == True
@@ -3341,9 +3345,9 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "system/settings",
     "help": "Configure VDOM settings.",
-    "total_fields": 141,
+    "total_fields": 142,
     "required_fields_count": 3,
-    "fields_with_defaults_count": 139,
+    "fields_with_defaults_count": 140,
 }
 
 

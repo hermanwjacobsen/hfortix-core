@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/os/shutdown",
     "category": "monitor",
     "api_path": "system/os/shutdown",
-    "help": "Configuration for system/os/shutdown",
+    "help": "Immediately shutdown this device.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

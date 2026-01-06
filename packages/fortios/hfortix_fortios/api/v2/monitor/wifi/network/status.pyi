@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Status:
     """
-    Configuration for wifi/network/status
+    When FortiWiFi is in client mode, retrieve status of currently connected WiFi network, if any.
     
     Path: wifi/network/status
     Category: monitor

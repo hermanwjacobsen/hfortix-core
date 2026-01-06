@@ -56,7 +56,7 @@ class ClearCounters:
         """
         Retrieve firewall/dnat/clear_counters configuration.
 
-        Configuration for firewall/dnat/clear-counters
+        Reset hit count statistics for one or more firewall virtual IP/server by ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

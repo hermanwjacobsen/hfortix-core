@@ -111,8 +111,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_START = [
-    "manual",
-    "auto",
+    "manual",  # Starting manually.
+    "auto",  # Starting automatically.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -240,7 +240,7 @@ def validate_system_auto_script_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "start": "manual",  # Valid enum value
+        ...     "start": "{'name': 'manual', 'help': 'Starting manually.', 'label': 'Manual', 'description': 'Starting manually'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_auto_script_post(payload)
         >>> assert is_valid == True

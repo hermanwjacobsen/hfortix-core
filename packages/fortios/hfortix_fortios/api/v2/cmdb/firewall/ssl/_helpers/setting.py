@@ -125,26 +125,26 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SSL_DH_BITS = [
-    "768",
-    "1024",
-    "1536",
-    "2048",
+    "768",  # 768-bit Diffie-Hellman prime.
+    "1024",  # 1024-bit Diffie-Hellman prime.
+    "1536",  # 1536-bit Diffie-Hellman prime.
+    "2048",  # 2048-bit Diffie-Hellman prime.
 ]
 VALID_BODY_SSL_SEND_EMPTY_FRAGS = [
-    "enable",
-    "disable",
+    "enable",  # Send empty fragments.
+    "disable",  # Do not send empty fragments.
 ]
 VALID_BODY_NO_MATCHING_CIPHER_ACTION = [
-    "bypass",
-    "drop",
+    "bypass",  # Bypass connection.
+    "drop",  # Drop connection.
 ]
 VALID_BODY_RESIGNED_SHORT_LIVED_CERTIFICATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable short-lived certificate: re-signed certificate will remain valid until either the origin server ceritificate expires or cache timeouts.
+    "disable",  # Disable short-lived certificate: re-signed certificate will have the same validation period as the origin server ceritificate.
 ]
 VALID_BODY_ABBREVIATE_HANDSHAKE = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of SSL abbreviated handshake.
+    "disable",  # Disable use of SSL abbreviated handshake.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -269,7 +269,7 @@ def validate_firewall_ssl_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ssl-dh-bits": "768",  # Valid enum value
+        ...     "ssl-dh-bits": "{'name': '768', 'help': '768-bit Diffie-Hellman prime.', 'label': '768', 'description': '768-bit Diffie-Hellman prime'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ssl_setting_post(payload)
         >>> assert is_valid == True

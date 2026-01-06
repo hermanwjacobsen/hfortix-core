@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Fortianalyzer:
     """
-    Configuration for log/fortianalyzer
+    Return FortiAnalyzer/FortiManager log status.
     
     Path: log/fortianalyzer
     Category: monitor

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "network/ddns/lookup",
     "category": "monitor",
     "api_path": "network/ddns/lookup",
-    "help": "Configuration for network/ddns/lookup",
+    "help": "Check DDNS FQDN availability.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -100,7 +100,7 @@ NESTED_SCHEMAS = {
             "help": "Enable/disable status.",
             "required": True,
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable status.", "label": "Enable", "name": "enable"}, {"help": "Disable status.", "label": "Disable", "name": "disable"}],
         },
         "id": {
             "type": "integer",
@@ -115,7 +115,7 @@ NESTED_SCHEMAS = {
             "help": "Type of address.",
             "required": True,
             "default": "ipv4",
-            "options": ["ipv4", "ipv6"],
+            "options": [{"help": "IPv4 Address type.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 Address type.", "label": "Ipv6", "name": "ipv6"}],
         },
         "ip4-subnet": {
             "type": "ipv4-classnet",

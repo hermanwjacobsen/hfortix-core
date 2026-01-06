@@ -95,7 +95,7 @@ DEPRECATED_FIELDS = {
 FIELD_TYPES = {
     "mode": "option",  # Central management mode.
     "type": "option",  # Central management type.
-    "fortigate-cloud-sso-default-profile": "string",  # Override access profile.
+    "fortigate-cloud-sso-default-profile": "string",  # Override access profile. Permission is set to read-only with
     "schedule-config-restore": "option",  # Enable/disable allowing the central management server to res
     "schedule-script-restore": "option",  # Enable/disable allowing the central management server to res
     "allow-push-configuration": "option",  # Enable/disable allowing the central management server to pus
@@ -123,7 +123,7 @@ FIELD_TYPES = {
 FIELD_DESCRIPTIONS = {
     "mode": "Central management mode.",
     "type": "Central management type.",
-    "fortigate-cloud-sso-default-profile": "Override access profile.",
+    "fortigate-cloud-sso-default-profile": "Override access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.",
     "schedule-config-restore": "Enable/disable allowing the central management server to restore the configuration of this FortiGate.",
     "schedule-script-restore": "Enable/disable allowing the central management server to restore the scripts stored on this FortiGate.",
     "allow-push-configuration": "Enable/disable allowing the central management server to push configuration changes to this FortiGate.",
@@ -171,13 +171,13 @@ NESTED_SCHEMAS = {
             "help": "FortiGuard service type.",
             "required": True,
             "default": "",
-            "options": ["update", "rating", "vpatch-query", "iot-collect"],
+            "options": [{"help": "AV, IPS, and AV-query update server.", "label": "Update", "name": "update"}, {"help": "Web filter and anti-spam rating server.", "label": "Rating", "name": "rating"}, {"help": "Virtual patch query server.", "label": "Vpatch Query", "name": "vpatch-query"}, {"help": "IoT device collection server.", "label": "Iot Collect", "name": "iot-collect"}],
         },
         "addr-type": {
             "type": "option",
             "help": "Indicate whether the FortiGate communicates with the override server using an IPv4 address, an IPv6 address or a FQDN.",
             "default": "ipv4",
-            "options": ["ipv4", "ipv6", "fqdn"],
+            "options": [{"help": "IPv4 address.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 address.", "label": "Ipv6", "name": "ipv6"}, {"help": "FQDN.", "label": "Fqdn", "name": "fqdn"}],
         },
         "server-address": {
             "type": "ipv4-address",
@@ -204,59 +204,59 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MODE = [
-    "normal",
-    "backup",
+    "normal",  # Manage and configure this FortiGate from FortiManager.
+    "backup",  # Manage and configure this FortiGate locally and back up its configuration to FortiManager.
 ]
 VALID_BODY_TYPE = [
-    "fortimanager",
-    "fortiguard",
-    "none",
+    "fortimanager",  # FortiManager.
+    "fortiguard",  # Central management of this FortiGate using FortiCloud.
+    "none",  # No central management.
 ]
 VALID_BODY_SCHEDULE_CONFIG_RESTORE = [
-    "enable",
-    "disable",
+    "enable",  # Enable scheduled configuration restore.
+    "disable",  # Disable scheduled configuration restore.
 ]
 VALID_BODY_SCHEDULE_SCRIPT_RESTORE = [
-    "enable",
-    "disable",
+    "enable",  # Enable scheduled script restore.
+    "disable",  # Disable scheduled script restore.
 ]
 VALID_BODY_ALLOW_PUSH_CONFIGURATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable push configuration.
+    "disable",  # Disable push configuration.
 ]
 VALID_BODY_ALLOW_PUSH_FIRMWARE = [
-    "enable",
-    "disable",
+    "enable",  # Enable push firmware.
+    "disable",  # Disable push firmware.
 ]
 VALID_BODY_ALLOW_REMOTE_FIRMWARE_UPGRADE = [
-    "enable",
-    "disable",
+    "enable",  # Enable remote firmware upgrade.
+    "disable",  # Disable remote firmware upgrade.
 ]
 VALID_BODY_ALLOW_MONITOR = [
-    "enable",
-    "disable",
+    "enable",  # Enable remote monitoring of device.
+    "disable",  # Disable remote monitoring of device.
 ]
 VALID_BODY_FMG_UPDATE_PORT = [
-    "8890",
-    "443",
+    "8890",  # Use port 8890 to communicate with FortiManager that is acting as a FortiGuard update server.
+    "443",  # Use port 443 to communicate with FortiManager that is acting as a FortiGuard update server.
 ]
 VALID_BODY_FMG_UPDATE_HTTP_HEADER = [
-    "enable",
-    "disable",
+    "enable",  # Enable inclusion of HTTP header in update request.
+    "disable",  # Disable inclusion of HTTP header in update request.
 ]
 VALID_BODY_INCLUDE_DEFAULT_SERVERS = [
-    "enable",
-    "disable",
+    "enable",  # Enable inclusion of public FortiGuard servers in the override server list.
+    "disable",  # Disable inclusion of public FortiGuard servers in the override server list.
 ]
 VALID_BODY_ENC_ALGORITHM = [
-    "default",
-    "high",
-    "low",
+    "default",  # High strength algorithms and medium-strength 128-bit key length algorithms.
+    "high",  # 128-bit and larger key length algorithms.
+    "low",  # 64-bit or 56-bit key length algorithms without export restrictions.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -383,7 +383,7 @@ def validate_system_central_management_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "mode": "normal",  # Valid enum value
+        ...     "mode": "{'name': 'normal', 'help': 'Manage and configure this FortiGate from FortiManager.', 'label': 'Normal', 'description': 'Manage and configure this FortiGate from FortiManager'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_central_management_post(payload)
         >>> assert is_valid == True

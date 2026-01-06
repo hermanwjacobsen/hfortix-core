@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for system/modem/update
+    Update supported modem list from FortiGuard.
     
     Path: system/modem/update
     Category: monitor

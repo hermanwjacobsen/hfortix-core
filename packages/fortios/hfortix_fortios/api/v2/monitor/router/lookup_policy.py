@@ -56,7 +56,7 @@ class LookupPolicy:
         """
         Retrieve router/lookup_policy configuration.
 
-        Configuration for router/lookup-policy
+        Performs a route lookup by querying the policy routing table.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

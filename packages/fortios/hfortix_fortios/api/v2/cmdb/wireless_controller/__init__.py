@@ -7,7 +7,7 @@ from .apcfg_profile import ApcfgProfile
 from .arrp_profile import ArrpProfile
 from .ble_profile import BleProfile
 from .bonjour_profile import BonjourProfile
-from .global_setting import GlobalSetting
+from .global_ import Global
 from .inter_controller import InterController
 from .log import Log
 from .lw_profile import LwProfile
@@ -36,7 +36,7 @@ __all__ = [
     "ArrpProfile",
     "BleProfile",
     "BonjourProfile",
-    "GlobalSetting",
+    "Global",
     "Hotspot20",
     "InterController",
     "Log",
@@ -78,7 +78,7 @@ class WirelessController:
         self.arrp_profile = ArrpProfile(client)
         self.ble_profile = BleProfile(client)
         self.bonjour_profile = BonjourProfile(client)
-        self.global_setting = GlobalSetting(client)
+        self.global_ = Global(client)
         self.inter_controller = InterController(client)
         self.log = Log(client)
         self.lw_profile = LwProfile(client)

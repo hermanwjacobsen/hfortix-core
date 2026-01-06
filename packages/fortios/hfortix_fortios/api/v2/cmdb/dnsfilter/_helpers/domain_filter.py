@@ -114,19 +114,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "DNS domain filter type.",
             "default": "simple",
-            "options": ["simple", "regex", "wildcard"],
+            "options": [{"help": "Simple domain string.", "label": "Simple", "name": "simple"}, {"help": "Regular expression domain string.", "label": "Regex", "name": "regex"}, {"help": "Wildcard domain string.", "label": "Wildcard", "name": "wildcard"}],
         },
         "action": {
             "type": "option",
             "help": "Action to take for domain filter matches.",
             "default": "block",
-            "options": ["block", "allow", "monitor"],
+            "options": [{"help": "Block DNS requests matching the domain filter.", "label": "Block", "name": "block"}, {"help": "Allow DNS requests matching the domain filter without logging.", "label": "Allow", "name": "allow"}, {"help": "Allow DNS requests matching the domain filter with logging.", "label": "Monitor", "name": "monitor"}],
         },
         "status": {
             "type": "option",
             "help": "Enable/disable this domain filter.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable this domain filter.", "label": "Enable", "name": "enable"}, {"help": "Disable this domain filter.", "label": "Disable", "name": "disable"}],
         },
         "comment": {
             "type": "var-string",

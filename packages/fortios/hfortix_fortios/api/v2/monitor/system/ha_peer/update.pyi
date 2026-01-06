@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for system/ha-peer/update
+    Update configuration of peer in HA cluster.
     
     Path: system/ha_peer/update
     Category: monitor

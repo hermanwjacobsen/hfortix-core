@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ValidateJsonpath:
     """
-    Configuration for system/external-resource/validate-jsonpath
+    Validate a JSON path name.
     
     Path: system/external_resource/validate_jsonpath
     Category: monitor

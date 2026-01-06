@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "fortiguard/answers",
     "category": "monitor",
     "api_path": "fortiguard/answers",
-    "help": "Configuration for fortiguard/answers",
+    "help": "Retrieve a list of questions on answers.fortinet.com",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

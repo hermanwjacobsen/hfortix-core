@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/sdn_connector_filters",
     "category": "monitor",
     "api_path": "firewall/sdn-connector-filters",
-    "help": "Configuration for firewall/sdn-connector-filters",
+    "help": "List all available filters for a specified SDN Fabric Connector. Used for Fabric Connector address objects.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

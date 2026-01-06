@@ -1,6 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_LW_PROTOCOL: Literal[{"help": "Configure LoRaWAN protocol to Basics Station.", "label": "Basics Station", "name": "basics-station"}, {"description": "Configure LoRaWAN protocol to UDP Packet Forwarder", "help": "Configure LoRaWAN protocol to UDP Packet Forwarder.", "label": "Packet Forwarder", "name": "packet-forwarder"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -23,6 +24,7 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_LW_PROTOCOL",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

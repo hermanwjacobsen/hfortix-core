@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "extension_controller/lan_extension_vdom_status",
     "category": "monitor",
     "api_path": "extension-controller/lan-extension-vdom-status",
-    "help": "Configuration for extension-controller/lan-extension-vdom-status",
+    "help": "Retrieve information for the FortiGate LAN Extension VDOM.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

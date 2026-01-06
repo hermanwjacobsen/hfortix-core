@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SaasApplication:
     """
-    Monitor endpoint for firewall/saas-application
+    List of SaaS applications.
     
     Path: firewall/saas_application
     Category: monitor

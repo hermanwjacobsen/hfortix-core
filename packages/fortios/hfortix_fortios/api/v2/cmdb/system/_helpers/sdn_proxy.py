@@ -108,8 +108,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "general",
-    "fortimanager",
+    "general",  # General HTTP proxy.
+    "fortimanager",  # FortiManager SDN proxy.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -239,7 +239,7 @@ def validate_system_sdn_proxy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "type": "general",  # Valid enum value
+        ...     "type": "{'name': 'general', 'help': 'General HTTP proxy.', 'label': 'General', 'description': 'General HTTP proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_sdn_proxy_post(payload)
         >>> assert is_valid == True

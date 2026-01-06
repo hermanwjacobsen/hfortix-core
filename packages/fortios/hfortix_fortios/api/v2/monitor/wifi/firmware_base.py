@@ -56,7 +56,7 @@ class Firmware:
         """
         Retrieve wifi/firmware configuration.
 
-        Configuration for wifi/firmware
+        Retrieve a list of current and recommended firmware for FortiAPs in use.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MODE: Literal["erspan-auto", "rspan", "none"]
+VALID_BODY_MODE: Literal[{"description": "Mirror traffic using a GRE tunnel", "help": "Mirror traffic using a GRE tunnel.", "label": "Erspan Auto", "name": "erspan-auto"}, {"description": "Mirror traffic on a layer2 VLAN", "help": "Mirror traffic on a layer2 VLAN.", "label": "Rspan", "name": "rspan"}, {"description": "Disable traffic mirroring (sniffer)", "help": "Disable traffic mirroring (sniffer).", "label": "None", "name": "none"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

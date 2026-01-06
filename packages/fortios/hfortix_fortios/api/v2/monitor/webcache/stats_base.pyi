@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stats:
     """
-    Configuration for webcache/stats
+    Retrieve webcache statistics.
     
     Path: webcache/stats
     Category: monitor

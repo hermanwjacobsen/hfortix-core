@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/check_port_availability",
     "category": "monitor",
     "api_path": "system/check-port-availability",
-    "help": "Configuration for system/check-port-availability",
+    "help": "Check whether a list of TCP port ranges is available for a certain service.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

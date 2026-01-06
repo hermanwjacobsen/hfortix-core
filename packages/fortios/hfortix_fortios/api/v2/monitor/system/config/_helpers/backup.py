@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config/backup",
     "category": "monitor",
     "api_path": "system/config/backup",
-    "help": "Configuration for system/config/backup",
+    "help": "Backup system config",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

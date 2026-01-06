@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OVERSIZE_LOG: Literal["disable", "enable"]
-VALID_BODY_SWITCHING_PROTOCOLS_LOG: Literal["disable", "enable"]
-VALID_BODY_RPC_OVER_HTTP: Literal["enable", "disable"]
+VALID_BODY_OVERSIZE_LOG: Literal[{"description": "Disable logging for antivirus oversize file blocking", "help": "Disable logging for antivirus oversize file blocking.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for antivirus oversize file blocking", "help": "Enable logging for antivirus oversize file blocking.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SWITCHING_PROTOCOLS_LOG: Literal[{"description": "Disable logging for HTTP/HTTPS switching protocols", "help": "Disable logging for HTTP/HTTPS switching protocols.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for HTTP/HTTPS switching protocols", "help": "Enable logging for HTTP/HTTPS switching protocols.", "label": "Enable", "name": "enable"}]
+VALID_BODY_RPC_OVER_HTTP: Literal[{"description": "Enable inspection of RPC over HTTP", "help": "Enable inspection of RPC over HTTP.", "label": "Enable", "name": "enable"}, {"description": "Disable inspection of RPC over HTTP", "help": "Disable inspection of RPC over HTTP.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

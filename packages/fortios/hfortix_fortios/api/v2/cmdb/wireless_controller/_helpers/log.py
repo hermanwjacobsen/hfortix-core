@@ -125,128 +125,128 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable wireless event logging.
+    "disable",  # Disable wireless event logging.
 ]
 VALID_BODY_ADDRGRP_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_BLE_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_CLB_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_DHCP_STARV_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_LED_SCHED_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_RADIO_EVENT_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_ROGUE_EVENT_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_STA_EVENT_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_STA_LOCATE_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_WIDS_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_WTP_EVENT_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_WTP_FIPS_EVENT_LOG = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -371,7 +371,7 @@ def validate_wireless_controller_log_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable wireless event logging.', 'label': 'Enable', 'description': 'Enable wireless event logging'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_log_post(payload)
         >>> assert is_valid == True

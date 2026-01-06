@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticloud/login",
     "category": "monitor",
     "api_path": "registration/forticloud/login",
-    "help": "Configuration for registration/forticloud/login",
+    "help": "Login to FortiCloud.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

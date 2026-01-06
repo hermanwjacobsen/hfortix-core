@@ -11,12 +11,12 @@ class AccessProxySshClientCertPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # SSH client certificate name.
-    source_address: NotRequired[Literal["enable", "disable"]]  # Enable/disable appending source-address certificate critical
-    permit_x11_forwarding: NotRequired[Literal["enable", "disable"]]  # Enable/disable appending permit-x11-forwarding certificate e
-    permit_agent_forwarding: NotRequired[Literal["enable", "disable"]]  # Enable/disable appending permit-agent-forwarding certificate
-    permit_port_forwarding: NotRequired[Literal["enable", "disable"]]  # Enable/disable appending permit-port-forwarding certificate 
-    permit_pty: NotRequired[Literal["enable", "disable"]]  # Enable/disable appending permit-pty certificate extension.
-    permit_user_rc: NotRequired[Literal["enable", "disable"]]  # Enable/disable appending permit-user-rc certificate extensio
+    source_address: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable appending source-address certificate critical
+    permit_x11_forwarding: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable appending permit-x11-forwarding certificate e
+    permit_agent_forwarding: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable appending permit-agent-forwarding certificate
+    permit_port_forwarding: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable appending permit-port-forwarding certificate 
+    permit_pty: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable appending permit-pty certificate extension.
+    permit_user_rc: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable appending permit-user-rc certificate extensio
     cert_extension: NotRequired[list[dict[str, Any]]]  # Configure certificate extension for user certificate.
     auth_ca: str  # Name of the SSH server public key authentication CA.
 
@@ -47,12 +47,12 @@ class AccessProxySshClientCert:
         self,
         payload_dict: AccessProxySshClientCertPayload | None = ...,
         name: str | None = ...,
-        source_address: Literal["enable", "disable"] | None = ...,
-        permit_x11_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_agent_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_port_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_pty: Literal["enable", "disable"] | None = ...,
-        permit_user_rc: Literal["enable", "disable"] | None = ...,
+        source_address: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_x11_forwarding: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_agent_forwarding: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_port_forwarding: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_pty: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_user_rc: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         cert_extension: list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
@@ -64,12 +64,12 @@ class AccessProxySshClientCert:
         self,
         payload_dict: AccessProxySshClientCertPayload | None = ...,
         name: str | None = ...,
-        source_address: Literal["enable", "disable"] | None = ...,
-        permit_x11_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_agent_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_port_forwarding: Literal["enable", "disable"] | None = ...,
-        permit_pty: Literal["enable", "disable"] | None = ...,
-        permit_user_rc: Literal["enable", "disable"] | None = ...,
+        source_address: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_x11_forwarding: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_agent_forwarding: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_port_forwarding: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_pty: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        permit_user_rc: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         cert_extension: list[dict[str, Any]] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,

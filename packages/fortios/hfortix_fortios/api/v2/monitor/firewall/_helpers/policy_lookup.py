@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/policy_lookup",
     "category": "monitor",
     "api_path": "firewall/policy-lookup",
-    "help": "Configuration for firewall/policy-lookup",
+    "help": "Performs a policy lookup by creating a dummy packet and asking the kernel which policy would be hit.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

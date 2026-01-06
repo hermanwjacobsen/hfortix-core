@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_FEATURE_SET: Literal["flow", "proxy"]
-VALID_BODY_LOG: Literal["disable", "enable"]
-VALID_BODY_EXTENDED_LOG: Literal["disable", "enable"]
-VALID_BODY_SCAN_ARCHIVE_CONTENTS: Literal["disable", "enable"]
+VALID_BODY_FEATURE_SET: Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}]
+VALID_BODY_LOG: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}]
+VALID_BODY_EXTENDED_LOG: Literal[{"description": "Disable extended logging", "help": "Disable extended logging.", "label": "Disable", "name": "disable"}, {"description": "Enable extended logging", "help": "Enable extended logging.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SCAN_ARCHIVE_CONTENTS: Literal[{"description": "Disable scanning archive contents", "help": "Disable scanning archive contents.", "label": "Disable", "name": "disable"}, {"description": "Enable scanning archive contents", "help": "Enable scanning archive contents.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

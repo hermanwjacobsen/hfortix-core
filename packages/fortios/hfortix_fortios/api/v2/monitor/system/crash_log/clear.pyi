@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Clear:
     """
-    Configuration for system/crash-log/clear
+    Clear system crash log.
     
     Path: system/crash_log/clear
     Category: monitor

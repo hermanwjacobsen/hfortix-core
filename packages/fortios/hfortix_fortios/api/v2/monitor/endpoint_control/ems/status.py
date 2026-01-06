@@ -56,7 +56,7 @@ class Status:
         """
         Retrieve endpoint_control/ems/status configuration.
 
-        Configuration for endpoint-control/ems/status
+        Retrieve EMS connection status for a specific EMS.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

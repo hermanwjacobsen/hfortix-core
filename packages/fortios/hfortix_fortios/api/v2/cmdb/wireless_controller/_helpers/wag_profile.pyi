@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TUNNEL_TYPE: Literal["l2tpv3", "gre"]
+VALID_BODY_TUNNEL_TYPE: Literal[{"description": "L2TPV3 Ethernet Pseudowire", "help": "L2TPV3 Ethernet Pseudowire.", "label": "L2Tpv3", "name": "l2tpv3"}, {"description": "GRE Ethernet tunnel", "help": "GRE Ethernet tunnel.", "label": "Gre", "name": "gre"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

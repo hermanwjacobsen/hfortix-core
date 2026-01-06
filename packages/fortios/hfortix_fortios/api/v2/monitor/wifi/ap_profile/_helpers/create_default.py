@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/ap_profile/create_default",
     "category": "monitor",
     "api_path": "wifi/ap-profile/create-default",
-    "help": "Configuration for wifi/ap-profile/create-default",
+    "help": "Create a default FortiAP profile for the specified platform.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

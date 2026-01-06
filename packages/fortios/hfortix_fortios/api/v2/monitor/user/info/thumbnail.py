@@ -56,7 +56,7 @@ class Thumbnail:
         """
         Retrieve user/info/thumbnail configuration.
 
-        Configuration for user/info/thumbnail
+        Get user info thumbnail. Returns the first match to the filter.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

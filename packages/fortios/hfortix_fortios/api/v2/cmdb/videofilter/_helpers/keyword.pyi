@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MATCH: Literal["or", "and"]
+VALID_BODY_MATCH: Literal[{"description": "Match any keyword", "help": "Match any keyword.", "label": "Or", "name": "or"}, {"description": "Match all keywords", "help": "Match all keywords.", "label": "And", "name": "and"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

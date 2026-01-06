@@ -103,16 +103,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_UNKNOWN_UNICAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable unknown unicast storm control.
+    "disable",  # Disable unknown unicast storm control.
 ]
 VALID_BODY_UNKNOWN_MULTICAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable unknown multicast storm control.
+    "disable",  # Disable unknown multicast storm control.
 ]
 VALID_BODY_BROADCAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable broadcast storm control.
+    "disable",  # Disable broadcast storm control.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -237,7 +237,7 @@ def validate_switch_controller_storm_control_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "unknown-unicast": "enable",  # Valid enum value
+        ...     "unknown-unicast": "{'name': 'enable', 'help': 'Enable unknown unicast storm control.', 'label': 'Enable', 'description': 'Enable unknown unicast storm control'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_storm_control_post(payload)
         >>> assert is_valid == True

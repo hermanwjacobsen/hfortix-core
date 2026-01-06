@@ -101,8 +101,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_GRAYSCALE = [
-    "enable",
-    "disable",
+    "enable",  # Enable region image grayscale.
+    "disable",  # Disable region image grayscale.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -230,7 +230,7 @@ def validate_wireless_controller_region_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "grayscale": "enable",  # Valid enum value
+        ...     "grayscale": "{'name': 'enable', 'help': 'Enable region image grayscale.', 'label': 'Enable', 'description': 'Enable region image grayscale'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_region_post(payload)
         >>> assert is_valid == True

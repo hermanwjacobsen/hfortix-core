@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/current_disk_usage",
     "category": "monitor",
     "api_path": "log/current-disk-usage",
-    "help": "Configuration for log/current-disk-usage",
+    "help": "Return current used, free and total disk bytes.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

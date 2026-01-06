@@ -15,10 +15,10 @@ class Addrgrp6Payload(TypedDict, total=False):
     color: NotRequired[int]  # Integer value to determine the color of the icon in the GUI 
     comment: NotRequired[str]  # Comment.
     member: NotRequired[list[dict[str, Any]]]  # Address objects contained within the group.
-    exclude: NotRequired[Literal["enable", "disable"]]  # Enable/disable address6 exclusion.
+    exclude: NotRequired[Literal[{"description": "Enable address6 exclusion", "help": "Enable address6 exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address6 exclusion", "help": "Disable address6 exclusion.", "label": "Disable", "name": "disable"}]]  # Enable/disable address6 exclusion.
     exclude_member: list[dict[str, Any]]  # Address6 exclusion member.
     tagging: NotRequired[list[dict[str, Any]]]  # Config object tagging.
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Addrgrp6:
@@ -51,10 +51,10 @@ class Addrgrp6:
         color: int | None = ...,
         comment: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
+        exclude: Literal[{"description": "Enable address6 exclusion", "help": "Enable address6 exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address6 exclusion", "help": "Disable address6 exclusion.", "label": "Disable", "name": "disable"}] | None = ...,
         exclude_member: list[dict[str, Any]] | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -68,10 +68,10 @@ class Addrgrp6:
         color: int | None = ...,
         comment: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
-        exclude: Literal["enable", "disable"] | None = ...,
+        exclude: Literal[{"description": "Enable address6 exclusion", "help": "Enable address6 exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address6 exclusion", "help": "Disable address6 exclusion.", "label": "Disable", "name": "disable"}] | None = ...,
         exclude_member: list[dict[str, Any]] | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

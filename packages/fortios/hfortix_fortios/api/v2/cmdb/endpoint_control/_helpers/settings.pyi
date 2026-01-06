@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OVERRIDE: Literal["enable", "disable"]
+VALID_BODY_OVERRIDE: Literal[{"description": "Enable Overriding global EMS table", "help": "Enable Overriding global EMS table.", "label": "Enable", "name": "enable"}, {"description": "Disable Overriding global EMS table", "help": "Disable Overriding global EMS table.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

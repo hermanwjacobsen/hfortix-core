@@ -106,7 +106,7 @@ FIELD_TYPES = {
     "update-method": "option",  # External resource update method.
     "category": "integer",  # User resource category.
     "username": "string",  # HTTP basic authentication user name.
-    "password": "password",  # HTTP basic authentication password.
+    "password": "varlen_password",  # HTTP basic authentication password.
     "client-cert-auth": "option",  # Enable/disable using client certificate for TLS authenticati
     "client-cert": "string",  # Client certificate name.
     "comments": "var-string",  # Comment.
@@ -175,35 +175,35 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable user resource.
+    "disable",  # Disable user resource.
 ]
 VALID_BODY_TYPE = [
-    "category",
-    "domain",
-    "malware",
-    "address",
-    "mac-address",
-    "data",
-    "generic-address",
+    "category",  # FortiGuard category.
+    "domain",  # Domain Name.
+    "malware",  # Malware hash.
+    "address",  # Firewall IP address.
+    "mac-address",  # Firewall MAC address.
+    "data",  # Data file.
+    "generic-address",  # Generic addresses.
 ]
 VALID_BODY_UPDATE_METHOD = [
-    "feed",
-    "push",
+    "feed",  # FortiGate unit will pull update from the external resource.
+    "push",  # External Resource update is pushed to the FortiGate unit through the FortiGate unit's RESTAPI/CLI.
 ]
 VALID_BODY_CLIENT_CERT_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable using client certificate for TLS authentication.
+    "disable",  # Disable using client certificate for TLS authentication.
 ]
 VALID_BODY_SERVER_IDENTITY_CHECK = [
-    "none",
-    "basic",
-    "full",
+    "none",  # No certificate verification.
+    "basic",  # Check server certifcate only.
+    "full",  # Check server certificate and verify the domain matches in the server certificate.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -334,7 +334,7 @@ def validate_system_external_resource_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable user resource.', 'label': 'Enable', 'description': 'Enable user resource'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_external_resource_post(payload)
         >>> assert is_valid == True

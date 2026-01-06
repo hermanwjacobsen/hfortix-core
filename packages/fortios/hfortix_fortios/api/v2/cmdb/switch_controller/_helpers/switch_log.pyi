@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_SEVERITY: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
+VALID_BODY_STATUS: Literal[{"description": "Add FortiSwitch logs to FortiGate event log", "help": "Add FortiSwitch logs to FortiGate event log.", "label": "Enable", "name": "enable"}, {"description": "Do not add  FortiSwitch logs to FortiGate event log", "help": "Do not add  FortiSwitch logs to FortiGate event log.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SEVERITY: Literal[{"description": "Emergency level", "help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"description": "Alert level", "help": "Alert level.", "label": "Alert", "name": "alert"}, {"description": "Critical level", "help": "Critical level.", "label": "Critical", "name": "critical"}, {"description": "Error level", "help": "Error level.", "label": "Error", "name": "error"}, {"description": "Warning level", "help": "Warning level.", "label": "Warning", "name": "warning"}, {"description": "Notification level", "help": "Notification level.", "label": "Notification", "name": "notification"}, {"description": "Information level", "help": "Information level.", "label": "Information", "name": "information"}, {"description": "Debug level", "help": "Debug level.", "label": "Debug", "name": "debug"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

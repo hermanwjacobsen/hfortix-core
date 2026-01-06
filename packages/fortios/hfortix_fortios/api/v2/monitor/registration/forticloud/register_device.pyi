@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RegisterDevice:
     """
-    Configuration for registration/forticloud/register-device
+    Register a device to FortiCloud through FortiGate. Currently FortiSwitches, FortiAPs and FortiExtenders are supported.
     
     Path: registration/forticloud/register_device
     Category: monitor

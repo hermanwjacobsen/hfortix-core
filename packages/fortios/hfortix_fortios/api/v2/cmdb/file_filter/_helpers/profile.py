@@ -123,25 +123,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Protocols to apply rule to.",
             "default": "http ftp smtp imap pop3 mapi cifs ssh",
-            "options": ["http", "ftp", "smtp", "imap", "pop3", "mapi", "cifs", "ssh"],
+            "options": [{"help": "Filter on HTTP.", "label": "Http", "name": "http"}, {"help": "Filter on FTP.", "label": "Ftp", "name": "ftp"}, {"help": "Filter on SMTP.", "label": "Smtp", "name": "smtp"}, {"help": "Filter on IMAP.", "label": "Imap", "name": "imap"}, {"help": "Filter on POP3.", "label": "Pop3", "name": "pop3"}, {"help": "Filter on MAPI. (Proxy mode only.)", "label": "Mapi", "name": "mapi"}, {"help": "Filter on CIFS.", "label": "Cifs", "name": "cifs"}, {"help": "Filter on SFTP and SCP. (Proxy mode only.)", "label": "Ssh", "name": "ssh"}],
         },
         "action": {
             "type": "option",
             "help": "Action taken for matched file.",
             "default": "log-only",
-            "options": ["log-only", "block"],
+            "options": [{"help": "Allow the content and write a log message.", "label": "Log Only", "name": "log-only"}, {"help": "Block the content and write a log message.", "label": "Block", "name": "block"}],
         },
         "direction": {
             "type": "option",
             "help": "Traffic direction (HTTP, FTP, SSH, CIFS, and MAPI only).",
             "default": "any",
-            "options": ["incoming", "outgoing", "any"],
+            "options": [{"help": "Match files transmitted in the session\u0027s reply direction.", "label": "Incoming", "name": "incoming"}, {"help": "Match files transmitted in the session\u0027s originating direction.", "label": "Outgoing", "name": "outgoing"}, {"help": "Match files transmitted in the session\u0027s originating and reply directions.", "label": "Any", "name": "any"}],
         },
         "password-protected": {
             "type": "option",
             "help": "Match password-protected files.",
             "default": "any",
-            "options": ["yes", "any"],
+            "options": [{"help": "Match only password-protected files.", "label": "Yes", "name": "yes"}, {"help": "Match any file.", "label": "Any", "name": "any"}],
         },
         "file-type": {
             "type": "string",
@@ -154,20 +154,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FEATURE_SET = [
-    "flow",
-    "proxy",
+    "flow",  # Flow feature set.
+    "proxy",  # Proxy feature set.
 ]
 VALID_BODY_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging.
+    "enable",  # Enable logging.
 ]
 VALID_BODY_EXTENDED_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable extended logging.
+    "enable",  # Enable extended logging.
 ]
 VALID_BODY_SCAN_ARCHIVE_CONTENTS = [
-    "disable",
-    "enable",
+    "disable",  # Disable scanning archive contents.
+    "enable",  # Enable scanning archive contents.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -297,7 +297,7 @@ def validate_file_filter_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "feature-set": "flow",  # Valid enum value
+        ...     "feature-set": "{'name': 'flow', 'help': 'Flow feature set.', 'label': 'Flow', 'description': 'Flow feature set'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_file_filter_profile_post(payload)
         >>> assert is_valid == True

@@ -10,7 +10,7 @@ class NdProxyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable neighbor discovery proxy.
+    status: NotRequired[Literal[{"description": "Enable neighbor discovery proxy", "help": "Enable neighbor discovery proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable neighbor discovery proxy", "help": "Disable neighbor discovery proxy.", "label": "Disable", "name": "disable"}]]  # Enable/disable neighbor discovery proxy.
     member: NotRequired[list[dict[str, Any]]]  # Interfaces using the neighbor discovery proxy.
 
 
@@ -38,7 +38,7 @@ class NdProxy:
     def post(
         self,
         payload_dict: NdProxyPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable neighbor discovery proxy", "help": "Enable neighbor discovery proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable neighbor discovery proxy", "help": "Disable neighbor discovery proxy.", "label": "Disable", "name": "disable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -48,7 +48,7 @@ class NdProxy:
     def put(
         self,
         payload_dict: NdProxyPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable neighbor discovery proxy", "help": "Enable neighbor discovery proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable neighbor discovery proxy", "help": "Disable neighbor discovery proxy.", "label": "Disable", "name": "disable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ApplicationList:
     """
-    Configuration for azure/application-list
+    Retrieve a list of Azure applications that can be used for configuring an Azure SDN connector.
     
     Path: azure/application_list
     Category: monitor

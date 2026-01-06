@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "virtual_wan/interface_log",
     "category": "monitor",
     "api_path": "virtual-wan/interface-log",
-    "help": "Monitor endpoint for virtual-wan/interface-log",
+    "help": "Retrieve log of SD-WAN interface quality information.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

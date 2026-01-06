@@ -56,7 +56,7 @@ class SensorInfo:
         """
         Retrieve system/sensor_info configuration.
 
-        Configuration for system/sensor-info
+        Retrieve system sensor status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

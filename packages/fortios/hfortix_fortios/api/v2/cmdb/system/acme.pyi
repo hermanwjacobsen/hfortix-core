@@ -11,7 +11,7 @@ class AcmePayload(TypedDict, total=False):
         }
     """
     interface: NotRequired[list[dict[str, Any]]]  # Interface(s) on which the ACME client will listen for challe
-    use_ha_direct: NotRequired[Literal["enable", "disable"]]  # Enable the use of 'ha-mgmt' interface to connect to the ACME
+    use_ha_direct: NotRequired[Literal[{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable the use of 'ha-mgmt' interface to connect to the ACME
     source_ip: NotRequired[str]  # Source IPv4 address used to connect to the ACME server.
     source_ip6: NotRequired[str]  # Source IPv6 address used to connect to the ACME server.
     accounts: NotRequired[list[dict[str, Any]]]  # ACME accounts list.
@@ -44,7 +44,7 @@ class Acme:
         self,
         payload_dict: AcmePayload | None = ...,
         interface: list[dict[str, Any]] | None = ...,
-        use_ha_direct: Literal["enable", "disable"] | None = ...,
+        use_ha_direct: Literal[{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         accounts: list[dict[str, Any]] | None = ...,
@@ -59,7 +59,7 @@ class Acme:
         self,
         payload_dict: AcmePayload | None = ...,
         interface: list[dict[str, Any]] | None = ...,
-        use_ha_direct: Literal["enable", "disable"] | None = ...,
+        use_ha_direct: Literal[{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         accounts: list[dict[str, Any]] | None = ...,

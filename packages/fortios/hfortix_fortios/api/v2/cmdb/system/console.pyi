@@ -10,8 +10,8 @@ class ConsolePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    output: NotRequired[Literal["standard", "more"]]  # Console output mode.
-    login: NotRequired[Literal["enable", "disable"]]  # Enable/disable serial console and FortiExplorer.
+    output: NotRequired[Literal[{"description": "Standard output", "help": "Standard output.", "label": "Standard", "name": "standard"}, {"description": "More page output", "help": "More page output.", "label": "More", "name": "more"}]]  # Console output mode.
+    login: NotRequired[Literal[{"description": "Console login enable", "help": "Console login enable.", "label": "Enable", "name": "enable"}, {"description": "Console login disable", "help": "Console login disable.", "label": "Disable", "name": "disable"}]]  # Enable/disable serial console and FortiExplorer.
 
 
 class Console:
@@ -38,8 +38,8 @@ class Console:
     def post(
         self,
         payload_dict: ConsolePayload | None = ...,
-        output: Literal["standard", "more"] | None = ...,
-        login: Literal["enable", "disable"] | None = ...,
+        output: Literal[{"description": "Standard output", "help": "Standard output.", "label": "Standard", "name": "standard"}, {"description": "More page output", "help": "More page output.", "label": "More", "name": "more"}] | None = ...,
+        login: Literal[{"description": "Console login enable", "help": "Console login enable.", "label": "Enable", "name": "enable"}, {"description": "Console login disable", "help": "Console login disable.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -48,8 +48,8 @@ class Console:
     def put(
         self,
         payload_dict: ConsolePayload | None = ...,
-        output: Literal["standard", "more"] | None = ...,
-        login: Literal["enable", "disable"] | None = ...,
+        output: Literal[{"description": "Standard output", "help": "Standard output.", "label": "Standard", "name": "standard"}, {"description": "More page output", "help": "More page output.", "label": "More", "name": "more"}] | None = ...,
+        login: Literal[{"description": "Console login enable", "help": "Console login enable.", "label": "Enable", "name": "enable"}, {"description": "Console login disable", "help": "Console login disable.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

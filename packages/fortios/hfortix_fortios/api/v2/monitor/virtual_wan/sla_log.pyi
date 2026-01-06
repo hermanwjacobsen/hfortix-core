@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SlaLog:
     """
-    Monitor endpoint for virtual-wan/sla-log
+    Retrieve logs of SLA probe results for the specified SD-WAN SLA or health check name.
     
     Path: virtual_wan/sla_log
     Category: monitor

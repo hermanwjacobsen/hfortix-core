@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Health:
     """
-    Monitor endpoint for firewall/health
+    List configured load balance server health monitors.
     
     Path: firewall/health
     Category: monitor

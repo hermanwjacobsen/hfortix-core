@@ -11,8 +11,8 @@ class MibViewPayload(TypedDict, total=False):
         }
     """
     name: str  # MIB view name.
-    include: NotRequired[str]  # OID subtrees to be included in the view. Maximum 16 allowed.
-    exclude: NotRequired[str]  # OID subtrees to be excluded in the view. Maximum 64 allowed.
+    include: NotRequired[list[dict[str, Any]]]  # OID subtrees to be included in the view. Maximum 16 allowed.
+    exclude: NotRequired[list[dict[str, Any]]]  # OID subtrees to be excluded in the view. Maximum 64 allowed.
 
 
 class MibView:
@@ -41,8 +41,8 @@ class MibView:
         self,
         payload_dict: MibViewPayload | None = ...,
         name: str | None = ...,
-        include: str | None = ...,
-        exclude: str | None = ...,
+        include: list[dict[str, Any]] | None = ...,
+        exclude: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -52,8 +52,8 @@ class MibView:
         self,
         payload_dict: MibViewPayload | None = ...,
         name: str | None = ...,
-        include: str | None = ...,
-        exclude: str | None = ...,
+        include: list[dict[str, Any]] | None = ...,
+        exclude: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

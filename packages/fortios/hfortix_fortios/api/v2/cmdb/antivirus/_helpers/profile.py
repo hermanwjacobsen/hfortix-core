@@ -66,6 +66,7 @@ FIELDS_WITH_DEFAULTS = {
     "ems-threat-feed": "disable",
     "fortindr-error-action": "log-only",
     "fortindr-timeout-action": "log-only",
+    "fortisandbox-scan-timeout": 60,
     "fortisandbox-error-action": "log-only",
     "fortisandbox-timeout-action": "log-only",
     "av-virus-log": "enable",
@@ -116,6 +117,7 @@ FIELD_TYPES = {
     "ems-threat-feed": "option",  # Enable/disable use of EMS threat feed when performing AntiVi
     "fortindr-error-action": "option",  # Action to take if FortiNDR encounters an error.
     "fortindr-timeout-action": "option",  # Action to take if FortiNDR encounters a scan timeout.
+    "fortisandbox-scan-timeout": "integer",  # FortiSandbox inline scan timeout in seconds (30 - 180, defau
     "fortisandbox-error-action": "option",  # Action to take if FortiSandbox inline scan encounters an err
     "fortisandbox-timeout-action": "option",  # Action to take if FortiSandbox inline scan encounters a scan
     "av-virus-log": "option",  # Enable/disable AntiVirus logging.
@@ -152,6 +154,7 @@ FIELD_DESCRIPTIONS = {
     "ems-threat-feed": "Enable/disable use of EMS threat feed when performing AntiVirus scan. Analyzes files including the content of archives.",
     "fortindr-error-action": "Action to take if FortiNDR encounters an error.",
     "fortindr-timeout-action": "Action to take if FortiNDR encounters a scan timeout.",
+    "fortisandbox-scan-timeout": "FortiSandbox inline scan timeout in seconds (30 - 180, default = 60).",
     "fortisandbox-error-action": "Action to take if FortiSandbox inline scan encounters an error.",
     "fortisandbox-timeout-action": "Action to take if FortiSandbox inline scan encounters a scan timeout.",
     "av-virus-log": "Enable/disable AntiVirus logging.",
@@ -166,6 +169,7 @@ FIELD_CONSTRAINTS = {
     "fortisandbox-max-upload": {"type": "integer", "min": 1, "max": 4095},
     "analytics-ignore-filetype": {"type": "integer", "min": 0, "max": 4294967295},
     "analytics-accept-filetype": {"type": "integer", "min": 0, "max": 4294967295},
+    "fortisandbox-scan-timeout": {"type": "integer", "min": 30, "max": 180},
 }
 
 # Nested schemas (for table/list fields with children)
@@ -175,67 +179,67 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
         "content-disarm": {
             "type": "option",
             "help": "Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Disable", "name": "disable"}, {"help": "Enable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Enable", "name": "enable"}],
         },
     },
     "ftp": {
@@ -243,61 +247,61 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
     },
     "imap": {
@@ -305,73 +309,73 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
         "executables": {
             "type": "option",
             "help": "Treat Windows executable files as viruses for the purpose of blocking or monitoring.",
             "default": "default",
-            "options": ["default", "virus"],
+            "options": [{"help": "Perform standard AntiVirus scanning of Windows executable files.", "label": "Default", "name": "default"}, {"help": "Treat Windows executables as viruses.", "label": "Virus", "name": "virus"}],
         },
         "content-disarm": {
             "type": "option",
             "help": "Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Disable", "name": "disable"}, {"help": "Enable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Enable", "name": "enable"}],
         },
     },
     "pop3": {
@@ -379,73 +383,73 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
         "executables": {
             "type": "option",
             "help": "Treat Windows executable files as viruses for the purpose of blocking or monitoring.",
             "default": "default",
-            "options": ["default", "virus"],
+            "options": [{"help": "Perform standard AntiVirus scanning of Windows executable files.", "label": "Default", "name": "default"}, {"help": "Treat Windows executables as viruses.", "label": "Virus", "name": "virus"}],
         },
         "content-disarm": {
             "type": "option",
             "help": "Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Disable", "name": "disable"}, {"help": "Enable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Enable", "name": "enable"}],
         },
     },
     "smtp": {
@@ -453,73 +457,73 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
         "executables": {
             "type": "option",
             "help": "Treat Windows executable files as viruses for the purpose of blocking or monitoring.",
             "default": "default",
-            "options": ["default", "virus"],
+            "options": [{"help": "Perform standard AntiVirus scanning of Windows executable files.", "label": "Default", "name": "default"}, {"help": "Treat Windows executables as viruses.", "label": "Virus", "name": "virus"}],
         },
         "content-disarm": {
             "type": "option",
             "help": "Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Disable", "name": "disable"}, {"help": "Enable Content Disarm and Reconstruction when performing AntiVirus scan.", "label": "Enable", "name": "enable"}],
         },
     },
     "mapi": {
@@ -527,67 +531,67 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
         "executables": {
             "type": "option",
             "help": "Treat Windows executable files as viruses for the purpose of blocking or monitoring.",
             "default": "default",
-            "options": ["default", "virus"],
+            "options": [{"help": "Perform standard AntiVirus scanning of Windows executable files.", "label": "Default", "name": "default"}, {"help": "Treat Windows executables as viruses.", "label": "Virus", "name": "virus"}],
         },
     },
     "nntp": {
@@ -595,61 +599,61 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
     },
     "cifs": {
@@ -657,61 +661,61 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
     },
     "ssh": {
@@ -719,61 +723,61 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable AntiVirus scan service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the virus infected files.", "label": "Block", "name": "block"}, {"help": "Log the virus infected files.", "label": "Monitor", "name": "monitor"}],
         },
         "outbreak-prevention": {
             "type": "option",
             "help": "Enable virus outbreak prevention service.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "external-blocklist": {
             "type": "option",
             "help": "Enable external-blocklist. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "malware-stream": {
             "type": "option",
             "help": "Enable 0-day malware-stream scanning. Analyzes files including the content of archives.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the matched files.", "label": "Block", "name": "block"}, {"help": "Log the matched files.", "label": "Monitor", "name": "monitor"}],
         },
         "fortindr": {
             "type": "option",
             "help": "Enable scanning of files by FortiNDR.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiNDR detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiNDR detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "fortisandbox": {
             "type": "option",
             "help": "Enable scanning of files by FortiSandbox.",
             "default": "disable",
-            "options": ["disable", "block", "monitor"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Block the FortiSandbox detected infections.", "label": "Block", "name": "block"}, {"help": "Log the FortiSandbox detected infections.", "label": "Monitor", "name": "monitor"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Enable/disable quarantine for infected files.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine for infected files.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine for infected files.", "label": "Enable", "name": "enable"}],
         },
         "archive-block": {
             "type": "option",
             "help": "Select the archive types to block.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Block encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Block corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Block partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Block multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Block nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Block mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Block scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Block archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "archive-log": {
             "type": "option",
             "help": "Select the archive types to log.",
             "default": "",
-            "options": ["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"],
+            "options": [{"help": "Log encrypted archives.", "label": "Encrypted", "name": "encrypted"}, {"help": "Log corrupted archives.", "label": "Corrupted", "name": "corrupted"}, {"help": "Log partially corrupted archives.", "label": "Partiallycorrupted", "name": "partiallycorrupted"}, {"help": "Log multipart archives.", "label": "Multipart", "name": "multipart"}, {"help": "Log nested archives that exceed uncompressed nest limit.", "label": "Nested", "name": "nested"}, {"help": "Log mail bomb archives.", "label": "Mailbomb", "name": "mailbomb"}, {"help": "Log scan timeout.", "label": "Timeout", "name": "timeout"}, {"help": "Log archives that FortiOS cannot open.", "label": "Unhandled", "name": "unhandled"}],
         },
         "emulator": {
             "type": "option",
             "help": "Enable/disable the virus emulator.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the virus emulator.", "label": "Enable", "name": "enable"}, {"help": "Disable the virus emulator.", "label": "Disable", "name": "disable"}],
         },
     },
     "nac-quar": {
@@ -781,7 +785,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/Disable quarantining infected hosts to the banned user list.",
             "default": "none",
-            "options": ["none", "quar-src-ip"],
+            "options": [{"help": "Do not quarantine infected hosts.", "label": "None", "name": "none"}, {"help": "Quarantine all traffic from the infected hosts source IP.", "label": "Quar Src Ip", "name": "quar-src-ip"}],
         },
         "expiry": {
             "type": "user",
@@ -792,7 +796,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable AntiVirus quarantine logging.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable AntiVirus quarantine logging.", "label": "Enable", "name": "enable"}, {"help": "Disable AntiVirus quarantine logging.", "label": "Disable", "name": "disable"}],
         },
     },
     "content-disarm": {
@@ -800,121 +804,121 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable using CDR as a secondary method for determining suspicous files for analytics.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "", "label": "Disable", "name": "disable"}, {"help": "", "label": "Enable", "name": "enable"}],
         },
         "original-file-destination": {
             "type": "option",
             "help": "Destination to send original file if active content is removed.",
             "default": "discard",
-            "options": ["fortisandbox", "quarantine", "discard"],
+            "options": [{"help": "Send original file to configured FortiSandbox.", "label": "Fortisandbox", "name": "fortisandbox"}, {"help": "Send original file to quarantine.", "label": "Quarantine", "name": "quarantine"}, {"help": "Original file will be discarded after content disarm.", "label": "Discard", "name": "discard"}],
         },
         "error-action": {
             "type": "option",
             "help": "Action to be taken if CDR engine encounters an unrecoverable error.",
             "default": "log-only",
-            "options": ["block", "log-only", "ignore"],
+            "options": [{"help": "Block file on CDR error.", "label": "Block", "name": "block"}, {"help": "Log CDR error, but allow file.", "label": "Log Only", "name": "log-only"}, {"help": "Do nothing on CDR error.", "label": "Ignore", "name": "ignore"}],
         },
         "office-macro": {
             "type": "option",
             "help": "Enable/disable stripping of macros in Microsoft Office documents.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "office-hylink": {
             "type": "option",
             "help": "Enable/disable stripping of hyperlinks in Microsoft Office documents.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "office-linked": {
             "type": "option",
             "help": "Enable/disable stripping of linked objects in Microsoft Office documents.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "office-embed": {
             "type": "option",
             "help": "Enable/disable stripping of embedded objects in Microsoft Office documents.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "office-dde": {
             "type": "option",
             "help": "Enable/disable stripping of Dynamic Data Exchange events in Microsoft Office documents.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "office-action": {
             "type": "option",
             "help": "Enable/disable stripping of PowerPoint action events in Microsoft Office documents.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-javacode": {
             "type": "option",
             "help": "Enable/disable stripping of JavaScript code in PDF documents.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-embedfile": {
             "type": "option",
             "help": "Enable/disable stripping of embedded files in PDF documents.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-hyperlink": {
             "type": "option",
             "help": "Enable/disable stripping of hyperlinks from PDF documents.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-act-gotor": {
             "type": "option",
             "help": "Enable/disable stripping of PDF document actions that access other PDF documents.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-act-launch": {
             "type": "option",
             "help": "Enable/disable stripping of PDF document actions that launch other applications.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-act-sound": {
             "type": "option",
             "help": "Enable/disable stripping of PDF document actions that play a sound.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-act-movie": {
             "type": "option",
             "help": "Enable/disable stripping of PDF document actions that play a movie.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-act-java": {
             "type": "option",
             "help": "Enable/disable stripping of PDF document actions that execute JavaScript code.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "pdf-act-form": {
             "type": "option",
             "help": "Enable/disable stripping of PDF document actions that submit data to other targets.",
-            "default": "enable",
-            "options": ["disable", "enable"],
+            "default": "",
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "cover-page": {
             "type": "option",
             "help": "Enable/disable inserting a cover page into the disarmed document.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
         "detect-only": {
             "type": "option",
             "help": "Enable/disable only detect disarmable files, do not alter content.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this Content Disarm and Reconstruction feature.", "label": "Disable", "name": "disable"}, {"help": "Enable this Content Disarm and Reconstruction feature.", "label": "Enable", "name": "enable"}],
         },
     },
     "external-blocklist": {
@@ -930,65 +934,65 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FEATURE_SET = [
-    "flow",
-    "proxy",
+    "flow",  # Flow feature set.
+    "proxy",  # Proxy feature set.
 ]
 VALID_BODY_FORTISANDBOX_MODE = [
-    "inline",
-    "analytics-suspicious",
-    "analytics-everything",
+    "inline",  # FortiSandbox inline scan.
+    "analytics-suspicious",  # FortiSandbox post-transfer scan: submit supported files if heuristics or other methods determine they are suspicious.
+    "analytics-everything",  # FortiSandbox post-transfer scan: submit supported files for inspection.
 ]
 VALID_BODY_ANALYTICS_DB = [
-    "disable",
-    "enable",
+    "disable",  # Use only the standard AV signature databases.
+    "enable",  # Also use the FortiSandbox signature database.
 ]
 VALID_BODY_MOBILE_MALWARE_DB = [
-    "disable",
-    "enable",
+    "disable",  # Do not use the mobile malware signature database.
+    "enable",  # Also use the mobile malware signature database.
 ]
 VALID_BODY_OUTBREAK_PREVENTION_ARCHIVE_SCAN = [
-    "disable",
-    "enable",
+    "disable",  # Analyze files as sent, not the content of archives.
+    "enable",  # Analyze files including the content of archives.
 ]
 VALID_BODY_EXTERNAL_BLOCKLIST_ENABLE_ALL = [
-    "disable",
-    "enable",
+    "disable",  # Use configured external blocklists.
+    "enable",  # Enable all external blocklists.
 ]
 VALID_BODY_EMS_THREAT_FEED = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of EMS threat feed when performing AntiVirus scan.
+    "enable",  # Enable use of EMS threat feed when performing AntiVirus scan.
 ]
 VALID_BODY_FORTINDR_ERROR_ACTION = [
-    "log-only",
-    "block",
-    "ignore",
+    "log-only",  # Log FortiNDR error, but allow the file.
+    "block",  # Block the file on FortiNDR error.
+    "ignore",  # Do nothing on FortiNDR error.
 ]
 VALID_BODY_FORTINDR_TIMEOUT_ACTION = [
-    "log-only",
-    "block",
-    "ignore",
+    "log-only",  # Log FortiNDR scan timeout, but allow the file.
+    "block",  # Block the file on FortiNDR scan timeout.
+    "ignore",  # Do nothing on FortiNDR scan timeout.
 ]
 VALID_BODY_FORTISANDBOX_ERROR_ACTION = [
-    "log-only",
-    "block",
-    "ignore",
+    "log-only",  # Log FortiSandbox inline scan error, but allow the file.
+    "block",  # Block the file on FortiSandbox inline scan error.
+    "ignore",  # Do nothing on FortiSandbox inline scan error.
 ]
 VALID_BODY_FORTISANDBOX_TIMEOUT_ACTION = [
-    "log-only",
-    "block",
-    "ignore",
+    "log-only",  # Log FortiSandbox inline scan timeout, but allow the file.
+    "block",  # Block the file on FortiSandbox inline scan timeout.
+    "ignore",  # Do nothing on FortiSandbox inline scan timeout.
 ]
 VALID_BODY_AV_VIRUS_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_EXTENDED_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SCAN_MODE = [
-    "default",
-    "legacy",
+    "default",  # On the fly decompression and scanning of certain archive files.
+    "legacy",  # Scan archive files only after the entire file is received.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1118,7 +1122,7 @@ def validate_antivirus_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "feature-set": "flow",  # Valid enum value
+        ...     "feature-set": "{'name': 'flow', 'help': 'Flow feature set.', 'label': 'Flow', 'description': 'Flow feature set'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_antivirus_profile_post(payload)
         >>> assert is_valid == True
@@ -1695,9 +1699,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure AntiVirus profiles.",
-    "total_fields": 32,
+    "total_fields": 33,
     "required_fields_count": 1,
-    "fields_with_defaults_count": 19,
+    "fields_with_defaults_count": 20,
 }
 
 

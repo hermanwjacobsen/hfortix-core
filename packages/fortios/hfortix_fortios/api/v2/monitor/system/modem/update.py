@@ -56,7 +56,7 @@ class Update:
         """
         Retrieve system/modem/update configuration.
 
-        Configuration for system/modem/update
+        Update supported modem list from FortiGuard.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

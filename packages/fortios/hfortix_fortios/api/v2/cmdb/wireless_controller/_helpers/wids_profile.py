@@ -487,245 +487,245 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SENSOR_MODE = [
-    "disable",
-    "foreign",
-    "both",
+    "disable",  # Disable the scan.
+    "foreign",  # Enable the scan and monitor foreign channels. Foreign channels are all other available channels than the current operating channel.
+    "both",  # Enable the scan and monitor both foreign and home channels. Select this option to monitor all WiFi channels.
 ]
 VALID_BODY_AP_SCAN = [
-    "disable",
-    "enable",
+    "disable",  # Disable rogue AP detection.
+    "enable",  # Enable rogue AP detection.
 ]
 VALID_BODY_AP_SCAN_PASSIVE = [
-    "enable",
-    "disable",
+    "enable",  # Passive scanning on all channels.
+    "disable",  # Passive scanning only on DFS channels.
 ]
 VALID_BODY_AP_AUTO_SUPPRESS = [
-    "enable",
-    "disable",
+    "enable",  # Enable on-wire rogue AP auto-suppression.
+    "disable",  # Disable on-wire rogue AP auto-suppression.
 ]
 VALID_BODY_WIRELESS_BRIDGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable wireless bridge detection.
+    "disable",  # Disable wireless bridge detection.
 ]
 VALID_BODY_DEAUTH_BROADCAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable broadcast de-authentication detection.
+    "disable",  # Disable broadcast de-authentication detection.
 ]
 VALID_BODY_NULL_SSID_PROBE_RESP = [
-    "enable",
-    "disable",
+    "enable",  # Enable null SSID probe resp detection.
+    "disable",  # Disable null SSID probe resp detection.
 ]
 VALID_BODY_LONG_DURATION_ATTACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable long duration attack detection.
+    "disable",  # Disable long duration attack detection.
 ]
 VALID_BODY_INVALID_MAC_OUI = [
-    "enable",
-    "disable",
+    "enable",  # Enable invalid MAC OUI detection.
+    "disable",  # Disable invalid MAC OUI detection.
 ]
 VALID_BODY_WEAK_WEP_IV = [
-    "enable",
-    "disable",
+    "enable",  # Enable weak WEP IV detection.
+    "disable",  # Disable weak WEP IV detection.
 ]
 VALID_BODY_AUTH_FRAME_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable authentication frame flooding detection.
+    "disable",  # Disable authentication frame flooding detection.
 ]
 VALID_BODY_ASSOC_FRAME_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable association frame flooding detection.
+    "disable",  # Disable association frame flooding detection.
 ]
 VALID_BODY_REASSOC_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable reassociation flood detection.
+    "disable",  # Disable reassociation flood detection.
 ]
 VALID_BODY_PROBE_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable probe flood detection.
+    "disable",  # Disable probe flood detection.
 ]
 VALID_BODY_BCN_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable bcn flood detection.
+    "disable",  # Disable bcn flood detection.
 ]
 VALID_BODY_RTS_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable rts flood detection.
+    "disable",  # Disable rts flood detection.
 ]
 VALID_BODY_CTS_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable cts flood detection.
+    "disable",  # Disable cts flood detection.
 ]
 VALID_BODY_CLIENT_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable client flood detection.
+    "disable",  # Disable client flood detection.
 ]
 VALID_BODY_BLOCK_ACK_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable block_ack flood detection.
+    "disable",  # Disable block_ack flood detection.
 ]
 VALID_BODY_PSPOLL_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable pspoll flood detection.
+    "disable",  # Disable pspoll flood detection.
 ]
 VALID_BODY_NETSTUMBLER = [
-    "enable",
-    "disable",
+    "enable",  # Enable netstumbler detection.
+    "disable",  # Disable netstumbler detection.
 ]
 VALID_BODY_WELLENREITER = [
-    "enable",
-    "disable",
+    "enable",  # Enable wellenreiter detection.
+    "disable",  # Disable wellenreiter detection.
 ]
 VALID_BODY_SPOOFED_DEAUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable spoofed de-authentication attack detection.
+    "disable",  # Disable spoofed de-authentication attack detection.
 ]
 VALID_BODY_ASLEAP_ATTACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable asleap attack detection.
+    "disable",  # Disable asleap attack detection.
 ]
 VALID_BODY_EAPOL_START_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable EAPOL-Start flooding detection.
+    "disable",  # Disable EAPOL-Start flooding detection.
 ]
 VALID_BODY_EAPOL_LOGOFF_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable EAPOL-Logoff flooding detection.
+    "disable",  # Disable EAPOL-Logoff flooding detection.
 ]
 VALID_BODY_EAPOL_SUCC_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable EAPOL-Success flooding detection.
+    "disable",  # Disable EAPOL-Success flooding detection.
 ]
 VALID_BODY_EAPOL_FAIL_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable EAPOL-Failure flooding detection.
+    "disable",  # Disable EAPOL-Failure flooding detection.
 ]
 VALID_BODY_EAPOL_PRE_SUCC_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable premature EAPOL-Success flooding detection.
+    "disable",  # Disable premature EAPOL-Success flooding detection.
 ]
 VALID_BODY_EAPOL_PRE_FAIL_FLOOD = [
-    "enable",
-    "disable",
+    "enable",  # Enable premature EAPOL-Failure flooding detection.
+    "disable",  # Disable premature EAPOL-Failure flooding detection.
 ]
 VALID_BODY_WINDOWS_BRIDGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable windows bridge detection.
+    "disable",  # Disable windows bridge detection.
 ]
 VALID_BODY_DISASSOC_BROADCAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable broadcast dis-association detection.
+    "disable",  # Disable broadcast dis-association detection.
 ]
 VALID_BODY_AP_SPOOFING = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP spoofing detection.
+    "disable",  # Disable AP spoofing detection.
 ]
 VALID_BODY_CHAN_BASED_MITM = [
-    "enable",
-    "disable",
+    "enable",  # Enable channel based mitm detection.
+    "disable",  # Disable channel based mitm detection.
 ]
 VALID_BODY_ADHOC_VALID_SSID = [
-    "enable",
-    "disable",
+    "enable",  # Enable adhoc using valid SSID detection.
+    "disable",  # Disable adhoc using valid SSID detection.
 ]
 VALID_BODY_ADHOC_NETWORK = [
-    "enable",
-    "disable",
+    "enable",  # Enable adhoc network detection.
+    "disable",  # Disable adhoc network detection.
 ]
 VALID_BODY_EAPOL_KEY_OVERFLOW = [
-    "enable",
-    "disable",
+    "enable",  # Enable overflow EAPOL key detection.
+    "disable",  # Disable overflow EAPOL key detection.
 ]
 VALID_BODY_AP_IMPERSONATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable AP impersonation detection.
+    "disable",  # Disable AP impersonation detection.
 ]
 VALID_BODY_INVALID_ADDR_COMBINATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable invalid address combination detection.
+    "disable",  # Disable invalid address combination detection.
 ]
 VALID_BODY_BEACON_WRONG_CHANNEL = [
-    "enable",
-    "disable",
+    "enable",  # Enable beacon wrong channel detection.
+    "disable",  # Disable beacon wrong channel detection.
 ]
 VALID_BODY_HT_GREENFIELD = [
-    "enable",
-    "disable",
+    "enable",  # Enable HT greenfield detection.
+    "disable",  # Disable HT greenfield detection.
 ]
 VALID_BODY_OVERFLOW_IE = [
-    "enable",
-    "disable",
+    "enable",  # Enable overflow IE detection.
+    "disable",  # Disable overflow IE detection.
 ]
 VALID_BODY_MALFORMED_HT_IE = [
-    "enable",
-    "disable",
+    "enable",  # Enable malformed HT IE detection.
+    "disable",  # Disable malformed HT IE detection.
 ]
 VALID_BODY_MALFORMED_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable malformed auth frame detection.
+    "disable",  # Disable malformed auth frame detection.
 ]
 VALID_BODY_MALFORMED_ASSOCIATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable malformed association request detection.
+    "disable",  # Disable malformed association request detection.
 ]
 VALID_BODY_HT_40MHZ_INTOLERANCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable HT 40 MHz intolerance detection.
+    "disable",  # Disable HT 40 MHz intolerance detection.
 ]
 VALID_BODY_VALID_SSID_MISUSE = [
-    "enable",
-    "disable",
+    "enable",  # Enable valid SSID misuse detection.
+    "disable",  # Disable valid SSID misuse detection.
 ]
 VALID_BODY_VALID_CLIENT_MISASSOCIATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable valid client misassociation detection.
+    "disable",  # Disable valid client misassociation detection.
 ]
 VALID_BODY_HOTSPOTTER_ATTACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable hotspotter attack detection.
+    "disable",  # Disable hotspotter attack detection.
 ]
 VALID_BODY_PWSAVE_DOS_ATTACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable power save DOS attack detection.
+    "disable",  # Disable power save DOS attack detection.
 ]
 VALID_BODY_OMERTA_ATTACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable omerta attack detection.
+    "disable",  # Disable omerta attack detection.
 ]
 VALID_BODY_DISCONNECT_STATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable disconnect station detection.
+    "disable",  # Disable disconnect station detection.
 ]
 VALID_BODY_UNENCRYPTED_VALID = [
-    "enable",
-    "disable",
+    "enable",  # Enable unencrypted valid detection.
+    "disable",  # Disable unencrypted valid detection.
 ]
 VALID_BODY_FATA_JACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable FATA-Jack detection.
+    "disable",  # Disable FATA-Jack detection.
 ]
 VALID_BODY_RISKY_ENCRYPTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable Risky Encryption detection.
+    "disable",  # Disable Risky Encryption detection.
 ]
 VALID_BODY_FUZZED_BEACON = [
-    "enable",
-    "disable",
+    "enable",  # Enable fuzzed beacon detection.
+    "disable",  # Disable fuzzed beacon detection.
 ]
 VALID_BODY_FUZZED_PROBE_REQUEST = [
-    "enable",
-    "disable",
+    "enable",  # Enable fuzzed probe request detection.
+    "disable",  # Disable fuzzed probe request detection.
 ]
 VALID_BODY_FUZZED_PROBE_RESPONSE = [
-    "enable",
-    "disable",
+    "enable",  # Enable fuzzed probe response detection.
+    "disable",  # Disable fuzzed probe response detection.
 ]
 VALID_BODY_AIR_JACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable AirJack detection.
+    "disable",  # Disable AirJack detection.
 ]
 VALID_BODY_WPA_FT_ATTACK = [
-    "enable",
-    "disable",
+    "enable",  # Enable WPA FT attack detection.
+    "disable",  # Disable WPA FT attack detection.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -853,7 +853,7 @@ def validate_wireless_controller_wids_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "sensor-mode": "disable",  # Valid enum value
+        ...     "sensor-mode": "{'name': 'disable', 'help': 'Disable the scan.', 'label': 'Disable', 'description': 'Disable the scan'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_wids_profile_post(payload)
         >>> assert is_valid == True

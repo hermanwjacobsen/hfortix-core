@@ -10,16 +10,16 @@ class ExplicitPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the explicit FTP proxy.
+    status: NotRequired[Literal[{"description": "Enable the explicit FTP proxy", "help": "Enable the explicit FTP proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTP proxy", "help": "Disable the explicit FTP proxy.", "label": "Disable", "name": "disable"}]]  # Enable/disable the explicit FTP proxy.
     incoming_port: NotRequired[str]  # Accept incoming FTP requests on one or more ports.
     incoming_ip: NotRequired[str]  # Accept incoming FTP requests from this IP address. An interf
-    outgoing_ip: NotRequired[str]  # Outgoing FTP requests will leave from this IP address. An in
-    sec_default_action: NotRequired[Literal["accept", "deny"]]  # Accept or deny explicit FTP proxy sessions when no FTP proxy
-    server_data_mode: NotRequired[Literal["client", "passive"]]  # Determine mode of data session on FTP server side.
-    ssl: NotRequired[Literal["enable", "disable"]]  # Enable/disable the explicit FTPS proxy.
+    outgoing_ip: NotRequired[list[dict[str, Any]]]  # Outgoing FTP requests will leave from this IP address. An in
+    sec_default_action: NotRequired[Literal[{"description": "Accept requests", "help": "Accept requests. All explicit FTP proxy traffic is accepted whether there is an explicit FTP proxy policy or not", "label": "Accept", "name": "accept"}, {"help": "Deny requests unless there is a matching explicit FTP proxy policy.", "label": "Deny", "name": "deny"}]]  # Accept or deny explicit FTP proxy sessions when no FTP proxy
+    server_data_mode: NotRequired[Literal[{"description": "Use the same transmission mode for client and server data sessions", "help": "Use the same transmission mode for client and server data sessions.", "label": "Client", "name": "client"}, {"description": "Use passive mode on server data session", "help": "Use passive mode on server data session.", "label": "Passive", "name": "passive"}]]  # Determine mode of data session on FTP server side.
+    ssl: NotRequired[Literal[{"description": "Enable the explicit FTPS proxy", "help": "Enable the explicit FTPS proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTPS proxy", "help": "Disable the explicit FTPS proxy.", "label": "Disable", "name": "disable"}]]  # Enable/disable the explicit FTPS proxy.
     ssl_cert: NotRequired[list[dict[str, Any]]]  # List of certificate names to use for SSL connections to this
-    ssl_dh_bits: NotRequired[Literal["768", "1024", "1536", "2048"]]  # Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negoti
-    ssl_algorithm: NotRequired[Literal["high", "medium", "low"]]  # Relative strength of encryption algorithms accepted in negot
+    ssl_dh_bits: NotRequired[Literal[{"description": "768-bit Diffie-Hellman prime", "help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"description": "1024-bit Diffie-Hellman prime", "help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"description": "1536-bit Diffie-Hellman prime", "help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"description": "2048-bit Diffie-Hellman prime", "help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}]]  # Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negoti
+    ssl_algorithm: NotRequired[Literal[{"description": "High encryption", "help": "High encryption. Allow only AES and ChaCha", "label": "High", "name": "high"}, {"help": "Medium encryption. Allow AES, ChaCha, 3DES, and RC4.", "label": "Medium", "name": "medium"}, {"description": "Low encryption", "help": "Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.", "label": "Low", "name": "low"}]]  # Relative strength of encryption algorithms accepted in negot
 
 
 class Explicit:
@@ -46,16 +46,16 @@ class Explicit:
     def post(
         self,
         payload_dict: ExplicitPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the explicit FTP proxy", "help": "Enable the explicit FTP proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTP proxy", "help": "Disable the explicit FTP proxy.", "label": "Disable", "name": "disable"}] | None = ...,
         incoming_port: str | None = ...,
         incoming_ip: str | None = ...,
-        outgoing_ip: str | None = ...,
-        sec_default_action: Literal["accept", "deny"] | None = ...,
-        server_data_mode: Literal["client", "passive"] | None = ...,
-        ssl: Literal["enable", "disable"] | None = ...,
+        outgoing_ip: list[dict[str, Any]] | None = ...,
+        sec_default_action: Literal[{"description": "Accept requests", "help": "Accept requests. All explicit FTP proxy traffic is accepted whether there is an explicit FTP proxy policy or not", "label": "Accept", "name": "accept"}, {"help": "Deny requests unless there is a matching explicit FTP proxy policy.", "label": "Deny", "name": "deny"}] | None = ...,
+        server_data_mode: Literal[{"description": "Use the same transmission mode for client and server data sessions", "help": "Use the same transmission mode for client and server data sessions.", "label": "Client", "name": "client"}, {"description": "Use passive mode on server data session", "help": "Use passive mode on server data session.", "label": "Passive", "name": "passive"}] | None = ...,
+        ssl: Literal[{"description": "Enable the explicit FTPS proxy", "help": "Enable the explicit FTPS proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTPS proxy", "help": "Disable the explicit FTPS proxy.", "label": "Disable", "name": "disable"}] | None = ...,
         ssl_cert: list[dict[str, Any]] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
+        ssl_dh_bits: Literal[{"description": "768-bit Diffie-Hellman prime", "help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"description": "1024-bit Diffie-Hellman prime", "help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"description": "1536-bit Diffie-Hellman prime", "help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"description": "2048-bit Diffie-Hellman prime", "help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}] | None = ...,
+        ssl_algorithm: Literal[{"description": "High encryption", "help": "High encryption. Allow only AES and ChaCha", "label": "High", "name": "high"}, {"help": "Medium encryption. Allow AES, ChaCha, 3DES, and RC4.", "label": "Medium", "name": "medium"}, {"description": "Low encryption", "help": "Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.", "label": "Low", "name": "low"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -64,16 +64,16 @@ class Explicit:
     def put(
         self,
         payload_dict: ExplicitPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the explicit FTP proxy", "help": "Enable the explicit FTP proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTP proxy", "help": "Disable the explicit FTP proxy.", "label": "Disable", "name": "disable"}] | None = ...,
         incoming_port: str | None = ...,
         incoming_ip: str | None = ...,
-        outgoing_ip: str | None = ...,
-        sec_default_action: Literal["accept", "deny"] | None = ...,
-        server_data_mode: Literal["client", "passive"] | None = ...,
-        ssl: Literal["enable", "disable"] | None = ...,
+        outgoing_ip: list[dict[str, Any]] | None = ...,
+        sec_default_action: Literal[{"description": "Accept requests", "help": "Accept requests. All explicit FTP proxy traffic is accepted whether there is an explicit FTP proxy policy or not", "label": "Accept", "name": "accept"}, {"help": "Deny requests unless there is a matching explicit FTP proxy policy.", "label": "Deny", "name": "deny"}] | None = ...,
+        server_data_mode: Literal[{"description": "Use the same transmission mode for client and server data sessions", "help": "Use the same transmission mode for client and server data sessions.", "label": "Client", "name": "client"}, {"description": "Use passive mode on server data session", "help": "Use passive mode on server data session.", "label": "Passive", "name": "passive"}] | None = ...,
+        ssl: Literal[{"description": "Enable the explicit FTPS proxy", "help": "Enable the explicit FTPS proxy.", "label": "Enable", "name": "enable"}, {"description": "Disable the explicit FTPS proxy", "help": "Disable the explicit FTPS proxy.", "label": "Disable", "name": "disable"}] | None = ...,
         ssl_cert: list[dict[str, Any]] | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
+        ssl_dh_bits: Literal[{"description": "768-bit Diffie-Hellman prime", "help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"description": "1024-bit Diffie-Hellman prime", "help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"description": "1536-bit Diffie-Hellman prime", "help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"description": "2048-bit Diffie-Hellman prime", "help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}] | None = ...,
+        ssl_algorithm: Literal[{"description": "High encryption", "help": "High encryption. Allow only AES and ChaCha", "label": "High", "name": "high"}, {"help": "Medium encryption. Allow AES, ChaCha, 3DES, and RC4.", "label": "Medium", "name": "medium"}, {"description": "Low encryption", "help": "Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.", "label": "Low", "name": "low"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

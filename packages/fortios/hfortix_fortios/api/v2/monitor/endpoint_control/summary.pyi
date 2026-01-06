@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Summary:
     """
-    Configuration for endpoint-control/summary
+    Summary of FortiClient endpoint records.
     
     Path: endpoint_control/summary
     Category: monitor

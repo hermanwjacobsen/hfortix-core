@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_AUTHENTICATION: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable FSSO Polling Mode", "help": "Enable FSSO Polling Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Polling Mode", "help": "Disable FSSO Polling Mode.", "label": "Disable", "name": "disable"}]
+VALID_BODY_AUTHENTICATION: Literal[{"description": "Enable FSSO Agent Authentication", "help": "Enable FSSO Agent Authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable FSSO Agent Authentication", "help": "Disable FSSO Agent Authentication.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

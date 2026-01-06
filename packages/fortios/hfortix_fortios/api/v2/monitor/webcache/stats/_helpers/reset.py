@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webcache/stats/reset",
     "category": "monitor",
     "api_path": "webcache/stats/reset",
-    "help": "Configuration for webcache/stats/reset",
+    "help": "Reset all webcache statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -116,7 +116,7 @@ class StandaloneCluster:
         standalone_group_id: int | None = None,
         group_member_id: int | None = None,
         layer2_connection: str | None = None,
-        session_sync_dev: str | None = None,
+        session_sync_dev: str | list | None = None,
         encryption: str | None = None,
         psksecret: Any | None = None,
         asymmetric_traffic_control: str | None = None,

@@ -56,7 +56,7 @@ class VlanProbe:
         """
         Retrieve wifi/vlan_probe configuration.
 
-        Configuration for wifi/vlan-probe
+        Retrieve the VLAN probe results.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

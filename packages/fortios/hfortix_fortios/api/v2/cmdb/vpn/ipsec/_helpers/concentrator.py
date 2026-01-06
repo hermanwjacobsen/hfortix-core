@@ -108,8 +108,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SRC_CHECK = [
-    "disable",
-    "enable",
+    "disable",  # Ignore source selector when choosing tunnel.
+    "enable",  # Use source selector to choose tunnel.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -237,7 +237,7 @@ def validate_vpn_ipsec_concentrator_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "src-check": "disable",  # Valid enum value
+        ...     "src-check": "{'name': 'disable', 'help': 'Ignore source selector when choosing tunnel.', 'label': 'Disable', 'description': 'Ignore source selector when choosing tunnel'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_ipsec_concentrator_post(payload)
         >>> assert is_valid == True

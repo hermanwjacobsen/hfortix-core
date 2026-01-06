@@ -13,9 +13,9 @@ class ProfilePayload(TypedDict, total=False):
     name: str  # Name.
     comment: NotRequired[str]  # Comment.
     filters: list[dict[str, Any]]  # YouTube filter entries.
-    youtube: NotRequired[Literal["enable", "disable"]]  # Enable/disable YouTube video source.
-    vimeo: NotRequired[Literal["enable", "disable"]]  # Enable/disable Vimeo video source.
-    dailymotion: NotRequired[Literal["enable", "disable"]]  # Enable/disable Dailymotion video source.
+    youtube: NotRequired[Literal[{"description": "Enable YouTube source", "help": "Enable YouTube source.", "label": "Enable", "name": "enable"}, {"description": "Disable YouTube source", "help": "Disable YouTube source.", "label": "Disable", "name": "disable"}]]  # Enable/disable YouTube video source.
+    vimeo: NotRequired[Literal[{"description": "Enable Vimeo source", "help": "Enable Vimeo source.", "label": "Enable", "name": "enable"}, {"description": "Disable Vimeo source", "help": "Disable Vimeo source.", "label": "Disable", "name": "disable"}]]  # Enable/disable Vimeo video source.
+    dailymotion: NotRequired[Literal[{"description": "Enable Dailymotion source", "help": "Enable Dailymotion source.", "label": "Enable", "name": "enable"}, {"description": "Disable Dailymotion source", "help": "Disable Dailymotion source.", "label": "Disable", "name": "disable"}]]  # Enable/disable Dailymotion video source.
     replacemsg_group: NotRequired[str]  # Replacement message group.
 
 
@@ -47,9 +47,9 @@ class Profile:
         name: str | None = ...,
         comment: str | None = ...,
         filters: list[dict[str, Any]] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
+        youtube: Literal[{"description": "Enable YouTube source", "help": "Enable YouTube source.", "label": "Enable", "name": "enable"}, {"description": "Disable YouTube source", "help": "Disable YouTube source.", "label": "Disable", "name": "disable"}] | None = ...,
+        vimeo: Literal[{"description": "Enable Vimeo source", "help": "Enable Vimeo source.", "label": "Enable", "name": "enable"}, {"description": "Disable Vimeo source", "help": "Disable Vimeo source.", "label": "Disable", "name": "disable"}] | None = ...,
+        dailymotion: Literal[{"description": "Enable Dailymotion source", "help": "Enable Dailymotion source.", "label": "Enable", "name": "enable"}, {"description": "Disable Dailymotion source", "help": "Disable Dailymotion source.", "label": "Disable", "name": "disable"}] | None = ...,
         replacemsg_group: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -62,9 +62,9 @@ class Profile:
         name: str | None = ...,
         comment: str | None = ...,
         filters: list[dict[str, Any]] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
+        youtube: Literal[{"description": "Enable YouTube source", "help": "Enable YouTube source.", "label": "Enable", "name": "enable"}, {"description": "Disable YouTube source", "help": "Disable YouTube source.", "label": "Disable", "name": "disable"}] | None = ...,
+        vimeo: Literal[{"description": "Enable Vimeo source", "help": "Enable Vimeo source.", "label": "Enable", "name": "enable"}, {"description": "Disable Vimeo source", "help": "Disable Vimeo source.", "label": "Disable", "name": "disable"}] | None = ...,
+        dailymotion: Literal[{"description": "Enable Dailymotion source", "help": "Enable Dailymotion source.", "label": "Enable", "name": "enable"}, {"description": "Disable Dailymotion source", "help": "Disable Dailymotion source.", "label": "Disable", "name": "disable"}] | None = ...,
         replacemsg_group: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

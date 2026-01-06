@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Migrate:
     """
-    Configuration for registration/forticloud/migrate
+    Migrate standalone FortiGate Cloud account to FortiCloud.
     
     Path: registration/forticloud/migrate
     Category: monitor

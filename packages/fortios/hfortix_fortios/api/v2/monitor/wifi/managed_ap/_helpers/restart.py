@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/managed_ap/restart",
     "category": "monitor",
     "api_path": "wifi/managed_ap/restart",
-    "help": "Configuration for wifi/managed_ap/restart",
+    "help": "Restart a given FortiAP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

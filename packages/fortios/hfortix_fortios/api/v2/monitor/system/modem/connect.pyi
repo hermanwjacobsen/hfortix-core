@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Connect:
     """
-    Configuration for system/modem/connect
+    Trigger a connect for the configured modem.
     
     Path: system/modem/connect
     Category: monitor

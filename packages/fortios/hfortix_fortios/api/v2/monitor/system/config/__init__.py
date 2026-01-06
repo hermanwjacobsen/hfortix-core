@@ -3,12 +3,14 @@
 from .backup import Backup
 from .restore import Restore
 from .restore_status import RestoreStatus
+from .usb_filelist import UsbFilelist
 
 __all__ = [
     "Backup",
     "Config",
     "Restore",
     "RestoreStatus",
+    "UsbFilelist",
 ]
 
 
@@ -24,3 +26,4 @@ class Config:
         self.backup = Backup(client)
         self.restore = Restore(client)
         self.restore_status = RestoreStatus(client)
+        self.usb_filelist = UsbFilelist(client)

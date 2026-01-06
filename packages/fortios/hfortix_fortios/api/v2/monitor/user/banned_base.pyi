@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Banned:
     """
-    Monitor endpoint for user/banned
+    Return a list of all banned users by IP.
     
     Path: user/banned
     Category: monitor

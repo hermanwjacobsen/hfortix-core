@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "fortiview/session/cancel",
     "category": "monitor",
     "api_path": "fortiview/session/cancel",
-    "help": "Configuration for fortiview/session/cancel",
+    "help": "Cancel a FortiView request session.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -71,6 +71,7 @@ FIELDS_WITH_DEFAULTS = {
     "user-name": "",
     "group-name": "",
     "digest-method": "sha1",
+    "require-signed-resp-and-asrt": "disable",
     "limit-relaystate": "disable",
     "clock-tolerance": 15,
     "adfs-claim": "disable",
@@ -110,6 +111,7 @@ FIELD_TYPES = {
     "user-name": "string",  # User name in assertion statement.
     "group-name": "string",  # Group name in assertion statement.
     "digest-method": "option",  # Digest method algorithm.
+    "require-signed-resp-and-asrt": "option",  # Require both response and assertion from IDP to be signed wh
     "limit-relaystate": "option",  # Enable/disable limiting of relay-state parameter when it exc
     "clock-tolerance": "integer",  # Clock skew tolerance in seconds (0 - 300, default = 15, 0 = 
     "adfs-claim": "option",  # Enable/disable ADFS Claim for user/group attribute in assert
@@ -135,6 +137,7 @@ FIELD_DESCRIPTIONS = {
     "user-name": "User name in assertion statement.",
     "group-name": "Group name in assertion statement.",
     "digest-method": "Digest method algorithm.",
+    "require-signed-resp-and-asrt": "Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).",
     "limit-relaystate": "Enable/disable limiting of relay-state parameter when it exceeds SAML 2.0 specification limits (80 bytes).",
     "clock-tolerance": "Clock skew tolerance in seconds (0 - 300, default = 15, 0 = no tolerance).",
     "adfs-claim": "Enable/disable ADFS Claim for user/group attribute in assertion statement (default = disable).",
@@ -167,73 +170,78 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SCIM_USER_ATTR_TYPE = [
-    "user-name",
-    "display-name",
-    "external-id",
+    "user-name",  # User name.
+    "display-name",  # Display name.
+    "external-id",  # External ID.
+    "email",  # Email.
 ]
 VALID_BODY_SCIM_GROUP_ATTR_TYPE = [
-    "display-name",
-    "external-id",
+    "display-name",  # Display name.
+    "external-id",  # External ID.
 ]
 VALID_BODY_DIGEST_METHOD = [
-    "sha1",
-    "sha256",
+    "sha1",  # Digest Method Algorithm is SHA1.
+    "sha256",  # Digest Method Algorithm is SHA256.
+]
+VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT = [
+    "enable",  # Both response and assertion must be signed and valid.
+    "disable",  # At least one of response or assertion must be signed and valid.
 ]
 VALID_BODY_LIMIT_RELAYSTATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable limiting of relay-state parameter when it exceeds SAML 2.0 specification limits (80 bytes).
+    "disable",  # Disable limiting of relay-state parameter when it exceeds SAML 2.0 specification limits (80 bytes).
 ]
 VALID_BODY_ADFS_CLAIM = [
-    "enable",
-    "disable",
+    "enable",  # Enable ADFS Claim for user/group attribute in assertion statement.
+    "disable",  # Disable ADFS Claim for user/group attribute in assertion statement.
 ]
 VALID_BODY_USER_CLAIM_TYPE = [
-    "email",
-    "given-name",
-    "name",
-    "upn",
-    "common-name",
-    "email-adfs-1x",
-    "group",
-    "upn-adfs-1x",
-    "role",
-    "sur-name",
-    "ppid",
-    "name-identifier",
-    "authentication-method",
-    "deny-only-group-sid",
-    "deny-only-primary-sid",
-    "deny-only-primary-group-sid",
-    "group-sid",
-    "primary-group-sid",
-    "primary-sid",
-    "windows-account-name",
+    "email",  # E-mail address of the user.
+    "given-name",  # Given name of the user.
+    "name",  # Unique name of the user.
+    "upn",  # User principal name (UPN) of the user.
+    "common-name",  # Common name of the user.
+    "email-adfs-1x",  # E-mail address of the user when interoperating with AD FS 1.1 or ADFS 1.0.
+    "group",  # Group that the user is a member of.
+    "upn-adfs-1x",  # User principal name (UPN) of the user.
+    "role",  # Role that the user has.
+    "sur-name",  # Surname of the user
+    "ppid",  # Private identifier of the user.
+    "name-identifier",  # SAML name identifier of the user.
+    "authentication-method",  # Method used to authenticate the user.
+    "deny-only-group-sid",  # Deny-only group SID of the user.
+    "deny-only-primary-sid",  # Deny-only primary SID of the user.
+    "deny-only-primary-group-sid",  # Deny-only primary group SID of the user.
+    "group-sid",  # Group SID of the user.
+    "primary-group-sid",  # Primary group SID of the user.
+    "primary-sid",  # Primary SID of the user.
+    "windows-account-name",  # Domain account name of the user in the form of <domain>\<user>.
 ]
 VALID_BODY_GROUP_CLAIM_TYPE = [
-    "email",
-    "given-name",
-    "name",
-    "upn",
-    "common-name",
-    "email-adfs-1x",
-    "group",
-    "upn-adfs-1x",
-    "role",
-    "sur-name",
-    "ppid",
-    "name-identifier",
-    "authentication-method",
-    "deny-only-group-sid",
-    "deny-only-primary-sid",
-    "deny-only-primary-group-sid",
-    "group-sid",
-    "primary-group-sid",
-    "primary-sid",
-    "windows-account-name",
+    "email",  # E-mail address of the user.
+    "given-name",  # Given name of the user.
+    "name",  # Unique name of the user.
+    "upn",  # User principal name (UPN) of the user.
+    "common-name",  # Common name of the user.
+    "email-adfs-1x",  # E-mail address of the user when interoperating with AD FS 1.1 or ADFS 1.0.
+    "group",  # Group that the user is a member of.
+    "upn-adfs-1x",  # User principal name (UPN) of the user.
+    "role",  # Role that the user has.
+    "sur-name",  # Surname of the user
+    "ppid",  # Private identifier of the user.
+    "name-identifier",  # SAML name identifier of the user.
+    "authentication-method",  # Method used to authenticate the user.
+    "deny-only-group-sid",  # Deny-only group SID of the user.
+    "deny-only-primary-sid",  # Deny-only primary SID of the user.
+    "deny-only-primary-group-sid",  # Deny-only primary group SID of the user.
+    "group-sid",  # Group SID of the user.
+    "primary-group-sid",  # Primary group SID of the user.
+    "primary-sid",  # Primary SID of the user.
+    "windows-account-name",  # Domain account name of the user in the form of <domain>\<user>.
 ]
 VALID_BODY_REAUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable signalling of IDP to force user re-authentication.
+    "disable",  # Disable signalling of IDP to force user re-authentication.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -364,7 +372,7 @@ def validate_user_saml_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "entity-id": True,
-        ...     "scim-user-attr-type": "user-name",  # Valid enum value
+        ...     "scim-user-attr-type": "{'name': 'user-name', 'help': 'User name.', 'label': 'User Name', 'description': 'User name'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_saml_post(payload)
         >>> assert is_valid == True
@@ -416,6 +424,16 @@ def validate_user_saml_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_DIGEST_METHOD)}"
             error_msg += f"\n  → Example: digest-method='{{ VALID_BODY_DIGEST_METHOD[0] }}'"
+            return (False, error_msg)
+    if "require-signed-resp-and-asrt" in payload:
+        value = payload["require-signed-resp-and-asrt"]
+        if value not in VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT:
+            desc = FIELD_DESCRIPTIONS.get("require-signed-resp-and-asrt", "")
+            error_msg = f"Invalid value for 'require-signed-resp-and-asrt': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT)}"
+            error_msg += f"\n  → Example: require-signed-resp-and-asrt='{{ VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT[0] }}'"
             return (False, error_msg)
     if "limit-relaystate" in payload:
         value = payload["limit-relaystate"]
@@ -515,6 +533,13 @@ def validate_user_saml_put(
             return (
                 False,
                 f"Invalid value for 'digest-method'='{value}'. Must be one of: {', '.join(VALID_BODY_DIGEST_METHOD)}",
+            )
+    if "require-signed-resp-and-asrt" in payload:
+        value = payload["require-signed-resp-and-asrt"]
+        if value not in VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT:
+            return (
+                False,
+                f"Invalid value for 'require-signed-resp-and-asrt'='{value}'. Must be one of: {', '.join(VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT)}",
             )
     if "limit-relaystate" in payload:
         value = payload["limit-relaystate"]
@@ -839,9 +864,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "SAML server entry configuration.",
-    "total_fields": 21,
+    "total_fields": 22,
     "required_fields_count": 5,
-    "fields_with_defaults_count": 21,
+    "fields_with_defaults_count": 22,
 }
 
 

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Eject:
     """
-    Configuration for system/usb-device/eject
+    Eject USB drives for safe removal.
     
     Path: system/usb_device/eject
     Category: monitor

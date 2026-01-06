@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FeatureSet:
     """
-    Configuration for log/feature-set
+    Retrieve logging feature set.
     
     Path: log/feature_set
     Category: monitor

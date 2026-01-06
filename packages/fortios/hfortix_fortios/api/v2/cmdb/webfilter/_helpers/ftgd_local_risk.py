@@ -100,8 +100,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable local risk level.
+    "disable",  # Disable local risk level.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -231,7 +231,7 @@ def validate_webfilter_ftgd_local_risk_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "url": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable local risk level.', 'label': 'Enable', 'description': 'Enable local risk level'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_webfilter_ftgd_local_risk_post(payload)
         >>> assert is_valid == True

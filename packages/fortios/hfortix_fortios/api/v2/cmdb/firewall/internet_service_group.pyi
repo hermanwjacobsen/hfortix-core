@@ -12,7 +12,7 @@ class InternetServiceGroupPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Internet Service group name.
     comment: NotRequired[str]  # Comment.
-    direction: NotRequired[Literal["source", "destination", "both"]]  # How this service may be used (source, destination or both).
+    direction: NotRequired[Literal[{"description": "As source when applied", "help": "As source when applied.", "label": "Source", "name": "source"}, {"description": "As destination when applied", "help": "As destination when applied.", "label": "Destination", "name": "destination"}, {"description": "Both directions when applied", "help": "Both directions when applied.", "label": "Both", "name": "both"}]]  # How this service may be used (source, destination or both).
     member: NotRequired[list[dict[str, Any]]]  # Internet Service group member.
 
 
@@ -43,7 +43,7 @@ class InternetServiceGroup:
         payload_dict: InternetServiceGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        direction: Literal["source", "destination", "both"] | None = ...,
+        direction: Literal[{"description": "As source when applied", "help": "As source when applied.", "label": "Source", "name": "source"}, {"description": "As destination when applied", "help": "As destination when applied.", "label": "Destination", "name": "destination"}, {"description": "Both directions when applied", "help": "Both directions when applied.", "label": "Both", "name": "both"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -55,7 +55,7 @@ class InternetServiceGroup:
         payload_dict: InternetServiceGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        direction: Literal["source", "destination", "both"] | None = ...,
+        direction: Literal[{"description": "As source when applied", "help": "As source when applied.", "label": "Source", "name": "source"}, {"description": "As destination when applied", "help": "As destination when applied.", "label": "Destination", "name": "destination"}, {"description": "Both directions when applied", "help": "Both directions when applied.", "label": "Both", "name": "both"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

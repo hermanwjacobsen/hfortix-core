@@ -12,7 +12,7 @@ class Address6Payload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Address name.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    type: NotRequired[Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]]  # Type of IPv6 address object (default = ipprefix).
+    type: NotRequired[Literal[{"description": "Uses the IP prefix to define a range of IPv6 addresses", "help": "Uses the IP prefix to define a range of IPv6 addresses.", "label": "Ipprefix", "name": "ipprefix"}, {"description": "Range of IPv6 addresses between two specified addresses (inclusive)", "help": "Range of IPv6 addresses between two specified addresses (inclusive).", "label": "Iprange", "name": "iprange"}, {"description": "Fully qualified domain name", "help": "Fully qualified domain name.", "label": "Fqdn", "name": "fqdn"}, {"description": "IPv6 addresses from a specified country", "help": "IPv6 addresses from a specified country.", "label": "Geography", "name": "geography"}, {"description": "Dynamic address object for SDN", "help": "Dynamic address object for SDN.", "label": "Dynamic", "name": "dynamic"}, {"description": "Template", "help": "Template.", "label": "Template", "name": "template"}, {"description": "Range of MAC addresses", "help": "Range of MAC addresses.", "label": "Mac", "name": "mac"}, {"description": "route-tag addresses", "help": "route-tag addresses.", "label": "Route Tag", "name": "route-tag"}, {"description": "Standard IPv6 using a wildcard subnet mask", "help": "Standard IPv6 using a wildcard subnet mask.", "label": "Wildcard", "name": "wildcard"}]]  # Type of IPv6 address object (default = ipprefix).
     route_tag: NotRequired[int]  # route-tag address.
     macaddr: NotRequired[list[dict[str, Any]]]  # Multiple MAC address ranges.
     sdn: NotRequired[str]  # SDN.
@@ -29,15 +29,16 @@ class Address6Payload(TypedDict, total=False):
     comment: NotRequired[str]  # Comment.
     template: str  # IPv6 address template.
     subnet_segment: NotRequired[list[dict[str, Any]]]  # IPv6 subnet segments.
-    host_type: NotRequired[Literal["any", "specific"]]  # Host type.
+    host_type: NotRequired[Literal[{"description": "Wildcard", "help": "Wildcard.", "label": "Any", "name": "any"}, {"description": "Specific host address", "help": "Specific host address.", "label": "Specific", "name": "specific"}]]  # Host type.
     host: NotRequired[str]  # Host Address.
     tenant: NotRequired[str]  # Tenant.
     epg_name: NotRequired[str]  # Endpoint group name.
     sdn_tag: NotRequired[str]  # SDN Tag.
     filter: str  # Match criteria filter.
     list: NotRequired[list[dict[str, Any]]]  # IP address list.
-    sdn_addr_type: NotRequired[Literal["private", "public", "all"]]  # Type of addresses to collect.
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    sdn_addr_type: NotRequired[Literal[{"description": "Collect private addresses only", "help": "Collect private addresses only.", "label": "Private", "name": "private"}, {"description": "Collect public addresses only", "help": "Collect public addresses only.", "label": "Public", "name": "public"}, {"description": "Collect both public and private addresses", "help": "Collect both public and private addresses.", "label": "All", "name": "all"}]]  # Type of addresses to collect.
+    passive_fqdn_learning: NotRequired[Literal[{"description": "Disable passive learning of FQDNs", "help": "Disable passive learning of FQDNs.", "label": "Disable", "name": "disable"}, {"description": "Enable passive learning of FQDNs", "help": "Enable passive learning of FQDNs.", "label": "Enable", "name": "enable"}]]  # Enable/disable passive learning of FQDNs.  When enabled, the
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Address6:
@@ -67,7 +68,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal[{"description": "Uses the IP prefix to define a range of IPv6 addresses", "help": "Uses the IP prefix to define a range of IPv6 addresses.", "label": "Ipprefix", "name": "ipprefix"}, {"description": "Range of IPv6 addresses between two specified addresses (inclusive)", "help": "Range of IPv6 addresses between two specified addresses (inclusive).", "label": "Iprange", "name": "iprange"}, {"description": "Fully qualified domain name", "help": "Fully qualified domain name.", "label": "Fqdn", "name": "fqdn"}, {"description": "IPv6 addresses from a specified country", "help": "IPv6 addresses from a specified country.", "label": "Geography", "name": "geography"}, {"description": "Dynamic address object for SDN", "help": "Dynamic address object for SDN.", "label": "Dynamic", "name": "dynamic"}, {"description": "Template", "help": "Template.", "label": "Template", "name": "template"}, {"description": "Range of MAC addresses", "help": "Range of MAC addresses.", "label": "Mac", "name": "mac"}, {"description": "route-tag addresses", "help": "route-tag addresses.", "label": "Route Tag", "name": "route-tag"}, {"description": "Standard IPv6 using a wildcard subnet mask", "help": "Standard IPv6 using a wildcard subnet mask.", "label": "Wildcard", "name": "wildcard"}] | None = ...,
         route_tag: int | None = ...,
         macaddr: list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -84,15 +85,16 @@ class Address6:
         comment: str | None = ...,
         template: str | None = ...,
         subnet_segment: list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
+        host_type: Literal[{"description": "Wildcard", "help": "Wildcard.", "label": "Any", "name": "any"}, {"description": "Specific host address", "help": "Specific host address.", "label": "Specific", "name": "specific"}] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
         list: list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        sdn_addr_type: Literal[{"description": "Collect private addresses only", "help": "Collect private addresses only.", "label": "Private", "name": "private"}, {"description": "Collect public addresses only", "help": "Collect public addresses only.", "label": "Public", "name": "public"}, {"description": "Collect both public and private addresses", "help": "Collect both public and private addresses.", "label": "All", "name": "all"}] | None = ...,
+        passive_fqdn_learning: Literal[{"description": "Disable passive learning of FQDNs", "help": "Disable passive learning of FQDNs.", "label": "Disable", "name": "disable"}, {"description": "Enable passive learning of FQDNs", "help": "Enable passive learning of FQDNs.", "label": "Enable", "name": "enable"}] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -103,7 +105,7 @@ class Address6:
         payload_dict: Address6Payload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
+        type: Literal[{"description": "Uses the IP prefix to define a range of IPv6 addresses", "help": "Uses the IP prefix to define a range of IPv6 addresses.", "label": "Ipprefix", "name": "ipprefix"}, {"description": "Range of IPv6 addresses between two specified addresses (inclusive)", "help": "Range of IPv6 addresses between two specified addresses (inclusive).", "label": "Iprange", "name": "iprange"}, {"description": "Fully qualified domain name", "help": "Fully qualified domain name.", "label": "Fqdn", "name": "fqdn"}, {"description": "IPv6 addresses from a specified country", "help": "IPv6 addresses from a specified country.", "label": "Geography", "name": "geography"}, {"description": "Dynamic address object for SDN", "help": "Dynamic address object for SDN.", "label": "Dynamic", "name": "dynamic"}, {"description": "Template", "help": "Template.", "label": "Template", "name": "template"}, {"description": "Range of MAC addresses", "help": "Range of MAC addresses.", "label": "Mac", "name": "mac"}, {"description": "route-tag addresses", "help": "route-tag addresses.", "label": "Route Tag", "name": "route-tag"}, {"description": "Standard IPv6 using a wildcard subnet mask", "help": "Standard IPv6 using a wildcard subnet mask.", "label": "Wildcard", "name": "wildcard"}] | None = ...,
         route_tag: int | None = ...,
         macaddr: list[dict[str, Any]] | None = ...,
         sdn: str | None = ...,
@@ -120,15 +122,16 @@ class Address6:
         comment: str | None = ...,
         template: str | None = ...,
         subnet_segment: list[dict[str, Any]] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
+        host_type: Literal[{"description": "Wildcard", "help": "Wildcard.", "label": "Any", "name": "any"}, {"description": "Specific host address", "help": "Specific host address.", "label": "Specific", "name": "specific"}] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
         list: list[dict[str, Any]] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        sdn_addr_type: Literal[{"description": "Collect private addresses only", "help": "Collect private addresses only.", "label": "Private", "name": "private"}, {"description": "Collect public addresses only", "help": "Collect public addresses only.", "label": "Public", "name": "public"}, {"description": "Collect both public and private addresses", "help": "Collect both public and private addresses.", "label": "All", "name": "all"}] | None = ...,
+        passive_fqdn_learning: Literal[{"description": "Disable passive learning of FQDNs", "help": "Disable passive learning of FQDNs.", "label": "Disable", "name": "disable"}, {"description": "Enable passive learning of FQDNs", "help": "Enable passive learning of FQDNs.", "label": "Enable", "name": "enable"}] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

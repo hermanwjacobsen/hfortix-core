@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Query:
     """
-    Configuration for user/info/query
+    Query user info.
     
     Path: user/info/query
     Category: monitor

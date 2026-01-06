@@ -56,7 +56,7 @@ class ClearStatistics:
         """
         Retrieve system/fortiguard/clear_statistics configuration.
 
-        Configuration for system/fortiguard/clear-statistics
+        Immediately clear all FortiGuard statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

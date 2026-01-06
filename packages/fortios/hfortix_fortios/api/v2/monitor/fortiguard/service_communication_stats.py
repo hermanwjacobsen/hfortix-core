@@ -56,7 +56,7 @@ class ServiceCommunicationStats:
         """
         Retrieve fortiguard/service_communication_stats configuration.
 
-        Configuration for fortiguard/service-communication-stats
+        Retrieve historical statistics for communication with FortiGuard services.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

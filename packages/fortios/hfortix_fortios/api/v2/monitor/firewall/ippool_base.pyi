@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Ippool:
     """
-    Configuration for firewall/ippool
+    List IPv4 pool statistics.
     
     Path: firewall/ippool
     Category: monitor

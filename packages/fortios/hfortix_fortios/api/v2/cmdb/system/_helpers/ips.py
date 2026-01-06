@@ -92,8 +92,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OVERRIDE_SIGNATURE_HOLD_BY_ID = [
-    "enable",
-    "disable",
+    "enable",  # Allow the signatures specified by IDs to be triggered even if they are on hold.
+    "disable",  # Do not trigger the signatures that are on hold.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -218,7 +218,7 @@ def validate_system_ips_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "override-signature-hold-by-id": "enable",  # Valid enum value
+        ...     "override-signature-hold-by-id": "{'name': 'enable', 'help': 'Allow the signatures specified by IDs to be triggered even if they are on hold.', 'label': 'Enable', 'description': 'Allow the signatures specified by IDs to be triggered even if they are on hold'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ips_post(payload)
         >>> assert is_valid == True

@@ -10,7 +10,7 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: Literal["enable", "disable"]  # Enable/disable statistics collection for when no external lo
+    status: Literal[{"description": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Enable", "name": "enable"}, {"description": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Disable", "name": "disable"}]  # Enable/disable statistics collection for when no external lo
 
 
 class Setting:
@@ -37,7 +37,7 @@ class Setting:
     def post(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Enable", "name": "enable"}, {"description": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -46,7 +46,7 @@ class Setting:
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Enable", "name": "enable"}, {"description": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)", "help": "Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

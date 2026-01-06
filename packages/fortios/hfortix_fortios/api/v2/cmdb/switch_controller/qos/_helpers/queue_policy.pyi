@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SCHEDULE: Literal["strict", "round-robin", "weighted"]
-VALID_BODY_RATE_BY: Literal["kbps", "percent"]
+VALID_BODY_SCHEDULE: Literal[{"description": "Strict scheduling (queue7: highest priority, queue0: lowest priority)", "help": "Strict scheduling (queue7: highest priority, queue0: lowest priority).", "label": "Strict", "name": "strict"}, {"description": "Round robin scheduling", "help": "Round robin scheduling.", "label": "Round Robin", "name": "round-robin"}, {"description": "Weighted round robin scheduling", "help": "Weighted round robin scheduling.", "label": "Weighted", "name": "weighted"}]
+VALID_BODY_RATE_BY: Literal[{"description": "Rate by kbps", "help": "Rate by kbps.", "label": "Kbps", "name": "kbps"}, {"description": "Rate by percent", "help": "Rate by percent.", "label": "Percent", "name": "percent"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

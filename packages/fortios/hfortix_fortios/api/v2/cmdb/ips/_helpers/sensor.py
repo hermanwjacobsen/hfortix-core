@@ -144,13 +144,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Signature default action filter.",
             "default": "all",
-            "options": ["all", "pass", "block"],
+            "options": [{"help": "Selects signatures with any default action.", "label": "All", "name": "all"}, {"help": "Selects signatures with default action \u0027pass\u0027.", "label": "Pass", "name": "pass"}, {"help": "Selects signatures with default action \u0027block\u0027.", "label": "Block", "name": "block"}],
         },
         "default-status": {
             "type": "option",
             "help": "Signature default status filter.",
             "default": "all",
-            "options": ["all", "enable", "disable"],
+            "options": [{"help": "Selects signatures with any default status.", "label": "All", "name": "all"}, {"help": "Selects signatures enabled by default.", "label": "Enable", "name": "enable"}, {"help": "Selects signatures disabled by default.", "label": "Disable", "name": "disable"}],
         },
         "cve": {
             "type": "string",
@@ -169,31 +169,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status of the signatures included in filter. Only those filters with a status to enable are used.",
             "default": "default",
-            "options": ["disable", "enable", "default"],
+            "options": [{"help": "Disable status of selected rules.", "label": "Disable", "name": "disable"}, {"help": "Enable status of selected rules.", "label": "Enable", "name": "enable"}, {"help": "Default.", "label": "Default", "name": "default"}],
         },
         "log": {
             "type": "option",
             "help": "Enable/disable logging of signatures included in filter.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of selected rules.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of selected rules.", "label": "Enable", "name": "enable"}],
         },
         "log-packet": {
             "type": "option",
             "help": "Enable/disable packet logging. Enable to save the packet that triggers the filter. You can download the packets in pcap format for diagnostic use.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable packet logging of selected rules.", "label": "Disable", "name": "disable"}, {"help": "Enable packet logging of selected rules.", "label": "Enable", "name": "enable"}],
         },
         "log-attack-context": {
             "type": "option",
             "help": "Enable/disable logging of attack context: URL buffer, header buffer, body buffer, packet buffer.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging of detailed attack context.", "label": "Disable", "name": "disable"}, {"help": "Enable logging of detailed attack context.", "label": "Enable", "name": "enable"}],
         },
         "action": {
             "type": "option",
             "help": "Action taken with traffic in which signatures are detected.",
             "default": "default",
-            "options": ["pass", "block", "reset", "default"],
+            "options": [{"help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}, {"help": "Pass or drop matching traffic, depending on the default action of the signature.", "label": "Default", "name": "default"}],
         },
         "rate-count": {
             "type": "integer",
@@ -213,13 +213,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Rate limit mode.",
             "default": "continuous",
-            "options": ["periodical", "continuous"],
+            "options": [{"help": "Allow configured number of packets every rate-duration.", "label": "Periodical", "name": "periodical"}, {"help": "Block packets once the rate is reached.", "label": "Continuous", "name": "continuous"}],
         },
         "rate-track": {
             "type": "option",
             "help": "Track the packet protocol field.",
             "default": "none",
-            "options": ["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"],
+            "options": [{"help": "none", "label": "None", "name": "none"}, {"help": "Source IP.", "label": "Src Ip", "name": "src-ip"}, {"help": "Destination IP.", "label": "Dest Ip", "name": "dest-ip"}, {"help": "DHCP client.", "label": "Dhcp Client Mac", "name": "dhcp-client-mac"}, {"help": "DNS domain.", "label": "Dns Domain", "name": "dns-domain"}],
         },
         "exempt-ip": {
             "type": "string",
@@ -229,7 +229,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Quarantine method.",
             "default": "none",
-            "options": ["none", "attacker"],
+            "options": [{"help": "Quarantine is disabled.", "label": "None", "name": "none"}, {"help": "Block all traffic sent from attacker\u0027s IP address. The attacker\u0027s IP address is also added to the banned user list. The target\u0027s address is not affected.", "label": "Attacker", "name": "attacker"}],
         },
         "quarantine-expiry": {
             "type": "user",
@@ -240,7 +240,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable quarantine logging.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine logging.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine logging.", "label": "Enable", "name": "enable"}],
         },
     },
 }
@@ -248,17 +248,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_BLOCK_MALICIOUS_URL = [
-    "disable",
-    "enable",
+    "disable",  # Disable malicious URL blocking.
+    "enable",  # Enable malicious URL blocking.
 ]
 VALID_BODY_SCAN_BOTNET_CONNECTIONS = [
-    "disable",
-    "block",
-    "monitor",
+    "disable",  # Do not scan connections to botnet servers.
+    "block",  # Block connections to botnet servers.
+    "monitor",  # Log connections to botnet servers.
 ]
 VALID_BODY_EXTENDED_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -388,7 +388,7 @@ def validate_ips_sensor_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "block-malicious-url": "disable",  # Valid enum value
+        ...     "block-malicious-url": "{'name': 'disable', 'help': 'Disable malicious URL blocking.', 'label': 'Disable', 'description': 'Disable malicious URL blocking'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ips_sensor_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearUsers:
     """
-    Configuration for user/banned/clear_users
+    Immediately clear a list of specific banned users by IP.
     
     Path: user/banned/clear_users
     Category: monitor

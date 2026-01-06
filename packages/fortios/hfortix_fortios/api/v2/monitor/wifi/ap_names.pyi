@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ApNames:
     """
-    Monitor endpoint for wifi/ap-names
+    Retrieve list of objects, each containing the valid serial number prefix, platform short name 
     
     Path: wifi/ap_names
     Category: monitor

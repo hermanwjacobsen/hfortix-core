@@ -10,7 +10,7 @@ class VlansPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    optional_vlans: NotRequired[Literal["enable", "disable"]]  # Auto-generate pre-configured VLANs upon switch discovery.
+    optional_vlans: NotRequired[Literal[{"description": "Enable auto-generated VLANs", "help": "Enable auto-generated VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-generated VLANs", "help": "Disable auto-generated VLANs.", "label": "Disable", "name": "disable"}]]  # Auto-generate pre-configured VLANs upon switch discovery.
     default_vlan: NotRequired[str]  # Default VLAN (native) assigned to all switch ports upon disc
     quarantine: NotRequired[str]  # VLAN for quarantined traffic.
     rspan: NotRequired[str]  # VLAN for RSPAN/ERSPAN mirrored traffic.
@@ -44,7 +44,7 @@ class Vlans:
     def post(
         self,
         payload_dict: VlansPayload | None = ...,
-        optional_vlans: Literal["enable", "disable"] | None = ...,
+        optional_vlans: Literal[{"description": "Enable auto-generated VLANs", "help": "Enable auto-generated VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-generated VLANs", "help": "Disable auto-generated VLANs.", "label": "Disable", "name": "disable"}] | None = ...,
         default_vlan: str | None = ...,
         quarantine: str | None = ...,
         rspan: str | None = ...,
@@ -60,7 +60,7 @@ class Vlans:
     def put(
         self,
         payload_dict: VlansPayload | None = ...,
-        optional_vlans: Literal["enable", "disable"] | None = ...,
+        optional_vlans: Literal[{"description": "Enable auto-generated VLANs", "help": "Enable auto-generated VLANs.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-generated VLANs", "help": "Disable auto-generated VLANs.", "label": "Disable", "name": "disable"}] | None = ...,
         default_vlan: str | None = ...,
         quarantine: str | None = ...,
         rspan: str | None = ...,

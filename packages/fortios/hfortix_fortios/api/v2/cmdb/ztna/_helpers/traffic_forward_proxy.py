@@ -116,12 +116,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LOG_BLOCKED_TRAFFIC = [
-    "disable",
-    "enable",
+    "disable",  # Do not log all traffic denied by this ZTNA web-proxy.
+    "enable",  # Log all traffic denied by this ZTNA web-proxy.
 ]
 VALID_BODY_AUTH_PORTAL = [
-    "disable",
-    "enable",
+    "disable",  # Disable authentication portal.
+    "enable",  # Enable authentication portal.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -249,7 +249,7 @@ def validate_ztna_traffic_forward_proxy_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "log-blocked-traffic": "disable",  # Valid enum value
+        ...     "log-blocked-traffic": "{'name': 'disable', 'help': 'Do not log all traffic denied by this ZTNA web-proxy.', 'label': 'Disable', 'description': 'Do not log all traffic denied by this ZTNA web-proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ztna_traffic_forward_proxy_post(payload)
         >>> assert is_valid == True

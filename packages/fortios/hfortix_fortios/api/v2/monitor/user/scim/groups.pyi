@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Groups:
     """
-    Configuration for user/scim/groups
+    Get SCIM client group-names.
     
     Path: user/scim/groups
     Category: monitor

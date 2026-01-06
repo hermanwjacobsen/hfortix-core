@@ -1,13 +1,13 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_BANDWIDTH_UNIT: Literal["kbps", "mbps", "gbps"]
-VALID_BODY_PRIORITY: Literal["low", "medium", "high"]
-VALID_BODY_PER_POLICY: Literal["disable", "enable"]
-VALID_BODY_DIFFSERV: Literal["enable", "disable"]
-VALID_BODY_DSCP_MARKING_METHOD: Literal["multi-stage", "static"]
-VALID_BODY_COS_MARKING: Literal["enable", "disable"]
-VALID_BODY_COS_MARKING_METHOD: Literal["multi-stage", "static"]
+VALID_BODY_BANDWIDTH_UNIT: Literal[{"description": "Kilobits per second", "help": "Kilobits per second.", "label": "Kbps", "name": "kbps"}, {"description": "Megabits per second", "help": "Megabits per second.", "label": "Mbps", "name": "mbps"}, {"description": "Gigabits per second", "help": "Gigabits per second.", "label": "Gbps", "name": "gbps"}]
+VALID_BODY_PRIORITY: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}]
+VALID_BODY_PER_POLICY: Literal[{"description": "All referring policies share one traffic shaper", "help": "All referring policies share one traffic shaper.", "label": "Disable", "name": "disable"}, {"description": "Each referring policy has its own traffic shaper", "help": "Each referring policy has its own traffic shaper.", "label": "Enable", "name": "enable"}]
+VALID_BODY_DIFFSERV: Literal[{"description": "Enable setting traffic DiffServ", "help": "Enable setting traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting traffic DiffServ", "help": "Disable setting traffic DiffServ.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DSCP_MARKING_METHOD: Literal[{"description": "Multistage marking", "help": "Multistage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}]
+VALID_BODY_COS_MARKING: Literal[{"description": "Enable VLAN CoS marking", "help": "Enable VLAN CoS marking.", "label": "Enable", "name": "enable"}, {"description": "Disable VLAN CoS marking", "help": "Disable VLAN CoS marking.", "label": "Disable", "name": "disable"}]
+VALID_BODY_COS_MARKING_METHOD: Literal[{"description": "Multi stage marking", "help": "Multi stage marking.", "label": "Multi Stage", "name": "multi-stage"}, {"description": "Static marking", "help": "Static marking.", "label": "Static", "name": "static"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

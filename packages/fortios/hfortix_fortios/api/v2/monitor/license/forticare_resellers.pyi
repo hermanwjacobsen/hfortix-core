@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ForticareResellers:
     """
-    Configuration for license/forticare-resellers
+    Get current FortiCare resellers for the requested country.
     
     Path: license/forticare_resellers
     Category: monitor

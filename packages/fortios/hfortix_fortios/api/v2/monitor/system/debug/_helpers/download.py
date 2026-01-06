@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/debug/download",
     "category": "monitor",
     "api_path": "system/debug/download",
-    "help": "Configuration for system/debug/download",
+    "help": "Download debug report for technical support.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

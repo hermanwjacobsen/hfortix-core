@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/crash_log/download",
     "category": "monitor",
     "api_path": "system/crash-log/download",
-    "help": "Configuration for system/crash-log/download",
+    "help": "Download system crash log.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

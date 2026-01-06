@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/device/query",
     "category": "monitor",
     "api_path": "user/device/query",
-    "help": "Monitor endpoint for user/device/query",
+    "help": "Retrieve user devices from user device store. List all the user devices if there is no filter set.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -56,7 +56,7 @@ class Start:
         """
         Retrieve wifi/vlan_probe/start configuration.
 
-        Configuration for wifi/vlan-probe/start
+        Start a VLAN probe.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

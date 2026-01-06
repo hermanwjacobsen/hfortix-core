@@ -56,7 +56,7 @@ class Answers:
         """
         Retrieve fortiguard/answers configuration.
 
-        Configuration for fortiguard/answers
+        Retrieve a list of questions on answers.fortinet.com
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

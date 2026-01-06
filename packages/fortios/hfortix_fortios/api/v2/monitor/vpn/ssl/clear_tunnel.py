@@ -56,7 +56,7 @@ class ClearTunnel:
         """
         Retrieve vpn/ssl/clear_tunnel configuration.
 
-        Configuration for vpn/ssl/clear_tunnel
+        Remove all active tunnel sessions in current virtual domain.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

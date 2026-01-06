@@ -111,13 +111,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TRAFFIC_TYPE = [
-    "ssl",
-    "ssh",
+    "ssl",  # Mirror decrypted SSL traffic.
+    "ssh",  # Mirror decrypted SSH traffic.
 ]
 VALID_BODY_TRAFFIC_SOURCE = [
-    "client",
-    "server",
-    "both",
+    "client",  # Mirror client side decrypted traffic.
+    "server",  # Mirror server side decrypted traffic.
+    "both",  # Mirror both client and server side decrypted traffic.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -248,7 +248,7 @@ def validate_firewall_decrypted_traffic_mirror_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "traffic-type": "ssl",  # Valid enum value
+        ...     "traffic-type": "{'name': 'ssl', 'help': 'Mirror decrypted SSL traffic.', 'label': 'Ssl', 'description': 'Mirror decrypted SSL traffic'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_decrypted_traffic_mirror_post(payload)
         >>> assert is_valid == True

@@ -129,6 +129,7 @@ class Eventfilter:
         cifs: str | None = None,
         switch_controller: str | None = None,
         rest_api: str | None = None,
+        web_svc: str | None = None,
         webproxy: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -193,6 +194,7 @@ class Eventfilter:
             cifs=cifs,
             switch_controller=switch_controller,
             rest_api=rest_api,
+            web_svc=web_svc,
             webproxy=webproxy,
             data=payload_dict,
         )

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Sessions:
     """
-    Configuration for firewall/proxy/sessions
+    List all active proxy sessions (optionally filtered).
     
     Path: firewall/proxy/sessions
     Category: monitor

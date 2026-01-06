@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/tacacs_plus/test",
     "category": "monitor",
     "api_path": "user/tacacs-plus/test",
-    "help": "Configuration for user/tacacs-plus/test",
+    "help": "Test the connectivity of the given TACACS+ server.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

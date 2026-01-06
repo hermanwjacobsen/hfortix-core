@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ha_table_checksums",
     "category": "monitor",
     "api_path": "system/ha-table-checksums",
-    "help": "Configuration for system/ha-table-checksums",
+    "help": "List of table checksums for members of HA cluster.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

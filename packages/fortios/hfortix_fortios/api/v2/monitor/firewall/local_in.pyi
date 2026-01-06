@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LocalIn:
     """
-    Configuration for firewall/local-in
+    List implicit and explicit local-in firewall policies.
     
     Path: firewall/local_in
     Category: monitor

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/matched_devices",
     "category": "monitor",
     "api_path": "wifi/matched-devices",
-    "help": "Monitor endpoint for wifi/matched-devices",
+    "help": "Return a list of devices that match NAC WiFi settings.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

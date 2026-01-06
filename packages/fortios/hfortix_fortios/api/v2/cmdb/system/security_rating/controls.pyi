@@ -11,8 +11,8 @@ class ControlsPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Security Rating control name.
-    display_report: Literal["enable", "disable"]  # Enable/disable displaying the Security Rating control in the
-    display_insight: Literal["enable", "disable"]  # Enable/disable displaying the Security Rating control as an 
+    display_report: Literal[{"description": "Enable displaying the Security Rating control in the default report", "help": "Enable displaying the Security Rating control in the default report.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control in the default report", "help": "Disable displaying the Security Rating control in the default report.", "label": "Disable", "name": "disable"}]  # Enable/disable displaying the Security Rating control in the
+    display_insight: Literal[{"description": "Enable displaying the Security Rating control as an insight across the GUI", "help": "Enable displaying the Security Rating control as an insight across the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control as an insight across the GUI", "help": "Disable displaying the Security Rating control as an insight across the GUI.", "label": "Disable", "name": "disable"}]  # Enable/disable displaying the Security Rating control as an 
 
 
 class Controls:
@@ -41,8 +41,8 @@ class Controls:
         self,
         payload_dict: ControlsPayload | None = ...,
         name: str | None = ...,
-        display_report: Literal["enable", "disable"] | None = ...,
-        display_insight: Literal["enable", "disable"] | None = ...,
+        display_report: Literal[{"description": "Enable displaying the Security Rating control in the default report", "help": "Enable displaying the Security Rating control in the default report.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control in the default report", "help": "Disable displaying the Security Rating control in the default report.", "label": "Disable", "name": "disable"}] | None = ...,
+        display_insight: Literal[{"description": "Enable displaying the Security Rating control as an insight across the GUI", "help": "Enable displaying the Security Rating control as an insight across the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control as an insight across the GUI", "help": "Disable displaying the Security Rating control as an insight across the GUI.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -52,8 +52,8 @@ class Controls:
         self,
         payload_dict: ControlsPayload | None = ...,
         name: str | None = ...,
-        display_report: Literal["enable", "disable"] | None = ...,
-        display_insight: Literal["enable", "disable"] | None = ...,
+        display_report: Literal[{"description": "Enable displaying the Security Rating control in the default report", "help": "Enable displaying the Security Rating control in the default report.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control in the default report", "help": "Disable displaying the Security Rating control in the default report.", "label": "Disable", "name": "disable"}] | None = ...,
+        display_insight: Literal[{"description": "Enable displaying the Security Rating control as an insight across the GUI", "help": "Enable displaying the Security Rating control as an insight across the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control as an insight across the GUI", "help": "Disable displaying the Security Rating control as an insight across the GUI.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

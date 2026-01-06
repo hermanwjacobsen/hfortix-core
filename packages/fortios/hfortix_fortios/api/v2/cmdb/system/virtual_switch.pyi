@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class VirtualSwitch:
     """
-    Configuration for system/virtual-switch
+    Configuration for system/virtual_switch
     
     Path: system/virtual_switch
     Category: cmdb

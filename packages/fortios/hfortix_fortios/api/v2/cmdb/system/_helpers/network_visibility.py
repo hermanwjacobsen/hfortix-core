@@ -98,20 +98,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DESTINATION_VISIBILITY = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of destination visibility.
+    "enable",  # Enable logging of destination visibility.
 ]
 VALID_BODY_SOURCE_LOCATION = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of source geographical location visibility.
+    "enable",  # Enable logging of source geographical location visibility.
 ]
 VALID_BODY_DESTINATION_HOSTNAME_VISIBILITY = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of destination hostname visibility.
+    "enable",  # Enable logging of destination hostname visibility.
 ]
 VALID_BODY_DESTINATION_LOCATION = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of destination geographical location visibility.
+    "enable",  # Enable logging of destination geographical location visibility.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -236,7 +236,7 @@ def validate_system_network_visibility_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "destination-visibility": "disable",  # Valid enum value
+        ...     "destination-visibility": "{'name': 'disable', 'help': 'Disable logging of destination visibility.', 'label': 'Disable', 'description': 'Disable logging of destination visibility'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_network_visibility_post(payload)
         >>> assert is_valid == True

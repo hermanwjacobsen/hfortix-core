@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HoldSignatures:
     """
-    Monitor endpoint for ips/hold-signatures
+    Return a list of IPS signatures that are on hold due to active hold time.
     
     Path: ips/hold_signatures
     Category: monitor

@@ -12,12 +12,12 @@ class UtmProfilePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # UTM profile name.
     comment: NotRequired[str]  # Comment.
-    utm_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable UTM logging.
+    utm_log: NotRequired[Literal[{"description": "Enable UTM logging", "help": "Enable UTM logging.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM logging", "help": "Disable UTM logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable UTM logging.
     ips_sensor: NotRequired[str]  # IPS sensor name.
     application_list: NotRequired[str]  # Application control list name.
     antivirus_profile: NotRequired[str]  # AntiVirus profile name.
     webfilter_profile: NotRequired[str]  # WebFilter profile name.
-    scan_botnet_connections: NotRequired[Literal["disable", "monitor", "block"]]  # Block or monitor connections to Botnet servers or disable Bo
+    scan_botnet_connections: NotRequired[Literal[{"description": "Do not scan connections to botnet servers", "help": "Do not scan connections to botnet servers.", "label": "Disable", "name": "disable"}, {"description": "Log connections to botnet servers", "help": "Log connections to botnet servers.", "label": "Monitor", "name": "monitor"}, {"description": "Block connections to botnet servers", "help": "Block connections to botnet servers.", "label": "Block", "name": "block"}]]  # Block or monitor connections to Botnet servers or disable Bo
 
 
 class UtmProfile:
@@ -47,12 +47,12 @@ class UtmProfile:
         payload_dict: UtmProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        utm_log: Literal["enable", "disable"] | None = ...,
+        utm_log: Literal[{"description": "Enable UTM logging", "help": "Enable UTM logging.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM logging", "help": "Disable UTM logging.", "label": "Disable", "name": "disable"}] | None = ...,
         ips_sensor: str | None = ...,
         application_list: str | None = ...,
         antivirus_profile: str | None = ...,
         webfilter_profile: str | None = ...,
-        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
+        scan_botnet_connections: Literal[{"description": "Do not scan connections to botnet servers", "help": "Do not scan connections to botnet servers.", "label": "Disable", "name": "disable"}, {"description": "Log connections to botnet servers", "help": "Log connections to botnet servers.", "label": "Monitor", "name": "monitor"}, {"description": "Block connections to botnet servers", "help": "Block connections to botnet servers.", "label": "Block", "name": "block"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -63,12 +63,12 @@ class UtmProfile:
         payload_dict: UtmProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        utm_log: Literal["enable", "disable"] | None = ...,
+        utm_log: Literal[{"description": "Enable UTM logging", "help": "Enable UTM logging.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM logging", "help": "Disable UTM logging.", "label": "Disable", "name": "disable"}] | None = ...,
         ips_sensor: str | None = ...,
         application_list: str | None = ...,
         antivirus_profile: str | None = ...,
         webfilter_profile: str | None = ...,
-        scan_botnet_connections: Literal["disable", "monitor", "block"] | None = ...,
+        scan_botnet_connections: Literal[{"description": "Do not scan connections to botnet servers", "help": "Do not scan connections to botnet servers.", "label": "Disable", "name": "disable"}, {"description": "Log connections to botnet servers", "help": "Log connections to botnet servers.", "label": "Monitor", "name": "monitor"}, {"description": "Block connections to botnet servers", "help": "Block connections to botnet servers.", "label": "Block", "name": "block"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AcquiredDns:
     """
-    Monitor endpoint for system/acquired-dns
+    Retrieve a list of interfaces and their acquired DNS servers.
     
     Path: system/acquired_dns
     Category: monitor

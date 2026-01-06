@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_AUTHEN_TYPE: Literal["mschap", "chap", "pap", "ascii", "auto"]
-VALID_BODY_AUTHORIZATION: Literal["enable", "disable"]
-VALID_BODY_INTERFACE_SELECT_METHOD: Literal["auto", "sdwan", "specify"]
+VALID_BODY_AUTHEN_TYPE: Literal[{"description": "MSCHAP", "help": "MSCHAP.", "label": "Mschap", "name": "mschap"}, {"description": "CHAP", "help": "CHAP.", "label": "Chap", "name": "chap"}, {"description": "PAP", "help": "PAP.", "label": "Pap", "name": "pap"}, {"description": "ASCII", "help": "ASCII.", "label": "Ascii", "name": "ascii"}, {"description": "Use PAP, MSCHAP, and CHAP (in that order)", "help": "Use PAP, MSCHAP, and CHAP (in that order).", "label": "Auto", "name": "auto"}]
+VALID_BODY_AUTHORIZATION: Literal[{"description": "Enable TACACS+ authorization", "help": "Enable TACACS+ authorization.", "label": "Enable", "name": "enable"}, {"description": "Disable TACACS+ authorization", "help": "Disable TACACS+ authorization.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INTERFACE_SELECT_METHOD: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/external_resource/validate_jsonpath",
     "category": "monitor",
     "api_path": "system/external-resource/validate-jsonpath",
-    "help": "Configuration for system/external-resource/validate-jsonpath",
+    "help": "Validate a JSON path name.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

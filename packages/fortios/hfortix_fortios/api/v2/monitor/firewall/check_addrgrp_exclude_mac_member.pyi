@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CheckAddrgrpExcludeMacMember:
     """
-    Configuration for firewall/check-addrgrp-exclude-mac-member
+    Check if the IPv4 or IPv6 address group should exclude mac address type member.
     
     Path: firewall/check_addrgrp_exclude_mac_member
     Category: monitor

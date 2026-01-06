@@ -146,15 +146,15 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "application",
-    "filter",
+    "application",  # Application ID.
+    "filter",  # Application filter.
 ]
 VALID_BODY_POPULARITY = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
+    "1",  # Popularity level 1.
+    "2",  # Popularity level 2.
+    "3",  # Popularity level 3.
+    "4",  # Popularity level 4.
+    "5",  # Popularity level 5.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -282,7 +282,7 @@ def validate_application_group_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "type": "application",  # Valid enum value
+        ...     "type": "{'name': 'application', 'help': 'Application ID.', 'label': 'Application', 'description': 'Application ID'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_application_group_post(payload)
         >>> assert is_valid == True

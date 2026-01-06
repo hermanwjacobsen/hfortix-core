@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/gtp_runtime_statistics",
     "category": "monitor",
     "api_path": "firewall/gtp-runtime-statistics",
-    "help": "Configuration for firewall/gtp-runtime-statistics",
+    "help": "Retrieve runtime statistics for GTP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for extender-controller/extender/reset
+    Reset a specific FortiExtender unit.
     
     Path: extender_controller/extender/reset
     Category: monitor

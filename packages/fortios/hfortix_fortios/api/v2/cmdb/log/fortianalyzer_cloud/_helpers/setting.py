@@ -173,56 +173,56 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging to FortiAnalyzer.
+    "disable",  # Disable logging to FortiAnalyzer.
 ]
 VALID_BODY_IPS_ARCHIVE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPS packet archive logging.
+    "disable",  # Disable IPS packet archive logging.
 ]
 VALID_BODY_CERTIFICATE_VERIFICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable identity verification of FortiAnalyzer by use of certificate.
+    "disable",  # Disable identity verification of FortiAnalyzer by use of certificate.
 ]
 VALID_BODY_ACCESS_CONFIG = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiAnalyzer access to configuration and data.
+    "disable",  # Disable FortiAnalyzer access to configuration and data.
 ]
 VALID_BODY_HMAC_ALGORITHM = [
-    "sha256",
+    "sha256",  # Use SHA256 as HMAC algorithm.
 ]
 VALID_BODY_ENC_ALGORITHM = [
-    "high-medium",
-    "high",
-    "low",
+    "high-medium",  # Encrypt logs using high and medium encryption algorithms.
+    "high",  # Encrypt logs using high encryption algorithms.
+    "low",  # Encrypt logs using all encryption algorithms.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_UPLOAD_OPTION = [
-    "store-and-upload",
-    "realtime",
-    "1-minute",
-    "5-minute",
+    "store-and-upload",  # Log to hard disk and then upload to FortiAnalyzer.
+    "realtime",  # Log directly to FortiAnalyzer in real time.
+    "1-minute",  # Log directly to FortiAnalyzer at least every 1 minute.
+    "5-minute",  # Log directly to FortiAnalyzer at least every 5 minutes.
 ]
 VALID_BODY_UPLOAD_INTERVAL = [
-    "daily",
-    "weekly",
-    "monthly",
+    "daily",  # Upload log files to FortiAnalyzer once a day.
+    "weekly",  # Upload log files to FortiAnalyzer once a week.
+    "monthly",  # Upload log files to FortiAnalyzer once a month.
 ]
 VALID_BODY_PRIORITY = [
-    "default",
-    "low",
+    "default",  # Set FortiAnalyzer log transmission priority to default.
+    "low",  # Set FortiAnalyzer log transmission priority to low.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -349,7 +349,7 @@ def validate_log_fortianalyzer_cloud_setting_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable logging to FortiAnalyzer.', 'label': 'Enable', 'description': 'Enable logging to FortiAnalyzer'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_fortianalyzer_cloud_setting_post(payload)
         >>> assert is_valid == True

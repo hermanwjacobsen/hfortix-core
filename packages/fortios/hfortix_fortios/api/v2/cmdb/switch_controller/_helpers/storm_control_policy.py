@@ -115,21 +115,21 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STORM_CONTROL_MODE = [
-    "global",
-    "override",
-    "disabled",
+    "global",  # Apply Global or switch level storm control configuration.
+    "override",  # Override global and switch level storm control to use port level configuration.
+    "disabled",  # Disable storm control on the port entirely overriding global and switch level storm control.
 ]
 VALID_BODY_UNKNOWN_UNICAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits.
+    "disable",  # Disable storm control for unknown unicast traffic to allow all packets.
 ]
 VALID_BODY_UNKNOWN_MULTICAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits.
+    "disable",  # Disable storm control for unknown multicast traffic to allow all packets.
 ]
 VALID_BODY_BROADCAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable storm control for broadcast traffic to drop packets which exceed configured rate limits.
+    "disable",  # Disable storm control for broadcast traffic to allow all packets.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -259,7 +259,7 @@ def validate_switch_controller_storm_control_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "storm-control-mode": "global",  # Valid enum value
+        ...     "storm-control-mode": "{'name': 'global', 'help': 'Apply Global or switch level storm control configuration.', 'label': 'Global', 'description': 'Apply Global or switch level storm control configuration'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_storm_control_policy_post(payload)
         >>> assert is_valid == True

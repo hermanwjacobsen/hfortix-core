@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearCounters:
     """
-    Configuration for firewall/acl6/clear_counters
+    Reset counters for one or more IPv6 ACLs by policy ID.
     
     Path: firewall/acl6/clear_counters
     Category: monitor

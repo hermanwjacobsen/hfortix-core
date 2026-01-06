@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/query/abort",
     "category": "monitor",
     "api_path": "user/query/abort",
-    "help": "Configuration for user/query/abort",
+    "help": "Abort a running user device unified query.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

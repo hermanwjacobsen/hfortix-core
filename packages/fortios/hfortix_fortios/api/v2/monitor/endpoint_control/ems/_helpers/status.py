@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/ems/status",
     "category": "monitor",
     "api_path": "endpoint-control/ems/status",
-    "help": "Configuration for endpoint-control/ems/status",
+    "help": "Retrieve EMS connection status for a specific EMS.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

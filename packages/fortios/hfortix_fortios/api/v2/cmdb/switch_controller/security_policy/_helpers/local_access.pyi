@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MGMT_ALLOWACCESS: Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"]
-VALID_BODY_INTERNAL_ALLOWACCESS: Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"]
+VALID_BODY_MGMT_ALLOWACCESS: Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}]
+VALID_BODY_INTERNAL_ALLOWACCESS: Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

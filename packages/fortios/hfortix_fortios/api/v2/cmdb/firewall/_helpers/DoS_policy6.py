@@ -148,25 +148,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this anomaly.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this status.", "label": "Disable", "name": "disable"}, {"help": "Enable this status.", "label": "Enable", "name": "enable"}],
         },
         "log": {
             "type": "option",
             "help": "Enable/disable anomaly logging.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable anomaly logging.", "label": "Enable", "name": "enable"}, {"help": "Disable anomaly logging.", "label": "Disable", "name": "disable"}],
         },
         "action": {
             "type": "option",
             "help": "Action taken when the threshold is reached.",
             "default": "pass",
-            "options": ["pass", "block"],
+            "options": [{"help": "Allow traffic but record a log message if logging is enabled.", "label": "Pass", "name": "pass"}, {"help": "Block traffic if this anomaly is found.", "label": "Block", "name": "block"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Quarantine method.",
             "default": "none",
-            "options": ["none", "attacker"],
+            "options": [{"help": "Quarantine is disabled.", "label": "None", "name": "none"}, {"help": "Block all traffic sent from attacker\u0027s IP address. The attacker\u0027s IP address is also added to the banned user list. The target\u0027s address is not affected.", "label": "Attacker", "name": "attacker"}],
         },
         "quarantine-expiry": {
             "type": "user",
@@ -177,7 +177,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable quarantine logging.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine logging.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine logging.", "label": "Enable", "name": "enable"}],
         },
         "threshold": {
             "type": "integer",
@@ -199,8 +199,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this policy.
+    "disable",  # Disable this policy.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -331,7 +331,7 @@ def validate_firewall_DoS_policy6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable this policy.', 'label': 'Enable', 'description': 'Enable this policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_DoS_policy6_post(payload)
         >>> assert is_valid == True

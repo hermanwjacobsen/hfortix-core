@@ -56,7 +56,7 @@ class Select:
         """
         Retrieve system/password_policy_conform/select configuration.
 
-        Configuration for system/password-policy-conform/select
+        Check whether password conforms to the password policy.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

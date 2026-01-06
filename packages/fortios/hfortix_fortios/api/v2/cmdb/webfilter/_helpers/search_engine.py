@@ -113,18 +113,18 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SAFESEARCH = [
-    "disable",
-    "url",
-    "header",
-    "translate",
-    "yt-pattern",
-    "yt-scan",
-    "yt-video",
-    "yt-channel",
+    "disable",  # Site does not support safe search.
+    "url",  # Safe search selected with a parameter in the URL.
+    "header",  # Safe search selected by search header (i.e. youtube.edu).
+    "translate",  # Perform URL FortiGuard check on translated URL.
+    "yt-pattern",  # Pattern to match YouTube channel ID.
+    "yt-scan",  # Perform IPS scan.
+    "yt-video",  # Pattern to match YouTube video name.
+    "yt-channel",  # Pattern to match YouTube channel name.
 ]
 VALID_BODY_CHARSET = [
-    "utf-8",
-    "gb2312",
+    "utf-8",  # UTF-8 encoding.
+    "gb2312",  # GB2312 encoding.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -254,7 +254,7 @@ def validate_webfilter_search_engine_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "safesearch": "disable",  # Valid enum value
+        ...     "safesearch": "{'name': 'disable', 'help': 'Site does not support safe search.', 'label': 'Disable', 'description': 'Site does not support safe search'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_webfilter_search_engine_post(payload)
         >>> assert is_valid == True

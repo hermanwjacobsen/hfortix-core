@@ -138,21 +138,21 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "switch",
-    "hub",
+    "switch",  # Switch for normal switch functionality (available in NAT mode only).
+    "hub",  # Hub to duplicate packets to all member ports.
 ]
 VALID_BODY_INTRA_SWITCH_POLICY = [
-    "implicit",
-    "explicit",
+    "implicit",  # Traffic between switch members is implicitly allowed.
+    "explicit",  # Traffic between switch members must match firewall policies.
 ]
 VALID_BODY_SPAN = [
-    "disable",
-    "enable",
+    "disable",  # Disable port spanning.
+    "enable",  # Enable port spanning.
 ]
 VALID_BODY_SPAN_DIRECTION = [
-    "rx",
-    "tx",
-    "both",
+    "rx",  # Copies only received packets from source SPAN ports to the destination SPAN port.
+    "tx",  # Copies only transmitted packets from source SPAN ports to the destination SPAN port.
+    "both",  # Copies both received and transmitted packets from source SPAN ports to the destination SPAN port.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -283,7 +283,7 @@ def validate_system_switch_interface_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "type": "switch",  # Valid enum value
+        ...     "type": "{'name': 'switch', 'help': 'Switch for normal switch functionality (available in NAT mode only).', 'label': 'Switch', 'description': 'Switch for normal switch functionality (available in NAT mode only)'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_switch_interface_post(payload)
         >>> assert is_valid == True

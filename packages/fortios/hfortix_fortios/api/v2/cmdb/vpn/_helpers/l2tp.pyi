@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_ENFORCE_IPSEC: Literal["enable", "disable"]
-VALID_BODY_COMPRESS: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ENFORCE_IPSEC: Literal[{"description": "Enable enforce-ipsec    disable:Disable enforce-ipsec", "help": "Enable enforce-ipsec", "label": "Enable", "name": "enable"}, {"help": "Disable enforce-ipsec", "label": "Disable", "name": "disable"}]
+VALID_BODY_COMPRESS: Literal[{"description": "Enable compress    disable:Disable compress", "help": "Enable compress", "label": "Enable", "name": "enable"}, {"help": "Disable compress", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

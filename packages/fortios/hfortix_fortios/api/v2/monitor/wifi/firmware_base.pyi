@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Firmware:
     """
-    Configuration for wifi/firmware
+    Retrieve a list of current and recommended firmware for FortiAPs in use.
     
     Path: wifi/firmware
     Category: monitor

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LoadBalance:
     """
-    Configuration for firewall/load-balance
+    List all firewall load balance servers.
     
     Path: firewall/load_balance
     Category: monitor

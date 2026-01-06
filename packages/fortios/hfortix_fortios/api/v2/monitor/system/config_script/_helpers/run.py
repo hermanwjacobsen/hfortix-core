@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_script/run",
     "category": "monitor",
     "api_path": "system/config-script/run",
-    "help": "Configuration for system/config-script/run",
+    "help": "Run remote config scripts.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

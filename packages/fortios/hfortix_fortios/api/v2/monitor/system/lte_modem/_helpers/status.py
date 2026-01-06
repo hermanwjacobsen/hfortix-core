@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/lte_modem/status",
     "category": "monitor",
     "api_path": "system/lte-modem/status",
-    "help": "Configuration for system/lte-modem/status",
+    "help": "Retrieve the LTE modem status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

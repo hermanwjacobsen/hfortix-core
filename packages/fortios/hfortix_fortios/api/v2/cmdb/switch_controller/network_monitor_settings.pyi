@@ -10,7 +10,7 @@ class NetworkMonitorSettingsPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    network_monitoring: NotRequired[Literal["enable", "disable"]]  # Enable/disable passive gathering of information by FortiSwit
+    network_monitoring: NotRequired[Literal[{"description": "Enable network monitoring on FortiSwitch", "help": "Enable network monitoring on FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable network monitoring on FortiSwitch", "help": "Disable network monitoring on FortiSwitch.", "label": "Disable", "name": "disable"}]]  # Enable/disable passive gathering of information by FortiSwit
 
 
 class NetworkMonitorSettings:
@@ -37,7 +37,7 @@ class NetworkMonitorSettings:
     def post(
         self,
         payload_dict: NetworkMonitorSettingsPayload | None = ...,
-        network_monitoring: Literal["enable", "disable"] | None = ...,
+        network_monitoring: Literal[{"description": "Enable network monitoring on FortiSwitch", "help": "Enable network monitoring on FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable network monitoring on FortiSwitch", "help": "Disable network monitoring on FortiSwitch.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -46,7 +46,7 @@ class NetworkMonitorSettings:
     def put(
         self,
         payload_dict: NetworkMonitorSettingsPayload | None = ...,
-        network_monitoring: Literal["enable", "disable"] | None = ...,
+        network_monitoring: Literal[{"description": "Enable network monitoring on FortiSwitch", "help": "Enable network monitoring on FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable network monitoring on FortiSwitch", "help": "Disable network monitoring on FortiSwitch.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

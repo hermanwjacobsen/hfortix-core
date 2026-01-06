@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PROXY_INLINE_IPS: Literal["disable", "enable"]
-VALID_BODY_HA_SESSION_PICKUP: Literal["connectivity", "security"]
+VALID_BODY_PROXY_INLINE_IPS: Literal[{"description": "Do not allow inline IPS in proxy-mode policy", "help": "Do not allow inline IPS in proxy-mode policy.", "label": "Disable", "name": "disable"}, {"description": "Allow inline IPS in proxy-mode policy", "help": "Allow inline IPS in proxy-mode policy.", "label": "Enable", "name": "enable"}]
+VALID_BODY_HA_SESSION_PICKUP: Literal[{"description": "Prefer session continuity", "help": "Prefer session continuity.", "label": "Connectivity", "name": "connectivity"}, {"description": "Prefer session complete security", "help": "Prefer session complete security.", "label": "Security", "name": "security"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

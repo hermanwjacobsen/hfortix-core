@@ -10,7 +10,7 @@ class PcpServerPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable PCP server.
+    status: NotRequired[Literal[{"description": "Enable PCP Server", "help": "Enable PCP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable PCP Server", "help": "Disable PCP Server.", "label": "Disable", "name": "disable"}]]  # Enable/disable PCP server.
     pools: NotRequired[list[dict[str, Any]]]  # Configure PCP pools.
 
 
@@ -38,7 +38,7 @@ class PcpServer:
     def post(
         self,
         payload_dict: PcpServerPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable PCP Server", "help": "Enable PCP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable PCP Server", "help": "Disable PCP Server.", "label": "Disable", "name": "disable"}] | None = ...,
         pools: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -48,7 +48,7 @@ class PcpServer:
     def put(
         self,
         payload_dict: PcpServerPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable PCP Server", "help": "Enable PCP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable PCP Server", "help": "Disable PCP Server.", "label": "Disable", "name": "disable"}] | None = ...,
         pools: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

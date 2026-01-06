@@ -56,7 +56,7 @@ class Status:
         """
         Retrieve system/lte_modem/status configuration.
 
-        Configuration for system/lte-modem/status
+        Retrieve the LTE modem status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

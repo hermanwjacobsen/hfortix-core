@@ -112,29 +112,29 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_QUERIES = [
-    "disable",
-    "enable",
+    "disable",  # Disable SNMP queries for this user.
+    "enable",  # Enable SNMP queries for this user.
 ]
 VALID_BODY_SECURITY_LEVEL = [
-    "no-auth-no-priv",
-    "auth-no-priv",
-    "auth-priv",
+    "no-auth-no-priv",  # Message with no authentication and no privacy (encryption).
+    "auth-no-priv",  # Message with authentication but no privacy (encryption).
+    "auth-priv",  # Message with authentication and privacy (encryption).
 ]
 VALID_BODY_AUTH_PROTO = [
-    "md5",
-    "sha1",
-    "sha224",
-    "sha256",
-    "sha384",
-    "sha512",
+    "md5",  # HMAC-MD5-96 authentication protocol.
+    "sha1",  # HMAC-SHA-1 authentication protocol.
+    "sha224",  # HMAC-SHA-224 authentication protocol.
+    "sha256",  # HMAC-SHA-256 authentication protocol.
+    "sha384",  # HMAC-SHA-384 authentication protocol.
+    "sha512",  # HMAC-SHA-512 authentication protocol.
 ]
 VALID_BODY_PRIV_PROTO = [
-    "aes128",
-    "aes192",
-    "aes192c",
-    "aes256",
-    "aes256c",
-    "des",
+    "aes128",  # CFB128-AES-128 symmetric encryption protocol.
+    "aes192",  # CFB128-AES-192 symmetric encryption protocol.
+    "aes192c",  # CFB128-AES-192-C symmetric encryption protocol.
+    "aes256",  # CFB128-AES-256 symmetric encryption protocol.
+    "aes256c",  # CFB128-AES-256-C symmetric encryption protocol.
+    "des",  # CBC-DES symmetric encryption protocol.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -265,7 +265,7 @@ def validate_switch_controller_snmp_user_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "auth-pwd": True,
-        ...     "queries": "disable",  # Valid enum value
+        ...     "queries": "{'name': 'disable', 'help': 'Disable SNMP queries for this user.', 'label': 'Disable', 'description': 'Disable SNMP queries for this user'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_snmp_user_post(payload)
         >>> assert is_valid == True

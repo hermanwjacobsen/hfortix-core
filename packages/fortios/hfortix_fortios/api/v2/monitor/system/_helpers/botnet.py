@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/botnet",
     "category": "monitor",
     "api_path": "system/botnet",
-    "help": "Configuration for system/botnet/stat",
+    "help": "Retrieve statistics for FortiGuard botnet database.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

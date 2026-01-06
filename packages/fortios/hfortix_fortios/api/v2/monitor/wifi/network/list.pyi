@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class List:
     """
-    Configuration for wifi/network/list
+    When FortiWiFi is in client mode, retrieve list of local WiFi networks.
     
     Path: wifi/network/list
     Category: monitor

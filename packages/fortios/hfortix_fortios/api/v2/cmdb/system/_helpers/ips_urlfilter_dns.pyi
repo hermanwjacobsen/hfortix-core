@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_IPV6_CAPABILITY: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable this DNS server for IPS URL filter DNS queries", "help": "Enable this DNS server for IPS URL filter DNS queries.", "label": "Enable", "name": "enable"}, {"description": "Disable this DNS server for IPS URL filter DNS queries", "help": "Disable this DNS server for IPS URL filter DNS queries.", "label": "Disable", "name": "disable"}]
+VALID_BODY_IPV6_CAPABILITY: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -114,7 +114,7 @@ class PasswordPolicy:
         self,
         payload_dict: dict[str, Any] | None = None,
         status: str | None = None,
-        apply_to: str | None = None,
+        apply_to: str | list | None = None,
         minimum_length: int | None = None,
         min_lower_case_letter: int | None = None,
         min_upper_case_letter: int | None = None,
@@ -138,9 +138,9 @@ class PasswordPolicy:
             payload_dict: Object data as dict. Must include name (primary key).
             status: Enable/disable setting a password policy for locally defined administrator passwords and IPsec VPN pre-shared keys.
             apply_to: Apply password policy to administrator passwords or IPsec pre-shared keys or both. Separate entries with a space.
-            minimum_length: Minimum password length (8 - 128, default = 8).
-            min_lower_case_letter: Minimum number of lowercase characters in password (0 - 128, default = 0).
-            min_upper_case_letter: Minimum number of uppercase characters in password (0 - 128, default = 0).
+            minimum_length: Minimum password length (12 - 128, default = 12).
+            min_lower_case_letter: Minimum number of lowercase characters in password (0 - 128, default = 1).
+            min_upper_case_letter: Minimum number of uppercase characters in password (0 - 128, default = 1).
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             **kwargs: Additional parameters

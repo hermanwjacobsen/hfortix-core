@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/usb_log/stop",
     "category": "monitor",
     "api_path": "system/usb-log/stop",
-    "help": "Configuration for system/usb-log/stop",
+    "help": "Stop backup of logs to USB drive.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

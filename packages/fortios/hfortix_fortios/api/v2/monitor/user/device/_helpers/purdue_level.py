@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/device/purdue_level",
     "category": "monitor",
     "api_path": "user/device/purdue-level",
-    "help": "Configuration for user/device/purdue-level",
+    "help": "Update the Purdue level of device from device store.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

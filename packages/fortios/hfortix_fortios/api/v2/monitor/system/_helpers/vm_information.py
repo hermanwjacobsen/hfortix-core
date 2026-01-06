@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/vm_information",
     "category": "monitor",
     "api_path": "system/vm-information",
-    "help": "Configuration for system/vm-information",
+    "help": "Get VM information.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

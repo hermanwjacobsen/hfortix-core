@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve log/av_archive/download configuration.
 
-        Configuration for log/av-archive/download
+        Download file quarantined by AntiVirus.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Webcache:
     """
-    Configuration for wanopt/webcache
+    Retrieve webcache statistics history.
     
     Path: wanopt/webcache
     Category: monitor

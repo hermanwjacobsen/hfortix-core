@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LteModem:
     """
-    Configuration for system/lte-modem
+    Configuration for system/lte_modem
     
     Path: system/lte_modem
     Category: cmdb

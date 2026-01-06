@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_DDNS_SERVER: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"]
-VALID_BODY_ADDR_TYPE: Literal["ipv4", "ipv6"]
-VALID_BODY_SERVER_TYPE: Literal["ipv4", "ipv6"]
-VALID_BODY_DDNS_AUTH: Literal["disable", "tsig"]
-VALID_BODY_USE_PUBLIC_IP: Literal["disable", "enable"]
-VALID_BODY_CLEAR_TEXT: Literal["disable", "enable"]
+VALID_BODY_DDNS_SERVER: Literal[{"help": "members.dyndns.org and dnsalias.com", "label": "Dyndns.Org", "name": "dyndns.org"}, {"help": "www.dyns.net", "label": "Dyns.Net", "name": "dyns.net"}, {"help": "rh.tzo.com", "label": "Tzo.Com", "name": "tzo.com"}, {"help": "Peanut Hull", "label": "Vavic.Com", "name": "vavic.com"}, {"help": "dipdnsserver.dipdns.com", "label": "Dipdns.Net", "name": "dipdns.net"}, {"help": "ip.todayisp.com", "label": "Now.Net.Cn", "name": "now.net.cn"}, {"help": "members.dhs.org", "label": "Dhs.Org", "name": "dhs.org"}, {"help": "members.easydns.com", "label": "Easydns.Com", "name": "easydns.com"}, {"help": "Generic DDNS based on RFC2136.", "label": "Genericddns", "name": "genericDDNS"}, {"description": "FortiGuard DDNS service", "help": "FortiGuard DDNS service.", "label": "Fortiguardddns", "name": "FortiGuardDDNS"}, {"help": "dynupdate.no-ip.com", "label": "Noip.Com", "name": "noip.com"}]
+VALID_BODY_ADDR_TYPE: Literal[{"description": "Use IPv4 address of the interface", "help": "Use IPv4 address of the interface.", "label": "Ipv4", "name": "ipv4"}, {"description": "Use IPv6 address of the interface", "help": "Use IPv6 address of the interface.", "label": "Ipv6", "name": "ipv6"}]
+VALID_BODY_SERVER_TYPE: Literal[{"description": "Use IPv4 addressing", "help": "Use IPv4 addressing.", "label": "Ipv4", "name": "ipv4"}, {"description": "Use IPv6 addressing", "help": "Use IPv6 addressing.", "label": "Ipv6", "name": "ipv6"}]
+VALID_BODY_DDNS_AUTH: Literal[{"description": "Disable DDNS authentication", "help": "Disable DDNS authentication.", "label": "Disable", "name": "disable"}, {"description": "Enable TSIG authentication based on RFC2845", "help": "Enable TSIG authentication based on RFC2845.", "label": "Tsig", "name": "tsig"}]
+VALID_BODY_USE_PUBLIC_IP: Literal[{"description": "Disable use of public IP address", "help": "Disable use of public IP address.", "label": "Disable", "name": "disable"}, {"description": "Enable use of public IP address", "help": "Enable use of public IP address.", "label": "Enable", "name": "enable"}]
+VALID_BODY_CLEAR_TEXT: Literal[{"description": "Disable use of clear text connections", "help": "Disable use of clear text connections.", "label": "Disable", "name": "disable"}, {"description": "Enable use of clear text connections", "help": "Enable use of clear text connections.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -96,12 +96,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SPAM_SUBMIT_FORCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SPAM_SUBMIT_TXT2HTM = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -226,7 +226,7 @@ def validate_emailfilter_fortishield_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "spam-submit-force": "enable",  # Valid enum value
+        ...     "spam-submit-force": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_emailfilter_fortishield_post(payload)
         >>> assert is_valid == True

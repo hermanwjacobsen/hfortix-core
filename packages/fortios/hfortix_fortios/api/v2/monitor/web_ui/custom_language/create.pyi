@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Create:
     """
-    Configuration for web-ui/custom-language/create
+    Upload custom language file to this Fortigate.
     
     Path: web_ui/custom_language/create
     Category: monitor

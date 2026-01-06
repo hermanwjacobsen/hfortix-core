@@ -11,7 +11,7 @@ class VdomRadiusServerPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Name of the VDOM that you are adding the RADIUS server to.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the RSSO RADIUS server for this VDOM.
+    status: NotRequired[Literal[{"description": "Enable the RSSO RADIUS server for this VDOM", "help": "Enable the RSSO RADIUS server for this VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable the RSSO RADIUS server for this VDOM", "help": "Disable the RSSO RADIUS server for this VDOM.", "label": "Disable", "name": "disable"}]]  # Enable/disable the RSSO RADIUS server for this VDOM.
     radius_server_vdom: str  # Use this option to select another VDOM containing a VDOM RSS
 
 
@@ -41,7 +41,7 @@ class VdomRadiusServer:
         self,
         payload_dict: VdomRadiusServerPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the RSSO RADIUS server for this VDOM", "help": "Enable the RSSO RADIUS server for this VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable the RSSO RADIUS server for this VDOM", "help": "Disable the RSSO RADIUS server for this VDOM.", "label": "Disable", "name": "disable"}] | None = ...,
         radius_server_vdom: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -52,7 +52,7 @@ class VdomRadiusServer:
         self,
         payload_dict: VdomRadiusServerPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the RSSO RADIUS server for this VDOM", "help": "Enable the RSSO RADIUS server for this VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable the RSSO RADIUS server for this VDOM", "help": "Disable the RSSO RADIUS server for this VDOM.", "label": "Disable", "name": "disable"}] | None = ...,
         radius_server_vdom: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SdnConnectorFilters:
     """
-    Configuration for firewall/sdn-connector-filters
+    List all available filters for a specified SDN Fabric Connector. Used for Fabric Connector address objects.
     
     Path: firewall/sdn_connector_filters
     Category: monitor

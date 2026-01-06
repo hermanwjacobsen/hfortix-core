@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/link_monitor",
     "category": "monitor",
     "api_path": "system/link-monitor",
-    "help": "Configuration for system/link-monitor",
+    "help": "Retrieve per-interface statistics for active link monitors.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

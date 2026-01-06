@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Delete:
     """
-    Configuration for vpn/ssl/delete
+    Terminate the provided Agentless VPN session.
     
     Path: vpn/ssl/delete
     Category: monitor

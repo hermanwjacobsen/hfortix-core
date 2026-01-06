@@ -56,7 +56,7 @@ class InternetServiceReputation:
         """
         Retrieve firewall/internet_service_reputation configuration.
 
-        Configuration for firewall/internet-service-reputation
+        List internet services with reputation information that exist at a given IP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

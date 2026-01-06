@@ -119,9 +119,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTHORIZED = [
-    "discovered",
-    "disable",
-    "enable",
+    "discovered",  # Controller discovered this FortiGate.
+    "disable",  # Controller is configured to not provide service to this FortiGate.
+    "enable",  # Controller is configured to provide service to this FortiGate.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -252,7 +252,7 @@ def validate_extension_controller_fortigate_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "authorized": "discovered",  # Valid enum value
+        ...     "authorized": "{'name': 'discovered', 'help': 'Controller discovered this FortiGate.', 'label': 'Discovered', 'description': 'Controller discovered this FortiGate'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_extension_controller_fortigate_post(payload)
         >>> assert is_valid == True

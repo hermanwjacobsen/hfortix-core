@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AddLicense:
     """
-    Configuration for registration/forticare/add-license
+    Add a FortiCare license.
     
     Path: registration/forticare/add_license
     Category: monitor

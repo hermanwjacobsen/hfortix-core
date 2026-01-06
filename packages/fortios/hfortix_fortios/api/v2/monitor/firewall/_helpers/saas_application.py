@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/saas_application",
     "category": "monitor",
     "api_path": "firewall/saas-application",
-    "help": "Monitor endpoint for firewall/saas-application",
+    "help": "List of SaaS applications.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

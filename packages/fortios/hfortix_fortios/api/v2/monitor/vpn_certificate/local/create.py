@@ -56,7 +56,7 @@ class Create:
         """
         Retrieve vpn_certificate/local/create configuration.
 
-        Configuration for vpn-certificate/local/create
+        Generate a new certificate signed by Fortinet_CA_SSL.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

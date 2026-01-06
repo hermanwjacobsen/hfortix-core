@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for web-ui/custom-language/update
+    Update custom language file to this Fortigate.
     
     Path: web_ui/custom_language/update
     Category: monitor

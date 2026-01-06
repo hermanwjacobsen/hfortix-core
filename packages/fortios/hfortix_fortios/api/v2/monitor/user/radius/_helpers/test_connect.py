@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/radius/test_connect",
     "category": "monitor",
     "api_path": "user/radius/test-connect",
-    "help": "Configuration for user/radius/test-connect",
+    "help": "Test the connectivity of the given RADIUS server and, optionally, the validity of a username & password.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

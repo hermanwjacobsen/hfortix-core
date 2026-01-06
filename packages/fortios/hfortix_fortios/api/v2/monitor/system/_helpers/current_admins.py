@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/current_admins",
     "category": "monitor",
     "api_path": "system/current-admins",
-    "help": "Monitor endpoint for system/current-admins",
+    "help": "Return a list of currently logged in administrators.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

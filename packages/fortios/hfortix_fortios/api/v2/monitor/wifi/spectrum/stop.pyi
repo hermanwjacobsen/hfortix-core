@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stop:
     """
-    Configuration for wifi/spectrum/stop
+    Stop spectrum analysis for a specific FortiAP.
     
     Path: wifi/spectrum/stop
     Category: monitor

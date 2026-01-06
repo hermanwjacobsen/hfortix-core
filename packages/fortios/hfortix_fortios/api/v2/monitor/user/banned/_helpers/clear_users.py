@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/banned/clear_users",
     "category": "monitor",
     "api_path": "user/banned/clear_users",
-    "help": "Configuration for user/banned/clear_users",
+    "help": "Immediately clear a list of specific banned users by IP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

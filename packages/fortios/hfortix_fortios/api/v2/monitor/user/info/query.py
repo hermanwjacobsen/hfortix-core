@@ -56,7 +56,7 @@ class Query:
         """
         Retrieve user/info/query configuration.
 
-        Configuration for user/info/query
+        Query user info.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

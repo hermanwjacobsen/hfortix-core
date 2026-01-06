@@ -112,48 +112,48 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging by FortiSwitch device to a remote syslog server.
+    "disable",  # Disable logging by FortiSwitch device to a remote syslog server.
 ]
 VALID_BODY_SEVERITY = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_CSV = [
-    "enable",
-    "disable",
+    "enable",  # Enable comma-separated value (CSV) strings.
+    "disable",  # Disable comma-separated value (CSV) strings.
 ]
 VALID_BODY_FACILITY = [
-    "kernel",
-    "user",
-    "mail",
-    "daemon",
-    "auth",
-    "syslog",
-    "lpr",
-    "news",
-    "uucp",
-    "cron",
-    "authpriv",
-    "ftp",
-    "ntp",
-    "audit",
-    "alert",
-    "clock",
-    "local0",
-    "local1",
-    "local2",
-    "local3",
-    "local4",
-    "local5",
-    "local6",
-    "local7",
+    "kernel",  # Kernel messages.
+    "user",  # Random user-level messages.
+    "mail",  # Mail system.
+    "daemon",  # System daemons.
+    "auth",  # Security/authorization messages.
+    "syslog",  # Messages generated internally by syslogd.
+    "lpr",  # Line printer subsystem.
+    "news",  # Network news subsystem.
+    "uucp",  # UUCP server messages.
+    "cron",  # Clock daemon.
+    "authpriv",  # Security/authorization messages (private).
+    "ftp",  # FTP daemon.
+    "ntp",  # NTP daemon.
+    "audit",  # Log audit.
+    "alert",  # Log alert.
+    "clock",  # Clock daemon.
+    "local0",  # Reserved for local use.
+    "local1",  # Reserved for local use.
+    "local2",  # Reserved for local use.
+    "local3",  # Reserved for local use.
+    "local4",  # Reserved for local use.
+    "local5",  # Reserved for local use.
+    "local6",  # Reserved for local use.
+    "local7",  # Reserved for local use.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -284,7 +284,7 @@ def validate_switch_controller_remote_log_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable logging by FortiSwitch device to a remote syslog server.', 'label': 'Enable', 'description': 'Enable logging by FortiSwitch device to a remote syslog server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_remote_log_post(payload)
         >>> assert is_valid == True

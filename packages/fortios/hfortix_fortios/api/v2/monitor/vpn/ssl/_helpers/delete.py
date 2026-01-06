@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn/ssl/delete",
     "category": "monitor",
     "api_path": "vpn/ssl/delete",
-    "help": "Configuration for vpn/ssl/delete",
+    "help": "Terminate the provided Agentless VPN session.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

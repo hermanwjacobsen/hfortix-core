@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/recommendation/pse_config",
     "category": "monitor",
     "api_path": "switch-controller/recommendation/pse-config",
-    "help": "Configuration for switch-controller/recommendation/pse-config",
+    "help": "Execute switch recommendation for pse-config to prevent PSE-PSE scenarios.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

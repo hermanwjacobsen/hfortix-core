@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from .fast_fallback import FastFallback
     from .forward_server import ForwardServer
     from .forward_server_group import ForwardServerGroup
-    from .global_setting import GlobalSetting
+    from .global_ import Global
     from .isolator_server import IsolatorServer
     from .profile import Profile
     from .url_match import UrlMatch
@@ -26,7 +26,7 @@ class WebProxy:
     fast_fallback: FastFallback
     forward_server: ForwardServer
     forward_server_group: ForwardServerGroup
-    global_setting: GlobalSetting
+    global_: Global
     isolator_server: IsolatorServer
     profile: Profile
     url_match: UrlMatch

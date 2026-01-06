@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/summary",
     "category": "monitor",
     "api_path": "endpoint-control/summary",
-    "help": "Configuration for endpoint-control/summary",
+    "help": "Summary of FortiClient endpoint records.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

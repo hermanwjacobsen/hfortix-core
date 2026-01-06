@@ -89,8 +89,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).
+    "disable",  # Disable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -215,7 +215,7 @@ def validate_log_null_device_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved).', 'label': 'Enable', 'description': 'Enable statistics collection for when no external logging destination, such as FortiAnalyzer, is present (data is not saved)'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_null_device_setting_post(payload)
         >>> assert is_valid == True

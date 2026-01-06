@@ -15,7 +15,7 @@ class OcspServerPayload(TypedDict, total=False):
     cert: NotRequired[str]  # OCSP server certificate.
     secondary_url: NotRequired[str]  # Secondary OCSP server URL.
     secondary_cert: NotRequired[str]  # Secondary OCSP server certificate.
-    unavail_action: NotRequired[Literal["revoke", "ignore"]]  # Action when server is unavailable (revoke the certificate or
+    unavail_action: NotRequired[Literal[{"description": "Revoke certificate if server is unavailable", "help": "Revoke certificate if server is unavailable.", "label": "Revoke", "name": "revoke"}, {"description": "Ignore OCSP check if server is unavailable", "help": "Ignore OCSP check if server is unavailable.", "label": "Ignore", "name": "ignore"}]]  # Action when server is unavailable (revoke the certificate or
     source_ip: NotRequired[str]  # Source IP address for dynamic AIA and OCSP queries.
 
 
@@ -49,7 +49,7 @@ class OcspServer:
         cert: str | None = ...,
         secondary_url: str | None = ...,
         secondary_cert: str | None = ...,
-        unavail_action: Literal["revoke", "ignore"] | None = ...,
+        unavail_action: Literal[{"description": "Revoke certificate if server is unavailable", "help": "Revoke certificate if server is unavailable.", "label": "Revoke", "name": "revoke"}, {"description": "Ignore OCSP check if server is unavailable", "help": "Ignore OCSP check if server is unavailable.", "label": "Ignore", "name": "ignore"}] | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -64,7 +64,7 @@ class OcspServer:
         cert: str | None = ...,
         secondary_url: str | None = ...,
         secondary_cert: str | None = ...,
-        unavail_action: Literal["revoke", "ignore"] | None = ...,
+        unavail_action: Literal[{"description": "Revoke certificate if server is unavailable", "help": "Revoke certificate if server is unavailable.", "label": "Revoke", "name": "revoke"}, {"description": "Ignore OCSP check if server is unavailable", "help": "Ignore OCSP check if server is unavailable.", "label": "Ignore", "name": "ignore"}] | None = ...,
         source_ip: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

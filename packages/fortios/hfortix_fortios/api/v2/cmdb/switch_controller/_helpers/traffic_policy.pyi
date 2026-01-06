@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_POLICER_STATUS: Literal["enable", "disable"]
-VALID_BODY_TYPE: Literal["ingress", "egress"]
+VALID_BODY_POLICER_STATUS: Literal[{"description": "Enable policer config on the traffic policy", "help": "Enable policer config on the traffic policy.", "label": "Enable", "name": "enable"}, {"description": "Disable policer config on the traffic policy", "help": "Disable policer config on the traffic policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_TYPE: Literal[{"description": "Ingress policy", "help": "Ingress policy.", "label": "Ingress", "name": "ingress"}, {"description": "Egress policy", "help": "Egress policy.", "label": "Egress", "name": "egress"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

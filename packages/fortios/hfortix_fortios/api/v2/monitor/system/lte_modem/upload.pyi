@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for system/lte-modem/upload
+    Upload the modem firmware upgrade files.
     
     Path: system/lte_modem/upload
     Category: monitor

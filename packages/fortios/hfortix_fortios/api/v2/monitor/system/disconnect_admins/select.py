@@ -56,7 +56,7 @@ class Select:
         """
         Retrieve system/disconnect_admins/select configuration.
 
-        Configuration for system/disconnect-admins/select
+        Disconnects logged in administrators.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

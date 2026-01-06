@@ -97,8 +97,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FLOOD_UNKNOWN_MULTICAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable unknown multicast flooding.
+    "disable",  # Disable unknown multicast flooding.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -223,7 +223,7 @@ def validate_switch_controller_igmp_snooping_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "flood-unknown-multicast": "enable",  # Valid enum value
+        ...     "flood-unknown-multicast": "{'name': 'enable', 'help': 'Enable unknown multicast flooding.', 'label': 'Enable', 'description': 'Enable unknown multicast flooding'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_igmp_snooping_post(payload)
         >>> assert is_valid == True

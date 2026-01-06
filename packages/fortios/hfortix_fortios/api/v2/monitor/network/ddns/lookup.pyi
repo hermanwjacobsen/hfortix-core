@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Lookup:
     """
-    Configuration for network/ddns/lookup
+    Check DDNS FQDN availability.
     
     Path: network/ddns/lookup
     Category: monitor

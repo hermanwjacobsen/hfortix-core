@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/session/close_all",
     "category": "monitor",
     "api_path": "firewall/session/close-all",
-    "help": "Configuration for firewall/session/close-all",
+    "help": "Immediately close all active IPv4 and IPv6 sessions, as well as IPS sessions of the current VDOM.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

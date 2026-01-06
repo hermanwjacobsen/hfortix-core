@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/firewall/deauth",
     "category": "monitor",
     "api_path": "user/firewall/deauth",
-    "help": "Configuration for user/firewall/deauth",
+    "help": "Deauthenticate single, multiple, or all firewall users.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

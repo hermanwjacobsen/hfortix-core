@@ -146,32 +146,32 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_IP_VERSION = [
-    "4",
-    "6",
+    "4",  # Use IPv4 addressing for gateways.
+    "6",  # Use IPv6 addressing for gateways.
 ]
 VALID_BODY_USE_SDWAN = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of SD-WAN to reach remote gateway.
+    "enable",  # Enable use of SD-WAN to reach remote gateway.
 ]
 VALID_BODY_SEQUENCE_NUMBER_TRANSMISSION = [
-    "disable",
-    "enable",
+    "disable",  # Include sequence numbers in transmitted GRE packets.
+    "enable",  # Do not  include sequence numbers in transmitted GRE packets.
 ]
 VALID_BODY_SEQUENCE_NUMBER_RECEPTION = [
-    "disable",
-    "enable",
+    "disable",  # Do not validate sequence number in received GRE packets.
+    "enable",  # Validate sequence numbers in received GRE packets.
 ]
 VALID_BODY_CHECKSUM_TRANSMISSION = [
-    "disable",
-    "enable",
+    "disable",  # Do not include checksums in transmitted GRE packets.
+    "enable",  # Include checksums in transmitted GRE packets.
 ]
 VALID_BODY_CHECKSUM_RECEPTION = [
-    "disable",
-    "enable",
+    "disable",  # Do not validate checksums in received GRE packets.
+    "enable",  # Validate checksums in received GRE packets.
 ]
 VALID_BODY_DSCP_COPYING = [
-    "disable",
-    "enable",
+    "disable",  # Disable DSCP copying.
+    "enable",  # Enable DSCP copying.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -299,7 +299,7 @@ def validate_system_gre_tunnel_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ip-version": "4",  # Valid enum value
+        ...     "ip-version": "{'name': '4', 'help': 'Use IPv4 addressing for gateways.', 'label': '4', 'description': 'Use IPv4 addressing for gateways'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_gre_tunnel_post(payload)
         >>> assert is_valid == True

@@ -11,7 +11,7 @@ class MobileTunnelPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Tunnel name.
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable this mobile tunnel.
+    status: NotRequired[Literal[{"description": "Disable this mobile tunnel", "help": "Disable this mobile tunnel.", "label": "Disable", "name": "disable"}, {"description": "Enable this mobile tunnel", "help": "Enable this mobile tunnel.", "label": "Enable", "name": "enable"}]]  # Enable/disable this mobile tunnel.
     roaming_interface: str  # Select the associated interface name from available options.
     home_agent: str  # IPv4 address of the NEMO HA (Format: xxx.xxx.xxx.xxx).
     home_address: NotRequired[str]  # Home IP address (Format: xxx.xxx.xxx.xxx).
@@ -20,10 +20,10 @@ class MobileTunnelPayload(TypedDict, total=False):
     reg_interval: int  # NMMO HA registration interval (5 - 300, default = 5).
     reg_retry: int  # Maximum number of NMMO HA registration retries (1 to 30, def
     n_mhae_spi: int  # NEMO authentication SPI (default: 256).
-    n_mhae_key_type: Literal["ascii", "base64"]  # NEMO authentication key type (ASCII or base64).
+    n_mhae_key_type: Literal[{"description": "The authentication key is an ASCII string", "help": "The authentication key is an ASCII string.", "label": "Ascii", "name": "ascii"}, {"description": "The authentication key is Base64 encoded", "help": "The authentication key is Base64 encoded.", "label": "Base64", "name": "base64"}]  # NEMO authentication key type (ASCII or base64).
     n_mhae_key: NotRequired[str]  # NEMO authentication key.
-    hash_algorithm: Literal["hmac-md5"]  # Hash Algorithm (Keyed MD5).
-    tunnel_mode: Literal["gre"]  # NEMO tunnel mode (GRE tunnel).
+    hash_algorithm: Literal[{"description": "Keyed MD5", "help": "Keyed MD5.", "label": "Hmac Md5", "name": "hmac-md5"}]  # Hash Algorithm (Keyed MD5).
+    tunnel_mode: Literal[{"description": "GRE tunnel", "help": "GRE tunnel.", "label": "Gre", "name": "gre"}]  # NEMO tunnel mode (GRE tunnel).
     network: NotRequired[list[dict[str, Any]]]  # NEMO network configuration.
 
 
@@ -53,7 +53,7 @@ class MobileTunnel:
         self,
         payload_dict: MobileTunnelPayload | None = ...,
         name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable this mobile tunnel", "help": "Disable this mobile tunnel.", "label": "Disable", "name": "disable"}, {"description": "Enable this mobile tunnel", "help": "Enable this mobile tunnel.", "label": "Enable", "name": "enable"}] | None = ...,
         roaming_interface: str | None = ...,
         home_agent: str | None = ...,
         home_address: str | None = ...,
@@ -62,10 +62,10 @@ class MobileTunnel:
         reg_interval: int | None = ...,
         reg_retry: int | None = ...,
         n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
+        n_mhae_key_type: Literal[{"description": "The authentication key is an ASCII string", "help": "The authentication key is an ASCII string.", "label": "Ascii", "name": "ascii"}, {"description": "The authentication key is Base64 encoded", "help": "The authentication key is Base64 encoded.", "label": "Base64", "name": "base64"}] | None = ...,
         n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
+        hash_algorithm: Literal[{"description": "Keyed MD5", "help": "Keyed MD5.", "label": "Hmac Md5", "name": "hmac-md5"}] | None = ...,
+        tunnel_mode: Literal[{"description": "GRE tunnel", "help": "GRE tunnel.", "label": "Gre", "name": "gre"}] | None = ...,
         network: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -76,7 +76,7 @@ class MobileTunnel:
         self,
         payload_dict: MobileTunnelPayload | None = ...,
         name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable this mobile tunnel", "help": "Disable this mobile tunnel.", "label": "Disable", "name": "disable"}, {"description": "Enable this mobile tunnel", "help": "Enable this mobile tunnel.", "label": "Enable", "name": "enable"}] | None = ...,
         roaming_interface: str | None = ...,
         home_agent: str | None = ...,
         home_address: str | None = ...,
@@ -85,10 +85,10 @@ class MobileTunnel:
         reg_interval: int | None = ...,
         reg_retry: int | None = ...,
         n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
+        n_mhae_key_type: Literal[{"description": "The authentication key is an ASCII string", "help": "The authentication key is an ASCII string.", "label": "Ascii", "name": "ascii"}, {"description": "The authentication key is Base64 encoded", "help": "The authentication key is Base64 encoded.", "label": "Base64", "name": "base64"}] | None = ...,
         n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
+        hash_algorithm: Literal[{"description": "Keyed MD5", "help": "Keyed MD5.", "label": "Hmac Md5", "name": "hmac-md5"}] | None = ...,
+        tunnel_mode: Literal[{"description": "GRE tunnel", "help": "GRE tunnel.", "label": "Gre", "name": "gre"}] | None = ...,
         network: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

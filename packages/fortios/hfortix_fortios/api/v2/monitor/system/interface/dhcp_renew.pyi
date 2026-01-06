@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class DhcpRenew:
     """
-    Configuration for system/interface/dhcp-renew
+    Renew DHCP lease of an interface.
     
     Path: system/interface/dhcp_renew
     Category: monitor

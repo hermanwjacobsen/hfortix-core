@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/monitor_sensor",
     "category": "monitor",
     "api_path": "system/monitor-sensor",
-    "help": "Configuration for system/monitor-sensor",
+    "help": "Retrieve monitor sensor status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/unassociated_devices",
     "category": "monitor",
     "api_path": "wifi/unassociated-devices",
-    "help": "Monitor endpoint for wifi/unassociated-devices",
+    "help": "Retrieve a list of unassociated and BLE devices",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

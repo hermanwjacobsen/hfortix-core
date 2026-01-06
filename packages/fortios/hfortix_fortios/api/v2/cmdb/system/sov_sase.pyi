@@ -1,9 +1,21 @@
 from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
+# Payload TypedDict for IDE autocomplete
+class SovSasePayload(TypedDict, total=False):
+    """
+    Type hints for system/sov_sase payload fields.
+    
+    Use this for IDE autocomplete when building payload dicts:
+        payload: SovSasePayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    status: NotRequired[Literal[{"description": "Enable Sovereign SASE", "help": "Enable Sovereign SASE.", "label": "Enable", "name": "enable"}, {"description": "Disable Sovereign SASE", "help": "Disable Sovereign SASE.", "label": "Disable", "name": "disable"}]]  # Enable/disable Sovereign SASE.
+
 
 class SovSase:
     """
-    Configuration for system/sov-sase
+    Configure Sovereign SASE.
     
     Path: system/sov_sase
     Category: cmdb
@@ -24,7 +36,8 @@ class SovSase:
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SovSasePayload | None = ...,
+        status: Literal[{"description": "Enable Sovereign SASE", "help": "Enable Sovereign SASE.", "label": "Enable", "name": "enable"}, {"description": "Disable Sovereign SASE", "help": "Disable Sovereign SASE.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -32,7 +45,8 @@ class SovSase:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SovSasePayload | None = ...,
+        status: Literal[{"description": "Enable Sovereign SASE", "help": "Enable Sovereign SASE.", "label": "Enable", "name": "enable"}, {"description": "Disable Sovereign SASE", "help": "Disable Sovereign SASE.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -54,7 +68,7 @@ class SovSase:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: SovSasePayload | None = ...,
         vdom: str | bool | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
@@ -84,4 +98,5 @@ class SovSase:
 
 __all__ = [
     "SovSase",
+    "SovSasePayload",
 ]

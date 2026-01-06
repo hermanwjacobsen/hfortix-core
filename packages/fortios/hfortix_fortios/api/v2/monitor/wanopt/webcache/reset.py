@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve wanopt/webcache/reset configuration.
 
-        Configuration for wanopt/webcache/reset
+        Reset webcache statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

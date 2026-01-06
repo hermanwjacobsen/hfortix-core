@@ -135,13 +135,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "CASB attribute format type.",
             "default": "string",
-            "options": ["string", "string-list", "integer", "integer-list", "boolean"],
+            "options": [{"help": "String type.", "label": "String", "name": "string"}, {"help": "String list type.", "label": "String List", "name": "string-list"}, {"help": "Integer type.", "label": "Integer", "name": "integer"}, {"help": "Integer list type.", "label": "Integer List", "name": "integer-list"}, {"help": "Boolean type.", "label": "Boolean", "name": "boolean"}],
         },
         "optional": {
             "type": "option",
             "help": "CASB output attribute optional.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "input-attributes": {
@@ -161,25 +161,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "CASB attribute format type.",
             "default": "string",
-            "options": ["string"],
+            "options": [{"help": "String type.", "label": "String", "name": "string"}],
         },
         "required": {
             "type": "option",
             "help": "CASB input attribute required.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "default": {
             "type": "option",
             "help": "CASB attribute default value.",
             "default": "string",
-            "options": ["string", "string-list"],
+            "options": [{"help": "String type.", "label": "String", "name": "string"}, {"help": "String list type.", "label": "String List", "name": "string-list"}],
         },
         "fallback-input": {
             "type": "option",
             "help": "CASB attribute legacy input.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
 }
@@ -187,12 +187,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_TYPE = [
-    "built-in",
-    "customized",
+    "built-in",  # Built-in SaaS application.
+    "customized",  # User customized SaaS appliciation.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -320,7 +320,7 @@ def validate_casb_saas_application_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_casb_saas_application_post(payload)
         >>> assert is_valid == True

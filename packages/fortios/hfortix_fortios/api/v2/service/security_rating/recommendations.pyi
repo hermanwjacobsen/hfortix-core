@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Recommendations:
     """
-    Configuration for security-rating/recommendations
+    Retrieve recommendations for Security Rating tests.
     
     Path: security_rating/recommendations
     Category: service

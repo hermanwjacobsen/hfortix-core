@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearAll:
     """
-    Configuration for wifi/rogue_ap/clear_all
+    Clear all detected rogue APs.
     
     Path: wifi/rogue_ap/clear_all
     Category: monitor

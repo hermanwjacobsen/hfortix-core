@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OPTIONS: Literal["include-table-of-content", "auto-numbering-heading", "view-chart-as-heading", "show-html-navbar-before-heading", "dummy-option"]
-VALID_BODY_FORMAT: Literal["pdf"]
-VALID_BODY_SCHEDULE_TYPE: Literal["demand", "daily", "weekly"]
-VALID_BODY_DAY: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
-VALID_BODY_CUTOFF_OPTION: Literal["run-time", "custom"]
-VALID_BODY_EMAIL_SEND: Literal["enable", "disable"]
+VALID_BODY_OPTIONS: Literal[{"description": "Include table of content in the report", "help": "Include table of content in the report.", "label": "Include Table Of Content", "name": "include-table-of-content"}, {"description": "Prepend heading with auto numbering", "help": "Prepend heading with auto numbering.", "label": "Auto Numbering Heading", "name": "auto-numbering-heading"}, {"description": "Auto add heading for each chart", "help": "Auto add heading for each chart.", "label": "View Chart As Heading", "name": "view-chart-as-heading"}, {"description": "Show HTML navigation bar before each heading", "help": "Show HTML navigation bar before each heading.", "label": "Show Html Navbar Before Heading", "name": "show-html-navbar-before-heading"}, {"description": "Use this option if you need none of the above options", "help": "Use this option if you need none of the above options.", "label": "Dummy Option", "name": "dummy-option"}]
+VALID_BODY_FORMAT: Literal[{"description": "PDF", "help": "PDF.", "label": "Pdf", "name": "pdf"}]
+VALID_BODY_SCHEDULE_TYPE: Literal[{"description": "Run on demand", "help": "Run on demand.", "label": "Demand", "name": "demand"}, {"description": "Schedule daily", "help": "Schedule daily.", "label": "Daily", "name": "daily"}, {"description": "Schedule weekly", "help": "Schedule weekly.", "label": "Weekly", "name": "weekly"}]
+VALID_BODY_DAY: Literal[{"description": "Sunday", "help": "Sunday.", "label": "Sunday", "name": "sunday"}, {"description": "Monday", "help": "Monday.", "label": "Monday", "name": "monday"}, {"description": "Tuesday", "help": "Tuesday.", "label": "Tuesday", "name": "tuesday"}, {"description": "Wednesday", "help": "Wednesday.", "label": "Wednesday", "name": "wednesday"}, {"description": "Thursday", "help": "Thursday.", "label": "Thursday", "name": "thursday"}, {"description": "Friday", "help": "Friday.", "label": "Friday", "name": "friday"}, {"description": "Saturday", "help": "Saturday.", "label": "Saturday", "name": "saturday"}]
+VALID_BODY_CUTOFF_OPTION: Literal[{"description": "Run time", "help": "Run time.", "label": "Run Time", "name": "run-time"}, {"description": "Custom", "help": "Custom.", "label": "Custom", "name": "custom"}]
+VALID_BODY_EMAIL_SEND: Literal[{"description": "Enable sending emails after generating reports", "help": "Enable sending emails after generating reports.", "label": "Enable", "name": "enable"}, {"description": "Disable sending emails after generating reports", "help": "Disable sending emails after generating reports.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

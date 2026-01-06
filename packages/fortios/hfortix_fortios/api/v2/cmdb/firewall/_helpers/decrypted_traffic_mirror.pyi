@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TRAFFIC_TYPE: Literal["ssl", "ssh"]
-VALID_BODY_TRAFFIC_SOURCE: Literal["client", "server", "both"]
+VALID_BODY_TRAFFIC_TYPE: Literal[{"description": "Mirror decrypted SSL traffic", "help": "Mirror decrypted SSL traffic.", "label": "Ssl", "name": "ssl"}, {"description": "Mirror decrypted SSH traffic", "help": "Mirror decrypted SSH traffic.", "label": "Ssh", "name": "ssh"}]
+VALID_BODY_TRAFFIC_SOURCE: Literal[{"description": "Mirror client side decrypted traffic", "help": "Mirror client side decrypted traffic.", "label": "Client", "name": "client"}, {"description": "Mirror server side decrypted traffic", "help": "Mirror server side decrypted traffic.", "label": "Server", "name": "server"}, {"description": "Mirror both client and server side decrypted traffic", "help": "Mirror both client and server side decrypted traffic.", "label": "Both", "name": "both"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

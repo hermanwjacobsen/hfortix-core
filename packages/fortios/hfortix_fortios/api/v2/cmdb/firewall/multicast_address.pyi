@@ -11,7 +11,7 @@ class MulticastAddressPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Multicast address name.
-    type: NotRequired[Literal["multicastrange", "broadcastmask"]]  # Type of address object: multicast IP address range or broadc
+    type: NotRequired[Literal[{"description": "Multicast range", "help": "Multicast range.", "label": "Multicastrange", "name": "multicastrange"}, {"description": "Broadcast IP/mask", "help": "Broadcast IP/mask.", "label": "Broadcastmask", "name": "broadcastmask"}]]  # Type of address object: multicast IP address range or broadc
     subnet: NotRequired[str]  # Broadcast address and subnet.
     start_ip: str  # First IPv4 address (inclusive) in the range for the address.
     end_ip: str  # Final IPv4 address (inclusive) in the range for the address.
@@ -47,7 +47,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type: Literal[{"description": "Multicast range", "help": "Multicast range.", "label": "Multicastrange", "name": "multicastrange"}, {"description": "Broadcast IP/mask", "help": "Broadcast IP/mask.", "label": "Broadcastmask", "name": "broadcastmask"}] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
@@ -64,7 +64,7 @@ class MulticastAddress:
         self,
         payload_dict: MulticastAddressPayload | None = ...,
         name: str | None = ...,
-        type: Literal["multicastrange", "broadcastmask"] | None = ...,
+        type: Literal[{"description": "Multicast range", "help": "Multicast range.", "label": "Multicastrange", "name": "multicastrange"}, {"description": "Broadcast IP/mask", "help": "Broadcast IP/mask.", "label": "Broadcastmask", "name": "broadcastmask"}] | None = ...,
         subnet: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,

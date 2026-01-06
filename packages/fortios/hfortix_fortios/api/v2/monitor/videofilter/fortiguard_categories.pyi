@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FortiguardCategories:
     """
-    Monitor endpoint for videofilter/fortiguard-categories
+    Return FortiGuard video filter categories.
     
     Path: videofilter/fortiguard_categories
     Category: monitor

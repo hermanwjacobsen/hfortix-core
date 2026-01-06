@@ -56,7 +56,7 @@ class SpeedTestTrigger:
         """
         Retrieve system/interface/speed_test_trigger configuration.
 
-        Configuration for system/interface/speed-test-trigger
+        Run a speed-test on the given interface.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

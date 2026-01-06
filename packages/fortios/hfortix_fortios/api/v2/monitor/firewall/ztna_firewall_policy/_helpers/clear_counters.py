@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/ztna_firewall_policy/clear_counters",
     "category": "monitor",
     "api_path": "firewall/ztna-firewall-policy/clear-counters",
-    "help": "Configuration for firewall/ztna-firewall-policy/clear-counters",
+    "help": "Reset traffic statistics for one or more ZTNA firewall policies by policy ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/managed_switch/update",
     "category": "monitor",
     "api_path": "switch-controller/managed-switch/update",
-    "help": "Configuration for switch-controller/managed-switch/update",
+    "help": "Update administrative state for a given FortiSwitch (enable or disable authorization).",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

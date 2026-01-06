@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LinkMonitor:
     """
-    Configuration for system/link-monitor
+    Retrieve per-interface statistics for active link monitors.
     
     Path: system/link_monitor
     Category: monitor

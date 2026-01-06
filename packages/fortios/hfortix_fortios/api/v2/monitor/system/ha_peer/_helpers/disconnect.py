@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ha_peer/disconnect",
     "category": "monitor",
     "api_path": "system/ha-peer/disconnect",
-    "help": "Configuration for system/ha-peer/disconnect",
+    "help": "Update configuration of peer in HA cluster.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

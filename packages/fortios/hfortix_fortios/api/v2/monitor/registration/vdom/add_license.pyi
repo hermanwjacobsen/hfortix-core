@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AddLicense:
     """
-    Configuration for registration/vdom/add-license
+    Add a VDOM license.
     
     Path: registration/vdom/add_license
     Category: monitor

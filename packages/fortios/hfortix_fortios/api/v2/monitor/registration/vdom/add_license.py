@@ -56,7 +56,7 @@ class AddLicense:
         """
         Retrieve registration/vdom/add_license configuration.
 
-        Configuration for registration/vdom/add-license
+        Add a VDOM license.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

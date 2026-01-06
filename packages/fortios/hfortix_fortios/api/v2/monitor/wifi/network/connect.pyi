@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Connect:
     """
-    Configuration for wifi/network/connect
+    When FortiWiFi is in client mode, connect to the specified network, if configured in the 'wifi' interface.
     
     Path: wifi/network/connect
     Category: monitor

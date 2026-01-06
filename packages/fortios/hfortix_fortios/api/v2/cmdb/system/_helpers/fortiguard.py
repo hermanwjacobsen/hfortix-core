@@ -295,110 +295,110 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FORTIGUARD_ANYCAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of FortiGuard's Anycast network.
+    "disable",  # Disable use of FortiGuard's Anycast network.
 ]
 VALID_BODY_FORTIGUARD_ANYCAST_SOURCE = [
-    "fortinet",
-    "aws",
-    "debug",
+    "fortinet",  # Use Fortinet's servers to provide FortiGuard services in FortiGuard's anycast network.
+    "aws",  # Use Fortinet's AWS servers to provide FortiGuard services in FortiGuard's anycast network.
+    "debug",  # Use Fortinet's internal test servers to provide FortiGuard services in FortiGuard's anycast network.
 ]
 VALID_BODY_PROTOCOL = [
-    "udp",
-    "http",
-    "https",
+    "udp",  # UDP for server communication (for use by FortiGuard or FortiManager).
+    "http",  # HTTP for server communication (for use only by FortiManager).
+    "https",  # HTTPS for server communication (for use by FortiGuard or FortiManager).
 ]
 VALID_BODY_PORT = [
-    "8888",
-    "53",
-    "80",
-    "443",
+    "8888",  # port 8888 for server communication.
+    "53",  # port 53 for server communication.
+    "80",  # port 80 for server communication.
+    "443",  # port 443 for server communication.
 ]
 VALID_BODY_AUTO_JOIN_FORTICLOUD = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic connection and login to FortiCloud.
+    "disable",  # Disable automatic connection and login to FortiCloud.
 ]
 VALID_BODY_UPDATE_SERVER_LOCATION = [
-    "automatic",
-    "usa",
-    "eu",
+    "automatic",  # FortiGuard servers chosen based on closest proximity to FortiGate unit.
+    "usa",  # FortiGuard servers in United States.
+    "eu",  # FortiGuard servers in the European Union.
 ]
 VALID_BODY_SANDBOX_INLINE_SCAN = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiCloud Sandbox inline scan.
+    "disable",  # Disable FortiCloud Sandbox inline scan.
 ]
 VALID_BODY_UPDATE_FFDB = [
-    "enable",
-    "disable",
+    "enable",  # Enable Internet Service Database update.
+    "disable",  # Disable Internet Service Database update.
 ]
 VALID_BODY_UPDATE_UWDB = [
-    "enable",
-    "disable",
+    "enable",  # Enable allowlist update.
+    "disable",  # Disable allowlist update.
 ]
 VALID_BODY_UPDATE_DLDB = [
-    "enable",
-    "disable",
+    "enable",  # Enable DLP signature update.
+    "disable",  # Disable DLP signature update.
 ]
 VALID_BODY_UPDATE_EXTDB = [
-    "enable",
-    "disable",
+    "enable",  # Enable external resource update.
+    "disable",  # Disable external resource update.
 ]
 VALID_BODY_UPDATE_BUILD_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable proxy dictionary rebuild.
+    "disable",  # Disable proxy dictionary rebuild.
 ]
 VALID_BODY_PERSISTENT_CONNECTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable persistent connection to receive update notification from FortiGuard.
+    "disable",  # Disable persistent connection to receive update notification from FortiGuard.
 ]
 VALID_BODY_AUTO_FIRMWARE_UPGRADE = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic patch-level firmware upgrade to latest version from FortiGuard.
+    "disable",  # Disable automatic patch-level firmware upgrade to latest version from FortiGuard.
 ]
 VALID_BODY_AUTO_FIRMWARE_UPGRADE_DAY = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
+    "sunday",  # Sunday.
+    "monday",  # Monday.
+    "tuesday",  # Tuesday.
+    "wednesday",  # Wednesday.
+    "thursday",  # Thursday.
+    "friday",  # Friday.
+    "saturday",  # Saturday.
 ]
 VALID_BODY_SUBSCRIBE_UPDATE_NOTIFICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable subscription to receive update notification from FortiGuard.
+    "disable",  # Disable subscription to receive update notification from FortiGuard.
 ]
 VALID_BODY_ANTISPAM_FORCE_OFF = [
-    "enable",
-    "disable",
+    "enable",  # Turn off the FortiGuard antispam service.
+    "disable",  # Allow the FortiGuard antispam service.
 ]
 VALID_BODY_ANTISPAM_CACHE = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGuard antispam request caching.
+    "disable",  # Disable FortiGuard antispam request caching.
 ]
 VALID_BODY_OUTBREAK_PREVENTION_FORCE_OFF = [
-    "enable",
-    "disable",
+    "enable",  # Turn off FortiGuard antivirus service.
+    "disable",  # Allow the FortiGuard antivirus service.
 ]
 VALID_BODY_OUTBREAK_PREVENTION_CACHE = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGuard antivirus caching.
+    "disable",  # Disable FortiGuard antivirus caching.
 ]
 VALID_BODY_WEBFILTER_FORCE_OFF = [
-    "enable",
-    "disable",
+    "enable",  # Turn off the FortiGuard web filtering service.
+    "disable",  # Allow the FortiGuard web filtering service to operate.
 ]
 VALID_BODY_WEBFILTER_CACHE = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGuard web filter caching.
+    "disable",  # Disable FortiGuard web filter caching.
 ]
 VALID_BODY_SDNS_OPTIONS = [
-    "include-question-section",
+    "include-question-section",  # Include DNS question section in the FortiGuard DNS setup message.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -525,7 +525,7 @@ def validate_system_fortiguard_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "fortiguard-anycast": "enable",  # Valid enum value
+        ...     "fortiguard-anycast": "{'name': 'enable', 'help': "Enable use of FortiGuard's Anycast network.", 'label': 'Enable', 'description': "Enable use of FortiGuard's Anycast network"}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_fortiguard_post(payload)
         >>> assert is_valid == True

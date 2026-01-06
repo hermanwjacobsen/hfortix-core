@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/password_policy_conform/select",
     "category": "monitor",
     "api_path": "system/password-policy-conform/select",
-    "help": "Configuration for system/password-policy-conform/select",
+    "help": "Check whether password conforms to the password policy.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

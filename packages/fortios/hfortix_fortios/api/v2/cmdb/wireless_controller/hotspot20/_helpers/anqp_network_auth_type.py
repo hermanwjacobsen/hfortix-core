@@ -97,10 +97,10 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTH_TYPE = [
-    "acceptance-of-terms",
-    "online-enrollment",
-    "http-redirection",
-    "dns-redirection",
+    "acceptance-of-terms",  # Acceptance of terms and conditions.
+    "online-enrollment",  # Online enrollment supported.
+    "http-redirection",  # HTTP and HTTPS redirection.
+    "dns-redirection",  # DNS redirection.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -228,7 +228,7 @@ def validate_wireless_controller_hotspot20_anqp_network_auth_type_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "auth-type": "acceptance-of-terms",  # Valid enum value
+        ...     "auth-type": "{'name': 'acceptance-of-terms', 'help': 'Acceptance of terms and conditions.', 'label': 'Acceptance Of Terms', 'description': 'Acceptance of terms and conditions'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_hotspot20_anqp_network_auth_type_post(payload)
         >>> assert is_valid == True

@@ -114,7 +114,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Specify how to select outgoing interface to reach server.",
             "default": "auto",
-            "options": ["auto", "sdwan", "specify"],
+            "options": [{"help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}],
         },
         "interface": {
             "type": "string",

@@ -149,12 +149,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_EXCLUDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable address6 exclusion.
+    "disable",  # Disable address6 exclusion.
 ]
 VALID_BODY_FABRIC_OBJECT = [
-    "enable",
-    "disable",
+    "enable",  # Object is set as a security fabric-wide global object.
+    "disable",  # Object is local to this security fabric member.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -285,7 +285,7 @@ def validate_firewall_addrgrp6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "exclude": "enable",  # Valid enum value
+        ...     "exclude": "{'name': 'enable', 'help': 'Enable address6 exclusion.', 'label': 'Enable', 'description': 'Enable address6 exclusion'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_addrgrp6_post(payload)
         >>> assert is_valid == True

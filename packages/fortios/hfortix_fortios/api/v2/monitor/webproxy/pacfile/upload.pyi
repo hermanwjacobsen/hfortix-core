@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for webproxy/pacfile/upload
+    Upload webproxy PAC file.
     
     Path: webproxy/pacfile/upload
     Category: monitor

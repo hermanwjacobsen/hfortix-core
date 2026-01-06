@@ -11,16 +11,16 @@ class SettingPayload(TypedDict, total=False):
         }
     """
     proxy_connect_timeout: int  # Time limit to make an internal connection to the appropriate
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048"]  # Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negoti
-    ssl_send_empty_frags: Literal["enable", "disable"]  # Enable/disable sending empty fragments to avoid attack on CB
-    no_matching_cipher_action: Literal["bypass", "drop"]  # Bypass or drop the connection when no matching cipher is fou
+    ssl_dh_bits: Literal[{"description": "768-bit Diffie-Hellman prime", "help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"description": "1024-bit Diffie-Hellman prime", "help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"description": "1536-bit Diffie-Hellman prime", "help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"description": "2048-bit Diffie-Hellman prime", "help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}]  # Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negoti
+    ssl_send_empty_frags: Literal[{"description": "Send empty fragments", "help": "Send empty fragments.", "label": "Enable", "name": "enable"}, {"description": "Do not send empty fragments", "help": "Do not send empty fragments.", "label": "Disable", "name": "disable"}]  # Enable/disable sending empty fragments to avoid attack on CB
+    no_matching_cipher_action: Literal[{"description": "Bypass connection", "help": "Bypass connection.", "label": "Bypass", "name": "bypass"}, {"description": "Drop connection", "help": "Drop connection.", "label": "Drop", "name": "drop"}]  # Bypass or drop the connection when no matching cipher is fou
     cert_manager_cache_timeout: int  # Time limit for certificate manager to keep FortiGate re-sign
-    resigned_short_lived_certificate: Literal["enable", "disable"]  # Enable/disable short-lived certificate.
+    resigned_short_lived_certificate: Literal[{"description": "Enable short-lived certificate: re-signed certificate will remain valid until either the origin server ceritificate expires or cache timeouts", "help": "Enable short-lived certificate: re-signed certificate will remain valid until either the origin server ceritificate expires or cache timeouts.", "label": "Enable", "name": "enable"}, {"description": "Disable short-lived certificate: re-signed certificate will have the same validation period as the origin server ceritificate", "help": "Disable short-lived certificate: re-signed certificate will have the same validation period as the origin server ceritificate.", "label": "Disable", "name": "disable"}]  # Enable/disable short-lived certificate.
     cert_cache_capacity: int  # Maximum capacity of the host certificate cache (0 - 500, def
     cert_cache_timeout: int  # Time limit to keep certificate cache (1 - 120 min, default =
     session_cache_capacity: int  # Capacity of the SSL session cache (--Obsolete--) (1 - 1000, 
     session_cache_timeout: int  # Time limit to keep SSL session state (1 - 60 min, default = 
-    abbreviate_handshake: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of SSL abbreviated handshake.
+    abbreviate_handshake: NotRequired[Literal[{"description": "Enable use of SSL abbreviated handshake", "help": "Enable use of SSL abbreviated handshake.", "label": "Enable", "name": "enable"}, {"description": "Disable use of SSL abbreviated handshake", "help": "Disable use of SSL abbreviated handshake.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of SSL abbreviated handshake.
 
 
 class Setting:
@@ -48,16 +48,16 @@ class Setting:
         self,
         payload_dict: SettingPayload | None = ...,
         proxy_connect_timeout: int | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
-        no_matching_cipher_action: Literal["bypass", "drop"] | None = ...,
+        ssl_dh_bits: Literal[{"description": "768-bit Diffie-Hellman prime", "help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"description": "1024-bit Diffie-Hellman prime", "help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"description": "1536-bit Diffie-Hellman prime", "help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"description": "2048-bit Diffie-Hellman prime", "help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}] | None = ...,
+        ssl_send_empty_frags: Literal[{"description": "Send empty fragments", "help": "Send empty fragments.", "label": "Enable", "name": "enable"}, {"description": "Do not send empty fragments", "help": "Do not send empty fragments.", "label": "Disable", "name": "disable"}] | None = ...,
+        no_matching_cipher_action: Literal[{"description": "Bypass connection", "help": "Bypass connection.", "label": "Bypass", "name": "bypass"}, {"description": "Drop connection", "help": "Drop connection.", "label": "Drop", "name": "drop"}] | None = ...,
         cert_manager_cache_timeout: int | None = ...,
-        resigned_short_lived_certificate: Literal["enable", "disable"] | None = ...,
+        resigned_short_lived_certificate: Literal[{"description": "Enable short-lived certificate: re-signed certificate will remain valid until either the origin server ceritificate expires or cache timeouts", "help": "Enable short-lived certificate: re-signed certificate will remain valid until either the origin server ceritificate expires or cache timeouts.", "label": "Enable", "name": "enable"}, {"description": "Disable short-lived certificate: re-signed certificate will have the same validation period as the origin server ceritificate", "help": "Disable short-lived certificate: re-signed certificate will have the same validation period as the origin server ceritificate.", "label": "Disable", "name": "disable"}] | None = ...,
         cert_cache_capacity: int | None = ...,
         cert_cache_timeout: int | None = ...,
         session_cache_capacity: int | None = ...,
         session_cache_timeout: int | None = ...,
-        abbreviate_handshake: Literal["enable", "disable"] | None = ...,
+        abbreviate_handshake: Literal[{"description": "Enable use of SSL abbreviated handshake", "help": "Enable use of SSL abbreviated handshake.", "label": "Enable", "name": "enable"}, {"description": "Disable use of SSL abbreviated handshake", "help": "Disable use of SSL abbreviated handshake.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -67,16 +67,16 @@ class Setting:
         self,
         payload_dict: SettingPayload | None = ...,
         proxy_connect_timeout: int | None = ...,
-        ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
-        ssl_send_empty_frags: Literal["enable", "disable"] | None = ...,
-        no_matching_cipher_action: Literal["bypass", "drop"] | None = ...,
+        ssl_dh_bits: Literal[{"description": "768-bit Diffie-Hellman prime", "help": "768-bit Diffie-Hellman prime.", "label": "768", "name": "768"}, {"description": "1024-bit Diffie-Hellman prime", "help": "1024-bit Diffie-Hellman prime.", "label": "1024", "name": "1024"}, {"description": "1536-bit Diffie-Hellman prime", "help": "1536-bit Diffie-Hellman prime.", "label": "1536", "name": "1536"}, {"description": "2048-bit Diffie-Hellman prime", "help": "2048-bit Diffie-Hellman prime.", "label": "2048", "name": "2048"}] | None = ...,
+        ssl_send_empty_frags: Literal[{"description": "Send empty fragments", "help": "Send empty fragments.", "label": "Enable", "name": "enable"}, {"description": "Do not send empty fragments", "help": "Do not send empty fragments.", "label": "Disable", "name": "disable"}] | None = ...,
+        no_matching_cipher_action: Literal[{"description": "Bypass connection", "help": "Bypass connection.", "label": "Bypass", "name": "bypass"}, {"description": "Drop connection", "help": "Drop connection.", "label": "Drop", "name": "drop"}] | None = ...,
         cert_manager_cache_timeout: int | None = ...,
-        resigned_short_lived_certificate: Literal["enable", "disable"] | None = ...,
+        resigned_short_lived_certificate: Literal[{"description": "Enable short-lived certificate: re-signed certificate will remain valid until either the origin server ceritificate expires or cache timeouts", "help": "Enable short-lived certificate: re-signed certificate will remain valid until either the origin server ceritificate expires or cache timeouts.", "label": "Enable", "name": "enable"}, {"description": "Disable short-lived certificate: re-signed certificate will have the same validation period as the origin server ceritificate", "help": "Disable short-lived certificate: re-signed certificate will have the same validation period as the origin server ceritificate.", "label": "Disable", "name": "disable"}] | None = ...,
         cert_cache_capacity: int | None = ...,
         cert_cache_timeout: int | None = ...,
         session_cache_capacity: int | None = ...,
         session_cache_timeout: int | None = ...,
-        abbreviate_handshake: Literal["enable", "disable"] | None = ...,
+        abbreviate_handshake: Literal[{"description": "Enable use of SSL abbreviated handshake", "help": "Enable use of SSL abbreviated handshake.", "label": "Enable", "name": "enable"}, {"description": "Disable use of SSL abbreviated handshake", "help": "Disable use of SSL abbreviated handshake.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -98,13 +98,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable drop.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable drop.", "label": "Enable", "name": "enable"}, {"help": "Disable drop.", "label": "Disable", "name": "disable"}],
         },
         "count": {
             "type": "option",
             "help": "Enable/disable count.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable count.", "label": "Enable", "name": "enable"}, {"help": "Disable count.", "label": "Disable", "name": "disable"}],
         },
     },
     "classifier": {

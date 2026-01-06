@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Add:
     """
-    Configuration for firewall/clearpass-address/add
+    Add ClearPass address with SPT (System Posture Token) value.
     
     Path: firewall/clearpass_address/add
     Category: monitor

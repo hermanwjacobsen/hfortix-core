@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Storage:
     """
-    Monitor endpoint for system/storage
+    Retrieve information for the non-boot disk.
     
     Path: system/storage
     Category: monitor

@@ -101,13 +101,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable setting.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "safe-search": {
             "type": "option",
             "help": "Enable/disable safe search.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "safe-search-control": {
             "type": "string",
@@ -118,7 +118,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable tenant control.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "tenant-control-tenants": {
             "type": "string",
@@ -133,7 +133,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable domain control.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "domain-control-domains": {
             "type": "string",
@@ -144,7 +144,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable log settings.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable log setting.", "label": "Enable", "name": "enable"}, {"help": "Disable log setting.", "label": "Disable", "name": "disable"}],
         },
         "access-rule": {
             "type": "string",

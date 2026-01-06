@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_EXCLUDE: Literal["enable", "disable"]
-VALID_BODY_FABRIC_OBJECT: Literal["enable", "disable"]
+VALID_BODY_EXCLUDE: Literal[{"description": "Enable address6 exclusion", "help": "Enable address6 exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address6 exclusion", "help": "Disable address6 exclusion.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FABRIC_OBJECT: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

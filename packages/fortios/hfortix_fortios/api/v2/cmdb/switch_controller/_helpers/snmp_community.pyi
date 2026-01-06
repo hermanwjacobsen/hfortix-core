@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["disable", "enable"]
-VALID_BODY_QUERY_V1_STATUS: Literal["disable", "enable"]
-VALID_BODY_QUERY_V2C_STATUS: Literal["disable", "enable"]
-VALID_BODY_TRAP_V1_STATUS: Literal["disable", "enable"]
-VALID_BODY_TRAP_V2C_STATUS: Literal["disable", "enable"]
-VALID_BODY_EVENTS: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]
+VALID_BODY_STATUS: Literal[{"description": "Disable SNMP community", "help": "Disable SNMP community.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP community", "help": "Enable SNMP community.", "label": "Enable", "name": "enable"}]
+VALID_BODY_QUERY_V1_STATUS: Literal[{"description": "Disable SNMP v1 queries", "help": "Disable SNMP v1 queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 queries", "help": "Enable SNMP v1 queries.", "label": "Enable", "name": "enable"}]
+VALID_BODY_QUERY_V2C_STATUS: Literal[{"description": "Disable SNMP v2c queries", "help": "Disable SNMP v2c queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c queries", "help": "Enable SNMP v2c queries.", "label": "Enable", "name": "enable"}]
+VALID_BODY_TRAP_V1_STATUS: Literal[{"description": "Disable SNMP v1 traps", "help": "Disable SNMP v1 traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 traps", "help": "Enable SNMP v1 traps.", "label": "Enable", "name": "enable"}]
+VALID_BODY_TRAP_V2C_STATUS: Literal[{"description": "Disable SNMP v2c traps", "help": "Disable SNMP v2c traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c traps", "help": "Enable SNMP v2c traps.", "label": "Enable", "name": "enable"}]
+VALID_BODY_EVENTS: Literal[{"description": "Send a trap when CPU usage too high", "help": "Send a trap when CPU usage too high.", "label": "Cpu High", "name": "cpu-high"}, {"description": "Send a trap when available memory is low", "help": "Send a trap when available memory is low.", "label": "Mem Low", "name": "mem-low"}, {"description": "Send a trap when log disk space becomes low", "help": "Send a trap when log disk space becomes low.", "label": "Log Full", "name": "log-full"}, {"description": "Send a trap when an interface IP address is changed", "help": "Send a trap when an interface IP address is changed.", "label": "Intf Ip", "name": "intf-ip"}, {"description": "Send a trap when an entity MIB change occurs (RFC4133)", "help": "Send a trap when an entity MIB change occurs (RFC4133).", "label": "Ent Conf Change", "name": "ent-conf-change"}, {"description": "Send a trap for Learning event (add/delete/movefrom/moveto)", "help": "Send a trap for Learning event (add/delete/movefrom/moveto).", "label": "L2Mac", "name": "l2mac"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

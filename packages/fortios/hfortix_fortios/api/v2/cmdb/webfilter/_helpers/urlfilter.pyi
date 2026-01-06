@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ONE_ARM_IPS_URLFILTER: Literal["enable", "disable"]
-VALID_BODY_IP_ADDR_BLOCK: Literal["enable", "disable"]
-VALID_BODY_IP4_MAPPED_IP6: Literal["enable", "disable"]
-VALID_BODY_INCLUDE_SUBDOMAINS: Literal["enable", "disable"]
+VALID_BODY_ONE_ARM_IPS_URLFILTER: Literal[{"description": "Enable DNS resolver for one-arm IPS URL filter operation", "help": "Enable DNS resolver for one-arm IPS URL filter operation.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS resolver for one-arm IPS URL filter operation", "help": "Disable DNS resolver for one-arm IPS URL filter operation.", "label": "Disable", "name": "disable"}]
+VALID_BODY_IP_ADDR_BLOCK: Literal[{"description": "Enable blocking URLs when the hostname appears as an IP address", "help": "Enable blocking URLs when the hostname appears as an IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable blocking URLs when the hostname appears as an IP address", "help": "Disable blocking URLs when the hostname appears as an IP address.", "label": "Disable", "name": "disable"}]
+VALID_BODY_IP4_MAPPED_IP6: Literal[{"description": "Enable matching IPv4 mapped IPv6 URLs", "help": "Enable matching IPv4 mapped IPv6 URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable matching IPv4 mapped IPv6 URLs", "help": "Disable matching IPv4 mapped IPv6 URLs.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INCLUDE_SUBDOMAINS: Literal[{"description": "Enable matching subdomains", "help": "Enable matching subdomains. Applies only to simple type.", "label": "Enable", "name": "enable"}, {"description": "Disable matching subdomains", "help": "Disable matching subdomains. Applies only to simple type.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

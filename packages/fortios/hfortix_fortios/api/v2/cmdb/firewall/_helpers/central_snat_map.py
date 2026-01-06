@@ -220,32 +220,32 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this policy.
+    "disable",  # Disable this policy.
 ]
 VALID_BODY_TYPE = [
-    "ipv4",
-    "ipv6",
+    "ipv4",  # Perform IPv4 source NAT.
+    "ipv6",  # Perform IPv6 source NAT.
 ]
 VALID_BODY_NAT = [
-    "disable",
-    "enable",
+    "disable",  # Disable source NAT.
+    "enable",  # Enable source NAT.
 ]
 VALID_BODY_NAT46 = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAT46.
+    "disable",  # Disable NAT46.
 ]
 VALID_BODY_NAT64 = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAT64.
+    "disable",  # Disable NAT64.
 ]
 VALID_BODY_PORT_PRESERVE = [
-    "enable",
-    "disable",
+    "enable",  # Use the original source port if it has not been used.
+    "disable",  # Source NAT always changes the source port.
 ]
 VALID_BODY_PORT_RANDOM = [
-    "enable",
-    "disable",
+    "enable",  # Enable random source port selection for source NAT.
+    "disable",  # Disable random source port selection for source NAT.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -376,7 +376,7 @@ def validate_firewall_central_snat_map_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "srcintf": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable this policy.', 'label': 'Enable', 'description': 'Enable this policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_central_snat_map_post(payload)
         >>> assert is_valid == True

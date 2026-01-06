@@ -56,7 +56,7 @@ class Users:
         """
         Retrieve user/scim/users configuration.
 
-        Configuration for user/scim/users
+        Get SCIM client users.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

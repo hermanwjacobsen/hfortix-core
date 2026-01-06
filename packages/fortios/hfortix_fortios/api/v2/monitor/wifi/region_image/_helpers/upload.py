@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/region_image/upload",
     "category": "monitor",
     "api_path": "wifi/region-image/upload",
-    "help": "Configuration for wifi/region-image/upload",
+    "help": "Saves a floorplan/region image to an existing region.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

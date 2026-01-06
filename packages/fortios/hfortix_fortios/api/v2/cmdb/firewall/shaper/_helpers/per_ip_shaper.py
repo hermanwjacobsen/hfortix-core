@@ -121,17 +121,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_BANDWIDTH_UNIT = [
-    "kbps",
-    "mbps",
-    "gbps",
+    "kbps",  # Kilobits per second.
+    "mbps",  # Megabits per second.
+    "gbps",  # Gigabits per second.
 ]
 VALID_BODY_DIFFSERV_FORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting forward (original) traffic DiffServ.
+    "disable",  # Disable setting forward (original) traffic DiffServ.
 ]
 VALID_BODY_DIFFSERV_REVERSE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting reverse (reply) traffic DiffServ.
+    "disable",  # Disable setting reverse (reply) traffic DiffServ.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -259,7 +259,7 @@ def validate_firewall_shaper_per_ip_shaper_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "bandwidth-unit": "kbps",  # Valid enum value
+        ...     "bandwidth-unit": "{'name': 'kbps', 'help': 'Kilobits per second.', 'label': 'Kbps', 'description': 'Kilobits per second'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_shaper_per_ip_shaper_post(payload)
         >>> assert is_valid == True

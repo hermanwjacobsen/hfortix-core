@@ -56,7 +56,7 @@ class Create:
         """
         Retrieve registration/forticare/create configuration.
 
-        Configuration for registration/forticare/create
+        Create a new FortiCare account.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

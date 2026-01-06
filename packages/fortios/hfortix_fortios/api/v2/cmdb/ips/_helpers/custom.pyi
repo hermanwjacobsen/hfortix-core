@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["disable", "enable"]
-VALID_BODY_LOG: Literal["disable", "enable"]
-VALID_BODY_LOG_PACKET: Literal["disable", "enable"]
-VALID_BODY_ACTION: Literal["pass", "block"]
+VALID_BODY_STATUS: Literal[{"description": "Disable status", "help": "Disable status.", "label": "Disable", "name": "disable"}, {"description": "Enable status", "help": "Enable status.", "label": "Enable", "name": "enable"}]
+VALID_BODY_LOG: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}]
+VALID_BODY_LOG_PACKET: Literal[{"description": "Disable packet logging", "help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"description": "Enable packet logging", "help": "Enable packet logging.", "label": "Enable", "name": "enable"}]
+VALID_BODY_ACTION: Literal[{"description": "Pass or allow matching traffic", "help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SOURCE: Literal["built-in", "user"]
+VALID_BODY_SOURCE: Literal[{"description": "Built-in SSH proxy local keys", "help": "Built-in SSH proxy local keys.", "label": "Built In", "name": "built-in"}, {"description": "User imported SSH proxy local keys", "help": "User imported SSH proxy local keys.", "label": "User", "name": "user"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

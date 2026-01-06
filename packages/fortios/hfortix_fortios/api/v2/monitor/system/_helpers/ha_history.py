@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ha_history",
     "category": "monitor",
     "api_path": "system/ha-history",
-    "help": "Configuration for system/ha-history",
+    "help": "Get HA cluster historical logs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

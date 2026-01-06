@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/fsw_firmware/upload",
     "category": "monitor",
     "api_path": "switch-controller/fsw-firmware/upload",
-    "help": "Configuration for switch-controller/fsw-firmware/upload",
+    "help": "Upload FortiSwitch firmware to the management FortiGate and then push to target FortiSwitches.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

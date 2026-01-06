@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/internet_service_reputation",
     "category": "monitor",
     "api_path": "firewall/internet-service-reputation",
-    "help": "Configuration for firewall/internet-service-reputation",
+    "help": "List internet services with reputation information that exist at a given IP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

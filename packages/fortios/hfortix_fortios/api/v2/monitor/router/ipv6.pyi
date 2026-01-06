@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Ipv6:
     """
-    Monitor endpoint for router/ipv6
+    List all active IPv6 routing table entries.
     
     Path: router/ipv6
     Category: monitor

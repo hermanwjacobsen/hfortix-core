@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/timezone",
     "category": "monitor",
     "api_path": "system/timezone",
-    "help": "Monitor endpoint for system/timezone",
+    "help": "Get world timezone and daylight saving time.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

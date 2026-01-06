@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SetTierPlus:
     """
-    Configuration for switch-controller/mclag-icl/set-tier-plus
+    Setup a tier 2/3 MC-LAG link between a pair of FortiSwitches.
     
     Path: switch_controller/mclag_icl/set_tier_plus
     Category: monitor

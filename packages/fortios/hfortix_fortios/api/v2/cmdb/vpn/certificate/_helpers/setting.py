@@ -202,19 +202,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "CRL verification option when CRL is expired (default = ignore).",
             "default": "ignore",
-            "options": ["ignore", "revoke"],
+            "options": [{"help": "Certificate status will be verified even if CRL is expired.", "label": "Ignore", "name": "ignore"}, {"help": "Certificate will be revoked if CRL is expired.", "label": "Revoke", "name": "revoke"}],
         },
         "leaf-crl-absence": {
             "type": "option",
             "help": "CRL verification option when leaf CRL is absent (default = ignore).",
             "default": "ignore",
-            "options": ["ignore", "revoke"],
+            "options": [{"help": "CRL verification against leaf certificate is ignored if CRL is absent.", "label": "Ignore", "name": "ignore"}, {"help": "Certificate will be revoked if CRL of leaf certificate is absent.", "label": "Revoke", "name": "revoke"}],
         },
         "chain-crl-absence": {
             "type": "option",
             "help": "CRL verification option when CRL of any certificate in chain is absent (default = ignore).",
             "default": "ignore",
-            "options": ["ignore", "revoke"],
+            "options": [{"help": "CRL verification is ignored if CRL of any certificate in chain is absent.", "label": "Ignore", "name": "ignore"}, {"help": "Certificate will be revoked if CRL of any certificate in chain is absent.", "label": "Revoke", "name": "revoke"}],
         },
     },
 }
@@ -222,62 +222,62 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OCSP_STATUS = [
-    "enable",
-    "mandatory",
-    "disable",
+    "enable",  # OCSP is performed if CRL is not checked.
+    "mandatory",  # If cert is not revoked by CRL, OCSP is performed.
+    "disable",  # OCSP is not performed.
 ]
 VALID_BODY_OCSP_OPTION = [
-    "certificate",
-    "server",
+    "certificate",  # Use URL from certificate.
+    "server",  # Use URL from configured OCSP server.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_CHECK_CA_CERT = [
-    "enable",
-    "disable",
+    "enable",  # Enable verification of the user certificate.
+    "disable",  # Disable verification of the user certificate.
 ]
 VALID_BODY_CHECK_CA_CHAIN = [
-    "enable",
-    "disable",
+    "enable",  # Enable verification of the entire certificate chain.
+    "disable",  # Disable verification of the entire certificate chain.
 ]
 VALID_BODY_SUBJECT_MATCH = [
-    "substring",
-    "value",
+    "substring",  # Find a match if the name being searched for is a part or the same as a certificate subject RDN.
+    "value",  # Find a match if the name being searched for is same as a certificate subject RDN.
 ]
 VALID_BODY_SUBJECT_SET = [
-    "subset",
-    "superset",
+    "subset",  # Find a match if the name being searched for is a subset of a certificate subject.
+    "superset",  # Find a match if the name being searched for is a superset of a certificate subject.
 ]
 VALID_BODY_CN_MATCH = [
-    "substring",
-    "value",
+    "substring",  # Find a match if the name being searched for is a part or the same as a certificate CN.
+    "value",  # Find a match if the name being searched for is same as a certificate CN.
 ]
 VALID_BODY_CN_ALLOW_MULTI = [
-    "disable",
-    "enable",
+    "disable",  # Does not allow multiple CN entries in certificate matching.
+    "enable",  # Allow multiple CN entries in certificate matching.
 ]
 VALID_BODY_STRICT_OCSP_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable strict mode OCSP checking.
+    "disable",  # Disable strict mode OCSP checking.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_CMP_SAVE_EXTRA_CERTS = [
-    "enable",
-    "disable",
+    "enable",  # Enable saving extra certificates in CMP mode.
+    "disable",  # Disable saving extra certificates in CMP mode.
 ]
 VALID_BODY_CMP_KEY_USAGE_CHECKING = [
-    "enable",
-    "disable",
+    "enable",  # Enable server certificate key usage checking in CMP mode.
+    "disable",  # Disable server certificate key usage checking in CMP mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -404,7 +404,7 @@ def validate_vpn_certificate_setting_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "ocsp-status": "enable",  # Valid enum value
+        ...     "ocsp-status": "{'name': 'enable', 'help': 'OCSP is performed if CRL is not checked.', 'label': 'Enable', 'description': 'OCSP is performed if CRL is not checked'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_certificate_setting_post(payload)
         >>> assert is_valid == True

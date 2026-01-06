@@ -106,12 +106,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_IP_MODE = [
-    "range",
-    "usrgrp",
+    "range",  # PPTP client IP from manual config (range from sip to eip).
+    "usrgrp",  # PPTP client IP from user-group defined server.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -238,7 +238,7 @@ def validate_vpn_pptp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "usrgrp": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_pptp_post(payload)
         >>> assert is_valid == True

@@ -56,7 +56,7 @@ class Dnat:
         """
         Retrieve firewall/dnat configuration.
 
-        Configuration for firewall/dnat
+        List hit count statistics for firewall virtual IP/server.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

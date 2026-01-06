@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticloud/device_status",
     "category": "monitor",
     "api_path": "registration/forticloud/device-status",
-    "help": "Configuration for registration/forticloud/device-status",
+    "help": "Fetch device registration status from FortiCloud. Currently FortiSwitch and FortiAP are supported.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

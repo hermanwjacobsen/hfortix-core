@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "extender_controller/extender/reset",
     "category": "monitor",
     "api_path": "extender-controller/extender/reset",
-    "help": "Configuration for extender-controller/extender/reset",
+    "help": "Reset a specific FortiExtender unit.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -13,7 +13,7 @@ class AffinityPacketRedistributionPayload(TypedDict, total=False):
     id: int  # ID of the packet redistribution setting.
     interface: str  # Physical interface name on which to perform packet redistrib
     rxqid: int  # ID of the receive queue (when the interface has multiple que
-    round_robin: Literal["enable", "disable"]  # Enable/disable round-robin redistribution to multiple CPUs.
+    round_robin: Literal[{"description": "Enable round-robin redistribution", "help": "Enable round-robin redistribution.", "label": "Enable", "name": "enable"}, {"description": "Disable round-robin redistribution", "help": "Disable round-robin redistribution.", "label": "Disable", "name": "disable"}]  # Enable/disable round-robin redistribution to multiple CPUs.
     affinity_cpumask: NotRequired[str]  # Hexadecimal cpumask, empty value means all CPUs.
 
 
@@ -45,7 +45,7 @@ class AffinityPacketRedistribution:
         id: int | None = ...,
         interface: str | None = ...,
         rxqid: int | None = ...,
-        round_robin: Literal["enable", "disable"] | None = ...,
+        round_robin: Literal[{"description": "Enable round-robin redistribution", "help": "Enable round-robin redistribution.", "label": "Enable", "name": "enable"}, {"description": "Disable round-robin redistribution", "help": "Disable round-robin redistribution.", "label": "Disable", "name": "disable"}] | None = ...,
         affinity_cpumask: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -58,7 +58,7 @@ class AffinityPacketRedistribution:
         id: int | None = ...,
         interface: str | None = ...,
         rxqid: int | None = ...,
-        round_robin: Literal["enable", "disable"] | None = ...,
+        round_robin: Literal[{"description": "Enable round-robin redistribution", "help": "Enable round-robin redistribution.", "label": "Enable", "name": "enable"}, {"description": "Disable round-robin redistribution", "help": "Disable round-robin redistribution.", "label": "Disable", "name": "disable"}] | None = ...,
         affinity_cpumask: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

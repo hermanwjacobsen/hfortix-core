@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CloseAll:
     """
-    Configuration for firewall/session/close-all
+    Immediately close all active IPv4 and IPv6 sessions, as well as IPS sessions of the current VDOM.
     
     Path: firewall/session/close_all
     Category: monitor

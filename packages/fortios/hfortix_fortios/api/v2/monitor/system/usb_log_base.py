@@ -56,7 +56,7 @@ class UsbLog:
         """
         Retrieve system/usb_log configuration.
 
-        Configuration for system/usb-log
+        Retrieve information about connected USB drives, including estimated log sizes.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

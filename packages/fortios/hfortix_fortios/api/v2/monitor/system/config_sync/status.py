@@ -56,7 +56,7 @@ class Status:
         """
         Retrieve system/config_sync/status configuration.
 
-        Configuration for system/config-sync/status
+        Get configuration sync status of SLBC cluster master and slave.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

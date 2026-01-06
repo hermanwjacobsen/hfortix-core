@@ -114,14 +114,14 @@ NESTED_SCHEMAS = {
             "help": "Pattern type.",
             "required": True,
             "default": "wildcard",
-            "options": ["wildcard", "regex"],
+            "options": [{"help": "Wildcard pattern.", "label": "Wildcard", "name": "wildcard"}, {"help": "Perl regular expression.", "label": "Regex", "name": "regex"}],
         },
         "status": {
             "type": "option",
             "help": "Enable(consider)/disable(ignore) this keyword.",
             "required": True,
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Consider this keyword.", "label": "Enable", "name": "enable"}, {"help": "Ignore this keyword.", "label": "Disable", "name": "disable"}],
         },
     },
 }
@@ -129,8 +129,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MATCH = [
-    "or",
-    "and",
+    "or",  # Match any keyword.
+    "and",  # Match all keywords.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -260,7 +260,7 @@ def validate_videofilter_keyword_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "match": "or",  # Valid enum value
+        ...     "match": "{'name': 'or', 'help': 'Match any keyword.', 'label': 'Or', 'description': 'Match any keyword'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_videofilter_keyword_post(payload)
         >>> assert is_valid == True

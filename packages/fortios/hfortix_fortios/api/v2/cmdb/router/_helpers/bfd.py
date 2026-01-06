@@ -146,7 +146,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Authentication mode.",
             "default": "none",
-            "options": ["none", "md5"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Meticulous MD5 mode.", "label": "Md5", "name": "md5"}],
         },
         "md5-key": {
             "type": "password",

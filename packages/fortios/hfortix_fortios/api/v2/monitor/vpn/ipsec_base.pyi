@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Ipsec:
     """
-    Monitor endpoint for vpn/ipsec/connection-count
+    Return the connection counts for every ipsec tunnel.
     
     Path: vpn/ipsec
     Category: monitor

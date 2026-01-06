@@ -155,25 +155,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "NSSA translator role type.",
             "default": "candidate",
-            "options": ["candidate", "never", "always"],
+            "options": [{"help": "Candidate.", "label": "Candidate", "name": "candidate"}, {"help": "Never.", "label": "Never", "name": "never"}, {"help": "Always.", "label": "Always", "name": "always"}],
         },
         "stub-type": {
             "type": "option",
             "help": "Stub summary setting.",
             "default": "summary",
-            "options": ["no-summary", "summary"],
+            "options": [{"help": "No summary.", "label": "No Summary", "name": "no-summary"}, {"help": "Summary.", "label": "Summary", "name": "summary"}],
         },
         "type": {
             "type": "option",
             "help": "Area type setting.",
             "default": "regular",
-            "options": ["regular", "nssa", "stub"],
+            "options": [{"help": "Regular.", "label": "Regular", "name": "regular"}, {"help": "NSSA.", "label": "Nssa", "name": "nssa"}, {"help": "Stub.", "label": "Stub", "name": "stub"}],
         },
         "nssa-default-information-originate": {
             "type": "option",
             "help": "Enable/disable originate type 7 default into NSSA area.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable originate type 7 default into NSSA area.", "label": "Enable", "name": "enable"}, {"help": "Disable originate type 7 default into NSSA area.", "label": "Disable", "name": "disable"}],
         },
         "nssa-default-information-originate-metric": {
             "type": "integer",
@@ -186,19 +186,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "OSPFv3 metric type for default routes.",
             "default": "2",
-            "options": ["1", "2"],
+            "options": [{"help": "Type 1.", "label": "1", "name": "1"}, {"help": "Type 2.", "label": "2", "name": "2"}],
         },
         "nssa-redistribution": {
             "type": "option",
             "help": "Enable/disable redistribute into NSSA area.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable redistribute into NSSA area.", "label": "Enable", "name": "enable"}, {"help": "Disable redistribute into NSSA area.", "label": "Disable", "name": "disable"}],
         },
         "authentication": {
             "type": "option",
             "help": "Authentication mode.",
             "default": "none",
-            "options": ["none", "ah", "esp"],
+            "options": [{"help": "Disable authentication.", "label": "None", "name": "none"}, {"help": "Authentication Header.", "label": "Ah", "name": "ah"}, {"help": "Encapsulating Security Payload.", "label": "Esp", "name": "esp"}],
         },
         "key-rollover-interval": {
             "type": "integer",
@@ -211,13 +211,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Authentication algorithm.",
             "default": "md5",
-            "options": ["md5", "sha1", "sha256", "sha384", "sha512"],
+            "options": [{"help": "MD5.", "label": "Md5", "name": "md5"}, {"help": "SHA1.", "label": "Sha1", "name": "sha1"}, {"help": "SHA256.", "label": "Sha256", "name": "sha256"}, {"help": "SHA384.", "label": "Sha384", "name": "sha384"}, {"help": "SHA512.", "label": "Sha512", "name": "sha512"}],
         },
         "ipsec-enc-alg": {
             "type": "option",
             "help": "Encryption algorithm.",
             "default": "null",
-            "options": ["null", "des", "3des", "aes128", "aes192", "aes256"],
+            "options": [{"help": "No encryption.", "label": "Null", "name": "null"}, {"help": "DES.", "label": "Des", "name": "des"}, {"help": "3DES.", "label": "3Des", "name": "3des"}, {"help": "AES128.", "label": "Aes128", "name": "aes128"}, {"help": "AES192.", "label": "Aes192", "name": "aes192"}, {"help": "AES256.", "label": "Aes256", "name": "aes256"}],
         },
         "ipsec-keys": {
             "type": "string",
@@ -298,19 +298,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable OSPF6 routing on this interface.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable OSPF6 routing.", "label": "Disable", "name": "disable"}, {"help": "Enable OSPF6 routing.", "label": "Enable", "name": "enable"}],
         },
         "network-type": {
             "type": "option",
             "help": "Network type.",
             "default": "broadcast",
-            "options": ["broadcast", "point-to-point", "non-broadcast", "point-to-multipoint", "point-to-multipoint-non-broadcast"],
+            "options": [{"help": "broadcast", "label": "Broadcast", "name": "broadcast"}, {"help": "point-to-point", "label": "Point To Point", "name": "point-to-point"}, {"help": "non-broadcast", "label": "Non Broadcast", "name": "non-broadcast"}, {"help": "point-to-multipoint", "label": "Point To Multipoint", "name": "point-to-multipoint"}, {"help": "point-to-multipoint and non-broadcast.", "label": "Point To Multipoint Non Broadcast", "name": "point-to-multipoint-non-broadcast"}],
         },
         "bfd": {
             "type": "option",
             "help": "Enable/disable Bidirectional Forwarding Detection (BFD).",
             "default": "global",
-            "options": ["global", "enable", "disable"],
+            "options": [{"help": "Use global configuration of Bidirectional Forwarding Detection (BFD).", "label": "Global", "name": "global"}, {"help": "Enable Bidirectional Forwarding Detection (BFD) on this interface.", "label": "Enable", "name": "enable"}, {"help": "Disable Bidirectional Forwarding Detection (BFD) on this interface.", "label": "Disable", "name": "disable"}],
         },
         "mtu": {
             "type": "integer",
@@ -323,13 +323,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable ignoring MTU field in DBD packets.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Ignore MTU field in DBD packets.", "label": "Enable", "name": "enable"}, {"help": "Do not ignore MTU field in DBD packets.", "label": "Disable", "name": "disable"}],
         },
         "authentication": {
             "type": "option",
             "help": "Authentication mode.",
             "default": "area",
-            "options": ["none", "ah", "esp", "area"],
+            "options": [{"help": "Disable authentication.", "label": "None", "name": "none"}, {"help": "Authentication Header.", "label": "Ah", "name": "ah"}, {"help": "Encapsulating Security Payload.", "label": "Esp", "name": "esp"}, {"help": "Use the routing area\u0027s authentication configuration.", "label": "Area", "name": "area"}],
         },
         "key-rollover-interval": {
             "type": "integer",
@@ -342,13 +342,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Authentication algorithm.",
             "default": "md5",
-            "options": ["md5", "sha1", "sha256", "sha384", "sha512"],
+            "options": [{"help": "MD5.", "label": "Md5", "name": "md5"}, {"help": "SHA1.", "label": "Sha1", "name": "sha1"}, {"help": "SHA256.", "label": "Sha256", "name": "sha256"}, {"help": "SHA384.", "label": "Sha384", "name": "sha384"}, {"help": "SHA512.", "label": "Sha512", "name": "sha512"}],
         },
         "ipsec-enc-alg": {
             "type": "option",
             "help": "Encryption algorithm.",
             "default": "null",
-            "options": ["null", "des", "3des", "aes128", "aes192", "aes256"],
+            "options": [{"help": "No encryption.", "label": "Null", "name": "null"}, {"help": "DES.", "label": "Des", "name": "des"}, {"help": "3DES.", "label": "3Des", "name": "3des"}, {"help": "AES128.", "label": "Aes128", "name": "aes128"}, {"help": "AES192.", "label": "Aes192", "name": "aes192"}, {"help": "AES256.", "label": "Aes256", "name": "aes256"}],
         },
         "ipsec-keys": {
             "type": "string",
@@ -371,7 +371,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "metric": {
             "type": "integer",
@@ -390,7 +390,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Metric type.",
             "default": "2",
-            "options": ["1", "2"],
+            "options": [{"help": "Type 1.", "label": "1", "name": "1"}, {"help": "Type 2.", "label": "2", "name": "2"}],
         },
     },
     "passive-interface": {
@@ -420,7 +420,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable advertise status.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "disable", "label": "Disable", "name": "disable"}, {"help": "enable", "label": "Enable", "name": "enable"}],
         },
         "tag": {
             "type": "integer",
@@ -435,34 +435,34 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ABR_TYPE = [
-    "cisco",
-    "ibm",
-    "standard",
+    "cisco",  # Cisco.
+    "ibm",  # IBM.
+    "standard",  # Standard.
 ]
 VALID_BODY_DEFAULT_INFORMATION_ORIGINATE = [
-    "enable",
-    "always",
-    "disable",
+    "enable",  # Enable setting.
+    "always",  # Always advertise the default router.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOG_NEIGHBOUR_CHANGES = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DEFAULT_INFORMATION_METRIC_TYPE = [
-    "1",
-    "2",
+    "1",  # Type 1.
+    "2",  # Type 2.
 ]
 VALID_BODY_BFD = [
-    "enable",
-    "disable",
+    "enable",  # Enable Bidirectional Forwarding Detection (BFD).
+    "disable",  # Disable Bidirectional Forwarding Detection (BFD).
 ]
 VALID_BODY_RESTART_MODE = [
-    "none",
-    "graceful-restart",
+    "none",  # Disable hitless restart.
+    "graceful-restart",  # Enable graceful restart mode.
 ]
 VALID_BODY_RESTART_ON_TOPOLOGY_CHANGE = [
-    "enable",
-    "disable",
+    "enable",  # Continue graceful restart upon topology change.
+    "disable",  # Exit graceful restart upon topology change.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -587,7 +587,7 @@ def validate_router_ospf6_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "abr-type": "cisco",  # Valid enum value
+        ...     "abr-type": "{'name': 'cisco', 'help': 'Cisco.', 'label': 'Cisco', 'description': 'Cisco'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_ospf6_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GlobalSearch:
     """
-    Configuration for system/global-search
+    Search for CMDB table objects based on search phrase.
     
     Path: system/global_search
     Category: monitor

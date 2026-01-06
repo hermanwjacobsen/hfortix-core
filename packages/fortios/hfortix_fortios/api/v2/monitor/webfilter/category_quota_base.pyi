@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CategoryQuota:
     """
-    Monitor endpoint for webfilter/category-quota
+    Retrieve quota usage statistics for webfilter categories.
     
     Path: webfilter/category_quota
     Category: monitor

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SESSION_CACHE_SIZE: Literal["min", "default", "max"]
+VALID_BODY_SESSION_CACHE_SIZE: Literal[{"description": "Up to 0", "help": "Up to 0.5% of system RAM.", "label": "Min", "name": "min"}, {"description": "Up to 1% of system RAM", "help": "Up to 1% of system RAM.", "label": "Default", "name": "default"}, {"description": "Up to 2% of system RAM", "help": "Up to 2% of system RAM.", "label": "Max", "name": "max"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

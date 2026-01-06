@@ -121,7 +121,7 @@ NESTED_SCHEMAS = {
             "help": "Application type.",
             "required": True,
             "default": "web",
-            "options": ["ftp", "rdp", "sftp", "smb", "ssh", "telnet", "vnc", "web"],
+            "options": [{"help": "FTP.", "label": "Ftp", "name": "ftp"}, {"help": "RDP.", "label": "Rdp", "name": "rdp"}, {"help": "SFTP.", "label": "Sftp", "name": "sftp"}, {"help": "SMB/CIFS.", "label": "Smb", "name": "smb"}, {"help": "SSH.", "label": "Ssh", "name": "ssh"}, {"help": "Telnet.", "label": "Telnet", "name": "telnet"}, {"help": "VNC.", "label": "Vnc", "name": "vnc"}, {"help": "HTTP/HTTPS.", "label": "Web", "name": "web"}],
         },
         "url": {
             "type": "var-string",
@@ -155,19 +155,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Keyboard layout.",
             "default": "en-us",
-            "options": ["ar-101", "ar-102", "ar-102-azerty", "can-mul", "cz", "cz-qwerty", "cz-pr", "da", "nl", "de", "de-ch", "de-ibm", "en-uk", "en-uk-ext", "en-us", "en-us-dvorak", "es", "es-var", "fi", "fi-sami", "fr", "fr-apple", "fr-ca", "fr-ch", "fr-be", "hr", "hu", "hu-101", "it", "it-142", "ja", "ja-106", "ko", "la-am", "lt", "lt-ibm", "lt-std", "lav-std", "lav-leg", "mk", "mk-std", "no", "no-sami", "pol-214", "pol-pr", "pt", "pt-br", "pt-br-abnt2", "ru", "ru-mne", "ru-t", "sl", "sv", "sv-sami", "tuk", "tur-f", "tur-q", "zh-sym-sg-us", "zh-sym-us", "zh-tr-hk", "zh-tr-mo", "zh-tr-us"],
+            "options": [{"help": "Arabic (101).", "label": "Ar 101", "name": "ar-101"}, {"help": "Arabic (102).", "label": "Ar 102", "name": "ar-102"}, {"help": "Arabic (102) AZERTY.", "label": "Ar 102 Azerty", "name": "ar-102-azerty"}, {"help": "Canadian Multilingual Standard.", "label": "Can Mul", "name": "can-mul"}, {"help": "Czech.", "label": "Cz", "name": "cz"}, {"help": "Czech (QWERTY).", "label": "Cz Qwerty", "name": "cz-qwerty"}, {"help": "Czech Programmers.", "label": "Cz Pr", "name": "cz-pr"}, {"help": "Danish.", "label": "Da", "name": "da"}, {"help": "Dutch.", "label": "Nl", "name": "nl"}, {"help": "German.", "label": "De", "name": "de"}, {"help": "German, Switzerland.", "label": "De Ch", "name": "de-ch"}, {"help": "German (IBM).", "label": "De Ibm", "name": "de-ibm"}, {"help": "English, United Kingdom.", "label": "En Uk", "name": "en-uk"}, {"help": "English, United Kingdom Extended.", "label": "En Uk Ext", "name": "en-uk-ext"}, {"help": "English, United States.", "label": "En Us", "name": "en-us"}, {"help": "English, United States-Dvorak.", "label": "En Us Dvorak", "name": "en-us-dvorak"}, {"help": "Spanish.", "label": "Es", "name": "es"}, {"help": "Spanish Variation.", "label": "Es Var", "name": "es-var"}, {"help": "Finnish.", "label": "Fi", "name": "fi"}, {"help": "Finnish with Sami.", "label": "Fi Sami", "name": "fi-sami"}, {"help": "French.", "label": "Fr", "name": "fr"}, {"help": "French, Apple.", "label": "Fr Apple", "name": "fr-apple"}, {"help": "French, Canada.", "label": "Fr Ca", "name": "fr-ca"}, {"help": "French, Switzerland.", "label": "Fr Ch", "name": "fr-ch"}, {"help": "French, Belgium.", "label": "Fr Be", "name": "fr-be"}, {"help": "Croatian.", "label": "Hr", "name": "hr"}, {"help": "Hungarian.", "label": "Hu", "name": "hu"}, {"help": "Hungarian 101-Key.", "label": "Hu 101", "name": "hu-101"}, {"help": "Italian.", "label": "It", "name": "it"}, {"help": "Italian (142).", "label": "It 142", "name": "it-142"}, {"help": "Japanese.", "label": "Ja", "name": "ja"}, {"help": "Japanese 106/109 key.", "label": "Ja 106", "name": "ja-106"}, {"help": "Korean.", "label": "Ko", "name": "ko"}, {"help": "Latin American.", "label": "La Am", "name": "la-am"}, {"help": "Lithuanian.", "label": "Lt", "name": "lt"}, {"help": "Lithuanian IBM.", "label": "Lt Ibm", "name": "lt-ibm"}, {"help": "Lithuanian Standard.", "label": "Lt Std", "name": "lt-std"}, {"help": "Latvian (Standard).", "label": "Lav Std", "name": "lav-std"}, {"help": "Latvian (Legacy).", "label": "Lav Leg", "name": "lav-leg"}, {"help": "Macedonian (FYROM).", "label": "Mk", "name": "mk"}, {"help": "Macedonia (FYROM) - Standard.", "label": "Mk Std", "name": "mk-std"}, {"help": "Norwegian.", "label": "No", "name": "no"}, {"help": "Norwegian with Sami.", "label": "No Sami", "name": "no-sami"}, {"help": "Polish (214).", "label": "Pol 214", "name": "pol-214"}, {"help": "Polish (Programmers).", "label": "Pol Pr", "name": "pol-pr"}, {"help": "Portuguese.", "label": "Pt", "name": "pt"}, {"help": "Portuguese (Brazilian ABNT).", "label": "Pt Br", "name": "pt-br"}, {"help": "Portuguese (Brazilian ABNT2).", "label": "Pt Br Abnt2", "name": "pt-br-abnt2"}, {"help": "Russian.", "label": "Ru", "name": "ru"}, {"help": "Russian - Mnemonic.", "label": "Ru Mne", "name": "ru-mne"}, {"help": "Russian (Typewriter).", "label": "Ru T", "name": "ru-t"}, {"help": "Slovenian.", "label": "Sl", "name": "sl"}, {"help": "Swedish.", "label": "Sv", "name": "sv"}, {"help": "Swedish with Sami.", "label": "Sv Sami", "name": "sv-sami"}, {"help": "Turkmen.", "label": "Tuk", "name": "tuk"}, {"help": "Turkish F.", "label": "Tur F", "name": "tur-f"}, {"help": "Turkish Q.", "label": "Tur Q", "name": "tur-q"}, {"help": "Chinese (Simplified, Singapore) - US keyboard.", "label": "Zh Sym Sg Us", "name": "zh-sym-sg-us"}, {"help": "Chinese (Simplified) - US Keyboard.", "label": "Zh Sym Us", "name": "zh-sym-us"}, {"help": "Chinese (Traditional, Hong Kong S.A.R.).", "label": "Zh Tr Hk", "name": "zh-tr-hk"}, {"help": "Chinese (Traditional Macao S.A.R.) - US Keyboard.", "label": "Zh Tr Mo", "name": "zh-tr-mo"}, {"help": "Chinese (Traditional) - US keyboard.", "label": "Zh Tr Us", "name": "zh-tr-us"}],
         },
         "security": {
             "type": "option",
             "help": "Security mode for RDP connection (default = any).",
             "default": "any",
-            "options": ["any", "rdp", "nla", "tls"],
+            "options": [{"help": "Allow the server to choose the type of security.", "label": "Any", "name": "any"}, {"help": "Standard RDP encryption.", "label": "Rdp", "name": "rdp"}, {"help": "Network Level Authentication.", "label": "Nla", "name": "nla"}, {"help": "TLS encryption.", "label": "Tls", "name": "tls"}],
         },
         "send-preconnection-id": {
             "type": "option",
             "help": "Enable/disable sending of preconnection ID.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable sending of preconnection ID.", "label": "Enable", "name": "enable"}, {"help": "Disable sending of preconnection ID.", "label": "Disable", "name": "disable"}],
         },
         "preconnection-id": {
             "type": "integer",
@@ -190,7 +190,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable restricted admin mode for RDP.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable restricted admin mode for RDP.", "label": "Enable", "name": "enable"}, {"help": "Disable restricted admin mode for RDP.", "label": "Disable", "name": "disable"}],
         },
         "port": {
             "type": "integer",
@@ -213,13 +213,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Color depth per pixel.",
             "default": "16",
-            "options": ["32", "16", "8"],
+            "options": [{"help": "32bits per pixel.", "label": "32", "name": "32"}, {"help": "16bits per pixel.", "label": "16", "name": "16"}, {"help": "8bits per pixel.", "label": "8", "name": "8"}],
         },
         "sso": {
             "type": "option",
             "help": "Single sign-on.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SSO.", "label": "Disable", "name": "disable"}, {"help": "Enable SSO.", "label": "Enable", "name": "enable"}],
         },
         "width": {
             "type": "integer",
@@ -239,7 +239,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Keyboard layout.",
             "default": "default",
-            "options": ["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"],
+            "options": [{"help": "Default.", "label": "Default", "name": "default"}, {"help": "Danish.", "label": "Da", "name": "da"}, {"help": "Dutch.", "label": "Nl", "name": "nl"}, {"help": "English, United Kingdom.", "label": "En Uk", "name": "en-uk"}, {"help": "English, United Kingdom Extended.", "label": "En Uk Ext", "name": "en-uk-ext"}, {"help": "Finnish.", "label": "Fi", "name": "fi"}, {"help": "French.", "label": "Fr", "name": "fr"}, {"help": "French, Belgium.", "label": "Fr Be", "name": "fr-be"}, {"help": "French, Canadian Multilingual Std.", "label": "Fr Ca Mul", "name": "fr-ca-mul"}, {"help": "German.", "label": "De", "name": "de"}, {"help": "German, Switzerland.", "label": "De Ch", "name": "de-ch"}, {"help": "Italian.", "label": "It", "name": "it"}, {"help": "Italian (142).", "label": "It 142", "name": "it-142"}, {"help": "Portuguese.", "label": "Pt", "name": "pt"}, {"help": "Portuguese (Brazilian ABNT2).", "label": "Pt Br Abnt2", "name": "pt-br-abnt2"}, {"help": "Norwegian.", "label": "No", "name": "no"}, {"help": "Scottish Gaelic.", "label": "Gd", "name": "gd"}, {"help": "Spanish.", "label": "Es", "name": "es"}, {"help": "Swedish.", "label": "Sv", "name": "sv"}, {"help": "United States-International.", "label": "Us Intl", "name": "us-intl"}],
         },
     },
 }

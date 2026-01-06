@@ -13,8 +13,8 @@ class InternetServicePayload(TypedDict, total=False):
     id: NotRequired[int]  # Internet Service ID.
     name: NotRequired[str]  # Internet Service name.
     icon_id: NotRequired[int]  # Icon ID of Internet Service.
-    direction: NotRequired[Literal["src", "dst", "both"]]  # How this service may be used in a firewall policy (source, d
-    database: NotRequired[Literal["isdb", "irdb"]]  # Database name this Internet Service belongs to.
+    direction: NotRequired[Literal[{"description": "As source in the firewall policy", "help": "As source in the firewall policy.", "label": "Src", "name": "src"}, {"description": "As destination in the firewall policy", "help": "As destination in the firewall policy.", "label": "Dst", "name": "dst"}, {"description": "Both directions in the firewall policy", "help": "Both directions in the firewall policy.", "label": "Both", "name": "both"}]]  # How this service may be used in a firewall policy (source, d
+    database: NotRequired[Literal[{"description": "Internet Service Database", "help": "Internet Service Database.", "label": "Isdb", "name": "isdb"}, {"description": "Internet RRR Database", "help": "Internet RRR Database.", "label": "Irdb", "name": "irdb"}]]  # Database name this Internet Service belongs to.
     ip_range_number: NotRequired[int]  # Number of IPv4 ranges.
     extra_ip_range_number: NotRequired[int]  # Extra number of IPv4 ranges.
     ip_number: NotRequired[int]  # Total number of IPv4 addresses.
@@ -52,8 +52,8 @@ class InternetService:
         id: int | None = ...,
         name: str | None = ...,
         icon_id: int | None = ...,
-        direction: Literal["src", "dst", "both"] | None = ...,
-        database: Literal["isdb", "irdb"] | None = ...,
+        direction: Literal[{"description": "As source in the firewall policy", "help": "As source in the firewall policy.", "label": "Src", "name": "src"}, {"description": "As destination in the firewall policy", "help": "As destination in the firewall policy.", "label": "Dst", "name": "dst"}, {"description": "Both directions in the firewall policy", "help": "Both directions in the firewall policy.", "label": "Both", "name": "both"}] | None = ...,
+        database: Literal[{"description": "Internet Service Database", "help": "Internet Service Database.", "label": "Isdb", "name": "isdb"}, {"description": "Internet RRR Database", "help": "Internet RRR Database.", "label": "Irdb", "name": "irdb"}] | None = ...,
         ip_range_number: int | None = ...,
         extra_ip_range_number: int | None = ...,
         ip_number: int | None = ...,
@@ -72,8 +72,8 @@ class InternetService:
         id: int | None = ...,
         name: str | None = ...,
         icon_id: int | None = ...,
-        direction: Literal["src", "dst", "both"] | None = ...,
-        database: Literal["isdb", "irdb"] | None = ...,
+        direction: Literal[{"description": "As source in the firewall policy", "help": "As source in the firewall policy.", "label": "Src", "name": "src"}, {"description": "As destination in the firewall policy", "help": "As destination in the firewall policy.", "label": "Dst", "name": "dst"}, {"description": "Both directions in the firewall policy", "help": "Both directions in the firewall policy.", "label": "Both", "name": "both"}] | None = ...,
+        database: Literal[{"description": "Internet Service Database", "help": "Internet Service Database.", "label": "Isdb", "name": "isdb"}, {"description": "Internet RRR Database", "help": "Internet RRR Database.", "label": "Irdb", "name": "irdb"}] | None = ...,
         ip_range_number: int | None = ...,
         extra_ip_range_number: int | None = ...,
         ip_number: int | None = ...,

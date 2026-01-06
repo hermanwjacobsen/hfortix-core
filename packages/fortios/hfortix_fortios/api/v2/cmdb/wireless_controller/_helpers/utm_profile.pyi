@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_UTM_LOG: Literal["enable", "disable"]
-VALID_BODY_SCAN_BOTNET_CONNECTIONS: Literal["disable", "monitor", "block"]
+VALID_BODY_UTM_LOG: Literal[{"description": "Enable UTM logging", "help": "Enable UTM logging.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM logging", "help": "Disable UTM logging.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SCAN_BOTNET_CONNECTIONS: Literal[{"description": "Do not scan connections to botnet servers", "help": "Do not scan connections to botnet servers.", "label": "Disable", "name": "disable"}, {"description": "Log connections to botnet servers", "help": "Log connections to botnet servers.", "label": "Monitor", "name": "monitor"}, {"description": "Block connections to botnet servers", "help": "Block connections to botnet servers.", "label": "Block", "name": "block"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

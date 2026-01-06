@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for webproxy/pacfile/download
+    Download webproxy PAC file.
     
     Path: webproxy/pacfile/download
     Category: monitor

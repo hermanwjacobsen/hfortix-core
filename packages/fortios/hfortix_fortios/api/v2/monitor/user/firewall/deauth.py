@@ -56,7 +56,7 @@ class Deauth:
         """
         Retrieve user/firewall/deauth configuration.
 
-        Configuration for user/firewall/deauth
+        Deauthenticate single, multiple, or all firewall users.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

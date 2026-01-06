@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "fortiguard/service_communication_stats",
     "category": "monitor",
     "api_path": "fortiguard/service-communication-stats",
-    "help": "Configuration for fortiguard/service-communication-stats",
+    "help": "Retrieve historical statistics for communication with FortiGuard services.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

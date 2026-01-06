@@ -12,7 +12,7 @@ class SettingsPayload(TypedDict, total=False):
     """
     storage_device: NotRequired[str]  # Storage device name.
     size: NotRequired[int]  # Maximum total size of files within the DLP fingerprint datab
-    db_mode: NotRequired[Literal["stop-adding", "remove-modified-then-oldest", "remove-oldest"]]  # Behavior when the maximum size is reached in the DLP fingerp
+    db_mode: NotRequired[Literal[{"help": "Stop adding entries.", "label": "Stop Adding", "name": "stop-adding"}, {"help": "Remove modified chunks first, then oldest file entries.", "label": "Remove Modified Then Oldest", "name": "remove-modified-then-oldest"}, {"help": "Remove the oldest files first.", "label": "Remove Oldest", "name": "remove-oldest"}]]  # Behavior when the maximum size is reached in the DLP fingerp
     cache_mem_percent: NotRequired[int]  # Maximum percentage of available memory allocated to caching 
     chunk_size: NotRequired[int]  # Maximum fingerprint chunk size. Caution, changing this setti
     config_builder_timeout: NotRequired[int]  # Maximum time allowed for building a single DLP profile (defa
@@ -44,7 +44,7 @@ class Settings:
         payload_dict: SettingsPayload | None = ...,
         storage_device: str | None = ...,
         size: int | None = ...,
-        db_mode: Literal["stop-adding", "remove-modified-then-oldest", "remove-oldest"] | None = ...,
+        db_mode: Literal[{"help": "Stop adding entries.", "label": "Stop Adding", "name": "stop-adding"}, {"help": "Remove modified chunks first, then oldest file entries.", "label": "Remove Modified Then Oldest", "name": "remove-modified-then-oldest"}, {"help": "Remove the oldest files first.", "label": "Remove Oldest", "name": "remove-oldest"}] | None = ...,
         cache_mem_percent: int | None = ...,
         chunk_size: int | None = ...,
         config_builder_timeout: int | None = ...,
@@ -58,7 +58,7 @@ class Settings:
         payload_dict: SettingsPayload | None = ...,
         storage_device: str | None = ...,
         size: int | None = ...,
-        db_mode: Literal["stop-adding", "remove-modified-then-oldest", "remove-oldest"] | None = ...,
+        db_mode: Literal[{"help": "Stop adding entries.", "label": "Stop Adding", "name": "stop-adding"}, {"help": "Remove modified chunks first, then oldest file entries.", "label": "Remove Modified Then Oldest", "name": "remove-modified-then-oldest"}, {"help": "Remove the oldest files first.", "label": "Remove Oldest", "name": "remove-oldest"}] | None = ...,
         cache_mem_percent: int | None = ...,
         chunk_size: int | None = ...,
         config_builder_timeout: int | None = ...,

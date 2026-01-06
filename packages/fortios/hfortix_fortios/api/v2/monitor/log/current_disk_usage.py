@@ -56,7 +56,7 @@ class CurrentDiskUsage:
         """
         Retrieve log/current_disk_usage configuration.
 
-        Configuration for log/current-disk-usage
+        Return current used, free and total disk bytes.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

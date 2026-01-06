@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Ipconf:
     """
-    Configuration for system/ipconf
+    Determine if there is an IP conflict for a specific IP using ARP.
     
     Path: system/ipconf
     Category: monitor

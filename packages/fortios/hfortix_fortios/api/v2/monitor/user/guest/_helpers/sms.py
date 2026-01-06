@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/guest/sms",
     "category": "monitor",
     "api_path": "user/guest/sms",
-    "help": "Configuration for user/guest/sms",
+    "help": "Sent guest login details via SMS.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

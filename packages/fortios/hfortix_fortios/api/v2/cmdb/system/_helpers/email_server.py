@@ -133,33 +133,33 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "custom",
+    "custom",  # Use custom email server.
 ]
 VALID_BODY_AUTHENTICATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable authentication.
+    "disable",  # Disable authentication.
 ]
 VALID_BODY_VALIDATE_SERVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable validation of server certificate.
+    "disable",  # Disable validation of server certificate.
 ]
 VALID_BODY_SECURITY = [
-    "none",
-    "starttls",
-    "smtps",
+    "none",  # None.
+    "starttls",  # STARTTLS.
+    "smtps",  # SSL/TLS.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -286,7 +286,7 @@ def validate_system_email_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "type": "custom",  # Valid enum value
+        ...     "type": "{'name': 'custom', 'help': 'Use custom email server.', 'label': 'Custom', 'description': 'Use custom email server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_email_server_post(payload)
         >>> assert is_valid == True

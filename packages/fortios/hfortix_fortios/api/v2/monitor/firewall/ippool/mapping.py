@@ -56,7 +56,7 @@ class Mapping:
         """
         Retrieve firewall/ippool/mapping configuration.
 
-        Configuration for firewall/ippool/mapping
+        Get the list of IPv4 mappings for the specified IP pool.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

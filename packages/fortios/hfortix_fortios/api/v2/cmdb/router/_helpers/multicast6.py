@@ -125,7 +125,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable use of SDWAN when checking RPF neighbor and sending of REG packet.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable use of SDWAN when checking RPF neighbor and sending of REG packet.", "label": "Enable", "name": "enable"}, {"help": "Disable use of SDWAN when checking RPF neighbor and sending of REG packet.", "label": "Disable", "name": "disable"}],
         },
         "rp-address": {
             "type": "string",
@@ -137,12 +137,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MULTICAST_ROUTING = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv6 multicast routing.
+    "disable",  # Disable IPv6 multicast routing.
 ]
 VALID_BODY_MULTICAST_PMTU = [
-    "enable",
-    "disable",
+    "enable",  # Enable PMTU for IPv6 multicast.
+    "disable",  # Disable PMTU for IPv6 multicast.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -267,7 +267,7 @@ def validate_router_multicast6_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "multicast-routing": "enable",  # Valid enum value
+        ...     "multicast-routing": "{'name': 'enable', 'help': 'Enable IPv6 multicast routing.', 'label': 'Enable', 'description': 'Enable IPv6 multicast routing'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_multicast6_post(payload)
         >>> assert is_valid == True

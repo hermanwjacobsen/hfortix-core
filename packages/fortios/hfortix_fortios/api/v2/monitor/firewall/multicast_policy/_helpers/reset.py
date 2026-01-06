@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/multicast_policy/reset",
     "category": "monitor",
     "api_path": "firewall/multicast-policy/reset",
-    "help": "Configuration for firewall/multicast-policy/reset",
+    "help": "Reset traffic statistics for all IPv4 firewall multicast policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

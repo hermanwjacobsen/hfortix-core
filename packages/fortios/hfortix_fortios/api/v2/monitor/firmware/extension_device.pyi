@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ExtensionDevice:
     """
-    Configuration for firmware/extension-device
+    Retrieve a list of recommended firmwares for the specified extension device type.
     
     Path: firmware/extension_device
     Category: monitor

@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_INPUT_DEVICE_NEGATE: Literal["enable", "disable"]
-VALID_BODY_SRC_NEGATE: Literal["enable", "disable"]
-VALID_BODY_DST_NEGATE: Literal["enable", "disable"]
-VALID_BODY_ACTION: Literal["deny", "permit"]
-VALID_BODY_STATUS: Literal["enable", "disable"]
+VALID_BODY_INPUT_DEVICE_NEGATE: Literal[{"description": "Enable negation of input device match", "help": "Enable negation of input device match.", "label": "Enable", "name": "enable"}, {"description": "Disable negation of input device match", "help": "Disable negation of input device match.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SRC_NEGATE: Literal[{"description": "Enable source address negation", "help": "Enable source address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable source address negation", "help": "Disable source address negation.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DST_NEGATE: Literal[{"description": "Enable destination address negation", "help": "Enable destination address negation.", "label": "Enable", "name": "enable"}, {"description": "Disable destination address negation", "help": "Disable destination address negation.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ACTION: Literal[{"description": "Do not search policy route table", "help": "Do not search policy route table.", "label": "Deny", "name": "deny"}, {"description": "Use this policy route for forwarding", "help": "Use this policy route for forwarding.", "label": "Permit", "name": "permit"}]
+VALID_BODY_STATUS: Literal[{"description": "Enable this policy route", "help": "Enable this policy route.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy route", "help": "Disable this policy route.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

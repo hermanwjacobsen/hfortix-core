@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_ACTION: Literal["accept", "deny"]
+VALID_BODY_STATUS: Literal[{"description": "Enable this TTL policy", "help": "Enable this TTL policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this TTL policy", "help": "Disable this TTL policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ACTION: Literal[{"description": "Allow traffic matching this policy", "help": "Allow traffic matching this policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching this policy", "help": "Deny or block traffic matching this policy.", "label": "Deny", "name": "deny"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

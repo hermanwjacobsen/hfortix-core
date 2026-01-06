@@ -89,8 +89,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Overriding global EMS table.
+    "disable",  # Disable Overriding global EMS table.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -215,7 +215,7 @@ def validate_endpoint_control_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "override": "enable",  # Valid enum value
+        ...     "override": "{'name': 'enable', 'help': 'Enable Overriding global EMS table.', 'label': 'Enable', 'description': 'Enable Overriding global EMS table'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_endpoint_control_settings_post(payload)
         >>> assert is_valid == True

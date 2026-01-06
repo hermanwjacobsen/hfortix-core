@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Delete:
     """
-    Configuration for sniffer/delete
+    Deletes a packet capture.
     
     Path: sniffer/delete
     Category: service

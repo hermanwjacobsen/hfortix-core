@@ -135,7 +135,7 @@ class Isis:
         adjacency_check: str | None = None,
         adjacency_check6: str | None = None,
         overload_bit: str | None = None,
-        overload_bit_suppress: str | None = None,
+        overload_bit_suppress: str | list | None = None,
         overload_bit_on_startup: int | None = None,
         default_originate: str | None = None,
         default_originate6: str | None = None,

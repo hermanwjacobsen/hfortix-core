@@ -201,23 +201,23 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_CATEGORY = [
-    "device",
-    "firewall-user",
-    "ems-tag",
-    "fortivoice-tag",
-    "vulnerability",
+    "device",  # Device category.
+    "firewall-user",  # Firewall user category.
+    "ems-tag",  # EMS Tag category.
+    "fortivoice-tag",  # FortiVoice Tag category.
+    "vulnerability",  # Vulnerability category.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAC policy.
+    "disable",  # Disable NAC policy.
 ]
 VALID_BODY_MATCH_TYPE = [
-    "dynamic",
-    "override",
+    "dynamic",  # Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline.
+    "override",  # Matched devices will be retained until the match-period.
 ]
 VALID_BODY_MATCH_REMOVE = [
-    "default",
-    "link-down",
+    "default",  # Remove the matched override devices based on the match period.
+    "link-down",  # Remove the matched override devices based on switch port link down event.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -345,7 +345,7 @@ def validate_user_nac_policy_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "category": "device",  # Valid enum value
+        ...     "category": "{'name': 'device', 'help': 'Device category.', 'label': 'Device', 'description': 'Device category'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_nac_policy_post(payload)
         >>> assert is_valid == True

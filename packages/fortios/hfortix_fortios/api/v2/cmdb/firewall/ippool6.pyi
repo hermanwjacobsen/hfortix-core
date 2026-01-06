@@ -11,14 +11,14 @@ class Ippool6Payload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # IPv6 IP pool name.
-    type: NotRequired[Literal["overload", "nptv6"]]  # Configure IPv6 pool type (overload or NPTv6).
+    type: NotRequired[Literal[{"description": "IPv6 addresses in the IP pool can be shared by clients", "help": "IPv6 addresses in the IP pool can be shared by clients.", "label": "Overload", "name": "overload"}, {"description": "NPTv6 one to one mapping", "help": "NPTv6 one to one mapping.", "label": "Nptv6", "name": "nptv6"}]]  # Configure IPv6 pool type (overload or NPTv6).
     startip: str  # First IPv6 address (inclusive) in the range for the address 
     endip: str  # Final IPv6 address (inclusive) in the range for the address 
     internal_prefix: str  # Internal NPTv6 prefix length (32 - 64).
     external_prefix: str  # External NPTv6 prefix length (32 - 64).
     comments: NotRequired[str]  # Comment.
-    nat46: NotRequired[Literal["disable", "enable"]]  # Enable/disable NAT46.
-    add_nat46_route: NotRequired[Literal["disable", "enable"]]  # Enable/disable adding NAT46 route.
+    nat46: NotRequired[Literal[{"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}]]  # Enable/disable NAT46.
+    add_nat46_route: NotRequired[Literal[{"description": "Disable adding NAT46 route", "help": "Disable adding NAT46 route.", "label": "Disable", "name": "disable"}, {"description": "Enable adding NAT46 route", "help": "Enable adding NAT46 route.", "label": "Enable", "name": "enable"}]]  # Enable/disable adding NAT46 route.
 
 
 class Ippool6:
@@ -47,14 +47,14 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type: Literal[{"description": "IPv6 addresses in the IP pool can be shared by clients", "help": "IPv6 addresses in the IP pool can be shared by clients.", "label": "Overload", "name": "overload"}, {"description": "NPTv6 one to one mapping", "help": "NPTv6 one to one mapping.", "label": "Nptv6", "name": "nptv6"}] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
         external_prefix: str | None = ...,
         comments: str | None = ...,
-        nat46: Literal["disable", "enable"] | None = ...,
-        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        nat46: Literal[{"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}] | None = ...,
+        add_nat46_route: Literal[{"description": "Disable adding NAT46 route", "help": "Disable adding NAT46 route.", "label": "Disable", "name": "disable"}, {"description": "Enable adding NAT46 route", "help": "Enable adding NAT46 route.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -64,14 +64,14 @@ class Ippool6:
         self,
         payload_dict: Ippool6Payload | None = ...,
         name: str | None = ...,
-        type: Literal["overload", "nptv6"] | None = ...,
+        type: Literal[{"description": "IPv6 addresses in the IP pool can be shared by clients", "help": "IPv6 addresses in the IP pool can be shared by clients.", "label": "Overload", "name": "overload"}, {"description": "NPTv6 one to one mapping", "help": "NPTv6 one to one mapping.", "label": "Nptv6", "name": "nptv6"}] | None = ...,
         startip: str | None = ...,
         endip: str | None = ...,
         internal_prefix: str | None = ...,
         external_prefix: str | None = ...,
         comments: str | None = ...,
-        nat46: Literal["disable", "enable"] | None = ...,
-        add_nat46_route: Literal["disable", "enable"] | None = ...,
+        nat46: Literal[{"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}] | None = ...,
+        add_nat46_route: Literal[{"description": "Disable adding NAT46 route", "help": "Disable adding NAT46 route.", "label": "Disable", "name": "disable"}, {"description": "Enable adding NAT46 route", "help": "Enable adding NAT46 route.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

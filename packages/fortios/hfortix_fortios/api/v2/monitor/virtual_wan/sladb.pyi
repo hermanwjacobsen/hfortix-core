@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Sladb:
     """
-    Monitor endpoint for virtual-wan/sladb
+    Retrieve the Service Level Agreement Database downloaded from FortiGuard.
     
     Path: virtual_wan/sladb
     Category: monitor

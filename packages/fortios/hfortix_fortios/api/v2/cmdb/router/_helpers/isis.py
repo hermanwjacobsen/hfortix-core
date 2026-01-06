@@ -232,25 +232,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable interface for IS-IS.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable interface for IS-IS.", "label": "Enable", "name": "enable"}, {"help": "Disable interface for IS-IS.", "label": "Disable", "name": "disable"}],
         },
         "status6": {
             "type": "option",
             "help": "Enable/disable IPv6 interface for IS-IS.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable IPv6 interface for IS-IS.", "label": "Enable", "name": "enable"}, {"help": "Disable IPv6 interface for IS-IS.", "label": "Disable", "name": "disable"}],
         },
         "network-type": {
             "type": "option",
             "help": "IS-IS interface's network type.",
             "default": "",
-            "options": ["broadcast", "point-to-point", "loopback"],
+            "options": [{"help": "Broadcast.", "label": "Broadcast", "name": "broadcast"}, {"help": "Point-to-point.", "label": "Point To Point", "name": "point-to-point"}, {"help": "Loopback.", "label": "Loopback", "name": "loopback"}],
         },
         "circuit-type": {
             "type": "option",
             "help": "IS-IS interface's circuit type.",
             "default": "level-1-2",
-            "options": ["level-1-2", "level-1", "level-2"],
+            "options": [{"help": "Level 1 and 2.", "label": "Level 1 2", "name": "level-1-2"}, {"help": "Level 1.", "label": "Level 1", "name": "level-1"}, {"help": "Level 2.", "label": "Level 2", "name": "level-2"}],
         },
         "csnp-interval-l1": {
             "type": "integer",
@@ -298,7 +298,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable padding to IS-IS hello packets.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable padding to IS-IS hello packets.", "label": "Enable", "name": "enable"}, {"help": "Disable padding to IS-IS hello packets.", "label": "Disable", "name": "disable"}],
         },
         "lsp-interval": {
             "type": "integer",
@@ -368,25 +368,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable authentication send-only for level 1 PDUs.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable authentication send-only for level 1 PDUs.", "label": "Enable", "name": "enable"}, {"help": "Disable authentication send-only for level 1 PDUs.", "label": "Disable", "name": "disable"}],
         },
         "auth-send-only-l2": {
             "type": "option",
             "help": "Enable/disable authentication send-only for level 2 PDUs.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable authentication send-only for level 2 PDUs.", "label": "Enable", "name": "enable"}, {"help": "Disable authentication send-only for level 2 PDUs.", "label": "Disable", "name": "disable"}],
         },
         "auth-mode-l1": {
             "type": "option",
             "help": "Level 1 authentication mode.",
             "default": "password",
-            "options": ["md5", "password"],
+            "options": [{"help": "MD5.", "label": "Md5", "name": "md5"}, {"help": "Password.", "label": "Password", "name": "password"}],
         },
         "auth-mode-l2": {
             "type": "option",
             "help": "Level 2 authentication mode.",
             "default": "password",
-            "options": ["md5", "password"],
+            "options": [{"help": "MD5.", "label": "Md5", "name": "md5"}, {"help": "Password.", "label": "Password", "name": "password"}],
         },
         "priority-l1": {
             "type": "integer",
@@ -406,7 +406,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IS-IS mesh group.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable IS-IS mesh group.", "label": "Enable", "name": "enable"}, {"help": "Disable IS-IS mesh group.", "label": "Disable", "name": "disable"}],
         },
         "mesh-group-id": {
             "type": "integer",
@@ -434,7 +434,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Level.",
             "default": "level-2",
-            "options": ["level-1-2", "level-1", "level-2"],
+            "options": [{"help": "Level 1 and 2.", "label": "Level 1 2", "name": "level-1-2"}, {"help": "Level 1.", "label": "Level 1", "name": "level-1"}, {"help": "Level 2.", "label": "Level 2", "name": "level-2"}],
         },
     },
     "summary-address6": {
@@ -455,7 +455,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Level.",
             "default": "level-2",
-            "options": ["level-1-2", "level-1", "level-2"],
+            "options": [{"help": "Level 1 and 2.", "label": "Level 1 2", "name": "level-1-2"}, {"help": "Level 1.", "label": "Level 1", "name": "level-1"}, {"help": "Level 2.", "label": "Level 2", "name": "level-2"}],
         },
     },
     "redistribute": {
@@ -470,7 +470,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable.", "label": "Enable", "name": "enable"}, {"help": "Disable.", "label": "Disable", "name": "disable"}],
         },
         "metric": {
             "type": "integer",
@@ -483,13 +483,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Metric type.",
             "default": "internal",
-            "options": ["external", "internal"],
+            "options": [{"help": "External.", "label": "External", "name": "external"}, {"help": "Internal.", "label": "Internal", "name": "internal"}],
         },
         "level": {
             "type": "option",
             "help": "Level.",
             "default": "level-2",
-            "options": ["level-1-2", "level-1", "level-2"],
+            "options": [{"help": "Level 1 and 2.", "label": "Level 1 2", "name": "level-1-2"}, {"help": "Level 1.", "label": "Level 1", "name": "level-1"}, {"help": "Level 2.", "label": "Level 2", "name": "level-2"}],
         },
         "routemap": {
             "type": "string",
@@ -510,7 +510,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable redistribution.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable redistribution.", "label": "Enable", "name": "enable"}, {"help": "Disable redistribution.", "label": "Disable", "name": "disable"}],
         },
         "metric": {
             "type": "integer",
@@ -523,13 +523,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Metric type.",
             "default": "internal",
-            "options": ["external", "internal"],
+            "options": [{"help": "External metric type.", "label": "External", "name": "external"}, {"help": "Internal metric type.", "label": "Internal", "name": "internal"}],
         },
         "level": {
             "type": "option",
             "help": "Level.",
             "default": "level-2",
-            "options": ["level-1-2", "level-1", "level-2"],
+            "options": [{"help": "Level 1 and 2.", "label": "Level 1 2", "name": "level-1-2"}, {"help": "Level 1.", "label": "Level 1", "name": "level-1"}, {"help": "Level 2.", "label": "Level 2", "name": "level-2"}],
         },
         "routemap": {
             "type": "string",
@@ -543,96 +543,96 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_IS_TYPE = [
-    "level-1-2",
-    "level-1",
-    "level-2-only",
+    "level-1-2",  # Level 1 and 2.
+    "level-1",  # Level 1 only.
+    "level-2-only",  # Level 2 only.
 ]
 VALID_BODY_ADV_PASSIVE_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # Advertise passive interfaces only.
+    "disable",  # Advertise all IS-IS enabled interfaces.
 ]
 VALID_BODY_ADV_PASSIVE_ONLY6 = [
-    "enable",
-    "disable",
+    "enable",  # Advertise passive interfaces only.
+    "disable",  # Advertise all IS-IS enabled interfaces.
 ]
 VALID_BODY_AUTH_MODE_L1 = [
-    "password",
-    "md5",
+    "password",  # Password.
+    "md5",  # MD5.
 ]
 VALID_BODY_AUTH_MODE_L2 = [
-    "password",
-    "md5",
+    "password",  # Password.
+    "md5",  # MD5.
 ]
 VALID_BODY_AUTH_SENDONLY_L1 = [
-    "enable",
-    "disable",
+    "enable",  # Enable level 1 authentication send-only.
+    "disable",  # Disable level 1 authentication send-only.
 ]
 VALID_BODY_AUTH_SENDONLY_L2 = [
-    "enable",
-    "disable",
+    "enable",  # Enable level 2 authentication send-only.
+    "disable",  # Disable level 2 authentication send-only.
 ]
 VALID_BODY_IGNORE_LSP_ERRORS = [
-    "enable",
-    "disable",
+    "enable",  # Enable ignoring of LSP errors with bad checksums.
+    "disable",  # Disable ignoring of LSP errors with bad checksums.
 ]
 VALID_BODY_DYNAMIC_HOSTNAME = [
-    "enable",
-    "disable",
+    "enable",  # Enable dynamic hostname.
+    "disable",  # Disable dynamic hostname.
 ]
 VALID_BODY_ADJACENCY_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable adjacency check.
+    "disable",  # Disable adjacency check.
 ]
 VALID_BODY_ADJACENCY_CHECK6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv6 adjacency check.
+    "disable",  # Disable IPv6 adjacency check.
 ]
 VALID_BODY_OVERLOAD_BIT = [
-    "enable",
-    "disable",
+    "enable",  # Enable overload bit.
+    "disable",  # Disable overload bit.
 ]
 VALID_BODY_OVERLOAD_BIT_SUPPRESS = [
-    "external",
-    "interlevel",
+    "external",  # External.
+    "interlevel",  # Inter-level.
 ]
 VALID_BODY_DEFAULT_ORIGINATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable distribution of default route information.
+    "disable",  # Disable distribution of default route information.
 ]
 VALID_BODY_DEFAULT_ORIGINATE6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable distribution of default IPv6 route information.
+    "disable",  # Disable distribution of default IPv6 route information.
 ]
 VALID_BODY_METRIC_STYLE = [
-    "narrow",
-    "wide",
-    "transition",
-    "narrow-transition",
-    "narrow-transition-l1",
-    "narrow-transition-l2",
-    "wide-l1",
-    "wide-l2",
-    "wide-transition",
-    "wide-transition-l1",
-    "wide-transition-l2",
-    "transition-l1",
-    "transition-l2",
+    "narrow",  # Use old style of TLVs with narrow metric.
+    "wide",  # Use new style of TLVs to carry wider metric.
+    "transition",  # Send and accept both styles of TLVs during transition.
+    "narrow-transition",  # Narrow and accept both styles of TLVs during transition.
+    "narrow-transition-l1",  # Narrow-transition level-1 only.
+    "narrow-transition-l2",  # Narrow-transition level-2 only.
+    "wide-l1",  # Wide level-1 only.
+    "wide-l2",  # Wide level-2 only.
+    "wide-transition",  # Wide and accept both styles of TLVs during transition.
+    "wide-transition-l1",  # Wide-transition level-1 only.
+    "wide-transition-l2",  # Wide-transition level-2 only.
+    "transition-l1",  # Transition level-1 only.
+    "transition-l2",  # Transition level-2 only.
 ]
 VALID_BODY_REDISTRIBUTE_L1 = [
-    "enable",
-    "disable",
+    "enable",  # Enable redistribution of level 1 routes into level 2.
+    "disable",  # Disable redistribution of level 1 routes into level 2.
 ]
 VALID_BODY_REDISTRIBUTE_L2 = [
-    "enable",
-    "disable",
+    "enable",  # Enable redistribution of level 2 routes into level 1.
+    "disable",  # Disable redistribution of  level 2 routes into level 1.
 ]
 VALID_BODY_REDISTRIBUTE6_L1 = [
-    "enable",
-    "disable",
+    "enable",  # Enable redistribution of level 1 IPv6 routes into level 2.
+    "disable",  # Disable redistribution of level 1 IPv6 routes into level 2.
 ]
 VALID_BODY_REDISTRIBUTE6_L2 = [
-    "enable",
-    "disable",
+    "enable",  # Enable redistribution of level 2 IPv6 routes into level 1.
+    "disable",  # Disable redistribution of level 2 IPv6 routes into level 1.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -757,7 +757,7 @@ def validate_router_isis_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "is-type": "level-1-2",  # Valid enum value
+        ...     "is-type": "{'name': 'level-1-2', 'help': 'Level 1 and 2.', 'label': 'Level 1 2', 'description': 'Level 1 and 2'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_isis_post(payload)
         >>> assert is_valid == True

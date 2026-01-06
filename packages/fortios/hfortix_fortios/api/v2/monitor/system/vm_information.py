@@ -56,7 +56,7 @@ class VmInformation:
         """
         Retrieve system/vm_information configuration.
 
-        Configuration for system/vm-information
+        Get VM information.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

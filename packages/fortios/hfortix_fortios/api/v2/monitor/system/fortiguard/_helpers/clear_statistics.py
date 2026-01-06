@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/fortiguard/clear_statistics",
     "category": "monitor",
     "api_path": "system/fortiguard/clear-statistics",
-    "help": "Configuration for system/fortiguard/clear-statistics",
+    "help": "Immediately clear all FortiGuard statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

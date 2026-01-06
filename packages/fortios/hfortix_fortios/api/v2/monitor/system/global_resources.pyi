@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GlobalResources:
     """
-    Configuration for system/global-resources
+    Retrieve current usage of global resources as well as both the default and user configured maximum values.
     
     Path: system/global_resources
     Category: monitor

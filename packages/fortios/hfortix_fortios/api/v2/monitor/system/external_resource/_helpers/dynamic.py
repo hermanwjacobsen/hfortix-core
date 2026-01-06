@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/external_resource/dynamic",
     "category": "monitor",
     "api_path": "system/external-resource/dynamic",
-    "help": "Configuration for system/external-resource/dynamic",
+    "help": "Push updates to the specified external resource.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

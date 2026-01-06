@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaTableChecksums:
     """
-    Configuration for system/ha-table-checksums
+    List of table checksums for members of HA cluster.
     
     Path: system/ha_table_checksums
     Category: monitor

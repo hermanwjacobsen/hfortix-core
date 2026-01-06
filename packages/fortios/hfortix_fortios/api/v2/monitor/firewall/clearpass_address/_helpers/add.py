@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/clearpass_address/add",
     "category": "monitor",
     "api_path": "firewall/clearpass-address/add",
-    "help": "Configuration for firewall/clearpass-address/add",
+    "help": "Add ClearPass address with SPT (System Posture Token) value.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

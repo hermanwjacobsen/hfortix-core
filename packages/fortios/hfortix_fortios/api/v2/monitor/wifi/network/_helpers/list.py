@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/network/list",
     "category": "monitor",
     "api_path": "wifi/network/list",
-    "help": "Configuration for wifi/network/list",
+    "help": "When FortiWiFi is in client mode, retrieve list of local WiFi networks.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ProxyPolicy:
     """
-    Monitor endpoint for firewall/proxy-policy
+    List traffic statistics for all explicit proxy policies.
     
     Path: firewall/proxy_policy
     Category: monitor

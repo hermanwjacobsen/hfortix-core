@@ -132,7 +132,7 @@ NESTED_SCHEMAS = {
             "help": "Log category.",
             "required": True,
             "default": "traffic",
-            "options": ["traffic", "event", "virus", "webfilter", "attack", "spam", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"],
+            "options": [{"help": "Traffic log.", "label": "Traffic", "name": "traffic"}, {"help": "Event log.", "label": "Event", "name": "event"}, {"help": "Antivirus log.", "label": "Virus", "name": "virus"}, {"help": "Web filter log.", "label": "Webfilter", "name": "webfilter"}, {"help": "Attack log.", "label": "Attack", "name": "attack"}, {"help": "Antispam log.", "label": "Spam", "name": "spam"}, {"help": "Anomaly log.", "label": "Anomaly", "name": "anomaly"}, {"help": "VoIP log.", "label": "Voip", "name": "voip"}, {"help": "DLP log.", "label": "Dlp", "name": "dlp"}, {"help": "Application control log.", "label": "App Ctrl", "name": "app-ctrl"}, {"help": "Web application firewall log.", "label": "Waf", "name": "waf"}, {"help": "GTP log.", "label": "Gtp", "name": "gtp"}, {"help": "DNS detail log.", "label": "Dns", "name": "dns"}, {"help": "SSH log.", "label": "Ssh", "name": "ssh"}, {"help": "SSL log.", "label": "Ssl", "name": "ssl"}, {"help": "File filter log.", "label": "File Filter", "name": "file-filter"}, {"help": "ICAP log.", "label": "Icap", "name": "icap"}, {"help": "Virtual patch log.", "label": "Virtual Patch", "name": "virtual-patch"}, {"help": "Debug log.", "label": "Debug", "name": "debug"}],
         },
         "filter": {
             "type": "string",
@@ -145,7 +145,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Include/exclude logs that match the filter.",
             "default": "include",
-            "options": ["include", "exclude"],
+            "options": [{"help": "Include logs that match the filter.", "label": "Include", "name": "include"}, {"help": "Exclude logs that match the filter.", "label": "Exclude", "name": "exclude"}],
         },
     },
 }
@@ -153,58 +153,58 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SEVERITY = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_BODY_FORWARD_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable forward traffic logging.
+    "disable",  # Disable forward traffic logging.
 ]
 VALID_BODY_LOCAL_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable local in or out traffic logging.
+    "disable",  # Disable local in or out traffic logging.
 ]
 VALID_BODY_MULTICAST_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable multicast traffic logging.
+    "disable",  # Disable multicast traffic logging.
 ]
 VALID_BODY_SNIFFER_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable sniffer traffic logging.
+    "disable",  # Disable sniffer traffic logging.
 ]
 VALID_BODY_ZTNA_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable ztna traffic logging.
+    "disable",  # Disable ztna traffic logging.
 ]
 VALID_BODY_HTTP_TRANSACTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable http transaction logging.
+    "disable",  # Disable http transaction logging.
 ]
 VALID_BODY_ANOMALY = [
-    "enable",
-    "disable",
+    "enable",  # Enable anomaly logging.
+    "disable",  # Disable anomaly logging.
 ]
 VALID_BODY_VOIP = [
-    "enable",
-    "disable",
+    "enable",  # Enable VoIP logging.
+    "disable",  # Disable VoIP logging.
 ]
 VALID_BODY_GTP = [
-    "enable",
-    "disable",
+    "enable",  # Enable GTP messages logging.
+    "disable",  # Disable GTP messages logging.
 ]
 VALID_BODY_FORTI_SWITCH = [
-    "enable",
-    "disable",
+    "enable",  # Enable Forti-Switch logging.
+    "disable",  # Disable Forti-Switch logging.
 ]
 VALID_BODY_DEBUG = [
-    "enable",
-    "disable",
+    "enable",  # Enable Debug logging.
+    "disable",  # Disable Debug logging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -329,7 +329,7 @@ def validate_log_syslogd3_override_filter_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "severity": "emergency",  # Valid enum value
+        ...     "severity": "{'name': 'emergency', 'help': 'Emergency level.', 'label': 'Emergency', 'description': 'Emergency level'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_syslogd3_override_filter_post(payload)
         >>> assert is_valid == True

@@ -111,7 +111,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Icon type.",
             "default": "png",
-            "options": ["bmp", "gif", "jpeg", "png", "tiff"],
+            "options": [{"help": "BMP image.", "label": "Bmp", "name": "bmp"}, {"help": "GIF image.", "label": "Gif", "name": "gif"}, {"help": "JPEG image.", "label": "Jpeg", "name": "jpeg"}, {"help": "PNG image.", "label": "Png", "name": "png"}, {"help": "TIFF image.", "label": "Tiff", "name": "tiff"}],
         },
         "width": {
             "type": "integer",

@@ -106,8 +106,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ROUND_ROBIN = [
-    "enable",
-    "disable",
+    "enable",  # Enable round-robin redistribution.
+    "disable",  # Disable round-robin redistribution.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -237,7 +237,7 @@ def validate_system_affinity_packet_redistribution_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "round-robin": "enable",  # Valid enum value
+        ...     "round-robin": "{'name': 'enable', 'help': 'Enable round-robin redistribution.', 'label': 'Enable', 'description': 'Enable round-robin redistribution'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_affinity_packet_redistribution_post(payload)
         >>> assert is_valid == True

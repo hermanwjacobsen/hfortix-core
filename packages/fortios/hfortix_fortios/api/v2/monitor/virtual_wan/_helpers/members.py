@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "virtual_wan/members",
     "category": "monitor",
     "api_path": "virtual-wan/members",
-    "help": "Monitor endpoint for virtual-wan/members",
+    "help": "Retrieve interface statistics for each SD-WAN link.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

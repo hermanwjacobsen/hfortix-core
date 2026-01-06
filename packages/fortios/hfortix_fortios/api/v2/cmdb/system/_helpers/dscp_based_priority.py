@@ -97,9 +97,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PRIORITY = [
-    "low",
-    "medium",
-    "high",
+    "low",  # Low priority.
+    "medium",  # Medium priority.
+    "high",  # High priority.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -227,7 +227,7 @@ def validate_system_dscp_based_priority_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "priority": "low",  # Valid enum value
+        ...     "priority": "{'name': 'low', 'help': 'Low priority.', 'label': 'Low', 'description': 'Low priority'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_dscp_based_priority_post(payload)
         >>> assert is_valid == True

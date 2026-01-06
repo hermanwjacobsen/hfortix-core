@@ -12,17 +12,17 @@ class BleProfilePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Bluetooth Low Energy profile name.
     comment: NotRequired[str]  # Comment.
-    advertising: NotRequired[Literal["ibeacon", "eddystone-uid", "eddystone-url"]]  # Advertising type.
+    advertising: NotRequired[Literal[{"description": "iBeacon advertising", "help": "iBeacon advertising.", "label": "Ibeacon", "name": "ibeacon"}, {"description": "Eddystone UID advertising", "help": "Eddystone UID advertising.", "label": "Eddystone Uid", "name": "eddystone-uid"}, {"description": "Eddystone URL advertising", "help": "Eddystone URL advertising.", "label": "Eddystone Url", "name": "eddystone-url"}]]  # Advertising type.
     ibeacon_uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
     major_id: NotRequired[int]  # Major ID.
     minor_id: NotRequired[int]  # Minor ID.
     eddystone_namespace: NotRequired[str]  # Eddystone namespace ID.
     eddystone_instance: NotRequired[str]  # Eddystone instance ID.
     eddystone_url: NotRequired[str]  # Eddystone URL.
-    txpower: NotRequired[Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]]  # Transmit power level (default = 0).
+    txpower: NotRequired[Literal[{"description": "Transmit power level 0 (-21 dBm)    1:Transmit power level 1 (-18 dBm)    2:Transmit power level 2 (-15 dBm)    3:Transmit power level 3 (-12 dBm)    4:Transmit power level 4 (-9 dBm)    5:Transmit power level 5 (-6 dBm)    6:Transmit power level 6 (-3 dBm)    7:Transmit power level 7 (0 dBm)    8:Transmit power level 8 (1 dBm)    9:Transmit power level 9 (2 dBm)    10:Transmit power level 10 (3 dBm)    11:Transmit power level 11 (4 dBm)    12:Transmit power level 12 (5 dBm)    13:Transmit power level 13 (8 dBm)    14:Transmit power level 14 (11 dBm)    15:Transmit power level 15 (14 dBm)    16:Transmit power level 16 (17 dBm)    17:Transmit power level 17 (20 dBm)", "help": "Transmit power level 0 (-21 dBm)", "label": "0", "name": "0"}, {"help": "Transmit power level 1 (-18 dBm)", "label": "1", "name": "1"}, {"help": "Transmit power level 2 (-15 dBm)", "label": "2", "name": "2"}, {"help": "Transmit power level 3 (-12 dBm)", "label": "3", "name": "3"}, {"help": "Transmit power level 4 (-9 dBm)", "label": "4", "name": "4"}, {"help": "Transmit power level 5 (-6 dBm)", "label": "5", "name": "5"}, {"help": "Transmit power level 6 (-3 dBm)", "label": "6", "name": "6"}, {"help": "Transmit power level 7 (0 dBm)", "label": "7", "name": "7"}, {"help": "Transmit power level 8 (1 dBm)", "label": "8", "name": "8"}, {"help": "Transmit power level 9 (2 dBm)", "label": "9", "name": "9"}, {"help": "Transmit power level 10 (3 dBm)", "label": "10", "name": "10"}, {"help": "Transmit power level 11 (4 dBm)", "label": "11", "name": "11"}, {"help": "Transmit power level 12 (5 dBm)", "label": "12", "name": "12"}, {"help": "Transmit power level 13 (8 dBm)", "label": "13", "name": "13"}, {"help": "Transmit power level 14 (11 dBm)", "label": "14", "name": "14"}, {"help": "Transmit power level 15 (14 dBm)", "label": "15", "name": "15"}, {"help": "Transmit power level 16 (17 dBm)", "label": "16", "name": "16"}, {"help": "Transmit power level 17 (20 dBm)", "label": "17", "name": "17"}]]  # Transmit power level (default = 0).
     beacon_interval: NotRequired[int]  # Beacon interval (default = 100 msec).
-    ble_scanning: NotRequired[Literal["enable", "disable"]]  # Enable/disable Bluetooth Low Energy (BLE) scanning.
-    scan_type: NotRequired[Literal["active", "passive"]]  # Scan Type (default = active).
+    ble_scanning: NotRequired[Literal[{"description": "Enable BLE scanning", "help": "Enable BLE scanning.", "label": "Enable", "name": "enable"}, {"description": "Disable BLE scanning", "help": "Disable BLE scanning.", "label": "Disable", "name": "disable"}]]  # Enable/disable Bluetooth Low Energy (BLE) scanning.
+    scan_type: NotRequired[Literal[{"description": "Active BLE scanning", "help": "Active BLE scanning.", "label": "Active", "name": "active"}, {"description": "Passive BLE scanning", "help": "Passive BLE scanning.", "label": "Passive", "name": "passive"}]]  # Scan Type (default = active).
     scan_threshold: NotRequired[str]  # Minimum signal level/threshold in dBm required for the AP to
     scan_period: NotRequired[int]  # Scan Period (default = 4000 msec).
     scan_time: NotRequired[int]  # Scan Time (default = 1000 msec).
@@ -57,17 +57,17 @@ class BleProfile:
         payload_dict: BleProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | None = ...,
+        advertising: Literal[{"description": "iBeacon advertising", "help": "iBeacon advertising.", "label": "Ibeacon", "name": "ibeacon"}, {"description": "Eddystone UID advertising", "help": "Eddystone UID advertising.", "label": "Eddystone Uid", "name": "eddystone-uid"}, {"description": "Eddystone URL advertising", "help": "Eddystone URL advertising.", "label": "Eddystone Url", "name": "eddystone-url"}] | None = ...,
         ibeacon_uuid: str | None = ...,
         major_id: int | None = ...,
         minor_id: int | None = ...,
         eddystone_namespace: str | None = ...,
         eddystone_instance: str | None = ...,
         eddystone_url: str | None = ...,
-        txpower: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"] | None = ...,
+        txpower: Literal[{"description": "Transmit power level 0 (-21 dBm)    1:Transmit power level 1 (-18 dBm)    2:Transmit power level 2 (-15 dBm)    3:Transmit power level 3 (-12 dBm)    4:Transmit power level 4 (-9 dBm)    5:Transmit power level 5 (-6 dBm)    6:Transmit power level 6 (-3 dBm)    7:Transmit power level 7 (0 dBm)    8:Transmit power level 8 (1 dBm)    9:Transmit power level 9 (2 dBm)    10:Transmit power level 10 (3 dBm)    11:Transmit power level 11 (4 dBm)    12:Transmit power level 12 (5 dBm)    13:Transmit power level 13 (8 dBm)    14:Transmit power level 14 (11 dBm)    15:Transmit power level 15 (14 dBm)    16:Transmit power level 16 (17 dBm)    17:Transmit power level 17 (20 dBm)", "help": "Transmit power level 0 (-21 dBm)", "label": "0", "name": "0"}, {"help": "Transmit power level 1 (-18 dBm)", "label": "1", "name": "1"}, {"help": "Transmit power level 2 (-15 dBm)", "label": "2", "name": "2"}, {"help": "Transmit power level 3 (-12 dBm)", "label": "3", "name": "3"}, {"help": "Transmit power level 4 (-9 dBm)", "label": "4", "name": "4"}, {"help": "Transmit power level 5 (-6 dBm)", "label": "5", "name": "5"}, {"help": "Transmit power level 6 (-3 dBm)", "label": "6", "name": "6"}, {"help": "Transmit power level 7 (0 dBm)", "label": "7", "name": "7"}, {"help": "Transmit power level 8 (1 dBm)", "label": "8", "name": "8"}, {"help": "Transmit power level 9 (2 dBm)", "label": "9", "name": "9"}, {"help": "Transmit power level 10 (3 dBm)", "label": "10", "name": "10"}, {"help": "Transmit power level 11 (4 dBm)", "label": "11", "name": "11"}, {"help": "Transmit power level 12 (5 dBm)", "label": "12", "name": "12"}, {"help": "Transmit power level 13 (8 dBm)", "label": "13", "name": "13"}, {"help": "Transmit power level 14 (11 dBm)", "label": "14", "name": "14"}, {"help": "Transmit power level 15 (14 dBm)", "label": "15", "name": "15"}, {"help": "Transmit power level 16 (17 dBm)", "label": "16", "name": "16"}, {"help": "Transmit power level 17 (20 dBm)", "label": "17", "name": "17"}] | None = ...,
         beacon_interval: int | None = ...,
-        ble_scanning: Literal["enable", "disable"] | None = ...,
-        scan_type: Literal["active", "passive"] | None = ...,
+        ble_scanning: Literal[{"description": "Enable BLE scanning", "help": "Enable BLE scanning.", "label": "Enable", "name": "enable"}, {"description": "Disable BLE scanning", "help": "Disable BLE scanning.", "label": "Disable", "name": "disable"}] | None = ...,
+        scan_type: Literal[{"description": "Active BLE scanning", "help": "Active BLE scanning.", "label": "Active", "name": "active"}, {"description": "Passive BLE scanning", "help": "Passive BLE scanning.", "label": "Passive", "name": "passive"}] | None = ...,
         scan_threshold: str | None = ...,
         scan_period: int | None = ...,
         scan_time: int | None = ...,
@@ -83,17 +83,17 @@ class BleProfile:
         payload_dict: BleProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        advertising: Literal["ibeacon", "eddystone-uid", "eddystone-url"] | None = ...,
+        advertising: Literal[{"description": "iBeacon advertising", "help": "iBeacon advertising.", "label": "Ibeacon", "name": "ibeacon"}, {"description": "Eddystone UID advertising", "help": "Eddystone UID advertising.", "label": "Eddystone Uid", "name": "eddystone-uid"}, {"description": "Eddystone URL advertising", "help": "Eddystone URL advertising.", "label": "Eddystone Url", "name": "eddystone-url"}] | None = ...,
         ibeacon_uuid: str | None = ...,
         major_id: int | None = ...,
         minor_id: int | None = ...,
         eddystone_namespace: str | None = ...,
         eddystone_instance: str | None = ...,
         eddystone_url: str | None = ...,
-        txpower: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"] | None = ...,
+        txpower: Literal[{"description": "Transmit power level 0 (-21 dBm)    1:Transmit power level 1 (-18 dBm)    2:Transmit power level 2 (-15 dBm)    3:Transmit power level 3 (-12 dBm)    4:Transmit power level 4 (-9 dBm)    5:Transmit power level 5 (-6 dBm)    6:Transmit power level 6 (-3 dBm)    7:Transmit power level 7 (0 dBm)    8:Transmit power level 8 (1 dBm)    9:Transmit power level 9 (2 dBm)    10:Transmit power level 10 (3 dBm)    11:Transmit power level 11 (4 dBm)    12:Transmit power level 12 (5 dBm)    13:Transmit power level 13 (8 dBm)    14:Transmit power level 14 (11 dBm)    15:Transmit power level 15 (14 dBm)    16:Transmit power level 16 (17 dBm)    17:Transmit power level 17 (20 dBm)", "help": "Transmit power level 0 (-21 dBm)", "label": "0", "name": "0"}, {"help": "Transmit power level 1 (-18 dBm)", "label": "1", "name": "1"}, {"help": "Transmit power level 2 (-15 dBm)", "label": "2", "name": "2"}, {"help": "Transmit power level 3 (-12 dBm)", "label": "3", "name": "3"}, {"help": "Transmit power level 4 (-9 dBm)", "label": "4", "name": "4"}, {"help": "Transmit power level 5 (-6 dBm)", "label": "5", "name": "5"}, {"help": "Transmit power level 6 (-3 dBm)", "label": "6", "name": "6"}, {"help": "Transmit power level 7 (0 dBm)", "label": "7", "name": "7"}, {"help": "Transmit power level 8 (1 dBm)", "label": "8", "name": "8"}, {"help": "Transmit power level 9 (2 dBm)", "label": "9", "name": "9"}, {"help": "Transmit power level 10 (3 dBm)", "label": "10", "name": "10"}, {"help": "Transmit power level 11 (4 dBm)", "label": "11", "name": "11"}, {"help": "Transmit power level 12 (5 dBm)", "label": "12", "name": "12"}, {"help": "Transmit power level 13 (8 dBm)", "label": "13", "name": "13"}, {"help": "Transmit power level 14 (11 dBm)", "label": "14", "name": "14"}, {"help": "Transmit power level 15 (14 dBm)", "label": "15", "name": "15"}, {"help": "Transmit power level 16 (17 dBm)", "label": "16", "name": "16"}, {"help": "Transmit power level 17 (20 dBm)", "label": "17", "name": "17"}] | None = ...,
         beacon_interval: int | None = ...,
-        ble_scanning: Literal["enable", "disable"] | None = ...,
-        scan_type: Literal["active", "passive"] | None = ...,
+        ble_scanning: Literal[{"description": "Enable BLE scanning", "help": "Enable BLE scanning.", "label": "Enable", "name": "enable"}, {"description": "Disable BLE scanning", "help": "Disable BLE scanning.", "label": "Disable", "name": "disable"}] | None = ...,
+        scan_type: Literal[{"description": "Active BLE scanning", "help": "Active BLE scanning.", "label": "Active", "name": "active"}, {"description": "Passive BLE scanning", "help": "Passive BLE scanning.", "label": "Passive", "name": "passive"}] | None = ...,
         scan_threshold: str | None = ...,
         scan_period: int | None = ...,
         scan_time: int | None = ...,

@@ -246,24 +246,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_INPUT_DEVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negation of input device match.
+    "disable",  # Disable negation of input device match.
 ]
 VALID_BODY_SRC_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable source address negation.
+    "disable",  # Disable source address negation.
 ]
 VALID_BODY_DST_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable destination address negation.
+    "disable",  # Disable destination address negation.
 ]
 VALID_BODY_ACTION = [
-    "deny",
-    "permit",
+    "deny",  # Do not search policy route table.
+    "permit",  # Use this policy route for forwarding.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this policy route.
+    "disable",  # Disable this policy route.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -391,7 +391,7 @@ def validate_router_policy_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "input-device-negate": "enable",  # Valid enum value
+        ...     "input-device-negate": "{'name': 'enable', 'help': 'Enable negation of input device match.', 'label': 'Enable', 'description': 'Enable negation of input device match'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_policy_post(payload)
         >>> assert is_valid == True

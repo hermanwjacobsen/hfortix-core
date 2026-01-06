@@ -53,9 +53,7 @@ REQUIRED_FIELDS = [
 FIELDS_WITH_DEFAULTS = {
     "name": "",
     "server-status": "enable",
-    "server-addr-type": "ip",
-    "server-fqdn": "",
-    "server-ip": "0.0.0.0",
+    "server": "",
     "server-port": 514,
     "server-type": "standard",
     "log-level": "information",
@@ -80,9 +78,7 @@ FIELD_TYPES = {
     "name": "string",  # WTP system log server profile name.
     "comment": "var-string",  # Comment.
     "server-status": "option",  # Enable/disable FortiAP units to send log messages to a syslo
-    "server-addr-type": "option",  # Syslog server address type (default = ip).
-    "server-fqdn": "string",  # FQDN of syslog server that FortiAP units send log messages t
-    "server-ip": "ipv4-address",  # IP address of syslog server that FortiAP units send log mess
+    "server": "string",  # Syslog server CN domain name or IP address.
     "server-port": "integer",  # Port number of syslog server that FortiAP units send log mes
     "server-type": "option",  # Configure syslog server type (default = standard).
     "log-level": "option",  # Lowest level of log messages that FortiAP units send to this
@@ -93,9 +89,7 @@ FIELD_DESCRIPTIONS = {
     "name": "WTP system log server profile name.",
     "comment": "Comment.",
     "server-status": "Enable/disable FortiAP units to send log messages to a syslog server (default = enable).",
-    "server-addr-type": "Syslog server address type (default = ip).",
-    "server-fqdn": "FQDN of syslog server that FortiAP units send log messages to.",
-    "server-ip": "IP address of syslog server that FortiAP units send log messages to.",
+    "server": "Syslog server CN domain name or IP address.",
     "server-port": "Port number of syslog server that FortiAP units send log messages to (default = 514).",
     "server-type": "Configure syslog server type (default = standard).",
     "log-level": "Lowest level of log messages that FortiAP units send to this server (default = information).",
@@ -104,7 +98,7 @@ FIELD_DESCRIPTIONS = {
 # Field constraints (string lengths, integer ranges)
 FIELD_CONSTRAINTS = {
     "name": {"type": "string", "max_length": 35},
-    "server-fqdn": {"type": "string", "max_length": 63},
+    "server": {"type": "string", "max_length": 63},
     "server-port": {"type": "integer", "min": 0, "max": 65535},
 }
 
@@ -115,26 +109,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SERVER_STATUS = [
-    "enable",
-    "disable",
-]
-VALID_BODY_SERVER_ADDR_TYPE = [
-    "fqdn",
-    "ip",
+    "enable",  # Enable syslog server.
+    "disable",  # Disable syslog server.
 ]
 VALID_BODY_SERVER_TYPE = [
-    "standard",
-    "fortianalyzer",
+    "standard",  # Standard syslog server hosted on an server endpoint.
+    "fortianalyzer",  # Syslog server hosted on a FortiAnalyzer device.
 ]
 VALID_BODY_LOG_LEVEL = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debugging",
+    "emergency",  # Level 0
+    "alert",  # Level 1
+    "critical",  # Level 2
+    "error",  # Level 3
+    "warning",  # Level 4
+    "notification",  # Level 5
+    "information",  # Level 6
+    "debugging",  # Level 7
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -262,7 +252,7 @@ def validate_wireless_controller_syslog_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "server-status": "enable",  # Valid enum value
+        ...     "server-status": "{'name': 'enable', 'help': 'Enable syslog server.', 'label': 'Enable', 'description': 'Enable syslog server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_syslog_profile_post(payload)
         >>> assert is_valid == True
@@ -294,16 +284,6 @@ def validate_wireless_controller_syslog_profile_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SERVER_STATUS)}"
             error_msg += f"\n  → Example: server-status='{{ VALID_BODY_SERVER_STATUS[0] }}'"
-            return (False, error_msg)
-    if "server-addr-type" in payload:
-        value = payload["server-addr-type"]
-        if value not in VALID_BODY_SERVER_ADDR_TYPE:
-            desc = FIELD_DESCRIPTIONS.get("server-addr-type", "")
-            error_msg = f"Invalid value for 'server-addr-type': '{value}'"
-            if desc:
-                error_msg += f"\n  → Description: {desc}"
-            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SERVER_ADDR_TYPE)}"
-            error_msg += f"\n  → Example: server-addr-type='{{ VALID_BODY_SERVER_ADDR_TYPE[0] }}'"
             return (False, error_msg)
     if "server-type" in payload:
         value = payload["server-type"]
@@ -359,13 +339,6 @@ def validate_wireless_controller_syslog_profile_put(
             return (
                 False,
                 f"Invalid value for 'server-status'='{value}'. Must be one of: {', '.join(VALID_BODY_SERVER_STATUS)}",
-            )
-    if "server-addr-type" in payload:
-        value = payload["server-addr-type"]
-        if value not in VALID_BODY_SERVER_ADDR_TYPE:
-            return (
-                False,
-                f"Invalid value for 'server-addr-type'='{value}'. Must be one of: {', '.join(VALID_BODY_SERVER_ADDR_TYPE)}",
             )
     if "server-type" in payload:
         value = payload["server-type"]
@@ -669,9 +642,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure Wireless Termination Points (WTP) system log server profile.",
-    "total_fields": 9,
+    "total_fields": 7,
     "required_fields_count": 0,
-    "fields_with_defaults_count": 8,
+    "fields_with_defaults_count": 6,
 }
 
 

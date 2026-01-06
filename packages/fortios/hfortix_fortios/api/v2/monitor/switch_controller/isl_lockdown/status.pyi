@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Status:
     """
-    Configuration for switch-controller/isl-lockdown/status
+    Get current status of ISL lockdown.
     
     Path: switch_controller/isl_lockdown/status
     Category: monitor

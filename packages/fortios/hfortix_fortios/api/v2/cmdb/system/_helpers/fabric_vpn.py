@@ -83,7 +83,7 @@ DEPRECATED_FIELDS = {
 # Field types mapping
 FIELD_TYPES = {
     "status": "option",  # Enable/disable Fabric VPN.
-    "sync-mode": "option",  # Setting synchronised by fabric or manual.
+    "sync-mode": "option",  # Setting synchronized by fabric or manual.
     "branch-name": "string",  # Branch name.
     "policy-rule": "option",  # Policy creation rule.
     "vpn-role": "option",  # Fabric VPN role.
@@ -101,7 +101,7 @@ FIELD_TYPES = {
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
     "status": "Enable/disable Fabric VPN.",
-    "sync-mode": "Setting synchronised by fabric or manual.",
+    "sync-mode": "Setting synchronized by fabric or manual.",
     "branch-name": "Branch name.",
     "policy-rule": "Policy creation rule.",
     "vpn-role": "Fabric VPN role.",
@@ -231,7 +231,7 @@ NESTED_SCHEMAS = {
             "help": "Access policy direction.",
             "required": True,
             "default": "inbound",
-            "options": ["inbound", "bidirectional"],
+            "options": [{"help": "Allow inbound traffic to subnet.", "label": "Inbound", "name": "inbound"}, {"help": "Allow inbound and outbound traffic to subnet.", "label": "Bidirectional", "name": "bidirectional"}],
         },
         "bgp-network": {
             "type": "integer",
@@ -259,21 +259,21 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable Fabric VPN.
+    "disable",  # Disable Fabric VPN.
 ]
 VALID_BODY_SYNC_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable fabric led configuration synchronization.
+    "disable",  # Disable fabric led configuration synchronization.
 ]
 VALID_BODY_POLICY_RULE = [
-    "health-check",
-    "manual",
-    "auto",
+    "health-check",  # Create health check policy automatically.
+    "manual",  # All policies will be created manually.
+    "auto",  # Automatically create allow policies.
 ]
 VALID_BODY_VPN_ROLE = [
-    "hub",
-    "spoke",
+    "hub",  # VPN hub.
+    "spoke",  # VPN spoke.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -401,7 +401,7 @@ def validate_system_fabric_vpn_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "psksecret": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable Fabric VPN.', 'label': 'Enable', 'description': 'Enable Fabric VPN'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_fabric_vpn_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Run:
     """
-    Configuration for system/config-script/run
+    Run remote config scripts.
     
     Path: system/config_script/run
     Category: monitor

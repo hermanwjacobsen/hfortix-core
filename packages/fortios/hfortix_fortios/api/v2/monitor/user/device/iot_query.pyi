@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class IotQuery:
     """
-    Configuration for user/device/iot-query
+    Retrieve IoT/OT information for a given device from user device store.
     
     Path: user/device/iot_query
     Category: monitor

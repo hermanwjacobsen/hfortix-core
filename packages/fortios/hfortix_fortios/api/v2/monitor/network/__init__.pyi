@@ -7,12 +7,12 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .arp import Arp
-    from .dns import Dns
-    from .fortiguard import Fortiguard
-    from .lldp import Lldp
     from .reverse_ip_lookup import ReverseIpLookup
     from .ddns import Ddns
     from .debug_flow import DebugFlow
+    from .dns import Dns
+    from .fortiguard import Fortiguard
+    from .lldp import Lldp
 
 
 class Network:
@@ -20,10 +20,10 @@ class Network:
 
     ddns: Ddns
     debug_flow: DebugFlow
-    arp: Arp
     dns: Dns
     fortiguard: Fortiguard
     lldp: Lldp
+    arp: Arp
     reverse_ip_lookup: ReverseIpLookup
 
     def __init__(self, client: IHTTPClient) -> None: ...

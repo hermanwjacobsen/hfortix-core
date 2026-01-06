@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_DB_MODE: Literal["stop-adding", "remove-modified-then-oldest", "remove-oldest"]
+VALID_BODY_DB_MODE: Literal[{"help": "Stop adding entries.", "label": "Stop Adding", "name": "stop-adding"}, {"help": "Remove modified chunks first, then oldest file entries.", "label": "Remove Modified Then Oldest", "name": "remove-modified-then-oldest"}, {"help": "Remove the oldest files first.", "label": "Remove Oldest", "name": "remove-oldest"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

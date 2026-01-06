@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_revision/save",
     "category": "monitor",
     "api_path": "system/config-revision/save",
-    "help": "Configuration for system/config-revision/save",
+    "help": "Create a new config revision checkpoint.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

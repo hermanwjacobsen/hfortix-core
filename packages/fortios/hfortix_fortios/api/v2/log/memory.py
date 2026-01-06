@@ -54,7 +54,7 @@ class MemoryAnomaly:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get anomaly logs."""
-        return self._client.get("/log/memory/anomaly/raw", **kwargs)
+        return self._client.get("log", "/log/memory/anomaly/raw", **kwargs)
 
 
 class MemoryAppCtrl:
@@ -68,7 +68,7 @@ class MemoryAppCtrl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get app_ctrl logs."""
-        return self._client.get("/log/memory/app-ctrl/raw", **kwargs)
+        return self._client.get("log", "/log/memory/app-ctrl/raw", **kwargs)
 
 
 class MemoryAppCtrlArchive:
@@ -81,7 +81,7 @@ class MemoryAppCtrlArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/memory/app-ctrl/archive", **kwargs)
+        return self._client.get("log", "/log/memory/app-ctrl/archive", **kwargs)
 
 
 class MemoryAppCtrlArchiveDownload:
@@ -94,7 +94,7 @@ class MemoryAppCtrlArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/memory/app-ctrl/archive-download", **kwargs)
+        return self._client.get("log", "/log/memory/app-ctrl/archive-download", **kwargs)
 
 
 class MemoryCifs:
@@ -106,7 +106,7 @@ class MemoryCifs:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get cifs logs."""
-        return self._client.get("/log/memory/cifs/raw", **kwargs)
+        return self._client.get("log", "/log/memory/cifs/raw", **kwargs)
 
 
 class MemoryDlp:
@@ -118,7 +118,7 @@ class MemoryDlp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dlp logs."""
-        return self._client.get("/log/memory/dlp/raw", **kwargs)
+        return self._client.get("log", "/log/memory/dlp/raw", **kwargs)
 
 
 class MemoryDns:
@@ -130,7 +130,7 @@ class MemoryDns:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dns logs."""
-        return self._client.get("/log/memory/dns/raw", **kwargs)
+        return self._client.get("log", "/log/memory/dns/raw", **kwargs)
 
 
 class MemoryEmailfilter:
@@ -142,7 +142,7 @@ class MemoryEmailfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get emailfilter logs."""
-        return self._client.get("/log/memory/emailfilter/raw", **kwargs)
+        return self._client.get("log", "/log/memory/emailfilter/raw", **kwargs)
 
 
 class MemoryEvent:
@@ -175,7 +175,7 @@ class MemoryEventComplianceCheck:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get compliance-check event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventConnector:
@@ -188,7 +188,7 @@ class MemoryEventConnector:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get connector event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventEndpoint:
@@ -201,7 +201,7 @@ class MemoryEventEndpoint:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get endpoint event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventFortiextender:
@@ -214,7 +214,7 @@ class MemoryEventFortiextender:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiextender event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventHa:
@@ -227,7 +227,7 @@ class MemoryEventHa:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ha event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventRouter:
@@ -240,7 +240,7 @@ class MemoryEventRouter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get router event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventSecurityRating:
@@ -253,7 +253,7 @@ class MemoryEventSecurityRating:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get security-rating event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventSystem:
@@ -266,7 +266,7 @@ class MemoryEventSystem:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get system event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventUser:
@@ -279,7 +279,7 @@ class MemoryEventUser:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get user event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventVpn:
@@ -292,7 +292,7 @@ class MemoryEventVpn:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get vpn event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventWad:
@@ -305,7 +305,7 @@ class MemoryEventWad:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wad event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryEventWireless:
@@ -318,7 +318,7 @@ class MemoryEventWireless:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wireless event logs."""
-        return self._client.get(f"/log/memory/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/event/{self._subtype}/raw", **kwargs)
 
 
 class MemoryFileFilter:
@@ -330,7 +330,7 @@ class MemoryFileFilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get file_filter logs."""
-        return self._client.get("/log/memory/file-filter/raw", **kwargs)
+        return self._client.get("log", "/log/memory/file-filter/raw", **kwargs)
 
 
 class MemoryGtp:
@@ -342,7 +342,7 @@ class MemoryGtp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get gtp logs."""
-        return self._client.get("/log/memory/gtp/raw", **kwargs)
+        return self._client.get("log", "/log/memory/gtp/raw", **kwargs)
 
 
 class MemoryIps:
@@ -356,7 +356,7 @@ class MemoryIps:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ips logs."""
-        return self._client.get("/log/memory/ips/raw", **kwargs)
+        return self._client.get("log", "/log/memory/ips/raw", **kwargs)
 
 
 class MemoryIpsArchive:
@@ -369,7 +369,7 @@ class MemoryIpsArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/memory/ips/archive", **kwargs)
+        return self._client.get("log", "/log/memory/ips/archive", **kwargs)
 
 
 class MemoryIpsArchiveDownload:
@@ -382,7 +382,7 @@ class MemoryIpsArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/memory/ips/archive-download", **kwargs)
+        return self._client.get("log", "/log/memory/ips/archive-download", **kwargs)
 
 
 class MemorySsh:
@@ -394,7 +394,7 @@ class MemorySsh:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssh logs."""
-        return self._client.get("/log/memory/ssh/raw", **kwargs)
+        return self._client.get("log", "/log/memory/ssh/raw", **kwargs)
 
 
 class MemorySsl:
@@ -406,7 +406,7 @@ class MemorySsl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssl logs."""
-        return self._client.get("/log/memory/ssl/raw", **kwargs)
+        return self._client.get("log", "/log/memory/ssl/raw", **kwargs)
 
 
 class MemoryTraffic:
@@ -433,7 +433,7 @@ class MemoryTrafficFortiview:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiview traffic logs."""
-        return self._client.get(f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
 
 
 class MemoryTrafficForward:
@@ -446,7 +446,7 @@ class MemoryTrafficForward:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get forward traffic logs."""
-        return self._client.get(f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
 
 
 class MemoryTrafficLocal:
@@ -459,7 +459,7 @@ class MemoryTrafficLocal:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get local traffic logs."""
-        return self._client.get(f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
 
 
 class MemoryTrafficMulticast:
@@ -472,7 +472,7 @@ class MemoryTrafficMulticast:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get multicast traffic logs."""
-        return self._client.get(f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
 
 
 class MemoryTrafficSniffer:
@@ -485,7 +485,7 @@ class MemoryTrafficSniffer:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get sniffer traffic logs."""
-        return self._client.get(f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
 
 
 class MemoryTrafficThreat:
@@ -498,7 +498,7 @@ class MemoryTrafficThreat:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get threat traffic logs."""
-        return self._client.get(f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/memory/traffic/{self._subtype}/raw", **kwargs)
 
 
 class MemoryVirus:
@@ -510,7 +510,7 @@ class MemoryVirus:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get virus logs."""
-        return self._client.get("/log/memory/virus/raw", **kwargs)
+        return self._client.get("log", "/log/memory/virus/raw", **kwargs)
 
 
 class MemoryVoip:
@@ -522,7 +522,7 @@ class MemoryVoip:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get voip logs."""
-        return self._client.get("/log/memory/voip/raw", **kwargs)
+        return self._client.get("log", "/log/memory/voip/raw", **kwargs)
 
 
 class MemoryWaf:
@@ -534,7 +534,7 @@ class MemoryWaf:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get waf logs."""
-        return self._client.get("/log/memory/waf/raw", **kwargs)
+        return self._client.get("log", "/log/memory/waf/raw", **kwargs)
 
 
 class MemoryWebfilter:
@@ -546,4 +546,4 @@ class MemoryWebfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get webfilter logs."""
-        return self._client.get("/log/memory/webfilter/raw", **kwargs)
+        return self._client.get("log", "/log/memory/webfilter/raw", **kwargs)

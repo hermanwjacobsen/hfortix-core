@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/interface_connected_admins_info",
     "category": "monitor",
     "api_path": "system/interface-connected-admins-info",
-    "help": "Configuration for system/interface-connected-admins-info",
+    "help": "Return admins info that are connected to current interface.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

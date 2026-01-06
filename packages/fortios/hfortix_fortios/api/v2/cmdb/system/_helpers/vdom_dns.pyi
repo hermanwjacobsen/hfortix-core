@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_VDOM_DNS: Literal["enable", "disable"]
-VALID_BODY_PROTOCOL: Literal["cleartext", "dot", "doh"]
-VALID_BODY_INTERFACE_SELECT_METHOD: Literal["auto", "sdwan", "specify"]
-VALID_BODY_SERVER_SELECT_METHOD: Literal["least-rtt", "failover"]
+VALID_BODY_VDOM_DNS: Literal[{"description": "Enable configuring DNS servers for the current VDOM", "help": "Enable configuring DNS servers for the current VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable configuring DNS servers for the current VDOM", "help": "Disable configuring DNS servers for the current VDOM.", "label": "Disable", "name": "disable"}]
+VALID_BODY_PROTOCOL: Literal[{"description": "DNS over UDP/53, DNS over TCP/53", "help": "DNS over UDP/53, DNS over TCP/53.", "label": "Cleartext", "name": "cleartext"}, {"description": "DNS over TLS/853", "help": "DNS over TLS/853.", "label": "Dot", "name": "dot"}, {"description": "DNS over HTTPS/443", "help": "DNS over HTTPS/443.", "label": "Doh", "name": "doh"}]
+VALID_BODY_INTERFACE_SELECT_METHOD: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]
+VALID_BODY_SERVER_SELECT_METHOD: Literal[{"description": "Select servers based on least round trip time", "help": "Select servers based on least round trip time.", "label": "Least Rtt", "name": "least-rtt"}, {"description": "Select servers based on the order they are configured", "help": "Select servers based on the order they are configured.", "label": "Failover", "name": "failover"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

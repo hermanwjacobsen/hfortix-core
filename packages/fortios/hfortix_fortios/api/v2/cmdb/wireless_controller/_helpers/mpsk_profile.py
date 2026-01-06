@@ -113,7 +113,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "MPSK group VLAN options.",
             "default": "no-vlan",
-            "options": ["no-vlan", "fixed-vlan"],
+            "options": [{"help": "No VLAN.", "label": "No Vlan", "name": "no-vlan"}, {"help": "Fixed VLAN ID.", "label": "Fixed Vlan", "name": "fixed-vlan"}],
         },
         "vlan-id": {
             "type": "integer",
@@ -132,13 +132,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MPSK_EXTERNAL_SERVER_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable MPSK external server authentication.
+    "disable",  # Disable MPSK external server authentication.
 ]
 VALID_BODY_MPSK_TYPE = [
-    "wpa2-personal",
-    "wpa3-sae",
-    "wpa3-sae-transition",
+    "wpa2-personal",  # WPA2 personal.
+    "wpa3-sae",  # WPA3 SAE.
+    "wpa3-sae-transition",  # WPA3 SAE transition.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -266,7 +266,7 @@ def validate_wireless_controller_mpsk_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "mpsk-external-server-auth": "enable",  # Valid enum value
+        ...     "mpsk-external-server-auth": "{'name': 'enable', 'help': 'Enable MPSK external server authentication.', 'label': 'Enable', 'description': 'Enable MPSK external server authentication'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_mpsk_profile_post(payload)
         >>> assert is_valid == True

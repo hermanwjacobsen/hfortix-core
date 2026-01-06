@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PEER_AUTH: Literal["enable", "disable"]
+VALID_BODY_PEER_AUTH: Literal[{"description": "Enable peer", "help": "Enable peer.", "label": "Enable", "name": "enable"}, {"description": "Disable peer", "help": "Disable peer.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

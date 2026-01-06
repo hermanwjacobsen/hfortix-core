@@ -12,11 +12,11 @@ class GroupPayload(TypedDict, total=False):
     """
     name: str  # Service group name.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    proxy: NotRequired[Literal["enable", "disable"]]  # Enable/disable web proxy service group.
+    proxy: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable web proxy service group.
     member: NotRequired[list[dict[str, Any]]]  # Service objects contained within the group.
     comment: NotRequired[str]  # Comment.
     color: NotRequired[int]  # Color of icon on the GUI.
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Group:
@@ -46,11 +46,11 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
+        proxy: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -61,11 +61,11 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
+        proxy: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         member: list[dict[str, Any]] | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

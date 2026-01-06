@@ -145,6 +145,7 @@ class Address6:
         filter: str | None = None,
         list: str | list | None = None,
         sdn_addr_type: str | None = None,
+        passive_fqdn_learning: str | None = None,
         fabric_object: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -220,6 +221,7 @@ class Address6:
             filter=filter,
             list=list,
             sdn_addr_type=sdn_addr_type,
+            passive_fqdn_learning=passive_fqdn_learning,
             fabric_object=fabric_object,
             data=payload_dict,
         )
@@ -273,6 +275,7 @@ class Address6:
         filter: str | None = None,
         list: str | list | None = None,
         sdn_addr_type: str | None = None,
+        passive_fqdn_learning: str | None = None,
         fabric_object: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -350,6 +353,7 @@ class Address6:
             filter=filter,
             list=list,
             sdn_addr_type=sdn_addr_type,
+            passive_fqdn_learning=passive_fqdn_learning,
             fabric_object=fabric_object,
             data=payload_dict,
         )

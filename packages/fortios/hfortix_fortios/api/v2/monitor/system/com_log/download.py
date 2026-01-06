@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve system/com_log/download configuration.
 
-        Configuration for system/com-log/download
+        Download com-log file (after file dump is complete).
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SetStatus:
     """
-    Configuration for wifi/rogue_ap/set_status
+    Mark detected APs as rogue APs.
     
     Path: wifi/rogue_ap/set_status
     Category: monitor

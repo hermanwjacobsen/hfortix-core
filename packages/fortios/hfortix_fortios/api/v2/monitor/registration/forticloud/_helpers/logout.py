@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticloud/logout",
     "category": "monitor",
     "api_path": "registration/forticloud/logout",
-    "help": "Configuration for registration/forticloud/logout",
+    "help": "Logout from FortiCloud.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

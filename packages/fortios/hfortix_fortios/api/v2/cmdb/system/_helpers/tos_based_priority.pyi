@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PRIORITY: Literal["low", "medium", "high"]
+VALID_BODY_PRIORITY: Literal[{"description": "Low priority", "help": "Low priority.", "label": "Low", "name": "low"}, {"description": "Medium priority", "help": "Medium priority.", "label": "Medium", "name": "medium"}, {"description": "High priority", "help": "High priority.", "label": "High", "name": "high"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

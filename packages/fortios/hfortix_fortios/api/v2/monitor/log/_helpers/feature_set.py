@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/feature_set",
     "category": "monitor",
     "api_path": "log/feature-set",
-    "help": "Configuration for log/feature-set",
+    "help": "Retrieve logging feature set.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

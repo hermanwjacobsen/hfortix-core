@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PoeUsage:
     """
-    Configuration for system/interface/poe-usage
+    Retrieve PoE usage stats across all VDOMs.
     
     Path: system/interface/poe_usage
     Category: monitor

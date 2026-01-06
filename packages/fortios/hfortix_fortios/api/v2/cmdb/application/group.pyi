@@ -12,15 +12,15 @@ class GroupPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Application group name.
     comment: NotRequired[str]  # Comments.
-    type: NotRequired[Literal["application", "filter"]]  # Application group type.
+    type: NotRequired[Literal[{"description": "Application ID", "help": "Application ID.", "label": "Application", "name": "application"}, {"description": "Application filter", "help": "Application filter.", "label": "Filter", "name": "filter"}]]  # Application group type.
     application: NotRequired[list[dict[str, Any]]]  # Application ID list.
     category: NotRequired[list[dict[str, Any]]]  # Application category ID list.
     risk: NotRequired[list[dict[str, Any]]]  # Risk, or impact, of allowing traffic from this application t
-    protocols: NotRequired[str]  # Application protocol filter.
-    vendor: NotRequired[str]  # Application vendor filter.
-    technology: NotRequired[str]  # Application technology filter.
-    behavior: NotRequired[str]  # Application behavior filter.
-    popularity: NotRequired[Literal["1", "2", "3", "4", "5"]]  # Application popularity filter (1 - 5, from least to most pop
+    protocols: NotRequired[list[dict[str, Any]]]  # Application protocol filter.
+    vendor: NotRequired[list[dict[str, Any]]]  # Application vendor filter.
+    technology: NotRequired[list[dict[str, Any]]]  # Application technology filter.
+    behavior: NotRequired[list[dict[str, Any]]]  # Application behavior filter.
+    popularity: NotRequired[Literal[{"description": "Popularity level 1", "help": "Popularity level 1.", "label": "1", "name": "1"}, {"description": "Popularity level 2", "help": "Popularity level 2.", "label": "2", "name": "2"}, {"description": "Popularity level 3", "help": "Popularity level 3.", "label": "3", "name": "3"}, {"description": "Popularity level 4", "help": "Popularity level 4.", "label": "4", "name": "4"}, {"description": "Popularity level 5", "help": "Popularity level 5.", "label": "5", "name": "5"}]]  # Application popularity filter (1 - 5, from least to most pop
 
 
 class Group:
@@ -50,15 +50,15 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type: Literal[{"description": "Application ID", "help": "Application ID.", "label": "Application", "name": "application"}, {"description": "Application filter", "help": "Application filter.", "label": "Filter", "name": "filter"}] | None = ...,
         application: list[dict[str, Any]] | None = ...,
         category: list[dict[str, Any]] | None = ...,
         risk: list[dict[str, Any]] | None = ...,
-        protocols: str | None = ...,
-        vendor: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        popularity: Literal["1", "2", "3", "4", "5"] | None = ...,
+        protocols: list[dict[str, Any]] | None = ...,
+        vendor: list[dict[str, Any]] | None = ...,
+        technology: list[dict[str, Any]] | None = ...,
+        behavior: list[dict[str, Any]] | None = ...,
+        popularity: Literal[{"description": "Popularity level 1", "help": "Popularity level 1.", "label": "1", "name": "1"}, {"description": "Popularity level 2", "help": "Popularity level 2.", "label": "2", "name": "2"}, {"description": "Popularity level 3", "help": "Popularity level 3.", "label": "3", "name": "3"}, {"description": "Popularity level 4", "help": "Popularity level 4.", "label": "4", "name": "4"}, {"description": "Popularity level 5", "help": "Popularity level 5.", "label": "5", "name": "5"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -69,15 +69,15 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        type: Literal["application", "filter"] | None = ...,
+        type: Literal[{"description": "Application ID", "help": "Application ID.", "label": "Application", "name": "application"}, {"description": "Application filter", "help": "Application filter.", "label": "Filter", "name": "filter"}] | None = ...,
         application: list[dict[str, Any]] | None = ...,
         category: list[dict[str, Any]] | None = ...,
         risk: list[dict[str, Any]] | None = ...,
-        protocols: str | None = ...,
-        vendor: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        popularity: Literal["1", "2", "3", "4", "5"] | None = ...,
+        protocols: list[dict[str, Any]] | None = ...,
+        vendor: list[dict[str, Any]] | None = ...,
+        technology: list[dict[str, Any]] | None = ...,
+        behavior: list[dict[str, Any]] | None = ...,
+        popularity: Literal[{"description": "Popularity level 1", "help": "Popularity level 1.", "label": "1", "name": "1"}, {"description": "Popularity level 2", "help": "Popularity level 2.", "label": "2", "name": "2"}, {"description": "Popularity level 3", "help": "Popularity level 3.", "label": "3", "name": "3"}, {"description": "Popularity level 4", "help": "Popularity level 4.", "label": "4", "name": "4"}, {"description": "Popularity level 5", "help": "Popularity level 5.", "label": "5", "name": "5"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

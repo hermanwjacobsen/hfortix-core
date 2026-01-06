@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/gtp",
     "category": "monitor",
     "api_path": "firewall/gtp",
-    "help": "Monitor endpoint for firewall/gtp",
+    "help": "Retrieve a list of GTP tunnels",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

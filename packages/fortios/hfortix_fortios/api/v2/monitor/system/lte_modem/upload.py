@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve system/lte_modem/upload configuration.
 
-        Configuration for system/lte-modem/upload
+        Upload the modem firmware upgrade files.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

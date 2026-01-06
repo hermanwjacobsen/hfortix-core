@@ -12,11 +12,11 @@ class ProfilePayload(TypedDict, total=False):
     """
     name: str  # Profile name.
     comment: NotRequired[str]  # Comment.
-    feature_set: NotRequired[Literal["flow", "proxy"]]  # Flow/proxy feature set.
+    feature_set: NotRequired[Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}]]  # Flow/proxy feature set.
     replacemsg_group: NotRequired[str]  # Replacement message group.
-    log: NotRequired[Literal["disable", "enable"]]  # Enable/disable file-filter logging.
-    extended_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable file-filter extended logging.
-    scan_archive_contents: NotRequired[Literal["disable", "enable"]]  # Enable/disable archive contents scan.
+    log: NotRequired[Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}]]  # Enable/disable file-filter logging.
+    extended_log: NotRequired[Literal[{"description": "Disable extended logging", "help": "Disable extended logging.", "label": "Disable", "name": "disable"}, {"description": "Enable extended logging", "help": "Enable extended logging.", "label": "Enable", "name": "enable"}]]  # Enable/disable file-filter extended logging.
+    scan_archive_contents: NotRequired[Literal[{"description": "Disable scanning archive contents", "help": "Disable scanning archive contents.", "label": "Disable", "name": "disable"}, {"description": "Enable scanning archive contents", "help": "Enable scanning archive contents.", "label": "Enable", "name": "enable"}]]  # Enable/disable archive contents scan.
     rules: NotRequired[list[dict[str, Any]]]  # File filter rules.
 
 
@@ -47,11 +47,11 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
+        feature_set: Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}] | None = ...,
         replacemsg_group: str | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        extended_log: Literal["disable", "enable"] | None = ...,
-        scan_archive_contents: Literal["disable", "enable"] | None = ...,
+        log: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        extended_log: Literal[{"description": "Disable extended logging", "help": "Disable extended logging.", "label": "Disable", "name": "disable"}, {"description": "Enable extended logging", "help": "Enable extended logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        scan_archive_contents: Literal[{"description": "Disable scanning archive contents", "help": "Disable scanning archive contents.", "label": "Disable", "name": "disable"}, {"description": "Enable scanning archive contents", "help": "Enable scanning archive contents.", "label": "Enable", "name": "enable"}] | None = ...,
         rules: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -63,11 +63,11 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
+        feature_set: Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}] | None = ...,
         replacemsg_group: str | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        extended_log: Literal["disable", "enable"] | None = ...,
-        scan_archive_contents: Literal["disable", "enable"] | None = ...,
+        log: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        extended_log: Literal[{"description": "Disable extended logging", "help": "Disable extended logging.", "label": "Disable", "name": "disable"}, {"description": "Enable extended logging", "help": "Enable extended logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        scan_archive_contents: Literal[{"description": "Disable scanning archive contents", "help": "Disable scanning archive contents.", "label": "Disable", "name": "disable"}, {"description": "Enable scanning archive contents", "help": "Enable scanning archive contents.", "label": "Enable", "name": "enable"}] | None = ...,
         rules: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

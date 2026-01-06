@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Refresh:
     """
-    Configuration for system/external-resource/refresh
+    Fetch the external resource file and refresh status for the specified external resource.
     
     Path: system/external_resource/refresh
     Category: monitor

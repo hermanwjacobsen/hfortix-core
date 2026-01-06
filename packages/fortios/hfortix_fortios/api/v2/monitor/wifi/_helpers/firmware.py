@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/firmware",
     "category": "monitor",
     "api_path": "wifi/firmware",
-    "help": "Configuration for wifi/firmware",
+    "help": "Retrieve a list of current and recommended firmware for FortiAPs in use.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/client/disassociate",
     "category": "monitor",
     "api_path": "wifi/client/disassociate",
-    "help": "Configuration for wifi/client/disassociate",
+    "help": "Disassociate a WiFi client from the FortiAP it's currently connected to. The client will need to reassociate with the same FortiAP or another to resume connectivity.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

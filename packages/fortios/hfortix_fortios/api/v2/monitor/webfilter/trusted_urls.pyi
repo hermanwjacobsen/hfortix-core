@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TrustedUrls:
     """
-    Monitor endpoint for webfilter/trusted-urls
+    List all URLs in FortiGuard trusted URL database.
     
     Path: webfilter/trusted_urls
     Category: monitor

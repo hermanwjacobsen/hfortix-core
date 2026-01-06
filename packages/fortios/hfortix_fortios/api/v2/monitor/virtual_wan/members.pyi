@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Members:
     """
-    Monitor endpoint for virtual-wan/members
+    Retrieve interface statistics for each SD-WAN link.
     
     Path: virtual_wan/members
     Category: monitor

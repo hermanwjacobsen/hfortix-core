@@ -126,7 +126,7 @@ class FabricVpn:
         psksecret: Any | None = None,
         bgp_as: str | None = None,
         sdwan_zone: str | None = None,
-        health_checks: str | None = None,
+        health_checks: str | list | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -139,7 +139,7 @@ class FabricVpn:
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             status: Enable/disable Fabric VPN.
-            sync_mode: Setting synchronised by fabric or manual.
+            sync_mode: Setting synchronized by fabric or manual.
             branch_name: Branch name.
             policy_rule: Policy creation rule.
             vpn_role: Fabric VPN role.

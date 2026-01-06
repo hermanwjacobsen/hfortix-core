@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for firewall/multicast-policy/reset
+    Reset traffic statistics for all IPv4 firewall multicast policies.
     
     Path: firewall/multicast_policy/reset
     Category: monitor

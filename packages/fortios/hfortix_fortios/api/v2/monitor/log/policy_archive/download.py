@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve log/policy_archive/download configuration.
 
-        Configuration for log/policy-archive/download
+        Download policy-based packet capture archive.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

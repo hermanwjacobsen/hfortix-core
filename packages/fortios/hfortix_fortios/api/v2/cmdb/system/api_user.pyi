@@ -17,7 +17,7 @@ class ApiUserPayload(TypedDict, total=False):
     vdom: NotRequired[list[dict[str, Any]]]  # Virtual domains.
     schedule: NotRequired[str]  # Schedule name.
     cors_allow_origin: NotRequired[str]  # Value for Access-Control-Allow-Origin on API responses. Avoi
-    peer_auth: NotRequired[Literal["enable", "disable"]]  # Enable/disable peer authentication.
+    peer_auth: NotRequired[Literal[{"description": "Enable peer", "help": "Enable peer.", "label": "Enable", "name": "enable"}, {"description": "Disable peer", "help": "Disable peer.", "label": "Disable", "name": "disable"}]]  # Enable/disable peer authentication.
     peer_group: str  # Peer group name.
     trusthost: NotRequired[list[dict[str, Any]]]  # Trusthost.
 
@@ -53,7 +53,7 @@ class ApiUser:
         accprofile: str | None = ...,
         schedule: str | None = ...,
         cors_allow_origin: str | None = ...,
-        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_auth: Literal[{"description": "Enable peer", "help": "Enable peer.", "label": "Enable", "name": "enable"}, {"description": "Disable peer", "help": "Disable peer.", "label": "Disable", "name": "disable"}] | None = ...,
         peer_group: str | None = ...,
         trusthost: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -70,7 +70,7 @@ class ApiUser:
         accprofile: str | None = ...,
         schedule: str | None = ...,
         cors_allow_origin: str | None = ...,
-        peer_auth: Literal["enable", "disable"] | None = ...,
+        peer_auth: Literal[{"description": "Enable peer", "help": "Enable peer.", "label": "Enable", "name": "enable"}, {"description": "Disable peer", "help": "Disable peer.", "label": "Disable", "name": "disable"}] | None = ...,
         peer_group: str | None = ...,
         trusthost: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

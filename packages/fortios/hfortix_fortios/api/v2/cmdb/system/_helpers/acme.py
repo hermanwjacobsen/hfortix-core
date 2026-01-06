@@ -165,8 +165,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_USE_HA_DIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -291,7 +291,7 @@ def validate_system_acme_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "use-ha-direct": "enable",  # Valid enum value
+        ...     "use-ha-direct": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_acme_post(payload)
         >>> assert is_valid == True

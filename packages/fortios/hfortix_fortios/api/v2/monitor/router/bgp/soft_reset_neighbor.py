@@ -56,7 +56,7 @@ class SoftResetNeighbor:
         """
         Retrieve router/bgp/soft_reset_neighbor configuration.
 
-        Configuration for router/bgp/soft-reset-neighbor
+        BGP Neighbor soft reset.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

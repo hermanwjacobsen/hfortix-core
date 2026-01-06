@@ -156,24 +156,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable static route.
+    "disable",  # Disable static route.
 ]
 VALID_BODY_BLACKHOLE = [
-    "enable",
-    "disable",
+    "enable",  # Enable black hole.
+    "disable",  # Disable black hole.
 ]
 VALID_BODY_DYNAMIC_GATEWAY = [
-    "enable",
-    "disable",
+    "enable",  # Enable dynamic gateway.
+    "disable",  # Disable dynamic gateway.
 ]
 VALID_BODY_LINK_MONITOR_EXEMPT = [
-    "enable",
-    "disable",
+    "enable",  # Keep this static route when link monitor or health check is down.
+    "disable",  # Withdraw this static route when link monitor or health check is down. (default)
 ]
 VALID_BODY_BFD = [
-    "enable",
-    "disable",
+    "enable",  # Enable Bidirectional Forwarding Detection (BFD).
+    "disable",  # Disable Bidirectional Forwarding Detection (BFD).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -303,7 +303,7 @@ def validate_router_static6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "device": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable static route.', 'label': 'Enable', 'description': 'Enable static route'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_static6_post(payload)
         >>> assert is_valid == True

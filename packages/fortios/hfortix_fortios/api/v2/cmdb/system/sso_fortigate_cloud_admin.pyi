@@ -11,7 +11,7 @@ class SsoFortigateCloudAdminPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # FortiCloud SSO admin name.
-    accprofile: NotRequired[str]  # FortiCloud SSO admin user access profile.
+    accprofile: NotRequired[str]  # FortiCloud SSO admin user access profile. Permission is set 
     vdom: NotRequired[list[dict[str, Any]]]  # Virtual domain(s) that the administrator can access.
 
 

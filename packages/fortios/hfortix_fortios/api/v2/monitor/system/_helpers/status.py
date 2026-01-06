@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/status",
     "category": "monitor",
     "api_path": "system/status",
-    "help": "Configuration for system/status",
+    "help": "Retrieve basic system status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

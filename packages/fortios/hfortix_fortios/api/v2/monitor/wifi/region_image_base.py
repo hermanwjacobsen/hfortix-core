@@ -56,7 +56,7 @@ class RegionImage:
         """
         Retrieve wifi/region_image configuration.
 
-        Configuration for wifi/region-image
+        Retrieves a floorplan/region image from a configured FortiAP region.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

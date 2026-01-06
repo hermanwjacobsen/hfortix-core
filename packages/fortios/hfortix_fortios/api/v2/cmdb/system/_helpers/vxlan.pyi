@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_IP_VERSION: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"]
-VALID_BODY_LEARN_FROM_TRAFFIC: Literal["enable", "disable"]
+VALID_BODY_IP_VERSION: Literal[{"description": "Use IPv4 unicast addressing over the VXLAN", "help": "Use IPv4 unicast addressing over the VXLAN.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the VXLAN", "help": "Use IPv6 unicast addressing over the VXLAN.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}, {"description": "Use IPv4 multicast addressing over the VXLAN", "help": "Use IPv4 multicast addressing over the VXLAN.", "label": "Ipv4 Multicast", "name": "ipv4-multicast"}, {"description": "Use IPv6 multicast addressing over the VXLAN", "help": "Use IPv6 multicast addressing over the VXLAN.", "label": "Ipv6 Multicast", "name": "ipv6-multicast"}]
+VALID_BODY_LEARN_FROM_TRAFFIC: Literal[{"description": "Enable VXLAN MAC learning from traffic", "help": "Enable VXLAN MAC learning from traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable VXLAN MAC learning from traffic", "help": "Disable VXLAN MAC learning from traffic.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

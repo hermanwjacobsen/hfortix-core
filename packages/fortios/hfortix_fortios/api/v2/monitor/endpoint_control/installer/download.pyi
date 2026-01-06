@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for endpoint-control/installer/download
+    Download a FortiClient installer via FortiGuard.
     
     Path: endpoint_control/installer/download
     Category: monitor

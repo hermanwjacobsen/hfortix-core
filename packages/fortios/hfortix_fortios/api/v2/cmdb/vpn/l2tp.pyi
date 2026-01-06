@@ -10,15 +10,15 @@ class L2tpPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: Literal["enable", "disable"]  # Enable/disable FortiGate as a L2TP gateway.
+    status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]  # Enable/disable FortiGate as a L2TP gateway.
     eip: str  # End IP.
     sip: str  # Start IP.
     usrgrp: str  # User group.
-    enforce_ipsec: Literal["enable", "disable"]  # Enable/disable IPsec enforcement.
+    enforce_ipsec: Literal[{"description": "Enable enforce-ipsec    disable:Disable enforce-ipsec", "help": "Enable enforce-ipsec", "label": "Enable", "name": "enable"}, {"help": "Disable enforce-ipsec", "label": "Disable", "name": "disable"}]  # Enable/disable IPsec enforcement.
     lcp_echo_interval: NotRequired[int]  # Time in seconds between PPPoE Link Control Protocol (LCP) ec
     lcp_max_echo_fails: NotRequired[int]  # Maximum number of missed LCP echo messages before disconnect
     hello_interval: NotRequired[int]  # L2TP hello message interval in seconds (0 - 3600 sec, defaul
-    compress: Literal["enable", "disable"]  # Enable/disable data compression.
+    compress: Literal[{"description": "Enable compress    disable:Disable compress", "help": "Enable compress", "label": "Enable", "name": "enable"}, {"help": "Disable compress", "label": "Disable", "name": "disable"}]  # Enable/disable data compression.
 
 
 class L2tp:
@@ -45,15 +45,15 @@ class L2tp:
     def post(
         self,
         payload_dict: L2tpPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         eip: str | None = ...,
         sip: str | None = ...,
         usrgrp: str | None = ...,
-        enforce_ipsec: Literal["enable", "disable"] | None = ...,
+        enforce_ipsec: Literal[{"description": "Enable enforce-ipsec    disable:Disable enforce-ipsec", "help": "Enable enforce-ipsec", "label": "Enable", "name": "enable"}, {"help": "Disable enforce-ipsec", "label": "Disable", "name": "disable"}] | None = ...,
         lcp_echo_interval: int | None = ...,
         lcp_max_echo_fails: int | None = ...,
         hello_interval: int | None = ...,
-        compress: Literal["enable", "disable"] | None = ...,
+        compress: Literal[{"description": "Enable compress    disable:Disable compress", "help": "Enable compress", "label": "Enable", "name": "enable"}, {"help": "Disable compress", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -62,15 +62,15 @@ class L2tp:
     def put(
         self,
         payload_dict: L2tpPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         eip: str | None = ...,
         sip: str | None = ...,
         usrgrp: str | None = ...,
-        enforce_ipsec: Literal["enable", "disable"] | None = ...,
+        enforce_ipsec: Literal[{"description": "Enable enforce-ipsec    disable:Disable enforce-ipsec", "help": "Enable enforce-ipsec", "label": "Enable", "name": "enable"}, {"help": "Disable enforce-ipsec", "label": "Disable", "name": "disable"}] | None = ...,
         lcp_echo_interval: int | None = ...,
         lcp_max_echo_fails: int | None = ...,
         hello_interval: int | None = ...,
-        compress: Literal["enable", "disable"] | None = ...,
+        compress: Literal[{"description": "Enable compress    disable:Disable compress", "help": "Enable compress", "label": "Enable", "name": "enable"}, {"help": "Disable compress", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

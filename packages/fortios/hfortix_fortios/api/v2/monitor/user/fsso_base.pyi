@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Fsso:
     """
-    Monitor endpoint for user/fsso
+    Refresh remote agent group list for all fsso agents.
     
     Path: user/fsso
     Category: monitor

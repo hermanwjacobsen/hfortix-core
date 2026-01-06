@@ -56,7 +56,7 @@ class Statistics:
         """
         Retrieve wifi/statistics configuration.
 
-        Configuration for wifi/statistics
+        Retrieve aggregated FortiAP statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

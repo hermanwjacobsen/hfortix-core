@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "azure/application_list/refresh",
     "category": "monitor",
     "api_path": "azure/application-list/refresh",
-    "help": "Configuration for azure/application-list/refresh",
+    "help": "Update the Azure application list data or get the status of an update.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

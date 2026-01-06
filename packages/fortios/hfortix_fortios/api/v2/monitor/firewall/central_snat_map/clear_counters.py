@@ -56,7 +56,7 @@ class ClearCounters:
         """
         Retrieve firewall/central_snat_map/clear_counters configuration.
 
-        Configuration for firewall/central-snat-map/clear-counters
+        Reset traffic statistics for one or more firewall central SNAT policy by policy ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

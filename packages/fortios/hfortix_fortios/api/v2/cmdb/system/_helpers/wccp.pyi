@@ -1,16 +1,16 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PORTS_DEFINED: Literal["source", "destination"]
-VALID_BODY_SERVER_TYPE: Literal["forward", "proxy"]
-VALID_BODY_AUTHENTICATION: Literal["enable", "disable"]
-VALID_BODY_FORWARD_METHOD: Literal["GRE", "L2", "any"]
-VALID_BODY_CACHE_ENGINE_METHOD: Literal["GRE", "L2"]
-VALID_BODY_SERVICE_TYPE: Literal["auto", "standard", "dynamic"]
-VALID_BODY_PRIMARY_HASH: Literal["src-ip", "dst-ip", "src-port", "dst-port"]
-VALID_BODY_ASSIGNMENT_BUCKET_FORMAT: Literal["wccp-v2", "cisco-implementation"]
-VALID_BODY_RETURN_METHOD: Literal["GRE", "L2", "any"]
-VALID_BODY_ASSIGNMENT_METHOD: Literal["HASH", "MASK", "any"]
+VALID_BODY_PORTS_DEFINED: Literal[{"description": "Source port match", "help": "Source port match.", "label": "Source", "name": "source"}, {"description": "Destination port match", "help": "Destination port match.", "label": "Destination", "name": "destination"}]
+VALID_BODY_SERVER_TYPE: Literal[{"description": "Forward server", "help": "Forward server.", "label": "Forward", "name": "forward"}, {"description": "Proxy server", "help": "Proxy server.", "label": "Proxy", "name": "proxy"}]
+VALID_BODY_AUTHENTICATION: Literal[{"description": "Enable MD5 authentication", "help": "Enable MD5 authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable MD5 authentication", "help": "Disable MD5 authentication.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FORWARD_METHOD: Literal[{"description": "GRE encapsulation", "help": "GRE encapsulation.", "label": "Gre", "name": "GRE"}, {"description": "L2 rewrite", "help": "L2 rewrite.", "label": "L2", "name": "L2"}, {"description": "GRE or L2", "help": "GRE or L2.", "label": "Any", "name": "any"}]
+VALID_BODY_CACHE_ENGINE_METHOD: Literal[{"description": "GRE encapsulation", "help": "GRE encapsulation.", "label": "Gre", "name": "GRE"}, {"description": "L2 rewrite", "help": "L2 rewrite.", "label": "L2", "name": "L2"}]
+VALID_BODY_SERVICE_TYPE: Literal[{"description": "auto    standard:Standard service", "help": "auto", "label": "Auto", "name": "auto"}, {"help": "Standard service.", "label": "Standard", "name": "standard"}, {"description": "Dynamic service", "help": "Dynamic service.", "label": "Dynamic", "name": "dynamic"}]
+VALID_BODY_PRIMARY_HASH: Literal[{"description": "Source IP hash", "help": "Source IP hash.", "label": "Src Ip", "name": "src-ip"}, {"description": "Destination IP hash", "help": "Destination IP hash.", "label": "Dst Ip", "name": "dst-ip"}, {"description": "Source port hash", "help": "Source port hash.", "label": "Src Port", "name": "src-port"}, {"description": "Destination port hash", "help": "Destination port hash.", "label": "Dst Port", "name": "dst-port"}]
+VALID_BODY_ASSIGNMENT_BUCKET_FORMAT: Literal[{"description": "WCCP-v2 bucket format", "help": "WCCP-v2 bucket format.", "label": "Wccp V2", "name": "wccp-v2"}, {"description": "Cisco bucket format", "help": "Cisco bucket format.", "label": "Cisco Implementation", "name": "cisco-implementation"}]
+VALID_BODY_RETURN_METHOD: Literal[{"description": "GRE encapsulation", "help": "GRE encapsulation.", "label": "Gre", "name": "GRE"}, {"description": "L2 rewrite", "help": "L2 rewrite.", "label": "L2", "name": "L2"}, {"description": "GRE or L2", "help": "GRE or L2.", "label": "Any", "name": "any"}]
+VALID_BODY_ASSIGNMENT_METHOD: Literal[{"description": "HASH assignment method", "help": "HASH assignment method.", "label": "Hash", "name": "HASH"}, {"description": "MASK assignment method", "help": "MASK assignment method.", "label": "Mask", "name": "MASK"}, {"description": "HASH or MASK", "help": "HASH or MASK.", "label": "Any", "name": "any"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

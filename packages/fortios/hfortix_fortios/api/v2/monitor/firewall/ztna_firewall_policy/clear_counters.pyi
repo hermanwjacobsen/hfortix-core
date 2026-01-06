@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearCounters:
     """
-    Configuration for firewall/ztna-firewall-policy/clear-counters
+    Reset traffic statistics for one or more ZTNA firewall policies by policy ID.
     
     Path: firewall/ztna_firewall_policy/clear_counters
     Category: monitor

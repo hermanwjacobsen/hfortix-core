@@ -56,7 +56,7 @@ class Select:
         """
         Retrieve geoip/geoip_query/select configuration.
 
-        Configuration for geoip/geoip-query/select
+        Retrieve location details for IPs queried against FortiGuard's geoip service.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -56,7 +56,7 @@ class PseConfig:
         """
         Retrieve switch_controller/recommendation/pse_config configuration.
 
-        Configuration for switch-controller/recommendation/pse-config
+        Execute switch recommendation for pse-config to prevent PSE-PSE scenarios.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

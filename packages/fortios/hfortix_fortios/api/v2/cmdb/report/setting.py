@@ -115,7 +115,7 @@ class Setting:
         payload_dict: dict[str, Any] | None = None,
         pdf_report: str | None = None,
         fortiview: str | None = None,
-        report_source: str | None = None,
+        report_source: str | list | None = None,
         web_browsing_threshold: int | None = None,
         top_n: int | None = None,
         vdom: str | bool | None = None,

@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_LINK_DOWN_FLUSH: Literal["disable", "enable"]
-VALID_BODY_ACCESS_VLAN_MODE: Literal["legacy", "fail-open", "fail-close"]
+VALID_BODY_LINK_DOWN_FLUSH: Literal[{"description": "Disable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Disable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Disable", "name": "disable"}, {"description": "Enable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Enable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Enable", "name": "enable"}]
+VALID_BODY_ACCESS_VLAN_MODE: Literal[{"description": "Backward compatible behavior", "help": "Backward compatible behavior.", "label": "Legacy", "name": "legacy"}, {"description": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points", "help": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points.", "label": "Fail Open", "name": "fail-open"}, {"description": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked", "help": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked.", "label": "Fail Close", "name": "fail-close"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "license/database/upgrade",
     "category": "monitor",
     "api_path": "license/database/upgrade",
-    "help": "Configuration for license/database/upgrade",
+    "help": "Upgrade or downgrade UTM engine or signature package (IPS/AntiVirus/Application Control/Industrial database/Security Rating/Internet Service Database) using uploaded file.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

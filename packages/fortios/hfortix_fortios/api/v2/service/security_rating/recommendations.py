@@ -56,7 +56,7 @@ class Recommendations:
         """
         Retrieve security_rating/recommendations configuration.
 
-        Configuration for security-rating/recommendations
+        Retrieve recommendations for Security Rating tests.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

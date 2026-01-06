@@ -127,20 +127,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable status.
+    "enable",  # Enable status.
 ]
 VALID_BODY_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging.
+    "enable",  # Enable logging.
 ]
 VALID_BODY_LOG_PACKET = [
-    "disable",
-    "enable",
+    "disable",  # Disable packet logging.
+    "enable",  # Enable packet logging.
 ]
 VALID_BODY_ACTION = [
-    "pass",
-    "block",
+    "pass",  # Pass or allow matching traffic.
+    "block",  # Block or drop matching traffic.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -268,7 +268,7 @@ def validate_ips_custom_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Disable status.', 'label': 'Disable', 'description': 'Disable status'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ips_custom_post(payload)
         >>> assert is_valid == True

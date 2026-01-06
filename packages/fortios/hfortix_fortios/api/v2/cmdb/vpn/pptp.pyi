@@ -10,8 +10,8 @@ class PptpPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: Literal["enable", "disable"]  # Enable/disable FortiGate as a PPTP gateway.
-    ip_mode: Literal["range", "usrgrp"]  # IP assignment mode for PPTP client.
+    status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]  # Enable/disable FortiGate as a PPTP gateway.
+    ip_mode: Literal[{"description": "PPTP client IP from manual config (range from sip to eip)", "help": "PPTP client IP from manual config (range from sip to eip).", "label": "Range", "name": "range"}, {"description": "PPTP client IP from user-group defined server", "help": "PPTP client IP from user-group defined server.", "label": "Usrgrp", "name": "usrgrp"}]  # IP assignment mode for PPTP client.
     eip: str  # End IP.
     sip: str  # Start IP.
     local_ip: str  # Local IP to be used for peer's remote IP.
@@ -42,8 +42,8 @@ class Pptp:
     def post(
         self,
         payload_dict: PptpPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_mode: Literal["range", "usrgrp"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip_mode: Literal[{"description": "PPTP client IP from manual config (range from sip to eip)", "help": "PPTP client IP from manual config (range from sip to eip).", "label": "Range", "name": "range"}, {"description": "PPTP client IP from user-group defined server", "help": "PPTP client IP from user-group defined server.", "label": "Usrgrp", "name": "usrgrp"}] | None = ...,
         eip: str | None = ...,
         sip: str | None = ...,
         local_ip: str | None = ...,
@@ -56,8 +56,8 @@ class Pptp:
     def put(
         self,
         payload_dict: PptpPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_mode: Literal["range", "usrgrp"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip_mode: Literal[{"description": "PPTP client IP from manual config (range from sip to eip)", "help": "PPTP client IP from manual config (range from sip to eip).", "label": "Range", "name": "range"}, {"description": "PPTP client IP from user-group defined server", "help": "PPTP client IP from user-group defined server.", "label": "Usrgrp", "name": "usrgrp"}] | None = ...,
         eip: str | None = ...,
         sip: str | None = ...,
         local_ip: str | None = ...,

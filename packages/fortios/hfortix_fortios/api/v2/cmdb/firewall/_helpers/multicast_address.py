@@ -132,8 +132,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "multicastrange",
-    "broadcastmask",
+    "multicastrange",  # Multicast range.
+    "broadcastmask",  # Broadcast IP/mask.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -261,7 +261,7 @@ def validate_firewall_multicast_address_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "type": "multicastrange",  # Valid enum value
+        ...     "type": "{'name': 'multicastrange', 'help': 'Multicast range.', 'label': 'Multicastrange', 'description': 'Multicast range'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_multicast_address_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AddressFqdns6:
     """
-    Monitor endpoint for firewall/address-fqdns6
+    List of IPv6 FQDN address objects and the IPs they resolved to.
     
     Path: firewall/address_fqdns6
     Category: monitor

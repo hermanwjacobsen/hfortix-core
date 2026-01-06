@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_INTRAZONE: Literal["allow", "deny"]
+VALID_BODY_INTRAZONE: Literal[{"description": "Allow traffic between interfaces in the zone", "help": "Allow traffic between interfaces in the zone.", "label": "Allow", "name": "allow"}, {"description": "Deny traffic between interfaces in the zone", "help": "Deny traffic between interfaces in the zone.", "label": "Deny", "name": "deny"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

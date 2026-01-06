@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/running_processes",
     "category": "monitor",
     "api_path": "system/running-processes",
-    "help": "Configuration for system/running-processes",
+    "help": "List of running processes and their resource usage.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

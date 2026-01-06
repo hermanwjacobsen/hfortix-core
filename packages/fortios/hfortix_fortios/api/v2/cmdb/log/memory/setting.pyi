@@ -10,7 +10,7 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging to the FortiGate's memory.
+    status: NotRequired[Literal[{"description": "Enable logging to memory", "help": "Enable logging to memory.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to memory", "help": "Disable logging to memory.", "label": "Disable", "name": "disable"}]]  # Enable/disable logging to the FortiGate's memory.
 
 
 class Setting:
@@ -37,7 +37,7 @@ class Setting:
     def post(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable logging to memory", "help": "Enable logging to memory.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to memory", "help": "Disable logging to memory.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -46,7 +46,7 @@ class Setting:
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable logging to memory", "help": "Enable logging to memory.", "label": "Enable", "name": "enable"}, {"description": "Disable logging to memory", "help": "Disable logging to memory.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

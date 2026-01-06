@@ -1,5 +1,6 @@
 """FortiOS CMDB - CategoryQuota category"""
 
+from ..category_quota_base import CategoryQuota as CategoryQuotaBase
 from .reset import Reset
 
 __all__ = [
@@ -8,7 +9,7 @@ __all__ = [
 ]
 
 
-class CategoryQuota:
+class CategoryQuota(CategoryQuotaBase):
     """CategoryQuota endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -17,4 +18,5 @@ class CategoryQuota:
         Args:
             client: HTTP client instance for API communication
         """
+        super().__init__(client)  # Initialize base class with GET methods
         self.reset = Reset(client)

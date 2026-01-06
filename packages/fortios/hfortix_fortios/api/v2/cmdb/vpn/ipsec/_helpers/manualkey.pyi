@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_AUTHENTICATION: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"]
-VALID_BODY_ENCRYPTION: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"]
-VALID_BODY_NPU_OFFLOAD: Literal["enable", "disable"]
+VALID_BODY_AUTHENTICATION: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "MD5", "help": "MD5.", "label": "Md5", "name": "md5"}, {"description": "SHA1", "help": "SHA1.", "label": "Sha1", "name": "sha1"}, {"description": "SHA256", "help": "SHA256.", "label": "Sha256", "name": "sha256"}, {"description": "SHA384", "help": "SHA384.", "label": "Sha384", "name": "sha384"}, {"description": "SHA512", "help": "SHA512.", "label": "Sha512", "name": "sha512"}]
+VALID_BODY_ENCRYPTION: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "DES", "help": "DES.", "label": "Des", "name": "des"}, {"description": "3DES", "help": "3DES.", "label": "3Des", "name": "3des"}, {"description": "AES128", "help": "AES128.", "label": "Aes128", "name": "aes128"}, {"description": "AES192", "help": "AES192.", "label": "Aes192", "name": "aes192"}, {"description": "AES256", "help": "AES256.", "label": "Aes256", "name": "aes256"}, {"description": "ARIA128", "help": "ARIA128.", "label": "Aria128", "name": "aria128"}, {"description": "ARIA192", "help": "ARIA192.", "label": "Aria192", "name": "aria192"}, {"description": "ARIA256", "help": "ARIA256.", "label": "Aria256", "name": "aria256"}, {"description": "Seed", "help": "Seed.", "label": "Seed", "name": "seed"}]
+VALID_BODY_NPU_OFFLOAD: Literal[{"description": "Enable NPU offloading", "help": "Enable NPU offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable NPU offloading", "help": "Disable NPU offloading.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ALGORITHM: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"]
+VALID_BODY_ALGORITHM: Literal[{"description": "Use layer 3 address for distribution", "help": "Use layer 3 address for distribution.", "label": "L3", "name": "L3"}, {"description": "Use layer 4 information for distribution", "help": "Use layer 4 information for distribution.", "label": "L4", "name": "L4"}, {"description": "Per-packet round-robin distribution", "help": "Per-packet round-robin distribution.", "label": "Round Robin", "name": "round-robin"}, {"description": "Use first tunnel that is up for all traffic", "help": "Use first tunnel that is up for all traffic.", "label": "Redundant", "name": "redundant"}, {"description": "Weighted round-robin distribution", "help": "Weighted round-robin distribution.", "label": "Weighted Round Robin", "name": "weighted-round-robin"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

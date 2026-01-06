@@ -100,7 +100,7 @@ NESTED_SCHEMAS = {
             "help": "Enable/disable status.",
             "required": True,
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable status.", "label": "Enable", "name": "enable"}, {"help": "Disable status.", "label": "Disable", "name": "disable"}],
         },
         "id": {
             "type": "integer",
@@ -129,14 +129,14 @@ NESTED_SCHEMAS = {
             "help": "Wildcard pattern or regular expression.",
             "required": True,
             "default": "wildcard",
-            "options": ["wildcard", "regexp"],
+            "options": [{"help": "Wildcard pattern.", "label": "Wildcard", "name": "wildcard"}, {"help": "Perl regular expression.", "label": "Regexp", "name": "regexp"}],
         },
         "action": {
             "type": "option",
             "help": "Mark spam or good.",
             "required": True,
             "default": "spam",
-            "options": ["spam", "clear"],
+            "options": [{"help": "Mark as spam email.", "label": "Spam", "name": "spam"}, {"help": "Mark as good email.", "label": "Clear", "name": "clear"}],
         },
     },
 }

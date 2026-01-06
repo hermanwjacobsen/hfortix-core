@@ -12,8 +12,8 @@ class DictionaryPayload(TypedDict, total=False):
     """
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
     name: str  # Name of table containing the dictionary.
-    match_type: Literal["match-all", "match-any"]  # Logical relation between entries (default = match-any).
-    match_around: NotRequired[Literal["enable", "disable"]]  # Enable/disable match-around support.
+    match_type: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}]  # Logical relation between entries (default = match-any).
+    match_around: NotRequired[Literal[{"description": "Enable match-around support", "help": "Enable match-around support.", "label": "Enable", "name": "enable"}, {"description": "Disable match-around support", "help": "Disable match-around support.", "label": "Disable", "name": "disable"}]]  # Enable/disable match-around support.
     comment: NotRequired[str]  # Optional comments.
     entries: list[dict[str, Any]]  # DLP dictionary entries.
 
@@ -45,8 +45,8 @@ class Dictionary:
         payload_dict: DictionaryPayload | None = ...,
         uuid: str | None = ...,
         name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
+        match_type: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}] | None = ...,
+        match_around: Literal[{"description": "Enable match-around support", "help": "Enable match-around support.", "label": "Enable", "name": "enable"}, {"description": "Disable match-around support", "help": "Disable match-around support.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -59,8 +59,8 @@ class Dictionary:
         payload_dict: DictionaryPayload | None = ...,
         uuid: str | None = ...,
         name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
+        match_type: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}] | None = ...,
+        match_around: Literal[{"description": "Enable match-around support", "help": "Enable match-around support.", "label": "Enable", "name": "enable"}, {"description": "Disable match-around support", "help": "Disable match-around support.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

@@ -422,7 +422,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable and increase the priority of the unit that should always be primary (master).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "priority": {
             "type": "integer",
@@ -459,7 +459,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to force the cluster to negotiate after a remote IP monitoring failover.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable force reset of secondary member after PING server failure.", "label": "Enable", "name": "enable"}, {"help": "Disable force reset of secondary member after PING server failure.", "label": "Disable", "name": "disable"}],
         },
         "pingserver-flip-timeout": {
             "type": "integer",
@@ -484,149 +484,149 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MODE = [
-    "standalone",
-    "a-a",
-    "a-p",
+    "standalone",  # Standalone mode.
+    "a-a",  # Active-active mode.
+    "a-p",  # Active-passive mode.
 ]
 VALID_BODY_SYNC_PACKET_BALANCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable HA packet distribution to multiple CPUs.
+    "disable",  # Disable HA packet distribution to multiple CPUs.
 ]
 VALID_BODY_UNICAST_HB = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOAD_BALANCE_ALL = [
-    "enable",
-    "disable",
+    "enable",  # Enable load balance.
+    "disable",  # Disable load balance.
 ]
 VALID_BODY_SYNC_CONFIG = [
-    "enable",
-    "disable",
+    "enable",  # Enable configuration synchronization.
+    "disable",  # Disable configuration synchronization.
 ]
 VALID_BODY_ENCRYPTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable heartbeat message encryption.
+    "disable",  # Disable heartbeat message encryption.
 ]
 VALID_BODY_AUTHENTICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable heartbeat message authentication.
+    "disable",  # Disable heartbeat message authentication.
 ]
 VALID_BODY_HB_INTERVAL_IN_MILLISECONDS = [
-    "100ms",
-    "10ms",
+    "100ms",  # Each heartbeat interval is 100ms.
+    "10ms",  # Each heartbeat interval is 10ms.
 ]
 VALID_BODY_GRATUITOUS_ARPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable gratuitous ARPs.
+    "disable",  # Disable gratuitous ARPs.
 ]
 VALID_BODY_SESSION_PICKUP = [
-    "enable",
-    "disable",
+    "enable",  # Enable session pickup.
+    "disable",  # Disable session pickup.
 ]
 VALID_BODY_SESSION_PICKUP_CONNECTIONLESS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SESSION_PICKUP_EXPECTATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SESSION_PICKUP_NAT = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SESSION_PICKUP_DELAY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LINK_FAILED_SIGNAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_UPGRADE_MODE = [
-    "simultaneous",
-    "uninterruptible",
-    "local-only",
-    "secondary-only",
+    "simultaneous",  # Upgrade all HA members at the same time.
+    "uninterruptible",  # Upgrade HA cluster without blocking network traffic.
+    "local-only",  # Upgrade local member only.
+    "secondary-only",  # Upgrade secondary member only.
 ]
 VALID_BODY_STANDALONE_MGMT_VDOM = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_HA_MGMT_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_STANDALONE_CONFIG_SYNC = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_UNICAST_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SCHEDULE = [
-    "none",
-    "leastconnection",
-    "round-robin",
-    "weight-round-robin",
-    "random",
-    "ip",
-    "ipport",
+    "none",  # None.
+    "leastconnection",  # Least connection.
+    "round-robin",  # Round robin.
+    "weight-round-robin",  # Weight round robin.
+    "random",  # Random.
+    "ip",  # IP.
+    "ipport",  # IP port.
 ]
 VALID_BODY_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PINGSERVER_SECONDARY_FORCE_RESET = [
-    "enable",
-    "disable",
+    "enable",  # Enable force reset of secondary member after PING server failure.
+    "disable",  # Disable force reset of secondary member after PING server failure.
 ]
 VALID_BODY_VCLUSTER_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_HA_DIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.
+    "disable",  # Disable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.
 ]
 VALID_BODY_SSD_FAILOVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_MEMORY_COMPATIBLE_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_MEMORY_BASED_FAILOVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_CHECK_SECONDARY_DEV_HEALTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_IPSEC_PHASE2_PROPOSAL = [
-    "aes128-sha1",
-    "aes128-sha256",
-    "aes128-sha384",
-    "aes128-sha512",
-    "aes192-sha1",
-    "aes192-sha256",
-    "aes192-sha384",
-    "aes192-sha512",
-    "aes256-sha1",
-    "aes256-sha256",
-    "aes256-sha384",
-    "aes256-sha512",
-    "aes128gcm",
-    "aes256gcm",
-    "chacha20poly1305",
+    "aes128-sha1",  # aes128-sha1
+    "aes128-sha256",  # aes128-sha256
+    "aes128-sha384",  # aes128-sha384
+    "aes128-sha512",  # aes128-sha512
+    "aes192-sha1",  # aes192-sha1
+    "aes192-sha256",  # aes192-sha256
+    "aes192-sha384",  # aes192-sha384
+    "aes192-sha512",  # aes192-sha512
+    "aes256-sha1",  # aes256-sha1
+    "aes256-sha256",  # aes256-sha256
+    "aes256-sha384",  # aes256-sha384
+    "aes256-sha512",  # aes256-sha512
+    "aes128gcm",  # aes128gcm
+    "aes256gcm",  # aes256gcm
+    "chacha20poly1305",  # chacha20poly1305
 ]
 VALID_BODY_BOUNCE_INTF_UPON_FAILOVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -753,7 +753,7 @@ def validate_system_ha_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "ipsec-phase2-proposal": True,
-        ...     "mode": "standalone",  # Valid enum value
+        ...     "mode": "{'name': 'standalone', 'help': 'Standalone mode.', 'label': 'Standalone', 'description': 'Standalone mode'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ha_post(payload)
         >>> assert is_valid == True

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/rogue_ap/clear_all",
     "category": "monitor",
     "api_path": "wifi/rogue_ap/clear_all",
-    "help": "Configuration for wifi/rogue_ap/clear_all",
+    "help": "Clear all detected rogue APs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

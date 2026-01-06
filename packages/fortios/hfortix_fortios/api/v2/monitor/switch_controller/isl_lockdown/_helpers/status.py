@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/isl_lockdown/status",
     "category": "monitor",
     "api_path": "switch-controller/isl-lockdown/status",
-    "help": "Configuration for switch-controller/isl-lockdown/status",
+    "help": "Get current status of ISL lockdown.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

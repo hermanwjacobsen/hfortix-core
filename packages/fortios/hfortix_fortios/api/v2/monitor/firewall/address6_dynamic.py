@@ -56,7 +56,7 @@ class Address6Dynamic:
         """
         Retrieve firewall/address6_dynamic configuration.
 
-        Configuration for firewall/address6-dynamic
+        List of IPv6 Fabric Connector address objects and the IPs they resolve to.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

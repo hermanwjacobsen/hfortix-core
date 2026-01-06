@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/health",
     "category": "monitor",
     "api_path": "firewall/health",
-    "help": "Monitor endpoint for firewall/health",
+    "help": "List configured load balance server health monitors.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

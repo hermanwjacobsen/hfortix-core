@@ -119,7 +119,7 @@ class Setting:
         fapc_compatibility: str | None = None,
         wfa_compatibility: str | None = None,
         phishing_ssid_detect: str | None = None,
-        fake_ssid_action: str | None = None,
+        fake_ssid_action: str | list | None = None,
         offending_ssid: str | list | None = None,
         device_weight: int | None = None,
         device_holdoff: int | None = None,

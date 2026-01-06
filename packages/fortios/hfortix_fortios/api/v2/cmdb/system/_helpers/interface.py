@@ -97,6 +97,8 @@ FIELDS_WITH_DEFAULTS = {
     "pppoe-egress-cos": "cos0",
     "pppoe-unnumbered-negotiate": "enable",
     "idle-timeout": 0,
+    "multilink": "disable",
+    "mrru": 1500,
     "detected-peer-mtu": 0,
     "disc-retry-timeout": 1,
     "padt-retry-timeout": 1,
@@ -321,6 +323,8 @@ FIELD_TYPES = {
     "pppoe-unnumbered-negotiate": "option",  # Enable/disable PPPoE unnumbered negotiation.
     "password": "password",  # PPPoE account's password.
     "idle-timeout": "integer",  # PPPoE auto disconnect after idle timeout seconds, 0 means no
+    "multilink": "option",  # Enable/disable PPP multilink support.
+    "mrru": "integer",  # PPP MRRU (296 - 65535, default = 1500).
     "detected-peer-mtu": "integer",  # MTU of detected peer (0 - 4294967295).
     "disc-retry-timeout": "integer",  # Time in seconds to wait before retrying to start a PPPoE dis
     "padt-retry-timeout": "integer",  # PPPoE Active Discovery Terminate (PADT) used to terminate se
@@ -447,6 +451,7 @@ FIELD_TYPES = {
     "monitor-bandwidth": "option",  # Enable monitoring bandwidth on this interface.
     "vrrp-virtual-mac": "option",  # Enable/disable use of virtual MAC for VRRP.
     "vrrp": "string",  # VRRP configuration.
+    "phy-setting": "string",  # PHY settings
     "role": "option",  # Interface role.
     "snmp-index": "integer",  # Permanent SNMP Index of the interface.
     "secondary-IP": "option",  # Enable/disable adding a secondary IP to this interface.
@@ -544,6 +549,8 @@ FIELD_DESCRIPTIONS = {
     "pppoe-unnumbered-negotiate": "Enable/disable PPPoE unnumbered negotiation.",
     "password": "PPPoE account's password.",
     "idle-timeout": "PPPoE auto disconnect after idle timeout seconds, 0 means no timeout.",
+    "multilink": "Enable/disable PPP multilink support.",
+    "mrru": "PPP MRRU (296 - 65535, default = 1500).",
     "detected-peer-mtu": "MTU of detected peer (0 - 4294967295).",
     "disc-retry-timeout": "Time in seconds to wait before retrying to start a PPPoE discovery, 0 means no timeout.",
     "padt-retry-timeout": "PPPoE Active Discovery Terminate (PADT) used to terminate sessions after an idle time.",
@@ -670,6 +677,7 @@ FIELD_DESCRIPTIONS = {
     "monitor-bandwidth": "Enable monitoring bandwidth on this interface.",
     "vrrp-virtual-mac": "Enable/disable use of virtual MAC for VRRP.",
     "vrrp": "VRRP configuration.",
+    "phy-setting": "PHY settings",
     "role": "Interface role.",
     "snmp-index": "Permanent SNMP Index of the interface.",
     "secondary-IP": "Enable/disable adding a secondary IP to this interface.",
@@ -736,6 +744,7 @@ FIELD_CONSTRAINTS = {
     "dhcp-renew-time": {"type": "integer", "min": 300, "max": 604800},
     "username": {"type": "string", "max_length": 64},
     "idle-timeout": {"type": "integer", "min": 0, "max": 32767},
+    "mrru": {"type": "integer", "min": 296, "max": 65535},
     "detected-peer-mtu": {"type": "integer", "min": 0, "max": 4294967295},
     "disc-retry-timeout": {"type": "integer", "min": 0, "max": 4294967295},
     "padt-retry-timeout": {"type": "integer", "min": 0, "max": 4294967295},
@@ -826,7 +835,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "DHCP client option type.",
             "default": "hex",
-            "options": ["hex", "string", "ip", "fqdn"],
+            "options": [{"help": "DHCP option in hex.", "label": "Hex", "name": "hex"}, {"help": "DHCP option in string.", "label": "String", "name": "string"}, {"help": "DHCP option in IP.", "label": "Ip", "name": "ip"}, {"help": "DHCP option in domain search option format.", "label": "Fqdn", "name": "fqdn"}],
         },
         "value": {
             "type": "string",
@@ -879,7 +888,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "VRRP version.",
             "default": "2",
-            "options": ["2", "3"],
+            "options": [{"help": "VRRP version 2.", "label": "2", "name": "2"}, {"help": "VRRP version 3.", "label": "3", "name": "3"}],
         },
         "vrgrp": {
             "type": "integer",
@@ -919,13 +928,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable preempt mode.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable preempt mode.", "label": "Enable", "name": "enable"}, {"help": "Disable preempt mode.", "label": "Disable", "name": "disable"}],
         },
         "accept-mode": {
             "type": "option",
             "help": "Enable/disable accept mode.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable accept mode.", "label": "Enable", "name": "enable"}, {"help": "Disable accept mode.", "label": "Disable", "name": "disable"}],
         },
         "vrdst": {
             "type": "ipv4-address-any",
@@ -943,17 +952,27 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable ignoring of default route when checking destination.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Ignore default route when checking destination.", "label": "Enable", "name": "enable"}, {"help": "Do not ignore default route when checking destination.", "label": "Disable", "name": "disable"}],
         },
         "status": {
             "type": "option",
             "help": "Enable/disable this VRRP configuration.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable this VRRP configuration.", "label": "Enable", "name": "enable"}, {"help": "Disable this VRRP configuration.", "label": "Disable", "name": "disable"}],
         },
         "proxy-arp": {
             "type": "string",
             "help": "VRRP Proxy ARP configuration.",
+        },
+    },
+    "phy-setting": {
+        "signal-ok-threshold": {
+            "type": "integer",
+            "help": "Configure the signal strength value at which the FortiGate unit detects that the receiving signal is idle or that data is not being received. Zero means idle detection is disabled. Higher values mean the signal strength must be higher in order for the FortiGate unit to consider the interface is not idle (0 - 12, default = 0).",
+            "required": True,
+            "default": 0,
+            "min_value": 0,
+            "max_value": 12,
         },
     },
     "secondaryip": {
@@ -978,13 +997,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Management access settings for the secondary IP address.",
             "default": "",
-            "options": ["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"],
+            "options": [{"help": "PING access.", "label": "Ping", "name": "ping"}, {"help": "HTTPS access.", "label": "Https", "name": "https"}, {"help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"help": "HTTP access.", "label": "Http", "name": "http"}, {"help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"help": "FortiManager access.", "label": "Fgfm", "name": "fgfm"}, {"help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}, {"help": "Probe access.", "label": "Probe Response", "name": "probe-response"}, {"help": "Security Fabric access.", "label": "Fabric", "name": "fabric"}, {"help": "FTM access.", "label": "Ftm", "name": "ftm"}, {"help": "Speed test access.", "label": "Speed Test", "name": "speed-test"}, {"help": "System for Cross-domain Identity Management (SCIM) access.", "label": "Scim", "name": "scim"}],
         },
         "gwdetect": {
             "type": "option",
             "help": "Enable/disable detect gateway alive for first.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable detect gateway alive for first.", "label": "Enable", "name": "enable"}, {"help": "Disable detect gateway alive for first.", "label": "Disable", "name": "disable"}],
         },
         "ping-serv-status": {
             "type": "integer",
@@ -1002,7 +1021,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Protocols used to detect the server.",
             "default": "ping",
-            "options": ["ping", "tcp-echo", "udp-echo"],
+            "options": [{"help": "PING.", "label": "Ping", "name": "ping"}, {"help": "TCP echo.", "label": "Tcp Echo", "name": "tcp-echo"}, {"help": "UDP echo.", "label": "Udp Echo", "name": "udp-echo"}],
         },
         "ha-priority": {
             "type": "integer",
@@ -1048,7 +1067,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Addressing mode (static, DHCP, delegated).",
             "default": "static",
-            "options": ["static", "dhcp", "pppoe", "delegated"],
+            "options": [{"help": "Static setting.", "label": "Static", "name": "static"}, {"help": "DHCPv6 client mode.", "label": "Dhcp", "name": "dhcp"}, {"help": "IPv6 over PPPoE mode.", "label": "Pppoe", "name": "pppoe"}, {"help": "IPv6 address with delegated prefix.", "label": "Delegated", "name": "delegated"}],
         },
         "client-options": {
             "type": "string",
@@ -1058,7 +1077,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Neighbor discovery mode.",
             "default": "basic",
-            "options": ["basic", "SEND-compatible"],
+            "options": [{"help": "Do not support SEND.", "label": "Basic", "name": "basic"}, {"help": "Support SEND.", "label": "Send Compatible", "name": "SEND-compatible"}],
         },
         "nd-cert": {
             "type": "string",
@@ -1097,7 +1116,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable using the DNS server acquired by DHCP.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable using the DNS server acquired by DHCP.", "label": "Enable", "name": "enable"}, {"help": "Disable using the DNS server acquired by DHCP.", "label": "Disable", "name": "disable"}],
         },
         "ip6-address": {
             "type": "ipv6-prefix",
@@ -1112,31 +1131,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Allow management access to the interface.",
             "default": "",
-            "options": ["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "fabric", "scim"],
+            "options": [{"help": "PING access.", "label": "Ping", "name": "ping"}, {"help": "HTTPS access.", "label": "Https", "name": "https"}, {"help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"help": "HTTP access.", "label": "Http", "name": "http"}, {"help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"help": "FortiManager access.", "label": "Fgfm", "name": "fgfm"}, {"help": "Security Fabric access.", "label": "Fabric", "name": "fabric"}, {"help": "System for Cross-domain Identity Management (SCIM) access.", "label": "Scim", "name": "scim"}, {"help": "Probe access.", "label": "Probe Response", "name": "probe-response"}],
         },
         "ip6-send-adv": {
             "type": "option",
             "help": "Enable/disable sending advertisements about the interface.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable sending advertisements about this interface.", "label": "Enable", "name": "enable"}, {"help": "Disable sending advertisements about this interface.", "label": "Disable", "name": "disable"}],
         },
         "icmp6-send-redirect": {
             "type": "option",
             "help": "Enable/disable sending of ICMPv6 redirects.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable sending of ICMPv6 redirects.", "label": "Enable", "name": "enable"}, {"help": "Disable sending of ICMPv6 redirects.", "label": "Disable", "name": "disable"}],
         },
         "ip6-manage-flag": {
             "type": "option",
             "help": "Enable/disable the managed flag.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the managed IPv6 flag.", "label": "Enable", "name": "enable"}, {"help": "Disable the managed IPv6 flag.", "label": "Disable", "name": "disable"}],
         },
         "ip6-other-flag": {
             "type": "option",
             "help": "Enable/disable the other IPv6 flag.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable the other IPv6 flag.", "label": "Enable", "name": "enable"}, {"help": "Disable the other IPv6 flag.", "label": "Disable", "name": "disable"}],
         },
         "ip6-max-interval": {
             "type": "integer",
@@ -1163,7 +1182,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable sending link MTU in RA packet.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable sending link MTU in RA packet.", "label": "Enable", "name": "enable"}, {"help": "Disable sending link MTU in RA packet.", "label": "Disable", "name": "disable"}],
         },
         "ip6-reachable-time": {
             "type": "integer",
@@ -1197,13 +1216,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable sending advertisements with route information option.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable sending advertisements with route information option.", "label": "Enable", "name": "enable"}, {"help": "Disable sending advertisements with route information option.", "label": "Disable", "name": "disable"}],
         },
         "ip6-route-pref": {
             "type": "option",
             "help": "Set route preference to the interface (default = medium).",
             "default": "medium",
-            "options": ["medium", "high", "low"],
+            "options": [{"help": "Medium route preferences in RA packet.", "label": "Medium", "name": "medium"}, {"help": "High route preferences in RA packet.", "label": "High", "name": "high"}, {"help": "Low route preferences in RA packet.", "label": "Low", "name": "low"}],
         },
         "ip6-route-list": {
             "type": "string",
@@ -1213,13 +1232,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable address auto config.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable auto-configuration.", "label": "Enable", "name": "enable"}, {"help": "Disable auto-configuration.", "label": "Disable", "name": "disable"}],
         },
         "unique-autoconf-addr": {
             "type": "option",
             "help": "Enable/disable unique auto config address.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable unique auto-configuration address.", "label": "Enable", "name": "enable"}, {"help": "Disable unique auto-configuration address.", "label": "Disable", "name": "disable"}],
         },
         "interface-identifier": {
             "type": "ipv6-address",
@@ -1230,7 +1249,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Assigning a prefix from DHCP or RA.",
             "default": "dhcp6",
-            "options": ["dhcp6", "ra"],
+            "options": [{"help": "Use delegated prefix from a DHCPv6 client to form a delegated IPv6 address.", "label": "Dhcp6", "name": "dhcp6"}, {"help": "Use prefix from RA to form a delegated IPv6 address.", "label": "Ra", "name": "ra"}],
         },
         "ip6-delegated-prefix-iaid": {
             "type": "integer",
@@ -1272,19 +1291,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable DHCPv6 relay.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable DHCPv6 relay", "label": "Disable", "name": "disable"}, {"help": "Enable DHCPv6 relay.", "label": "Enable", "name": "enable"}],
         },
         "dhcp6-relay-type": {
             "type": "option",
             "help": "DHCPv6 relay type.",
             "default": "regular",
-            "options": ["regular"],
+            "options": [{"help": "Regular DHCP relay.", "label": "Regular", "name": "regular"}],
         },
         "dhcp6-relay-source-interface": {
             "type": "option",
             "help": "Enable/disable use of address on this interface as the source address of the relay message.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Use address of the egress interface as source address of the relay message.", "label": "Disable", "name": "disable"}, {"help": "Use address of this interface as source address of the relay message.", "label": "Enable", "name": "enable"}],
         },
         "dhcp6-relay-ip": {
             "type": "user",
@@ -1306,19 +1325,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "DHCPv6 client options.",
             "default": "",
-            "options": ["rapid", "iapd", "iana"],
+            "options": [{"help": "Send rapid commit option.", "label": "Rapid", "name": "rapid"}, {"help": "Send including IA-PD option.", "label": "Iapd", "name": "iapd"}, {"help": "Send including IA-NA option.", "label": "Iana", "name": "iana"}],
         },
         "dhcp6-prefix-delegation": {
             "type": "option",
             "help": "Enable/disable DHCPv6 prefix delegation.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable DHCPv6 prefix delegation.", "label": "Enable", "name": "enable"}, {"help": "Disable DHCPv6 prefix delegation.", "label": "Disable", "name": "disable"}],
         },
         "dhcp6-information-request": {
             "type": "option",
             "help": "Enable/disable DHCPv6 information request.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable DHCPv6 information request.", "label": "Enable", "name": "enable"}, {"help": "Disable DHCPv6 information request.", "label": "Disable", "name": "disable"}],
         },
         "dhcp6-iapd-list": {
             "type": "string",
@@ -1335,7 +1354,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable virtual MAC for VRRP.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable virtual MAC for VRRP.", "label": "Enable", "name": "enable"}, {"help": "Disable virtual MAC for VRRP.", "label": "Disable", "name": "disable"}],
         },
         "vrip6_link_local": {
             "type": "ipv6-address",
@@ -1358,511 +1377,515 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FORTILINK = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiLink to dedicated interface for managing FortiSwitch devices.
+    "disable",  # Disable FortiLink to dedicated interface for managing FortiSwitch devices.
 ]
 VALID_BODY_SWITCH_CONTROLLER_SOURCE_IP = [
-    "outbound",
-    "fixed",
+    "outbound",  # Source IP address is that of the outbound interface.
+    "fixed",  # Source IP address is that of the FortiLink interface.
 ]
 VALID_BODY_MODE = [
-    "static",
-    "dhcp",
-    "pppoe",
+    "static",  # Static setting.
+    "dhcp",  # External DHCP client mode.
+    "pppoe",  # External PPPoE mode.
 ]
 VALID_BODY_DHCP_RELAY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_DHCP_BROADCAST_FLAG = [
-    "disable",
-    "enable",
+    "disable",  # Disable broadcast flag.
+    "enable",  # Enable broadcast flag.
 ]
 VALID_BODY_DHCP_RELAY_SERVICE = [
-    "disable",
-    "enable",
+    "disable",  # None.
+    "enable",  # DHCP relay agent.
 ]
 VALID_BODY_DHCP_RELAY_REQUEST_ALL_SERVER = [
-    "disable",
-    "enable",
+    "disable",  # Send DHCP requests only to a matching server.
+    "enable",  # Send DHCP requests to all servers.
 ]
 VALID_BODY_DHCP_RELAY_ALLOW_NO_END_OPTION = [
-    "disable",
-    "enable",
+    "disable",  # Disable relaying DHCP messages with no end option.
+    "enable",  # Enable relaying DHCP messages with no end option.
 ]
 VALID_BODY_DHCP_RELAY_TYPE = [
-    "regular",
-    "ipsec",
+    "regular",  # Regular DHCP relay.
+    "ipsec",  # DHCP relay for IPsec.
 ]
 VALID_BODY_DHCP_SMART_RELAY = [
-    "disable",
-    "enable",
+    "disable",  # Disable DHCP smart relay.
+    "enable",  # Enable DHCP smart relay.
 ]
 VALID_BODY_DHCP_RELAY_AGENT_OPTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable DHCP relay agent option.
+    "disable",  # Disable DHCP relay agent option.
 ]
 VALID_BODY_DHCP_CLASSLESS_ROUTE_ADDITION = [
-    "enable",
-    "disable",
+    "enable",  # Enable addition of classless static routes retrieved from DHCP server.
+    "disable",  # Disable addition of classless static routes retrieved from DHCP server.
 ]
 VALID_BODY_ALLOWACCESS = [
-    "ping",
-    "https",
-    "ssh",
-    "snmp",
-    "http",
-    "telnet",
-    "fgfm",
-    "radius-acct",
-    "probe-response",
-    "fabric",
-    "ftm",
-    "speed-test",
-    "scim",
+    "ping",  # PING access.
+    "https",  # HTTPS access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
+    "http",  # HTTP access.
+    "telnet",  # TELNET access.
+    "fgfm",  # FortiManager access.
+    "radius-acct",  # RADIUS accounting access.
+    "probe-response",  # Probe access.
+    "fabric",  # Security Fabric access.
+    "ftm",  # FTM access.
+    "speed-test",  # Speed test access.
+    "scim",  # System for Cross-domain Identity Management (SCIM) access.
 ]
 VALID_BODY_GWDETECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable detect gateway alive for first.
+    "disable",  # Disable detect gateway alive for first.
 ]
 VALID_BODY_DETECTPROTOCOL = [
-    "ping",
-    "tcp-echo",
-    "udp-echo",
+    "ping",  # PING.
+    "tcp-echo",  # TCP echo.
+    "udp-echo",  # UDP echo.
 ]
 VALID_BODY_FAIL_DETECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable interface failed option status.
+    "disable",  # Disable interface failed option status.
 ]
 VALID_BODY_FAIL_DETECT_OPTION = [
-    "detectserver",
-    "link-down",
+    "detectserver",  # Use a ping server to determine if the interface has failed.
+    "link-down",  # Use port detection to determine if the interface has failed.
 ]
 VALID_BODY_FAIL_ALERT_METHOD = [
-    "link-failed-signal",
-    "link-down",
+    "link-failed-signal",  # Link-failed-signal.
+    "link-down",  # Link-down.
 ]
 VALID_BODY_FAIL_ACTION_ON_EXTENDER = [
-    "soft-restart",
-    "hard-restart",
-    "reboot",
+    "soft-restart",  # Soft-restart-on-extender.
+    "hard-restart",  # Hard-restart-on-extender.
+    "reboot",  # Reboot-on-extender.
 ]
 VALID_BODY_PPPOE_EGRESS_COS = [
-    "cos0",
-    "cos1",
-    "cos2",
-    "cos3",
-    "cos4",
-    "cos5",
-    "cos6",
-    "cos7",
+    "cos0",  # CoS 0.
+    "cos1",  # CoS 1.
+    "cos2",  # CoS 2.
+    "cos3",  # CoS 3.
+    "cos4",  # CoS 4.
+    "cos5",  # CoS 5.
+    "cos6",  # CoS 6.
+    "cos7",  # CoS 7.
 ]
 VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP address negotiating for unnumbered.
+    "disable",  # Disable IP address negotiating for unnumbered.
+]
+VALID_BODY_MULTILINK = [
+    "enable",  # Enable PPP multilink support.
+    "disable",  # Disable PPP multilink support.
 ]
 VALID_BODY_DEFAULTGW = [
-    "enable",
-    "disable",
+    "enable",  # Enable default gateway.
+    "disable",  # Disable default gateway.
 ]
 VALID_BODY_DNS_SERVER_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Use DNS acquired by DHCP or PPPoE.
+    "disable",  # No not use DNS acquired by DHCP or PPPoE.
 ]
 VALID_BODY_DNS_SERVER_PROTOCOL = [
-    "cleartext",
-    "dot",
-    "doh",
+    "cleartext",  # DNS over UDP/53, DNS over TCP/53.
+    "dot",  # DNS over TLS/853.
+    "doh",  # DNS over HTTPS/443.
 ]
 VALID_BODY_AUTH_TYPE = [
-    "auto",
-    "pap",
-    "chap",
-    "mschapv1",
-    "mschapv2",
+    "auto",  # Automatically choose authentication.
+    "pap",  # PAP authentication.
+    "chap",  # CHAP authentication.
+    "mschapv1",  # MS-CHAPv1 authentication.
+    "mschapv2",  # MS-CHAPv2 authentication.
 ]
 VALID_BODY_PPTP_CLIENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable PPTP client.
+    "disable",  # Disable PPTP client.
 ]
 VALID_BODY_PPTP_AUTH_TYPE = [
-    "auto",
-    "pap",
-    "chap",
-    "mschapv1",
-    "mschapv2",
+    "auto",  # Automatically choose authentication.
+    "pap",  # PAP authentication.
+    "chap",  # CHAP authentication.
+    "mschapv1",  # MS-CHAPv1 authentication.
+    "mschapv2",  # MS-CHAPv2 authentication.
 ]
 VALID_BODY_ARPFORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable ARP forwarding.
+    "disable",  # Disable ARP forwarding.
 ]
 VALID_BODY_NDISCFORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable NDISC forwarding.
+    "disable",  # Disable NDISC forwarding.
 ]
 VALID_BODY_BROADCAST_FORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable broadcast forwarding.
+    "disable",  # Disable broadcast forwarding.
 ]
 VALID_BODY_BFD = [
-    "global",
-    "enable",
-    "disable",
+    "global",  # BFD behavior of this interface will be based on global configuration.
+    "enable",  # Enable BFD on this interface and ignore global configuration.
+    "disable",  # Disable BFD on this interface and ignore global configuration.
 ]
 VALID_BODY_L2FORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable L2 forwarding.
+    "disable",  # Disable L2 forwarding.
 ]
 VALID_BODY_ICMP_SEND_REDIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable sending of ICMP redirects.
+    "disable",  # Disable sending of ICMP redirects.
 ]
 VALID_BODY_ICMP_ACCEPT_REDIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable ICMP accept redirect.
+    "disable",  # Disable ICMP accept redirect.
 ]
 VALID_BODY_VLANFORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable traffic forwarding.
+    "disable",  # Disable traffic forwarding.
 ]
 VALID_BODY_STPFORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable STP forwarding.
+    "disable",  # Disable STP forwarding.
 ]
 VALID_BODY_STPFORWARD_MODE = [
-    "rpl-all-ext-id",
-    "rpl-bridge-ext-id",
-    "rpl-nothing",
+    "rpl-all-ext-id",  # Replace all extension IDs (root, bridge).
+    "rpl-bridge-ext-id",  # Replace the bridge extension ID only.
+    "rpl-nothing",  # Replace nothing.
 ]
 VALID_BODY_IPS_SNIFFER_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPS sniffer mode.
+    "disable",  # Disable IPS sniffer mode.
 ]
 VALID_BODY_IDENT_ACCEPT = [
-    "enable",
-    "disable",
+    "enable",  # Enable determining a user's identity from packet identification.
+    "disable",  # Disable determining a user's identity from packet identification.
 ]
 VALID_BODY_IPMAC = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP/MAC binding.
+    "disable",  # Disable IP/MAC binding.
 ]
 VALID_BODY_SUBST = [
-    "enable",
-    "disable",
+    "enable",  # Send packets from this interface.
+    "disable",  # Do not send packets from this interface.
 ]
 VALID_BODY_SPEED = [
-    "auto",
-    "10full",
-    "10half",
-    "100full",
-    "100half",
-    "100auto",
-    "1000full",
-    "1000auto",
+    "auto",  # Automatically adjust speed.
+    "10full",  # 10M full-duplex.
+    "10half",  # 10M half-duplex.
+    "100full",  # 100M full-duplex.
+    "100half",  # 100M half-duplex.
+    "100auto",  # 100M auto-negotiation.
+    "1000full",  # 1000M full-duplex.
+    "1000auto",  # 1000M auto adjust.
 ]
 VALID_BODY_STATUS = [
-    "up",
-    "down",
+    "up",  # Bring the interface up.
+    "down",  # Shut the interface down.
 ]
 VALID_BODY_NETBIOS_FORWARD = [
-    "disable",
-    "enable",
+    "disable",  # Disable NETBIOS forwarding.
+    "enable",  # Enable NETBIOS forwarding.
 ]
 VALID_BODY_TYPE = [
-    "physical",
-    "vlan",
-    "aggregate",
-    "redundant",
-    "tunnel",
-    "vdom-link",
-    "loopback",
-    "switch",
-    "vap-switch",
-    "wl-mesh",
-    "fext-wan",
-    "vxlan",
-    "geneve",
-    "switch-vlan",
-    "emac-vlan",
-    "lan-extension",
+    "physical",  # Physical interface.
+    "vlan",  # VLAN interface.
+    "aggregate",  # Aggregate interface.
+    "redundant",  # Redundant interface.
+    "tunnel",  # Tunnel interface.
+    "vdom-link",  # VDOM link interface.
+    "loopback",  # Loopback interface.
+    "switch",  # Software switch interface.
+    "vap-switch",  # VAP interface.
+    "wl-mesh",  # WLAN mesh interface.
+    "fext-wan",  # FortiExtender interface.
+    "vxlan",  # VXLAN interface.
+    "geneve",  # GENEVE interface.
+    "switch-vlan",  # Switch VLAN interface.
+    "emac-vlan",  # EMAC VLAN interface.
+    "lan-extension",  # LAN extension interface.
 ]
 VALID_BODY_DEDICATED_TO = [
-    "none",
-    "management",
+    "none",  # Interface not dedicated for any purpose.
+    "management",  # Dedicate this interface for management purposes only.
 ]
 VALID_BODY_WCCP = [
-    "enable",
-    "disable",
+    "enable",  # Enable WCCP protocol on this interface.
+    "disable",  # Disable WCCP protocol on this interface.
 ]
 VALID_BODY_NETFLOW_SAMPLER = [
-    "disable",
-    "tx",
-    "rx",
-    "both",
+    "disable",  # Disable NetFlow protocol on this interface.
+    "tx",  # Monitor transmitted traffic on this interface.
+    "rx",  # Monitor received traffic on this interface.
+    "both",  # Monitor transmitted/received traffic on this interface.
 ]
 VALID_BODY_SFLOW_SAMPLER = [
-    "enable",
-    "disable",
+    "enable",  # Enable sFlow protocol on this interface.
+    "disable",  # Disable sFlow protocol on this interface.
 ]
 VALID_BODY_DROP_FRAGMENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable/disable drop fragment packets.
+    "disable",  # Do not drop fragment packets.
 ]
 VALID_BODY_SRC_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable source IP check.
+    "disable",  # Disable source IP check.
 ]
 VALID_BODY_SAMPLE_DIRECTION = [
-    "tx",
-    "rx",
-    "both",
+    "tx",  # Monitor transmitted traffic on this interface.
+    "rx",  # Monitor received traffic on this interface.
+    "both",  # Monitor transmitted/received traffic on this interface.
 ]
 VALID_BODY_EXPLICIT_WEB_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable explicit Web proxy on this interface.
+    "disable",  # Disable explicit Web proxy on this interface.
 ]
 VALID_BODY_EXPLICIT_FTP_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable explicit FTP proxy on this interface.
+    "disable",  # Disable explicit FTP proxy on this interface.
 ]
 VALID_BODY_PROXY_CAPTIVE_PORTAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable proxy captive portal on this interface.
+    "disable",  # Disable proxy captive portal on this interface.
 ]
 VALID_BODY_EXTERNAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable identifying the interface as an external interface.
+    "disable",  # Disable identifying the interface as an external interface.
 ]
 VALID_BODY_MTU_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Override default MTU.
+    "disable",  # Use default MTU.
 ]
 VALID_BODY_VLAN_PROTOCOL = [
-    "8021q",
-    "8021ad",
+    "8021q",  # IEEE 802.1Q.
+    "8021ad",  # IEEE 802.1AD.
 ]
 VALID_BODY_LACP_MODE = [
-    "static",
-    "passive",
-    "active",
+    "static",  # Use static aggregation, do not send and ignore any LACP messages.
+    "passive",  # Passively use LACP to negotiate 802.3ad aggregation.
+    "active",  # Actively use LACP to negotiate 802.3ad aggregation.
 ]
 VALID_BODY_LACP_HA_SECONDARY = [
-    "enable",
-    "disable",
+    "enable",  # Allow HA secondary member to send/receive LACP messages.
+    "disable",  # Block HA secondary member from sending/receiving LACP messages.
 ]
 VALID_BODY_SYSTEM_ID_TYPE = [
-    "auto",
-    "user",
+    "auto",  # Use the MAC address of the first member.
+    "user",  # User-defined system ID.
 ]
 VALID_BODY_LACP_SPEED = [
-    "slow",
-    "fast",
+    "slow",  # Send LACP message every 30 seconds.
+    "fast",  # Send LACP message every second.
 ]
 VALID_BODY_MIN_LINKS_DOWN = [
-    "operational",
-    "administrative",
+    "operational",  # Set the aggregate operationally down.
+    "administrative",  # Set the aggregate administratively down.
 ]
 VALID_BODY_ALGORITHM = [
-    "L2",
-    "L3",
-    "L4",
-    "NPU-GRE",
-    "Source-MAC",
+    "L2",  # Use layer 2 address for distribution.
+    "L3",  # Use layer 3 address for distribution.
+    "L4",  # Use layer 4 information for distribution.
+    "NPU-GRE",  # Use L4 and GRE inner header information for distribution.
+    "Source-MAC",  # Use source MAC address for distribution.
 ]
 VALID_BODY_AGGREGATE_TYPE = [
-    "physical",
-    "vxlan",
+    "physical",  # Physical interface aggregation.
+    "vxlan",  # VXLAN interface aggregation.
 ]
 VALID_BODY_PRIORITY_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable fail back to higher priority port once recovered.
+    "disable",  # Disable fail back to higher priority port once recovered.
 ]
 VALID_BODY_SECURITY_MODE = [
-    "none",
-    "captive-portal",
-    "802.1X",
+    "none",  # No security option.
+    "captive-portal",  # Captive portal authentication.
+    "802.1X",  # 802.1X port-based authentication.
 ]
 VALID_BODY_SECURITY_MAC_AUTH_BYPASS = [
-    "mac-auth-only",
-    "enable",
-    "disable",
+    "mac-auth-only",  # Enable MAC authentication bypass without EAP.
+    "enable",  # Enable MAC authentication bypass.
+    "disable",  # Disable MAC authentication bypass.
 ]
 VALID_BODY_SECURITY_IP_AUTH_BYPASS = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP authentication bypass.
+    "disable",  # Disable IP authentication bypass.
 ]
 VALID_BODY_DEVICE_IDENTIFICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable passive gathering of identity information about hosts.
+    "disable",  # Disable passive gathering of identity information about hosts.
 ]
 VALID_BODY_EXCLUDE_SIGNATURES = [
-    "iot",
-    "ot",
+    "iot",  # Exclude IOT appctrl signatures.
+    "ot",  # Exclude OT appctrl signatures.
 ]
 VALID_BODY_DEVICE_USER_IDENTIFICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable passive gathering of user identity information about users.
+    "disable",  # Disable passive gathering of user identity information about users.
 ]
 VALID_BODY_LLDP_RECEPTION = [
-    "enable",
-    "disable",
-    "vdom",
+    "enable",  # Enable reception of Link Layer Discovery Protocol (LLDP).
+    "disable",  # Disable reception of Link Layer Discovery Protocol (LLDP).
+    "vdom",  # Use VDOM Link Layer Discovery Protocol (LLDP) reception configuration setting.
 ]
 VALID_BODY_LLDP_TRANSMISSION = [
-    "enable",
-    "disable",
-    "vdom",
+    "enable",  # Enable transmission of Link Layer Discovery Protocol (LLDP).
+    "disable",  # Disable transmission of Link Layer Discovery Protocol (LLDP).
+    "vdom",  # Use VDOM Link Layer Discovery Protocol (LLDP) transmission configuration setting.
 ]
 VALID_BODY_MONITOR_BANDWIDTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable monitoring bandwidth on this interface.
+    "disable",  # Disable monitoring bandwidth on this interface.
 ]
 VALID_BODY_VRRP_VIRTUAL_MAC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of virtual MAC for VRRP.
+    "disable",  # Disable use of virtual MAC for VRRP.
 ]
 VALID_BODY_ROLE = [
-    "lan",
-    "wan",
-    "dmz",
-    "undefined",
+    "lan",  # Connected to local network of endpoints.
+    "wan",  # Connected to Internet.
+    "dmz",  # Connected to server zone.
+    "undefined",  # Interface has no specific role.
 ]
 VALID_BODY_SECONDARY_IP = [
-    "enable",
-    "disable",
+    "enable",  # Enable secondary IP.
+    "disable",  # Disable secondary IP.
 ]
 VALID_BODY_PRESERVE_SESSION_ROUTE = [
-    "enable",
-    "disable",
+    "enable",  # Enable preservation of session route when dirty.
+    "disable",  # Disable preservation of session route when dirty.
 ]
 VALID_BODY_AUTO_AUTH_EXTENSION_DEVICE = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic authorization of dedicated Fortinet extension device on this interface.
+    "disable",  # Disable automatic authorization of dedicated Fortinet extension device on this interface.
 ]
 VALID_BODY_AP_DISCOVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic registration of unknown FortiAP devices.
+    "disable",  # Disable automatic registration of unknown FortiAP devices.
 ]
 VALID_BODY_FORTILINK_NEIGHBOR_DETECT = [
-    "lldp",
-    "fortilink",
+    "lldp",  # Detect FortiLink neighbors using LLDP protocol.
+    "fortilink",  # Detect FortiLink neighbors using FortiLink protocol.
 ]
 VALID_BODY_IP_MANAGED_BY_FORTIIPAM = [
-    "inherit-global",
-    "enable",
-    "disable",
+    "inherit-global",  # Control automatic IP address assignment status using the central FortiIPAM config.
+    "enable",  # Enable automatic IP address assignment of this interface by FortiIPAM.
+    "disable",  # Disable automatic IP address assignment of this interface by FortiIPAM.
 ]
 VALID_BODY_MANAGED_SUBNETWORK_SIZE = [
-    "4",
-    "8",
-    "16",
-    "32",
-    "64",
-    "128",
-    "256",
-    "512",
-    "1024",
-    "2048",
-    "4096",
-    "8192",
-    "16384",
-    "32768",
-    "65536",
-    "131072",
-    "262144",
-    "524288",
-    "1048576",
-    "2097152",
-    "4194304",
-    "8388608",
-    "16777216",
+    "4",  # Allocate a subnet with 4 IP addresses.
+    "8",  # Allocate a subnet with 8 IP addresses.
+    "16",  # Allocate a subnet with 16 IP addresses.
+    "32",  # Allocate a subnet with 32 IP addresses.
+    "64",  # Allocate a subnet with 64 IP addresses.
+    "128",  # Allocate a subnet with 128 IP addresses.
+    "256",  # Allocate a subnet with 256 IP addresses.
+    "512",  # Allocate a subnet with 512 IP addresses.
+    "1024",  # Allocate a subnet with 1024 IP addresses.
+    "2048",  # Allocate a subnet with 2048 IP addresses.
+    "4096",  # Allocate a subnet with 4096 IP addresses.
+    "8192",  # Allocate a subnet with 8192 IP addresses.
+    "16384",  # Allocate a subnet with 16384 IP addresses.
+    "32768",  # Allocate a subnet with 32768 IP addresses.
+    "65536",  # Allocate a subnet with 65536 IP addresses.
+    "131072",  # Allocate a subnet with 131072 IP addresses.
+    "262144",  # Allocate a subnet with 262144 IP addresses.
+    "524288",  # Allocate a subnet with 524288 IP addresses.
+    "1048576",  # Allocate a subnet with 1048576 IP addresses.
+    "2097152",  # Allocate a subnet with 2097152 IP addresses.
+    "4194304",  # Allocate a subnet with 4194304 IP addresses.
+    "8388608",  # Allocate a subnet with 8388608 IP addresses.
+    "16777216",  # Allocate a subnet with 16777216 IP addresses.
 ]
 VALID_BODY_FORTILINK_SPLIT_INTERFACE = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiLink split interface to connect member link to different FortiSwitch in stack for uplink redundancy.
+    "disable",  # Disable FortiLink split interface.
 ]
 VALID_BODY_SWITCH_CONTROLLER_ACCESS_VLAN = [
-    "enable",
-    "disable",
+    "enable",  # Block FortiSwitch port-to-port traffic on the VLAN, only permitting traffic to and from the FortiGate.
+    "disable",  # Allow normal VLAN traffic.
 ]
 VALID_BODY_SWITCH_CONTROLLER_RSPAN_MODE = [
-    "disable",
-    "enable",
+    "disable",  # Disable RSPAN passthrough mode on this VLAN interface.
+    "enable",  # Enable RSPAN passthrough mode on this VLAN interface.
 ]
 VALID_BODY_SWITCH_CONTROLLER_NETFLOW_COLLECT = [
-    "disable",
-    "enable",
+    "disable",  # Disable NetFlow collection.
+    "enable",  # Enable NetFlow collection.
 ]
 VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING = [
-    "enable",
-    "disable",
+    "enable",  # Enable IGMP snooping.
+    "disable",  # Disable IGMP snooping.
 ]
 VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable IGMP snooping proxy.
+    "disable",  # Disable IGMP snooping proxy.
 ]
 VALID_BODY_SWITCH_CONTROLLER_IGMP_SNOOPING_FAST_LEAVE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IGMP snooping fast-leave.
+    "disable",  # Disable IGMP snooping fast-leave.
 ]
 VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING = [
-    "enable",
-    "disable",
+    "enable",  # Enable DHCP snooping for FortiSwitch devices.
+    "disable",  # Disable DHCP snooping for FortiSwitch devices.
 ]
 VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_VERIFY_MAC = [
-    "enable",
-    "disable",
+    "enable",  # Enable DHCP snooping verify source MAC for FortiSwitch devices.
+    "disable",  # Disable DHCP snooping verify source MAC for FortiSwitch devices.
 ]
 VALID_BODY_SWITCH_CONTROLLER_DHCP_SNOOPING_OPTION82 = [
-    "enable",
-    "disable",
+    "enable",  # Enable DHCP snooping insert option82 for FortiSwitch devices.
+    "disable",  # Disable DHCP snooping insert option82 for FortiSwitch devices.
 ]
 VALID_BODY_SWITCH_CONTROLLER_ARP_INSPECTION = [
-    "enable",
-    "disable",
-    "monitor",
+    "enable",  # Enable ARP inspection for FortiSwitch devices.
+    "disable",  # Disable ARP inspection for FortiSwitch devices.
+    "monitor",  # Monitor ARP traffic and update DHCP client database with MAC-VLAN-IP.
 ]
 VALID_BODY_SWITCH_CONTROLLER_FEATURE = [
-    "none",
-    "default-vlan",
-    "quarantine",
-    "rspan",
-    "voice",
-    "video",
-    "nac",
-    "nac-segment",
+    "none",  # VLAN for generic purpose.
+    "default-vlan",  # Default VLAN (native) assigned to all switch ports upon discovery.
+    "quarantine",  # VLAN for quarantined traffic.
+    "rspan",  # VLAN for RSPAN/ERSPAN mirrored traffic.
+    "voice",  # VLAN dedicated for voice devices.
+    "video",  # VLAN dedicated for camera devices.
+    "nac",  # VLAN dedicated for NAC onboarding devices.
+    "nac-segment",  # VLAN dedicated for NAC segment devices.
 ]
 VALID_BODY_SWITCH_CONTROLLER_IOT_SCANNING = [
-    "enable",
-    "disable",
+    "enable",  # Enable IoT scanning for managed FortiSwitch devices.
+    "disable",  # Disable IoT scanning for managed FortiSwitch devices.
 ]
 VALID_BODY_SWITCH_CONTROLLER_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable routing offload to managed FortiSwitch devices.
+    "disable",  # Disable routing offload to managed FortiSwitch devices.
 ]
 VALID_BODY_SWITCH_CONTROLLER_OFFLOAD_GW = [
-    "enable",
-    "disable",
+    "enable",  # Enable routing offload gateway to managed FortiSwitch devices.
+    "disable",  # Disable routing offload gateway to managed FortiSwitch devices.
 ]
 VALID_BODY_EAP_SUPPLICANT = [
-    "enable",
-    "disable",
+    "enable",  # Enable EAP Supplicant.
+    "disable",  # Disable EAP Supplicant.
 ]
 VALID_BODY_EAP_METHOD = [
-    "tls",
-    "peap",
+    "tls",  # TLS.
+    "peap",  # PEAP.
 ]
 VALID_BODY_DEFAULT_PURDUE_LEVEL = [
-    "1",
-    "1.5",
-    "2",
-    "2.5",
-    "3",
-    "3.5",
-    "4",
-    "5",
-    "5.5",
+    "1",  # Level 1 - Basic Control
+    "1.5",  # Level 1.5
+    "2",  # Level 2 - Area Supervisory Control
+    "2.5",  # Level 2.5
+    "3",  # Level 3 - Operations & Control
+    "3.5",  # Level 3.5
+    "4",  # Level 4 - Business Planning & Logistics
+    "5",  # Level 5 - Enterprise Network
+    "5.5",  # Level 5.5
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1993,7 +2016,7 @@ def validate_system_interface_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "vdom": True,
-        ...     "fortilink": "enable",  # Valid enum value
+        ...     "fortilink": "{'name': 'enable', 'help': 'Enable FortiLink to dedicated interface for managing FortiSwitch devices.', 'label': 'Enable', 'description': 'Enable FortiLink to dedicated interface for managing FortiSwitch devices'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_interface_post(payload)
         >>> assert is_valid == True
@@ -2225,6 +2248,16 @@ def validate_system_interface_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}"
             error_msg += f"\n  → Example: pppoe-unnumbered-negotiate='{{ VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE[0] }}'"
+            return (False, error_msg)
+    if "multilink" in payload:
+        value = payload["multilink"]
+        if value not in VALID_BODY_MULTILINK:
+            desc = FIELD_DESCRIPTIONS.get("multilink", "")
+            error_msg = f"Invalid value for 'multilink': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MULTILINK)}"
+            error_msg += f"\n  → Example: multilink='{{ VALID_BODY_MULTILINK[0] }}'"
             return (False, error_msg)
     if "defaultgw" in payload:
         value = payload["defaultgw"]
@@ -3211,6 +3244,13 @@ def validate_system_interface_put(
                 False,
                 f"Invalid value for 'pppoe-unnumbered-negotiate'='{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}",
             )
+    if "multilink" in payload:
+        value = payload["multilink"]
+        if value not in VALID_BODY_MULTILINK:
+            return (
+                False,
+                f"Invalid value for 'multilink'='{value}'. Must be one of: {', '.join(VALID_BODY_MULTILINK)}",
+            )
     if "defaultgw" in payload:
         value = payload["defaultgw"]
         if value not in VALID_BODY_DEFAULTGW:
@@ -4066,9 +4106,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure interfaces.",
-    "total_fields": 219,
+    "total_fields": 222,
     "required_fields_count": 3,
-    "fields_with_defaults_count": 203,
+    "fields_with_defaults_count": 205,
 }
 
 

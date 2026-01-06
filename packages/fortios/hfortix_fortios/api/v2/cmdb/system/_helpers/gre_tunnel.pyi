@@ -1,13 +1,13 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_IP_VERSION: Literal["4", "6"]
-VALID_BODY_USE_SDWAN: Literal["disable", "enable"]
-VALID_BODY_SEQUENCE_NUMBER_TRANSMISSION: Literal["disable", "enable"]
-VALID_BODY_SEQUENCE_NUMBER_RECEPTION: Literal["disable", "enable"]
-VALID_BODY_CHECKSUM_TRANSMISSION: Literal["disable", "enable"]
-VALID_BODY_CHECKSUM_RECEPTION: Literal["disable", "enable"]
-VALID_BODY_DSCP_COPYING: Literal["disable", "enable"]
+VALID_BODY_IP_VERSION: Literal[{"description": "Use IPv4 addressing for gateways", "help": "Use IPv4 addressing for gateways.", "label": "4", "name": "4"}, {"description": "Use IPv6 addressing for gateways", "help": "Use IPv6 addressing for gateways.", "label": "6", "name": "6"}]
+VALID_BODY_USE_SDWAN: Literal[{"description": "Disable use of SD-WAN to reach remote gateway", "help": "Disable use of SD-WAN to reach remote gateway.", "label": "Disable", "name": "disable"}, {"description": "Enable use of SD-WAN to reach remote gateway", "help": "Enable use of SD-WAN to reach remote gateway.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SEQUENCE_NUMBER_TRANSMISSION: Literal[{"description": "Include sequence numbers in transmitted GRE packets", "help": "Include sequence numbers in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Do not  include sequence numbers in transmitted GRE packets", "help": "Do not  include sequence numbers in transmitted GRE packets.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SEQUENCE_NUMBER_RECEPTION: Literal[{"description": "Do not validate sequence number in received GRE packets", "help": "Do not validate sequence number in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate sequence numbers in received GRE packets", "help": "Validate sequence numbers in received GRE packets.", "label": "Enable", "name": "enable"}]
+VALID_BODY_CHECKSUM_TRANSMISSION: Literal[{"description": "Do not include checksums in transmitted GRE packets", "help": "Do not include checksums in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Include checksums in transmitted GRE packets", "help": "Include checksums in transmitted GRE packets.", "label": "Enable", "name": "enable"}]
+VALID_BODY_CHECKSUM_RECEPTION: Literal[{"description": "Do not validate checksums in received GRE packets", "help": "Do not validate checksums in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate checksums in received GRE packets", "help": "Validate checksums in received GRE packets.", "label": "Enable", "name": "enable"}]
+VALID_BODY_DSCP_COPYING: Literal[{"description": "Disable DSCP copying", "help": "Disable DSCP copying.", "label": "Disable", "name": "disable"}, {"description": "Enable DSCP copying", "help": "Enable DSCP copying.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

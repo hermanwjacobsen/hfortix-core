@@ -258,58 +258,58 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_GROUP_TYPE = [
-    "firewall",
-    "fsso-service",
-    "rsso",
-    "guest",
+    "firewall",  # Firewall.
+    "fsso-service",  # Fortinet Single Sign-On Service.
+    "rsso",  # RADIUS based Single Sign-On Service.
+    "guest",  # Guest.
 ]
 VALID_BODY_AUTH_CONCURRENT_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable auth-concurrent-override.
+    "disable",  # Disable auth-concurrent-override.
 ]
 VALID_BODY_USER_ID = [
-    "email",
-    "auto-generate",
-    "specify",
+    "email",  # Email address.
+    "auto-generate",  # Automatically generate.
+    "specify",  # Specify.
 ]
 VALID_BODY_PASSWORD = [
-    "auto-generate",
-    "specify",
-    "disable",
+    "auto-generate",  # Automatically generate.
+    "specify",  # Specify.
+    "disable",  # Disable.
 ]
 VALID_BODY_USER_NAME = [
-    "disable",
-    "enable",
+    "disable",  # Disable setting.
+    "enable",  # Enable setting.
 ]
 VALID_BODY_SPONSOR = [
-    "optional",
-    "mandatory",
-    "disabled",
+    "optional",  # Optional.
+    "mandatory",  # Mandatory.
+    "disabled",  # Disabled.
 ]
 VALID_BODY_COMPANY = [
-    "optional",
-    "mandatory",
-    "disabled",
+    "optional",  # Optional.
+    "mandatory",  # Mandatory.
+    "disabled",  # Disabled.
 ]
 VALID_BODY_EMAIL = [
-    "disable",
-    "enable",
+    "disable",  # Disable setting.
+    "enable",  # Enable setting.
 ]
 VALID_BODY_MOBILE_PHONE = [
-    "disable",
-    "enable",
+    "disable",  # Disable setting.
+    "enable",  # Enable setting.
 ]
 VALID_BODY_SMS_SERVER = [
-    "fortiguard",
-    "custom",
+    "fortiguard",  # Send SMS by FortiGuard.
+    "custom",  # Send SMS by custom server.
 ]
 VALID_BODY_EXPIRE_TYPE = [
-    "immediately",
-    "first-successful-login",
+    "immediately",  # Immediately.
+    "first-successful-login",  # First successful login.
 ]
 VALID_BODY_MULTIPLE_GUEST_ADD = [
-    "disable",
-    "enable",
+    "disable",  # Disable setting.
+    "enable",  # Enable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -437,7 +437,7 @@ def validate_user_group_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "group-type": "firewall",  # Valid enum value
+        ...     "group-type": "{'name': 'firewall', 'help': 'Firewall.', 'label': 'Firewall', 'description': 'Firewall'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_group_post(payload)
         >>> assert is_valid == True

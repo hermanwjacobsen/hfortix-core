@@ -14,19 +14,19 @@ class ProfilePayload(TypedDict, total=False):
     comment: NotRequired[str]  # Comment.
     domain_filter: NotRequired[str]  # Domain filter settings.
     ftgd_dns: NotRequired[str]  # FortiGuard DNS Filter settings.
-    log_all_domain: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging of all domains visited (detailed DNS 
-    sdns_ftgd_err_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiGuard SDNS rating error logging.
-    sdns_domain_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable domain filtering and botnet domain logging.
-    block_action: NotRequired[Literal["block", "redirect", "block-sevrfail"]]  # Action to take for blocked domains.
+    log_all_domain: NotRequired[Literal[{"description": "Enable logging of all domains visited", "help": "Enable logging of all domains visited.", "label": "Enable", "name": "enable"}, {"description": "Disable logging of all domains visited", "help": "Disable logging of all domains visited.", "label": "Disable", "name": "disable"}]]  # Enable/disable logging of all domains visited (detailed DNS 
+    sdns_ftgd_err_log: NotRequired[Literal[{"description": "Enable FortiGuard SDNS rating error logging", "help": "Enable FortiGuard SDNS rating error logging.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGuard SDNS rating error logging", "help": "Disable FortiGuard SDNS rating error logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable FortiGuard SDNS rating error logging.
+    sdns_domain_log: NotRequired[Literal[{"description": "Enable domain filtering and botnet domain logging", "help": "Enable domain filtering and botnet domain logging.", "label": "Enable", "name": "enable"}, {"description": "Disable domain filtering and botnet domain logging", "help": "Disable domain filtering and botnet domain logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable domain filtering and botnet domain logging.
+    block_action: NotRequired[Literal[{"description": "Return NXDOMAIN for blocked domains", "help": "Return NXDOMAIN for blocked domains.", "label": "Block", "name": "block"}, {"description": "Redirect blocked domains to SDNS portal", "help": "Redirect blocked domains to SDNS portal.", "label": "Redirect", "name": "redirect"}, {"description": "Return SERVFAIL for blocked domains", "help": "Return SERVFAIL for blocked domains.", "label": "Block Sevrfail", "name": "block-sevrfail"}]]  # Action to take for blocked domains.
     redirect_portal: NotRequired[str]  # IPv4 address of the SDNS redirect portal.
     redirect_portal6: NotRequired[str]  # IPv6 address of the SDNS redirect portal.
-    block_botnet: NotRequired[Literal["disable", "enable"]]  # Enable/disable blocking botnet C&C DNS lookups.
-    safe_search: NotRequired[Literal["disable", "enable"]]  # Enable/disable Google, Bing, YouTube, Qwant, DuckDuckGo safe
-    youtube_restrict: NotRequired[Literal["strict", "moderate", "none"]]  # Set safe search for YouTube restriction level.
+    block_botnet: NotRequired[Literal[{"description": "Disable blocking botnet C\u0026C DNS lookups", "help": "Disable blocking botnet C\u0026C DNS lookups.", "label": "Disable", "name": "disable"}, {"description": "Enable blocking botnet C\u0026C DNS lookups", "help": "Enable blocking botnet C\u0026C DNS lookups.", "label": "Enable", "name": "enable"}]]  # Enable/disable blocking botnet C&C DNS lookups.
+    safe_search: NotRequired[Literal[{"description": "Disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search", "help": "Disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.", "label": "Disable", "name": "disable"}, {"description": "Enable Google, Bing, YouTube, Qwant, DuckDuckGo safe search", "help": "Enable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.", "label": "Enable", "name": "enable"}]]  # Enable/disable Google, Bing, YouTube, Qwant, DuckDuckGo safe
+    youtube_restrict: NotRequired[Literal[{"description": "Enable strict safe seach for YouTube", "help": "Enable strict safe seach for YouTube.", "label": "Strict", "name": "strict"}, {"description": "Enable moderate safe search for YouTube", "help": "Enable moderate safe search for YouTube.", "label": "Moderate", "name": "moderate"}, {"description": "Disable safe search for YouTube", "help": "Disable safe search for YouTube.", "label": "None", "name": "none"}]]  # Set safe search for YouTube restriction level.
     external_ip_blocklist: NotRequired[list[dict[str, Any]]]  # One or more external IP block lists.
     dns_translation: NotRequired[list[dict[str, Any]]]  # DNS translation settings.
     transparent_dns_database: NotRequired[list[dict[str, Any]]]  # Transparent DNS database zones.
-    strip_ech: NotRequired[Literal["disable", "enable"]]  # Enable/disable removal of the encrypted client hello service
+    strip_ech: NotRequired[Literal[{"description": "Disable removal of the encrypted client hello service parameter from supporting DNS RRs", "help": "Disable removal of the encrypted client hello service parameter from supporting DNS RRs.", "label": "Disable", "name": "disable"}, {"description": "Enable removal of the encrypted client hello service parameter from supporting DNS RRs", "help": "Enable removal of the encrypted client hello service parameter from supporting DNS RRs.", "label": "Enable", "name": "enable"}]]  # Enable/disable removal of the encrypted client hello service
 
 
 class Profile:
@@ -58,19 +58,19 @@ class Profile:
         comment: str | None = ...,
         domain_filter: str | None = ...,
         ftgd_dns: str | None = ...,
-        log_all_domain: Literal["enable", "disable"] | None = ...,
-        sdns_ftgd_err_log: Literal["enable", "disable"] | None = ...,
-        sdns_domain_log: Literal["enable", "disable"] | None = ...,
-        block_action: Literal["block", "redirect", "block-sevrfail"] | None = ...,
+        log_all_domain: Literal[{"description": "Enable logging of all domains visited", "help": "Enable logging of all domains visited.", "label": "Enable", "name": "enable"}, {"description": "Disable logging of all domains visited", "help": "Disable logging of all domains visited.", "label": "Disable", "name": "disable"}] | None = ...,
+        sdns_ftgd_err_log: Literal[{"description": "Enable FortiGuard SDNS rating error logging", "help": "Enable FortiGuard SDNS rating error logging.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGuard SDNS rating error logging", "help": "Disable FortiGuard SDNS rating error logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        sdns_domain_log: Literal[{"description": "Enable domain filtering and botnet domain logging", "help": "Enable domain filtering and botnet domain logging.", "label": "Enable", "name": "enable"}, {"description": "Disable domain filtering and botnet domain logging", "help": "Disable domain filtering and botnet domain logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        block_action: Literal[{"description": "Return NXDOMAIN for blocked domains", "help": "Return NXDOMAIN for blocked domains.", "label": "Block", "name": "block"}, {"description": "Redirect blocked domains to SDNS portal", "help": "Redirect blocked domains to SDNS portal.", "label": "Redirect", "name": "redirect"}, {"description": "Return SERVFAIL for blocked domains", "help": "Return SERVFAIL for blocked domains.", "label": "Block Sevrfail", "name": "block-sevrfail"}] | None = ...,
         redirect_portal: str | None = ...,
         redirect_portal6: str | None = ...,
-        block_botnet: Literal["disable", "enable"] | None = ...,
-        safe_search: Literal["disable", "enable"] | None = ...,
-        youtube_restrict: Literal["strict", "moderate", "none"] | None = ...,
+        block_botnet: Literal[{"description": "Disable blocking botnet C\u0026C DNS lookups", "help": "Disable blocking botnet C\u0026C DNS lookups.", "label": "Disable", "name": "disable"}, {"description": "Enable blocking botnet C\u0026C DNS lookups", "help": "Enable blocking botnet C\u0026C DNS lookups.", "label": "Enable", "name": "enable"}] | None = ...,
+        safe_search: Literal[{"description": "Disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search", "help": "Disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.", "label": "Disable", "name": "disable"}, {"description": "Enable Google, Bing, YouTube, Qwant, DuckDuckGo safe search", "help": "Enable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.", "label": "Enable", "name": "enable"}] | None = ...,
+        youtube_restrict: Literal[{"description": "Enable strict safe seach for YouTube", "help": "Enable strict safe seach for YouTube.", "label": "Strict", "name": "strict"}, {"description": "Enable moderate safe search for YouTube", "help": "Enable moderate safe search for YouTube.", "label": "Moderate", "name": "moderate"}, {"description": "Disable safe search for YouTube", "help": "Disable safe search for YouTube.", "label": "None", "name": "none"}] | None = ...,
         external_ip_blocklist: list[dict[str, Any]] | None = ...,
         dns_translation: list[dict[str, Any]] | None = ...,
         transparent_dns_database: list[dict[str, Any]] | None = ...,
-        strip_ech: Literal["disable", "enable"] | None = ...,
+        strip_ech: Literal[{"description": "Disable removal of the encrypted client hello service parameter from supporting DNS RRs", "help": "Disable removal of the encrypted client hello service parameter from supporting DNS RRs.", "label": "Disable", "name": "disable"}, {"description": "Enable removal of the encrypted client hello service parameter from supporting DNS RRs", "help": "Enable removal of the encrypted client hello service parameter from supporting DNS RRs.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -83,19 +83,19 @@ class Profile:
         comment: str | None = ...,
         domain_filter: str | None = ...,
         ftgd_dns: str | None = ...,
-        log_all_domain: Literal["enable", "disable"] | None = ...,
-        sdns_ftgd_err_log: Literal["enable", "disable"] | None = ...,
-        sdns_domain_log: Literal["enable", "disable"] | None = ...,
-        block_action: Literal["block", "redirect", "block-sevrfail"] | None = ...,
+        log_all_domain: Literal[{"description": "Enable logging of all domains visited", "help": "Enable logging of all domains visited.", "label": "Enable", "name": "enable"}, {"description": "Disable logging of all domains visited", "help": "Disable logging of all domains visited.", "label": "Disable", "name": "disable"}] | None = ...,
+        sdns_ftgd_err_log: Literal[{"description": "Enable FortiGuard SDNS rating error logging", "help": "Enable FortiGuard SDNS rating error logging.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGuard SDNS rating error logging", "help": "Disable FortiGuard SDNS rating error logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        sdns_domain_log: Literal[{"description": "Enable domain filtering and botnet domain logging", "help": "Enable domain filtering and botnet domain logging.", "label": "Enable", "name": "enable"}, {"description": "Disable domain filtering and botnet domain logging", "help": "Disable domain filtering and botnet domain logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        block_action: Literal[{"description": "Return NXDOMAIN for blocked domains", "help": "Return NXDOMAIN for blocked domains.", "label": "Block", "name": "block"}, {"description": "Redirect blocked domains to SDNS portal", "help": "Redirect blocked domains to SDNS portal.", "label": "Redirect", "name": "redirect"}, {"description": "Return SERVFAIL for blocked domains", "help": "Return SERVFAIL for blocked domains.", "label": "Block Sevrfail", "name": "block-sevrfail"}] | None = ...,
         redirect_portal: str | None = ...,
         redirect_portal6: str | None = ...,
-        block_botnet: Literal["disable", "enable"] | None = ...,
-        safe_search: Literal["disable", "enable"] | None = ...,
-        youtube_restrict: Literal["strict", "moderate", "none"] | None = ...,
+        block_botnet: Literal[{"description": "Disable blocking botnet C\u0026C DNS lookups", "help": "Disable blocking botnet C\u0026C DNS lookups.", "label": "Disable", "name": "disable"}, {"description": "Enable blocking botnet C\u0026C DNS lookups", "help": "Enable blocking botnet C\u0026C DNS lookups.", "label": "Enable", "name": "enable"}] | None = ...,
+        safe_search: Literal[{"description": "Disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search", "help": "Disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.", "label": "Disable", "name": "disable"}, {"description": "Enable Google, Bing, YouTube, Qwant, DuckDuckGo safe search", "help": "Enable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.", "label": "Enable", "name": "enable"}] | None = ...,
+        youtube_restrict: Literal[{"description": "Enable strict safe seach for YouTube", "help": "Enable strict safe seach for YouTube.", "label": "Strict", "name": "strict"}, {"description": "Enable moderate safe search for YouTube", "help": "Enable moderate safe search for YouTube.", "label": "Moderate", "name": "moderate"}, {"description": "Disable safe search for YouTube", "help": "Disable safe search for YouTube.", "label": "None", "name": "none"}] | None = ...,
         external_ip_blocklist: list[dict[str, Any]] | None = ...,
         dns_translation: list[dict[str, Any]] | None = ...,
         transparent_dns_database: list[dict[str, Any]] | None = ...,
-        strip_ech: Literal["disable", "enable"] | None = ...,
+        strip_ech: Literal[{"description": "Disable removal of the encrypted client hello service parameter from supporting DNS RRs", "help": "Disable removal of the encrypted client hello service parameter from supporting DNS RRs.", "label": "Disable", "name": "disable"}, {"description": "Enable removal of the encrypted client hello service parameter from supporting DNS RRs", "help": "Enable removal of the encrypted client hello service parameter from supporting DNS RRs.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

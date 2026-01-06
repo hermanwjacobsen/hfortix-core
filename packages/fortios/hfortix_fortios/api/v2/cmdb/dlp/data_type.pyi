@@ -20,7 +20,7 @@ class DataTypePayload(TypedDict, total=False):
     match_back: int  # Number of characters in front for match-around (1 - 4096, de
     match_ahead: int  # Number of characters behind for match-around (1 - 4096, defa
     transform: NotRequired[str]  # Template to transform user input to a pattern using capture 
-    verify_transformed_pattern: NotRequired[Literal["enable", "disable"]]  # Enable/disable verification for transformed pattern.
+    verify_transformed_pattern: NotRequired[Literal[{"description": "Enable verification for transformed pattern", "help": "Enable verification for transformed pattern.", "label": "Enable", "name": "enable"}, {"description": "Disable verification for transformed pattern", "help": "Disable verification for transformed pattern.", "label": "Disable", "name": "disable"}]]  # Enable/disable verification for transformed pattern.
     comment: NotRequired[str]  # Optional comments.
 
 
@@ -59,7 +59,7 @@ class DataType:
         match_back: int | None = ...,
         match_ahead: int | None = ...,
         transform: str | None = ...,
-        verify_transformed_pattern: Literal["enable", "disable"] | None = ...,
+        verify_transformed_pattern: Literal[{"description": "Enable verification for transformed pattern", "help": "Enable verification for transformed pattern.", "label": "Enable", "name": "enable"}, {"description": "Disable verification for transformed pattern", "help": "Disable verification for transformed pattern.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -79,7 +79,7 @@ class DataType:
         match_back: int | None = ...,
         match_ahead: int | None = ...,
         transform: str | None = ...,
-        verify_transformed_pattern: Literal["enable", "disable"] | None = ...,
+        verify_transformed_pattern: Literal[{"description": "Enable verification for transformed pattern", "help": "Enable verification for transformed pattern.", "label": "Enable", "name": "enable"}, {"description": "Disable verification for transformed pattern", "help": "Disable verification for transformed pattern.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AcmeCertificateStatus:
     """
-    Configuration for system/acme-certificate-status
+    Get ACME certificate status.
     
     Path: system/acme_certificate_status
     Category: monitor

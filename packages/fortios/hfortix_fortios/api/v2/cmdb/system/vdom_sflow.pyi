@@ -10,7 +10,7 @@ class VdomSflowPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    vdom_sflow: NotRequired[Literal["enable", "disable"]]  # Enable/disable the sFlow configuration for the current VDOM.
+    vdom_sflow: NotRequired[Literal[{"description": "Enable sFlow for this VDOM", "help": "Enable sFlow for this VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable sFlow for this VDOM", "help": "Disable sFlow for this VDOM.", "label": "Disable", "name": "disable"}]]  # Enable/disable the sFlow configuration for the current VDOM.
     collectors: NotRequired[list[dict[str, Any]]]  # sFlow collectors.
 
 
@@ -38,7 +38,7 @@ class VdomSflow:
     def post(
         self,
         payload_dict: VdomSflowPayload | None = ...,
-        vdom_sflow: Literal["enable", "disable"] | None = ...,
+        vdom_sflow: Literal[{"description": "Enable sFlow for this VDOM", "help": "Enable sFlow for this VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable sFlow for this VDOM", "help": "Disable sFlow for this VDOM.", "label": "Disable", "name": "disable"}] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -48,7 +48,7 @@ class VdomSflow:
     def put(
         self,
         payload_dict: VdomSflowPayload | None = ...,
-        vdom_sflow: Literal["enable", "disable"] | None = ...,
+        vdom_sflow: Literal[{"description": "Enable sFlow for this VDOM", "help": "Enable sFlow for this VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable sFlow for this VDOM", "help": "Disable sFlow for this VDOM.", "label": "Disable", "name": "disable"}] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

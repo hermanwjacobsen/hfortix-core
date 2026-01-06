@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "extension_controller/fortigate",
     "category": "monitor",
     "api_path": "extension-controller/fortigate",
-    "help": "Configuration for extension-controller/fortigate",
+    "help": "Retrieve statistics for configured FortiGate LAN Extension Connectors.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

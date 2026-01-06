@@ -12,7 +12,7 @@ class MulticastPayload(TypedDict, total=False):
     """
     route_threshold: NotRequired[int]  # Generate warnings when the number of multicast routes exceed
     route_limit: NotRequired[int]  # Maximum number of multicast routes.
-    multicast_routing: NotRequired[Literal["enable", "disable"]]  # Enable/disable IP multicast routing.
+    multicast_routing: NotRequired[Literal[{"description": "Enable IP multicast routing", "help": "Enable IP multicast routing.", "label": "Enable", "name": "enable"}, {"description": "Disable IP multicast routing", "help": "Disable IP multicast routing.", "label": "Disable", "name": "disable"}]]  # Enable/disable IP multicast routing.
     pim_sm_global: NotRequired[str]  # PIM sparse-mode global settings.
     pim_sm_global_vrf: NotRequired[list[dict[str, Any]]]  # per-VRF PIM sparse-mode global settings.
     interface: NotRequired[list[dict[str, Any]]]  # PIM interfaces.
@@ -44,7 +44,7 @@ class Multicast:
         payload_dict: MulticastPayload | None = ...,
         route_threshold: int | None = ...,
         route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
+        multicast_routing: Literal[{"description": "Enable IP multicast routing", "help": "Enable IP multicast routing.", "label": "Enable", "name": "enable"}, {"description": "Disable IP multicast routing", "help": "Disable IP multicast routing.", "label": "Disable", "name": "disable"}] | None = ...,
         pim_sm_global: str | None = ...,
         pim_sm_global_vrf: list[dict[str, Any]] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
@@ -58,7 +58,7 @@ class Multicast:
         payload_dict: MulticastPayload | None = ...,
         route_threshold: int | None = ...,
         route_limit: int | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
+        multicast_routing: Literal[{"description": "Enable IP multicast routing", "help": "Enable IP multicast routing.", "label": "Enable", "name": "enable"}, {"description": "Disable IP multicast routing", "help": "Disable IP multicast routing.", "label": "Disable", "name": "disable"}] | None = ...,
         pim_sm_global: str | None = ...,
         pim_sm_global_vrf: list[dict[str, Any]] | None = ...,
         interface: list[dict[str, Any]] | None = ...,

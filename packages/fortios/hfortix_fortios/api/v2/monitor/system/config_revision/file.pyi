@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class File:
     """
-    Configuration for system/config-revision/file
+    Download a specific configuration revision.
     
     Path: system/config_revision/file
     Category: monitor

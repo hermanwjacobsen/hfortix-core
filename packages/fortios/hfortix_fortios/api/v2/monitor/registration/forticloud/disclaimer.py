@@ -56,7 +56,7 @@ class Disclaimer:
         """
         Retrieve registration/forticloud/disclaimer configuration.
 
-        Configuration for registration/forticloud/disclaimer
+        Retrieve the FortiCloud disclaimer.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

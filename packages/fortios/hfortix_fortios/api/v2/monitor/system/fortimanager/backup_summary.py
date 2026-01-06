@@ -56,7 +56,7 @@ class BackupSummary:
         """
         Retrieve system/fortimanager/backup_summary configuration.
 
-        Configuration for system/fortimanager/backup-summary
+        Get FortiManager backup summary.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve wifi/firmware/upload configuration.
 
-        Configuration for wifi/firmware/upload
+        Upload FortiAP firmware to the management FortiGate and then push to target FortiAPs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

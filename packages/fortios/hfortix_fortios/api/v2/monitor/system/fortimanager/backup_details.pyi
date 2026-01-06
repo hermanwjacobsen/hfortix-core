@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class BackupDetails:
     """
-    Configuration for system/fortimanager/backup-details
+    Get the properties of a FortiManager object.
     
     Path: system/fortimanager/backup_details
     Category: monitor

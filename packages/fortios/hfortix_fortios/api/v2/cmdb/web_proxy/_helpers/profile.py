@@ -55,6 +55,7 @@ FIELDS_WITH_DEFAULTS = {
     "header-client-ip": "pass",
     "header-via-request": "pass",
     "header-via-response": "pass",
+    "header-client-cert": "pass",
     "header-x-forwarded-for": "pass",
     "header-x-forwarded-client-cert": "pass",
     "header-front-end-https": "pass",
@@ -84,6 +85,7 @@ FIELD_TYPES = {
     "header-client-ip": "option",  # Action to take on the HTTP client-IP header in forwarded req
     "header-via-request": "option",  # Action to take on the HTTP via header in forwarded requests:
     "header-via-response": "option",  # Action to take on the HTTP via header in forwarded responses
+    "header-client-cert": "option",  # Action to take on the HTTP Client-Cert/Client-Cert-Chain hea
     "header-x-forwarded-for": "option",  # Action to take on the HTTP x-forwarded-for header in forward
     "header-x-forwarded-client-cert": "option",  # Action to take on the HTTP x-forwarded-client-cert header in
     "header-front-end-https": "option",  # Action to take on the HTTP front-end-HTTPS header in forward
@@ -100,6 +102,7 @@ FIELD_DESCRIPTIONS = {
     "header-client-ip": "Action to take on the HTTP client-IP header in forwarded requests: forwards (pass), adds, or removes the HTTP header.",
     "header-via-request": "Action to take on the HTTP via header in forwarded requests: forwards (pass), adds, or removes the HTTP header.",
     "header-via-response": "Action to take on the HTTP via header in forwarded responses: forwards (pass), adds, or removes the HTTP header.",
+    "header-client-cert": "Action to take on the HTTP Client-Cert/Client-Cert-Chain headers in forwarded responses: forwards (pass), adds, or removes the HTTP header.",
     "header-x-forwarded-for": "Action to take on the HTTP x-forwarded-for header in forwarded requests: forwards (pass), adds, or removes the HTTP header.",
     "header-x-forwarded-client-cert": "Action to take on the HTTP x-forwarded-client-cert header in forwarded requests: forwards (pass), adds, or removes the HTTP header.",
     "header-front-end-https": "Action to take on the HTTP front-end-HTTPS header in forwarded requests: forwards (pass), adds, or removes the HTTP header.",
@@ -143,7 +146,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure adding, removing, or logging of the HTTP header entry in HTTP requests and responses.",
             "default": "add-to-request",
-            "options": ["add-to-request", "add-to-response", "remove-from-request", "remove-from-response", "monitor-request", "monitor-response"],
+            "options": [{"help": "Add the HTTP header to request.", "label": "Add To Request", "name": "add-to-request"}, {"help": "Add the HTTP header to response.", "label": "Add To Response", "name": "add-to-response"}, {"help": "Remove the HTTP header from request.", "label": "Remove From Request", "name": "remove-from-request"}, {"help": "Remove the HTTP header from response.", "label": "Remove From Response", "name": "remove-from-response"}, {"help": "Record the HTTP header in utm-webfilter log.", "label": "Monitor Request", "name": "monitor-request"}, {"help": "Record the HTTP header in utm-webfilter log.", "label": "Monitor Response", "name": "monitor-response"}],
         },
         "content": {
             "type": "string",
@@ -155,19 +158,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable use of base64 encoding of HTTP content.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable use of base64 encoding of HTTP content.", "label": "Disable", "name": "disable"}, {"help": "Enable use of base64 encoding of HTTP content.", "label": "Enable", "name": "enable"}],
         },
         "add-option": {
             "type": "option",
             "help": "Configure options to append content to existing HTTP header or add new HTTP header.",
             "default": "new",
-            "options": ["append", "new-on-not-found", "new", "replace", "replace-when-match"],
+            "options": [{"help": "Append content to existing HTTP header or create new header if HTTP header is not found.", "label": "Append", "name": "append"}, {"help": "Create new header only if existing HTTP header is not found.", "label": "New On Not Found", "name": "new-on-not-found"}, {"help": "Create new header regardless if existing HTTP header is found or not.", "label": "New", "name": "new"}, {"help": "Replace content to existing HTTP header or create new header if HTTP header is not found.", "label": "Replace", "name": "replace"}, {"help": "Replace content to existing HTTP header.", "label": "Replace When Match", "name": "replace-when-match"}],
         },
         "protocol": {
             "type": "option",
             "help": "Configure protocol(s) to take add-option action on (HTTP, HTTPS, or both).",
             "default": "https http",
-            "options": ["https", "http"],
+            "options": [{"help": "Perform add-option action on HTTPS.", "label": "Https", "name": "https"}, {"help": "Perform add-option action on HTTP.", "label": "Http", "name": "http"}],
         },
     },
 }
@@ -175,52 +178,57 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_HEADER_CLIENT_IP = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_HEADER_VIA_REQUEST = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_HEADER_VIA_RESPONSE = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
+]
+VALID_BODY_HEADER_CLIENT_CERT = [
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_HEADER_X_FORWARDED_FOR = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_HEADER_X_FORWARDED_CLIENT_CERT = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_HEADER_FRONT_END_HTTPS = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_HEADER_X_AUTHENTICATED_USER = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_HEADER_X_AUTHENTICATED_GROUPS = [
-    "pass",
-    "add",
-    "remove",
+    "pass",  # Forward the same HTTP header.
+    "add",  # Add the HTTP header.
+    "remove",  # Remove the HTTP header.
 ]
 VALID_BODY_STRIP_ENCODING = [
-    "enable",
-    "disable",
+    "enable",  # Enable stripping of unsupported encoding from the request header.
+    "disable",  # Disable stripping of unsupported encoding from the request header.
 ]
 VALID_BODY_LOG_HEADER_CHANGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Enable/disable logging HTTP header changes.
+    "disable",  # Disable Enable/disable logging HTTP header changes.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -348,7 +356,7 @@ def validate_web_proxy_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "header-client-ip": "pass",  # Valid enum value
+        ...     "header-client-ip": "{'name': 'pass', 'help': 'Forward the same HTTP header.', 'label': 'Pass', 'description': 'Forward the same HTTP header'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_web_proxy_profile_post(payload)
         >>> assert is_valid == True
@@ -400,6 +408,16 @@ def validate_web_proxy_profile_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HEADER_VIA_RESPONSE)}"
             error_msg += f"\n  → Example: header-via-response='{{ VALID_BODY_HEADER_VIA_RESPONSE[0] }}'"
+            return (False, error_msg)
+    if "header-client-cert" in payload:
+        value = payload["header-client-cert"]
+        if value not in VALID_BODY_HEADER_CLIENT_CERT:
+            desc = FIELD_DESCRIPTIONS.get("header-client-cert", "")
+            error_msg = f"Invalid value for 'header-client-cert': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_HEADER_CLIENT_CERT)}"
+            error_msg += f"\n  → Example: header-client-cert='{{ VALID_BODY_HEADER_CLIENT_CERT[0] }}'"
             return (False, error_msg)
     if "header-x-forwarded-for" in payload:
         value = payload["header-x-forwarded-for"]
@@ -519,6 +537,13 @@ def validate_web_proxy_profile_put(
             return (
                 False,
                 f"Invalid value for 'header-via-response'='{value}'. Must be one of: {', '.join(VALID_BODY_HEADER_VIA_RESPONSE)}",
+            )
+    if "header-client-cert" in payload:
+        value = payload["header-client-cert"]
+        if value not in VALID_BODY_HEADER_CLIENT_CERT:
+            return (
+                False,
+                f"Invalid value for 'header-client-cert'='{value}'. Must be one of: {', '.join(VALID_BODY_HEADER_CLIENT_CERT)}",
             )
     if "header-x-forwarded-for" in payload:
         value = payload["header-x-forwarded-for"]
@@ -857,9 +882,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure web proxy profiles.",
-    "total_fields": 12,
+    "total_fields": 13,
     "required_fields_count": 0,
-    "fields_with_defaults_count": 11,
+    "fields_with_defaults_count": 12,
 }
 
 

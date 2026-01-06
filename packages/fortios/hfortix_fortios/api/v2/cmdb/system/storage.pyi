@@ -11,14 +11,14 @@ class StoragePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Storage name.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable storage.
-    media_status: NotRequired[Literal["enable", "disable", "fail"]]  # The physical status of current media.
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable storage.
+    media_status: NotRequired[Literal[{"description": "Storage is enabled", "help": "Storage is enabled.", "label": "Enable", "name": "enable"}, {"description": "Storage is disabled", "help": "Storage is disabled.", "label": "Disable", "name": "disable"}, {"description": "Storage have some fail sector", "help": "Storage have some fail sector.", "label": "Fail", "name": "fail"}]]  # The physical status of current media.
     order: NotRequired[int]  # Set storage order.
     partition: NotRequired[str]  # Label of underlying partition.
     device: NotRequired[str]  # Partition device.
     size: NotRequired[int]  # Partition size.
-    usage: NotRequired[Literal["log", "wanopt"]]  # Use hard disk for logging or WAN Optimization (default = log
-    wanopt_mode: NotRequired[Literal["mix", "wanopt", "webcache"]]  # WAN Optimization mode (default = mix).
+    usage: NotRequired[Literal[{"help": "Use hard disk for logging.", "label": "Log", "name": "log"}, {"help": "Use hard disk for WAN Optimization.", "label": "Wanopt", "name": "wanopt"}]]  # Use hard disk for logging or WAN Optimization (default = log
+    wanopt_mode: NotRequired[Literal[{"help": "Use hard disk for WAN Optimization mix mode.", "label": "Mix", "name": "mix"}, {"help": "Use hard disk for WAN Optimization wanopt mode.", "label": "Wanopt", "name": "wanopt"}, {"help": "Use hard disk for WAN Optimization webcache mode.", "label": "Webcache", "name": "webcache"}]]  # WAN Optimization mode (default = mix).
 
 
 class Storage:
@@ -47,14 +47,14 @@ class Storage:
         self,
         payload_dict: StoragePayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        media_status: Literal["enable", "disable", "fail"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        media_status: Literal[{"description": "Storage is enabled", "help": "Storage is enabled.", "label": "Enable", "name": "enable"}, {"description": "Storage is disabled", "help": "Storage is disabled.", "label": "Disable", "name": "disable"}, {"description": "Storage have some fail sector", "help": "Storage have some fail sector.", "label": "Fail", "name": "fail"}] | None = ...,
         order: int | None = ...,
         partition: str | None = ...,
         device: str | None = ...,
         size: int | None = ...,
-        usage: Literal["log", "wanopt"] | None = ...,
-        wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
+        usage: Literal[{"help": "Use hard disk for logging.", "label": "Log", "name": "log"}, {"help": "Use hard disk for WAN Optimization.", "label": "Wanopt", "name": "wanopt"}] | None = ...,
+        wanopt_mode: Literal[{"help": "Use hard disk for WAN Optimization mix mode.", "label": "Mix", "name": "mix"}, {"help": "Use hard disk for WAN Optimization wanopt mode.", "label": "Wanopt", "name": "wanopt"}, {"help": "Use hard disk for WAN Optimization webcache mode.", "label": "Webcache", "name": "webcache"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -64,14 +64,14 @@ class Storage:
         self,
         payload_dict: StoragePayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        media_status: Literal["enable", "disable", "fail"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        media_status: Literal[{"description": "Storage is enabled", "help": "Storage is enabled.", "label": "Enable", "name": "enable"}, {"description": "Storage is disabled", "help": "Storage is disabled.", "label": "Disable", "name": "disable"}, {"description": "Storage have some fail sector", "help": "Storage have some fail sector.", "label": "Fail", "name": "fail"}] | None = ...,
         order: int | None = ...,
         partition: str | None = ...,
         device: str | None = ...,
         size: int | None = ...,
-        usage: Literal["log", "wanopt"] | None = ...,
-        wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
+        usage: Literal[{"help": "Use hard disk for logging.", "label": "Log", "name": "log"}, {"help": "Use hard disk for WAN Optimization.", "label": "Wanopt", "name": "wanopt"}] | None = ...,
+        wanopt_mode: Literal[{"help": "Use hard disk for WAN Optimization mix mode.", "label": "Mix", "name": "mix"}, {"help": "Use hard disk for WAN Optimization wanopt mode.", "label": "Wanopt", "name": "wanopt"}, {"help": "Use hard disk for WAN Optimization webcache mode.", "label": "Webcache", "name": "webcache"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

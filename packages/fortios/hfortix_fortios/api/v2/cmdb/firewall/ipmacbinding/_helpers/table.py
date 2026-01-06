@@ -103,8 +103,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this IP-mac binding pair.
+    "disable",  # Disable this IP-mac binding pair.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -232,7 +232,7 @@ def validate_firewall_ipmacbinding_table_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable this IP-mac binding pair.', 'label': 'Enable', 'description': 'Enable this IP-mac binding pair'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ipmacbinding_table_post(payload)
         >>> assert is_valid == True

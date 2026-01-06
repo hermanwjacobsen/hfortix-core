@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UuidTypeLookup:
     """
-    Configuration for firewall/uuid-type-lookup
+    Retrieve a mapping of UUIDs to their firewall object type for given UUIDs.
     
     Path: firewall/uuid_type_lookup
     Category: monitor

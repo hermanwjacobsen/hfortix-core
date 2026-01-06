@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/vdom/add_license",
     "category": "monitor",
     "api_path": "registration/vdom/add-license",
-    "help": "Configuration for registration/vdom/add-license",
+    "help": "Add a VDOM license.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

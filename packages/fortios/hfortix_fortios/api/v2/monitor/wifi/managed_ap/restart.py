@@ -56,7 +56,7 @@ class Restart:
         """
         Retrieve wifi/managed_ap/restart configuration.
 
-        Configuration for wifi/managed_ap/restart
+        Restart a given FortiAP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

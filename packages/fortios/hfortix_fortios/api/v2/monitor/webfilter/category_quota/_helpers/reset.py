@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webfilter/category_quota/reset",
     "category": "monitor",
     "api_path": "webfilter/category-quota/reset",
-    "help": "Configuration for webfilter/category-quota/reset",
+    "help": "Reset webfilter quota for user or IP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -56,7 +56,7 @@ class LedBlink:
         """
         Retrieve wifi/managed_ap/led_blink configuration.
 
-        Configuration for wifi/managed_ap/led-blink
+        Turn a managed FortiAP's LED blinking on or off.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

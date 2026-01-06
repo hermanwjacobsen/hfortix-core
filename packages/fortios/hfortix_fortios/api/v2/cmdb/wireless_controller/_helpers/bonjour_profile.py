@@ -124,7 +124,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Bonjour services for the VLAN connecting to the Bonjour network.",
             "default": "all",
-            "options": ["all", "airplay", "afp", "bit-torrent", "ftp", "ichat", "itunes", "printers", "samba", "scanners", "ssh", "chromecast", "miracast"],
+            "options": [{"help": "All services.", "label": "All", "name": "all"}, {"help": "AirPlay.", "label": "Airplay", "name": "airplay"}, {"help": "AFP (Apple File Sharing).", "label": "Afp", "name": "afp"}, {"help": "BitTorrent.", "label": "Bit Torrent", "name": "bit-torrent"}, {"help": "FTP.", "label": "Ftp", "name": "ftp"}, {"help": "iChat.", "label": "Ichat", "name": "ichat"}, {"help": "iTunes.", "label": "Itunes", "name": "itunes"}, {"help": "Printers.", "label": "Printers", "name": "printers"}, {"help": "Samba.", "label": "Samba", "name": "samba"}, {"help": "Scanners.", "label": "Scanners", "name": "scanners"}, {"help": "SSH.", "label": "Ssh", "name": "ssh"}, {"help": "ChromeCast.", "label": "Chromecast", "name": "chromecast"}, {"help": "Miracast.", "label": "Miracast", "name": "miracast"}],
         },
     },
 }
@@ -132,8 +132,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MICRO_LOCATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable Micro location.
+    "disable",  # Disable Micro location.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -261,7 +261,7 @@ def validate_wireless_controller_bonjour_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "micro-location": "enable",  # Valid enum value
+        ...     "micro-location": "{'name': 'enable', 'help': 'Enable Micro location.', 'label': 'Enable', 'description': 'Enable Micro location'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_bonjour_profile_post(payload)
         >>> assert is_valid == True
@@ -616,7 +616,7 @@ SCHEMA_INFO = {
     "api_path": "wireless-controller/bonjour-profile",
     "mkey": "name",
     "mkey_type": "string",
-    "help": "Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connnect to networks using Bonjour.",
+    "help": "Configure Bonjour profiles. Bonjour is Apple's zero configuration networking protocol. Bonjour profiles allow APs and FortiAPs to connect to networks using Bonjour.",
     "total_fields": 4,
     "required_fields_count": 0,
     "fields_with_defaults_count": 3,

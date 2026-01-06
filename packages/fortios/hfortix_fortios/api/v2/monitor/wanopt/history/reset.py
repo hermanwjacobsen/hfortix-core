@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve wanopt/history/reset configuration.
 
-        Configuration for wanopt/history/reset
+        Reset WAN opt. statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

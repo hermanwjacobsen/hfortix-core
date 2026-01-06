@@ -56,7 +56,7 @@ class Fortianalyzer:
         """
         Retrieve log/fortianalyzer configuration.
 
-        Configuration for log/fortianalyzer
+        Return FortiAnalyzer/FortiManager log status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

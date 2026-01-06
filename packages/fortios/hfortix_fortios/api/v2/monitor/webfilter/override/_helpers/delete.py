@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webfilter/override/delete",
     "category": "monitor",
     "api_path": "webfilter/override/delete",
-    "help": "Configuration for webfilter/override/delete",
+    "help": "Delete a configured webfilter override.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

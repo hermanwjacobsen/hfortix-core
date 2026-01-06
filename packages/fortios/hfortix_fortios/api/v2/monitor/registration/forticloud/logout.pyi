@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Logout:
     """
-    Configuration for registration/forticloud/logout
+    Logout from FortiCloud.
     
     Path: registration/forticloud/logout
     Category: monitor

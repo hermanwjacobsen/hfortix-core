@@ -135,16 +135,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_EXPIRE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Passwords expire after expire-day days.
+    "disable",  # Passwords do not expire.
 ]
 VALID_BODY_EXPIRED_PASSWORD_RENEWAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable renewal of a password that already is expired.
+    "disable",  # Disable renewal of a password that already is expired.
 ]
 VALID_BODY_REUSE_PASSWORD = [
-    "enable",
-    "disable",
+    "enable",  # Users are allowed to reuse the same password up to a limit.
+    "disable",  # Users must create a new password.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -272,7 +272,7 @@ def validate_user_password_policy_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "expire-status": "enable",  # Valid enum value
+        ...     "expire-status": "{'name': 'enable', 'help': 'Passwords expire after expire-day days.', 'label': 'Enable', 'description': 'Passwords expire after expire-day days'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_password_policy_post(payload)
         >>> assert is_valid == True

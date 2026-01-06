@@ -56,7 +56,7 @@ class Sessions:
         """
         Retrieve firewall/sessions configuration.
 
-        Configuration for firewall/sessions
+        List all active firewall sessions (optionally filtered).
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

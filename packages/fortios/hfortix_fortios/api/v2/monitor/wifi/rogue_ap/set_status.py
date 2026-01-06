@@ -56,7 +56,7 @@ class SetStatus:
         """
         Retrieve wifi/rogue_ap/set_status configuration.
 
-        Configuration for wifi/rogue_ap/set_status
+        Mark detected APs as rogue APs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

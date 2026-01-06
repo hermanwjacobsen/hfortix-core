@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ModemFirmware:
     """
-    Configuration for extender-controller/extender/modem-firmware
+    List all available FortiExtender modem firmware images on FortiCloud.
     
     Path: extender_controller/extender/modem_firmware
     Category: monitor

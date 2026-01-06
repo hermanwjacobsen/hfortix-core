@@ -11,7 +11,7 @@ class IpsUrlfilterDns6Payload(TypedDict, total=False):
         }
     """
     address6: NotRequired[str]  # IPv6 address of DNS server.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this server for IPv6 DNS queries.
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable this server for IPv6 DNS queries.
 
 
 class IpsUrlfilterDns6:
@@ -40,7 +40,7 @@ class IpsUrlfilterDns6:
         self,
         payload_dict: IpsUrlfilterDns6Payload | None = ...,
         address6: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -50,7 +50,7 @@ class IpsUrlfilterDns6:
         self,
         payload_dict: IpsUrlfilterDns6Payload | None = ...,
         address6: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

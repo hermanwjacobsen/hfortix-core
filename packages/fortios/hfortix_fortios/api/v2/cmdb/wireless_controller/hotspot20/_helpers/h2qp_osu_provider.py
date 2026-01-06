@@ -155,9 +155,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OSU_METHOD = [
-    "oma-dm",
-    "soap-xml-spp",
-    "reserved",
+    "oma-dm",  # OMA DM.
+    "soap-xml-spp",  # SOAP XML SPP.
+    "reserved",  # Reserved.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -285,7 +285,7 @@ def validate_wireless_controller_hotspot20_h2qp_osu_provider_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "osu-method": "oma-dm",  # Valid enum value
+        ...     "osu-method": "{'name': 'oma-dm', 'help': 'OMA DM.', 'label': 'Oma Dm', 'description': 'OMA DM'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_osu_provider_post(payload)
         >>> assert is_valid == True

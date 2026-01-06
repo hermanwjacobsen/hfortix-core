@@ -173,7 +173,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Service type.",
             "default": "http",
-            "options": ["http", "https", "ftp", "telnet"],
+            "options": [{"help": "HTTP service.", "label": "Http", "name": "http"}, {"help": "HTTPS service.", "label": "Https", "name": "https"}, {"help": "FTP service.", "label": "Ftp", "name": "ftp"}, {"help": "TELNET service.", "label": "Telnet", "name": "telnet"}],
         },
         "port": {
             "type": "integer",
@@ -196,66 +196,66 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTH_TYPE = [
-    "http",
-    "https",
-    "ftp",
-    "telnet",
+    "http",  # Allow HTTP authentication.
+    "https",  # Allow HTTPS authentication.
+    "ftp",  # Allow FTP authentication.
+    "telnet",  # Allow TELNET authentication.
 ]
 VALID_BODY_AUTH_SECURE_HTTP = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_AUTH_HTTP_BASIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_AUTH_SSL_ALLOW_RENEGOTIATION = [
-    "enable",
-    "disable",
+    "enable",  # Allow SSL re-negotiation.
+    "disable",  # Forbid SSL re-negotiation.
 ]
 VALID_BODY_AUTH_SRC_MAC = [
-    "enable",
-    "disable",
+    "enable",  # Enable source MAC for user identity.
+    "disable",  # Disable source MAC for user identity.
 ]
 VALID_BODY_AUTH_ON_DEMAND = [
-    "always",
-    "implicitly",
+    "always",  # Always trigger firewall authentication on demand.
+    "implicitly",  # Implicitly trigger firewall authentication on demand.
 ]
 VALID_BODY_AUTH_TIMEOUT_TYPE = [
-    "idle-timeout",
-    "hard-timeout",
-    "new-session",
+    "idle-timeout",  # Idle timeout.
+    "hard-timeout",  # Hard timeout.
+    "new-session",  # New session timeout.
 ]
 VALID_BODY_RADIUS_SES_TIMEOUT_ACT = [
-    "hard-timeout",
-    "ignore-timeout",
+    "hard-timeout",  # Use session timeout from RADIUS as hard-timeout.
+    "ignore-timeout",  # Ignore session timeout from RADIUS.
 ]
 VALID_BODY_PER_POLICY_DISCLAIMER = [
-    "enable",
-    "disable",
+    "enable",  # Enable per policy disclaimer.
+    "disable",  # Disable per policy disclaimer.
 ]
 VALID_BODY_AUTH_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_AUTH_SSL_MAX_PROTO_VERSION = [
-    "sslv3",
-    "tlsv1",
-    "tlsv1-1",
-    "tlsv1-2",
-    "tlsv1-3",
+    "sslv3",  # SSLv3.
+    "tlsv1",  # TLSv1.
+    "tlsv1-1",  # TLSv1.1.
+    "tlsv1-2",  # TLSv1.2.
+    "tlsv1-3",  # TLSv1.3.
 ]
 VALID_BODY_AUTH_SSL_SIGALGS = [
-    "no-rsa-pss",
-    "all",
+    "no-rsa-pss",  # Disable RSA-PSS signature algorithms for HTTPS authentication.
+    "all",  # Enable all supported signature algorithms for HTTPS authentication.
 ]
 VALID_BODY_CORS = [
-    "disable",
-    "enable",
+    "disable",  # Disable allowed origins white list for CORS.
+    "enable",  # Enable allowed origins white list for CORS.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -380,7 +380,7 @@ def validate_user_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "auth-type": "http",  # Valid enum value
+        ...     "auth-type": "{'name': 'http', 'help': 'Allow HTTP authentication.', 'label': 'Http', 'description': 'Allow HTTP authentication'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_setting_post(payload)
         >>> assert is_valid == True

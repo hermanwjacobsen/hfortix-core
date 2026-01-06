@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InternetServiceMatch:
     """
-    Configuration for firewall/internet-service-match
+    List internet services that exist at a given IP or Subnet.
     
     Path: firewall/internet_service_match
     Category: monitor

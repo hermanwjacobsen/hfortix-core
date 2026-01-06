@@ -111,12 +111,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable exempting the matching URLs.
+    "disable",  # Disable exempting the matching URLs.
 ]
 VALID_BODY_CACHE_EXEMPTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable exempting this URL pattern from caching.
+    "disable",  # Disable exempting this URL pattern from caching.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -246,7 +246,7 @@ def validate_web_proxy_url_match_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "url-pattern": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable exempting the matching URLs.', 'label': 'Enable', 'description': 'Enable exempting the matching URLs'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_web_proxy_url_match_post(payload)
         >>> assert is_valid == True

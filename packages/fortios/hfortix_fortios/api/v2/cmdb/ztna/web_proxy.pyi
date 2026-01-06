@@ -14,11 +14,11 @@ class WebProxyPayload(TypedDict, total=False):
     vip: NotRequired[str]  # Virtual IP name.
     host: NotRequired[str]  # Virtual or real host name.
     decrypted_traffic_mirror: NotRequired[str]  # Decrypted traffic mirror.
-    log_blocked_traffic: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of blocked traffic.
-    auth_portal: NotRequired[Literal["disable", "enable"]]  # Enable/disable authentication portal.
+    log_blocked_traffic: NotRequired[Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging of blocked traffic.
+    auth_portal: NotRequired[Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}]]  # Enable/disable authentication portal.
     auth_virtual_host: NotRequired[str]  # Virtual host for authentication portal.
     vip6: NotRequired[str]  # Virtual IPv6 name.
-    svr_pool_multiplex: NotRequired[Literal["enable", "disable"]]  # Enable/disable server pool multiplexing (default = disable).
+    svr_pool_multiplex: NotRequired[Literal[{"description": "Enable server pool multiplexing", "help": "Enable server pool multiplexing. Share connected server.", "label": "Enable", "name": "enable"}, {"description": "Disable server pool multiplexing", "help": "Disable server pool multiplexing. Do not share connected server.", "label": "Disable", "name": "disable"}]]  # Enable/disable server pool multiplexing (default = disable).
     svr_pool_ttl: NotRequired[int]  # Time-to-live in the server pool for idle connections to serv
     svr_pool_server_max_request: NotRequired[int]  # Maximum number of requests that servers in the server pool h
     svr_pool_server_max_concurrent_request: NotRequired[int]  # Maximum number of concurrent requests that servers in the se
@@ -55,11 +55,11 @@ class WebProxy:
         vip: str | None = ...,
         host: str | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
         vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
+        svr_pool_multiplex: Literal[{"description": "Enable server pool multiplexing", "help": "Enable server pool multiplexing. Share connected server.", "label": "Enable", "name": "enable"}, {"description": "Disable server pool multiplexing", "help": "Disable server pool multiplexing. Do not share connected server.", "label": "Disable", "name": "disable"}] | None = ...,
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
@@ -77,11 +77,11 @@ class WebProxy:
         vip: str | None = ...,
         host: str | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
         vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
+        svr_pool_multiplex: Literal[{"description": "Enable server pool multiplexing", "help": "Enable server pool multiplexing. Share connected server.", "label": "Enable", "name": "enable"}, {"description": "Disable server pool multiplexing", "help": "Disable server pool multiplexing. Do not share connected server.", "label": "Disable", "name": "disable"}] | None = ...,
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "network/debug_flow/start",
     "category": "monitor",
     "api_path": "network/debug-flow/start",
-    "help": "Configuration for network/debug-flow/start",
+    "help": "Start debug flow packet capture.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

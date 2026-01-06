@@ -56,7 +56,7 @@ class Check:
         """
         Retrieve user/banned/check configuration.
 
-        Configuration for user/banned/check
+        Check if an IPv4 or IPv6 address is banned administratively.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

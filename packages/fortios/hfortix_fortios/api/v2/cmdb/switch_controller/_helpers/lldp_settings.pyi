@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MANAGEMENT_INTERFACE: Literal["internal", "mgmt"]
-VALID_BODY_DEVICE_DETECTION: Literal["disable", "enable"]
+VALID_BODY_MANAGEMENT_INTERFACE: Literal[{"description": "Use internal interface", "help": "Use internal interface.", "label": "Internal", "name": "internal"}, {"description": "Use management interface", "help": "Use management interface.", "label": "Mgmt", "name": "mgmt"}]
+VALID_BODY_DEVICE_DETECTION: Literal[{"description": "Disable dynamic detection of LLDP neighbor devices", "help": "Disable dynamic detection of LLDP neighbor devices.", "label": "Disable", "name": "disable"}, {"description": "Enable dynamic detection of LLDP neighbor devices", "help": "Enable dynamic detection of LLDP neighbor devices.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

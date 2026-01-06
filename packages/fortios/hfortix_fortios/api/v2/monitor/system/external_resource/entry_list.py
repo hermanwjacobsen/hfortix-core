@@ -56,7 +56,7 @@ class EntryList:
         """
         Retrieve system/external_resource/entry_list configuration.
 
-        Configuration for system/external-resource/entry-list
+        Retrieve resource file status with a list of valid/invalid entries for the specific external resource. Empty lines and comment lines are not returned.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

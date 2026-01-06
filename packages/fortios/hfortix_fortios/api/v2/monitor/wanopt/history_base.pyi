@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class History:
     """
-    Configuration for wanopt/history
+    Retrieve WAN opt. statistics history.
     
     Path: wanopt/history
     Category: monitor

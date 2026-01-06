@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_YOUTUBE: Literal["enable", "disable"]
-VALID_BODY_VIMEO: Literal["enable", "disable"]
-VALID_BODY_DAILYMOTION: Literal["enable", "disable"]
+VALID_BODY_YOUTUBE: Literal[{"description": "Enable YouTube source", "help": "Enable YouTube source.", "label": "Enable", "name": "enable"}, {"description": "Disable YouTube source", "help": "Disable YouTube source.", "label": "Disable", "name": "disable"}]
+VALID_BODY_VIMEO: Literal[{"description": "Enable Vimeo source", "help": "Enable Vimeo source.", "label": "Enable", "name": "enable"}, {"description": "Disable Vimeo source", "help": "Disable Vimeo source.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DAILYMOTION: Literal[{"description": "Enable Dailymotion source", "help": "Enable Dailymotion source.", "label": "Enable", "name": "enable"}, {"description": "Disable Dailymotion source", "help": "Disable Dailymotion source.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

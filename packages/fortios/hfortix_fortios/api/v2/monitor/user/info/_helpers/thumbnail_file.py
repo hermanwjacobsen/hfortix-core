@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/info/thumbnail_file",
     "category": "monitor",
     "api_path": "user/info/thumbnail-file",
-    "help": "Configuration for user/info/thumbnail-file",
+    "help": "Get user info thumbnail by given file name.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

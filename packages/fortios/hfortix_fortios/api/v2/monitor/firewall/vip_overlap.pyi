@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class VipOverlap:
     """
-    Monitor endpoint for firewall/vip-overlap
+    List any Virtual IPs that overlap with another Virtual IP.
     
     Path: firewall/vip_overlap
     Category: monitor

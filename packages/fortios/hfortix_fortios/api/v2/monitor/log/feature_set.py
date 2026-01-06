@@ -56,7 +56,7 @@ class FeatureSet:
         """
         Retrieve log/feature_set configuration.
 
-        Configuration for log/feature-set
+        Retrieve logging feature set.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

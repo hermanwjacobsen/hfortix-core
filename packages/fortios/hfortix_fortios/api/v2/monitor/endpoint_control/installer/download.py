@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve endpoint_control/installer/download configuration.
 
-        Configuration for endpoint-control/installer/download
+        Download a FortiClient installer via FortiGuard.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

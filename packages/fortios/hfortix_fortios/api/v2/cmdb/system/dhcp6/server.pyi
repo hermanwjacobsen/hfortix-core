@@ -11,11 +11,11 @@ class ServerPayload(TypedDict, total=False):
         }
     """
     id: int  # ID.
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable this DHCPv6 configuration.
-    rapid_commit: NotRequired[Literal["disable", "enable"]]  # Enable/disable allow/disallow rapid commit.
+    status: NotRequired[Literal[{"description": "Enable this DHCPv6 server configuration", "help": "Enable this DHCPv6 server configuration.", "label": "Disable", "name": "disable"}, {"description": "Disable this DHCPv6 server configuration", "help": "Disable this DHCPv6 server configuration.", "label": "Enable", "name": "enable"}]]  # Enable/disable this DHCPv6 configuration.
+    rapid_commit: NotRequired[Literal[{"description": "Do not allow rapid commit", "help": "Do not allow rapid commit.", "label": "Disable", "name": "disable"}, {"description": "Allow rapid commit", "help": "Allow rapid commit.", "label": "Enable", "name": "enable"}]]  # Enable/disable allow/disallow rapid commit.
     lease_time: NotRequired[int]  # Lease time in seconds, 0 means unlimited.
-    dns_service: NotRequired[Literal["delegated", "default", "specify"]]  # Options for assigning DNS servers to DHCPv6 clients.
-    dns_search_list: NotRequired[Literal["delegated", "specify"]]  # DNS search list options.
+    dns_service: NotRequired[Literal[{"description": "Delegated DNS settings", "help": "Delegated DNS settings.", "label": "Delegated", "name": "delegated"}, {"description": "Clients are assigned the FortiGate\u0027s configured DNS servers", "help": "Clients are assigned the FortiGate\u0027s configured DNS servers.", "label": "Default", "name": "default"}, {"description": "Specify up to 3 DNS servers in the DHCPv6 server configuration", "help": "Specify up to 3 DNS servers in the DHCPv6 server configuration.", "label": "Specify", "name": "specify"}]]  # Options for assigning DNS servers to DHCPv6 clients.
+    dns_search_list: NotRequired[Literal[{"description": "Delegated the DNS search list", "help": "Delegated the DNS search list.", "label": "Delegated", "name": "delegated"}, {"description": "Specify the DNS search list", "help": "Specify the DNS search list.", "label": "Specify", "name": "specify"}]]  # DNS search list options.
     dns_server1: NotRequired[str]  # DNS server 1.
     dns_server2: NotRequired[str]  # DNS server 2.
     dns_server3: NotRequired[str]  # DNS server 3.
@@ -23,12 +23,12 @@ class ServerPayload(TypedDict, total=False):
     domain: NotRequired[str]  # Domain name suffix for the IP addresses that the DHCP server
     subnet: str  # Subnet or subnet-id if the IP mode is delegated.
     interface: str  # DHCP server can assign IP configurations to clients connecte
-    delegated_prefix_route: NotRequired[Literal["disable", "enable"]]  # Enable/disable automatically adding of routing for delegated
+    delegated_prefix_route: NotRequired[Literal[{"description": "Disable automatically adding of routing for delegated prefix", "help": "Disable automatically adding of routing for delegated prefix.", "label": "Disable", "name": "disable"}, {"description": "Enable automatically adding of routing for delegated prefix", "help": "Enable automatically adding of routing for delegated prefix.", "label": "Enable", "name": "enable"}]]  # Enable/disable automatically adding of routing for delegated
     options: NotRequired[list[dict[str, Any]]]  # DHCPv6 options.
     upstream_interface: str  # Interface name from where delegated information is provided.
     delegated_prefix_iaid: int  # IAID of obtained delegated-prefix from the upstream interfac
-    ip_mode: NotRequired[Literal["range", "delegated"]]  # Method used to assign client IP.
-    prefix_mode: NotRequired[Literal["dhcp6", "ra"]]  # Assigning a prefix from a DHCPv6 client or RA.
+    ip_mode: NotRequired[Literal[{"description": "Use range defined by start IP/end IP to assign client IP", "help": "Use range defined by start IP/end IP to assign client IP.", "label": "Range", "name": "range"}, {"description": "Use delegated prefix method to assign client IP", "help": "Use delegated prefix method to assign client IP.", "label": "Delegated", "name": "delegated"}]]  # Method used to assign client IP.
+    prefix_mode: NotRequired[Literal[{"description": "Use delegated prefix from a DHCPv6 client", "help": "Use delegated prefix from a DHCPv6 client.", "label": "Dhcp6", "name": "dhcp6"}, {"description": "Use prefix from RA", "help": "Use prefix from RA.", "label": "Ra", "name": "ra"}]]  # Assigning a prefix from a DHCPv6 client or RA.
     prefix_range: NotRequired[list[dict[str, Any]]]  # DHCP prefix configuration.
     ip_range: NotRequired[list[dict[str, Any]]]  # DHCP IP range configuration.
 
@@ -59,11 +59,11 @@ class Server:
         self,
         payload_dict: ServerPayload | None = ...,
         id: int | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        rapid_commit: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Enable this DHCPv6 server configuration", "help": "Enable this DHCPv6 server configuration.", "label": "Disable", "name": "disable"}, {"description": "Disable this DHCPv6 server configuration", "help": "Disable this DHCPv6 server configuration.", "label": "Enable", "name": "enable"}] | None = ...,
+        rapid_commit: Literal[{"description": "Do not allow rapid commit", "help": "Do not allow rapid commit.", "label": "Disable", "name": "disable"}, {"description": "Allow rapid commit", "help": "Allow rapid commit.", "label": "Enable", "name": "enable"}] | None = ...,
         lease_time: int | None = ...,
-        dns_service: Literal["delegated", "default", "specify"] | None = ...,
-        dns_search_list: Literal["delegated", "specify"] | None = ...,
+        dns_service: Literal[{"description": "Delegated DNS settings", "help": "Delegated DNS settings.", "label": "Delegated", "name": "delegated"}, {"description": "Clients are assigned the FortiGate\u0027s configured DNS servers", "help": "Clients are assigned the FortiGate\u0027s configured DNS servers.", "label": "Default", "name": "default"}, {"description": "Specify up to 3 DNS servers in the DHCPv6 server configuration", "help": "Specify up to 3 DNS servers in the DHCPv6 server configuration.", "label": "Specify", "name": "specify"}] | None = ...,
+        dns_search_list: Literal[{"description": "Delegated the DNS search list", "help": "Delegated the DNS search list.", "label": "Delegated", "name": "delegated"}, {"description": "Specify the DNS search list", "help": "Specify the DNS search list.", "label": "Specify", "name": "specify"}] | None = ...,
         dns_server1: str | None = ...,
         dns_server2: str | None = ...,
         dns_server3: str | None = ...,
@@ -71,12 +71,12 @@ class Server:
         domain: str | None = ...,
         subnet: str | None = ...,
         interface: str | None = ...,
-        delegated_prefix_route: Literal["disable", "enable"] | None = ...,
+        delegated_prefix_route: Literal[{"description": "Disable automatically adding of routing for delegated prefix", "help": "Disable automatically adding of routing for delegated prefix.", "label": "Disable", "name": "disable"}, {"description": "Enable automatically adding of routing for delegated prefix", "help": "Enable automatically adding of routing for delegated prefix.", "label": "Enable", "name": "enable"}] | None = ...,
         options: list[dict[str, Any]] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
-        ip_mode: Literal["range", "delegated"] | None = ...,
-        prefix_mode: Literal["dhcp6", "ra"] | None = ...,
+        ip_mode: Literal[{"description": "Use range defined by start IP/end IP to assign client IP", "help": "Use range defined by start IP/end IP to assign client IP.", "label": "Range", "name": "range"}, {"description": "Use delegated prefix method to assign client IP", "help": "Use delegated prefix method to assign client IP.", "label": "Delegated", "name": "delegated"}] | None = ...,
+        prefix_mode: Literal[{"description": "Use delegated prefix from a DHCPv6 client", "help": "Use delegated prefix from a DHCPv6 client.", "label": "Dhcp6", "name": "dhcp6"}, {"description": "Use prefix from RA", "help": "Use prefix from RA.", "label": "Ra", "name": "ra"}] | None = ...,
         prefix_range: list[dict[str, Any]] | None = ...,
         ip_range: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -88,11 +88,11 @@ class Server:
         self,
         payload_dict: ServerPayload | None = ...,
         id: int | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        rapid_commit: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Enable this DHCPv6 server configuration", "help": "Enable this DHCPv6 server configuration.", "label": "Disable", "name": "disable"}, {"description": "Disable this DHCPv6 server configuration", "help": "Disable this DHCPv6 server configuration.", "label": "Enable", "name": "enable"}] | None = ...,
+        rapid_commit: Literal[{"description": "Do not allow rapid commit", "help": "Do not allow rapid commit.", "label": "Disable", "name": "disable"}, {"description": "Allow rapid commit", "help": "Allow rapid commit.", "label": "Enable", "name": "enable"}] | None = ...,
         lease_time: int | None = ...,
-        dns_service: Literal["delegated", "default", "specify"] | None = ...,
-        dns_search_list: Literal["delegated", "specify"] | None = ...,
+        dns_service: Literal[{"description": "Delegated DNS settings", "help": "Delegated DNS settings.", "label": "Delegated", "name": "delegated"}, {"description": "Clients are assigned the FortiGate\u0027s configured DNS servers", "help": "Clients are assigned the FortiGate\u0027s configured DNS servers.", "label": "Default", "name": "default"}, {"description": "Specify up to 3 DNS servers in the DHCPv6 server configuration", "help": "Specify up to 3 DNS servers in the DHCPv6 server configuration.", "label": "Specify", "name": "specify"}] | None = ...,
+        dns_search_list: Literal[{"description": "Delegated the DNS search list", "help": "Delegated the DNS search list.", "label": "Delegated", "name": "delegated"}, {"description": "Specify the DNS search list", "help": "Specify the DNS search list.", "label": "Specify", "name": "specify"}] | None = ...,
         dns_server1: str | None = ...,
         dns_server2: str | None = ...,
         dns_server3: str | None = ...,
@@ -100,12 +100,12 @@ class Server:
         domain: str | None = ...,
         subnet: str | None = ...,
         interface: str | None = ...,
-        delegated_prefix_route: Literal["disable", "enable"] | None = ...,
+        delegated_prefix_route: Literal[{"description": "Disable automatically adding of routing for delegated prefix", "help": "Disable automatically adding of routing for delegated prefix.", "label": "Disable", "name": "disable"}, {"description": "Enable automatically adding of routing for delegated prefix", "help": "Enable automatically adding of routing for delegated prefix.", "label": "Enable", "name": "enable"}] | None = ...,
         options: list[dict[str, Any]] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
-        ip_mode: Literal["range", "delegated"] | None = ...,
-        prefix_mode: Literal["dhcp6", "ra"] | None = ...,
+        ip_mode: Literal[{"description": "Use range defined by start IP/end IP to assign client IP", "help": "Use range defined by start IP/end IP to assign client IP.", "label": "Range", "name": "range"}, {"description": "Use delegated prefix method to assign client IP", "help": "Use delegated prefix method to assign client IP.", "label": "Delegated", "name": "delegated"}] | None = ...,
+        prefix_mode: Literal[{"description": "Use delegated prefix from a DHCPv6 client", "help": "Use delegated prefix from a DHCPv6 client.", "label": "Dhcp6", "name": "dhcp6"}, {"description": "Use prefix from RA", "help": "Use prefix from RA.", "label": "Ra", "name": "ra"}] | None = ...,
         prefix_range: list[dict[str, Any]] | None = ...,
         ip_range: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

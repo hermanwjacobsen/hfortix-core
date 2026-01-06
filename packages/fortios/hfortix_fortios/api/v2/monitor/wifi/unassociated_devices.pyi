@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UnassociatedDevices:
     """
-    Monitor endpoint for wifi/unassociated-devices
+    Retrieve a list of unassociated and BLE devices
     
     Path: wifi/unassociated_devices
     Category: monitor

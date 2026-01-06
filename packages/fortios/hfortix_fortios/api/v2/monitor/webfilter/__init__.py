@@ -1,9 +1,9 @@
 """FortiOS CMDB - Webfilter category"""
 
 from . import category_quota
+from . import malicious_urls
 from . import override
 from .fortiguard_categories import FortiguardCategories
-from .malicious_urls import MaliciousUrls
 from .trusted_urls import TrustedUrls
 
 __all__ = [
@@ -26,7 +26,7 @@ class Webfilter:
             client: HTTP client instance for API communication
         """
         self.category_quota = category_quota.CategoryQuota(client)
+        self.malicious_urls = malicious_urls.MaliciousUrls(client)
         self.override = override.Override(client)
         self.fortiguard_categories = FortiguardCategories(client)
-        self.malicious_urls = MaliciousUrls(client)
         self.trusted_urls = TrustedUrls(client)

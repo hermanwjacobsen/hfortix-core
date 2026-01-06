@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/address_dynamic",
     "category": "monitor",
     "api_path": "firewall/address-dynamic",
-    "help": "Configuration for firewall/address-dynamic",
+    "help": "List of Fabric Connector address objects and the IPs they resolve to.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

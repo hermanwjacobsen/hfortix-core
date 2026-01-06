@@ -169,14 +169,14 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable resource record status.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable resource record status.", "label": "Enable", "name": "enable"}, {"help": "Disable resource record status.", "label": "Disable", "name": "disable"}],
         },
         "type": {
             "type": "option",
             "help": "Resource record type.",
             "required": True,
             "default": "A",
-            "options": ["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"],
+            "options": [{"help": "Host type.", "label": "A", "name": "A"}, {"help": "Name server type.", "label": "Ns", "name": "NS"}, {"help": "Canonical name type.", "label": "Cname", "name": "CNAME"}, {"help": "Mail exchange type.", "label": "Mx", "name": "MX"}, {"help": "IPv6 host type.", "label": "Aaaa", "name": "AAAA"}, {"help": "Pointer type.", "label": "Ptr", "name": "PTR"}, {"help": "IPv6 pointer type.", "label": "Ptr V6", "name": "PTR_V6"}],
         },
         "ttl": {
             "type": "integer",
@@ -221,27 +221,27 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_TYPE = [
-    "primary",
-    "secondary",
+    "primary",  # Primary DNS zone, to manage entries directly.
+    "secondary",  # Secondary DNS zone, to import entries from other DNS zones.
 ]
 VALID_BODY_VIEW = [
-    "shadow",
-    "public",
-    "shadow-ztna",
-    "proxy",
+    "shadow",  # Shadow DNS zone to serve internal clients.
+    "public",  # Public DNS zone to serve public clients.
+    "shadow-ztna",  # implicit DNS zone for ztna dox tunnel.
+    "proxy",  # Shadow DNS zone for internal proxy.
 ]
 VALID_BODY_AUTHORITATIVE = [
-    "enable",
-    "disable",
+    "enable",  # Enable authoritative zone.
+    "disable",  # Disable authoritative zone.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -372,7 +372,7 @@ def validate_system_dns_database_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_dns_database_post(payload)
         >>> assert is_valid == True

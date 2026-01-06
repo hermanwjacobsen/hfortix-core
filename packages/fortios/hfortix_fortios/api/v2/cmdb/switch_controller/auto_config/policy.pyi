@@ -13,9 +13,9 @@ class PolicyPayload(TypedDict, total=False):
     name: str  # Auto-config policy name.
     qos_policy: NotRequired[str]  # Auto-Config QoS policy.
     storm_control_policy: NotRequired[str]  # Auto-Config storm control policy.
-    poe_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable PoE status.
-    igmp_flood_report: NotRequired[Literal["enable", "disable"]]  # Enable/disable IGMP flood report.
-    igmp_flood_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable IGMP flood traffic.
+    poe_status: NotRequired[Literal[{"description": "Enable PoE status", "help": "Enable PoE status.", "label": "Enable", "name": "enable"}, {"description": "Disable PoE status", "help": "Disable PoE status.", "label": "Disable", "name": "disable"}]]  # Enable/disable PoE status.
+    igmp_flood_report: NotRequired[Literal[{"description": "Enable IGMP flood report", "help": "Enable IGMP flood report.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood report", "help": "Disable IGMP flood report.", "label": "Disable", "name": "disable"}]]  # Enable/disable IGMP flood report.
+    igmp_flood_traffic: NotRequired[Literal[{"description": "Enable IGMP flood traffic", "help": "Enable IGMP flood traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood traffic", "help": "Disable IGMP flood traffic.", "label": "Disable", "name": "disable"}]]  # Enable/disable IGMP flood traffic.
 
 
 class Policy:
@@ -46,9 +46,9 @@ class Policy:
         name: str | None = ...,
         qos_policy: str | None = ...,
         storm_control_policy: str | None = ...,
-        poe_status: Literal["enable", "disable"] | None = ...,
-        igmp_flood_report: Literal["enable", "disable"] | None = ...,
-        igmp_flood_traffic: Literal["enable", "disable"] | None = ...,
+        poe_status: Literal[{"description": "Enable PoE status", "help": "Enable PoE status.", "label": "Enable", "name": "enable"}, {"description": "Disable PoE status", "help": "Disable PoE status.", "label": "Disable", "name": "disable"}] | None = ...,
+        igmp_flood_report: Literal[{"description": "Enable IGMP flood report", "help": "Enable IGMP flood report.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood report", "help": "Disable IGMP flood report.", "label": "Disable", "name": "disable"}] | None = ...,
+        igmp_flood_traffic: Literal[{"description": "Enable IGMP flood traffic", "help": "Enable IGMP flood traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood traffic", "help": "Disable IGMP flood traffic.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -60,9 +60,9 @@ class Policy:
         name: str | None = ...,
         qos_policy: str | None = ...,
         storm_control_policy: str | None = ...,
-        poe_status: Literal["enable", "disable"] | None = ...,
-        igmp_flood_report: Literal["enable", "disable"] | None = ...,
-        igmp_flood_traffic: Literal["enable", "disable"] | None = ...,
+        poe_status: Literal[{"description": "Enable PoE status", "help": "Enable PoE status.", "label": "Enable", "name": "enable"}, {"description": "Disable PoE status", "help": "Disable PoE status.", "label": "Disable", "name": "disable"}] | None = ...,
+        igmp_flood_report: Literal[{"description": "Enable IGMP flood report", "help": "Enable IGMP flood report.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood report", "help": "Disable IGMP flood report.", "label": "Disable", "name": "disable"}] | None = ...,
+        igmp_flood_traffic: Literal[{"description": "Enable IGMP flood traffic", "help": "Enable IGMP flood traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood traffic", "help": "Disable IGMP flood traffic.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

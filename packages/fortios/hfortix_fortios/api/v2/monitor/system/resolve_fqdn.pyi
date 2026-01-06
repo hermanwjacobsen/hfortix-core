@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ResolveFqdn:
     """
-    Configuration for system/resolve-fqdn
+    Resolves the provided FQDNs to FQDN -> IP mappings.
     
     Path: system/resolve_fqdn
     Category: monitor

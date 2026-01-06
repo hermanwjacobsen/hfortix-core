@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/fsso",
     "category": "monitor",
     "api_path": "user/fsso",
-    "help": "Monitor endpoint for user/fsso",
+    "help": "Refresh remote agent group list for all fsso agents.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

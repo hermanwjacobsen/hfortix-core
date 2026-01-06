@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ApChannels:
     """
-    Configuration for wifi/ap_channels
+    Retrieve the set of channel lists for all possible band/configurations for the given FortiAP platform.
     
     Path: wifi/ap_channels
     Category: monitor

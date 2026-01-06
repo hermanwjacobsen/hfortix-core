@@ -108,16 +108,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_POE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable PoE status.
+    "disable",  # Disable PoE status.
 ]
 VALID_BODY_IGMP_FLOOD_REPORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable IGMP flood report.
+    "disable",  # Disable IGMP flood report.
 ]
 VALID_BODY_IGMP_FLOOD_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable IGMP flood traffic.
+    "disable",  # Disable IGMP flood traffic.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -247,7 +247,7 @@ def validate_switch_controller_auto_config_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "poe-status": "enable",  # Valid enum value
+        ...     "poe-status": "{'name': 'enable', 'help': 'Enable PoE status.', 'label': 'Enable', 'description': 'Enable PoE status'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_auto_config_policy_post(payload)
         >>> assert is_valid == True

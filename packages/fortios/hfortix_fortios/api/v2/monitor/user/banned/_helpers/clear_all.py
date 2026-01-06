@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/banned/clear_all",
     "category": "monitor",
     "api_path": "user/banned/clear_all",
-    "help": "Configuration for user/banned/clear_all",
+    "help": "Immediately clear all banned users.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

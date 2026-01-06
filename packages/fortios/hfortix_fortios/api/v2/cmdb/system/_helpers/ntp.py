@@ -137,25 +137,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to use NTPv3 instead of NTPv4.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable NTPv3.", "label": "Enable", "name": "enable"}, {"help": "Disable NTPv3 (use NTPv4).", "label": "Disable", "name": "disable"}],
         },
         "authentication": {
             "type": "option",
             "help": "Enable/disable authentication.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable authentication.", "label": "Enable", "name": "enable"}, {"help": "Disable authentication.", "label": "Disable", "name": "disable"}],
         },
         "key-type": {
             "type": "option",
             "help": "Select NTP authentication type.",
             "default": "MD5",
-            "options": ["MD5", "SHA1", "SHA256"],
+            "options": [{"help": "Enable MD5(NTPv3) authentication.", "label": "Md5", "name": "MD5"}, {"help": "Enable SHA1(NTPv4) authentication.", "label": "Sha1", "name": "SHA1"}, {"help": "Enable SHA256(NTPv4) authentication.", "label": "Sha256", "name": "SHA256"}],
         },
         "key": {
             "type": "password",
             "help": "Key for MD5(NTPv3)/SHA1(NTPv4)/SHA256(NTPv4) authentication.",
             "required": True,
-            "max_length": 59,
+            "max_length": 64,
         },
         "key-id": {
             "type": "integer",
@@ -169,13 +169,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Choose to connect to IPv4 or/and IPv6 NTP server.",
             "default": "Both",
-            "options": ["IPv6", "IPv4", "Both"],
+            "options": [{"help": "Enable look up for IPv6 NTP server.", "label": "Ipv6", "name": "IPv6"}, {"help": "Enable look up for IPv4 NTP server.", "label": "Ipv4", "name": "IPv4"}, {"help": "Enable look up for both IPv4 and IPv6 NTP server.", "label": "Both", "name": "Both"}],
         },
         "interface-select-method": {
             "type": "option",
             "help": "Specify how to select outgoing interface to reach server.",
             "default": "auto",
-            "options": ["auto", "sdwan", "specify"],
+            "options": [{"help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}],
         },
         "interface": {
             "type": "string",
@@ -206,25 +206,25 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_NTPSYNC = [
-    "enable",
-    "disable",
+    "enable",  # Enable synchronization with NTP Server.
+    "disable",  # Disable synchronization with NTP Server.
 ]
 VALID_BODY_TYPE = [
-    "fortiguard",
-    "custom",
+    "fortiguard",  # Use the FortiGuard NTP server.
+    "custom",  # Use any other available NTP server.
 ]
 VALID_BODY_SERVER_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGate NTP Server Mode.
+    "disable",  # Disable FortiGate NTP Server Mode.
 ]
 VALID_BODY_AUTHENTICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable authentication.
+    "disable",  # Disable authentication.
 ]
 VALID_BODY_KEY_TYPE = [
-    "MD5",
-    "SHA1",
-    "SHA256",
+    "MD5",  # Use MD5 to authenticate the message.
+    "SHA1",  # Use SHA1 to authenticate the message.
+    "SHA256",  # Use SHA256 to authenticate the message.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -351,7 +351,7 @@ def validate_system_ntp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "key": True,
-        ...     "ntpsync": "enable",  # Valid enum value
+        ...     "ntpsync": "{'name': 'enable', 'help': 'Enable synchronization with NTP Server.', 'label': 'Enable', 'description': 'Enable synchronization with NTP Server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ntp_post(payload)
         >>> assert is_valid == True

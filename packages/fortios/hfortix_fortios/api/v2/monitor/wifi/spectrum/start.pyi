@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Start:
     """
-    Configuration for wifi/spectrum/start
+    Start spectrum analysis for a specific FortiAP for a duration of time.
     
     Path: wifi/spectrum/start
     Category: monitor

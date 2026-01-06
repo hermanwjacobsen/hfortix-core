@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wanopt/webcache/reset",
     "category": "monitor",
     "api_path": "wanopt/webcache/reset",
-    "help": "Configuration for wanopt/webcache/reset",
+    "help": "Reset webcache statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ROUND_ROBIN: Literal["enable", "disable"]
+VALID_BODY_ROUND_ROBIN: Literal[{"description": "Enable round-robin redistribution", "help": "Enable round-robin redistribution.", "label": "Enable", "name": "enable"}, {"description": "Disable round-robin redistribution", "help": "Disable round-robin redistribution.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

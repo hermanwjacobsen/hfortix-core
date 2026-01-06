@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/managed_switch/factory_reset",
     "category": "monitor",
     "api_path": "switch-controller/managed-switch/factory-reset",
-    "help": "Configuration for switch-controller/managed-switch/factory-reset",
+    "help": "Send 'Factory Reset' command to a given FortiSwitch.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

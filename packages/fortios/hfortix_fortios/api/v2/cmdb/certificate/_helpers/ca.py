@@ -141,25 +141,25 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_RANGE = [
-    "global",
-    "vdom",
+    "global",  # Global range.
+    "vdom",  # VDOM IP address range.
 ]
 VALID_BODY_SOURCE = [
-    "factory",
-    "user",
-    "bundle",
+    "factory",  # Factory installed certificate.
+    "user",  # User generated certificate.
+    "bundle",  # Bundle file certificate.
 ]
 VALID_BODY_SSL_INSPECTION_TRUSTED = [
-    "enable",
-    "disable",
+    "enable",  # Trusted CA for SSL inspection.
+    "disable",  # Untrusted CA for SSL inspection.
 ]
 VALID_BODY_OBSOLETE = [
-    "disable",
-    "enable",
+    "disable",  # Alive.
+    "enable",  # Obsolete.
 ]
 VALID_BODY_FABRIC_CA = [
-    "disable",
-    "enable",
+    "disable",  # Disable synchronization of CA across Security Fabric.
+    "enable",  # Enable synchronization of CA across Security Fabric.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -290,7 +290,7 @@ def validate_certificate_ca_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "range": "global",  # Valid enum value
+        ...     "range": "{'name': 'global', 'help': 'Global range.', 'label': 'Global', 'description': 'Global range'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_certificate_ca_post(payload)
         >>> assert is_valid == True

@@ -10,31 +10,31 @@ class OspfPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    abr_type: NotRequired[Literal["cisco", "ibm", "shortcut", "standard"]]  # Area border router type.
+    abr_type: NotRequired[Literal[{"description": "Cisco", "help": "Cisco.", "label": "Cisco", "name": "cisco"}, {"description": "IBM", "help": "IBM.", "label": "Ibm", "name": "ibm"}, {"description": "Shortcut", "help": "Shortcut.", "label": "Shortcut", "name": "shortcut"}, {"description": "Standard", "help": "Standard.", "label": "Standard", "name": "standard"}]]  # Area border router type.
     auto_cost_ref_bandwidth: NotRequired[int]  # Reference bandwidth in terms of megabits per second.
     distance_external: NotRequired[int]  # Administrative external distance.
     distance_inter_area: NotRequired[int]  # Administrative inter-area distance.
     distance_intra_area: NotRequired[int]  # Administrative intra-area distance.
-    database_overflow: NotRequired[Literal["enable", "disable"]]  # Enable/disable database overflow.
+    database_overflow: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable database overflow.
     database_overflow_max_lsas: NotRequired[int]  # Database overflow maximum LSAs.
     database_overflow_time_to_recover: NotRequired[int]  # Database overflow time to recover (sec).
-    default_information_originate: NotRequired[Literal["enable", "always", "disable"]]  # Enable/disable generation of default route.
+    default_information_originate: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Always advertise the default router", "help": "Always advertise the default router.", "label": "Always", "name": "always"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable generation of default route.
     default_information_metric: NotRequired[int]  # Default information metric.
-    default_information_metric_type: NotRequired[Literal["1", "2"]]  # Default information metric type.
+    default_information_metric_type: NotRequired[Literal[{"description": "Type 1", "help": "Type 1.", "label": "1", "name": "1"}, {"description": "Type 2", "help": "Type 2.", "label": "2", "name": "2"}]]  # Default information metric type.
     default_information_route_map: NotRequired[str]  # Default information route map.
     default_metric: NotRequired[int]  # Default metric of redistribute routes.
     distance: NotRequired[int]  # Distance of the route.
     lsa_refresh_interval: NotRequired[int]  # The minimal OSPF LSA update time interval
-    rfc1583_compatible: NotRequired[Literal["enable", "disable"]]  # Enable/disable RFC1583 compatibility.
+    rfc1583_compatible: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable RFC1583 compatibility.
     router_id: str  # Router ID.
     spf_timers: NotRequired[str]  # SPF calculation frequency.
-    bfd: NotRequired[Literal["enable", "disable"]]  # Bidirectional Forwarding Detection (BFD).
-    log_neighbour_changes: NotRequired[Literal["enable", "disable"]]  # Log of OSPF neighbor changes.
+    bfd: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Bidirectional Forwarding Detection (BFD).
+    log_neighbour_changes: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Log of OSPF neighbor changes.
     distribute_list_in: NotRequired[str]  # Filter incoming routes.
     distribute_route_map_in: NotRequired[str]  # Filter incoming external routes by route-map.
-    restart_mode: NotRequired[Literal["none", "lls", "graceful-restart"]]  # OSPF restart mode (graceful or LLS).
+    restart_mode: NotRequired[Literal[{"description": "Hitless restart disabled", "help": "Hitless restart disabled.", "label": "None", "name": "none"}, {"description": "LLS mode", "help": "LLS mode.", "label": "Lls", "name": "lls"}, {"description": "Graceful Restart Mode", "help": "Graceful Restart Mode.", "label": "Graceful Restart", "name": "graceful-restart"}]]  # OSPF restart mode (graceful or LLS).
     restart_period: NotRequired[int]  # Graceful restart period.
-    restart_on_topology_change: NotRequired[Literal["enable", "disable"]]  # Enable/disable continuing graceful restart upon topology cha
+    restart_on_topology_change: NotRequired[Literal[{"description": "Continue graceful restart upon topology change", "help": "Continue graceful restart upon topology change.", "label": "Enable", "name": "enable"}, {"description": "Exit graceful restart upon topology change", "help": "Exit graceful restart upon topology change.", "label": "Disable", "name": "disable"}]]  # Enable/disable continuing graceful restart upon topology cha
     area: NotRequired[list[dict[str, Any]]]  # OSPF area configuration.
     ospf_interface: NotRequired[list[dict[str, Any]]]  # OSPF interface configuration.
     network: NotRequired[list[dict[str, Any]]]  # OSPF network configuration.
@@ -69,31 +69,31 @@ class Ospf:
     def post(
         self,
         payload_dict: OspfPayload | None = ...,
-        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        abr_type: Literal[{"description": "Cisco", "help": "Cisco.", "label": "Cisco", "name": "cisco"}, {"description": "IBM", "help": "IBM.", "label": "Ibm", "name": "ibm"}, {"description": "Shortcut", "help": "Shortcut.", "label": "Shortcut", "name": "shortcut"}, {"description": "Standard", "help": "Standard.", "label": "Standard", "name": "standard"}] | None = ...,
         auto_cost_ref_bandwidth: int | None = ...,
         distance_external: int | None = ...,
         distance_inter_area: int | None = ...,
         distance_intra_area: int | None = ...,
-        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         database_overflow_max_lsas: int | None = ...,
         database_overflow_time_to_recover: int | None = ...,
-        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_originate: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Always advertise the default router", "help": "Always advertise the default router.", "label": "Always", "name": "always"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         default_information_metric: int | None = ...,
-        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_metric_type: Literal[{"description": "Type 1", "help": "Type 1.", "label": "1", "name": "1"}, {"description": "Type 2", "help": "Type 2.", "label": "2", "name": "2"}] | None = ...,
         default_information_route_map: str | None = ...,
         default_metric: int | None = ...,
         distance: int | None = ...,
         lsa_refresh_interval: int | None = ...,
-        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        rfc1583_compatible: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         router_id: str | None = ...,
         spf_timers: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        bfd: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        log_neighbour_changes: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         distribute_list_in: str | None = ...,
         distribute_route_map_in: str | None = ...,
-        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_mode: Literal[{"description": "Hitless restart disabled", "help": "Hitless restart disabled.", "label": "None", "name": "none"}, {"description": "LLS mode", "help": "LLS mode.", "label": "Lls", "name": "lls"}, {"description": "Graceful Restart Mode", "help": "Graceful Restart Mode.", "label": "Graceful Restart", "name": "graceful-restart"}] | None = ...,
         restart_period: int | None = ...,
-        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        restart_on_topology_change: Literal[{"description": "Continue graceful restart upon topology change", "help": "Continue graceful restart upon topology change.", "label": "Enable", "name": "enable"}, {"description": "Exit graceful restart upon topology change", "help": "Exit graceful restart upon topology change.", "label": "Disable", "name": "disable"}] | None = ...,
         area: list[dict[str, Any]] | None = ...,
         ospf_interface: list[dict[str, Any]] | None = ...,
         network: list[dict[str, Any]] | None = ...,
@@ -110,31 +110,31 @@ class Ospf:
     def put(
         self,
         payload_dict: OspfPayload | None = ...,
-        abr_type: Literal["cisco", "ibm", "shortcut", "standard"] | None = ...,
+        abr_type: Literal[{"description": "Cisco", "help": "Cisco.", "label": "Cisco", "name": "cisco"}, {"description": "IBM", "help": "IBM.", "label": "Ibm", "name": "ibm"}, {"description": "Shortcut", "help": "Shortcut.", "label": "Shortcut", "name": "shortcut"}, {"description": "Standard", "help": "Standard.", "label": "Standard", "name": "standard"}] | None = ...,
         auto_cost_ref_bandwidth: int | None = ...,
         distance_external: int | None = ...,
         distance_inter_area: int | None = ...,
         distance_intra_area: int | None = ...,
-        database_overflow: Literal["enable", "disable"] | None = ...,
+        database_overflow: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         database_overflow_max_lsas: int | None = ...,
         database_overflow_time_to_recover: int | None = ...,
-        default_information_originate: Literal["enable", "always", "disable"] | None = ...,
+        default_information_originate: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Always advertise the default router", "help": "Always advertise the default router.", "label": "Always", "name": "always"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         default_information_metric: int | None = ...,
-        default_information_metric_type: Literal["1", "2"] | None = ...,
+        default_information_metric_type: Literal[{"description": "Type 1", "help": "Type 1.", "label": "1", "name": "1"}, {"description": "Type 2", "help": "Type 2.", "label": "2", "name": "2"}] | None = ...,
         default_information_route_map: str | None = ...,
         default_metric: int | None = ...,
         distance: int | None = ...,
         lsa_refresh_interval: int | None = ...,
-        rfc1583_compatible: Literal["enable", "disable"] | None = ...,
+        rfc1583_compatible: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         router_id: str | None = ...,
         spf_timers: str | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
+        bfd: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        log_neighbour_changes: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         distribute_list_in: str | None = ...,
         distribute_route_map_in: str | None = ...,
-        restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
+        restart_mode: Literal[{"description": "Hitless restart disabled", "help": "Hitless restart disabled.", "label": "None", "name": "none"}, {"description": "LLS mode", "help": "LLS mode.", "label": "Lls", "name": "lls"}, {"description": "Graceful Restart Mode", "help": "Graceful Restart Mode.", "label": "Graceful Restart", "name": "graceful-restart"}] | None = ...,
         restart_period: int | None = ...,
-        restart_on_topology_change: Literal["enable", "disable"] | None = ...,
+        restart_on_topology_change: Literal[{"description": "Continue graceful restart upon topology change", "help": "Continue graceful restart upon topology change.", "label": "Enable", "name": "enable"}, {"description": "Exit graceful restart upon topology change", "help": "Exit graceful restart upon topology change.", "label": "Disable", "name": "disable"}] | None = ...,
         area: list[dict[str, Any]] | None = ...,
         ospf_interface: list[dict[str, Any]] | None = ...,
         network: list[dict[str, Any]] | None = ...,

@@ -56,7 +56,7 @@ class ManualUpdate:
         """
         Retrieve system/fortiguard/manual_update configuration.
 
-        Configuration for system/fortiguard/manual-update
+        Manually update entitlements.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

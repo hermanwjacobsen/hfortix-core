@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MPSK_EXTERNAL_SERVER_AUTH: Literal["enable", "disable"]
-VALID_BODY_MPSK_TYPE: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"]
+VALID_BODY_MPSK_EXTERNAL_SERVER_AUTH: Literal[{"description": "Enable MPSK external server authentication", "help": "Enable MPSK external server authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable MPSK external server authentication", "help": "Disable MPSK external server authentication.", "label": "Disable", "name": "disable"}]
+VALID_BODY_MPSK_TYPE: Literal[{"description": "WPA2 personal", "help": "WPA2 personal.", "label": "Wpa2 Personal", "name": "wpa2-personal"}, {"description": "WPA3 SAE", "help": "WPA3 SAE.", "label": "Wpa3 Sae", "name": "wpa3-sae"}, {"description": "WPA3 SAE transition", "help": "WPA3 SAE transition.", "label": "Wpa3 Sae Transition", "name": "wpa3-sae-transition"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

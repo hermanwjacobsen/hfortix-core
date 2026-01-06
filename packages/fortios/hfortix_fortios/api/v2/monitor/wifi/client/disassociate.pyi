@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Disassociate:
     """
-    Configuration for wifi/client/disassociate
+    Disassociate a WiFi client from the FortiAP it's currently connected to. The client will need to reassociate with the same FortiAP or another to resume connectivity.
     
     Path: wifi/client/disassociate
     Category: monitor

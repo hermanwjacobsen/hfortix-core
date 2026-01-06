@@ -10,7 +10,7 @@ class SystemPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    parallel_process_override: NotRequired[Literal["disable", "enable"]]  # Enable/disable parallel process override.
+    parallel_process_override: NotRequired[Literal[{"description": "Disable maximum parallel process override", "help": "Disable maximum parallel process override.", "label": "Disable", "name": "disable"}, {"description": "Enable maximum parallel process override", "help": "Enable maximum parallel process override.", "label": "Enable", "name": "enable"}]]  # Enable/disable parallel process override.
     parallel_process: NotRequired[int]  # Maximum number of parallel processes.
     data_sync_interval: NotRequired[int]  # Time interval between collection of switch data (30 - 1800 s
     iot_weight_threshold: NotRequired[int]  # MAC entry's confidence value. Value is re-queried when below
@@ -19,7 +19,7 @@ class SystemPayload(TypedDict, total=False):
     iot_mac_idle: NotRequired[int]  # MAC entry's idle time. MAC entry is removed after this value
     nac_periodic_interval: NotRequired[int]  # Periodic time interval to run NAC engine (5 - 180 sec, defau
     dynamic_periodic_interval: NotRequired[int]  # Periodic time interval to run Dynamic port policy engine (5 
-    tunnel_mode: NotRequired[Literal["compatible", "moderate", "strict"]]  # Compatible/strict tunnel mode.
+    tunnel_mode: NotRequired[Literal[{"description": "Least restrictive", "help": "Least restrictive. Supports the lowest levels of security but highest compatibility between all FortiSwitch and FortiGate devices. 3rd party certificates permitted.", "label": "Compatible", "name": "compatible"}, {"description": "Moderate level of security", "help": "Moderate level of security. 3rd party certificates permitted.", "label": "Moderate", "name": "moderate"}, {"description": "Highest level of security requirements", "help": "Highest level of security requirements. If enabled, the FortiGate device follows the same security mode requirements as in FIPS/CC mode.", "label": "Strict", "name": "strict"}]]  # Compatible/strict tunnel mode.
     caputp_echo_interval: NotRequired[int]  # Echo interval for the caputp echo requests from swtp.
     caputp_max_retransmit: NotRequired[int]  # Maximum retransmission count for the caputp tunnel packets.
 
@@ -48,7 +48,7 @@ class System:
     def post(
         self,
         payload_dict: SystemPayload | None = ...,
-        parallel_process_override: Literal["disable", "enable"] | None = ...,
+        parallel_process_override: Literal[{"description": "Disable maximum parallel process override", "help": "Disable maximum parallel process override.", "label": "Disable", "name": "disable"}, {"description": "Enable maximum parallel process override", "help": "Enable maximum parallel process override.", "label": "Enable", "name": "enable"}] | None = ...,
         parallel_process: int | None = ...,
         data_sync_interval: int | None = ...,
         iot_weight_threshold: int | None = ...,
@@ -57,7 +57,7 @@ class System:
         iot_mac_idle: int | None = ...,
         nac_periodic_interval: int | None = ...,
         dynamic_periodic_interval: int | None = ...,
-        tunnel_mode: Literal["compatible", "moderate", "strict"] | None = ...,
+        tunnel_mode: Literal[{"description": "Least restrictive", "help": "Least restrictive. Supports the lowest levels of security but highest compatibility between all FortiSwitch and FortiGate devices. 3rd party certificates permitted.", "label": "Compatible", "name": "compatible"}, {"description": "Moderate level of security", "help": "Moderate level of security. 3rd party certificates permitted.", "label": "Moderate", "name": "moderate"}, {"description": "Highest level of security requirements", "help": "Highest level of security requirements. If enabled, the FortiGate device follows the same security mode requirements as in FIPS/CC mode.", "label": "Strict", "name": "strict"}] | None = ...,
         caputp_echo_interval: int | None = ...,
         caputp_max_retransmit: int | None = ...,
         vdom: str | bool | None = ...,
@@ -68,7 +68,7 @@ class System:
     def put(
         self,
         payload_dict: SystemPayload | None = ...,
-        parallel_process_override: Literal["disable", "enable"] | None = ...,
+        parallel_process_override: Literal[{"description": "Disable maximum parallel process override", "help": "Disable maximum parallel process override.", "label": "Disable", "name": "disable"}, {"description": "Enable maximum parallel process override", "help": "Enable maximum parallel process override.", "label": "Enable", "name": "enable"}] | None = ...,
         parallel_process: int | None = ...,
         data_sync_interval: int | None = ...,
         iot_weight_threshold: int | None = ...,
@@ -77,7 +77,7 @@ class System:
         iot_mac_idle: int | None = ...,
         nac_periodic_interval: int | None = ...,
         dynamic_periodic_interval: int | None = ...,
-        tunnel_mode: Literal["compatible", "moderate", "strict"] | None = ...,
+        tunnel_mode: Literal[{"description": "Least restrictive", "help": "Least restrictive. Supports the lowest levels of security but highest compatibility between all FortiSwitch and FortiGate devices. 3rd party certificates permitted.", "label": "Compatible", "name": "compatible"}, {"description": "Moderate level of security", "help": "Moderate level of security. 3rd party certificates permitted.", "label": "Moderate", "name": "moderate"}, {"description": "Highest level of security requirements", "help": "Highest level of security requirements. If enabled, the FortiGate device follows the same security mode requirements as in FIPS/CC mode.", "label": "Strict", "name": "strict"}] | None = ...,
         caputp_echo_interval: int | None = ...,
         caputp_max_retransmit: int | None = ...,
         vdom: str | bool | None = ...,

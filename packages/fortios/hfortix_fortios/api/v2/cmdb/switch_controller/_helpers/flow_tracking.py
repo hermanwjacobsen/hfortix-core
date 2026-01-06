@@ -157,7 +157,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Collector L4 transport protocol for exporting packets.",
             "default": "udp",
-            "options": ["udp", "tcp", "sctp"],
+            "options": [{"help": "UDP protocol.", "label": "Udp", "name": "udp"}, {"help": "TCP protocol.", "label": "Tcp", "name": "tcp"}, {"help": "SCTP protocol.", "label": "Sctp", "name": "sctp"}],
         },
     },
     "aggregates": {
@@ -180,22 +180,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SAMPLE_MODE = [
-    "local",
-    "perimeter",
-    "device-ingress",
+    "local",  # Set local mode which samples on the specific switch port.
+    "perimeter",  # Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress.
+    "device-ingress",  # Set device -ingress mode which samples across all switch ports at the ingress.
 ]
 VALID_BODY_FORMAT = [
-    "netflow1",
-    "netflow5",
-    "netflow9",
-    "ipfix",
+    "netflow1",  # Netflow version 1 sampling.
+    "netflow5",  # Netflow version 5 sampling.
+    "netflow9",  # Netflow version 9 sampling.
+    "ipfix",  # Ipfix sampling.
 ]
 VALID_BODY_LEVEL = [
-    "vlan",
-    "ip",
-    "port",
-    "proto",
-    "mac",
+    "vlan",  # Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet.
+    "ip",  # Collects srcip/dstip from the sample packet.
+    "port",  # Collects srcip/dstip/srcport/dstport/protocol from the sample packet.
+    "proto",  # Collects srcip/dstip/protocol from the sample packet.
+    "mac",  # Collects smac/dmac from the sample packet.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -320,7 +320,7 @@ def validate_switch_controller_flow_tracking_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "sample-mode": "local",  # Valid enum value
+        ...     "sample-mode": "{'name': 'local', 'help': 'Set local mode which samples on the specific switch port.', 'label': 'Local', 'description': 'Set local mode which samples on the specific switch port'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_flow_tracking_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ForticareOrgList:
     """
-    Configuration for license/forticare-org-list
+    Get FortiCare organization size and industry lists.
     
     Path: license/forticare_org_list
     Category: monitor

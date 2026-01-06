@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Generate:
     """
-    Configuration for vpn-certificate/csr/generate
+    Generate a certificate signing request (CSR) and a private key. The CSR can be retrieved / downloaded from CLI, GUI and REST API.
     
     Path: vpn_certificate/csr/generate
     Category: monitor

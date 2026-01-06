@@ -56,7 +56,7 @@ class ExtensionDevice:
         """
         Retrieve firmware/extension_device configuration.
 
-        Configuration for firmware/extension-device
+        Retrieve a list of recommended firmwares for the specified extension device type.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

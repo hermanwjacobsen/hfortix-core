@@ -56,7 +56,7 @@ class Disconnect:
         """
         Retrieve system/modem/disconnect configuration.
 
-        Configuration for system/modem/disconnect
+        Trigger a disconnect for the configured modem.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ManagedAp:
     """
-    Monitor endpoint for wifi/managed_ap
+    Retrieve a list of managed FortiAPs.
     
     Path: wifi/managed_ap
     Category: monitor

@@ -120,16 +120,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_COUNT = [
-    "disable",
-    "enable",
+    "disable",  # Enable packet count on the NAC device.
+    "enable",  # Disable packet count on the NAC device.
 ]
 VALID_BODY_BOUNCE_PORT_LINK = [
-    "disable",
-    "enable",
+    "disable",  # Disable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.
+    "enable",  # Enable bouncing (administratively bring the link down, up) of a switch port where this mac-policy is applied.
 ]
 VALID_BODY_POE_RESET = [
-    "disable",
-    "enable",
+    "disable",  # Disable POE reset of a switch port where this mac-policy is applied.
+    "enable",  # Enable POE reset of a switch port where this mac-policy is applied.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -259,7 +259,7 @@ def validate_switch_controller_mac_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "fortilink": True,
-        ...     "count": "disable",  # Valid enum value
+        ...     "count": "{'name': 'disable', 'help': 'Enable packet count on the NAC device.', 'label': 'Disable', 'description': 'Enable packet count on the NAC device'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_mac_policy_post(payload)
         >>> assert is_valid == True

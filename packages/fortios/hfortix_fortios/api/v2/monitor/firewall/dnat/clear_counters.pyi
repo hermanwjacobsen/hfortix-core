@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearCounters:
     """
-    Configuration for firewall/dnat/clear-counters
+    Reset hit count statistics for one or more firewall virtual IP/server by ID.
     
     Path: firewall/dnat/clear_counters
     Category: monitor

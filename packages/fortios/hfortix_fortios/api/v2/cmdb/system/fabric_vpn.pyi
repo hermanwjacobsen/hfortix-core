@@ -10,11 +10,11 @@ class FabricVpnPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: Literal["enable", "disable"]  # Enable/disable Fabric VPN.
-    sync_mode: Literal["enable", "disable"]  # Setting synchronised by fabric or manual.
+    status: Literal[{"description": "Enable Fabric VPN", "help": "Enable Fabric VPN.", "label": "Enable", "name": "enable"}, {"description": "Disable Fabric VPN", "help": "Disable Fabric VPN.", "label": "Disable", "name": "disable"}]  # Enable/disable Fabric VPN.
+    sync_mode: Literal[{"description": "Enable fabric led configuration synchronization", "help": "Enable fabric led configuration synchronization.", "label": "Enable", "name": "enable"}, {"description": "Disable fabric led configuration synchronization", "help": "Disable fabric led configuration synchronization.", "label": "Disable", "name": "disable"}]  # Setting synchronized by fabric or manual.
     branch_name: NotRequired[str]  # Branch name.
-    policy_rule: NotRequired[Literal["health-check", "manual", "auto"]]  # Policy creation rule.
-    vpn_role: Literal["hub", "spoke"]  # Fabric VPN role.
+    policy_rule: NotRequired[Literal[{"description": "Create health check policy automatically", "help": "Create health check policy automatically.", "label": "Health Check", "name": "health-check"}, {"description": "All policies will be created manually", "help": "All policies will be created manually.", "label": "Manual", "name": "manual"}, {"description": "Automatically create allow policies", "help": "Automatically create allow policies.", "label": "Auto", "name": "auto"}]]  # Policy creation rule.
+    vpn_role: Literal[{"description": "VPN hub", "help": "VPN hub.", "label": "Hub", "name": "hub"}, {"description": "VPN spoke", "help": "VPN spoke.", "label": "Spoke", "name": "spoke"}]  # Fabric VPN role.
     overlays: NotRequired[list[dict[str, Any]]]  # Local overlay interfaces table.
     advertised_subnets: NotRequired[list[dict[str, Any]]]  # Local advertised subnets.
     loopback_address_block: str  # IPv4 address and subnet mask for hub's loopback address, syn
@@ -23,7 +23,7 @@ class FabricVpnPayload(TypedDict, total=False):
     psksecret: str  # Pre-shared secret for ADVPN.
     bgp_as: str  # BGP Router AS number, asplain/asdot/asdot+ format.
     sdwan_zone: NotRequired[str]  # Reference to created SD-WAN zone.
-    health_checks: NotRequired[str]  # Underlying health checks.
+    health_checks: NotRequired[list[dict[str, Any]]]  # Underlying health checks.
 
 
 class FabricVpn:
@@ -50,11 +50,11 @@ class FabricVpn:
     def post(
         self,
         payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable Fabric VPN", "help": "Enable Fabric VPN.", "label": "Enable", "name": "enable"}, {"description": "Disable Fabric VPN", "help": "Disable Fabric VPN.", "label": "Disable", "name": "disable"}] | None = ...,
+        sync_mode: Literal[{"description": "Enable fabric led configuration synchronization", "help": "Enable fabric led configuration synchronization.", "label": "Enable", "name": "enable"}, {"description": "Disable fabric led configuration synchronization", "help": "Disable fabric led configuration synchronization.", "label": "Disable", "name": "disable"}] | None = ...,
         branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
+        policy_rule: Literal[{"description": "Create health check policy automatically", "help": "Create health check policy automatically.", "label": "Health Check", "name": "health-check"}, {"description": "All policies will be created manually", "help": "All policies will be created manually.", "label": "Manual", "name": "manual"}, {"description": "Automatically create allow policies", "help": "Automatically create allow policies.", "label": "Auto", "name": "auto"}] | None = ...,
+        vpn_role: Literal[{"description": "VPN hub", "help": "VPN hub.", "label": "Hub", "name": "hub"}, {"description": "VPN spoke", "help": "VPN spoke.", "label": "Spoke", "name": "spoke"}] | None = ...,
         overlays: list[dict[str, Any]] | None = ...,
         advertised_subnets: list[dict[str, Any]] | None = ...,
         loopback_address_block: str | None = ...,
@@ -63,7 +63,7 @@ class FabricVpn:
         psksecret: str | None = ...,
         bgp_as: str | None = ...,
         sdwan_zone: str | None = ...,
-        health_checks: str | None = ...,
+        health_checks: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -72,11 +72,11 @@ class FabricVpn:
     def put(
         self,
         payload_dict: FabricVpnPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        sync_mode: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable Fabric VPN", "help": "Enable Fabric VPN.", "label": "Enable", "name": "enable"}, {"description": "Disable Fabric VPN", "help": "Disable Fabric VPN.", "label": "Disable", "name": "disable"}] | None = ...,
+        sync_mode: Literal[{"description": "Enable fabric led configuration synchronization", "help": "Enable fabric led configuration synchronization.", "label": "Enable", "name": "enable"}, {"description": "Disable fabric led configuration synchronization", "help": "Disable fabric led configuration synchronization.", "label": "Disable", "name": "disable"}] | None = ...,
         branch_name: str | None = ...,
-        policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
-        vpn_role: Literal["hub", "spoke"] | None = ...,
+        policy_rule: Literal[{"description": "Create health check policy automatically", "help": "Create health check policy automatically.", "label": "Health Check", "name": "health-check"}, {"description": "All policies will be created manually", "help": "All policies will be created manually.", "label": "Manual", "name": "manual"}, {"description": "Automatically create allow policies", "help": "Automatically create allow policies.", "label": "Auto", "name": "auto"}] | None = ...,
+        vpn_role: Literal[{"description": "VPN hub", "help": "VPN hub.", "label": "Hub", "name": "hub"}, {"description": "VPN spoke", "help": "VPN spoke.", "label": "Spoke", "name": "spoke"}] | None = ...,
         overlays: list[dict[str, Any]] | None = ...,
         advertised_subnets: list[dict[str, Any]] | None = ...,
         loopback_address_block: str | None = ...,
@@ -85,7 +85,7 @@ class FabricVpn:
         psksecret: str | None = ...,
         bgp_as: str | None = ...,
         sdwan_zone: str | None = ...,
-        health_checks: str | None = ...,
+        health_checks: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

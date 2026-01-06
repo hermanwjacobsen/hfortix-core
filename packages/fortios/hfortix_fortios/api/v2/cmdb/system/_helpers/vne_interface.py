@@ -127,13 +127,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTO_ASIC_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable auto ASIC offloading.
+    "disable",  # Disable ASIC offloading.
 ]
 VALID_BODY_MODE = [
-    "map-e",
-    "fixed-ip",
-    "ds-lite",
+    "map-e",  # Map-e mode.
+    "fixed-ip",  # Fixed-ip mode.
+    "ds-lite",  # DS-Lite mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -264,7 +264,7 @@ def validate_system_vne_interface_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "auto-asic-offload": "enable",  # Valid enum value
+        ...     "auto-asic-offload": "{'name': 'enable', 'help': 'Enable auto ASIC offloading.', 'label': 'Enable', 'description': 'Enable auto ASIC offloading'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_vne_interface_post(payload)
         >>> assert is_valid == True

@@ -56,7 +56,7 @@ class Report:
         """
         Retrieve sdwan/link_monitor_metrics/report configuration.
 
-        Configuration for sdwan/link-monitor-metrics/report
+        Report the application-level performance metrics collected by other fabric devices.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

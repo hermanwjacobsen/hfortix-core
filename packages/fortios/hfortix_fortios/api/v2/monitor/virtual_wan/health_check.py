@@ -56,7 +56,7 @@ class HealthCheck:
         """
         Retrieve virtual_wan/health_check configuration.
 
-        Configuration for virtual-wan/health-check
+        Retrieve health-check statistics for each SD-WAN link. To be deprecated and replaced by /api/v2/monitor/virtual-wan/sla-log?latest=1&sla=<sla_name> for SLA health metrics 
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/lte_modem/upgrade",
     "category": "monitor",
     "api_path": "system/lte-modem/upgrade",
-    "help": "Configuration for system/lte-modem/upgrade",
+    "help": "Upgrade LTE modem firmware image on this device using uploaded files.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

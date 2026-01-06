@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CloseMultiple:
     """
-    Configuration for firewall/session6/close-multiple
+    Close multiple IPv6 firewall sessions which match the provided criteria.
     
     Path: firewall/session6/close_multiple
     Category: monitor

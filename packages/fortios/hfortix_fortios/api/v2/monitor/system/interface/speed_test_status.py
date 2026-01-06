@@ -56,7 +56,7 @@ class SpeedTestStatus:
         """
         Retrieve system/interface/speed_test_status configuration.
 
-        Configuration for system/interface/speed-test-status
+        Retrieve the current status of a speed-test with the results if finished.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

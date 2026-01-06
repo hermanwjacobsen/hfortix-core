@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STORM_CONTROL_MODE: Literal["global", "override", "disabled"]
-VALID_BODY_UNKNOWN_UNICAST: Literal["enable", "disable"]
-VALID_BODY_UNKNOWN_MULTICAST: Literal["enable", "disable"]
-VALID_BODY_BROADCAST: Literal["enable", "disable"]
+VALID_BODY_STORM_CONTROL_MODE: Literal[{"description": "Apply Global or switch level storm control configuration", "help": "Apply Global or switch level storm control configuration.", "label": "Global", "name": "global"}, {"description": "Override global and switch level storm control to use port level configuration", "help": "Override global and switch level storm control to use port level configuration.", "label": "Override", "name": "override"}, {"description": "Disable storm control on the port entirely overriding global and switch level storm control", "help": "Disable storm control on the port entirely overriding global and switch level storm control.", "label": "Disabled", "name": "disabled"}]
+VALID_BODY_UNKNOWN_UNICAST: Literal[{"description": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown unicast traffic to allow all packets", "help": "Disable storm control for unknown unicast traffic to allow all packets.", "label": "Disable", "name": "disable"}]
+VALID_BODY_UNKNOWN_MULTICAST: Literal[{"description": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown multicast traffic to allow all packets", "help": "Disable storm control for unknown multicast traffic to allow all packets.", "label": "Disable", "name": "disable"}]
+VALID_BODY_BROADCAST: Literal[{"description": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for broadcast traffic to allow all packets", "help": "Disable storm control for broadcast traffic to allow all packets.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

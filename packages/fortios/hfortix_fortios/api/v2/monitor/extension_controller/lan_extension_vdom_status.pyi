@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LanExtensionVdomStatus:
     """
-    Configuration for extension-controller/lan-extension-vdom-status
+    Retrieve information for the FortiGate LAN Extension VDOM.
     
     Path: extension_controller/lan_extension_vdom_status
     Category: monitor

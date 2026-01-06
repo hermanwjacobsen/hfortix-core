@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticare/check_connectivity",
     "category": "monitor",
     "api_path": "registration/forticare/check-connectivity",
-    "help": "Configuration for registration/forticare/check-connectivity",
+    "help": "Check connectivity to FortiCare servers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

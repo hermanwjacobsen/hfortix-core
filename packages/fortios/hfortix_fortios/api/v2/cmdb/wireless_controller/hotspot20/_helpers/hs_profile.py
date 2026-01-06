@@ -250,129 +250,129 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ACCESS_NETWORK_TYPE = [
-    "private-network",
-    "private-network-with-guest-access",
-    "chargeable-public-network",
-    "free-public-network",
-    "personal-device-network",
-    "emergency-services-only-network",
-    "test-or-experimental",
-    "wildcard",
+    "private-network",  # Private network.
+    "private-network-with-guest-access",  # Private network with guest access.
+    "chargeable-public-network",  # Chargeable public network.
+    "free-public-network",  # Free public network.
+    "personal-device-network",  # Personal devices network.
+    "emergency-services-only-network",  # Emergency services only network.
+    "test-or-experimental",  # Test or experimental.
+    "wildcard",  # Wildcard.
 ]
 VALID_BODY_ACCESS_NETWORK_INTERNET = [
-    "enable",
-    "disable",
+    "enable",  # Enable connectivity to the Internet.
+    "disable",  # Disable connectivity to the Internet.
 ]
 VALID_BODY_ACCESS_NETWORK_ASRA = [
-    "enable",
-    "disable",
+    "enable",  # Enable additional step required for access (ASRA).
+    "disable",  # Disable additional step required for access (ASRA).
 ]
 VALID_BODY_ACCESS_NETWORK_ESR = [
-    "enable",
-    "disable",
+    "enable",  # Enable emergency services reachable (ESR).
+    "disable",  # Disable emergency services reachable (ESR).
 ]
 VALID_BODY_ACCESS_NETWORK_UESA = [
-    "enable",
-    "disable",
+    "enable",  # Enable unauthenticated emergency service accessible (UESA).
+    "disable",  # Disable unauthenticated emergency service accessible (UESA).
 ]
 VALID_BODY_VENUE_GROUP = [
-    "unspecified",
-    "assembly",
-    "business",
-    "educational",
-    "factory",
-    "institutional",
-    "mercantile",
-    "residential",
-    "storage",
-    "utility",
-    "vehicular",
-    "outdoor",
+    "unspecified",  # Unspecified.
+    "assembly",  # Assembly.
+    "business",  # Business.
+    "educational",  # Educational.
+    "factory",  # Factory and industrial.
+    "institutional",  # Institutional.
+    "mercantile",  # Mercantile.
+    "residential",  # Residential.
+    "storage",  # Storage.
+    "utility",  # Utility and miscellaneous.
+    "vehicular",  # Vehicular.
+    "outdoor",  # Outdoor.
 ]
 VALID_BODY_VENUE_TYPE = [
-    "unspecified",
-    "arena",
-    "stadium",
-    "passenger-terminal",
-    "amphitheater",
-    "amusement-park",
-    "place-of-worship",
-    "convention-center",
-    "library",
-    "museum",
-    "restaurant",
-    "theater",
-    "bar",
-    "coffee-shop",
-    "zoo-or-aquarium",
-    "emergency-center",
-    "doctor-office",
-    "bank",
-    "fire-station",
-    "police-station",
-    "post-office",
-    "professional-office",
-    "research-facility",
-    "attorney-office",
-    "primary-school",
-    "secondary-school",
-    "university-or-college",
-    "factory",
-    "hospital",
-    "long-term-care-facility",
-    "rehab-center",
-    "group-home",
-    "prison-or-jail",
-    "retail-store",
-    "grocery-market",
-    "auto-service-station",
-    "shopping-mall",
-    "gas-station",
-    "private",
-    "hotel-or-motel",
-    "dormitory",
-    "boarding-house",
-    "automobile",
-    "airplane",
-    "bus",
-    "ferry",
-    "ship-or-boat",
-    "train",
-    "motor-bike",
-    "muni-mesh-network",
-    "city-park",
-    "rest-area",
-    "traffic-control",
-    "bus-stop",
-    "kiosk",
+    "unspecified",  # Unspecified.
+    "arena",  # Arena.
+    "stadium",  # Stadium.
+    "passenger-terminal",  # Passenger terminal.
+    "amphitheater",  # Amphitheater.
+    "amusement-park",  # Amusement park.
+    "place-of-worship",  # Place of worship.
+    "convention-center",  # Convention center.
+    "library",  # Library.
+    "museum",  # Museum.
+    "restaurant",  # Restaurant.
+    "theater",  # Theater.
+    "bar",  # Bar.
+    "coffee-shop",  # Coffee shop.
+    "zoo-or-aquarium",  # Zoo or aquarium.
+    "emergency-center",  # Emergency coordination center.
+    "doctor-office",  # Doctor or dentist office.
+    "bank",  # Bank.
+    "fire-station",  # Fire station.
+    "police-station",  # Police station.
+    "post-office",  # Post office.
+    "professional-office",  # Professional office.
+    "research-facility",  # Research and development facility.
+    "attorney-office",  # Attorney office.
+    "primary-school",  # Primary school.
+    "secondary-school",  # Secondary school.
+    "university-or-college",  # University or college.
+    "factory",  # Factory.
+    "hospital",  # Hospital.
+    "long-term-care-facility",  # Long term care facility.
+    "rehab-center",  # Alcohol and drug rehabilitation center.
+    "group-home",  # Group home.
+    "prison-or-jail",  # Prison or jail.
+    "retail-store",  # Retail store.
+    "grocery-market",  # Grocery market.
+    "auto-service-station",  # Auto service station.
+    "shopping-mall",  # Shopping mall.
+    "gas-station",  # Gas station.
+    "private",  # Private residence.
+    "hotel-or-motel",  # Hotel or motel.
+    "dormitory",  # Dormitory.
+    "boarding-house",  # Boarding house.
+    "automobile",  # Automobile or truck.
+    "airplane",  # Airplane.
+    "bus",  # Bus.
+    "ferry",  # Ferry.
+    "ship-or-boat",  # Ship or boat.
+    "train",  # Train.
+    "motor-bike",  # Motor bike.
+    "muni-mesh-network",  # Muni mesh network.
+    "city-park",  # City park.
+    "rest-area",  # Rest area.
+    "traffic-control",  # Traffic control.
+    "bus-stop",  # Bus stop.
+    "kiosk",  # Kiosk.
 ]
 VALID_BODY_PROXY_ARP = [
-    "enable",
-    "disable",
+    "enable",  # Enable Proxy ARP.
+    "disable",  # Disable Proxy ARP.
 ]
 VALID_BODY_L2TIF = [
-    "enable",
-    "disable",
+    "enable",  # Enable Layer 2 traffic inspection and filtering.
+    "disable",  # Disable Layer 2 traffic inspection and filtering.
 ]
 VALID_BODY_PAME_BI = [
-    "disable",
-    "enable",
+    "disable",  # Disable Pre-Association Message Exchange BSSID Independent (PAME-BI).
+    "enable",  # Enable Pre-Association Message Exchange BSSID Independent (PAME-BI).
 ]
 VALID_BODY_DGAF = [
-    "enable",
-    "disable",
+    "enable",  # Enable downstream group-addressed forwarding (DGAF).
+    "disable",  # Disable downstream group-addressed forwarding (DGAF).
 ]
 VALID_BODY_WNM_SLEEP_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable wireless network management (WNM) sleep mode.
+    "disable",  # Disable wireless network management (WNM) sleep mode.
 ]
 VALID_BODY_BSS_TRANSITION = [
-    "enable",
-    "disable",
+    "enable",  # Enable basic service set (BSS) transition support.
+    "disable",  # Disable basic service set (BSS) transition support.
 ]
 VALID_BODY_WBA_OPEN_ROAMING = [
-    "disable",
-    "enable",
+    "disable",  # Disable WBA open roaming support.
+    "enable",  # Enable WBA open roaming support.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -500,7 +500,7 @@ def validate_wireless_controller_hotspot20_hs_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "access-network-type": "private-network",  # Valid enum value
+        ...     "access-network-type": "{'name': 'private-network', 'help': 'Private network.', 'label': 'Private Network', 'description': 'Private network'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_hotspot20_hs_profile_post(payload)
         >>> assert is_valid == True

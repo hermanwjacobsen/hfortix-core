@@ -216,22 +216,22 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AD_MODE = [
-    "none",
-    "ds",
-    "lds",
+    "none",  # The server is not configured as an Active Directory Domain Server (AD DS).
+    "ds",  # The server is configured as an Active Directory Domain Server (AD DS).
+    "lds",  # The server is an Active Directory Lightweight Domain Server (AD LDS).
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_CHANGE_DETECTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable detection of a configuration change in the Active Directory server.
+    "disable",  # Disable detection of a configuration change in the Active Directory server.
 ]
 VALID_BODY_DNS_SRV_LOOKUP = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS service lookup.
+    "disable",  # Disable DNS service lookup.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -362,7 +362,7 @@ def validate_user_domain_controller_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "hostname": True,
-        ...     "ad-mode": "none",  # Valid enum value
+        ...     "ad-mode": "{'name': 'none', 'help': 'The server is not configured as an Active Directory Domain Server (AD DS).', 'label': 'None', 'description': 'The server is not configured as an Active Directory Domain Server (AD DS)'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_domain_controller_post(payload)
         >>> assert is_valid == True

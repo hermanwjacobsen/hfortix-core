@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UuidList:
     """
-    Monitor endpoint for firewall/uuid-list
+    Retrieve a list of all UUIDs with their object type and VDOM.
     
     Path: firewall/uuid_list
     Category: monitor

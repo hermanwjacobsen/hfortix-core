@@ -12,7 +12,7 @@ class AttributeMatchPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # CASB attribute match name.
     application: str  # CASB attribute application name.
-    match_strategy: NotRequired[Literal["and", "or"]]  # CASB attribute match strategy.
+    match_strategy: NotRequired[Literal[{"description": "Match when any rule is satisfied", "help": "Match when any rule is satisfied.", "label": "Or", "name": "or"}, {"description": "Match when all rules are satisfied", "help": "Match when all rules are satisfied.", "label": "And", "name": "and"}, {"description": "Match when extracted attributes are found within defined rules", "help": "Match when extracted attributes are found within defined rules.", "label": "Subset", "name": "subset"}]]  # CASB attribute match strategy.
     match: NotRequired[list[dict[str, Any]]]  # CASB tenant match rules.
 
 
@@ -43,7 +43,7 @@ class AttributeMatch:
         payload_dict: AttributeMatchPayload | None = ...,
         name: str | None = ...,
         application: str | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
+        match_strategy: Literal[{"description": "Match when any rule is satisfied", "help": "Match when any rule is satisfied.", "label": "Or", "name": "or"}, {"description": "Match when all rules are satisfied", "help": "Match when all rules are satisfied.", "label": "And", "name": "and"}, {"description": "Match when extracted attributes are found within defined rules", "help": "Match when extracted attributes are found within defined rules.", "label": "Subset", "name": "subset"}] | None = ...,
         match: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -55,7 +55,7 @@ class AttributeMatch:
         payload_dict: AttributeMatchPayload | None = ...,
         name: str | None = ...,
         application: str | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
+        match_strategy: Literal[{"description": "Match when any rule is satisfied", "help": "Match when any rule is satisfied.", "label": "Or", "name": "or"}, {"description": "Match when all rules are satisfied", "help": "Match when all rules are satisfied.", "label": "And", "name": "and"}, {"description": "Match when extracted attributes are found within defined rules", "help": "Match when extracted attributes are found within defined rules.", "label": "Subset", "name": "subset"}] | None = ...,
         match: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

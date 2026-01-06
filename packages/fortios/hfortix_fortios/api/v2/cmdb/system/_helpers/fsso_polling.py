@@ -98,12 +98,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable FSSO Polling Mode.
+    "disable",  # Disable FSSO Polling Mode.
 ]
 VALID_BODY_AUTHENTICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable FSSO Agent Authentication.
+    "disable",  # Disable FSSO Agent Authentication.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -228,7 +228,7 @@ def validate_system_fsso_polling_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable FSSO Polling Mode.', 'label': 'Enable', 'description': 'Enable FSSO Polling Mode'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_fsso_polling_post(payload)
         >>> assert is_valid == True

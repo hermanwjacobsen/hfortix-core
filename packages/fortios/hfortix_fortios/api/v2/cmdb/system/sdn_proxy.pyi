@@ -11,7 +11,7 @@ class SdnProxyPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # SDN proxy name.
-    type: Literal["general", "fortimanager"]  # Type of SDN proxy.
+    type: Literal[{"description": "General HTTP proxy", "help": "General HTTP proxy.", "label": "General", "name": "general"}, {"description": "FortiManager SDN proxy", "help": "FortiManager SDN proxy.", "label": "Fortimanager", "name": "fortimanager"}]  # Type of SDN proxy.
     server: str  # Server address of the SDN proxy.
     server_port: NotRequired[int]  # Port number of the SDN proxy.
     username: NotRequired[str]  # SDN proxy username.
@@ -44,7 +44,7 @@ class SdnProxy:
         self,
         payload_dict: SdnProxyPayload | None = ...,
         name: str | None = ...,
-        type: Literal["general", "fortimanager"] | None = ...,
+        type: Literal[{"description": "General HTTP proxy", "help": "General HTTP proxy.", "label": "General", "name": "general"}, {"description": "FortiManager SDN proxy", "help": "FortiManager SDN proxy.", "label": "Fortimanager", "name": "fortimanager"}] | None = ...,
         server: str | None = ...,
         server_port: int | None = ...,
         username: str | None = ...,
@@ -58,7 +58,7 @@ class SdnProxy:
         self,
         payload_dict: SdnProxyPayload | None = ...,
         name: str | None = ...,
-        type: Literal["general", "fortimanager"] | None = ...,
+        type: Literal[{"description": "General HTTP proxy", "help": "General HTTP proxy.", "label": "General", "name": "general"}, {"description": "FortiManager SDN proxy", "help": "FortiManager SDN proxy.", "label": "Fortimanager", "name": "fortimanager"}] | None = ...,
         server: str | None = ...,
         server_port: int | None = ...,
         username: str | None = ...,

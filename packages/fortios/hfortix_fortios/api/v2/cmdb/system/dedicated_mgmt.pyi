@@ -10,10 +10,10 @@ class DedicatedMgmtPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable dedicated management.
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable dedicated management.
     interface: NotRequired[str]  # Dedicated management interface.
     default_gateway: NotRequired[str]  # Default gateway for dedicated management interface.
-    dhcp_server: NotRequired[Literal["enable", "disable"]]  # Enable/disable DHCP server on management interface.
+    dhcp_server: NotRequired[Literal[{"description": "Enable DHCP server on management port", "help": "Enable DHCP server on management port.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server on management port", "help": "Disable DHCP server on management port.", "label": "Disable", "name": "disable"}]]  # Enable/disable DHCP server on management interface.
     dhcp_netmask: NotRequired[str]  # DHCP netmask.
     dhcp_start_ip: NotRequired[str]  # DHCP start IP for dedicated management.
     dhcp_end_ip: NotRequired[str]  # DHCP end IP for dedicated management.
@@ -43,10 +43,10 @@ class DedicatedMgmt:
     def post(
         self,
         payload_dict: DedicatedMgmtPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         interface: str | None = ...,
         default_gateway: str | None = ...,
-        dhcp_server: Literal["enable", "disable"] | None = ...,
+        dhcp_server: Literal[{"description": "Enable DHCP server on management port", "help": "Enable DHCP server on management port.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server on management port", "help": "Disable DHCP server on management port.", "label": "Disable", "name": "disable"}] | None = ...,
         dhcp_netmask: str | None = ...,
         dhcp_start_ip: str | None = ...,
         dhcp_end_ip: str | None = ...,
@@ -58,10 +58,10 @@ class DedicatedMgmt:
     def put(
         self,
         payload_dict: DedicatedMgmtPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         interface: str | None = ...,
         default_gateway: str | None = ...,
-        dhcp_server: Literal["enable", "disable"] | None = ...,
+        dhcp_server: Literal[{"description": "Enable DHCP server on management port", "help": "Enable DHCP server on management port.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server on management port", "help": "Disable DHCP server on management port.", "label": "Disable", "name": "disable"}] | None = ...,
         dhcp_netmask: str | None = ...,
         dhcp_start_ip: str | None = ...,
         dhcp_end_ip: str | None = ...,

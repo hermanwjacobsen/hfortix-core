@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Installer:
     """
-    Monitor endpoint for endpoint-control/installer
+    List available FortiClient installers.
     
     Path: endpoint_control/installer
     Category: monitor

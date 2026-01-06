@@ -11,16 +11,18 @@ class PppoeInterfacePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Name of the PPPoE interface.
-    dial_on_demand: NotRequired[Literal["enable", "disable"]]  # Enable/disable dial on demand to dial the PPPoE interface wh
-    ipv6: NotRequired[Literal["enable", "disable"]]  # Enable/disable IPv6 Control Protocol (IPv6CP).
+    dial_on_demand: NotRequired[Literal[{"description": "Enable dial on demand", "help": "Enable dial on demand.", "label": "Enable", "name": "enable"}, {"description": "Disable dial on demand", "help": "Disable dial on demand.", "label": "Disable", "name": "disable"}]]  # Enable/disable dial on demand to dial the PPPoE interface wh
+    ipv6: NotRequired[Literal[{"description": "Enable IPv6CP", "help": "Enable IPv6CP.", "label": "Enable", "name": "enable"}, {"description": "Disable IPv6CP", "help": "Disable IPv6CP.", "label": "Disable", "name": "disable"}]]  # Enable/disable IPv6 Control Protocol (IPv6CP).
     device: str  # Name for the physical interface.
     username: NotRequired[str]  # User name.
     password: NotRequired[str]  # Enter the password.
-    pppoe_egress_cos: NotRequired[Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"]]  # CoS in VLAN tag for outgoing PPPoE/PPP packets.
-    auth_type: NotRequired[Literal["auto", "pap", "chap", "mschapv1", "mschapv2"]]  # PPP authentication type to use.
+    pppoe_egress_cos: NotRequired[Literal[{"description": "CoS 0", "help": "CoS 0.", "label": "Cos0", "name": "cos0"}, {"description": "CoS 1", "help": "CoS 1.", "label": "Cos1", "name": "cos1"}, {"description": "CoS 2", "help": "CoS 2.", "label": "Cos2", "name": "cos2"}, {"description": "CoS 3", "help": "CoS 3.", "label": "Cos3", "name": "cos3"}, {"description": "CoS 4", "help": "CoS 4.", "label": "Cos4", "name": "cos4"}, {"description": "CoS 5", "help": "CoS 5.", "label": "Cos5", "name": "cos5"}, {"description": "CoS 6", "help": "CoS 6.", "label": "Cos6", "name": "cos6"}, {"description": "CoS 7", "help": "CoS 7.", "label": "Cos7", "name": "cos7"}]]  # CoS in VLAN tag for outgoing PPPoE/PPP packets.
+    auth_type: NotRequired[Literal[{"description": "Automatically choose the authentication method", "help": "Automatically choose the authentication method.", "label": "Auto", "name": "auto"}, {"description": "PAP authentication", "help": "PAP authentication.", "label": "Pap", "name": "pap"}, {"description": "CHAP authentication", "help": "CHAP authentication.", "label": "Chap", "name": "chap"}, {"description": "MS-CHAPv1 authentication", "help": "MS-CHAPv1 authentication.", "label": "Mschapv1", "name": "mschapv1"}, {"description": "MS-CHAPv2 authentication", "help": "MS-CHAPv2 authentication.", "label": "Mschapv2", "name": "mschapv2"}]]  # PPP authentication type to use.
     ipunnumbered: NotRequired[str]  # PPPoE unnumbered IP.
-    pppoe_unnumbered_negotiate: NotRequired[Literal["enable", "disable"]]  # Enable/disable PPPoE unnumbered negotiation.
+    pppoe_unnumbered_negotiate: NotRequired[Literal[{"description": "Enable PPPoE unnumbered negotiation", "help": "Enable PPPoE unnumbered negotiation.", "label": "Enable", "name": "enable"}, {"description": "Disable PPPoE unnumbered negotiation", "help": "Disable PPPoE unnumbered negotiation.", "label": "Disable", "name": "disable"}]]  # Enable/disable PPPoE unnumbered negotiation.
     idle_timeout: NotRequired[int]  # PPPoE auto disconnect after idle timeout (0-4294967295 sec).
+    multilink: NotRequired[Literal[{"description": "Enable PPP multilink support", "help": "Enable PPP multilink support.", "label": "Enable", "name": "enable"}, {"description": "Disable PPP multilink support", "help": "Disable PPP multilink support.", "label": "Disable", "name": "disable"}]]  # Enable/disable PPP multilink support.
+    mrru: NotRequired[int]  # PPP MRRU (296 - 65535, default = 1500).
     disc_retry_timeout: NotRequired[int]  # PPPoE discovery init timeout value in (0-4294967295 sec).
     padt_retry_timeout: NotRequired[int]  # PPPoE terminate timeout value in (0-4294967295 sec).
     service_name: NotRequired[str]  # PPPoE service name.
@@ -55,16 +57,18 @@ class PppoeInterface:
         self,
         payload_dict: PppoeInterfacePayload | None = ...,
         name: str | None = ...,
-        dial_on_demand: Literal["enable", "disable"] | None = ...,
-        ipv6: Literal["enable", "disable"] | None = ...,
+        dial_on_demand: Literal[{"description": "Enable dial on demand", "help": "Enable dial on demand.", "label": "Enable", "name": "enable"}, {"description": "Disable dial on demand", "help": "Disable dial on demand.", "label": "Disable", "name": "disable"}] | None = ...,
+        ipv6: Literal[{"description": "Enable IPv6CP", "help": "Enable IPv6CP.", "label": "Enable", "name": "enable"}, {"description": "Disable IPv6CP", "help": "Disable IPv6CP.", "label": "Disable", "name": "disable"}] | None = ...,
         device: str | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
-        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pppoe_egress_cos: Literal[{"description": "CoS 0", "help": "CoS 0.", "label": "Cos0", "name": "cos0"}, {"description": "CoS 1", "help": "CoS 1.", "label": "Cos1", "name": "cos1"}, {"description": "CoS 2", "help": "CoS 2.", "label": "Cos2", "name": "cos2"}, {"description": "CoS 3", "help": "CoS 3.", "label": "Cos3", "name": "cos3"}, {"description": "CoS 4", "help": "CoS 4.", "label": "Cos4", "name": "cos4"}, {"description": "CoS 5", "help": "CoS 5.", "label": "Cos5", "name": "cos5"}, {"description": "CoS 6", "help": "CoS 6.", "label": "Cos6", "name": "cos6"}, {"description": "CoS 7", "help": "CoS 7.", "label": "Cos7", "name": "cos7"}] | None = ...,
+        auth_type: Literal[{"description": "Automatically choose the authentication method", "help": "Automatically choose the authentication method.", "label": "Auto", "name": "auto"}, {"description": "PAP authentication", "help": "PAP authentication.", "label": "Pap", "name": "pap"}, {"description": "CHAP authentication", "help": "CHAP authentication.", "label": "Chap", "name": "chap"}, {"description": "MS-CHAPv1 authentication", "help": "MS-CHAPv1 authentication.", "label": "Mschapv1", "name": "mschapv1"}, {"description": "MS-CHAPv2 authentication", "help": "MS-CHAPv2 authentication.", "label": "Mschapv2", "name": "mschapv2"}] | None = ...,
         ipunnumbered: str | None = ...,
-        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal[{"description": "Enable PPPoE unnumbered negotiation", "help": "Enable PPPoE unnumbered negotiation.", "label": "Enable", "name": "enable"}, {"description": "Disable PPPoE unnumbered negotiation", "help": "Disable PPPoE unnumbered negotiation.", "label": "Disable", "name": "disable"}] | None = ...,
         idle_timeout: int | None = ...,
+        multilink: Literal[{"description": "Enable PPP multilink support", "help": "Enable PPP multilink support.", "label": "Enable", "name": "enable"}, {"description": "Disable PPP multilink support", "help": "Disable PPP multilink support.", "label": "Disable", "name": "disable"}] | None = ...,
+        mrru: int | None = ...,
         disc_retry_timeout: int | None = ...,
         padt_retry_timeout: int | None = ...,
         service_name: str | None = ...,
@@ -80,16 +84,18 @@ class PppoeInterface:
         self,
         payload_dict: PppoeInterfacePayload | None = ...,
         name: str | None = ...,
-        dial_on_demand: Literal["enable", "disable"] | None = ...,
-        ipv6: Literal["enable", "disable"] | None = ...,
+        dial_on_demand: Literal[{"description": "Enable dial on demand", "help": "Enable dial on demand.", "label": "Enable", "name": "enable"}, {"description": "Disable dial on demand", "help": "Disable dial on demand.", "label": "Disable", "name": "disable"}] | None = ...,
+        ipv6: Literal[{"description": "Enable IPv6CP", "help": "Enable IPv6CP.", "label": "Enable", "name": "enable"}, {"description": "Disable IPv6CP", "help": "Disable IPv6CP.", "label": "Disable", "name": "disable"}] | None = ...,
         device: str | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        pppoe_egress_cos: Literal["cos0", "cos1", "cos2", "cos3", "cos4", "cos5", "cos6", "cos7"] | None = ...,
-        auth_type: Literal["auto", "pap", "chap", "mschapv1", "mschapv2"] | None = ...,
+        pppoe_egress_cos: Literal[{"description": "CoS 0", "help": "CoS 0.", "label": "Cos0", "name": "cos0"}, {"description": "CoS 1", "help": "CoS 1.", "label": "Cos1", "name": "cos1"}, {"description": "CoS 2", "help": "CoS 2.", "label": "Cos2", "name": "cos2"}, {"description": "CoS 3", "help": "CoS 3.", "label": "Cos3", "name": "cos3"}, {"description": "CoS 4", "help": "CoS 4.", "label": "Cos4", "name": "cos4"}, {"description": "CoS 5", "help": "CoS 5.", "label": "Cos5", "name": "cos5"}, {"description": "CoS 6", "help": "CoS 6.", "label": "Cos6", "name": "cos6"}, {"description": "CoS 7", "help": "CoS 7.", "label": "Cos7", "name": "cos7"}] | None = ...,
+        auth_type: Literal[{"description": "Automatically choose the authentication method", "help": "Automatically choose the authentication method.", "label": "Auto", "name": "auto"}, {"description": "PAP authentication", "help": "PAP authentication.", "label": "Pap", "name": "pap"}, {"description": "CHAP authentication", "help": "CHAP authentication.", "label": "Chap", "name": "chap"}, {"description": "MS-CHAPv1 authentication", "help": "MS-CHAPv1 authentication.", "label": "Mschapv1", "name": "mschapv1"}, {"description": "MS-CHAPv2 authentication", "help": "MS-CHAPv2 authentication.", "label": "Mschapv2", "name": "mschapv2"}] | None = ...,
         ipunnumbered: str | None = ...,
-        pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = ...,
+        pppoe_unnumbered_negotiate: Literal[{"description": "Enable PPPoE unnumbered negotiation", "help": "Enable PPPoE unnumbered negotiation.", "label": "Enable", "name": "enable"}, {"description": "Disable PPPoE unnumbered negotiation", "help": "Disable PPPoE unnumbered negotiation.", "label": "Disable", "name": "disable"}] | None = ...,
         idle_timeout: int | None = ...,
+        multilink: Literal[{"description": "Enable PPP multilink support", "help": "Enable PPP multilink support.", "label": "Enable", "name": "enable"}, {"description": "Disable PPP multilink support", "help": "Disable PPP multilink support.", "label": "Disable", "name": "disable"}] | None = ...,
+        mrru: int | None = ...,
         disc_retry_timeout: int | None = ...,
         padt_retry_timeout: int | None = ...,
         service_name: str | None = ...,

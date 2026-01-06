@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PROTOCOL: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp", "dns", "tcp-connect", "ftp"]
+VALID_BODY_PROTOCOL: Literal[{"description": "Use PING to test the link with the server", "help": "Use PING to test the link with the server.", "label": "Ping", "name": "ping"}, {"description": "Use TCP echo to test the link with the server", "help": "Use TCP echo to test the link with the server.", "label": "Tcp Echo", "name": "tcp-echo"}, {"description": "Use UDP echo to test the link with the server", "help": "Use UDP echo to test the link with the server.", "label": "Udp Echo", "name": "udp-echo"}, {"description": "Use HTTP-GET to test the link with the server", "help": "Use HTTP-GET to test the link with the server.", "label": "Http", "name": "http"}, {"description": "Use HTTPS-GET to test the link with the server", "help": "Use HTTPS-GET to test the link with the server.", "label": "Https", "name": "https"}, {"description": "Use TWAMP to test the link with the server", "help": "Use TWAMP to test the link with the server.", "label": "Twamp", "name": "twamp"}, {"description": "Use DNS query to test the link with the server", "help": "Use DNS query to test the link with the server.", "label": "Dns", "name": "dns"}, {"description": "Use a full TCP connection to test the link with the server", "help": "Use a full TCP connection to test the link with the server.", "label": "Tcp Connect", "name": "tcp-connect"}, {"description": "Use FTP to test the link with the server", "help": "Use FTP to test the link with the server.", "label": "Ftp", "name": "ftp"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

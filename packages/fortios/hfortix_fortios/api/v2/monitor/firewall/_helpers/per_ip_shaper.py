@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/per_ip_shaper",
     "category": "monitor",
     "api_path": "firewall/per-ip-shaper",
-    "help": "Configuration for firewall/per-ip-shaper",
+    "help": "List of statistics for configured firewall per-IP traffic shapers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

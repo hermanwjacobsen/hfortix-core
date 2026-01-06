@@ -56,7 +56,7 @@ class CloseAll:
         """
         Retrieve firewall/session/close_all configuration.
 
-        Configuration for firewall/session/close-all
+        Immediately close all active IPv4 and IPv6 sessions, as well as IPS sessions of the current VDOM.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

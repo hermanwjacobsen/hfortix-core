@@ -105,12 +105,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_WHICH = [
-    "firewall",
-    "interface",
-    "interface6",
-    "sniffer",
-    "sniffer6",
-    "explicit",
+    "firewall",  # Firewall policy.
+    "interface",  # Interface policy.
+    "interface6",  # Interface policy6.
+    "sniffer",  # Sniffer policy.
+    "sniffer6",  # Sniffer policy6.
+    "explicit",  # explicit proxy policy.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -238,7 +238,7 @@ def validate_ips_view_map_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "which": "firewall",  # Valid enum value
+        ...     "which": "{'name': 'firewall', 'help': 'Firewall policy.', 'label': 'Firewall', 'description': 'Firewall policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ips_view_map_post(payload)
         >>> assert is_valid == True

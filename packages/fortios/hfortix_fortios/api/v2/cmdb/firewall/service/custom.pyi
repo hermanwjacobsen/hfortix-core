@@ -12,10 +12,10 @@ class CustomPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Custom service name.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    proxy: NotRequired[Literal["enable", "disable"]]  # Enable/disable web proxy service.
+    proxy: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable web proxy service.
     category: NotRequired[str]  # Service category.
-    protocol: NotRequired[Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"]]  # Protocol type based on IANA numbers.
-    helper: NotRequired[Literal["auto", "disable", "ftp", "tftp", "ras", "h323", "tns", "mms", "sip", "pptp", "rtsp", "dns-udp", "dns-tcp", "pmap", "rsh", "dcerpc", "mgcp"]]  # Helper name.
+    protocol: NotRequired[Literal[{"description": "TCP, UDP, UDP-Lite and SCTP", "help": "TCP, UDP, UDP-Lite and SCTP.", "label": "Tcp/Udp/Udp Lite/Sctp", "name": "TCP/UDP/UDP-Lite/SCTP"}, {"description": "ICMP", "help": "ICMP.", "label": "Icmp", "name": "ICMP"}, {"description": "ICMP6", "help": "ICMP6.", "label": "Icmp6", "name": "ICMP6"}, {"description": "IP", "help": "IP.", "label": "Ip", "name": "IP"}, {"description": "HTTP - for web proxy", "help": "HTTP - for web proxy.", "label": "Http", "name": "HTTP"}, {"description": "FTP - for web proxy", "help": "FTP - for web proxy.", "label": "Ftp", "name": "FTP"}, {"description": "Connect - for web proxy", "help": "Connect - for web proxy.", "label": "Connect", "name": "CONNECT"}, {"description": "Socks TCP - for web proxy", "help": "Socks TCP - for web proxy.", "label": "Socks Tcp", "name": "SOCKS-TCP"}, {"description": "Socks UDP - for web proxy", "help": "Socks UDP - for web proxy.", "label": "Socks Udp", "name": "SOCKS-UDP"}, {"description": "All - for web proxy", "help": "All - for web proxy.", "label": "All", "name": "ALL"}]]  # Protocol type based on IANA numbers.
+    helper: NotRequired[Literal[{"description": "Automatically select helper based on protocol and port", "help": "Automatically select helper based on protocol and port.", "label": "Auto", "name": "auto"}, {"description": "Disable helper", "help": "Disable helper.", "label": "Disable", "name": "disable"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "TFTP", "help": "TFTP.", "label": "Tftp", "name": "tftp"}, {"description": "RAS", "help": "RAS.", "label": "Ras", "name": "ras"}, {"description": "H323", "help": "H323.", "label": "H323", "name": "h323"}, {"description": "TNS", "help": "TNS.", "label": "Tns", "name": "tns"}, {"description": "MMS", "help": "MMS.", "label": "Mms", "name": "mms"}, {"description": "SIP", "help": "SIP.", "label": "Sip", "name": "sip"}, {"description": "PPTP", "help": "PPTP.", "label": "Pptp", "name": "pptp"}, {"description": "RTSP", "help": "RTSP.", "label": "Rtsp", "name": "rtsp"}, {"description": "DNS UDP", "help": "DNS UDP.", "label": "Dns Udp", "name": "dns-udp"}, {"description": "DNS TCP", "help": "DNS TCP.", "label": "Dns Tcp", "name": "dns-tcp"}, {"description": "PMAP", "help": "PMAP.", "label": "Pmap", "name": "pmap"}, {"description": "RSH", "help": "RSH.", "label": "Rsh", "name": "rsh"}, {"description": "DCERPC", "help": "DCERPC.", "label": "Dcerpc", "name": "dcerpc"}, {"description": "MGCP", "help": "MGCP.", "label": "Mgcp", "name": "mgcp"}]]  # Helper name.
     iprange: NotRequired[str]  # Start and end of the IP range associated with service.
     fqdn: NotRequired[str]  # Fully qualified domain name.
     protocol_number: NotRequired[int]  # IP protocol number.
@@ -31,13 +31,13 @@ class CustomPayload(TypedDict, total=False):
     tcp_rst_timer: NotRequired[int]  # Set the length of the TCP CLOSE state in seconds (5 - 300 se
     udp_idle_timer: NotRequired[int]  # Number of seconds before an idle UDP/UDP-Lite connection tim
     session_ttl: NotRequired[str]  # Session TTL (300 - 2764800, 0 = default).
-    check_reset_range: NotRequired[Literal["disable", "strict", "default"]]  # Configure the type of ICMP error message verification.
+    check_reset_range: NotRequired[Literal[{"description": "Disable RST range check", "help": "Disable RST range check.", "label": "Disable", "name": "disable"}, {"description": "Check RST range strictly", "help": "Check RST range strictly.", "label": "Strict", "name": "strict"}, {"description": "Using system default setting", "help": "Using system default setting.", "label": "Default", "name": "default"}]]  # Configure the type of ICMP error message verification.
     comment: NotRequired[str]  # Comment.
     color: NotRequired[int]  # Color of icon on the GUI.
-    app_service_type: NotRequired[Literal["disable", "app-id", "app-category"]]  # Application service type.
+    app_service_type: NotRequired[Literal[{"description": "Disable application type", "help": "Disable application type.", "label": "Disable", "name": "disable"}, {"description": "Application ID", "help": "Application ID.", "label": "App Id", "name": "app-id"}, {"description": "Applicatin category", "help": "Applicatin category.", "label": "App Category", "name": "app-category"}]]  # Application service type.
     app_category: NotRequired[list[dict[str, Any]]]  # Application category ID.
     application: NotRequired[list[dict[str, Any]]]  # Application ID.
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Custom:
@@ -67,10 +67,10 @@ class Custom:
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
+        proxy: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         category: str | None = ...,
-        protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"] | None = ...,
-        helper: Literal["auto", "disable", "ftp", "tftp", "ras", "h323", "tns", "mms", "sip", "pptp", "rtsp", "dns-udp", "dns-tcp", "pmap", "rsh", "dcerpc", "mgcp"] | None = ...,
+        protocol: Literal[{"description": "TCP, UDP, UDP-Lite and SCTP", "help": "TCP, UDP, UDP-Lite and SCTP.", "label": "Tcp/Udp/Udp Lite/Sctp", "name": "TCP/UDP/UDP-Lite/SCTP"}, {"description": "ICMP", "help": "ICMP.", "label": "Icmp", "name": "ICMP"}, {"description": "ICMP6", "help": "ICMP6.", "label": "Icmp6", "name": "ICMP6"}, {"description": "IP", "help": "IP.", "label": "Ip", "name": "IP"}, {"description": "HTTP - for web proxy", "help": "HTTP - for web proxy.", "label": "Http", "name": "HTTP"}, {"description": "FTP - for web proxy", "help": "FTP - for web proxy.", "label": "Ftp", "name": "FTP"}, {"description": "Connect - for web proxy", "help": "Connect - for web proxy.", "label": "Connect", "name": "CONNECT"}, {"description": "Socks TCP - for web proxy", "help": "Socks TCP - for web proxy.", "label": "Socks Tcp", "name": "SOCKS-TCP"}, {"description": "Socks UDP - for web proxy", "help": "Socks UDP - for web proxy.", "label": "Socks Udp", "name": "SOCKS-UDP"}, {"description": "All - for web proxy", "help": "All - for web proxy.", "label": "All", "name": "ALL"}] | None = ...,
+        helper: Literal[{"description": "Automatically select helper based on protocol and port", "help": "Automatically select helper based on protocol and port.", "label": "Auto", "name": "auto"}, {"description": "Disable helper", "help": "Disable helper.", "label": "Disable", "name": "disable"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "TFTP", "help": "TFTP.", "label": "Tftp", "name": "tftp"}, {"description": "RAS", "help": "RAS.", "label": "Ras", "name": "ras"}, {"description": "H323", "help": "H323.", "label": "H323", "name": "h323"}, {"description": "TNS", "help": "TNS.", "label": "Tns", "name": "tns"}, {"description": "MMS", "help": "MMS.", "label": "Mms", "name": "mms"}, {"description": "SIP", "help": "SIP.", "label": "Sip", "name": "sip"}, {"description": "PPTP", "help": "PPTP.", "label": "Pptp", "name": "pptp"}, {"description": "RTSP", "help": "RTSP.", "label": "Rtsp", "name": "rtsp"}, {"description": "DNS UDP", "help": "DNS UDP.", "label": "Dns Udp", "name": "dns-udp"}, {"description": "DNS TCP", "help": "DNS TCP.", "label": "Dns Tcp", "name": "dns-tcp"}, {"description": "PMAP", "help": "PMAP.", "label": "Pmap", "name": "pmap"}, {"description": "RSH", "help": "RSH.", "label": "Rsh", "name": "rsh"}, {"description": "DCERPC", "help": "DCERPC.", "label": "Dcerpc", "name": "dcerpc"}, {"description": "MGCP", "help": "MGCP.", "label": "Mgcp", "name": "mgcp"}] | None = ...,
         iprange: str | None = ...,
         fqdn: str | None = ...,
         protocol_number: int | None = ...,
@@ -86,13 +86,13 @@ class Custom:
         tcp_rst_timer: int | None = ...,
         udp_idle_timer: int | None = ...,
         session_ttl: str | None = ...,
-        check_reset_range: Literal["disable", "strict", "default"] | None = ...,
+        check_reset_range: Literal[{"description": "Disable RST range check", "help": "Disable RST range check.", "label": "Disable", "name": "disable"}, {"description": "Check RST range strictly", "help": "Check RST range strictly.", "label": "Strict", "name": "strict"}, {"description": "Using system default setting", "help": "Using system default setting.", "label": "Default", "name": "default"}] | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
+        app_service_type: Literal[{"description": "Disable application type", "help": "Disable application type.", "label": "Disable", "name": "disable"}, {"description": "Application ID", "help": "Application ID.", "label": "App Id", "name": "app-id"}, {"description": "Applicatin category", "help": "Applicatin category.", "label": "App Category", "name": "app-category"}] | None = ...,
         app_category: list[dict[str, Any]] | None = ...,
         application: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -103,10 +103,10 @@ class Custom:
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
+        proxy: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         category: str | None = ...,
-        protocol: Literal["TCP/UDP/UDP-Lite/SCTP", "ICMP", "ICMP6", "IP", "HTTP", "FTP", "CONNECT", "SOCKS-TCP", "SOCKS-UDP", "ALL"] | None = ...,
-        helper: Literal["auto", "disable", "ftp", "tftp", "ras", "h323", "tns", "mms", "sip", "pptp", "rtsp", "dns-udp", "dns-tcp", "pmap", "rsh", "dcerpc", "mgcp"] | None = ...,
+        protocol: Literal[{"description": "TCP, UDP, UDP-Lite and SCTP", "help": "TCP, UDP, UDP-Lite and SCTP.", "label": "Tcp/Udp/Udp Lite/Sctp", "name": "TCP/UDP/UDP-Lite/SCTP"}, {"description": "ICMP", "help": "ICMP.", "label": "Icmp", "name": "ICMP"}, {"description": "ICMP6", "help": "ICMP6.", "label": "Icmp6", "name": "ICMP6"}, {"description": "IP", "help": "IP.", "label": "Ip", "name": "IP"}, {"description": "HTTP - for web proxy", "help": "HTTP - for web proxy.", "label": "Http", "name": "HTTP"}, {"description": "FTP - for web proxy", "help": "FTP - for web proxy.", "label": "Ftp", "name": "FTP"}, {"description": "Connect - for web proxy", "help": "Connect - for web proxy.", "label": "Connect", "name": "CONNECT"}, {"description": "Socks TCP - for web proxy", "help": "Socks TCP - for web proxy.", "label": "Socks Tcp", "name": "SOCKS-TCP"}, {"description": "Socks UDP - for web proxy", "help": "Socks UDP - for web proxy.", "label": "Socks Udp", "name": "SOCKS-UDP"}, {"description": "All - for web proxy", "help": "All - for web proxy.", "label": "All", "name": "ALL"}] | None = ...,
+        helper: Literal[{"description": "Automatically select helper based on protocol and port", "help": "Automatically select helper based on protocol and port.", "label": "Auto", "name": "auto"}, {"description": "Disable helper", "help": "Disable helper.", "label": "Disable", "name": "disable"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "TFTP", "help": "TFTP.", "label": "Tftp", "name": "tftp"}, {"description": "RAS", "help": "RAS.", "label": "Ras", "name": "ras"}, {"description": "H323", "help": "H323.", "label": "H323", "name": "h323"}, {"description": "TNS", "help": "TNS.", "label": "Tns", "name": "tns"}, {"description": "MMS", "help": "MMS.", "label": "Mms", "name": "mms"}, {"description": "SIP", "help": "SIP.", "label": "Sip", "name": "sip"}, {"description": "PPTP", "help": "PPTP.", "label": "Pptp", "name": "pptp"}, {"description": "RTSP", "help": "RTSP.", "label": "Rtsp", "name": "rtsp"}, {"description": "DNS UDP", "help": "DNS UDP.", "label": "Dns Udp", "name": "dns-udp"}, {"description": "DNS TCP", "help": "DNS TCP.", "label": "Dns Tcp", "name": "dns-tcp"}, {"description": "PMAP", "help": "PMAP.", "label": "Pmap", "name": "pmap"}, {"description": "RSH", "help": "RSH.", "label": "Rsh", "name": "rsh"}, {"description": "DCERPC", "help": "DCERPC.", "label": "Dcerpc", "name": "dcerpc"}, {"description": "MGCP", "help": "MGCP.", "label": "Mgcp", "name": "mgcp"}] | None = ...,
         iprange: str | None = ...,
         fqdn: str | None = ...,
         protocol_number: int | None = ...,
@@ -122,13 +122,13 @@ class Custom:
         tcp_rst_timer: int | None = ...,
         udp_idle_timer: int | None = ...,
         session_ttl: str | None = ...,
-        check_reset_range: Literal["disable", "strict", "default"] | None = ...,
+        check_reset_range: Literal[{"description": "Disable RST range check", "help": "Disable RST range check.", "label": "Disable", "name": "disable"}, {"description": "Check RST range strictly", "help": "Check RST range strictly.", "label": "Strict", "name": "strict"}, {"description": "Using system default setting", "help": "Using system default setting.", "label": "Default", "name": "default"}] | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
+        app_service_type: Literal[{"description": "Disable application type", "help": "Disable application type.", "label": "Disable", "name": "disable"}, {"description": "Application ID", "help": "Application ID.", "label": "App Id", "name": "app-id"}, {"description": "Applicatin category", "help": "Applicatin category.", "label": "App Category", "name": "app-category"}] | None = ...,
         app_category: list[dict[str, Any]] | None = ...,
         application: list[dict[str, Any]] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

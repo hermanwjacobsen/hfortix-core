@@ -12,8 +12,8 @@ class RemotePayload(TypedDict, total=False):
     """
     name: str  # Name.
     remote: NotRequired[str]  # Remote certificate.
-    range: NotRequired[Literal["global", "vdom"]]  # Either the global or VDOM IP address range for the remote ce
-    source: NotRequired[Literal["factory", "user", "bundle"]]  # Remote certificate source type.
+    range: NotRequired[Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}]]  # Either the global or VDOM IP address range for the remote ce
+    source: NotRequired[Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}]]  # Remote certificate source type.
 
 
 class Remote:
@@ -43,8 +43,8 @@ class Remote:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
+        range: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}] | None = ...,
+        source: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -55,8 +55,8 @@ class Remote:
         payload_dict: RemotePayload | None = ...,
         name: str | None = ...,
         remote: str | None = ...,
-        range: Literal["global", "vdom"] | None = ...,
-        source: Literal["factory", "user", "bundle"] | None = ...,
+        range: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}] | None = ...,
+        source: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

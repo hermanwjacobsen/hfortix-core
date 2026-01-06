@@ -56,7 +56,7 @@ class ModemFirmware:
         """
         Retrieve extender_controller/extender/modem_firmware configuration.
 
-        Configuration for extender-controller/extender/modem-firmware
+        List all available FortiExtender modem firmware images on FortiCloud.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -56,7 +56,7 @@ class Add:
         """
         Retrieve firewall/clearpass_address/add configuration.
 
-        Configuration for firewall/clearpass-address/add
+        Add ClearPass address with SPT (System Posture Token) value.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

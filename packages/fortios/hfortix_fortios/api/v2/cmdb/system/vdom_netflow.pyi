@@ -10,7 +10,7 @@ class VdomNetflowPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    vdom_netflow: NotRequired[Literal["enable", "disable"]]  # Enable/disable NetFlow per VDOM.
+    vdom_netflow: NotRequired[Literal[{"description": "Enable NetFlow per VDOM", "help": "Enable NetFlow per VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable NetFlow per VDOM", "help": "Disable NetFlow per VDOM.", "label": "Disable", "name": "disable"}]]  # Enable/disable NetFlow per VDOM.
     collectors: NotRequired[list[dict[str, Any]]]  # Netflow collectors.
 
 
@@ -38,7 +38,7 @@ class VdomNetflow:
     def post(
         self,
         payload_dict: VdomNetflowPayload | None = ...,
-        vdom_netflow: Literal["enable", "disable"] | None = ...,
+        vdom_netflow: Literal[{"description": "Enable NetFlow per VDOM", "help": "Enable NetFlow per VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable NetFlow per VDOM", "help": "Disable NetFlow per VDOM.", "label": "Disable", "name": "disable"}] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -48,7 +48,7 @@ class VdomNetflow:
     def put(
         self,
         payload_dict: VdomNetflowPayload | None = ...,
-        vdom_netflow: Literal["enable", "disable"] | None = ...,
+        vdom_netflow: Literal[{"description": "Enable NetFlow per VDOM", "help": "Enable NetFlow per VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable NetFlow per VDOM", "help": "Disable NetFlow per VDOM.", "label": "Disable", "name": "disable"}] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

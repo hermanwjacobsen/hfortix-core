@@ -56,7 +56,7 @@ class RunningProcesses:
         """
         Retrieve system/running_processes configuration.
 
-        Configuration for system/running-processes
+        List of running processes and their resource usage.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

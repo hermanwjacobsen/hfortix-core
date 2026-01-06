@@ -56,7 +56,7 @@ class ClearAll:
         """
         Retrieve user/banned/clear_all configuration.
 
-        Configuration for user/banned/clear_all
+        Immediately clear all banned users.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

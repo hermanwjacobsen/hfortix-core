@@ -10,7 +10,7 @@ class SnmpSysinfoPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable SNMP.
+    status: NotRequired[Literal[{"description": "Disable SNMP", "help": "Disable SNMP.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP", "help": "Enable SNMP.", "label": "Enable", "name": "enable"}]]  # Enable/disable SNMP.
     engine_id: NotRequired[str]  # Local SNMP engine ID string (max 24 char).
     description: NotRequired[str]  # System description.
     contact_info: NotRequired[str]  # Contact information.
@@ -41,7 +41,7 @@ class SnmpSysinfo:
     def post(
         self,
         payload_dict: SnmpSysinfoPayload | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable SNMP", "help": "Disable SNMP.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP", "help": "Enable SNMP.", "label": "Enable", "name": "enable"}] | None = ...,
         engine_id: str | None = ...,
         description: str | None = ...,
         contact_info: str | None = ...,
@@ -54,7 +54,7 @@ class SnmpSysinfo:
     def put(
         self,
         payload_dict: SnmpSysinfoPayload | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable SNMP", "help": "Disable SNMP.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP", "help": "Enable SNMP.", "label": "Enable", "name": "enable"}] | None = ...,
         engine_id: str | None = ...,
         description: str | None = ...,
         contact_info: str | None = ...,

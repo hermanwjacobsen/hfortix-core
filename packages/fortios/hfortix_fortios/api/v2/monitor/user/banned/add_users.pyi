@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AddUsers:
     """
-    Configuration for user/banned/add_users
+    Immediately add one or more users to the banned list.
     
     Path: user/banned/add_users
     Category: monitor

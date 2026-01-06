@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_INTER_CONTROLLER_MODE: Literal["disable", "l2-roaming", "1+1"]
-VALID_BODY_L3_ROAMING: Literal["enable", "disable"]
-VALID_BODY_INTER_CONTROLLER_PRI: Literal["primary", "secondary"]
+VALID_BODY_INTER_CONTROLLER_MODE: Literal[{"description": "Disable inter-controller mode", "help": "Disable inter-controller mode.", "label": "Disable", "name": "disable"}, {"description": "Enable layer 2 roaming support between inter-controllers", "help": "Enable layer 2 roaming support between inter-controllers.", "label": "L2 Roaming", "name": "l2-roaming"}, {"description": "Enable 1+1 fast failover mode", "help": "Enable 1+1 fast failover mode.", "label": "1+1", "name": "1+1"}]
+VALID_BODY_L3_ROAMING: Literal[{"description": "Enable layer 3 roaming", "help": "Enable layer 3 roaming.", "label": "Enable", "name": "enable"}, {"description": "Disable layer 3 roaming", "help": "Disable layer 3 roaming.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INTER_CONTROLLER_PRI: Literal[{"description": "Primary fast failover mode", "help": "Primary fast failover mode.", "label": "Primary", "name": "primary"}, {"description": "Secondary fast failover mode", "help": "Secondary fast failover mode.", "label": "Secondary", "name": "secondary"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

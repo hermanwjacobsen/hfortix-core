@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_HASH_TYPE: Literal["md5", "sha1", "sha256"]
-VALID_BODY_STATUS: Literal["disable", "enable"]
+VALID_BODY_HASH_TYPE: Literal[{"description": "MD5 hash value (32 characters in length)", "help": "MD5 hash value (32 characters in length).", "label": "Md5", "name": "md5"}, {"description": "SHA1 hash value (40 characters in length)", "help": "SHA1 hash value (40 characters in length).", "label": "Sha1", "name": "sha1"}, {"description": "SHA256 hash value (64 characters in length)", "help": "SHA256 hash value (64 characters in length).", "label": "Sha256", "name": "sha256"}]
+VALID_BODY_STATUS: Literal[{"description": "Disable AV exempt-list table entry", "help": "Disable AV exempt-list table entry.", "label": "Disable", "name": "disable"}, {"description": "Enable AV exempt-list table entry", "help": "Enable AV exempt-list table entry.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -12,11 +12,11 @@ class TrafficPolicyPayload(TypedDict, total=False):
     """
     name: str  # Traffic policy name.
     description: NotRequired[str]  # Description of the traffic policy.
-    policer_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable policer config on the traffic policy.
+    policer_status: NotRequired[Literal[{"description": "Enable policer config on the traffic policy", "help": "Enable policer config on the traffic policy.", "label": "Enable", "name": "enable"}, {"description": "Disable policer config on the traffic policy", "help": "Disable policer config on the traffic policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable policer config on the traffic policy.
     guaranteed_bandwidth: NotRequired[int]  # Guaranteed bandwidth in kbps (max value = 524287000).
     guaranteed_burst: NotRequired[int]  # Guaranteed burst size in bytes (max value = 4294967295).
     maximum_burst: NotRequired[int]  # Maximum burst size in bytes (max value = 4294967295).
-    type: NotRequired[Literal["ingress", "egress"]]  # Configure type of policy(ingress/egress).
+    type: NotRequired[Literal[{"description": "Ingress policy", "help": "Ingress policy.", "label": "Ingress", "name": "ingress"}, {"description": "Egress policy", "help": "Egress policy.", "label": "Egress", "name": "egress"}]]  # Configure type of policy(ingress/egress).
     cos_queue: NotRequired[int]  # COS queue(0 - 7), or unset to disable.
 
 
@@ -47,11 +47,11 @@ class TrafficPolicy:
         payload_dict: TrafficPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        policer_status: Literal["enable", "disable"] | None = ...,
+        policer_status: Literal[{"description": "Enable policer config on the traffic policy", "help": "Enable policer config on the traffic policy.", "label": "Enable", "name": "enable"}, {"description": "Disable policer config on the traffic policy", "help": "Disable policer config on the traffic policy.", "label": "Disable", "name": "disable"}] | None = ...,
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type: Literal[{"description": "Ingress policy", "help": "Ingress policy.", "label": "Ingress", "name": "ingress"}, {"description": "Egress policy", "help": "Egress policy.", "label": "Egress", "name": "egress"}] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -63,11 +63,11 @@ class TrafficPolicy:
         payload_dict: TrafficPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        policer_status: Literal["enable", "disable"] | None = ...,
+        policer_status: Literal[{"description": "Enable policer config on the traffic policy", "help": "Enable policer config on the traffic policy.", "label": "Enable", "name": "enable"}, {"description": "Disable policer config on the traffic policy", "help": "Disable policer config on the traffic policy.", "label": "Disable", "name": "disable"}] | None = ...,
         guaranteed_bandwidth: int | None = ...,
         guaranteed_burst: int | None = ...,
         maximum_burst: int | None = ...,
-        type: Literal["ingress", "egress"] | None = ...,
+        type: Literal[{"description": "Ingress policy", "help": "Ingress policy.", "label": "Ingress", "name": "ingress"}, {"description": "Egress policy", "help": "Egress policy.", "label": "Egress", "name": "egress"}] | None = ...,
         cos_queue: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

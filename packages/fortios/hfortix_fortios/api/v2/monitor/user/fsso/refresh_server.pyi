@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RefreshServer:
     """
-    Configuration for user/fsso/refresh-server
+    Refresh remote agent group list for all fsso agents.
     
     Path: user/fsso/refresh_server
     Category: monitor

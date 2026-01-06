@@ -197,53 +197,53 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PROTOCOL = [
-    "TCP/UDP/UDP-Lite/SCTP",
-    "ICMP",
-    "ICMP6",
-    "IP",
-    "HTTP",
-    "FTP",
-    "CONNECT",
-    "SOCKS-TCP",
-    "SOCKS-UDP",
-    "ALL",
+    "TCP/UDP/UDP-Lite/SCTP",  # TCP, UDP, UDP-Lite and SCTP.
+    "ICMP",  # ICMP.
+    "ICMP6",  # ICMP6.
+    "IP",  # IP.
+    "HTTP",  # HTTP - for web proxy.
+    "FTP",  # FTP - for web proxy.
+    "CONNECT",  # Connect - for web proxy.
+    "SOCKS-TCP",  # Socks TCP - for web proxy.
+    "SOCKS-UDP",  # Socks UDP - for web proxy.
+    "ALL",  # All - for web proxy.
 ]
 VALID_BODY_HELPER = [
-    "auto",
-    "disable",
-    "ftp",
-    "tftp",
-    "ras",
-    "h323",
-    "tns",
-    "mms",
-    "sip",
-    "pptp",
-    "rtsp",
-    "dns-udp",
-    "dns-tcp",
-    "pmap",
-    "rsh",
-    "dcerpc",
-    "mgcp",
+    "auto",  # Automatically select helper based on protocol and port.
+    "disable",  # Disable helper.
+    "ftp",  # FTP.
+    "tftp",  # TFTP.
+    "ras",  # RAS.
+    "h323",  # H323.
+    "tns",  # TNS.
+    "mms",  # MMS.
+    "sip",  # SIP.
+    "pptp",  # PPTP.
+    "rtsp",  # RTSP.
+    "dns-udp",  # DNS UDP.
+    "dns-tcp",  # DNS TCP.
+    "pmap",  # PMAP.
+    "rsh",  # RSH.
+    "dcerpc",  # DCERPC.
+    "mgcp",  # MGCP.
 ]
 VALID_BODY_CHECK_RESET_RANGE = [
-    "disable",
-    "strict",
-    "default",
+    "disable",  # Disable RST range check.
+    "strict",  # Check RST range strictly.
+    "default",  # Using system default setting.
 ]
 VALID_BODY_APP_SERVICE_TYPE = [
-    "disable",
-    "app-id",
-    "app-category",
+    "disable",  # Disable application type.
+    "app-id",  # Application ID.
+    "app-category",  # Applicatin category.
 ]
 VALID_BODY_FABRIC_OBJECT = [
-    "enable",
-    "disable",
+    "enable",  # Object is set as a security fabric-wide global object.
+    "disable",  # Object is local to this security fabric member.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -371,7 +371,7 @@ def validate_firewall_service_custom_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "proxy": "enable",  # Valid enum value
+        ...     "proxy": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_service_custom_post(payload)
         >>> assert is_valid == True

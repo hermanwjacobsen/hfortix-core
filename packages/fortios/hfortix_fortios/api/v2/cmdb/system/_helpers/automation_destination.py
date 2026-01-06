@@ -108,8 +108,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "fortigate",
-    "ha-cluster",
+    "fortigate",  # FortiGate set as destination.
+    "ha-cluster",  # HA cluster set as destination.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -237,7 +237,7 @@ def validate_system_automation_destination_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "type": "fortigate",  # Valid enum value
+        ...     "type": "{'name': 'fortigate', 'help': 'FortiGate set as destination.', 'label': 'Fortigate', 'description': 'FortiGate set as destination'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_automation_destination_post(payload)
         >>> assert is_valid == True

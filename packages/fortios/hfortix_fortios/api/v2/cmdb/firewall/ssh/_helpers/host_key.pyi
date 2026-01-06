@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["trusted", "revoked"]
-VALID_BODY_TYPE: Literal["RSA", "DSA", "ECDSA", "ED25519", "RSA-CA", "DSA-CA", "ECDSA-CA", "ED25519-CA"]
-VALID_BODY_NID: Literal["256", "384", "521"]
-VALID_BODY_USAGE: Literal["transparent-proxy", "access-proxy"]
+VALID_BODY_STATUS: Literal[{"description": "The public key is trusted", "help": "The public key is trusted.", "label": "Trusted", "name": "trusted"}, {"description": "The public key is revoked", "help": "The public key is revoked.", "label": "Revoked", "name": "revoked"}]
+VALID_BODY_TYPE: Literal[{"description": "The type of the public key is RSA", "help": "The type of the public key is RSA.", "label": "Rsa", "name": "RSA"}, {"description": "The type of the public key is DSA", "help": "The type of the public key is DSA.", "label": "Dsa", "name": "DSA"}, {"description": "The type of the public key is ECDSA", "help": "The type of the public key is ECDSA.", "label": "Ecdsa", "name": "ECDSA"}, {"description": "The type of the public key is ED25519", "help": "The type of the public key is ED25519.", "label": "Ed25519", "name": "ED25519"}, {"description": "The type of the public key is from RSA CA", "help": "The type of the public key is from RSA CA.", "label": "Rsa Ca", "name": "RSA-CA"}, {"description": "The type of the public key is from DSA CA", "help": "The type of the public key is from DSA CA.", "label": "Dsa Ca", "name": "DSA-CA"}, {"description": "The type of the public key is from ECDSA CA", "help": "The type of the public key is from ECDSA CA.", "label": "Ecdsa Ca", "name": "ECDSA-CA"}, {"description": "The type of the public key is from ED25519 CA", "help": "The type of the public key is from ED25519 CA.", "label": "Ed25519 Ca", "name": "ED25519-CA"}]
+VALID_BODY_NID: Literal[{"description": "The NID is ecdsa-sha2-nistp256", "help": "The NID is ecdsa-sha2-nistp256.", "label": "256", "name": "256"}, {"description": "The NID is ecdsa-sha2-nistp384", "help": "The NID is ecdsa-sha2-nistp384.", "label": "384", "name": "384"}, {"description": "The NID is ecdsa-sha2-nistp521", "help": "The NID is ecdsa-sha2-nistp521.", "label": "521", "name": "521"}]
+VALID_BODY_USAGE: Literal[{"description": "Transparent proxy uses this public key to validate server", "help": "Transparent proxy uses this public key to validate server.", "label": "Transparent Proxy", "name": "transparent-proxy"}, {"description": "Access proxy uses this public key to validate server", "help": "Access proxy uses this public key to validate server.", "label": "Access Proxy", "name": "access-proxy"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

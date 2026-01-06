@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RunningProcesses:
     """
-    Configuration for system/running-processes
+    List of running processes and their resource usage.
     
     Path: system/running_processes
     Category: monitor

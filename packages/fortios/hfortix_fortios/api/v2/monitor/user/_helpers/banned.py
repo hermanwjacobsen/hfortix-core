@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/banned",
     "category": "monitor",
     "api_path": "user/banned",
-    "help": "Monitor endpoint for user/banned",
+    "help": "Return a list of all banned users by IP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -10,7 +10,7 @@ class TrafficSnifferPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    mode: NotRequired[Literal["erspan-auto", "rspan", "none"]]  # Configure traffic sniffer mode.
+    mode: NotRequired[Literal[{"description": "Mirror traffic using a GRE tunnel", "help": "Mirror traffic using a GRE tunnel.", "label": "Erspan Auto", "name": "erspan-auto"}, {"description": "Mirror traffic on a layer2 VLAN", "help": "Mirror traffic on a layer2 VLAN.", "label": "Rspan", "name": "rspan"}, {"description": "Disable traffic mirroring (sniffer)", "help": "Disable traffic mirroring (sniffer).", "label": "None", "name": "none"}]]  # Configure traffic sniffer mode.
     erspan_ip: NotRequired[str]  # Configure ERSPAN collector IP address.
     target_mac: NotRequired[list[dict[str, Any]]]  # Sniffer MACs to filter.
     target_ip: NotRequired[list[dict[str, Any]]]  # Sniffer IPs to filter.
@@ -41,7 +41,7 @@ class TrafficSniffer:
     def post(
         self,
         payload_dict: TrafficSnifferPayload | None = ...,
-        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        mode: Literal[{"description": "Mirror traffic using a GRE tunnel", "help": "Mirror traffic using a GRE tunnel.", "label": "Erspan Auto", "name": "erspan-auto"}, {"description": "Mirror traffic on a layer2 VLAN", "help": "Mirror traffic on a layer2 VLAN.", "label": "Rspan", "name": "rspan"}, {"description": "Disable traffic mirroring (sniffer)", "help": "Disable traffic mirroring (sniffer).", "label": "None", "name": "none"}] | None = ...,
         erspan_ip: str | None = ...,
         target_mac: list[dict[str, Any]] | None = ...,
         target_ip: list[dict[str, Any]] | None = ...,
@@ -54,7 +54,7 @@ class TrafficSniffer:
     def put(
         self,
         payload_dict: TrafficSnifferPayload | None = ...,
-        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
+        mode: Literal[{"description": "Mirror traffic using a GRE tunnel", "help": "Mirror traffic using a GRE tunnel.", "label": "Erspan Auto", "name": "erspan-auto"}, {"description": "Mirror traffic on a layer2 VLAN", "help": "Mirror traffic on a layer2 VLAN.", "label": "Rspan", "name": "rspan"}, {"description": "Disable traffic mirroring (sniffer)", "help": "Disable traffic mirroring (sniffer).", "label": "None", "name": "none"}] | None = ...,
         erspan_ip: str | None = ...,
         target_mac: list[dict[str, Any]] | None = ...,
         target_ip: list[dict[str, Any]] | None = ...,

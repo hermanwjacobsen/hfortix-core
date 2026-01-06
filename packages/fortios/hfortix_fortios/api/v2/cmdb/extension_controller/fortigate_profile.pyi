@@ -12,7 +12,7 @@ class FortigateProfilePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # FortiGate connector profile name.
     id: NotRequired[int]  # ID.
-    extension: NotRequired[Literal["lan-extension"]]  # Extension option.
+    extension: NotRequired[Literal[{"description": "LAN extension", "help": "LAN extension.", "label": "Lan Extension", "name": "lan-extension"}]]  # Extension option.
     lan_extension: str  # FortiGate connector LAN extension configuration.
 
 
@@ -43,7 +43,7 @@ class FortigateProfile:
         payload_dict: FortigateProfilePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
-        extension: Literal["lan-extension"] | None = ...,
+        extension: Literal[{"description": "LAN extension", "help": "LAN extension.", "label": "Lan Extension", "name": "lan-extension"}] | None = ...,
         lan_extension: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -55,7 +55,7 @@ class FortigateProfile:
         payload_dict: FortigateProfilePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
-        extension: Literal["lan-extension"] | None = ...,
+        extension: Literal[{"description": "LAN extension", "help": "LAN extension.", "label": "Lan Extension", "name": "lan-extension"}] | None = ...,
         lan_extension: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

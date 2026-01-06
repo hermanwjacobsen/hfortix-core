@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve system/modem/reset configuration.
 
-        Configuration for system/modem/reset
+        Reset statistics for internal/external configured modem.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

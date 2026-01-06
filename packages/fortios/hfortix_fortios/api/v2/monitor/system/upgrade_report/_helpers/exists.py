@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/upgrade_report/exists",
     "category": "monitor",
     "api_path": "system/upgrade-report/exists",
-    "help": "Configuration for system/upgrade-report/exists",
+    "help": "Check if a report upgrade has been generated.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

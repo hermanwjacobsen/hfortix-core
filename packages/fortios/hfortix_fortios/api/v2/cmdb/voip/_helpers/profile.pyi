@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_FEATURE_SET: Literal["ips", "voipd"]
+VALID_BODY_FEATURE_SET: Literal[{"description": "IPS Engine feature set for ips-voip-filter", "help": "IPS Engine feature set for ips-voip-filter.", "label": "Ips", "name": "ips"}, {"description": "SIP ALG feature set for voip-profile", "help": "SIP ALG feature set for voip-profile.", "label": "Voipd", "name": "voipd"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

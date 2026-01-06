@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/policy_archive/download",
     "category": "monitor",
     "api_path": "log/policy-archive/download",
-    "help": "Configuration for log/policy-archive/download",
+    "help": "Download policy-based packet capture archive.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -10,7 +10,7 @@ class SettingsPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    override: NotRequired[Literal["enable", "disable"]]  # Override global EMS table for this VDOM.
+    override: NotRequired[Literal[{"description": "Enable Overriding global EMS table", "help": "Enable Overriding global EMS table.", "label": "Enable", "name": "enable"}, {"description": "Disable Overriding global EMS table", "help": "Disable Overriding global EMS table.", "label": "Disable", "name": "disable"}]]  # Override global EMS table for this VDOM.
 
 
 class Settings:
@@ -37,7 +37,7 @@ class Settings:
     def post(
         self,
         payload_dict: SettingsPayload | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
+        override: Literal[{"description": "Enable Overriding global EMS table", "help": "Enable Overriding global EMS table.", "label": "Enable", "name": "enable"}, {"description": "Disable Overriding global EMS table", "help": "Disable Overriding global EMS table.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -46,7 +46,7 @@ class Settings:
     def put(
         self,
         payload_dict: SettingsPayload | None = ...,
-        override: Literal["enable", "disable"] | None = ...,
+        override: Literal[{"description": "Enable Overriding global EMS table", "help": "Enable Overriding global EMS table.", "label": "Enable", "name": "enable"}, {"description": "Disable Overriding global EMS table", "help": "Disable Overriding global EMS table.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

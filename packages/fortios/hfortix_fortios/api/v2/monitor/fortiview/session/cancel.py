@@ -56,7 +56,7 @@ class Cancel:
         """
         Retrieve fortiview/session/cancel configuration.
 
-        Configuration for fortiview/session/cancel
+        Cancel a FortiView request session.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

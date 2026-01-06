@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CertStatus:
     """
-    Configuration for endpoint-control/ems/cert-status
+    Retrieve authentication status of the EMS server certificate for a specific EMS.
     
     Path: endpoint_control/ems/cert_status
     Category: monitor

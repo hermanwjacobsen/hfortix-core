@@ -139,24 +139,28 @@ FIELD_TYPES = {
     "internet-service-group": "string",  # Internet Service group name.
     "internet-service-custom": "string",  # Custom Internet Service name.
     "internet-service-custom-group": "string",  # Custom Internet Service group name.
+    "internet-service-fortiguard": "string",  # FortiGuard Internet Service name.
     "internet-service-src": "option",  # Enable/disable use of Internet Services in source for this p
     "internet-service-src-name": "string",  # Internet Service source name.
     "internet-service-src-negate": "option",  # When enabled internet-service-src specifies what the service
     "internet-service-src-group": "string",  # Internet Service source group name.
     "internet-service-src-custom": "string",  # Custom Internet Service source name.
     "internet-service-src-custom-group": "string",  # Custom Internet Service source group name.
+    "internet-service-src-fortiguard": "string",  # FortiGuard Internet Service source name.
     "internet-service6": "option",  # Enable/disable use of IPv6 Internet Services for this policy
     "internet-service6-name": "string",  # IPv6 Internet Service name.
     "internet-service6-negate": "option",  # When enabled internet-service6 specifies what the service mu
     "internet-service6-group": "string",  # Internet Service group name.
     "internet-service6-custom": "string",  # Custom IPv6 Internet Service name.
     "internet-service6-custom-group": "string",  # Custom IPv6 Internet Service group name.
+    "internet-service6-fortiguard": "string",  # FortiGuard IPv6 Internet Service name.
     "internet-service6-src": "option",  # Enable/disable use of IPv6 Internet Services in source for t
     "internet-service6-src-name": "string",  # IPv6 Internet Service source name.
     "internet-service6-src-negate": "option",  # When enabled internet-service6-src specifies what the servic
     "internet-service6-src-group": "string",  # Internet Service6 source group name.
     "internet-service6-src-custom": "string",  # Custom IPv6 Internet Service source name.
     "internet-service6-src-custom-group": "string",  # Custom Internet Service6 source group name.
+    "internet-service6-src-fortiguard": "string",  # FortiGuard IPv6 Internet Service source name.
     "enforce-default-app-port": "option",  # Enable/disable default application port enforcement for allo
     "service": "string",  # Service and service group names.
     "service-negate": "option",  # When enabled service specifies what the service must NOT be.
@@ -220,24 +224,28 @@ FIELD_DESCRIPTIONS = {
     "internet-service-group": "Internet Service group name.",
     "internet-service-custom": "Custom Internet Service name.",
     "internet-service-custom-group": "Custom Internet Service group name.",
+    "internet-service-fortiguard": "FortiGuard Internet Service name.",
     "internet-service-src": "Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.",
     "internet-service-src-name": "Internet Service source name.",
     "internet-service-src-negate": "When enabled internet-service-src specifies what the service must NOT be.",
     "internet-service-src-group": "Internet Service source group name.",
     "internet-service-src-custom": "Custom Internet Service source name.",
     "internet-service-src-custom-group": "Custom Internet Service source group name.",
+    "internet-service-src-fortiguard": "FortiGuard Internet Service source name.",
     "internet-service6": "Enable/disable use of IPv6 Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.",
     "internet-service6-name": "IPv6 Internet Service name.",
     "internet-service6-negate": "When enabled internet-service6 specifies what the service must NOT be.",
     "internet-service6-group": "Internet Service group name.",
     "internet-service6-custom": "Custom IPv6 Internet Service name.",
     "internet-service6-custom-group": "Custom IPv6 Internet Service group name.",
+    "internet-service6-fortiguard": "FortiGuard IPv6 Internet Service name.",
     "internet-service6-src": "Enable/disable use of IPv6 Internet Services in source for this policy. If enabled, source address is not used.",
     "internet-service6-src-name": "IPv6 Internet Service source name.",
     "internet-service6-src-negate": "When enabled internet-service6-src specifies what the service must NOT be.",
     "internet-service6-src-group": "Internet Service6 source group name.",
     "internet-service6-src-custom": "Custom IPv6 Internet Service source name.",
     "internet-service6-src-custom-group": "Custom Internet Service6 source group name.",
+    "internet-service6-src-fortiguard": "FortiGuard IPv6 Internet Service source name.",
     "enforce-default-app-port": "Enable/disable default application port enforcement for allowed applications.",
     "service": "Service and service group names.",
     "service-negate": "When enabled service specifies what the service must NOT be.",
@@ -396,6 +404,15 @@ NESTED_SCHEMAS = {
             "max_length": 79,
         },
     },
+    "internet-service-fortiguard": {
+        "name": {
+            "type": "string",
+            "help": "FortiGuard Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
     "internet-service-src-name": {
         "name": {
             "type": "string",
@@ -427,6 +444,15 @@ NESTED_SCHEMAS = {
         "name": {
             "type": "string",
             "help": "Custom Internet Service group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service-src-fortiguard": {
+        "name": {
+            "type": "string",
+            "help": "FortiGuard Internet Service name.",
             "required": True,
             "default": "",
             "max_length": 79,
@@ -468,6 +494,15 @@ NESTED_SCHEMAS = {
             "max_length": 79,
         },
     },
+    "internet-service6-fortiguard": {
+        "name": {
+            "type": "string",
+            "help": "FortiGuard Internet Service name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
     "internet-service6-src-name": {
         "name": {
             "type": "string",
@@ -499,6 +534,15 @@ NESTED_SCHEMAS = {
         "name": {
             "type": "string",
             "help": "Custom Internet Service6 group name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
+    "internet-service6-src-fortiguard": {
+        "name": {
+            "type": "string",
+            "help": "FortiGuard Internet Service name.",
             "required": True,
             "default": "",
             "max_length": 79,
@@ -573,93 +617,93 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SRCADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable source address negate.
+    "disable",  # Disable source address negate.
 ]
 VALID_BODY_DSTADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable destination address negate.
+    "disable",  # Disable destination address negate.
 ]
 VALID_BODY_SRCADDR6_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv6 source address negate.
+    "disable",  # Disable IPv6 source address negate.
 ]
 VALID_BODY_DSTADDR6_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv6 destination address negate.
+    "disable",  # Disable IPv6 destination address negate.
 ]
 VALID_BODY_INTERNET_SERVICE = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Services in policy.
+    "disable",  # Disable use of Internet Services in policy.
 ]
 VALID_BODY_INTERNET_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated Internet Service match.
+    "disable",  # Disable negated Internet Service match.
 ]
 VALID_BODY_INTERNET_SERVICE_SRC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Services source in policy.
+    "disable",  # Disable use of Internet Services source in policy.
 ]
 VALID_BODY_INTERNET_SERVICE_SRC_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated Internet Service source match.
+    "disable",  # Disable negated Internet Service source match.
 ]
 VALID_BODY_INTERNET_SERVICE6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of IPv6 Internet Services in policy.
+    "disable",  # Disable use of IPv6 Internet Services in policy.
 ]
 VALID_BODY_INTERNET_SERVICE6_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated IPv6 Internet Service match.
+    "disable",  # Disable negated IPv6 Internet Service match.
 ]
 VALID_BODY_INTERNET_SERVICE6_SRC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of IPv6 Internet Services source in policy.
+    "disable",  # Disable use of IPv6 Internet Services source in policy.
 ]
 VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated IPv6 Internet Service source match.
+    "disable",  # Disable negated IPv6 Internet Service source match.
 ]
 VALID_BODY_ENFORCE_DEFAULT_APP_PORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated service match.
+    "disable",  # Disable negated service match.
 ]
 VALID_BODY_ACTION = [
-    "accept",
-    "deny",
+    "accept",  # Allows session that match the firewall policy.
+    "deny",  # Blocks sessions that match the firewall policy.
 ]
 VALID_BODY_SEND_DENY_PACKET = [
-    "disable",
-    "enable",
+    "disable",  # Disable deny-packet sending.
+    "enable",  # Enable deny-packet sending.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "all",
-    "utm",
-    "disable",
+    "all",  # Log all sessions accepted or denied by this policy.
+    "utm",  # Log traffic that has a security profile applied to it.
+    "disable",  # Disable all logging for this policy.
 ]
 VALID_BODY_LEARNING_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable learning mode.
+    "disable",  # Disable learning mode.
 ]
 VALID_BODY_NAT46 = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAT46.
+    "disable",  # Disable NAT46.
 ]
 VALID_BODY_NAT64 = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAT64.
+    "disable",  # Disable NAT64.
 ]
 VALID_BODY_PROFILE_TYPE = [
-    "single",
-    "group",
+    "single",  # Do not allow security profile groups.
+    "group",  # Allow security profile groups.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -790,7 +834,7 @@ def validate_firewall_security_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "srcintf": True,
-        ...     "srcaddr-negate": "enable",  # Valid enum value
+        ...     "srcaddr-negate": "{'name': 'enable', 'help': 'Enable source address negate.', 'label': 'Enable', 'description': 'Enable source address negate'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_security_policy_post(payload)
         >>> assert is_valid == True
@@ -1503,7 +1547,7 @@ SCHEMA_INFO = {
     "mkey": "policyid",
     "mkey_type": "integer",
     "help": "Configure NGFW IPv4/IPv6 application policies.",
-    "total_fields": 77,
+    "total_fields": 81,
     "required_fields_count": 3,
     "fields_with_defaults_count": 47,
 }

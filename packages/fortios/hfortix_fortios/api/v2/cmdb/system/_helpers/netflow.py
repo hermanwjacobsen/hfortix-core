@@ -180,7 +180,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Specify how to select outgoing interface to reach server.",
             "default": "auto",
-            "options": ["auto", "sdwan", "specify"],
+            "options": [{"help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}],
         },
         "interface": {
             "type": "string",
@@ -202,9 +202,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SESSION_CACHE_SIZE = [
-    "min",
-    "default",
-    "max",
+    "min",  # Up to 0.5% of system RAM.
+    "default",  # Up to 1% of system RAM.
+    "max",  # Up to 2% of system RAM.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -329,7 +329,7 @@ def validate_system_netflow_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "session-cache-size": "min",  # Valid enum value
+        ...     "session-cache-size": "{'name': 'min', 'help': 'Up to 0.5% of system RAM.', 'label': 'Min', 'description': 'Up to 0'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_netflow_post(payload)
         >>> assert is_valid == True

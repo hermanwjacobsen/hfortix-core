@@ -56,7 +56,7 @@ class Delete:
         """
         Retrieve vpn/ssl/delete configuration.
 
-        Configuration for vpn/ssl/delete
+        Terminate the provided Agentless VPN session.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

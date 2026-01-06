@@ -1,18 +1,18 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_GROUP_TYPE: Literal["firewall", "fsso-service", "rsso", "guest"]
-VALID_BODY_AUTH_CONCURRENT_OVERRIDE: Literal["enable", "disable"]
-VALID_BODY_USER_ID: Literal["email", "auto-generate", "specify"]
-VALID_BODY_PASSWORD: Literal["auto-generate", "specify", "disable"]
-VALID_BODY_USER_NAME: Literal["disable", "enable"]
-VALID_BODY_SPONSOR: Literal["optional", "mandatory", "disabled"]
-VALID_BODY_COMPANY: Literal["optional", "mandatory", "disabled"]
-VALID_BODY_EMAIL: Literal["disable", "enable"]
-VALID_BODY_MOBILE_PHONE: Literal["disable", "enable"]
-VALID_BODY_SMS_SERVER: Literal["fortiguard", "custom"]
-VALID_BODY_EXPIRE_TYPE: Literal["immediately", "first-successful-login"]
-VALID_BODY_MULTIPLE_GUEST_ADD: Literal["disable", "enable"]
+VALID_BODY_GROUP_TYPE: Literal[{"description": "Firewall", "help": "Firewall.", "label": "Firewall", "name": "firewall"}, {"description": "Fortinet Single Sign-On Service", "help": "Fortinet Single Sign-On Service.", "label": "Fsso Service", "name": "fsso-service"}, {"description": "RADIUS based Single Sign-On Service", "help": "RADIUS based Single Sign-On Service.", "label": "Rsso", "name": "rsso"}, {"description": "Guest", "help": "Guest.", "label": "Guest", "name": "guest"}]
+VALID_BODY_AUTH_CONCURRENT_OVERRIDE: Literal[{"description": "Enable auth-concurrent-override", "help": "Enable auth-concurrent-override.", "label": "Enable", "name": "enable"}, {"description": "Disable auth-concurrent-override", "help": "Disable auth-concurrent-override.", "label": "Disable", "name": "disable"}]
+VALID_BODY_USER_ID: Literal[{"description": "Email address", "help": "Email address.", "label": "Email", "name": "email"}, {"description": "Automatically generate", "help": "Automatically generate.", "label": "Auto Generate", "name": "auto-generate"}, {"description": "Specify", "help": "Specify.", "label": "Specify", "name": "specify"}]
+VALID_BODY_PASSWORD: Literal[{"description": "Automatically generate", "help": "Automatically generate.", "label": "Auto Generate", "name": "auto-generate"}, {"description": "Specify", "help": "Specify.", "label": "Specify", "name": "specify"}, {"description": "Disable", "help": "Disable.", "label": "Disable", "name": "disable"}]
+VALID_BODY_USER_NAME: Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SPONSOR: Literal[{"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Disabled", "help": "Disabled.", "label": "Disabled", "name": "disabled"}]
+VALID_BODY_COMPANY: Literal[{"description": "Optional", "help": "Optional.", "label": "Optional", "name": "optional"}, {"description": "Mandatory", "help": "Mandatory.", "label": "Mandatory", "name": "mandatory"}, {"description": "Disabled", "help": "Disabled.", "label": "Disabled", "name": "disabled"}]
+VALID_BODY_EMAIL: Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}]
+VALID_BODY_MOBILE_PHONE: Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SMS_SERVER: Literal[{"description": "Send SMS by FortiGuard", "help": "Send SMS by FortiGuard.", "label": "Fortiguard", "name": "fortiguard"}, {"description": "Send SMS by custom server", "help": "Send SMS by custom server.", "label": "Custom", "name": "custom"}]
+VALID_BODY_EXPIRE_TYPE: Literal[{"description": "Immediately", "help": "Immediately.", "label": "Immediately", "name": "immediately"}, {"description": "First successful login", "help": "First successful login.", "label": "First Successful Login", "name": "first-successful-login"}]
+VALID_BODY_MULTIPLE_GUEST_ADD: Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class KnownNacDeviceCriteriaList:
     """
-    Monitor endpoint for switch-controller/known-nac-device-criteria-list
+    Retrieve a list of commonly configured NAC devices.
     
     Path: switch_controller/known_nac_device_criteria_list
     Category: monitor

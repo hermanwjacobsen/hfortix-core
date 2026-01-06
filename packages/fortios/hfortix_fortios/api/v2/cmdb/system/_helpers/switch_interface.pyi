@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["switch", "hub"]
-VALID_BODY_INTRA_SWITCH_POLICY: Literal["implicit", "explicit"]
-VALID_BODY_SPAN: Literal["disable", "enable"]
-VALID_BODY_SPAN_DIRECTION: Literal["rx", "tx", "both"]
+VALID_BODY_TYPE: Literal[{"description": "Switch for normal switch functionality (available in NAT mode only)", "help": "Switch for normal switch functionality (available in NAT mode only).", "label": "Switch", "name": "switch"}, {"description": "Hub to duplicate packets to all member ports", "help": "Hub to duplicate packets to all member ports.", "label": "Hub", "name": "hub"}]
+VALID_BODY_INTRA_SWITCH_POLICY: Literal[{"description": "Traffic between switch members is implicitly allowed", "help": "Traffic between switch members is implicitly allowed.", "label": "Implicit", "name": "implicit"}, {"description": "Traffic between switch members must match firewall policies", "help": "Traffic between switch members must match firewall policies.", "label": "Explicit", "name": "explicit"}]
+VALID_BODY_SPAN: Literal[{"description": "Disable port spanning", "help": "Disable port spanning.", "label": "Disable", "name": "disable"}, {"description": "Enable port spanning", "help": "Enable port spanning.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SPAN_DIRECTION: Literal[{"description": "Copies only received packets from source SPAN ports to the destination SPAN port", "help": "Copies only received packets from source SPAN ports to the destination SPAN port.", "label": "Rx", "name": "rx"}, {"description": "Copies only transmitted packets from source SPAN ports to the destination SPAN port", "help": "Copies only transmitted packets from source SPAN ports to the destination SPAN port.", "label": "Tx", "name": "tx"}, {"description": "Copies both received and transmitted packets from source SPAN ports to the destination SPAN port", "help": "Copies both received and transmitted packets from source SPAN ports to the destination SPAN port.", "label": "Both", "name": "both"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

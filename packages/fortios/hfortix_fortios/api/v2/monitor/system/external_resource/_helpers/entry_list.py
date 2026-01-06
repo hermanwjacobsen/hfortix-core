@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/external_resource/entry_list",
     "category": "monitor",
     "api_path": "system/external-resource/entry-list",
-    "help": "Configuration for system/external-resource/entry-list",
+    "help": "Retrieve resource file status with a list of valid/invalid entries for the specific external resource. Empty lines and comment lines are not returned.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -10,11 +10,11 @@ class FlowTrackingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    sample_mode: NotRequired[Literal["local", "perimeter", "device-ingress"]]  # Configure sample mode for the flow tracking.
+    sample_mode: NotRequired[Literal[{"description": "Set local mode which samples on the specific switch port", "help": "Set local mode which samples on the specific switch port.", "label": "Local", "name": "local"}, {"description": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress", "help": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress.", "label": "Perimeter", "name": "perimeter"}, {"description": "Set device -ingress mode which samples across all switch ports at the ingress", "help": "Set device -ingress mode which samples across all switch ports at the ingress.", "label": "Device Ingress", "name": "device-ingress"}]]  # Configure sample mode for the flow tracking.
     sample_rate: NotRequired[int]  # Configure sample rate for the perimeter and device-ingress s
-    format: NotRequired[Literal["netflow1", "netflow5", "netflow9", "ipfix"]]  # Configure flow tracking protocol.
+    format: NotRequired[Literal[{"description": "Netflow version 1 sampling", "help": "Netflow version 1 sampling.", "label": "Netflow1", "name": "netflow1"}, {"description": "Netflow version 5 sampling", "help": "Netflow version 5 sampling.", "label": "Netflow5", "name": "netflow5"}, {"description": "Netflow version 9 sampling", "help": "Netflow version 9 sampling.", "label": "Netflow9", "name": "netflow9"}, {"description": "Ipfix sampling", "help": "Ipfix sampling.", "label": "Ipfix", "name": "ipfix"}]]  # Configure flow tracking protocol.
     collectors: NotRequired[list[dict[str, Any]]]  # Configure collectors for the flow.
-    level: NotRequired[Literal["vlan", "ip", "port", "proto", "mac"]]  # Configure flow tracking level.
+    level: NotRequired[Literal[{"description": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet.", "label": "Vlan", "name": "vlan"}, {"description": "Collects srcip/dstip from the sample packet", "help": "Collects srcip/dstip from the sample packet.", "label": "Ip", "name": "ip"}, {"description": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet.", "label": "Port", "name": "port"}, {"description": "Collects srcip/dstip/protocol from the sample packet", "help": "Collects srcip/dstip/protocol from the sample packet.", "label": "Proto", "name": "proto"}, {"description": "Collects smac/dmac from the sample packet", "help": "Collects smac/dmac from the sample packet.", "label": "Mac", "name": "mac"}]]  # Configure flow tracking level.
     max_export_pkt_size: NotRequired[int]  # Configure flow max export packet size (512-9216, default=512
     template_export_period: NotRequired[int]  # Configure template export period (1-60, default=5 minutes).
     timeout_general: NotRequired[int]  # Configure flow session general timeout (60-604800, default=3
@@ -51,11 +51,11 @@ class FlowTracking:
     def post(
         self,
         payload_dict: FlowTrackingPayload | None = ...,
-        sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
+        sample_mode: Literal[{"description": "Set local mode which samples on the specific switch port", "help": "Set local mode which samples on the specific switch port.", "label": "Local", "name": "local"}, {"description": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress", "help": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress.", "label": "Perimeter", "name": "perimeter"}, {"description": "Set device -ingress mode which samples across all switch ports at the ingress", "help": "Set device -ingress mode which samples across all switch ports at the ingress.", "label": "Device Ingress", "name": "device-ingress"}] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format: Literal[{"description": "Netflow version 1 sampling", "help": "Netflow version 1 sampling.", "label": "Netflow1", "name": "netflow1"}, {"description": "Netflow version 5 sampling", "help": "Netflow version 5 sampling.", "label": "Netflow5", "name": "netflow5"}, {"description": "Netflow version 9 sampling", "help": "Netflow version 9 sampling.", "label": "Netflow9", "name": "netflow9"}, {"description": "Ipfix sampling", "help": "Ipfix sampling.", "label": "Ipfix", "name": "ipfix"}] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
-        level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
+        level: Literal[{"description": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet.", "label": "Vlan", "name": "vlan"}, {"description": "Collects srcip/dstip from the sample packet", "help": "Collects srcip/dstip from the sample packet.", "label": "Ip", "name": "ip"}, {"description": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet.", "label": "Port", "name": "port"}, {"description": "Collects srcip/dstip/protocol from the sample packet", "help": "Collects srcip/dstip/protocol from the sample packet.", "label": "Proto", "name": "proto"}, {"description": "Collects smac/dmac from the sample packet", "help": "Collects smac/dmac from the sample packet.", "label": "Mac", "name": "mac"}] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
         timeout_general: int | None = ...,
@@ -74,11 +74,11 @@ class FlowTracking:
     def put(
         self,
         payload_dict: FlowTrackingPayload | None = ...,
-        sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
+        sample_mode: Literal[{"description": "Set local mode which samples on the specific switch port", "help": "Set local mode which samples on the specific switch port.", "label": "Local", "name": "local"}, {"description": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress", "help": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress.", "label": "Perimeter", "name": "perimeter"}, {"description": "Set device -ingress mode which samples across all switch ports at the ingress", "help": "Set device -ingress mode which samples across all switch ports at the ingress.", "label": "Device Ingress", "name": "device-ingress"}] | None = ...,
         sample_rate: int | None = ...,
-        format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
+        format: Literal[{"description": "Netflow version 1 sampling", "help": "Netflow version 1 sampling.", "label": "Netflow1", "name": "netflow1"}, {"description": "Netflow version 5 sampling", "help": "Netflow version 5 sampling.", "label": "Netflow5", "name": "netflow5"}, {"description": "Netflow version 9 sampling", "help": "Netflow version 9 sampling.", "label": "Netflow9", "name": "netflow9"}, {"description": "Ipfix sampling", "help": "Ipfix sampling.", "label": "Ipfix", "name": "ipfix"}] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
-        level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
+        level: Literal[{"description": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet.", "label": "Vlan", "name": "vlan"}, {"description": "Collects srcip/dstip from the sample packet", "help": "Collects srcip/dstip from the sample packet.", "label": "Ip", "name": "ip"}, {"description": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet.", "label": "Port", "name": "port"}, {"description": "Collects srcip/dstip/protocol from the sample packet", "help": "Collects srcip/dstip/protocol from the sample packet.", "label": "Proto", "name": "proto"}, {"description": "Collects smac/dmac from the sample packet", "help": "Collects smac/dmac from the sample packet.", "label": "Mac", "name": "mac"}] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
         timeout_general: int | None = ...,

@@ -1,14 +1,14 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_TYPE: Literal["password", "radius", "tacacs+", "ldap", "saml"]
-VALID_BODY_TWO_FACTOR: Literal["disable", "fortitoken", "fortitoken-cloud", "email", "sms"]
-VALID_BODY_TWO_FACTOR_AUTHENTICATION: Literal["fortitoken", "email", "sms"]
-VALID_BODY_TWO_FACTOR_NOTIFICATION: Literal["email", "sms"]
-VALID_BODY_SMS_SERVER: Literal["fortiguard", "custom"]
-VALID_BODY_AUTH_CONCURRENT_OVERRIDE: Literal["enable", "disable"]
-VALID_BODY_USERNAME_SENSITIVITY: Literal["disable", "enable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable user", "help": "Enable user.", "label": "Enable", "name": "enable"}, {"description": "Disable user", "help": "Disable user.", "label": "Disable", "name": "disable"}]
+VALID_BODY_TYPE: Literal[{"description": "Password authentication", "help": "Password authentication.", "label": "Password", "name": "password"}, {"description": "RADIUS server authentication", "help": "RADIUS server authentication.", "label": "Radius", "name": "radius"}, {"description": "TACACS+ server authentication", "help": "TACACS+ server authentication.", "label": "Tacacs+", "name": "tacacs+"}, {"description": "LDAP server authentication", "help": "LDAP server authentication.", "label": "Ldap", "name": "ldap"}, {"description": "SAML server authentication", "help": "SAML server authentication.", "label": "Saml", "name": "saml"}]
+VALID_BODY_TWO_FACTOR: Literal[{"description": "disable    fortitoken:FortiToken    fortitoken-cloud:FortiToken Cloud Service", "help": "disable", "label": "Disable", "name": "disable"}, {"help": "FortiToken", "label": "Fortitoken", "name": "fortitoken"}, {"help": "FortiToken Cloud Service.", "label": "Fortitoken Cloud", "name": "fortitoken-cloud"}, {"description": "Email authentication code", "help": "Email authentication code.", "label": "Email", "name": "email"}, {"description": "SMS authentication code", "help": "SMS authentication code.", "label": "Sms", "name": "sms"}]
+VALID_BODY_TWO_FACTOR_AUTHENTICATION: Literal[{"description": "FortiToken authentication", "help": "FortiToken authentication.", "label": "Fortitoken", "name": "fortitoken"}, {"description": "Email one time password", "help": "Email one time password.", "label": "Email", "name": "email"}, {"description": "SMS one time password", "help": "SMS one time password.", "label": "Sms", "name": "sms"}]
+VALID_BODY_TWO_FACTOR_NOTIFICATION: Literal[{"description": "Email notification for activation code", "help": "Email notification for activation code.", "label": "Email", "name": "email"}, {"description": "SMS notification for activation code", "help": "SMS notification for activation code.", "label": "Sms", "name": "sms"}]
+VALID_BODY_SMS_SERVER: Literal[{"description": "Send SMS by FortiGuard", "help": "Send SMS by FortiGuard.", "label": "Fortiguard", "name": "fortiguard"}, {"description": "Send SMS by custom server", "help": "Send SMS by custom server.", "label": "Custom", "name": "custom"}]
+VALID_BODY_AUTH_CONCURRENT_OVERRIDE: Literal[{"description": "Enable auth-concurrent-override", "help": "Enable auth-concurrent-override.", "label": "Enable", "name": "enable"}, {"description": "Disable auth-concurrent-override", "help": "Disable auth-concurrent-override.", "label": "Disable", "name": "disable"}]
+VALID_BODY_USERNAME_SENSITIVITY: Literal[{"description": "Ignore case and accents", "help": "Ignore case and accents. Username at prompt not required to match case or accents.", "label": "Disable", "name": "disable"}, {"description": "Do not ignore case and accents", "help": "Do not ignore case and accents. Username at prompt must be an exact match.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

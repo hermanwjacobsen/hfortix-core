@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearSoftOut:
     """
-    Configuration for router/bgp/clear-soft-out
+    Outbound soft-reconfiguration for BGP peers.
     
     Path: router/bgp/clear_soft_out
     Category: monitor

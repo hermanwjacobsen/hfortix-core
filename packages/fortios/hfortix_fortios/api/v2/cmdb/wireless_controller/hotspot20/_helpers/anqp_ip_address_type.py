@@ -96,19 +96,19 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_IPV6_ADDRESS_TYPE = [
-    "not-available",
-    "available",
-    "not-known",
+    "not-available",  # Address type not available.
+    "available",  # Address type available.
+    "not-known",  # Availability of the address type not known.
 ]
 VALID_BODY_IPV4_ADDRESS_TYPE = [
-    "not-available",
-    "public",
-    "port-restricted",
-    "single-NATed-private",
-    "double-NATed-private",
-    "port-restricted-and-single-NATed",
-    "port-restricted-and-double-NATed",
-    "not-known",
+    "not-available",  # Address type not available.
+    "public",  # Public IPv4 address available.
+    "port-restricted",  # Port-restricted IPv4 address available.
+    "single-NATed-private",  # Single NATed private IPv4 address available.
+    "double-NATed-private",  # Double NATed private IPv4 address available.
+    "port-restricted-and-single-NATed",  # Port-restricted IPv4 address and single NATed IPv4 address available.
+    "port-restricted-and-double-NATed",  # Port-restricted IPv4 address and double NATed IPv4 address available.
+    "not-known",  # Availability of the address type is not known.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -236,7 +236,7 @@ def validate_wireless_controller_hotspot20_anqp_ip_address_type_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ipv6-address-type": "not-available",  # Valid enum value
+        ...     "ipv6-address-type": "{'name': 'not-available', 'help': 'Address type not available.', 'label': 'Not Available', 'description': 'Address type not available'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_hotspot20_anqp_ip_address_type_post(payload)
         >>> assert is_valid == True

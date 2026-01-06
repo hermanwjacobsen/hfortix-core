@@ -11,7 +11,7 @@ class SensorPayload(TypedDict, total=False):
         }
     """
     name: str  # Name of table containing the sensor.
-    match_type: Literal["match-all", "match-any", "match-eval"]  # Logical relation between entries (default = match-any).
+    match_type: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}, {"description": "Match an expression evaluation", "help": "Match an expression evaluation.", "label": "Match Eval", "name": "match-eval"}]  # Logical relation between entries (default = match-any).
     eval: NotRequired[str]  # Expression to evaluate.
     comment: NotRequired[str]  # Optional comments.
     entries: list[dict[str, Any]]  # DLP sensor entries.
@@ -43,7 +43,7 @@ class Sensor:
         self,
         payload_dict: SensorPayload | None = ...,
         name: str | None = ...,
-        match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
+        match_type: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}, {"description": "Match an expression evaluation", "help": "Match an expression evaluation.", "label": "Match Eval", "name": "match-eval"}] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
         entries: list[dict[str, Any]] | None = ...,
@@ -56,7 +56,7 @@ class Sensor:
         self,
         payload_dict: SensorPayload | None = ...,
         name: str | None = ...,
-        match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
+        match_type: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}, {"description": "Match an expression evaluation", "help": "Match an expression evaluation.", "label": "Match Eval", "name": "match-eval"}] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
         entries: list[dict[str, Any]] | None = ...,

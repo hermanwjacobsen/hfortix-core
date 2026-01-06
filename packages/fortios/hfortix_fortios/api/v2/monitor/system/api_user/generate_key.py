@@ -56,7 +56,7 @@ class GenerateKey:
         """
         Retrieve system/api_user/generate_key configuration.
 
-        Configuration for system/api-user/generate-key
+        Generate a new api-key for the specified api-key-auth admin. The old api-key will be replaced. The response contains the only chance to read the new api-key plaintext in the api_key field.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

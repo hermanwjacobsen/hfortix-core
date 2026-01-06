@@ -56,7 +56,7 @@ class DownloadEval:
         """
         Retrieve system/vmlicense/download_eval configuration.
 
-        Configuration for system/vmlicense/download-eval
+        Download Evaluation VM License and reboot immediately if successful.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

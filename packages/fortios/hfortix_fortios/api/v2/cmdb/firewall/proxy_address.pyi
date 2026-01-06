@@ -12,20 +12,20 @@ class ProxyAddressPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Address name.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    type: NotRequired[Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"]]  # Proxy address type.
+    type: NotRequired[Literal[{"description": "Host regular expression", "help": "Host regular expression.", "label": "Host Regex", "name": "host-regex"}, {"description": "HTTP URL", "help": "HTTP URL.", "label": "Url", "name": "url"}, {"description": "FortiGuard URL catgegory", "help": "FortiGuard URL catgegory.", "label": "Category", "name": "category"}, {"description": "HTTP request method", "help": "HTTP request method.", "label": "Method", "name": "method"}, {"description": "HTTP request user agent", "help": "HTTP request user agent.", "label": "Ua", "name": "ua"}, {"description": "HTTP request header", "help": "HTTP request header.", "label": "Header", "name": "header"}, {"description": "HTTP advanced source criteria", "help": "HTTP advanced source criteria.", "label": "Src Advanced", "name": "src-advanced"}, {"description": "HTTP advanced destination criteria", "help": "HTTP advanced destination criteria.", "label": "Dst Advanced", "name": "dst-advanced"}, {"description": "SaaS application", "help": "SaaS application.", "label": "Saas", "name": "saas"}]]  # Proxy address type.
     host: str  # Address object for the host.
     host_regex: NotRequired[str]  # Host name as a regular expression.
     path: NotRequired[str]  # URL path as a regular expression.
     query: NotRequired[str]  # Match the query part of the URL as a regular expression.
-    referrer: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of referrer field in the HTTP header to m
+    referrer: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of referrer field in the HTTP header to m
     category: NotRequired[list[dict[str, Any]]]  # FortiGuard category ID.
-    method: NotRequired[Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"]]  # HTTP request methods to be used.
-    ua: NotRequired[Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"]]  # Names of browsers to be used as user agent.
+    method: NotRequired[Literal[{"description": "GET method", "help": "GET method.", "label": "Get", "name": "get"}, {"description": "POST method", "help": "POST method.", "label": "Post", "name": "post"}, {"description": "PUT method", "help": "PUT method.", "label": "Put", "name": "put"}, {"description": "HEAD method", "help": "HEAD method.", "label": "Head", "name": "head"}, {"description": "CONNECT method", "help": "CONNECT method.", "label": "Connect", "name": "connect"}, {"description": "TRACE method", "help": "TRACE method.", "label": "Trace", "name": "trace"}, {"description": "OPTIONS method", "help": "OPTIONS method.", "label": "Options", "name": "options"}, {"description": "DELETE method", "help": "DELETE method.", "label": "Delete", "name": "delete"}, {"description": "UPDATE method", "help": "UPDATE method.", "label": "Update", "name": "update"}, {"description": "PATCH method", "help": "PATCH method.", "label": "Patch", "name": "patch"}, {"description": "Other methods", "help": "Other methods.", "label": "Other", "name": "other"}]]  # HTTP request methods to be used.
+    ua: NotRequired[Literal[{"description": "Google Chrome", "help": "Google Chrome.", "label": "Chrome", "name": "chrome"}, {"description": "Microsoft Internet Explorer or EDGE", "help": "Microsoft Internet Explorer or EDGE.", "label": "Ms", "name": "ms"}, {"description": "Mozilla Firefox", "help": "Mozilla Firefox.", "label": "Firefox", "name": "firefox"}, {"description": "Apple Safari", "help": "Apple Safari.", "label": "Safari", "name": "safari"}, {"description": "Microsoft Internet Explorer", "help": "Microsoft Internet Explorer.", "label": "Ie", "name": "ie"}, {"description": "Microsoft Edge", "help": "Microsoft Edge.", "label": "Edge", "name": "edge"}, {"description": "Other browsers", "help": "Other browsers.", "label": "Other", "name": "other"}]]  # Names of browsers to be used as user agent.
     ua_min_ver: NotRequired[str]  # Minimum version of the user agent specified in dotted notati
     ua_max_ver: NotRequired[str]  # Maximum version of the user agent specified in dotted notati
     header_name: NotRequired[str]  # Name of HTTP header.
     header: NotRequired[str]  # HTTP header name as a regular expression.
-    case_sensitivity: NotRequired[Literal["disable", "enable"]]  # Enable to make the pattern case sensitive.
+    case_sensitivity: NotRequired[Literal[{"description": "Case insensitive in pattern", "help": "Case insensitive in pattern.", "label": "Disable", "name": "disable"}, {"description": "Case sensitive in pattern", "help": "Case sensitive in pattern.", "label": "Enable", "name": "enable"}]]  # Enable to make the pattern case sensitive.
     header_group: NotRequired[list[dict[str, Any]]]  # HTTP header group.
     color: NotRequired[int]  # Integer value to determine the color of the icon in the GUI 
     tagging: NotRequired[list[dict[str, Any]]]  # Config object tagging.
@@ -60,20 +60,20 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type: Literal[{"description": "Host regular expression", "help": "Host regular expression.", "label": "Host Regex", "name": "host-regex"}, {"description": "HTTP URL", "help": "HTTP URL.", "label": "Url", "name": "url"}, {"description": "FortiGuard URL catgegory", "help": "FortiGuard URL catgegory.", "label": "Category", "name": "category"}, {"description": "HTTP request method", "help": "HTTP request method.", "label": "Method", "name": "method"}, {"description": "HTTP request user agent", "help": "HTTP request user agent.", "label": "Ua", "name": "ua"}, {"description": "HTTP request header", "help": "HTTP request header.", "label": "Header", "name": "header"}, {"description": "HTTP advanced source criteria", "help": "HTTP advanced source criteria.", "label": "Src Advanced", "name": "src-advanced"}, {"description": "HTTP advanced destination criteria", "help": "HTTP advanced destination criteria.", "label": "Dst Advanced", "name": "dst-advanced"}, {"description": "SaaS application", "help": "SaaS application.", "label": "Saas", "name": "saas"}] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
         query: str | None = ...,
-        referrer: Literal["enable", "disable"] | None = ...,
+        referrer: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         category: list[dict[str, Any]] | None = ...,
-        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | None = ...,
-        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | None = ...,
+        method: Literal[{"description": "GET method", "help": "GET method.", "label": "Get", "name": "get"}, {"description": "POST method", "help": "POST method.", "label": "Post", "name": "post"}, {"description": "PUT method", "help": "PUT method.", "label": "Put", "name": "put"}, {"description": "HEAD method", "help": "HEAD method.", "label": "Head", "name": "head"}, {"description": "CONNECT method", "help": "CONNECT method.", "label": "Connect", "name": "connect"}, {"description": "TRACE method", "help": "TRACE method.", "label": "Trace", "name": "trace"}, {"description": "OPTIONS method", "help": "OPTIONS method.", "label": "Options", "name": "options"}, {"description": "DELETE method", "help": "DELETE method.", "label": "Delete", "name": "delete"}, {"description": "UPDATE method", "help": "UPDATE method.", "label": "Update", "name": "update"}, {"description": "PATCH method", "help": "PATCH method.", "label": "Patch", "name": "patch"}, {"description": "Other methods", "help": "Other methods.", "label": "Other", "name": "other"}] | None = ...,
+        ua: Literal[{"description": "Google Chrome", "help": "Google Chrome.", "label": "Chrome", "name": "chrome"}, {"description": "Microsoft Internet Explorer or EDGE", "help": "Microsoft Internet Explorer or EDGE.", "label": "Ms", "name": "ms"}, {"description": "Mozilla Firefox", "help": "Mozilla Firefox.", "label": "Firefox", "name": "firefox"}, {"description": "Apple Safari", "help": "Apple Safari.", "label": "Safari", "name": "safari"}, {"description": "Microsoft Internet Explorer", "help": "Microsoft Internet Explorer.", "label": "Ie", "name": "ie"}, {"description": "Microsoft Edge", "help": "Microsoft Edge.", "label": "Edge", "name": "edge"}, {"description": "Other browsers", "help": "Other browsers.", "label": "Other", "name": "other"}] | None = ...,
         ua_min_ver: str | None = ...,
         ua_max_ver: str | None = ...,
         header_name: str | None = ...,
         header: str | None = ...,
-        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        case_sensitivity: Literal[{"description": "Case insensitive in pattern", "help": "Case insensitive in pattern.", "label": "Disable", "name": "disable"}, {"description": "Case sensitive in pattern", "help": "Case sensitive in pattern.", "label": "Enable", "name": "enable"}] | None = ...,
         header_group: list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: list[dict[str, Any]] | None = ...,
@@ -89,20 +89,20 @@ class ProxyAddress:
         payload_dict: ProxyAddressPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        type: Literal["host-regex", "url", "category", "method", "ua", "header", "src-advanced", "dst-advanced", "saas"] | None = ...,
+        type: Literal[{"description": "Host regular expression", "help": "Host regular expression.", "label": "Host Regex", "name": "host-regex"}, {"description": "HTTP URL", "help": "HTTP URL.", "label": "Url", "name": "url"}, {"description": "FortiGuard URL catgegory", "help": "FortiGuard URL catgegory.", "label": "Category", "name": "category"}, {"description": "HTTP request method", "help": "HTTP request method.", "label": "Method", "name": "method"}, {"description": "HTTP request user agent", "help": "HTTP request user agent.", "label": "Ua", "name": "ua"}, {"description": "HTTP request header", "help": "HTTP request header.", "label": "Header", "name": "header"}, {"description": "HTTP advanced source criteria", "help": "HTTP advanced source criteria.", "label": "Src Advanced", "name": "src-advanced"}, {"description": "HTTP advanced destination criteria", "help": "HTTP advanced destination criteria.", "label": "Dst Advanced", "name": "dst-advanced"}, {"description": "SaaS application", "help": "SaaS application.", "label": "Saas", "name": "saas"}] | None = ...,
         host: str | None = ...,
         host_regex: str | None = ...,
         path: str | None = ...,
         query: str | None = ...,
-        referrer: Literal["enable", "disable"] | None = ...,
+        referrer: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         category: list[dict[str, Any]] | None = ...,
-        method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | None = ...,
-        ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | None = ...,
+        method: Literal[{"description": "GET method", "help": "GET method.", "label": "Get", "name": "get"}, {"description": "POST method", "help": "POST method.", "label": "Post", "name": "post"}, {"description": "PUT method", "help": "PUT method.", "label": "Put", "name": "put"}, {"description": "HEAD method", "help": "HEAD method.", "label": "Head", "name": "head"}, {"description": "CONNECT method", "help": "CONNECT method.", "label": "Connect", "name": "connect"}, {"description": "TRACE method", "help": "TRACE method.", "label": "Trace", "name": "trace"}, {"description": "OPTIONS method", "help": "OPTIONS method.", "label": "Options", "name": "options"}, {"description": "DELETE method", "help": "DELETE method.", "label": "Delete", "name": "delete"}, {"description": "UPDATE method", "help": "UPDATE method.", "label": "Update", "name": "update"}, {"description": "PATCH method", "help": "PATCH method.", "label": "Patch", "name": "patch"}, {"description": "Other methods", "help": "Other methods.", "label": "Other", "name": "other"}] | None = ...,
+        ua: Literal[{"description": "Google Chrome", "help": "Google Chrome.", "label": "Chrome", "name": "chrome"}, {"description": "Microsoft Internet Explorer or EDGE", "help": "Microsoft Internet Explorer or EDGE.", "label": "Ms", "name": "ms"}, {"description": "Mozilla Firefox", "help": "Mozilla Firefox.", "label": "Firefox", "name": "firefox"}, {"description": "Apple Safari", "help": "Apple Safari.", "label": "Safari", "name": "safari"}, {"description": "Microsoft Internet Explorer", "help": "Microsoft Internet Explorer.", "label": "Ie", "name": "ie"}, {"description": "Microsoft Edge", "help": "Microsoft Edge.", "label": "Edge", "name": "edge"}, {"description": "Other browsers", "help": "Other browsers.", "label": "Other", "name": "other"}] | None = ...,
         ua_min_ver: str | None = ...,
         ua_max_ver: str | None = ...,
         header_name: str | None = ...,
         header: str | None = ...,
-        case_sensitivity: Literal["disable", "enable"] | None = ...,
+        case_sensitivity: Literal[{"description": "Case insensitive in pattern", "help": "Case insensitive in pattern.", "label": "Disable", "name": "disable"}, {"description": "Case sensitive in pattern", "help": "Case sensitive in pattern.", "label": "Enable", "name": "enable"}] | None = ...,
         header_group: list[dict[str, Any]] | None = ...,
         color: int | None = ...,
         tagging: list[dict[str, Any]] | None = ...,

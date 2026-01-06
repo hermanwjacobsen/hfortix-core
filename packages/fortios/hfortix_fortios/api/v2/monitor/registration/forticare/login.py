@@ -56,7 +56,7 @@ class Login:
         """
         Retrieve registration/forticare/login configuration.
 
-        Configuration for registration/forticare/login
+        Login to FortiCare.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -306,7 +306,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Log to remote syslog server.", "label": "Enable", "name": "enable"}, {"help": "Do not log to remote syslog server.", "label": "Disable", "name": "disable"}],
         },
         "server": {
             "type": "string",
@@ -338,7 +338,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Specify how to select outgoing interface to reach server.",
             "default": "auto",
-            "options": ["auto", "sdwan", "specify"],
+            "options": [{"help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}],
         },
         "interface": {
             "type": "string",
@@ -360,235 +360,235 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ALL_USERGROUP = [
-    "disable",
-    "enable",
+    "disable",  # Do not automatically include this server in a user group.
+    "enable",  # Include this RADIUS server in every user group.
 ]
 VALID_BODY_USE_MANAGEMENT_VDOM = [
-    "enable",
-    "disable",
+    "enable",  # Send requests using the management VDOM.
+    "disable",  # Send requests using the current VDOM.
 ]
 VALID_BODY_SWITCH_CONTROLLER_NAS_IP_DYNAMIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable dynamic NAS-IP setting.
+    "disable",  # Disable dynamic NAS-IP setting.
 ]
 VALID_BODY_NAS_ID_TYPE = [
-    "legacy",
-    "custom",
-    "hostname",
+    "legacy",  # NAS-ID value is the value previously used by each daemon.
+    "custom",  # NAS-ID value is customized.
+    "hostname",  # NAS-ID value is hostname or HA group name if applicable.
 ]
 VALID_BODY_CALL_STATION_ID_TYPE = [
-    "legacy",
-    "IP",
-    "MAC",
+    "legacy",  # Calling & Called station identifier is the value previously used by each daemon.
+    "IP",  # Calling & Called station identifier is the value of IP address. 
+    "MAC",  # Calling & Called station identifier is the value of MAC address. 
 ]
 VALID_BODY_RADIUS_COA = [
-    "enable",
-    "disable",
+    "enable",  # Enable RADIUS CoA.
+    "disable",  # Disable RADIUS CoA.
 ]
 VALID_BODY_H3C_COMPATIBILITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable H3C compatibility.
+    "disable",  # Disable H3C compatibility.
 ]
 VALID_BODY_AUTH_TYPE = [
-    "auto",
-    "ms_chap_v2",
-    "ms_chap",
-    "chap",
-    "pap",
+    "auto",  # Use PAP, MSCHAP_v2, and CHAP (in that order).
+    "ms_chap_v2",  # Microsoft Challenge Handshake Authentication Protocol version 2.
+    "ms_chap",  # Microsoft Challenge Handshake Authentication Protocol.
+    "chap",  # Challenge Handshake Authentication Protocol.
+    "pap",  # Password Authentication Protocol.
 ]
 VALID_BODY_USERNAME_CASE_SENSITIVE = [
-    "enable",
-    "disable",
+    "enable",  # Enable username case-sensitive.
+    "disable",  # Disable username case-sensitive.
 ]
 VALID_BODY_GROUP_OVERRIDE_ATTR_TYPE = [
-    "filter-Id",
-    "class",
+    "filter-Id",  # Filter-Id
+    "class",  # Class
 ]
 VALID_BODY_PASSWORD_RENEWAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable password renewal.
+    "disable",  # Disable password renewal.
 ]
 VALID_BODY_REQUIRE_MESSAGE_AUTHENTICATOR = [
-    "enable",
-    "disable",
+    "enable",  # Make the validation of message authenticator mandatory in authentication response.
+    "disable",  # Make the validation of message authenticator optional in authentication response.
 ]
 VALID_BODY_PASSWORD_ENCODING = [
-    "auto",
-    "ISO-8859-1",
+    "auto",  # Use original password encoding.
+    "ISO-8859-1",  # Use ISO-8859-1 password encoding.
 ]
 VALID_BODY_MAC_USERNAME_DELIMITER = [
-    "hyphen",
-    "single-hyphen",
-    "colon",
-    "none",
+    "hyphen",  # Use hyphen as delimiter for MAC authentication username.
+    "single-hyphen",  # Use single hyphen as delimiter for MAC authentication username.
+    "colon",  # Use colon as delimiter for MAC authentication username.
+    "none",  # No delimiter for MAC authentication username.
 ]
 VALID_BODY_MAC_PASSWORD_DELIMITER = [
-    "hyphen",
-    "single-hyphen",
-    "colon",
-    "none",
+    "hyphen",  # Use hyphen as delimiter for MAC authentication password.
+    "single-hyphen",  # Use single hyphen as delimiter for MAC authentication password.
+    "colon",  # Use colon as delimiter for MAC authentication password.
+    "none",  # No delimiter for MAC authentication password.
 ]
 VALID_BODY_MAC_CASE = [
-    "uppercase",
-    "lowercase",
+    "uppercase",  # Use uppercase MAC.
+    "lowercase",  # Use lowercase MAC.
 ]
 VALID_BODY_ACCT_ALL_SERVERS = [
-    "enable",
-    "disable",
+    "enable",  # Send accounting messages to all configured servers.
+    "disable",  # Send accounting message only to servers that are confirmed to be reachable.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_SWITCH_CONTROLLER_SERVICE_TYPE = [
-    "login",
-    "framed",
-    "callback-login",
-    "callback-framed",
-    "outbound",
-    "administrative",
-    "nas-prompt",
-    "authenticate-only",
-    "callback-nas-prompt",
-    "call-check",
-    "callback-administrative",
+    "login",  # User should be connected to a host.
+    "framed",  # User use Framed Protocol.
+    "callback-login",  # User disconnected and called back.
+    "callback-framed",  # User disconnected and called back, then a Framed Protocol.
+    "outbound",  # User granted access to outgoing devices.
+    "administrative",  # User granted access to the administrative unsigned interface.
+    "nas-prompt",  # User provided a command prompt on the NAS.
+    "authenticate-only",  # Authentication requested, and no auth info needs to be returned.
+    "callback-nas-prompt",  # User disconnected and called back, then provided a command prompt.
+    "call-check",  # Used by the NAS in an Access-Request packet, Access-Accept to answer the call.
+    "callback-administrative",  # User disconnected and called back, granted access to the admin unsigned interface.
 ]
 VALID_BODY_TRANSPORT_PROTOCOL = [
-    "udp",
-    "tcp",
-    "tls",
+    "udp",  # UDP.
+    "tcp",  # TCP.
+    "tls",  # TLS over TCP.
 ]
 VALID_BODY_TLS_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_SERVER_IDENTITY_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable server identity check.
+    "disable",  # Disable server identity check.
 ]
 VALID_BODY_ACCOUNT_KEY_PROCESSING = [
-    "same",
-    "strip",
+    "same",  # Same as subject identity field.
+    "strip",  # Strip domain string from subject identity field.
 ]
 VALID_BODY_ACCOUNT_KEY_CERT_FIELD = [
-    "othername",
-    "rfc822name",
-    "dnsname",
-    "cn",
+    "othername",  # Other name in SAN.
+    "rfc822name",  # RFC822 email address in SAN.
+    "dnsname",  # DNS name in SAN.
+    "cn",  # CN in subject.
 ]
 VALID_BODY_RSSO = [
-    "enable",
-    "disable",
+    "enable",  # Enable RADIUS based single sign on feature.
+    "disable",  # Disable RADIUS based single sign on feature.
 ]
 VALID_BODY_RSSO_RADIUS_RESPONSE = [
-    "enable",
-    "disable",
+    "enable",  # Enable sending RADIUS response packets.
+    "disable",  # Disable sending RADIUS response packets.
 ]
 VALID_BODY_RSSO_VALIDATE_REQUEST_SECRET = [
-    "enable",
-    "disable",
+    "enable",  # Enable validating RADIUS request shared secret.
+    "disable",  # Disable validating RADIUS request shared secret.
 ]
 VALID_BODY_RSSO_ENDPOINT_ATTRIBUTE = [
-    "User-Name",
-    "NAS-IP-Address",
-    "Framed-IP-Address",
-    "Framed-IP-Netmask",
-    "Filter-Id",
-    "Login-IP-Host",
-    "Reply-Message",
-    "Callback-Number",
-    "Callback-Id",
-    "Framed-Route",
-    "Framed-IPX-Network",
-    "Class",
-    "Called-Station-Id",
-    "Calling-Station-Id",
-    "NAS-Identifier",
-    "Proxy-State",
-    "Login-LAT-Service",
-    "Login-LAT-Node",
-    "Login-LAT-Group",
-    "Framed-AppleTalk-Zone",
-    "Acct-Session-Id",
-    "Acct-Multi-Session-Id",
+    "User-Name",  # Use this attribute.
+    "NAS-IP-Address",  # Use this attribute.
+    "Framed-IP-Address",  # Use this attribute.
+    "Framed-IP-Netmask",  # Use this attribute.
+    "Filter-Id",  # Use this attribute.
+    "Login-IP-Host",  # Use this attribute.
+    "Reply-Message",  # Use this attribute.
+    "Callback-Number",  # Use this attribute.
+    "Callback-Id",  # Use this attribute.
+    "Framed-Route",  # Use this attribute.
+    "Framed-IPX-Network",  # Use this attribute.
+    "Class",  # Use this attribute.
+    "Called-Station-Id",  # Use this attribute.
+    "Calling-Station-Id",  # Use this attribute.
+    "NAS-Identifier",  # Use this attribute.
+    "Proxy-State",  # Use this attribute.
+    "Login-LAT-Service",  # Use this attribute.
+    "Login-LAT-Node",  # Use this attribute.
+    "Login-LAT-Group",  # Use this attribute.
+    "Framed-AppleTalk-Zone",  # Use this attribute.
+    "Acct-Session-Id",  # Use this attribute.
+    "Acct-Multi-Session-Id",  # Use this attribute.
 ]
 VALID_BODY_RSSO_ENDPOINT_BLOCK_ATTRIBUTE = [
-    "User-Name",
-    "NAS-IP-Address",
-    "Framed-IP-Address",
-    "Framed-IP-Netmask",
-    "Filter-Id",
-    "Login-IP-Host",
-    "Reply-Message",
-    "Callback-Number",
-    "Callback-Id",
-    "Framed-Route",
-    "Framed-IPX-Network",
-    "Class",
-    "Called-Station-Id",
-    "Calling-Station-Id",
-    "NAS-Identifier",
-    "Proxy-State",
-    "Login-LAT-Service",
-    "Login-LAT-Node",
-    "Login-LAT-Group",
-    "Framed-AppleTalk-Zone",
-    "Acct-Session-Id",
-    "Acct-Multi-Session-Id",
+    "User-Name",  # Use this attribute.
+    "NAS-IP-Address",  # Use this attribute.
+    "Framed-IP-Address",  # Use this attribute.
+    "Framed-IP-Netmask",  # Use this attribute.
+    "Filter-Id",  # Use this attribute.
+    "Login-IP-Host",  # Use this attribute.
+    "Reply-Message",  # Use this attribute.
+    "Callback-Number",  # Use this attribute.
+    "Callback-Id",  # Use this attribute.
+    "Framed-Route",  # Use this attribute.
+    "Framed-IPX-Network",  # Use this attribute.
+    "Class",  # Use this attribute.
+    "Called-Station-Id",  # Use this attribute.
+    "Calling-Station-Id",  # Use this attribute.
+    "NAS-Identifier",  # Use this attribute.
+    "Proxy-State",  # Use this attribute.
+    "Login-LAT-Service",  # Use this attribute.
+    "Login-LAT-Node",  # Use this attribute.
+    "Login-LAT-Group",  # Use this attribute.
+    "Framed-AppleTalk-Zone",  # Use this attribute.
+    "Acct-Session-Id",  # Use this attribute.
+    "Acct-Multi-Session-Id",  # Use this attribute.
 ]
 VALID_BODY_SSO_ATTRIBUTE = [
-    "User-Name",
-    "NAS-IP-Address",
-    "Framed-IP-Address",
-    "Framed-IP-Netmask",
-    "Filter-Id",
-    "Login-IP-Host",
-    "Reply-Message",
-    "Callback-Number",
-    "Callback-Id",
-    "Framed-Route",
-    "Framed-IPX-Network",
-    "Class",
-    "Called-Station-Id",
-    "Calling-Station-Id",
-    "NAS-Identifier",
-    "Proxy-State",
-    "Login-LAT-Service",
-    "Login-LAT-Node",
-    "Login-LAT-Group",
-    "Framed-AppleTalk-Zone",
-    "Acct-Session-Id",
-    "Acct-Multi-Session-Id",
+    "User-Name",  # Use this attribute.
+    "NAS-IP-Address",  # Use this attribute.
+    "Framed-IP-Address",  # Use this attribute.
+    "Framed-IP-Netmask",  # Use this attribute.
+    "Filter-Id",  # Use this attribute.
+    "Login-IP-Host",  # Use this attribute.
+    "Reply-Message",  # Use this attribute.
+    "Callback-Number",  # Use this attribute.
+    "Callback-Id",  # Use this attribute.
+    "Framed-Route",  # Use this attribute.
+    "Framed-IPX-Network",  # Use this attribute.
+    "Class",  # Use this attribute.
+    "Called-Station-Id",  # Use this attribute.
+    "Calling-Station-Id",  # Use this attribute.
+    "NAS-Identifier",  # Use this attribute.
+    "Proxy-State",  # Use this attribute.
+    "Login-LAT-Service",  # Use this attribute.
+    "Login-LAT-Node",  # Use this attribute.
+    "Login-LAT-Group",  # Use this attribute.
+    "Framed-AppleTalk-Zone",  # Use this attribute.
+    "Acct-Session-Id",  # Use this attribute.
+    "Acct-Multi-Session-Id",  # Use this attribute.
 ]
 VALID_BODY_SSO_ATTRIBUTE_VALUE_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable override old attribute value with new value for the same endpoint.
+    "disable",  # Disable override old attribute value with new value for the same endpoint.
 ]
 VALID_BODY_RSSO_LOG_FLAGS = [
-    "protocol-error",
-    "profile-missing",
-    "accounting-stop-missed",
-    "accounting-event",
-    "endpoint-block",
-    "radiusd-other",
-    "none",
+    "protocol-error",  # Enable this log type.
+    "profile-missing",  # Enable this log type.
+    "accounting-stop-missed",  # Enable this log type.
+    "accounting-event",  # Enable this log type.
+    "endpoint-block",  # Enable this log type.
+    "radiusd-other",  # Enable this log type.
+    "none",  # Disable all logging.
 ]
 VALID_BODY_RSSO_FLUSH_IP_SESSION = [
-    "enable",
-    "disable",
+    "enable",  # Enable flush user IP sessions on RADIUS accounting stop.
+    "disable",  # Disable flush user IP sessions on RADIUS accounting stop.
 ]
 VALID_BODY_RSSO_EP_ONE_IP_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # Enable replacement of old IP address with new IP address for the same endpoint on RADIUS accounting start.
+    "disable",  # Disable replacement of old IP address with new IP address for the same endpoint on RADIUS accounting start.
 ]
 VALID_BODY_DELIMITER = [
-    "plus",
-    "comma",
+    "plus",  # Plus character "+".
+    "comma",  # Comma character ",".
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -719,7 +719,7 @@ def validate_user_radius_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "all-usergroup": "disable",  # Valid enum value
+        ...     "all-usergroup": "{'name': 'disable', 'help': 'Do not automatically include this server in a user group.', 'label': 'Disable', 'description': 'Do not automatically include this server in a user group'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_radius_post(payload)
         >>> assert is_valid == True

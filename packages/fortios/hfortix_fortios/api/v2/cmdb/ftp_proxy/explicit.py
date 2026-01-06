@@ -116,7 +116,7 @@ class Explicit:
         status: str | None = None,
         incoming_port: str | None = None,
         incoming_ip: str | None = None,
-        outgoing_ip: str | None = None,
+        outgoing_ip: str | list | None = None,
         sec_default_action: str | None = None,
         server_data_mode: str | None = None,
         ssl: str | None = None,

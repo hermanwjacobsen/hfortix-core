@@ -96,12 +96,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable FIPS-CC mode.
+    "disable",  # Disable FIPS-CC mode.
 ]
 VALID_BODY_KEY_GENERATION_SELF_TEST = [
-    "enable",
-    "disable",
+    "enable",  # Enable self tests after key generation.
+    "disable",  # Disable self tests after key generation.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -226,7 +226,7 @@ def validate_system_fips_cc_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable FIPS-CC mode.', 'label': 'Enable', 'description': 'Enable FIPS-CC mode'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_fips_cc_post(payload)
         >>> assert is_valid == True

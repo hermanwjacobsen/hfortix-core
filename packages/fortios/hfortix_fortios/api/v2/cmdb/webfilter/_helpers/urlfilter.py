@@ -126,31 +126,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Filter type (simple, regex, or wildcard).",
             "default": "simple",
-            "options": ["simple", "regex", "wildcard"],
+            "options": [{"help": "Simple URL string.", "label": "Simple", "name": "simple"}, {"help": "Regular expression URL string.", "label": "Regex", "name": "regex"}, {"help": "Wildcard URL string.", "label": "Wildcard", "name": "wildcard"}],
         },
         "action": {
             "type": "option",
             "help": "Action to take for URL filter matches.",
             "default": "exempt",
-            "options": ["exempt", "block", "allow", "monitor"],
+            "options": [{"help": "Exempt matches.", "label": "Exempt", "name": "exempt"}, {"help": "Block matches.", "label": "Block", "name": "block"}, {"help": "Allow matches (no log).", "label": "Allow", "name": "allow"}, {"help": "Allow matches (with log).", "label": "Monitor", "name": "monitor"}],
         },
         "antiphish-action": {
             "type": "option",
             "help": "Action to take for AntiPhishing matches.",
             "default": "block",
-            "options": ["block", "log"],
+            "options": [{"help": "Block matches.", "label": "Block", "name": "block"}, {"help": "Allow matches with log.", "label": "Log", "name": "log"}],
         },
         "status": {
             "type": "option",
             "help": "Enable/disable this URL filter.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable this URL filter.", "label": "Enable", "name": "enable"}, {"help": "Disable this URL filter.", "label": "Disable", "name": "disable"}],
         },
         "exempt": {
             "type": "option",
             "help": "If action is set to exempt, select the security profile operations that exempt URLs skip. Separate multiple options with a space.",
             "default": "av web-content activex-java-cookie dlp fortiguard range-block antiphish all",
-            "options": ["av", "web-content", "activex-java-cookie", "dlp", "fortiguard", "range-block", "pass", "antiphish", "all"],
+            "options": [{"help": "AntiVirus scanning.", "label": "Av", "name": "av"}, {"help": "Web filter content matching.", "label": "Web Content", "name": "web-content"}, {"help": "ActiveX, Java, and cookie filtering.", "label": "Activex Java Cookie", "name": "activex-java-cookie"}, {"help": "DLP scanning.", "label": "Dlp", "name": "dlp"}, {"help": "FortiGuard web filtering.", "label": "Fortiguard", "name": "fortiguard"}, {"help": "Range block feature.", "label": "Range Block", "name": "range-block"}, {"help": "Pass single connection from all.", "label": "Pass", "name": "pass"}, {"help": "AntiPhish credential checking.", "label": "Antiphish", "name": "antiphish"}, {"help": "Exempt from all security profiles.", "label": "All", "name": "all"}],
         },
         "web-proxy-profile": {
             "type": "string",
@@ -168,7 +168,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Resolve IPv4 address, IPv6 address, or both from DNS server.",
             "default": "ipv4",
-            "options": ["ipv4", "ipv6", "both"],
+            "options": [{"help": "Resolve IPv4 address from DNS server.", "label": "Ipv4", "name": "ipv4"}, {"help": "Resolve IPv6 address from DNS server.", "label": "Ipv6", "name": "ipv6"}, {"help": "Resolve both IPv4 and IPv6 addresses from DNS server.", "label": "Both", "name": "both"}],
         },
         "comment": {
             "type": "var-string",
@@ -181,20 +181,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ONE_ARM_IPS_URLFILTER = [
-    "enable",
-    "disable",
+    "enable",  # Enable DNS resolver for one-arm IPS URL filter operation.
+    "disable",  # Disable DNS resolver for one-arm IPS URL filter operation.
 ]
 VALID_BODY_IP_ADDR_BLOCK = [
-    "enable",
-    "disable",
+    "enable",  # Enable blocking URLs when the hostname appears as an IP address.
+    "disable",  # Disable blocking URLs when the hostname appears as an IP address.
 ]
 VALID_BODY_IP4_MAPPED_IP6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable matching IPv4 mapped IPv6 URLs.
+    "disable",  # Disable matching IPv4 mapped IPv6 URLs.
 ]
 VALID_BODY_INCLUDE_SUBDOMAINS = [
-    "enable",
-    "disable",
+    "enable",  # Enable matching subdomains. Applies only to simple type.
+    "disable",  # Disable matching subdomains. Applies only to simple type.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -325,7 +325,7 @@ def validate_webfilter_urlfilter_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "one-arm-ips-urlfilter": "enable",  # Valid enum value
+        ...     "one-arm-ips-urlfilter": "{'name': 'enable', 'help': 'Enable DNS resolver for one-arm IPS URL filter operation.', 'label': 'Enable', 'description': 'Enable DNS resolver for one-arm IPS URL filter operation'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_webfilter_urlfilter_post(payload)
         >>> assert is_valid == True

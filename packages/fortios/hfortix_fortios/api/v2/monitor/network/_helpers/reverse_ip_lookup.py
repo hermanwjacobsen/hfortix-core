@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "network/reverse_ip_lookup",
     "category": "monitor",
     "api_path": "network/reverse-ip-lookup",
-    "help": "Configuration for network/reverse-ip-lookup",
+    "help": "Retrieve the resolved DNS domain name for a given IP address.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

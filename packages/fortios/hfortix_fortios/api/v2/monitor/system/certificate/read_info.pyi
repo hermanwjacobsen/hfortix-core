@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ReadInfo:
     """
-    Configuration for system/certificate/read-info
+    Get certificate information from a certificate string.
     
     Path: system/certificate/read_info
     Category: monitor

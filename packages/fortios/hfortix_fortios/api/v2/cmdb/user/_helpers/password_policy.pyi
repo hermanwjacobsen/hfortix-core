@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_EXPIRE_STATUS: Literal["enable", "disable"]
-VALID_BODY_EXPIRED_PASSWORD_RENEWAL: Literal["enable", "disable"]
-VALID_BODY_REUSE_PASSWORD: Literal["enable", "disable"]
+VALID_BODY_EXPIRE_STATUS: Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}]
+VALID_BODY_EXPIRED_PASSWORD_RENEWAL: Literal[{"description": "Enable renewal of a password that already is expired", "help": "Enable renewal of a password that already is expired.", "label": "Enable", "name": "enable"}, {"description": "Disable renewal of a password that already is expired", "help": "Disable renewal of a password that already is expired.", "label": "Disable", "name": "disable"}]
+VALID_BODY_REUSE_PASSWORD: Literal[{"description": "Users are allowed to reuse the same password up to a limit", "help": "Users are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Users must create a new password", "help": "Users must create a new password.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

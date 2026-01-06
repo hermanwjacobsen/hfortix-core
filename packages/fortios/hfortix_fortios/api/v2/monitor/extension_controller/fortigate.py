@@ -56,7 +56,7 @@ class Fortigate:
         """
         Retrieve extension_controller/fortigate configuration.
 
-        Configuration for extension-controller/fortigate
+        Retrieve statistics for configured FortiGate LAN Extension Connectors.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_DISPLAY_REPORT: Literal["enable", "disable"]
-VALID_BODY_DISPLAY_INSIGHT: Literal["enable", "disable"]
+VALID_BODY_DISPLAY_REPORT: Literal[{"description": "Enable displaying the Security Rating control in the default report", "help": "Enable displaying the Security Rating control in the default report.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control in the default report", "help": "Disable displaying the Security Rating control in the default report.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DISPLAY_INSIGHT: Literal[{"description": "Enable displaying the Security Rating control as an insight across the GUI", "help": "Enable displaying the Security Rating control as an insight across the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable displaying the Security Rating control as an insight across the GUI", "help": "Disable displaying the Security Rating control as an insight across the GUI.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

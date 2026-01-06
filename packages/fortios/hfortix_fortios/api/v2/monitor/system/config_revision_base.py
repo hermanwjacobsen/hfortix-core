@@ -56,7 +56,7 @@ class ConfigRevision:
         """
         Retrieve system/config_revision configuration.
 
-        Configuration for system/config-revision
+        Returns a list of system configuration revisions.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

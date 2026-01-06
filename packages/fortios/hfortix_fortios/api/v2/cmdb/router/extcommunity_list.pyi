@@ -11,7 +11,7 @@ class ExtcommunityListPayload(TypedDict, total=False):
         }
     """
     name: str  # Extended community list name.
-    type: Literal["standard", "expanded"]  # Extended community list type (standard or expanded).
+    type: Literal[{"description": "Standard extended community list type", "help": "Standard extended community list type.", "label": "Standard", "name": "standard"}, {"description": "Expanded extended community list type", "help": "Expanded extended community list type.", "label": "Expanded", "name": "expanded"}]  # Extended community list type (standard or expanded).
     rule: NotRequired[list[dict[str, Any]]]  # Extended community list rule.
 
 
@@ -41,7 +41,7 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type: Literal[{"description": "Standard extended community list type", "help": "Standard extended community list type.", "label": "Standard", "name": "standard"}, {"description": "Expanded extended community list type", "help": "Expanded extended community list type.", "label": "Expanded", "name": "expanded"}] | None = ...,
         rule: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -52,7 +52,7 @@ class ExtcommunityList:
         self,
         payload_dict: ExtcommunityListPayload | None = ...,
         name: str | None = ...,
-        type: Literal["standard", "expanded"] | None = ...,
+        type: Literal[{"description": "Standard extended community list type", "help": "Standard extended community list type.", "label": "Standard", "name": "standard"}, {"description": "Expanded extended community list type", "help": "Expanded extended community list type.", "label": "Expanded", "name": "expanded"}] | None = ...,
         rule: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

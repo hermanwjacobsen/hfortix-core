@@ -113,16 +113,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "overload",
-    "nptv6",
+    "overload",  # IPv6 addresses in the IP pool can be shared by clients.
+    "nptv6",  # NPTv6 one to one mapping.
 ]
 VALID_BODY_NAT46 = [
-    "disable",
-    "enable",
+    "disable",  # Disable NAT46.
+    "enable",  # Enable NAT46.
 ]
 VALID_BODY_ADD_NAT46_ROUTE = [
-    "disable",
-    "enable",
+    "disable",  # Disable adding NAT46 route.
+    "enable",  # Enable adding NAT46 route.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -250,7 +250,7 @@ def validate_firewall_ippool6_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "type": "overload",  # Valid enum value
+        ...     "type": "{'name': 'overload', 'help': 'IPv6 addresses in the IP pool can be shared by clients.', 'label': 'Overload', 'description': 'IPv6 addresses in the IP pool can be shared by clients'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ippool6_post(payload)
         >>> assert is_valid == True

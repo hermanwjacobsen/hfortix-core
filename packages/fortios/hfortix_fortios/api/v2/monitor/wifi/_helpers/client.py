@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/client",
     "category": "monitor",
     "api_path": "wifi/client",
-    "help": "Monitor endpoint for wifi/client",
+    "help": "Retrieve a list of connected WiFi clients.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

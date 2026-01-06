@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PhysicalSwitch:
     """
-    Configuration for system/physical-switch
+    Configuration for system/physical_switch
     
     Path: system/physical_switch
     Category: cmdb

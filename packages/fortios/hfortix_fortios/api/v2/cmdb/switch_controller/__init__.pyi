@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .dynamic_port_policy import DynamicPortPolicy
     from .flow_tracking import FlowTracking
     from .fortilink_settings import FortilinkSettings
-    from .global_setting import GlobalSetting
+    from .global_ import Global
     from .igmp_snooping import IgmpSnooping
     from .ip_source_guard_log import IpSourceGuardLog
     from .lldp_profile import LldpProfile
@@ -38,7 +38,7 @@ if TYPE_CHECKING:
     from .traffic_sniffer import TrafficSniffer
     from .virtual_port_pool import VirtualPortPool
     from .vlan_policy import VlanPolicy
-    from .x802_1X_settings import X8021xSettings
+    from .x802_1x_settings import X8021xSettings
     from .acl import Acl
     from .auto_config import AutoConfig
     from .initial_config import InitialConfig
@@ -60,7 +60,7 @@ class SwitchController:
     dynamic_port_policy: DynamicPortPolicy
     flow_tracking: FlowTracking
     fortilink_settings: FortilinkSettings
-    global_setting: GlobalSetting
+    global_: Global
     igmp_snooping: IgmpSnooping
     ip_source_guard_log: IpSourceGuardLog
     lldp_profile: LldpProfile
@@ -88,6 +88,6 @@ class SwitchController:
     traffic_sniffer: TrafficSniffer
     virtual_port_pool: VirtualPortPool
     vlan_policy: VlanPolicy
-    x802_1X_settings: X8021xSettings
+    x802_1x_settings: X8021xSettings
 
     def __init__(self, client: IHTTPClient) -> None: ...

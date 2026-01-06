@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Sms:
     """
-    Configuration for user/guest/sms
+    Sent guest login details via SMS.
     
     Path: user/guest/sms
     Category: monitor

@@ -176,7 +176,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Application popularity filter (1 - 5, from least to most popular).",
             "default": "1 2 3 4 5",
-            "options": ["1", "2", "3", "4", "5"],
+            "options": [{"help": "Popularity level 1.", "label": "1", "name": "1"}, {"help": "Popularity level 2.", "label": "2", "name": "2"}, {"help": "Popularity level 3.", "label": "3", "name": "3"}, {"help": "Popularity level 4.", "label": "4", "name": "4"}, {"help": "Popularity level 5.", "label": "5", "name": "5"}],
         },
         "exclusion": {
             "type": "string",
@@ -190,19 +190,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Pass or block traffic, or reset connection for traffic from this application.",
             "default": "block",
-            "options": ["pass", "block", "reset"],
+            "options": [{"help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"help": "Block or drop matching traffic.", "label": "Block", "name": "block"}, {"help": "Reset sessions for matching traffic.", "label": "Reset", "name": "reset"}],
         },
         "log": {
             "type": "option",
             "help": "Enable/disable logging for this application list.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable logging.", "label": "Disable", "name": "disable"}, {"help": "Enable logging.", "label": "Enable", "name": "enable"}],
         },
         "log-packet": {
             "type": "option",
             "help": "Enable/disable packet logging.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"help": "Enable packet logging.", "label": "Enable", "name": "enable"}],
         },
         "rate-count": {
             "type": "integer",
@@ -222,13 +222,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Rate limit mode.",
             "default": "continuous",
-            "options": ["periodical", "continuous"],
+            "options": [{"help": "Allow configured number of packets every rate-duration.", "label": "Periodical", "name": "periodical"}, {"help": "Block packets once the rate is reached.", "label": "Continuous", "name": "continuous"}],
         },
         "rate-track": {
             "type": "option",
             "help": "Track the packet protocol field.",
             "default": "none",
-            "options": ["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"],
+            "options": [{"help": "none", "label": "None", "name": "none"}, {"help": "Source IP.", "label": "Src Ip", "name": "src-ip"}, {"help": "Destination IP.", "label": "Dest Ip", "name": "dest-ip"}, {"help": "DHCP client.", "label": "Dhcp Client Mac", "name": "dhcp-client-mac"}, {"help": "DNS domain.", "label": "Dns Domain", "name": "dns-domain"}],
         },
         "session-ttl": {
             "type": "integer",
@@ -259,7 +259,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Quarantine method.",
             "default": "none",
-            "options": ["none", "attacker"],
+            "options": [{"help": "Quarantine is disabled.", "label": "None", "name": "none"}, {"help": "Block all traffic sent from attacker\u0027s IP address. The attacker\u0027s IP address is also added to the banned user list. The target\u0027s address is not affected.", "label": "Attacker", "name": "attacker"}],
         },
         "quarantine-expiry": {
             "type": "user",
@@ -270,7 +270,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable quarantine logging.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine logging.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine logging.", "label": "Enable", "name": "enable"}],
         },
     },
     "default-network-services": {
@@ -294,13 +294,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Network protocols.",
             "default": "",
-            "options": ["http", "ssh", "telnet", "ftp", "dns", "smtp", "pop3", "imap", "snmp", "nntp", "https"],
+            "options": [{"help": "HTTP.", "label": "Http", "name": "http"}, {"help": "SSH.", "label": "Ssh", "name": "ssh"}, {"help": "TELNET.", "label": "Telnet", "name": "telnet"}, {"help": "FTP.", "label": "Ftp", "name": "ftp"}, {"help": "DNS.", "label": "Dns", "name": "dns"}, {"help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"help": "POP3.", "label": "Pop3", "name": "pop3"}, {"help": "IMAP.", "label": "Imap", "name": "imap"}, {"help": "SNMP.", "label": "Snmp", "name": "snmp"}, {"help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"help": "HTTPS.", "label": "Https", "name": "https"}],
         },
         "violation-action": {
             "type": "option",
             "help": "Action for protocols not in the allowlist for selected port.",
             "default": "block",
-            "options": ["pass", "monitor", "block"],
+            "options": [{"help": "Allow protocols not in the allowlist for selected port.", "label": "Pass", "name": "pass"}, {"help": "Monitor protocols not in the allowlist for selected port.", "label": "Monitor", "name": "monitor"}, {"help": "Block protocols not in the allowlist for selected port.", "label": "Block", "name": "block"}],
         },
     },
 }
@@ -308,55 +308,55 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_EXTENDED_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_OTHER_APPLICATION_ACTION = [
-    "pass",
-    "block",
+    "pass",  # Allow sessions matching an application in this application list.
+    "block",  # Block sessions matching an application in this application list.
 ]
 VALID_BODY_APP_REPLACEMSG = [
-    "disable",
-    "enable",
+    "disable",  # Disable replacement messages for blocked applications.
+    "enable",  # Enable replacement messages for blocked applications.
 ]
 VALID_BODY_OTHER_APPLICATION_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging for other applications.
+    "enable",  # Enable logging for other applications.
 ]
 VALID_BODY_ENFORCE_DEFAULT_APP_PORT = [
-    "disable",
-    "enable",
+    "disable",  # Disable default application port enforcement.
+    "enable",  # Enable default application port enforcement.
 ]
 VALID_BODY_FORCE_INCLUSION_SSL_DI_SIGS = [
-    "disable",
-    "enable",
+    "disable",  # Disable forced inclusion of signatures which normally require SSL deep inspection.
+    "enable",  # Enable forced inclusion of signatures which normally require SSL deep inspection.
 ]
 VALID_BODY_UNKNOWN_APPLICATION_ACTION = [
-    "pass",
-    "block",
+    "pass",  # Pass or allow unknown applications.
+    "block",  # Drop or block unknown applications.
 ]
 VALID_BODY_UNKNOWN_APPLICATION_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging for unknown applications.
+    "enable",  # Enable logging for unknown applications.
 ]
 VALID_BODY_P2P_BLOCK_LIST = [
-    "skype",
-    "edonkey",
-    "bittorrent",
+    "skype",  # Skype.
+    "edonkey",  # Edonkey.
+    "bittorrent",  # Bit torrent.
 ]
 VALID_BODY_DEEP_APP_INSPECTION = [
-    "disable",
-    "enable",
+    "disable",  # Disable deep application inspection.
+    "enable",  # Enable deep application inspection.
 ]
 VALID_BODY_OPTIONS = [
-    "allow-dns",
-    "allow-icmp",
-    "allow-http",
-    "allow-ssl",
+    "allow-dns",  # Allow DNS.
+    "allow-icmp",  # Allow ICMP.
+    "allow-http",  # Allow generic HTTP web browsing.
+    "allow-ssl",  # Allow generic SSL communication.
 ]
 VALID_BODY_CONTROL_DEFAULT_NETWORK_SERVICES = [
-    "disable",
-    "enable",
+    "disable",  # Disable protocol enforcement over selected ports.
+    "enable",  # Enable protocol enforcement over selected ports.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -486,7 +486,7 @@ def validate_application_list_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "extended-log": "enable",  # Valid enum value
+        ...     "extended-log": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_application_list_post(payload)
         >>> assert is_valid == True

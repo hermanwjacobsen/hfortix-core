@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/fortimanager/backup_summary",
     "category": "monitor",
     "api_path": "system/fortimanager/backup-summary",
-    "help": "Configuration for system/fortimanager/backup-summary",
+    "help": "Get FortiManager backup summary.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

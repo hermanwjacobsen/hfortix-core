@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Cancel:
     """
-    Configuration for fortiview/session/cancel
+    Cancel a FortiView request session.
     
     Path: fortiview/session/cancel
     Category: monitor

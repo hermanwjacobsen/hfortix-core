@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MODE: Literal["recursive", "non-recursive", "forward-only", "resolver"]
-VALID_BODY_DOH: Literal["enable", "disable"]
-VALID_BODY_DOH3: Literal["enable", "disable"]
-VALID_BODY_DOQ: Literal["enable", "disable"]
+VALID_BODY_MODE: Literal[{"description": "Shadow DNS database and forward", "help": "Shadow DNS database and forward.", "label": "Recursive", "name": "recursive"}, {"description": "Public DNS database only", "help": "Public DNS database only.", "label": "Non Recursive", "name": "non-recursive"}, {"description": "Forward only", "help": "Forward only.", "label": "Forward Only", "name": "forward-only"}, {"description": "Recursive resolver mode", "help": "Recursive resolver mode.", "label": "Resolver", "name": "resolver"}]
+VALID_BODY_DOH: Literal[{"description": "Enable DNS over HTTPS", "help": "Enable DNS over HTTPS.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTPS", "help": "Disable DNS over HTTPS.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DOH3: Literal[{"description": "Enable DNS over HTTP3/QUIC", "help": "Enable DNS over HTTP3/QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTP3/QUIC", "help": "Disable DNS over HTTP3/QUIC.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DOQ: Literal[{"description": "Enable DNS over QUIC", "help": "Enable DNS over QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over QUIC", "help": "Disable DNS over QUIC.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -13,11 +13,11 @@ class AccessProxyVirtualHostPayload(TypedDict, total=False):
     name: NotRequired[str]  # Virtual host name.
     ssl_certificate: list[dict[str, Any]]  # SSL certificates for this host.
     host: str  # The host name.
-    host_type: Literal["sub-string", "wildcard"]  # Type of host pattern.
+    host_type: Literal[{"description": "Match the pattern if a string contains the sub-string", "help": "Match the pattern if a string contains the sub-string.", "label": "Sub String", "name": "sub-string"}, {"description": "Match the pattern with wildcards", "help": "Match the pattern with wildcards.", "label": "Wildcard", "name": "wildcard"}]  # Type of host pattern.
     replacemsg_group: NotRequired[str]  # Access-proxy-virtual-host replacement message override group
-    empty_cert_action: NotRequired[Literal["accept", "block", "accept-unmanageable"]]  # Action for an empty client certificate.
-    user_agent_detect: NotRequired[Literal["disable", "enable"]]  # Enable/disable detecting device type by HTTP user-agent if n
-    client_cert: NotRequired[Literal["disable", "enable"]]  # Enable/disable requesting client certificate.
+    empty_cert_action: NotRequired[Literal[{"description": "Accept the SSL handshake if the client certificate is empty", "help": "Accept the SSL handshake if the client certificate is empty.", "label": "Accept", "name": "accept"}, {"description": "Block the SSL handshake if the client certificate is empty", "help": "Block the SSL handshake if the client certificate is empty.", "label": "Block", "name": "block"}, {"description": "Accept the SSL handshake only if the end-point is unmanageable", "help": "Accept the SSL handshake only if the end-point is unmanageable.", "label": "Accept Unmanageable", "name": "accept-unmanageable"}]]  # Action for an empty client certificate.
+    user_agent_detect: NotRequired[Literal[{"description": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Disable", "name": "disable"}, {"description": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Enable", "name": "enable"}]]  # Enable/disable detecting device type by HTTP user-agent if n
+    client_cert: NotRequired[Literal[{"description": "Disable client certificate request", "help": "Disable client certificate request.", "label": "Disable", "name": "disable"}, {"description": "Enable client certificate request", "help": "Enable client certificate request.", "label": "Enable", "name": "enable"}]]  # Enable/disable requesting client certificate.
 
 
 class AccessProxyVirtualHost:
@@ -48,11 +48,11 @@ class AccessProxyVirtualHost:
         name: str | None = ...,
         ssl_certificate: list[dict[str, Any]] | None = ...,
         host: str | None = ...,
-        host_type: Literal["sub-string", "wildcard"] | None = ...,
+        host_type: Literal[{"description": "Match the pattern if a string contains the sub-string", "help": "Match the pattern if a string contains the sub-string.", "label": "Sub String", "name": "sub-string"}, {"description": "Match the pattern with wildcards", "help": "Match the pattern with wildcards.", "label": "Wildcard", "name": "wildcard"}] | None = ...,
         replacemsg_group: str | None = ...,
-        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
-        user_agent_detect: Literal["disable", "enable"] | None = ...,
-        client_cert: Literal["disable", "enable"] | None = ...,
+        empty_cert_action: Literal[{"description": "Accept the SSL handshake if the client certificate is empty", "help": "Accept the SSL handshake if the client certificate is empty.", "label": "Accept", "name": "accept"}, {"description": "Block the SSL handshake if the client certificate is empty", "help": "Block the SSL handshake if the client certificate is empty.", "label": "Block", "name": "block"}, {"description": "Accept the SSL handshake only if the end-point is unmanageable", "help": "Accept the SSL handshake only if the end-point is unmanageable.", "label": "Accept Unmanageable", "name": "accept-unmanageable"}] | None = ...,
+        user_agent_detect: Literal[{"description": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Disable", "name": "disable"}, {"description": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Enable", "name": "enable"}] | None = ...,
+        client_cert: Literal[{"description": "Disable client certificate request", "help": "Disable client certificate request.", "label": "Disable", "name": "disable"}, {"description": "Enable client certificate request", "help": "Enable client certificate request.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -64,11 +64,11 @@ class AccessProxyVirtualHost:
         name: str | None = ...,
         ssl_certificate: list[dict[str, Any]] | None = ...,
         host: str | None = ...,
-        host_type: Literal["sub-string", "wildcard"] | None = ...,
+        host_type: Literal[{"description": "Match the pattern if a string contains the sub-string", "help": "Match the pattern if a string contains the sub-string.", "label": "Sub String", "name": "sub-string"}, {"description": "Match the pattern with wildcards", "help": "Match the pattern with wildcards.", "label": "Wildcard", "name": "wildcard"}] | None = ...,
         replacemsg_group: str | None = ...,
-        empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
-        user_agent_detect: Literal["disable", "enable"] | None = ...,
-        client_cert: Literal["disable", "enable"] | None = ...,
+        empty_cert_action: Literal[{"description": "Accept the SSL handshake if the client certificate is empty", "help": "Accept the SSL handshake if the client certificate is empty.", "label": "Accept", "name": "accept"}, {"description": "Block the SSL handshake if the client certificate is empty", "help": "Block the SSL handshake if the client certificate is empty.", "label": "Block", "name": "block"}, {"description": "Accept the SSL handshake only if the end-point is unmanageable", "help": "Accept the SSL handshake only if the end-point is unmanageable.", "label": "Accept Unmanageable", "name": "accept-unmanageable"}] | None = ...,
+        user_agent_detect: Literal[{"description": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Disable", "name": "disable"}, {"description": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Enable", "name": "enable"}] | None = ...,
+        client_cert: Literal[{"description": "Disable client certificate request", "help": "Disable client certificate request.", "label": "Disable", "name": "disable"}, {"description": "Enable client certificate request", "help": "Enable client certificate request.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

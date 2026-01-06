@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["disable", "enable"]
-VALID_BODY_N_MHAE_KEY_TYPE: Literal["ascii", "base64"]
-VALID_BODY_HASH_ALGORITHM: Literal["hmac-md5"]
-VALID_BODY_TUNNEL_MODE: Literal["gre"]
+VALID_BODY_STATUS: Literal[{"description": "Disable this mobile tunnel", "help": "Disable this mobile tunnel.", "label": "Disable", "name": "disable"}, {"description": "Enable this mobile tunnel", "help": "Enable this mobile tunnel.", "label": "Enable", "name": "enable"}]
+VALID_BODY_N_MHAE_KEY_TYPE: Literal[{"description": "The authentication key is an ASCII string", "help": "The authentication key is an ASCII string.", "label": "Ascii", "name": "ascii"}, {"description": "The authentication key is Base64 encoded", "help": "The authentication key is Base64 encoded.", "label": "Base64", "name": "base64"}]
+VALID_BODY_HASH_ALGORITHM: Literal[{"description": "Keyed MD5", "help": "Keyed MD5.", "label": "Hmac Md5", "name": "hmac-md5"}]
+VALID_BODY_TUNNEL_MODE: Literal[{"description": "GRE tunnel", "help": "GRE tunnel.", "label": "Gre", "name": "gre"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

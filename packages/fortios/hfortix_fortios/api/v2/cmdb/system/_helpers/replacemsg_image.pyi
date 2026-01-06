@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_IMAGE_TYPE: Literal["gif", "jpg", "tiff", "png"]
+VALID_BODY_IMAGE_TYPE: Literal[{"description": "GIF image", "help": "GIF image.", "label": "Gif", "name": "gif"}, {"description": "JPEG image", "help": "JPEG image.", "label": "Jpg", "name": "jpg"}, {"description": "TIFF image", "help": "TIFF image.", "label": "Tiff", "name": "tiff"}, {"description": "PNG image", "help": "PNG image.", "label": "Png", "name": "png"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

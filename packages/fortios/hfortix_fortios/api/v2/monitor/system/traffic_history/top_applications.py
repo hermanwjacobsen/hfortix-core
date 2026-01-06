@@ -56,7 +56,7 @@ class TopApplications:
         """
         Retrieve system/traffic_history/top_applications configuration.
 
-        Configuration for system/traffic-history/top-applications
+        Retrieve top FortiView applications traffic stats by bandwidth.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

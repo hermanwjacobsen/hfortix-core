@@ -56,7 +56,7 @@ class Set:
         """
         Retrieve system/time/set configuration.
 
-        Configuration for system/time/set
+        Sets current system time stamp.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

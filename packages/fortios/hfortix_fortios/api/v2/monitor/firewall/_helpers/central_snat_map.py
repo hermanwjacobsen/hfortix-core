@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/central_snat_map",
     "category": "monitor",
     "api_path": "firewall/central-snat-map",
-    "help": "Monitor endpoint for firewall/central-snat-map",
+    "help": "List traffic statistics for firewall central SNAT policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

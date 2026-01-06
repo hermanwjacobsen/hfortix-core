@@ -12,7 +12,7 @@ class VirtualWirePairPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Virtual-wire-pair name. Must be a unique interface name.
     member: list[dict[str, Any]]  # Interfaces belong to the virtual-wire-pair.
-    wildcard_vlan: NotRequired[Literal["enable", "disable"]]  # Enable/disable wildcard VLAN.
+    wildcard_vlan: NotRequired[Literal[{"description": "Enable wildcard VLAN", "help": "Enable wildcard VLAN.", "label": "Enable", "name": "enable"}, {"description": "Disable wildcard VLAN", "help": "Disable wildcard VLAN.", "label": "Disable", "name": "disable"}]]  # Enable/disable wildcard VLAN.
     vlan_filter: NotRequired[str]  # VLAN ranges to allow
 
 
@@ -43,7 +43,7 @@ class VirtualWirePair:
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
-        wildcard_vlan: Literal["enable", "disable"] | None = ...,
+        wildcard_vlan: Literal[{"description": "Enable wildcard VLAN", "help": "Enable wildcard VLAN.", "label": "Enable", "name": "enable"}, {"description": "Disable wildcard VLAN", "help": "Disable wildcard VLAN.", "label": "Disable", "name": "disable"}] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -55,7 +55,7 @@ class VirtualWirePair:
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
-        wildcard_vlan: Literal["enable", "disable"] | None = ...,
+        wildcard_vlan: Literal[{"description": "Enable wildcard VLAN", "help": "Enable wildcard VLAN.", "label": "Enable", "name": "enable"}, {"description": "Disable wildcard VLAN", "help": "Disable wildcard VLAN.", "label": "Disable", "name": "disable"}] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PsirtVulnerabilities:
     """
-    Configuration for system/psirt-vulnerabilities
+    Retrieve a list of N number of PSIRT advisories that the Security Fabric is vulnerable to for a given severity.
     
     Path: system/psirt_vulnerabilities
     Category: service

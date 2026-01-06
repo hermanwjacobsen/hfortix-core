@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/avatar/download",
     "category": "monitor",
     "api_path": "endpoint-control/avatar/download",
-    "help": "Configuration for endpoint-control/avatar/download",
+    "help": "Download an endpoint avatar image.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -1,14 +1,14 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_RANGE: Literal["global", "vdom"]
-VALID_BODY_SOURCE: Literal["factory", "user", "bundle"]
-VALID_BODY_NAME_ENCODING: Literal["printable", "utf8"]
-VALID_BODY_IKE_LOCALID_TYPE: Literal["asn1dn", "fqdn"]
-VALID_BODY_ENROLL_PROTOCOL: Literal["none", "scep", "cmpv2", "acme2", "est"]
-VALID_BODY_PRIVATE_KEY_RETAIN: Literal["enable", "disable"]
-VALID_BODY_CMP_REGENERATION_METHOD: Literal["keyupate", "renewal"]
-VALID_BODY_EST_REGENERATION_METHOD: Literal["create-new-key", "use-existing-key"]
+VALID_BODY_RANGE: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}]
+VALID_BODY_SOURCE: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}]
+VALID_BODY_NAME_ENCODING: Literal[{"description": "Printable encoding (default)", "help": "Printable encoding (default).", "label": "Printable", "name": "printable"}, {"description": "UTF-8 encoding", "help": "UTF-8 encoding.", "label": "Utf8", "name": "utf8"}]
+VALID_BODY_IKE_LOCALID_TYPE: Literal[{"description": "ASN", "help": "ASN.1 distinguished name.", "label": "Asn1Dn", "name": "asn1dn"}, {"description": "Fully qualified domain name", "help": "Fully qualified domain name.", "label": "Fqdn", "name": "fqdn"}]
+VALID_BODY_ENROLL_PROTOCOL: Literal[{"description": "None (default)", "help": "None (default).", "label": "None", "name": "none"}, {"description": "Simple Certificate Enrollment Protocol", "help": "Simple Certificate Enrollment Protocol.", "label": "Scep", "name": "scep"}, {"description": "Certificate Management Protocol Version 2", "help": "Certificate Management Protocol Version 2.", "label": "Cmpv2", "name": "cmpv2"}, {"description": "Automated Certificate Management Environment Version 2", "help": "Automated Certificate Management Environment Version 2.", "label": "Acme2", "name": "acme2"}, {"description": "Enrollment over Secure Transport", "help": "Enrollment over Secure Transport.", "label": "Est", "name": "est"}]
+VALID_BODY_PRIVATE_KEY_RETAIN: Literal[{"description": "Keep the existing private key during SCEP renewal", "help": "Keep the existing private key during SCEP renewal.", "label": "Enable", "name": "enable"}, {"description": "Generate a new private key during SCEP renewal", "help": "Generate a new private key during SCEP renewal.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CMP_REGENERATION_METHOD: Literal[{"description": "Key Update", "help": "Key Update.", "label": "Keyupate", "name": "keyupate"}, {"description": "Renewal", "help": "Renewal.", "label": "Renewal", "name": "renewal"}]
+VALID_BODY_EST_REGENERATION_METHOD: Literal[{"description": "Create new private key during re-enrollment", "help": "Create new private key during re-enrollment.", "label": "Create New Key", "name": "create-new-key"}, {"description": "Reuse existing private key during re-enrollment", "help": "Reuse existing private key during re-enrollment.", "label": "Use Existing Key", "name": "use-existing-key"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

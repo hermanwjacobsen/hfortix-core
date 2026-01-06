@@ -12,7 +12,6 @@ if TYPE_CHECKING:
     from .interfering_ap import InterferingAp
     from .matched_devices import MatchedDevices
     from .meta import Meta
-    from .nac_device import NacDevice
     from .station_capability import StationCapability
     from .statistics import Statistics
     from .unassociated_devices import UnassociatedDevices
@@ -21,6 +20,7 @@ if TYPE_CHECKING:
     from .euclid import Euclid
     from .firmware import Firmware
     from .managed_ap import ManagedAp
+    from .nac_device import NacDevice
     from .network import Network
     from .region_image import RegionImage
     from .rogue_ap import RogueAp
@@ -37,6 +37,7 @@ class Wifi:
     euclid: Euclid
     firmware: Firmware
     managed_ap: ManagedAp
+    nac_device: NacDevice
     network: Network
     region_image: RegionImage
     rogue_ap: RogueAp
@@ -49,7 +50,6 @@ class Wifi:
     interfering_ap: InterferingAp
     matched_devices: MatchedDevices
     meta: Meta
-    nac_device: NacDevice
     station_capability: StationCapability
     statistics: Statistics
     unassociated_devices: UnassociatedDevices

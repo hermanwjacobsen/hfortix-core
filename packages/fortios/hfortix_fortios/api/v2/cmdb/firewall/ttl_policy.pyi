@@ -11,8 +11,8 @@ class TtlPolicyPayload(TypedDict, total=False):
         }
     """
     id: int  # ID.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this TTL policy.
-    action: NotRequired[Literal["accept", "deny"]]  # Action to be performed on traffic matching this policy (defa
+    status: NotRequired[Literal[{"description": "Enable this TTL policy", "help": "Enable this TTL policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this TTL policy", "help": "Disable this TTL policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable this TTL policy.
+    action: NotRequired[Literal[{"description": "Allow traffic matching this policy", "help": "Allow traffic matching this policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching this policy", "help": "Deny or block traffic matching this policy.", "label": "Deny", "name": "deny"}]]  # Action to be performed on traffic matching this policy (defa
     srcintf: str  # Source interface name from available interfaces.
     srcaddr: list[dict[str, Any]]  # Source address object(s) from available options. Separate mu
     service: list[dict[str, Any]]  # Service object(s) from available options. Separate multiple 
@@ -46,8 +46,8 @@ class TtlPolicy:
         self,
         payload_dict: TtlPolicyPayload | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
+        status: Literal[{"description": "Enable this TTL policy", "help": "Enable this TTL policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this TTL policy", "help": "Disable this TTL policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        action: Literal[{"description": "Allow traffic matching this policy", "help": "Allow traffic matching this policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching this policy", "help": "Deny or block traffic matching this policy.", "label": "Deny", "name": "deny"}] | None = ...,
         srcintf: str | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         service: list[dict[str, Any]] | None = ...,
@@ -62,8 +62,8 @@ class TtlPolicy:
         self,
         payload_dict: TtlPolicyPayload | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
+        status: Literal[{"description": "Enable this TTL policy", "help": "Enable this TTL policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this TTL policy", "help": "Disable this TTL policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        action: Literal[{"description": "Allow traffic matching this policy", "help": "Allow traffic matching this policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching this policy", "help": "Deny or block traffic matching this policy.", "label": "Deny", "name": "deny"}] | None = ...,
         srcintf: str | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         service: list[dict[str, Any]] | None = ...,

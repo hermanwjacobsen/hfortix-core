@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/global_search",
     "category": "monitor",
     "api_path": "system/global-search",
-    "help": "Configuration for system/global-search",
+    "help": "Search for CMDB table objects based on search phrase.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

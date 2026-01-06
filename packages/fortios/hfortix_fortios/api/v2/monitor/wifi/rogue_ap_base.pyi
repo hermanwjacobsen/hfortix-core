@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RogueAp:
     """
-    Monitor endpoint for wifi/rogue_ap
+    Retrieve a list of detected rogue APs.
     
     Path: wifi/rogue_ap
     Category: monitor

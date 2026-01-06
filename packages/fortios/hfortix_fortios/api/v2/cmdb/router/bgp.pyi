@@ -10,34 +10,34 @@ class BgpPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    as: str  # Router AS number, asplain/asdot/asdot+ format, 0 to disable 
+    asn: str  # Router AS number, asplain/asdot/asdot+ format, 0 to disable 
     router_id: NotRequired[str]  # Router ID.
     keepalive_timer: NotRequired[int]  # Frequency to send keep alive requests.
     holdtime_timer: NotRequired[int]  # Number of seconds to mark peer as dead.
-    always_compare_med: NotRequired[Literal["enable", "disable"]]  # Enable/disable always compare MED.
-    bestpath_as_path_ignore: NotRequired[Literal["enable", "disable"]]  # Enable/disable ignore AS path.
-    bestpath_cmp_confed_aspath: NotRequired[Literal["enable", "disable"]]  # Enable/disable compare federation AS path length.
-    bestpath_cmp_routerid: NotRequired[Literal["enable", "disable"]]  # Enable/disable compare router ID for identical EBGP paths.
-    bestpath_med_confed: NotRequired[Literal["enable", "disable"]]  # Enable/disable compare MED among confederation paths.
-    bestpath_med_missing_as_worst: NotRequired[Literal["enable", "disable"]]  # Enable/disable treat missing MED as least preferred.
-    client_to_client_reflection: NotRequired[Literal["enable", "disable"]]  # Enable/disable client-to-client route reflection.
-    dampening: NotRequired[Literal["enable", "disable"]]  # Enable/disable route-flap dampening.
-    deterministic_med: NotRequired[Literal["enable", "disable"]]  # Enable/disable enforce deterministic comparison of MED.
-    ebgp_multipath: NotRequired[Literal["enable", "disable"]]  # Enable/disable EBGP multi-path.
-    ibgp_multipath: NotRequired[Literal["enable", "disable"]]  # Enable/disable IBGP multi-path.
-    enforce_first_as: NotRequired[Literal["enable", "disable"]]  # Enable/disable enforce first AS for EBGP routes.
-    fast_external_failover: NotRequired[Literal["enable", "disable"]]  # Enable/disable reset peer BGP session if link goes down.
-    log_neighbour_changes: NotRequired[Literal["enable", "disable"]]  # Log BGP neighbor changes.
-    network_import_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable ensure BGP network route exists in IGP.
-    ignore_optional_capability: NotRequired[Literal["enable", "disable"]]  # Do not send unknown optional capability notification message
-    additional_path: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP IPv4 additional paths.
-    additional_path6: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP IPv6 additional paths.
-    additional_path_vpnv4: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP VPNv4 additional paths.
-    additional_path_vpnv6: NotRequired[Literal["enable", "disable"]]  # Enable/disable selection of BGP VPNv6 additional paths.
-    multipath_recursive_distance: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of recursive distance to select multipath
-    recursive_next_hop: NotRequired[Literal["enable", "disable"]]  # Enable/disable recursive resolution of next-hop using BGP ro
-    recursive_inherit_priority: NotRequired[Literal["enable", "disable"]]  # Enable/disable priority inheritance for recursive resolution
-    tag_resolve_mode: NotRequired[Literal["disable", "preferred", "merge", "merge-all"]]  # Configure tag-match mode. Resolves BGP routes with other rou
+    always_compare_med: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable always compare MED.
+    bestpath_as_path_ignore: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable ignore AS path.
+    bestpath_cmp_confed_aspath: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable compare federation AS path length.
+    bestpath_cmp_routerid: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable compare router ID for identical EBGP paths.
+    bestpath_med_confed: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable compare MED among confederation paths.
+    bestpath_med_missing_as_worst: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable treat missing MED as least preferred.
+    client_to_client_reflection: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable client-to-client route reflection.
+    dampening: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable route-flap dampening.
+    deterministic_med: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable enforce deterministic comparison of MED.
+    ebgp_multipath: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable EBGP multi-path.
+    ibgp_multipath: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable IBGP multi-path.
+    enforce_first_as: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable enforce first AS for EBGP routes.
+    fast_external_failover: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable reset peer BGP session if link goes down.
+    log_neighbour_changes: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Log BGP neighbor changes.
+    network_import_check: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable ensure BGP network route exists in IGP.
+    ignore_optional_capability: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Do not send unknown optional capability notification message
+    additional_path: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable selection of BGP IPv4 additional paths.
+    additional_path6: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable selection of BGP IPv6 additional paths.
+    additional_path_vpnv4: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable selection of BGP VPNv4 additional paths.
+    additional_path_vpnv6: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable selection of BGP VPNv6 additional paths.
+    multipath_recursive_distance: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of recursive distance to select multipath
+    recursive_next_hop: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable recursive resolution of next-hop using BGP ro
+    recursive_inherit_priority: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable priority inheritance for recursive resolution
+    tag_resolve_mode: NotRequired[Literal[{"description": "Disable tag-match mode", "help": "Disable tag-match mode.", "label": "Disable", "name": "disable"}, {"description": "Use tag-match if a BGP route resolution with another route containing the same tag is successful", "help": "Use tag-match if a BGP route resolution with another route containing the same tag is successful.", "label": "Preferred", "name": "preferred"}, {"description": "Merge tag-match with best-match if they are using different routes", "help": "Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces or child interfaces have appeared in best-match.", "label": "Merge", "name": "merge"}, {"description": "Merge tag-match with best-match if they are using different routes", "help": "Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces have appeared in best-match.", "label": "Merge All", "name": "merge-all"}]]  # Configure tag-match mode. Resolves BGP routes with other rou
     cluster_id: NotRequired[str]  # Route reflector cluster ID.
     confederation_identifier: NotRequired[int]  # Confederation identifier.
     confederation_peers: NotRequired[list[dict[str, Any]]]  # Confederation peers.
@@ -52,17 +52,17 @@ class BgpPayload(TypedDict, total=False):
     distance_external: NotRequired[int]  # Distance for routes external to the AS.
     distance_internal: NotRequired[int]  # Distance for routes internal to the AS.
     distance_local: NotRequired[int]  # Distance for routes local to the AS.
-    synchronization: NotRequired[Literal["enable", "disable"]]  # Enable/disable only advertise routes from iBGP if routes pre
-    graceful_restart: NotRequired[Literal["enable", "disable"]]  # Enable/disable BGP graceful restart capabilities.
+    synchronization: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable only advertise routes from iBGP if routes pre
+    graceful_restart: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable BGP graceful restart capabilities.
     graceful_restart_time: NotRequired[int]  # Time needed for neighbors to restart (sec).
     graceful_stalepath_time: NotRequired[int]  # Time to hold stale paths of restarting neighbor (sec).
     graceful_update_delay: NotRequired[int]  # Route advertisement/selection delay after restart (sec).
-    graceful_end_on_timer: NotRequired[Literal["enable", "disable"]]  # Enable/disable to exit graceful restart on timer only.
+    graceful_end_on_timer: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable to exit graceful restart on timer only.
     additional_path_select: NotRequired[int]  # Number of additional paths to be selected for each IPv4 NLRI
     additional_path_select6: NotRequired[int]  # Number of additional paths to be selected for each IPv6 NLRI
     additional_path_select_vpnv4: NotRequired[int]  # Number of additional paths to be selected for each VPNv4 NLR
     additional_path_select_vpnv6: NotRequired[int]  # Number of additional paths to be selected for each VPNv6 NLR
-    cross_family_conditional_adv: NotRequired[Literal["enable", "disable"]]  # Enable/disable cross address family conditional advertisemen
+    cross_family_conditional_adv: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable cross address family conditional advertisemen
     aggregate_address: NotRequired[list[dict[str, Any]]]  # BGP aggregate address table.
     aggregate_address6: NotRequired[list[dict[str, Any]]]  # BGP IPv6 aggregate address table.
     neighbor: NotRequired[list[dict[str, Any]]]  # BGP neighbor table.
@@ -102,34 +102,34 @@ class Bgp:
     def post(
         self,
         payload_dict: BgpPayload | None = ...,
-        as: str | None = ...,
+        asn: str | None = ...,
         router_id: str | None = ...,
         keepalive_timer: int | None = ...,
         holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
+        always_compare_med: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_as_path_ignore: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_cmp_confed_aspath: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_cmp_routerid: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_med_confed: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_med_missing_as_worst: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        client_to_client_reflection: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        dampening: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        deterministic_med: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ebgp_multipath: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ibgp_multipath: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        enforce_first_as: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        fast_external_failover: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        log_neighbour_changes: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        network_import_check: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ignore_optional_capability: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path6: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path_vpnv4: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path_vpnv6: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        multipath_recursive_distance: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        recursive_next_hop: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        recursive_inherit_priority: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        tag_resolve_mode: Literal[{"description": "Disable tag-match mode", "help": "Disable tag-match mode.", "label": "Disable", "name": "disable"}, {"description": "Use tag-match if a BGP route resolution with another route containing the same tag is successful", "help": "Use tag-match if a BGP route resolution with another route containing the same tag is successful.", "label": "Preferred", "name": "preferred"}, {"description": "Merge tag-match with best-match if they are using different routes", "help": "Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces or child interfaces have appeared in best-match.", "label": "Merge", "name": "merge"}, {"description": "Merge tag-match with best-match if they are using different routes", "help": "Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces have appeared in best-match.", "label": "Merge All", "name": "merge-all"}] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
         confederation_peers: list[dict[str, Any]] | None = ...,
@@ -144,17 +144,17 @@ class Bgp:
         distance_external: int | None = ...,
         distance_internal: int | None = ...,
         distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
+        synchronization: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        graceful_restart: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         graceful_restart_time: int | None = ...,
         graceful_stalepath_time: int | None = ...,
         graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
+        graceful_end_on_timer: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         additional_path_select: int | None = ...,
         additional_path_select6: int | None = ...,
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
+        cross_family_conditional_adv: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         aggregate_address: list[dict[str, Any]] | None = ...,
         aggregate_address6: list[dict[str, Any]] | None = ...,
         neighbor: list[dict[str, Any]] | None = ...,
@@ -176,34 +176,34 @@ class Bgp:
     def put(
         self,
         payload_dict: BgpPayload | None = ...,
-        as: str | None = ...,
+        asn: str | None = ...,
         router_id: str | None = ...,
         keepalive_timer: int | None = ...,
         holdtime_timer: int | None = ...,
-        always_compare_med: Literal["enable", "disable"] | None = ...,
-        bestpath_as_path_ignore: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_confed_aspath: Literal["enable", "disable"] | None = ...,
-        bestpath_cmp_routerid: Literal["enable", "disable"] | None = ...,
-        bestpath_med_confed: Literal["enable", "disable"] | None = ...,
-        bestpath_med_missing_as_worst: Literal["enable", "disable"] | None = ...,
-        client_to_client_reflection: Literal["enable", "disable"] | None = ...,
-        dampening: Literal["enable", "disable"] | None = ...,
-        deterministic_med: Literal["enable", "disable"] | None = ...,
-        ebgp_multipath: Literal["enable", "disable"] | None = ...,
-        ibgp_multipath: Literal["enable", "disable"] | None = ...,
-        enforce_first_as: Literal["enable", "disable"] | None = ...,
-        fast_external_failover: Literal["enable", "disable"] | None = ...,
-        log_neighbour_changes: Literal["enable", "disable"] | None = ...,
-        network_import_check: Literal["enable", "disable"] | None = ...,
-        ignore_optional_capability: Literal["enable", "disable"] | None = ...,
-        additional_path: Literal["enable", "disable"] | None = ...,
-        additional_path6: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv4: Literal["enable", "disable"] | None = ...,
-        additional_path_vpnv6: Literal["enable", "disable"] | None = ...,
-        multipath_recursive_distance: Literal["enable", "disable"] | None = ...,
-        recursive_next_hop: Literal["enable", "disable"] | None = ...,
-        recursive_inherit_priority: Literal["enable", "disable"] | None = ...,
-        tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
+        always_compare_med: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_as_path_ignore: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_cmp_confed_aspath: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_cmp_routerid: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_med_confed: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        bestpath_med_missing_as_worst: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        client_to_client_reflection: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        dampening: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        deterministic_med: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ebgp_multipath: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ibgp_multipath: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        enforce_first_as: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        fast_external_failover: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        log_neighbour_changes: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        network_import_check: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        ignore_optional_capability: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path6: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path_vpnv4: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        additional_path_vpnv6: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        multipath_recursive_distance: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        recursive_next_hop: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        recursive_inherit_priority: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        tag_resolve_mode: Literal[{"description": "Disable tag-match mode", "help": "Disable tag-match mode.", "label": "Disable", "name": "disable"}, {"description": "Use tag-match if a BGP route resolution with another route containing the same tag is successful", "help": "Use tag-match if a BGP route resolution with another route containing the same tag is successful.", "label": "Preferred", "name": "preferred"}, {"description": "Merge tag-match with best-match if they are using different routes", "help": "Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces or child interfaces have appeared in best-match.", "label": "Merge", "name": "merge"}, {"description": "Merge tag-match with best-match if they are using different routes", "help": "Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces have appeared in best-match.", "label": "Merge All", "name": "merge-all"}] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
         confederation_peers: list[dict[str, Any]] | None = ...,
@@ -218,17 +218,17 @@ class Bgp:
         distance_external: int | None = ...,
         distance_internal: int | None = ...,
         distance_local: int | None = ...,
-        synchronization: Literal["enable", "disable"] | None = ...,
-        graceful_restart: Literal["enable", "disable"] | None = ...,
+        synchronization: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        graceful_restart: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         graceful_restart_time: int | None = ...,
         graceful_stalepath_time: int | None = ...,
         graceful_update_delay: int | None = ...,
-        graceful_end_on_timer: Literal["enable", "disable"] | None = ...,
+        graceful_end_on_timer: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         additional_path_select: int | None = ...,
         additional_path_select6: int | None = ...,
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
-        cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
+        cross_family_conditional_adv: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         aggregate_address: list[dict[str, Any]] | None = ...,
         aggregate_address6: list[dict[str, Any]] | None = ...,
         neighbor: list[dict[str, Any]] | None = ...,

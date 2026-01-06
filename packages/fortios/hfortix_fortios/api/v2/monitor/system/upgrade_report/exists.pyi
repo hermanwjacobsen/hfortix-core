@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Exists:
     """
-    Configuration for system/upgrade-report/exists
+    Check if a report upgrade has been generated.
     
     Path: system/upgrade_report/exists
     Category: monitor

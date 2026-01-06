@@ -139,8 +139,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_NON_IP_PACKET = [
-    "enable",
-    "disable",
+    "enable",  # Enable non-IP packets to be included capture.
+    "disable",  # Disable non-IP packets to be included in capture.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -270,7 +270,7 @@ def validate_firewall_on_demand_sniffer_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "non-ip-packet": "enable",  # Valid enum value
+        ...     "non-ip-packet": "{'name': 'enable', 'help': 'Enable non-IP packets to be included capture.', 'label': 'Enable', 'description': 'Enable non-IP packets to be included capture'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_on_demand_sniffer_post(payload)
         >>> assert is_valid == True

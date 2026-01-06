@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve firewall/dnat/reset configuration.
 
-        Configuration for firewall/dnat/reset
+        Reset hit count statistics for all firewall virtual IPs/servers.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

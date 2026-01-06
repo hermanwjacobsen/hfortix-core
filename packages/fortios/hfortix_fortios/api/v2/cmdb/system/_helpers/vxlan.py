@@ -146,14 +146,14 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_IP_VERSION = [
-    "ipv4-unicast",
-    "ipv6-unicast",
-    "ipv4-multicast",
-    "ipv6-multicast",
+    "ipv4-unicast",  # Use IPv4 unicast addressing over the VXLAN.
+    "ipv6-unicast",  # Use IPv6 unicast addressing over the VXLAN.
+    "ipv4-multicast",  # Use IPv4 multicast addressing over the VXLAN.
+    "ipv6-multicast",  # Use IPv6 multicast addressing over the VXLAN.
 ]
 VALID_BODY_LEARN_FROM_TRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable VXLAN MAC learning from traffic.
+    "disable",  # Disable VXLAN MAC learning from traffic.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -284,7 +284,7 @@ def validate_system_vxlan_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "ip-version": "ipv4-unicast",  # Valid enum value
+        ...     "ip-version": "{'name': 'ipv4-unicast', 'help': 'Use IPv4 unicast addressing over the VXLAN.', 'label': 'Ipv4 Unicast', 'description': 'Use IPv4 unicast addressing over the VXLAN'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_vxlan_post(payload)
         >>> assert is_valid == True

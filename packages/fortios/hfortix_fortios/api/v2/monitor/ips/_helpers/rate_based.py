@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "ips/rate_based",
     "category": "monitor",
     "api_path": "ips/rate-based",
-    "help": "Monitor endpoint for ips/rate-based",
+    "help": "Returns a list of rate-based signatures in IPS package.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

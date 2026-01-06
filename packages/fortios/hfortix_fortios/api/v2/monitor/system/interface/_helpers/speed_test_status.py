@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/interface/speed_test_status",
     "category": "monitor",
     "api_path": "system/interface/speed-test-status",
-    "help": "Configuration for system/interface/speed-test-status",
+    "help": "Retrieve the current status of a speed-test with the results if finished.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

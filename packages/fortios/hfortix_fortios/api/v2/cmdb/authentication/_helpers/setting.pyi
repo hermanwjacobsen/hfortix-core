@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PERSISTENT_COOKIE: Literal["enable", "disable"]
-VALID_BODY_IP_AUTH_COOKIE: Literal["enable", "disable"]
-VALID_BODY_CAPTIVE_PORTAL_TYPE: Literal["fqdn", "ip"]
-VALID_BODY_CERT_AUTH: Literal["enable", "disable"]
-VALID_BODY_AUTH_HTTPS: Literal["enable", "disable"]
+VALID_BODY_PERSISTENT_COOKIE: Literal[{"description": "Enable persistent cookie", "help": "Enable persistent cookie.", "label": "Enable", "name": "enable"}, {"description": "Disable persistent cookie", "help": "Disable persistent cookie.", "label": "Disable", "name": "disable"}]
+VALID_BODY_IP_AUTH_COOKIE: Literal[{"description": "Enable persistent cookie for IP-based authentication", "help": "Enable persistent cookie for IP-based authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable persistent cookie for IP-based authentication", "help": "Disable persistent cookie for IP-based authentication.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CAPTIVE_PORTAL_TYPE: Literal[{"description": "Use FQDN for captive portal", "help": "Use FQDN for captive portal.", "label": "Fqdn", "name": "fqdn"}, {"description": "Use an IP address for captive portal", "help": "Use an IP address for captive portal.", "label": "Ip", "name": "ip"}]
+VALID_BODY_CERT_AUTH: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_AUTH_HTTPS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

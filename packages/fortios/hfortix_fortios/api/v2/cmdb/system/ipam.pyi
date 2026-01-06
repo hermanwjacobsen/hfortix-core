@@ -10,13 +10,13 @@ class IpamPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable IP address management services.
-    server_type: NotRequired[Literal["fabric-root"]]  # Configure the type of IPAM server to use.
-    automatic_conflict_resolution: NotRequired[Literal["disable", "enable"]]  # Enable/disable automatic conflict resolution.
-    require_subnet_size_match: NotRequired[Literal["disable", "enable"]]  # Enable/disable reassignment of subnets to make requested and
-    manage_lan_addresses: NotRequired[Literal["disable", "enable"]]  # Enable/disable default management of LAN interface addresses
-    manage_lan_extension_addresses: NotRequired[Literal["disable", "enable"]]  # Enable/disable default management of FortiExtender LAN exten
-    manage_ssid_addresses: NotRequired[Literal["disable", "enable"]]  # Enable/disable default management of FortiAP SSID addresses.
+    status: NotRequired[Literal[{"description": "Enable integration with IP address management services", "help": "Enable integration with IP address management services.", "label": "Enable", "name": "enable"}, {"description": "Disable integration with IP address management services", "help": "Disable integration with IP address management services.", "label": "Disable", "name": "disable"}]]  # Enable/disable IP address management services.
+    server_type: NotRequired[Literal[{"description": "Use the IPAM server running on the Security Fabric root", "help": "Use the IPAM server running on the Security Fabric root.", "label": "Fabric Root", "name": "fabric-root"}]]  # Configure the type of IPAM server to use.
+    automatic_conflict_resolution: NotRequired[Literal[{"description": "Disable automatic conflict resolution", "help": "Disable automatic conflict resolution.", "label": "Disable", "name": "disable"}, {"description": "Enable automatic conflict resolution", "help": "Enable automatic conflict resolution.", "label": "Enable", "name": "enable"}]]  # Enable/disable automatic conflict resolution.
+    require_subnet_size_match: NotRequired[Literal[{"description": "Disable requiring subnet sizes to match", "help": "Disable requiring subnet sizes to match.", "label": "Disable", "name": "disable"}, {"description": "Enable requiring subnet sizes to match", "help": "Enable requiring subnet sizes to match.", "label": "Enable", "name": "enable"}]]  # Enable/disable reassignment of subnets to make requested and
+    manage_lan_addresses: NotRequired[Literal[{"description": "Disable LAN interface address management by default", "help": "Disable LAN interface address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable LAN interface address management by default", "help": "Enable LAN interface address management by default.", "label": "Enable", "name": "enable"}]]  # Enable/disable default management of LAN interface addresses
+    manage_lan_extension_addresses: NotRequired[Literal[{"description": "Disable FortiExtender LAN extension interface address management by default", "help": "Disable FortiExtender LAN extension interface address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable FortiExtender LAN extension interface address management by default", "help": "Enable FortiExtender LAN extension interface address management by default.", "label": "Enable", "name": "enable"}]]  # Enable/disable default management of FortiExtender LAN exten
+    manage_ssid_addresses: NotRequired[Literal[{"description": "Disable FortiAP SSID address management by default", "help": "Disable FortiAP SSID address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable FortiAP SSID address management by default", "help": "Enable FortiAP SSID address management by default.", "label": "Enable", "name": "enable"}]]  # Enable/disable default management of FortiAP SSID addresses.
     pools: NotRequired[list[dict[str, Any]]]  # Configure IPAM pools.
     rules: NotRequired[list[dict[str, Any]]]  # Configure IPAM allocation rules.
 
@@ -45,13 +45,13 @@ class Ipam:
     def post(
         self,
         payload_dict: IpamPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server_type: Literal["fabric-root"] | None = ...,
-        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
-        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
-        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
-        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
-        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Enable integration with IP address management services", "help": "Enable integration with IP address management services.", "label": "Enable", "name": "enable"}, {"description": "Disable integration with IP address management services", "help": "Disable integration with IP address management services.", "label": "Disable", "name": "disable"}] | None = ...,
+        server_type: Literal[{"description": "Use the IPAM server running on the Security Fabric root", "help": "Use the IPAM server running on the Security Fabric root.", "label": "Fabric Root", "name": "fabric-root"}] | None = ...,
+        automatic_conflict_resolution: Literal[{"description": "Disable automatic conflict resolution", "help": "Disable automatic conflict resolution.", "label": "Disable", "name": "disable"}, {"description": "Enable automatic conflict resolution", "help": "Enable automatic conflict resolution.", "label": "Enable", "name": "enable"}] | None = ...,
+        require_subnet_size_match: Literal[{"description": "Disable requiring subnet sizes to match", "help": "Disable requiring subnet sizes to match.", "label": "Disable", "name": "disable"}, {"description": "Enable requiring subnet sizes to match", "help": "Enable requiring subnet sizes to match.", "label": "Enable", "name": "enable"}] | None = ...,
+        manage_lan_addresses: Literal[{"description": "Disable LAN interface address management by default", "help": "Disable LAN interface address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable LAN interface address management by default", "help": "Enable LAN interface address management by default.", "label": "Enable", "name": "enable"}] | None = ...,
+        manage_lan_extension_addresses: Literal[{"description": "Disable FortiExtender LAN extension interface address management by default", "help": "Disable FortiExtender LAN extension interface address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable FortiExtender LAN extension interface address management by default", "help": "Enable FortiExtender LAN extension interface address management by default.", "label": "Enable", "name": "enable"}] | None = ...,
+        manage_ssid_addresses: Literal[{"description": "Disable FortiAP SSID address management by default", "help": "Disable FortiAP SSID address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable FortiAP SSID address management by default", "help": "Enable FortiAP SSID address management by default.", "label": "Enable", "name": "enable"}] | None = ...,
         pools: list[dict[str, Any]] | None = ...,
         rules: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -62,13 +62,13 @@ class Ipam:
     def put(
         self,
         payload_dict: IpamPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server_type: Literal["fabric-root"] | None = ...,
-        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
-        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
-        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
-        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
-        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Enable integration with IP address management services", "help": "Enable integration with IP address management services.", "label": "Enable", "name": "enable"}, {"description": "Disable integration with IP address management services", "help": "Disable integration with IP address management services.", "label": "Disable", "name": "disable"}] | None = ...,
+        server_type: Literal[{"description": "Use the IPAM server running on the Security Fabric root", "help": "Use the IPAM server running on the Security Fabric root.", "label": "Fabric Root", "name": "fabric-root"}] | None = ...,
+        automatic_conflict_resolution: Literal[{"description": "Disable automatic conflict resolution", "help": "Disable automatic conflict resolution.", "label": "Disable", "name": "disable"}, {"description": "Enable automatic conflict resolution", "help": "Enable automatic conflict resolution.", "label": "Enable", "name": "enable"}] | None = ...,
+        require_subnet_size_match: Literal[{"description": "Disable requiring subnet sizes to match", "help": "Disable requiring subnet sizes to match.", "label": "Disable", "name": "disable"}, {"description": "Enable requiring subnet sizes to match", "help": "Enable requiring subnet sizes to match.", "label": "Enable", "name": "enable"}] | None = ...,
+        manage_lan_addresses: Literal[{"description": "Disable LAN interface address management by default", "help": "Disable LAN interface address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable LAN interface address management by default", "help": "Enable LAN interface address management by default.", "label": "Enable", "name": "enable"}] | None = ...,
+        manage_lan_extension_addresses: Literal[{"description": "Disable FortiExtender LAN extension interface address management by default", "help": "Disable FortiExtender LAN extension interface address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable FortiExtender LAN extension interface address management by default", "help": "Enable FortiExtender LAN extension interface address management by default.", "label": "Enable", "name": "enable"}] | None = ...,
+        manage_ssid_addresses: Literal[{"description": "Disable FortiAP SSID address management by default", "help": "Disable FortiAP SSID address management by default.", "label": "Disable", "name": "disable"}, {"description": "Enable FortiAP SSID address management by default", "help": "Enable FortiAP SSID address management by default.", "label": "Enable", "name": "enable"}] | None = ...,
         pools: list[dict[str, Any]] | None = ...,
         rules: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

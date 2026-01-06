@@ -56,7 +56,7 @@ class WakeOnLan:
         """
         Retrieve system/interface/wake_on_lan configuration.
 
-        Configuration for system/interface/wake-on-lan
+        Send wake on lan packet to device.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

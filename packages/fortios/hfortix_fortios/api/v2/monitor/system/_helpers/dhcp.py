@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/dhcp",
     "category": "monitor",
     "api_path": "system/dhcp",
-    "help": "Monitor endpoint for system/dhcp",
+    "help": "List all DHCP and DHCPv6 leases.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

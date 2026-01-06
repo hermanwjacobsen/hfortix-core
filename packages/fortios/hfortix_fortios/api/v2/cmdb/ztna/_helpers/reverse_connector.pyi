@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_SSL_MAX_VERSION: Literal["tls-1.1", "tls-1.2", "tls-1.3"]
+VALID_BODY_STATUS: Literal[{"description": "Enable the reverse-connector", "help": "Enable the reverse-connector.", "label": "Enable", "name": "enable"}, {"description": "Disable the reverse-connector", "help": "Disable the reverse-connector.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SSL_MAX_VERSION: Literal[{"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

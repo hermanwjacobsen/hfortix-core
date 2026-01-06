@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ha_hw_interface",
     "category": "monitor",
     "api_path": "system/ha-hw-interface",
-    "help": "Configuration for system/ha-hw-interface",
+    "help": "Get HA NPU hardware interface status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

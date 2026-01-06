@@ -12,8 +12,8 @@ class DecryptedTrafficMirrorPayload(TypedDict, total=False):
     """
     name: str  # Name.
     dstmac: NotRequired[str]  # Set destination MAC address for mirrored traffic.
-    traffic_type: NotRequired[Literal["ssl", "ssh"]]  # Types of decrypted traffic to be mirrored.
-    traffic_source: NotRequired[Literal["client", "server", "both"]]  # Source of decrypted traffic to be mirrored.
+    traffic_type: NotRequired[Literal[{"description": "Mirror decrypted SSL traffic", "help": "Mirror decrypted SSL traffic.", "label": "Ssl", "name": "ssl"}, {"description": "Mirror decrypted SSH traffic", "help": "Mirror decrypted SSH traffic.", "label": "Ssh", "name": "ssh"}]]  # Types of decrypted traffic to be mirrored.
+    traffic_source: NotRequired[Literal[{"description": "Mirror client side decrypted traffic", "help": "Mirror client side decrypted traffic.", "label": "Client", "name": "client"}, {"description": "Mirror server side decrypted traffic", "help": "Mirror server side decrypted traffic.", "label": "Server", "name": "server"}, {"description": "Mirror both client and server side decrypted traffic", "help": "Mirror both client and server side decrypted traffic.", "label": "Both", "name": "both"}]]  # Source of decrypted traffic to be mirrored.
     interface: list[dict[str, Any]]  # Decrypted traffic mirror interface.
 
 
@@ -44,8 +44,8 @@ class DecryptedTrafficMirror:
         payload_dict: DecryptedTrafficMirrorPayload | None = ...,
         name: str | None = ...,
         dstmac: str | None = ...,
-        traffic_type: Literal["ssl", "ssh"] | None = ...,
-        traffic_source: Literal["client", "server", "both"] | None = ...,
+        traffic_type: Literal[{"description": "Mirror decrypted SSL traffic", "help": "Mirror decrypted SSL traffic.", "label": "Ssl", "name": "ssl"}, {"description": "Mirror decrypted SSH traffic", "help": "Mirror decrypted SSH traffic.", "label": "Ssh", "name": "ssh"}] | None = ...,
+        traffic_source: Literal[{"description": "Mirror client side decrypted traffic", "help": "Mirror client side decrypted traffic.", "label": "Client", "name": "client"}, {"description": "Mirror server side decrypted traffic", "help": "Mirror server side decrypted traffic.", "label": "Server", "name": "server"}, {"description": "Mirror both client and server side decrypted traffic", "help": "Mirror both client and server side decrypted traffic.", "label": "Both", "name": "both"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -57,8 +57,8 @@ class DecryptedTrafficMirror:
         payload_dict: DecryptedTrafficMirrorPayload | None = ...,
         name: str | None = ...,
         dstmac: str | None = ...,
-        traffic_type: Literal["ssl", "ssh"] | None = ...,
-        traffic_source: Literal["client", "server", "both"] | None = ...,
+        traffic_type: Literal[{"description": "Mirror decrypted SSL traffic", "help": "Mirror decrypted SSL traffic.", "label": "Ssl", "name": "ssl"}, {"description": "Mirror decrypted SSH traffic", "help": "Mirror decrypted SSH traffic.", "label": "Ssh", "name": "ssh"}] | None = ...,
+        traffic_source: Literal[{"description": "Mirror client side decrypted traffic", "help": "Mirror client side decrypted traffic.", "label": "Client", "name": "client"}, {"description": "Mirror server side decrypted traffic", "help": "Mirror server side decrypted traffic.", "label": "Server", "name": "server"}, {"description": "Mirror both client and server side decrypted traffic", "help": "Mirror both client and server side decrypted traffic.", "label": "Both", "name": "both"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

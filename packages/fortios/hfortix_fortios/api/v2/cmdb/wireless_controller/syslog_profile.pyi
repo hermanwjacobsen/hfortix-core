@@ -12,13 +12,11 @@ class SyslogProfilePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # WTP system log server profile name.
     comment: NotRequired[str]  # Comment.
-    server_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiAP units to send log messages to a syslo
-    server_addr_type: NotRequired[Literal["fqdn", "ip"]]  # Syslog server address type (default = ip).
-    server_fqdn: NotRequired[str]  # FQDN of syslog server that FortiAP units send log messages t
-    server_ip: NotRequired[str]  # IP address of syslog server that FortiAP units send log mess
+    server_status: NotRequired[Literal[{"description": "Enable syslog server", "help": "Enable syslog server.", "label": "Enable", "name": "enable"}, {"description": "Disable syslog server", "help": "Disable syslog server.", "label": "Disable", "name": "disable"}]]  # Enable/disable FortiAP units to send log messages to a syslo
+    server: NotRequired[str]  # Syslog server CN domain name or IP address.
     server_port: NotRequired[int]  # Port number of syslog server that FortiAP units send log mes
-    server_type: NotRequired[Literal["standard", "fortianalyzer"]]  # Configure syslog server type (default = standard).
-    log_level: NotRequired[Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debugging"]]  # Lowest level of log messages that FortiAP units send to this
+    server_type: NotRequired[Literal[{"description": "Standard syslog server hosted on an server endpoint", "help": "Standard syslog server hosted on an server endpoint.", "label": "Standard", "name": "standard"}, {"description": "Syslog server hosted on a FortiAnalyzer device", "help": "Syslog server hosted on a FortiAnalyzer device.", "label": "Fortianalyzer", "name": "fortianalyzer"}]]  # Configure syslog server type (default = standard).
+    log_level: NotRequired[Literal[{"description": "Level 0    alert:Level 1    critical:Level 2    error:Level 3    warning:Level 4    notification:Level 5    information:Level 6    debugging:Level 7", "help": "Level 0", "label": "Emergency", "name": "emergency"}, {"help": "Level 1", "label": "Alert", "name": "alert"}, {"help": "Level 2", "label": "Critical", "name": "critical"}, {"help": "Level 3", "label": "Error", "name": "error"}, {"help": "Level 4", "label": "Warning", "name": "warning"}, {"help": "Level 5", "label": "Notification", "name": "notification"}, {"help": "Level 6", "label": "Information", "name": "information"}, {"help": "Level 7", "label": "Debugging", "name": "debugging"}]]  # Lowest level of log messages that FortiAP units send to this
 
 
 class SyslogProfile:
@@ -48,13 +46,11 @@ class SyslogProfile:
         payload_dict: SyslogProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        server_status: Literal["enable", "disable"] | None = ...,
-        server_addr_type: Literal["fqdn", "ip"] | None = ...,
-        server_fqdn: str | None = ...,
-        server_ip: str | None = ...,
+        server_status: Literal[{"description": "Enable syslog server", "help": "Enable syslog server.", "label": "Enable", "name": "enable"}, {"description": "Disable syslog server", "help": "Disable syslog server.", "label": "Disable", "name": "disable"}] | None = ...,
+        server: str | None = ...,
         server_port: int | None = ...,
-        server_type: Literal["standard", "fortianalyzer"] | None = ...,
-        log_level: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debugging"] | None = ...,
+        server_type: Literal[{"description": "Standard syslog server hosted on an server endpoint", "help": "Standard syslog server hosted on an server endpoint.", "label": "Standard", "name": "standard"}, {"description": "Syslog server hosted on a FortiAnalyzer device", "help": "Syslog server hosted on a FortiAnalyzer device.", "label": "Fortianalyzer", "name": "fortianalyzer"}] | None = ...,
+        log_level: Literal[{"description": "Level 0    alert:Level 1    critical:Level 2    error:Level 3    warning:Level 4    notification:Level 5    information:Level 6    debugging:Level 7", "help": "Level 0", "label": "Emergency", "name": "emergency"}, {"help": "Level 1", "label": "Alert", "name": "alert"}, {"help": "Level 2", "label": "Critical", "name": "critical"}, {"help": "Level 3", "label": "Error", "name": "error"}, {"help": "Level 4", "label": "Warning", "name": "warning"}, {"help": "Level 5", "label": "Notification", "name": "notification"}, {"help": "Level 6", "label": "Information", "name": "information"}, {"help": "Level 7", "label": "Debugging", "name": "debugging"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -65,13 +61,11 @@ class SyslogProfile:
         payload_dict: SyslogProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        server_status: Literal["enable", "disable"] | None = ...,
-        server_addr_type: Literal["fqdn", "ip"] | None = ...,
-        server_fqdn: str | None = ...,
-        server_ip: str | None = ...,
+        server_status: Literal[{"description": "Enable syslog server", "help": "Enable syslog server.", "label": "Enable", "name": "enable"}, {"description": "Disable syslog server", "help": "Disable syslog server.", "label": "Disable", "name": "disable"}] | None = ...,
+        server: str | None = ...,
         server_port: int | None = ...,
-        server_type: Literal["standard", "fortianalyzer"] | None = ...,
-        log_level: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debugging"] | None = ...,
+        server_type: Literal[{"description": "Standard syslog server hosted on an server endpoint", "help": "Standard syslog server hosted on an server endpoint.", "label": "Standard", "name": "standard"}, {"description": "Syslog server hosted on a FortiAnalyzer device", "help": "Syslog server hosted on a FortiAnalyzer device.", "label": "Fortianalyzer", "name": "fortianalyzer"}] | None = ...,
+        log_level: Literal[{"description": "Level 0    alert:Level 1    critical:Level 2    error:Level 3    warning:Level 4    notification:Level 5    information:Level 6    debugging:Level 7", "help": "Level 0", "label": "Emergency", "name": "emergency"}, {"help": "Level 1", "label": "Alert", "name": "alert"}, {"help": "Level 2", "label": "Critical", "name": "critical"}, {"help": "Level 3", "label": "Error", "name": "error"}, {"help": "Level 4", "label": "Warning", "name": "warning"}, {"help": "Level 5", "label": "Notification", "name": "notification"}, {"help": "Level 6", "label": "Information", "name": "information"}, {"help": "Level 7", "label": "Debugging", "name": "debugging"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

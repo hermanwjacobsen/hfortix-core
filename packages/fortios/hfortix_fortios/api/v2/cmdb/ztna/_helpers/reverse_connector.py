@@ -117,13 +117,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable the reverse-connector.
+    "disable",  # Disable the reverse-connector.
 ]
 VALID_BODY_SSL_MAX_VERSION = [
-    "tls-1.1",
-    "tls-1.2",
-    "tls-1.3",
+    "tls-1.1",  # TLS 1.1.
+    "tls-1.2",  # TLS 1.2.
+    "tls-1.3",  # TLS 1.3.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -253,7 +253,7 @@ def validate_ztna_reverse_connector_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "address": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable the reverse-connector.', 'label': 'Enable', 'description': 'Enable the reverse-connector'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_ztna_reverse_connector_post(payload)
         >>> assert is_valid == True

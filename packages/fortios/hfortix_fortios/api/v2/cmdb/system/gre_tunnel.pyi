@@ -12,19 +12,19 @@ class GreTunnelPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Tunnel name.
     interface: NotRequired[str]  # Interface name.
-    ip_version: NotRequired[Literal["4", "6"]]  # IP version to use for VPN interface.
+    ip_version: NotRequired[Literal[{"description": "Use IPv4 addressing for gateways", "help": "Use IPv4 addressing for gateways.", "label": "4", "name": "4"}, {"description": "Use IPv6 addressing for gateways", "help": "Use IPv6 addressing for gateways.", "label": "6", "name": "6"}]]  # IP version to use for VPN interface.
     remote_gw6: str  # IPv6 address of the remote gateway.
     local_gw6: str  # IPv6 address of the local gateway.
     remote_gw: str  # IP address of the remote gateway.
     local_gw: str  # IP address of the local gateway.
-    use_sdwan: NotRequired[Literal["disable", "enable"]]  # Enable/disable use of SD-WAN to reach remote gateway.
-    sequence_number_transmission: NotRequired[Literal["disable", "enable"]]  # Enable/disable including of sequence numbers in transmitted 
-    sequence_number_reception: NotRequired[Literal["disable", "enable"]]  # Enable/disable validating sequence numbers in received GRE p
-    checksum_transmission: NotRequired[Literal["disable", "enable"]]  # Enable/disable including checksums in transmitted GRE packet
-    checksum_reception: NotRequired[Literal["disable", "enable"]]  # Enable/disable validating checksums in received GRE packets.
+    use_sdwan: NotRequired[Literal[{"description": "Disable use of SD-WAN to reach remote gateway", "help": "Disable use of SD-WAN to reach remote gateway.", "label": "Disable", "name": "disable"}, {"description": "Enable use of SD-WAN to reach remote gateway", "help": "Enable use of SD-WAN to reach remote gateway.", "label": "Enable", "name": "enable"}]]  # Enable/disable use of SD-WAN to reach remote gateway.
+    sequence_number_transmission: NotRequired[Literal[{"description": "Include sequence numbers in transmitted GRE packets", "help": "Include sequence numbers in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Do not  include sequence numbers in transmitted GRE packets", "help": "Do not  include sequence numbers in transmitted GRE packets.", "label": "Enable", "name": "enable"}]]  # Enable/disable including of sequence numbers in transmitted 
+    sequence_number_reception: NotRequired[Literal[{"description": "Do not validate sequence number in received GRE packets", "help": "Do not validate sequence number in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate sequence numbers in received GRE packets", "help": "Validate sequence numbers in received GRE packets.", "label": "Enable", "name": "enable"}]]  # Enable/disable validating sequence numbers in received GRE p
+    checksum_transmission: NotRequired[Literal[{"description": "Do not include checksums in transmitted GRE packets", "help": "Do not include checksums in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Include checksums in transmitted GRE packets", "help": "Include checksums in transmitted GRE packets.", "label": "Enable", "name": "enable"}]]  # Enable/disable including checksums in transmitted GRE packet
+    checksum_reception: NotRequired[Literal[{"description": "Do not validate checksums in received GRE packets", "help": "Do not validate checksums in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate checksums in received GRE packets", "help": "Validate checksums in received GRE packets.", "label": "Enable", "name": "enable"}]]  # Enable/disable validating checksums in received GRE packets.
     key_outbound: NotRequired[int]  # Include this key in transmitted GRE packets (0 - 4294967295)
     key_inbound: NotRequired[int]  # Require received GRE packets contain this key (0 - 429496729
-    dscp_copying: NotRequired[Literal["disable", "enable"]]  # Enable/disable DSCP copying.
+    dscp_copying: NotRequired[Literal[{"description": "Disable DSCP copying", "help": "Disable DSCP copying.", "label": "Disable", "name": "disable"}, {"description": "Enable DSCP copying", "help": "Enable DSCP copying.", "label": "Enable", "name": "enable"}]]  # Enable/disable DSCP copying.
     diffservcode: NotRequired[str]  # DiffServ setting to be applied to GRE tunnel outer IP header
     keepalive_interval: NotRequired[int]  # Keepalive message interval (0 - 32767, 0 = disabled).
     keepalive_failtimes: NotRequired[int]  # Number of consecutive unreturned keepalive messages before a
@@ -57,19 +57,19 @@ class GreTunnel:
         payload_dict: GreTunnelPayload | None = ...,
         name: str | None = ...,
         interface: str | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 addressing for gateways", "help": "Use IPv4 addressing for gateways.", "label": "4", "name": "4"}, {"description": "Use IPv6 addressing for gateways", "help": "Use IPv6 addressing for gateways.", "label": "6", "name": "6"}] | None = ...,
         remote_gw6: str | None = ...,
         local_gw6: str | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        sequence_number_transmission: Literal["disable", "enable"] | None = ...,
-        sequence_number_reception: Literal["disable", "enable"] | None = ...,
-        checksum_transmission: Literal["disable", "enable"] | None = ...,
-        checksum_reception: Literal["disable", "enable"] | None = ...,
+        use_sdwan: Literal[{"description": "Disable use of SD-WAN to reach remote gateway", "help": "Disable use of SD-WAN to reach remote gateway.", "label": "Disable", "name": "disable"}, {"description": "Enable use of SD-WAN to reach remote gateway", "help": "Enable use of SD-WAN to reach remote gateway.", "label": "Enable", "name": "enable"}] | None = ...,
+        sequence_number_transmission: Literal[{"description": "Include sequence numbers in transmitted GRE packets", "help": "Include sequence numbers in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Do not  include sequence numbers in transmitted GRE packets", "help": "Do not  include sequence numbers in transmitted GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
+        sequence_number_reception: Literal[{"description": "Do not validate sequence number in received GRE packets", "help": "Do not validate sequence number in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate sequence numbers in received GRE packets", "help": "Validate sequence numbers in received GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
+        checksum_transmission: Literal[{"description": "Do not include checksums in transmitted GRE packets", "help": "Do not include checksums in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Include checksums in transmitted GRE packets", "help": "Include checksums in transmitted GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
+        checksum_reception: Literal[{"description": "Do not validate checksums in received GRE packets", "help": "Do not validate checksums in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate checksums in received GRE packets", "help": "Validate checksums in received GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
         key_outbound: int | None = ...,
         key_inbound: int | None = ...,
-        dscp_copying: Literal["disable", "enable"] | None = ...,
+        dscp_copying: Literal[{"description": "Disable DSCP copying", "help": "Disable DSCP copying.", "label": "Disable", "name": "disable"}, {"description": "Enable DSCP copying", "help": "Enable DSCP copying.", "label": "Enable", "name": "enable"}] | None = ...,
         diffservcode: str | None = ...,
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,
@@ -83,19 +83,19 @@ class GreTunnel:
         payload_dict: GreTunnelPayload | None = ...,
         name: str | None = ...,
         interface: str | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 addressing for gateways", "help": "Use IPv4 addressing for gateways.", "label": "4", "name": "4"}, {"description": "Use IPv6 addressing for gateways", "help": "Use IPv6 addressing for gateways.", "label": "6", "name": "6"}] | None = ...,
         remote_gw6: str | None = ...,
         local_gw6: str | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        sequence_number_transmission: Literal["disable", "enable"] | None = ...,
-        sequence_number_reception: Literal["disable", "enable"] | None = ...,
-        checksum_transmission: Literal["disable", "enable"] | None = ...,
-        checksum_reception: Literal["disable", "enable"] | None = ...,
+        use_sdwan: Literal[{"description": "Disable use of SD-WAN to reach remote gateway", "help": "Disable use of SD-WAN to reach remote gateway.", "label": "Disable", "name": "disable"}, {"description": "Enable use of SD-WAN to reach remote gateway", "help": "Enable use of SD-WAN to reach remote gateway.", "label": "Enable", "name": "enable"}] | None = ...,
+        sequence_number_transmission: Literal[{"description": "Include sequence numbers in transmitted GRE packets", "help": "Include sequence numbers in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Do not  include sequence numbers in transmitted GRE packets", "help": "Do not  include sequence numbers in transmitted GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
+        sequence_number_reception: Literal[{"description": "Do not validate sequence number in received GRE packets", "help": "Do not validate sequence number in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate sequence numbers in received GRE packets", "help": "Validate sequence numbers in received GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
+        checksum_transmission: Literal[{"description": "Do not include checksums in transmitted GRE packets", "help": "Do not include checksums in transmitted GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Include checksums in transmitted GRE packets", "help": "Include checksums in transmitted GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
+        checksum_reception: Literal[{"description": "Do not validate checksums in received GRE packets", "help": "Do not validate checksums in received GRE packets.", "label": "Disable", "name": "disable"}, {"description": "Validate checksums in received GRE packets", "help": "Validate checksums in received GRE packets.", "label": "Enable", "name": "enable"}] | None = ...,
         key_outbound: int | None = ...,
         key_inbound: int | None = ...,
-        dscp_copying: Literal["disable", "enable"] | None = ...,
+        dscp_copying: Literal[{"description": "Disable DSCP copying", "help": "Disable DSCP copying.", "label": "Disable", "name": "disable"}, {"description": "Enable DSCP copying", "help": "Enable DSCP copying.", "label": "Enable", "name": "enable"}] | None = ...,
         diffservcode: str | None = ...,
         keepalive_interval: int | None = ...,
         keepalive_failtimes: int | None = ...,

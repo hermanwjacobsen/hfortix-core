@@ -56,7 +56,7 @@ class Select:
         """
         Retrieve user/password_policy_conform/select configuration.
 
-        Configuration for user/password-policy-conform/select
+        Check if password adheres to local user password policy.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

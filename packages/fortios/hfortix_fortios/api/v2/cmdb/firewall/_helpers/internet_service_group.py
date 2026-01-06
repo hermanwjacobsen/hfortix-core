@@ -106,9 +106,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DIRECTION = [
-    "source",
-    "destination",
-    "both",
+    "source",  # As source when applied.
+    "destination",  # As destination when applied.
+    "both",  # Both directions when applied.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -236,7 +236,7 @@ def validate_firewall_internet_service_group_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "direction": "source",  # Valid enum value
+        ...     "direction": "{'name': 'source', 'help': 'As source when applied.', 'label': 'Source', 'description': 'As source when applied'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_internet_service_group_post(payload)
         >>> assert is_valid == True

@@ -56,7 +56,7 @@ class Ssl:
         """
         Retrieve vpn/ssl configuration.
 
-        Configuration for vpn/ssl/stats
+        Retrieve a list of all Agentless VPN sessions and sub-sessions.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

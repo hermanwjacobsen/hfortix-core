@@ -149,34 +149,34 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_VENDOR = [
-    "unknown",
-    "gch",
+    "unknown",  # Unknown type of HSM.
+    "gch",  # Google Cloud HSM.
 ]
 VALID_BODY_API_VERSION = [
-    "unknown",
-    "gch-default",
+    "unknown",  # Unknown API version.
+    "gch-default",  # Google Cloud HSM default API.
 ]
 VALID_BODY_RANGE = [
-    "global",
-    "vdom",
+    "global",  # Global range.
+    "vdom",  # VDOM IP address range.
 ]
 VALID_BODY_SOURCE = [
-    "factory",
-    "user",
-    "bundle",
+    "factory",  # Factory installed certificate.
+    "user",  # User generated certificate.
+    "bundle",  # Bundle file certificate.
 ]
 VALID_BODY_GCH_CRYPTOKEY_ALGORITHM = [
-    "rsa-sign-pkcs1-2048-sha256",
-    "rsa-sign-pkcs1-3072-sha256",
-    "rsa-sign-pkcs1-4096-sha256",
-    "rsa-sign-pkcs1-4096-sha512",
-    "rsa-sign-pss-2048-sha256",
-    "rsa-sign-pss-3072-sha256",
-    "rsa-sign-pss-4096-sha256",
-    "rsa-sign-pss-4096-sha512",
-    "ec-sign-p256-sha256",
-    "ec-sign-p384-sha384",
-    "ec-sign-secp256k1-sha256",
+    "rsa-sign-pkcs1-2048-sha256",  # 2048 bit RSA - PKCS#1 v1.5 padding - SHA256 Digest.
+    "rsa-sign-pkcs1-3072-sha256",  # 3072 bit RSA - PKCS#1 v1.5 padding - SHA256 Digest.
+    "rsa-sign-pkcs1-4096-sha256",  # 4096 bit RSA - PKCS#1 v1.5 padding - SHA256 Digest.
+    "rsa-sign-pkcs1-4096-sha512",  # 4096 bit RSA - PKCS#1 v1.5 padding - SHA512 Digest.
+    "rsa-sign-pss-2048-sha256",  # 2048 bit RSA - PSS padding - SHA256 Digest.
+    "rsa-sign-pss-3072-sha256",  # 3072 bit RSA - PSS padding - SHA256 Digest.
+    "rsa-sign-pss-4096-sha256",  # 4096 bit RSA - PSS padding - SHA256 Digest.
+    "rsa-sign-pss-4096-sha512",  # 4096 bit RSA - PSS padding - SHA256 Digest.
+    "ec-sign-p256-sha256",  # Elliptic Curve P-256 - SHA256 Digest.
+    "ec-sign-p384-sha384",  # Elliptic Curve P-384 - SHA384 Digest.
+    "ec-sign-secp256k1-sha256",  # Elliptic Curvesecp256k1 - SHA256 Digest.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -306,7 +306,7 @@ def validate_vpn_certificate_hsm_local_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "vendor": "unknown",  # Valid enum value
+        ...     "vendor": "{'name': 'unknown', 'help': 'Unknown type of HSM.', 'label': 'Unknown', 'description': 'Unknown type of HSM'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_certificate_hsm_local_post(payload)
         >>> assert is_valid == True

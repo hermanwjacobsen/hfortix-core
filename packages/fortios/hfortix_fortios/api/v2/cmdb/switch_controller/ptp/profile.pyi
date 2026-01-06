@@ -12,11 +12,11 @@ class ProfilePayload(TypedDict, total=False):
     """
     name: str  # Profile name.
     description: NotRequired[str]  # Description.
-    mode: NotRequired[Literal["transparent-e2e", "transparent-p2p"]]  # Select PTP mode.
-    ptp_profile: NotRequired[Literal["C37.238-2017"]]  # Configure PTP power profile.
-    transport: NotRequired[Literal["l2-mcast"]]  # Configure PTP transport mode.
+    mode: NotRequired[Literal[{"description": "End-to-end transparent clock", "help": "End-to-end transparent clock.", "label": "Transparent E2E", "name": "transparent-e2e"}, {"description": "Peer-to-peer transparent clock", "help": "Peer-to-peer transparent clock.", "label": "Transparent P2P", "name": "transparent-p2p"}]]  # Select PTP mode.
+    ptp_profile: NotRequired[Literal[{"help": "C37.238-2017 power profile.", "label": "C37.238 2017", "name": "C37.238-2017"}]]  # Configure PTP power profile.
+    transport: NotRequired[Literal[{"description": "L2 multicast", "help": "L2 multicast.", "label": "L2 Mcast", "name": "l2-mcast"}]]  # Configure PTP transport mode.
     domain: NotRequired[int]  # Configure PTP domain value (0 - 255, default = 254).
-    pdelay_req_interval: NotRequired[Literal["1sec", "2sec", "4sec", "8sec", "16sec", "32sec"]]  # Configure PTP peer delay request interval.
+    pdelay_req_interval: NotRequired[Literal[{"description": "1 sec", "help": "1 sec.", "label": "1Sec", "name": "1sec"}, {"description": "2 sec", "help": "2 sec.", "label": "2Sec", "name": "2sec"}, {"description": "4 sec", "help": "4 sec.", "label": "4Sec", "name": "4sec"}, {"description": "8 sec", "help": "8 sec.", "label": "8Sec", "name": "8sec"}, {"description": "16 sec", "help": "16 sec.", "label": "16Sec", "name": "16sec"}, {"description": "32 sec", "help": "32 sec.", "label": "32Sec", "name": "32sec"}]]  # Configure PTP peer delay request interval.
 
 
 class Profile:
@@ -46,11 +46,11 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        mode: Literal["transparent-e2e", "transparent-p2p"] | None = ...,
-        ptp_profile: Literal["C37.238-2017"] | None = ...,
-        transport: Literal["l2-mcast"] | None = ...,
+        mode: Literal[{"description": "End-to-end transparent clock", "help": "End-to-end transparent clock.", "label": "Transparent E2E", "name": "transparent-e2e"}, {"description": "Peer-to-peer transparent clock", "help": "Peer-to-peer transparent clock.", "label": "Transparent P2P", "name": "transparent-p2p"}] | None = ...,
+        ptp_profile: Literal[{"help": "C37.238-2017 power profile.", "label": "C37.238 2017", "name": "C37.238-2017"}] | None = ...,
+        transport: Literal[{"description": "L2 multicast", "help": "L2 multicast.", "label": "L2 Mcast", "name": "l2-mcast"}] | None = ...,
         domain: int | None = ...,
-        pdelay_req_interval: Literal["1sec", "2sec", "4sec", "8sec", "16sec", "32sec"] | None = ...,
+        pdelay_req_interval: Literal[{"description": "1 sec", "help": "1 sec.", "label": "1Sec", "name": "1sec"}, {"description": "2 sec", "help": "2 sec.", "label": "2Sec", "name": "2sec"}, {"description": "4 sec", "help": "4 sec.", "label": "4Sec", "name": "4sec"}, {"description": "8 sec", "help": "8 sec.", "label": "8Sec", "name": "8sec"}, {"description": "16 sec", "help": "16 sec.", "label": "16Sec", "name": "16sec"}, {"description": "32 sec", "help": "32 sec.", "label": "32Sec", "name": "32sec"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -61,11 +61,11 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        mode: Literal["transparent-e2e", "transparent-p2p"] | None = ...,
-        ptp_profile: Literal["C37.238-2017"] | None = ...,
-        transport: Literal["l2-mcast"] | None = ...,
+        mode: Literal[{"description": "End-to-end transparent clock", "help": "End-to-end transparent clock.", "label": "Transparent E2E", "name": "transparent-e2e"}, {"description": "Peer-to-peer transparent clock", "help": "Peer-to-peer transparent clock.", "label": "Transparent P2P", "name": "transparent-p2p"}] | None = ...,
+        ptp_profile: Literal[{"help": "C37.238-2017 power profile.", "label": "C37.238 2017", "name": "C37.238-2017"}] | None = ...,
+        transport: Literal[{"description": "L2 multicast", "help": "L2 multicast.", "label": "L2 Mcast", "name": "l2-mcast"}] | None = ...,
         domain: int | None = ...,
-        pdelay_req_interval: Literal["1sec", "2sec", "4sec", "8sec", "16sec", "32sec"] | None = ...,
+        pdelay_req_interval: Literal[{"description": "1 sec", "help": "1 sec.", "label": "1Sec", "name": "1sec"}, {"description": "2 sec", "help": "2 sec.", "label": "2Sec", "name": "2sec"}, {"description": "4 sec", "help": "4 sec.", "label": "4Sec", "name": "4sec"}, {"description": "8 sec", "help": "8 sec.", "label": "8Sec", "name": "8sec"}, {"description": "16 sec", "help": "16 sec.", "label": "16Sec", "name": "16sec"}, {"description": "32 sec", "help": "32 sec.", "label": "32Sec", "name": "32sec"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

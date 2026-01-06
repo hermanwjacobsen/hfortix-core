@@ -98,7 +98,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable format in accordance with IETF RFC 4282.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable format in accordance with IETF RFC 4282.", "label": "Disable", "name": "disable"}, {"help": "Enable format in accordance with IETF RFC 4282.", "label": "Enable", "name": "enable"}],
         },
         "nai-realm": {
             "type": "string",

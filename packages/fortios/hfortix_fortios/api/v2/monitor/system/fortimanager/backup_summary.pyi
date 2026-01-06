@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class BackupSummary:
     """
-    Configuration for system/fortimanager/backup-summary
+    Get FortiManager backup summary.
     
     Path: system/fortimanager/backup_summary
     Category: monitor

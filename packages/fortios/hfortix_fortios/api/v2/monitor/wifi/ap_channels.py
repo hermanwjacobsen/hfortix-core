@@ -56,7 +56,7 @@ class ApChannels:
         """
         Retrieve wifi/ap_channels configuration.
 
-        Configuration for wifi/ap_channels
+        Retrieve the set of channel lists for all possible band/configurations for the given FortiAP platform.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

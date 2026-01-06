@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/physical_switch",
     "category": "cmdb",
     "api_path": "system/physical-switch",
-    "help": "Configuration for system/physical-switch",
+    "help": "Configuration for system/physical_switch",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

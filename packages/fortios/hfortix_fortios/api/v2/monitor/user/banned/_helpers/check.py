@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/banned/check",
     "category": "monitor",
     "api_path": "user/banned/check",
-    "help": "Configuration for user/banned/check",
+    "help": "Check if an IPv4 or IPv6 address is banned administratively.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

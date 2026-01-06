@@ -122,88 +122,88 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_EGRESS_PRI_TAGGING = [
-    "disable",
-    "enable",
+    "disable",  # Disable egress priority tagging.
+    "enable",  # Enable egress priority tagging.
 ]
 VALID_BODY_PRIORITY_0 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_BODY_PRIORITY_1 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_BODY_PRIORITY_2 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_BODY_PRIORITY_3 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_BODY_PRIORITY_4 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_BODY_PRIORITY_5 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_BODY_PRIORITY_6 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_BODY_PRIORITY_7 = [
-    "queue-0",
-    "queue-1",
-    "queue-2",
-    "queue-3",
-    "queue-4",
-    "queue-5",
-    "queue-6",
-    "queue-7",
+    "queue-0",  # COS queue 0 (lowest priority).
+    "queue-1",  # COS queue 1.
+    "queue-2",  # COS queue 2.
+    "queue-3",  # COS queue 3.
+    "queue-4",  # COS queue 4.
+    "queue-5",  # COS queue 5.
+    "queue-6",  # COS queue 6.
+    "queue-7",  # COS queue 7 (highest priority).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -333,7 +333,7 @@ def validate_switch_controller_qos_dot1p_map_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "egress-pri-tagging": "disable",  # Valid enum value
+        ...     "egress-pri-tagging": "{'name': 'disable', 'help': 'Disable egress priority tagging.', 'label': 'Disable', 'description': 'Disable egress priority tagging'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_qos_dot1p_map_post(payload)
         >>> assert is_valid == True

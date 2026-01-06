@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Set:
     """
-    Configuration for system/private-data-encryption/set
+    Sets private data encryption. To be deprecated and replaced by the CMDB REST API.
     
     Path: system/private_data_encryption/set
     Category: monitor

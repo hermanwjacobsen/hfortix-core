@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class DownloadEval:
     """
-    Configuration for system/vmlicense/download-eval
+    Download Evaluation VM License and reboot immediately if successful.
     
     Path: system/vmlicense/download_eval
     Category: monitor

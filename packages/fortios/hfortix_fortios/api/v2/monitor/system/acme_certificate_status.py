@@ -56,7 +56,7 @@ class AcmeCertificateStatus:
         """
         Retrieve system/acme_certificate_status configuration.
 
-        Configuration for system/acme-certificate-status
+        Get ACME certificate status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

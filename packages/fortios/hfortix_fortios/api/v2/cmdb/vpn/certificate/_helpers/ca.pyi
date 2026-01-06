@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_RANGE: Literal["global", "vdom"]
-VALID_BODY_SOURCE: Literal["factory", "user", "bundle"]
-VALID_BODY_SSL_INSPECTION_TRUSTED: Literal["enable", "disable"]
-VALID_BODY_OBSOLETE: Literal["disable", "enable"]
-VALID_BODY_FABRIC_CA: Literal["disable", "enable"]
+VALID_BODY_RANGE: Literal[{"description": "Global range", "help": "Global range.", "label": "Global", "name": "global"}, {"description": "VDOM IP address range", "help": "VDOM IP address range.", "label": "Vdom", "name": "vdom"}]
+VALID_BODY_SOURCE: Literal[{"description": "Factory installed certificate", "help": "Factory installed certificate.", "label": "Factory", "name": "factory"}, {"description": "User generated certificate", "help": "User generated certificate.", "label": "User", "name": "user"}, {"description": "Bundle file certificate", "help": "Bundle file certificate.", "label": "Bundle", "name": "bundle"}]
+VALID_BODY_SSL_INSPECTION_TRUSTED: Literal[{"description": "Trusted CA for SSL inspection", "help": "Trusted CA for SSL inspection.", "label": "Enable", "name": "enable"}, {"description": "Untrusted CA for SSL inspection", "help": "Untrusted CA for SSL inspection.", "label": "Disable", "name": "disable"}]
+VALID_BODY_OBSOLETE: Literal[{"description": "Alive", "help": "Alive.", "label": "Disable", "name": "disable"}, {"description": "Obsolete", "help": "Obsolete.", "label": "Enable", "name": "enable"}]
+VALID_BODY_FABRIC_CA: Literal[{"description": "Disable synchronization of CA across Security Fabric", "help": "Disable synchronization of CA across Security Fabric.", "label": "Disable", "name": "disable"}, {"description": "Enable synchronization of CA across Security Fabric", "help": "Enable synchronization of CA across Security Fabric.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

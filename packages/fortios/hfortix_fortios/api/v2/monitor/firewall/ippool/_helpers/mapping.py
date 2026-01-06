@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/ippool/mapping",
     "category": "monitor",
     "api_path": "firewall/ippool/mapping",
-    "help": "Configuration for firewall/ippool/mapping",
+    "help": "Get the list of IPv4 mappings for the specified IP pool.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

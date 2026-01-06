@@ -56,7 +56,7 @@ class Push:
         """
         Retrieve wifi/firmware/push configuration.
 
-        Configuration for wifi/firmware/push
+        Push FortiAP firmware to the given device.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

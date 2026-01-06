@@ -56,7 +56,7 @@ class Webcache:
         """
         Retrieve wanopt/webcache configuration.
 
-        Configuration for wanopt/webcache
+        Retrieve webcache statistics history.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

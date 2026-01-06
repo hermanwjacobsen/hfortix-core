@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GenericAddress:
     """
-    Configuration for system/external-resource/generic-address
+    Push JSON data to the specified external resource.
     
     Path: system/external_resource/generic_address
     Category: monitor

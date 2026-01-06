@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/available_certificates",
     "category": "monitor",
     "api_path": "system/available-certificates",
-    "help": "Monitor endpoint for system/available-certificates",
+    "help": "Get available certificates.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

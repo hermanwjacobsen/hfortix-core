@@ -105,8 +105,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable SNMP.
+    "enable",  # Enable SNMP.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -231,7 +231,7 @@ def validate_switch_controller_snmp_sysinfo_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Disable SNMP.', 'label': 'Disable', 'description': 'Disable SNMP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_snmp_sysinfo_post(payload)
         >>> assert is_valid == True

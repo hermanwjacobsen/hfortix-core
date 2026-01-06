@@ -110,9 +110,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LDB_METHOD = [
-    "weighted",
-    "least-session",
-    "active-passive",
+    "weighted",  # Load balance traffic to forward servers based on assigned weights.
+    "least-session",  # Send new sessions to the server with lowest session count.
+    "active-passive",  # Send new sessions to active server with high weight.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -240,7 +240,7 @@ def validate_icap_server_group_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ldb-method": "weighted",  # Valid enum value
+        ...     "ldb-method": "{'name': 'weighted', 'help': 'Load balance traffic to forward servers based on assigned weights.', 'label': 'Weighted', 'description': 'Load balance traffic to forward servers based on assigned weights'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_icap_server_group_post(payload)
         >>> assert is_valid == True

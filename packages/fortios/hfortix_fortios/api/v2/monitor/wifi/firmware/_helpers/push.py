@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/firmware/push",
     "category": "monitor",
     "api_path": "wifi/firmware/push",
-    "help": "Configuration for wifi/firmware/push",
+    "help": "Push FortiAP firmware to the given device.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

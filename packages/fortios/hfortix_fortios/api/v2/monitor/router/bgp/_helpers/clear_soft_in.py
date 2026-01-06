@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/bgp/clear_soft_in",
     "category": "monitor",
     "api_path": "router/bgp/clear-soft-in",
-    "help": "Configuration for router/bgp/clear-soft-in",
+    "help": "Inbound soft-reconfiguration for BGP peers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

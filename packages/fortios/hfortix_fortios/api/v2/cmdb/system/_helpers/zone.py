@@ -128,8 +128,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_INTRAZONE = [
-    "allow",
-    "deny",
+    "allow",  # Allow traffic between interfaces in the zone.
+    "deny",  # Deny traffic between interfaces in the zone.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -257,7 +257,7 @@ def validate_system_zone_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "intrazone": "allow",  # Valid enum value
+        ...     "intrazone": "{'name': 'allow', 'help': 'Allow traffic between interfaces in the zone.', 'label': 'Allow', 'description': 'Allow traffic between interfaces in the zone'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_zone_post(payload)
         >>> assert is_valid == True

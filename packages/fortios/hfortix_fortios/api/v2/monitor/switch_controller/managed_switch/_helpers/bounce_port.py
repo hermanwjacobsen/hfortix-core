@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/managed_switch/bounce_port",
     "category": "monitor",
     "api_path": "switch-controller/managed-switch/bounce-port",
-    "help": "Configuration for switch-controller/managed-switch/bounce-port",
+    "help": "Reset the port to force all connected clients to re-request DHCP lease. All active client sessions will be terminated.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

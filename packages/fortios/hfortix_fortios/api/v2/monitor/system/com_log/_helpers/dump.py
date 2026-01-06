@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/com_log/dump",
     "category": "monitor",
     "api_path": "system/com-log/dump",
-    "help": "Configuration for system/com-log/dump",
+    "help": "Dump system com-log to file.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

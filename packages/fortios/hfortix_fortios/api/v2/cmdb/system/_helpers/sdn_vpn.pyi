@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_REMOTE_TYPE: Literal["vgw", "tgw"]
-VALID_BODY_ROUTING_TYPE: Literal["static", "dynamic"]
-VALID_BODY_NAT_TRAVERSAL: Literal["disable", "enable"]
+VALID_BODY_REMOTE_TYPE: Literal[{"description": "Virtual private gateway", "help": "Virtual private gateway.", "label": "Vgw", "name": "vgw"}, {"description": "Transit gateway", "help": "Transit gateway.", "label": "Tgw", "name": "tgw"}]
+VALID_BODY_ROUTING_TYPE: Literal[{"description": "Static routing", "help": "Static routing.", "label": "Static", "name": "static"}, {"description": "Dynamic routing", "help": "Dynamic routing.", "label": "Dynamic", "name": "dynamic"}]
+VALID_BODY_NAT_TRAVERSAL: Literal[{"description": "Disable NAT traversal", "help": "Disable NAT traversal.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT traversal", "help": "Enable NAT traversal.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

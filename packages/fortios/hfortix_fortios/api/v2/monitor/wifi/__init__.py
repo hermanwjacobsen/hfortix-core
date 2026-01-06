@@ -5,6 +5,7 @@ from . import client as client_ns
 from . import euclid
 from . import firmware
 from . import managed_ap
+from . import nac_device
 from . import network
 from . import region_image
 from . import rogue_ap
@@ -17,7 +18,6 @@ from .ap_status import ApStatus
 from .interfering_ap import InterferingAp
 from .matched_devices import MatchedDevices
 from .meta import Meta
-from .nac_device import NacDevice
 from .station_capability import StationCapability
 from .statistics import Statistics
 from .unassociated_devices import UnassociatedDevices
@@ -62,6 +62,7 @@ class Wifi:
         self.euclid = euclid.Euclid(client)
         self.firmware = firmware.Firmware(client)
         self.managed_ap = managed_ap.ManagedAp(client)
+        self.nac_device = nac_device.NacDevice(client)
         self.network = network.Network(client)
         self.region_image = region_image.RegionImage(client)
         self.rogue_ap = rogue_ap.RogueAp(client)
@@ -74,7 +75,6 @@ class Wifi:
         self.interfering_ap = InterferingAp(client)
         self.matched_devices = MatchedDevices(client)
         self.meta = Meta(client)
-        self.nac_device = NacDevice(client)
         self.station_capability = StationCapability(client)
         self.statistics = Statistics(client)
         self.unassociated_devices = UnassociatedDevices(client)

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webfilter/category_quota",
     "category": "monitor",
     "api_path": "webfilter/category-quota",
-    "help": "Monitor endpoint for webfilter/category-quota",
+    "help": "Retrieve quota usage statistics for webfilter categories.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

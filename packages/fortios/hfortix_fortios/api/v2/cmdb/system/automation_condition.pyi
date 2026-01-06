@@ -12,12 +12,12 @@ class AutomationConditionPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Name.
     description: NotRequired[str]  # Description.
-    condition_type: NotRequired[Literal["cpu", "memory", "vpn"]]  # Condition type.
+    condition_type: NotRequired[Literal[{"description": "CPU usage condition,    memory:Memory usage condition,    vpn:VPN state condition", "help": "CPU usage condition,", "label": "Cpu", "name": "cpu"}, {"help": "Memory usage condition,", "label": "Memory", "name": "memory"}, {"help": "VPN state condition.", "label": "Vpn", "name": "vpn"}]]  # Condition type.
     cpu_usage_percent: int  # CPU usage reaches specified percentage.
     mem_usage_percent: int  # Memory usage reaches specified percentage.
     vdom: str  # Virtual domain which the tunnel belongs to.
     vpn_tunnel_name: str  # VPN tunnel name.
-    vpn_tunnel_state: NotRequired[Literal["tunnel-up", "tunnel-down"]]  # VPN tunnel state.
+    vpn_tunnel_state: NotRequired[Literal[{"description": "VPN tunnel is up", "help": "VPN tunnel is up.", "label": "Tunnel Up", "name": "tunnel-up"}, {"description": "VPN tunnel is down", "help": "VPN tunnel is down.", "label": "Tunnel Down", "name": "tunnel-down"}]]  # VPN tunnel state.
 
 
 class AutomationCondition:
@@ -47,11 +47,11 @@ class AutomationCondition:
         payload_dict: AutomationConditionPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        condition_type: Literal["cpu", "memory", "vpn"] | None = ...,
+        condition_type: Literal[{"description": "CPU usage condition,    memory:Memory usage condition,    vpn:VPN state condition", "help": "CPU usage condition,", "label": "Cpu", "name": "cpu"}, {"help": "Memory usage condition,", "label": "Memory", "name": "memory"}, {"help": "VPN state condition.", "label": "Vpn", "name": "vpn"}] | None = ...,
         cpu_usage_percent: int | None = ...,
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
-        vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
+        vpn_tunnel_state: Literal[{"description": "VPN tunnel is up", "help": "VPN tunnel is up.", "label": "Tunnel Up", "name": "tunnel-up"}, {"description": "VPN tunnel is down", "help": "VPN tunnel is down.", "label": "Tunnel Down", "name": "tunnel-down"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -62,11 +62,11 @@ class AutomationCondition:
         payload_dict: AutomationConditionPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        condition_type: Literal["cpu", "memory", "vpn"] | None = ...,
+        condition_type: Literal[{"description": "CPU usage condition,    memory:Memory usage condition,    vpn:VPN state condition", "help": "CPU usage condition,", "label": "Cpu", "name": "cpu"}, {"help": "Memory usage condition,", "label": "Memory", "name": "memory"}, {"help": "VPN state condition.", "label": "Vpn", "name": "vpn"}] | None = ...,
         cpu_usage_percent: int | None = ...,
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
-        vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
+        vpn_tunnel_state: Literal[{"description": "VPN tunnel is up", "help": "VPN tunnel is up.", "label": "Tunnel Up", "name": "tunnel-up"}, {"description": "VPN tunnel is down", "help": "VPN tunnel is down.", "label": "Tunnel Down", "name": "tunnel-down"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ApplicationCategories:
     """
-    Monitor endpoint for utm/application-categories
+    Retrieve a list of application control categories.
     
     Path: utm/application_categories
     Category: monitor

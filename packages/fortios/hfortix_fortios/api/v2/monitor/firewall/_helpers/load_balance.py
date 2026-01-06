@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/load_balance",
     "category": "monitor",
     "api_path": "firewall/load-balance",
-    "help": "Configuration for firewall/load-balance",
+    "help": "List all firewall load balance servers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

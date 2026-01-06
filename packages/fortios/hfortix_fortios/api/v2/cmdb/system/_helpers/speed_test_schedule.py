@@ -63,10 +63,17 @@ FIELDS_WITH_DEFAULTS = {
     "update-shaper": "disable",
     "update-inbandwidth": "disable",
     "update-outbandwidth": "disable",
+    "update-interface-shaping": "disable",
     "update-inbandwidth-maximum": 0,
     "update-inbandwidth-minimum": 0,
     "update-outbandwidth-maximum": 0,
     "update-outbandwidth-minimum": 0,
+    "expected-inbandwidth-minimum": 0,
+    "expected-inbandwidth-maximum": 0,
+    "expected-outbandwidth-minimum": 0,
+    "expected-outbandwidth-maximum": 0,
+    "retries": 5,
+    "retry-pause": 300,
 }
 
 # ============================================================================
@@ -88,7 +95,7 @@ FIELD_TYPES = {
     "interface": "string",  # Interface name.
     "status": "option",  # Enable/disable scheduled speed test.
     "diffserv": "user",  # DSCP used for speed test.
-    "server-name": "string",  # Speed test server name.
+    "server-name": "string",  # Speed test server name in system.speed-test-server list or l
     "mode": "option",  # Protocol Auto(default), TCP or UDP used for speed test.
     "schedules": "string",  # Schedules for the interface.
     "dynamic-server": "option",  # Enable/disable dynamic server option.
@@ -97,10 +104,17 @@ FIELD_TYPES = {
     "update-shaper": "option",  # Set egress shaper based on the test result.
     "update-inbandwidth": "option",  # Enable/disable bypassing interface's inbound bandwidth setti
     "update-outbandwidth": "option",  # Enable/disable bypassing interface's outbound bandwidth sett
+    "update-interface-shaping": "option",  # Enable/disable using the speedtest results as reference for 
     "update-inbandwidth-maximum": "integer",  # Maximum downloading bandwidth (kbps) to be used in a speed t
     "update-inbandwidth-minimum": "integer",  # Minimum downloading bandwidth (kbps) to be considered effect
     "update-outbandwidth-maximum": "integer",  # Maximum uploading bandwidth (kbps) to be used in a speed tes
     "update-outbandwidth-minimum": "integer",  # Minimum uploading bandwidth (kbps) to be considered effectiv
+    "expected-inbandwidth-minimum": "integer",  # Set the minimum inbandwidth threshold for applying speedtest
+    "expected-inbandwidth-maximum": "integer",  # Set the maximum inbandwidth threshold for applying speedtest
+    "expected-outbandwidth-minimum": "integer",  # Set the minimum outbandwidth threshold for applying speedtes
+    "expected-outbandwidth-maximum": "integer",  # Set the maximum outbandwidth threshold for applying speedtes
+    "retries": "integer",  # Maximum number of times the FortiGate unit will attempt to c
+    "retry-pause": "integer",  # Number of seconds the FortiGate pauses between successive sp
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -108,7 +122,7 @@ FIELD_DESCRIPTIONS = {
     "interface": "Interface name.",
     "status": "Enable/disable scheduled speed test.",
     "diffserv": "DSCP used for speed test.",
-    "server-name": "Speed test server name.",
+    "server-name": "Speed test server name in system.speed-test-server list or leave it as empty to choose default server \"FTNT_Auto\".",
     "mode": "Protocol Auto(default), TCP or UDP used for speed test.",
     "schedules": "Schedules for the interface.",
     "dynamic-server": "Enable/disable dynamic server option.",
@@ -117,10 +131,17 @@ FIELD_DESCRIPTIONS = {
     "update-shaper": "Set egress shaper based on the test result.",
     "update-inbandwidth": "Enable/disable bypassing interface's inbound bandwidth setting.",
     "update-outbandwidth": "Enable/disable bypassing interface's outbound bandwidth setting.",
+    "update-interface-shaping": "Enable/disable using the speedtest results as reference for interface shaping (overriding configured in/outbandwidth).",
     "update-inbandwidth-maximum": "Maximum downloading bandwidth (kbps) to be used in a speed test.",
     "update-inbandwidth-minimum": "Minimum downloading bandwidth (kbps) to be considered effective.",
     "update-outbandwidth-maximum": "Maximum uploading bandwidth (kbps) to be used in a speed test.",
     "update-outbandwidth-minimum": "Minimum uploading bandwidth (kbps) to be considered effective.",
+    "expected-inbandwidth-minimum": "Set the minimum inbandwidth threshold for applying speedtest results on shaping-profile.",
+    "expected-inbandwidth-maximum": "Set the maximum inbandwidth threshold for applying speedtest results on shaping-profile.",
+    "expected-outbandwidth-minimum": "Set the minimum outbandwidth threshold for applying speedtest results on shaping-profile.",
+    "expected-outbandwidth-maximum": "Set the maximum outbandwidth threshold for applying speedtest results on shaping-profile.",
+    "retries": "Maximum number of times the FortiGate unit will attempt to contact the same server before considering the speed test has failed (1 - 10, default = 5).",
+    "retry-pause": "Number of seconds the FortiGate pauses between successive speed tests before trying a different server (60 - 3600, default = 300).",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -133,6 +154,12 @@ FIELD_CONSTRAINTS = {
     "update-inbandwidth-minimum": {"type": "integer", "min": 0, "max": 16776000},
     "update-outbandwidth-maximum": {"type": "integer", "min": 0, "max": 16776000},
     "update-outbandwidth-minimum": {"type": "integer", "min": 0, "max": 16776000},
+    "expected-inbandwidth-minimum": {"type": "integer", "min": 0, "max": 16776000},
+    "expected-inbandwidth-maximum": {"type": "integer", "min": 0, "max": 16776000},
+    "expected-outbandwidth-minimum": {"type": "integer", "min": 0, "max": 16776000},
+    "expected-outbandwidth-maximum": {"type": "integer", "min": 0, "max": 16776000},
+    "retries": {"type": "integer", "min": 1, "max": 10},
+    "retry-pause": {"type": "integer", "min": 60, "max": 3600},
 }
 
 # Nested schemas (for table/list fields with children)
@@ -151,31 +178,35 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable scheduled speed test.
+    "enable",  # Enable scheduled speed test.
 ]
 VALID_BODY_MODE = [
-    "UDP",
-    "TCP",
-    "Auto",
+    "UDP",  # Protocol UDP for speed test.
+    "TCP",  # Protocol TCP for speed test.
+    "Auto",  # Dynamically selects TCP or UDP based on the speed test setting
 ]
 VALID_BODY_DYNAMIC_SERVER = [
-    "disable",
-    "enable",
+    "disable",  # Disable dynamic server.
+    "enable",  # Enable dynamic server.The speed test server will be found automatically.
 ]
 VALID_BODY_UPDATE_SHAPER = [
-    "disable",
-    "local",
-    "remote",
-    "both",
+    "disable",  # Disable updating egress shaper.
+    "local",  # Update local-side egress shaper.
+    "remote",  # Update remote-side egress shaper.
+    "both",  # Update both local-side and remote-side egress shaper.
 ]
 VALID_BODY_UPDATE_INBANDWIDTH = [
-    "disable",
-    "enable",
+    "disable",  # Honor interface's inbandwidth shaping.
+    "enable",  # Ignore interface's inbandwidth shaping.
 ]
 VALID_BODY_UPDATE_OUTBANDWIDTH = [
-    "disable",
-    "enable",
+    "disable",  # Honor interface's outbandwidth shaping.
+    "enable",  # Ignore updating interface's outbandwidth shaping.
+]
+VALID_BODY_UPDATE_INTERFACE_SHAPING = [
+    "disable",  # Disable updating interface shaping.
+    "enable",  # Enable updating interface shaping.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -305,7 +336,7 @@ def validate_system_speed_test_schedule_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "schedules": True,
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Disable scheduled speed test.', 'label': 'Disable', 'description': 'Disable scheduled speed test'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_speed_test_schedule_post(payload)
         >>> assert is_valid == True
@@ -388,6 +419,16 @@ def validate_system_speed_test_schedule_post(
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPDATE_OUTBANDWIDTH)}"
             error_msg += f"\n  → Example: update-outbandwidth='{{ VALID_BODY_UPDATE_OUTBANDWIDTH[0] }}'"
             return (False, error_msg)
+    if "update-interface-shaping" in payload:
+        value = payload["update-interface-shaping"]
+        if value not in VALID_BODY_UPDATE_INTERFACE_SHAPING:
+            desc = FIELD_DESCRIPTIONS.get("update-interface-shaping", "")
+            error_msg = f"Invalid value for 'update-interface-shaping': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_UPDATE_INTERFACE_SHAPING)}"
+            error_msg += f"\n  → Example: update-interface-shaping='{{ VALID_BODY_UPDATE_INTERFACE_SHAPING[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -457,6 +498,13 @@ def validate_system_speed_test_schedule_put(
             return (
                 False,
                 f"Invalid value for 'update-outbandwidth'='{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_OUTBANDWIDTH)}",
+            )
+    if "update-interface-shaping" in payload:
+        value = payload["update-interface-shaping"]
+        if value not in VALID_BODY_UPDATE_INTERFACE_SHAPING:
+            return (
+                False,
+                f"Invalid value for 'update-interface-shaping'='{value}'. Must be one of: {', '.join(VALID_BODY_UPDATE_INTERFACE_SHAPING)}",
             )
 
     return (True, None)
@@ -746,9 +794,9 @@ SCHEMA_INFO = {
     "mkey": "interface",
     "mkey_type": "string",
     "help": "Speed test schedule for each interface.",
-    "total_fields": 16,
+    "total_fields": 23,
     "required_fields_count": 1,
-    "fields_with_defaults_count": 15,
+    "fields_with_defaults_count": 22,
 }
 
 

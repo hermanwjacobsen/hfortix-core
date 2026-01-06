@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Dump:
     """
-    Configuration for system/com-log/dump
+    Dump system com-log to file.
     
     Path: system/com_log/dump
     Category: monitor

@@ -89,8 +89,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_NETWORK_MONITORING = [
-    "enable",
-    "disable",
+    "enable",  # Enable network monitoring on FortiSwitch.
+    "disable",  # Disable network monitoring on FortiSwitch.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -215,7 +215,7 @@ def validate_switch_controller_network_monitor_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "network-monitoring": "enable",  # Valid enum value
+        ...     "network-monitoring": "{'name': 'enable', 'help': 'Enable network monitoring on FortiSwitch.', 'label': 'Enable', 'description': 'Enable network monitoring on FortiSwitch'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_network_monitor_settings_post(payload)
         >>> assert is_valid == True

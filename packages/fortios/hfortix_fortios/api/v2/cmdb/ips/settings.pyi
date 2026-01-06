@@ -14,8 +14,8 @@ class SettingsPayload(TypedDict, total=False):
     packet_log_post_attack: NotRequired[int]  # Number of packets to log after the IPS signature is detected
     packet_log_memory: NotRequired[int]  # Maximum memory can be used by packet log (64 - 8192 kB).
     ips_packet_quota: NotRequired[int]  # Maximum amount of disk space in MB for logged packets when l
-    proxy_inline_ips: NotRequired[Literal["disable", "enable"]]  # Enable/disable proxy-mode policy inline IPS support.
-    ha_session_pickup: NotRequired[Literal["connectivity", "security"]]  # IPS HA failover session pickup preference.
+    proxy_inline_ips: NotRequired[Literal[{"description": "Do not allow inline IPS in proxy-mode policy", "help": "Do not allow inline IPS in proxy-mode policy.", "label": "Disable", "name": "disable"}, {"description": "Allow inline IPS in proxy-mode policy", "help": "Allow inline IPS in proxy-mode policy.", "label": "Enable", "name": "enable"}]]  # Enable/disable proxy-mode policy inline IPS support.
+    ha_session_pickup: NotRequired[Literal[{"description": "Prefer session continuity", "help": "Prefer session continuity.", "label": "Connectivity", "name": "connectivity"}, {"description": "Prefer session complete security", "help": "Prefer session complete security.", "label": "Security", "name": "security"}]]  # IPS HA failover session pickup preference.
 
 
 class Settings:
@@ -46,8 +46,8 @@ class Settings:
         packet_log_post_attack: int | None = ...,
         packet_log_memory: int | None = ...,
         ips_packet_quota: int | None = ...,
-        proxy_inline_ips: Literal["disable", "enable"] | None = ...,
-        ha_session_pickup: Literal["connectivity", "security"] | None = ...,
+        proxy_inline_ips: Literal[{"description": "Do not allow inline IPS in proxy-mode policy", "help": "Do not allow inline IPS in proxy-mode policy.", "label": "Disable", "name": "disable"}, {"description": "Allow inline IPS in proxy-mode policy", "help": "Allow inline IPS in proxy-mode policy.", "label": "Enable", "name": "enable"}] | None = ...,
+        ha_session_pickup: Literal[{"description": "Prefer session continuity", "help": "Prefer session continuity.", "label": "Connectivity", "name": "connectivity"}, {"description": "Prefer session complete security", "help": "Prefer session complete security.", "label": "Security", "name": "security"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -60,8 +60,8 @@ class Settings:
         packet_log_post_attack: int | None = ...,
         packet_log_memory: int | None = ...,
         ips_packet_quota: int | None = ...,
-        proxy_inline_ips: Literal["disable", "enable"] | None = ...,
-        ha_session_pickup: Literal["connectivity", "security"] | None = ...,
+        proxy_inline_ips: Literal[{"description": "Do not allow inline IPS in proxy-mode policy", "help": "Do not allow inline IPS in proxy-mode policy.", "label": "Disable", "name": "disable"}, {"description": "Allow inline IPS in proxy-mode policy", "help": "Allow inline IPS in proxy-mode policy.", "label": "Enable", "name": "enable"}] | None = ...,
+        ha_session_pickup: Literal[{"description": "Prefer session continuity", "help": "Prefer session continuity.", "label": "Connectivity", "name": "connectivity"}, {"description": "Prefer session complete security", "help": "Prefer session complete security.", "label": "Security", "name": "security"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

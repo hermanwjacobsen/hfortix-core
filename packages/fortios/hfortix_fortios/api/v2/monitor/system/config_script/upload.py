@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve system/config_script/upload configuration.
 
-        Configuration for system/config-script/upload
+        Upload and run a new configuration script file.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

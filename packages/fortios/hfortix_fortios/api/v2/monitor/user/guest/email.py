@@ -56,7 +56,7 @@ class Email:
         """
         Retrieve user/guest/email configuration.
 
-        Configuration for user/guest/email
+        Sent guest login details via email.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

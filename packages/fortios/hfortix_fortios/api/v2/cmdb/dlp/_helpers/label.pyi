@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["mpip", "fortidata"]
-VALID_BODY_MPIP_TYPE: Literal["remote", "local"]
+VALID_BODY_TYPE: Literal[{"description": "Microsoft Purview Information Protection", "help": "Microsoft Purview Information Protection.", "label": "Mpip", "name": "mpip"}, {"help": "FortiData.", "label": "Fortidata", "name": "fortidata"}]
+VALID_BODY_MPIP_TYPE: Literal[{"description": "Remotely fetched MPIP labels", "help": "Remotely fetched MPIP labels.", "label": "Remote", "name": "remote"}, {"description": "Locally configured MPIP labels", "help": "Locally configured MPIP labels.", "label": "Local", "name": "local"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

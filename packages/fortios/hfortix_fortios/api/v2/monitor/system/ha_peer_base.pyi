@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaPeer:
     """
-    Monitor endpoint for system/ha-peer
+    Get configuration of peer(s) in HA cluster. Uptime is expressed in seconds.
     
     Path: system/ha_peer
     Category: monitor

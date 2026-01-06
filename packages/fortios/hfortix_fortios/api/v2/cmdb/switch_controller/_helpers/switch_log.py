@@ -92,18 +92,18 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Add FortiSwitch logs to FortiGate event log.
+    "disable",  # Do not add  FortiSwitch logs to FortiGate event log.
 ]
 VALID_BODY_SEVERITY = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -228,7 +228,7 @@ def validate_switch_controller_switch_log_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Add FortiSwitch logs to FortiGate event log.', 'label': 'Enable', 'description': 'Add FortiSwitch logs to FortiGate event log'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_switch_log_post(payload)
         >>> assert is_valid == True

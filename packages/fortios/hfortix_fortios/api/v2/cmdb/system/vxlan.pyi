@@ -13,7 +13,7 @@ class VxlanPayload(TypedDict, total=False):
     name: NotRequired[str]  # VXLAN device or interface name. Must be a unique interface n
     interface: str  # Outgoing interface for VXLAN encapsulated traffic.
     vni: int  # VXLAN network ID.
-    ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"]  # IP version to use for the VXLAN interface and so for communi
+    ip_version: Literal[{"description": "Use IPv4 unicast addressing over the VXLAN", "help": "Use IPv4 unicast addressing over the VXLAN.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the VXLAN", "help": "Use IPv6 unicast addressing over the VXLAN.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}, {"description": "Use IPv4 multicast addressing over the VXLAN", "help": "Use IPv4 multicast addressing over the VXLAN.", "label": "Ipv4 Multicast", "name": "ipv4-multicast"}, {"description": "Use IPv6 multicast addressing over the VXLAN", "help": "Use IPv6 multicast addressing over the VXLAN.", "label": "Ipv6 Multicast", "name": "ipv6-multicast"}]  # IP version to use for the VXLAN interface and so for communi
     remote_ip: NotRequired[list[dict[str, Any]]]  # IPv4 address of the VXLAN interface on the device at the rem
     local_ip: NotRequired[str]  # IPv4 address to use as the source address for egress VXLAN p
     remote_ip6: list[dict[str, Any]]  # IPv6 IP address of the VXLAN interface on the device at the 
@@ -21,7 +21,7 @@ class VxlanPayload(TypedDict, total=False):
     dstport: NotRequired[int]  # VXLAN destination port (1 - 65535, default = 4789).
     multicast_ttl: int  # VXLAN multicast TTL (1-255, default = 0).
     evpn_id: NotRequired[int]  # EVPN instance.
-    learn_from_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable VXLAN MAC learning from traffic.
+    learn_from_traffic: NotRequired[Literal[{"description": "Enable VXLAN MAC learning from traffic", "help": "Enable VXLAN MAC learning from traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable VXLAN MAC learning from traffic", "help": "Disable VXLAN MAC learning from traffic.", "label": "Disable", "name": "disable"}]]  # Enable/disable VXLAN MAC learning from traffic.
 
 
 class Vxlan:
@@ -52,7 +52,7 @@ class Vxlan:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 unicast addressing over the VXLAN", "help": "Use IPv4 unicast addressing over the VXLAN.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the VXLAN", "help": "Use IPv6 unicast addressing over the VXLAN.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}, {"description": "Use IPv4 multicast addressing over the VXLAN", "help": "Use IPv4 multicast addressing over the VXLAN.", "label": "Ipv4 Multicast", "name": "ipv4-multicast"}, {"description": "Use IPv6 multicast addressing over the VXLAN", "help": "Use IPv6 multicast addressing over the VXLAN.", "label": "Ipv6 Multicast", "name": "ipv6-multicast"}] | None = ...,
         remote_ip: list[dict[str, Any]] | None = ...,
         local_ip: str | None = ...,
         remote_ip6: list[dict[str, Any]] | None = ...,
@@ -60,7 +60,7 @@ class Vxlan:
         dstport: int | None = ...,
         multicast_ttl: int | None = ...,
         evpn_id: int | None = ...,
-        learn_from_traffic: Literal["enable", "disable"] | None = ...,
+        learn_from_traffic: Literal[{"description": "Enable VXLAN MAC learning from traffic", "help": "Enable VXLAN MAC learning from traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable VXLAN MAC learning from traffic", "help": "Disable VXLAN MAC learning from traffic.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -72,7 +72,7 @@ class Vxlan:
         name: str | None = ...,
         interface: str | None = ...,
         vni: int | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 unicast addressing over the VXLAN", "help": "Use IPv4 unicast addressing over the VXLAN.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the VXLAN", "help": "Use IPv6 unicast addressing over the VXLAN.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}, {"description": "Use IPv4 multicast addressing over the VXLAN", "help": "Use IPv4 multicast addressing over the VXLAN.", "label": "Ipv4 Multicast", "name": "ipv4-multicast"}, {"description": "Use IPv6 multicast addressing over the VXLAN", "help": "Use IPv6 multicast addressing over the VXLAN.", "label": "Ipv6 Multicast", "name": "ipv6-multicast"}] | None = ...,
         remote_ip: list[dict[str, Any]] | None = ...,
         local_ip: str | None = ...,
         remote_ip6: list[dict[str, Any]] | None = ...,
@@ -80,7 +80,7 @@ class Vxlan:
         dstport: int | None = ...,
         multicast_ttl: int | None = ...,
         evpn_id: int | None = ...,
-        learn_from_traffic: Literal["enable", "disable"] | None = ...,
+        learn_from_traffic: Literal[{"description": "Enable VXLAN MAC learning from traffic", "help": "Enable VXLAN MAC learning from traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable VXLAN MAC learning from traffic", "help": "Disable VXLAN MAC learning from traffic.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

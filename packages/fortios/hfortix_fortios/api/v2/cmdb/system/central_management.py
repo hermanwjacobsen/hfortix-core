@@ -149,7 +149,7 @@ class CentralManagement:
             payload_dict: Object data as dict. Must include name (primary key).
             mode: Central management mode.
             type: Central management type.
-            fortigate_cloud_sso_default_profile: Override access profile.
+            fortigate_cloud_sso_default_profile: Override access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.
             schedule_config_restore: Enable/disable allowing the central management server to restore the configuration of this FortiGate.
             schedule_script_restore: Enable/disable allowing the central management server to restore the scripts stored on this FortiGate.
             vdom: Virtual domain name.

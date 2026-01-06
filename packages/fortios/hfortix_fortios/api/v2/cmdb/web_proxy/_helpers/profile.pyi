@@ -1,16 +1,17 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_HEADER_CLIENT_IP: Literal["pass", "add", "remove"]
-VALID_BODY_HEADER_VIA_REQUEST: Literal["pass", "add", "remove"]
-VALID_BODY_HEADER_VIA_RESPONSE: Literal["pass", "add", "remove"]
-VALID_BODY_HEADER_X_FORWARDED_FOR: Literal["pass", "add", "remove"]
-VALID_BODY_HEADER_X_FORWARDED_CLIENT_CERT: Literal["pass", "add", "remove"]
-VALID_BODY_HEADER_FRONT_END_HTTPS: Literal["pass", "add", "remove"]
-VALID_BODY_HEADER_X_AUTHENTICATED_USER: Literal["pass", "add", "remove"]
-VALID_BODY_HEADER_X_AUTHENTICATED_GROUPS: Literal["pass", "add", "remove"]
-VALID_BODY_STRIP_ENCODING: Literal["enable", "disable"]
-VALID_BODY_LOG_HEADER_CHANGE: Literal["enable", "disable"]
+VALID_BODY_HEADER_CLIENT_IP: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_VIA_REQUEST: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_VIA_RESPONSE: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_CLIENT_CERT: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_X_FORWARDED_FOR: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_X_FORWARDED_CLIENT_CERT: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_FRONT_END_HTTPS: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_X_AUTHENTICATED_USER: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_HEADER_X_AUTHENTICATED_GROUPS: Literal[{"description": "Forward the same HTTP header", "help": "Forward the same HTTP header.", "label": "Pass", "name": "pass"}, {"description": "Add the HTTP header", "help": "Add the HTTP header.", "label": "Add", "name": "add"}, {"description": "Remove the HTTP header", "help": "Remove the HTTP header.", "label": "Remove", "name": "remove"}]
+VALID_BODY_STRIP_ENCODING: Literal[{"description": "Enable stripping of unsupported encoding from the request header", "help": "Enable stripping of unsupported encoding from the request header.", "label": "Enable", "name": "enable"}, {"description": "Disable stripping of unsupported encoding from the request header", "help": "Disable stripping of unsupported encoding from the request header.", "label": "Disable", "name": "disable"}]
+VALID_BODY_LOG_HEADER_CHANGE: Literal[{"description": "Enable Enable/disable logging HTTP header changes", "help": "Enable Enable/disable logging HTTP header changes.", "label": "Enable", "name": "enable"}, {"description": "Disable Enable/disable logging HTTP header changes", "help": "Disable Enable/disable logging HTTP header changes.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -36,6 +37,7 @@ __all__ = [
     "VALID_BODY_HEADER_CLIENT_IP",
     "VALID_BODY_HEADER_VIA_REQUEST",
     "VALID_BODY_HEADER_VIA_RESPONSE",
+    "VALID_BODY_HEADER_CLIENT_CERT",
     "VALID_BODY_HEADER_X_FORWARDED_FOR",
     "VALID_BODY_HEADER_X_FORWARDED_CLIENT_CERT",
     "VALID_BODY_HEADER_FRONT_END_HTTPS",

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Euclid:
     """
-    Monitor endpoint for wifi/euclid
+    Retrieve presence analytics statistics.
     
     Path: wifi/euclid
     Category: monitor

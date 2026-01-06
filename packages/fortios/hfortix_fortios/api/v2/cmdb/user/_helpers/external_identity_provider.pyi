@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["ms-graph"]
-VALID_BODY_VERSION: Literal["v1.0", "beta"]
-VALID_BODY_INTERFACE_SELECT_METHOD: Literal["auto", "sdwan", "specify"]
-VALID_BODY_SERVER_IDENTITY_CHECK: Literal["disable", "enable"]
+VALID_BODY_TYPE: Literal[{"description": "Microsoft Graph server", "help": "Microsoft Graph server.", "label": "Ms Graph", "name": "ms-graph"}]
+VALID_BODY_VERSION: Literal[{"help": "MS Graph REST API v1.0.", "label": "V1.0", "name": "v1.0"}, {"description": "MS Graph REST API beta (debug build only)", "help": "MS Graph REST API beta (debug build only).", "label": "Beta", "name": "beta"}]
+VALID_BODY_INTERFACE_SELECT_METHOD: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]
+VALID_BODY_SERVER_IDENTITY_CHECK: Literal[{"description": "Do not check server\u0027s identity against its certificate and subject alternative name(s)", "help": "Do not check server\u0027s identity against its certificate and subject alternative name(s).", "label": "Disable", "name": "disable"}, {"description": "Check server\u0027s identity against its certificate and subject alternative name(s)", "help": "Check server\u0027s identity against its certificate and subject alternative name(s).", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

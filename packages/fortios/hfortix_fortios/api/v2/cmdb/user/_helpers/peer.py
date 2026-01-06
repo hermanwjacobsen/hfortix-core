@@ -130,24 +130,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MANDATORY_CA_VERIFY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_CN_TYPE = [
-    "string",
-    "email",
-    "FQDN",
-    "ipv4",
-    "ipv6",
+    "string",  # Normal string.
+    "email",  # Email address.
+    "FQDN",  # Fully Qualified Domain Name.
+    "ipv4",  # IPv4 address.
+    "ipv6",  # IPv6 address.
 ]
 VALID_BODY_MFA_MODE = [
-    "none",
-    "password",
-    "subject-identity",
+    "none",  # None.
+    "password",  # Specified username/password.
+    "subject-identity",  # Subject identity extracted from certificate.
 ]
 VALID_BODY_TWO_FACTOR = [
-    "enable",
-    "disable",
+    "enable",  # Enable 2-factor authentication.
+    "disable",  # Disable 2-factor authentication.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -275,7 +275,7 @@ def validate_user_peer_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "mandatory-ca-verify": "enable",  # Valid enum value
+        ...     "mandatory-ca-verify": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_peer_post(payload)
         >>> assert is_valid == True

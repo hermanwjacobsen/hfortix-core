@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve system/hscalefw_license/upload configuration.
 
-        Configuration for system/hscalefw-license/upload
+        Update Hyperscale firewall license for hardware acceleration using license key.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

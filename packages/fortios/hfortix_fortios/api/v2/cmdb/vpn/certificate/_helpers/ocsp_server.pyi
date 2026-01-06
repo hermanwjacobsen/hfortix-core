@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_UNAVAIL_ACTION: Literal["revoke", "ignore"]
+VALID_BODY_UNAVAIL_ACTION: Literal[{"description": "Revoke certificate if server is unavailable", "help": "Revoke certificate if server is unavailable.", "label": "Revoke", "name": "revoke"}, {"description": "Ignore OCSP check if server is unavailable", "help": "Ignore OCSP check if server is unavailable.", "label": "Ignore", "name": "ignore"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

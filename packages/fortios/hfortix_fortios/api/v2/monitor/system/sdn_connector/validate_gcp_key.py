@@ -56,7 +56,7 @@ class ValidateGcpKey:
         """
         Retrieve system/sdn_connector/validate_gcp_key configuration.
 
-        Configuration for system/sdn-connector/validate-gcp-key
+        Validate a string representing a private key from GCP in PEM format.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

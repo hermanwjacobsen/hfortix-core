@@ -12,8 +12,8 @@ class AlertmailPayload(TypedDict, total=False):
     """
     msg_type: str  # Message type.
     buffer: NotRequired[str]  # Message string.
-    header: NotRequired[Literal["none", "http", "8bit"]]  # Header flag.
-    format: NotRequired[Literal["none", "text", "html"]]  # Format flag.
+    header: NotRequired[Literal[{"description": "No header type", "help": "No header type.", "label": "None", "name": "none"}, {"description": "HTTP    8bit:8 bit", "help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}]]  # Header flag.
+    format: NotRequired[Literal[{"description": "No format type", "help": "No format type.", "label": "None", "name": "none"}, {"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "HTML format", "help": "HTML format.", "label": "Html", "name": "html"}]]  # Format flag.
 
 
 class Alertmail:
@@ -43,8 +43,8 @@ class Alertmail:
         payload_dict: AlertmailPayload | None = ...,
         msg_type: str | None = ...,
         buffer: str | None = ...,
-        header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        header: Literal[{"description": "No header type", "help": "No header type.", "label": "None", "name": "none"}, {"description": "HTTP    8bit:8 bit", "help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}] | None = ...,
+        format: Literal[{"description": "No format type", "help": "No format type.", "label": "None", "name": "none"}, {"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "HTML format", "help": "HTML format.", "label": "Html", "name": "html"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -55,8 +55,8 @@ class Alertmail:
         payload_dict: AlertmailPayload | None = ...,
         msg_type: str | None = ...,
         buffer: str | None = ...,
-        header: Literal["none", "http", "8bit"] | None = ...,
-        format: Literal["none", "text", "html"] | None = ...,
+        header: Literal[{"description": "No header type", "help": "No header type.", "label": "None", "name": "none"}, {"description": "HTTP    8bit:8 bit", "help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}] | None = ...,
+        format: Literal[{"description": "No format type", "help": "No format type.", "label": "None", "name": "none"}, {"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "HTML format", "help": "HTML format.", "label": "Html", "name": "html"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/proxy/sessions",
     "category": "monitor",
     "api_path": "firewall/proxy/sessions",
-    "help": "Configuration for firewall/proxy/sessions",
+    "help": "List all active proxy sessions (optionally filtered).",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

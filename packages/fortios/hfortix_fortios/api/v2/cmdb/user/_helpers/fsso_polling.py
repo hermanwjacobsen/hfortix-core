@@ -143,16 +143,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SMBV1 = [
-    "enable",
-    "disable",
+    "enable",  # Enable support of SMBv1 for Samba.
+    "disable",  # Disable support of SMBv1 for Samba.
 ]
 VALID_BODY_SMB_NTLMV1_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable support of NTLMv1 for Samba authentication.
+    "disable",  # Disable support of NTLMv1 for Samba authentication.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -283,7 +283,7 @@ def validate_user_fsso_polling_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_fsso_polling_post(payload)
         >>> assert is_valid == True

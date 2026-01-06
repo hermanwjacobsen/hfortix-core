@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for wanopt/webcache/reset
+    Reset webcache statistics.
     
     Path: wanopt/webcache/reset
     Category: monitor

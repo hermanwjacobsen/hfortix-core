@@ -56,7 +56,7 @@ class VirtualSwitch:
         """
         Retrieve system/virtual_switch configuration.
 
-        Configuration for system/virtual-switch
+        Configuration for system/virtual_switch
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -120,7 +120,7 @@ class VirtualSwitch:
         """
         Update existing system/virtual_switch object.
 
-        Configuration for system/virtual-switch
+        Configuration for system/virtual_switch
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).

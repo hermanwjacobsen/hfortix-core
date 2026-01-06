@@ -2,10 +2,10 @@
 
 from . import ddns
 from . import debug_flow
+from . import dns
+from . import fortiguard
+from . import lldp
 from .arp import Arp
-from .dns import Dns
-from .fortiguard import Fortiguard
-from .lldp import Lldp
 from .reverse_ip_lookup import ReverseIpLookup
 
 __all__ = [
@@ -31,8 +31,8 @@ class Network:
         """
         self.ddns = ddns.Ddns(client)
         self.debug_flow = debug_flow.DebugFlow(client)
+        self.dns = dns.Dns(client)
+        self.fortiguard = fortiguard.Fortiguard(client)
+        self.lldp = lldp.Lldp(client)
         self.arp = Arp(client)
-        self.dns = Dns(client)
-        self.fortiguard = Fortiguard(client)
-        self.lldp = Lldp(client)
         self.reverse_ip_lookup = ReverseIpLookup(client)

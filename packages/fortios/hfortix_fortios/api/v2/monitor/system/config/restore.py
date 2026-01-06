@@ -56,7 +56,7 @@ class Restore:
         """
         Retrieve system/config/restore configuration.
 
-        Configuration for system/config/restore
+        Restore system configuration from uploaded file or from USB.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

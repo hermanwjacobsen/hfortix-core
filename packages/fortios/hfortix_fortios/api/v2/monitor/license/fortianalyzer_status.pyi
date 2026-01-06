@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FortianalyzerStatus:
     """
-    Configuration for license/fortianalyzer-status
+    Get current license & registration status for the connected FortiAnalyzer.
     
     Path: license/fortianalyzer_status
     Category: monitor

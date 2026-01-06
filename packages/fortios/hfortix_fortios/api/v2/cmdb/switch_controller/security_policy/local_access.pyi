@@ -11,8 +11,8 @@ class LocalAccessPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Policy name.
-    mgmt_allowaccess: NotRequired[Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"]]  # Allowed access on the switch management interface.
-    internal_allowaccess: NotRequired[Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"]]  # Allowed access on the switch internal interface.
+    mgmt_allowaccess: NotRequired[Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}]]  # Allowed access on the switch management interface.
+    internal_allowaccess: NotRequired[Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}]]  # Allowed access on the switch internal interface.
 
 
 class LocalAccess:
@@ -41,8 +41,8 @@ class LocalAccess:
         self,
         payload_dict: LocalAccessPayload | None = ...,
         name: str | None = ...,
-        mgmt_allowaccess: Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"] | None = ...,
-        internal_allowaccess: Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"] | None = ...,
+        mgmt_allowaccess: Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}] | None = ...,
+        internal_allowaccess: Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -52,8 +52,8 @@ class LocalAccess:
         self,
         payload_dict: LocalAccessPayload | None = ...,
         name: str | None = ...,
-        mgmt_allowaccess: Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"] | None = ...,
-        internal_allowaccess: Literal["https", "ping", "ssh", "snmp", "http", "telnet", "radius-acct"] | None = ...,
+        mgmt_allowaccess: Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}] | None = ...,
+        internal_allowaccess: Literal[{"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/session/close",
     "category": "monitor",
     "api_path": "firewall/session/close",
-    "help": "Configuration for firewall/session/close",
+    "help": "Close a single firewall session that matches all provided criteria.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

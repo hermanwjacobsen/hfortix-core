@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/ap_channels",
     "category": "monitor",
     "api_path": "wifi/ap_channels",
-    "help": "Configuration for wifi/ap_channels",
+    "help": "Retrieve the set of channel lists for all possible band/configurations for the given FortiAP platform.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

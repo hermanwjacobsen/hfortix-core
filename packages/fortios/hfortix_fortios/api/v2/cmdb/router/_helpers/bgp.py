@@ -314,13 +314,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable generate AS set path information.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "summary-only": {
             "type": "option",
             "help": "Enable/disable filter more specific routes from updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "aggregate-address6": {
@@ -342,13 +342,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable generate AS set path information.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "summary-only": {
             "type": "option",
             "help": "Enable/disable filter more specific routes from updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "neighbor": {
@@ -370,31 +370,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IPv4 Enable to allow my AS in AS path.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable6": {
             "type": "option",
             "help": "Enable/disable IPv6 Enable to allow my AS in AS path.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable-vpnv4": {
             "type": "option",
             "help": "Enable/disable to allow my AS in AS path for VPNv4 route.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable-vpnv6": {
             "type": "option",
             "help": "Enable/disable use of my AS in AS path for VPNv6 route.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable-evpn": {
             "type": "option",
             "help": "Enable/disable to allow my AS in AS path for L2VPN EVPN route.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in": {
             "type": "integer",
@@ -435,373 +435,373 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "IPv4 List of attributes that should be unchanged.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "attribute-unchanged6": {
             "type": "option",
             "help": "IPv6 List of attributes that should be unchanged.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "attribute-unchanged-vpnv4": {
             "type": "option",
             "help": "List of attributes that should be unchanged for VPNv4 route.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "attribute-unchanged-vpnv6": {
             "type": "option",
             "help": "List of attributes that should not be changed for VPNv6 route.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "activate": {
             "type": "option",
             "help": "Enable/disable address family IPv4 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate6": {
             "type": "option",
             "help": "Enable/disable address family IPv6 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate-vpnv4": {
             "type": "option",
             "help": "Enable/disable address family VPNv4 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate-vpnv6": {
             "type": "option",
             "help": "Enable/disable address family VPNv6 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate-evpn": {
             "type": "option",
             "help": "Enable/disable address family L2VPN EVPN for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "bfd": {
             "type": "option",
             "help": "Enable/disable BFD for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-dynamic": {
             "type": "option",
             "help": "Enable/disable advertise dynamic capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-orf": {
             "type": "option",
             "help": "Accept/Send IPv4 ORF lists to/from this neighbor.",
             "default": "none",
-            "options": ["none", "receive", "send", "both"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Receive ORF lists.", "label": "Receive", "name": "receive"}, {"help": "Send ORF list.", "label": "Send", "name": "send"}, {"help": "Send and receive ORF lists.", "label": "Both", "name": "both"}],
         },
         "capability-orf6": {
             "type": "option",
             "help": "Accept/Send IPv6 ORF lists to/from this neighbor.",
             "default": "none",
-            "options": ["none", "receive", "send", "both"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Receive ORF lists.", "label": "Receive", "name": "receive"}, {"help": "Send ORF list.", "label": "Send", "name": "send"}, {"help": "Send and receive ORF lists.", "label": "Both", "name": "both"}],
         },
         "capability-graceful-restart": {
             "type": "option",
             "help": "Enable/disable advertise IPv4 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart6": {
             "type": "option",
             "help": "Enable/disable advertise IPv6 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart-vpnv4": {
             "type": "option",
             "help": "Enable/disable advertise VPNv4 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart-vpnv6": {
             "type": "option",
             "help": "Enable/disable advertisement of VPNv6 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart-evpn": {
             "type": "option",
             "help": "Enable/disable advertisement of L2VPN EVPN graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-route-refresh": {
             "type": "option",
             "help": "Enable/disable advertise route refresh capability to this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-default-originate": {
             "type": "option",
             "help": "Enable/disable advertise default IPv4 route to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-default-originate6": {
             "type": "option",
             "help": "Enable/disable advertise default IPv6 route to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "dont-capability-negotiate": {
             "type": "option",
             "help": "Do not negotiate capabilities with this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "ebgp-enforce-multihop": {
             "type": "option",
             "help": "Enable/disable allow multi-hop EBGP neighbors.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "link-down-failover": {
             "type": "option",
             "help": "Enable/disable failover upon link down.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "stale-route": {
             "type": "option",
             "help": "Enable/disable stale route after neighbor down.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self": {
             "type": "option",
             "help": "Enable/disable IPv4 next-hop calculation for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self6": {
             "type": "option",
             "help": "Enable/disable IPv6 next-hop calculation for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-rr": {
             "type": "option",
             "help": "Enable/disable setting nexthop's address to interface's IPv4 address for route-reflector routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-rr6": {
             "type": "option",
             "help": "Enable/disable setting nexthop's address to interface's IPv6 address for route-reflector routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-vpnv4": {
             "type": "option",
             "help": "Enable/disable setting VPNv4 next-hop to interface's IP address for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-vpnv6": {
             "type": "option",
             "help": "Enable/disable use of outgoing interface's IP address as VPNv6 next-hop for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "override-capability": {
             "type": "option",
             "help": "Enable/disable override result of capability negotiation.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "passive": {
             "type": "option",
             "help": "Enable/disable sending of open messages to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as": {
             "type": "option",
             "help": "Enable/disable remove private AS number from IPv4 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as6": {
             "type": "option",
             "help": "Enable/disable remove private AS number from IPv6 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as-vpnv4": {
             "type": "option",
             "help": "Enable/disable remove private AS number from VPNv4 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as-vpnv6": {
             "type": "option",
             "help": "Enable/disable to remove private AS number from VPNv6 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as-evpn": {
             "type": "option",
             "help": "Enable/disable removing private AS number from L2VPN EVPN outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client": {
             "type": "option",
             "help": "Enable/disable IPv4 AS route reflector client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client6": {
             "type": "option",
             "help": "Enable/disable IPv6 AS route reflector client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client-vpnv4": {
             "type": "option",
             "help": "Enable/disable VPNv4 AS route reflector client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 AS route reflector client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client-evpn": {
             "type": "option",
             "help": "Enable/disable L2VPN EVPN AS route reflector client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client": {
             "type": "option",
             "help": "Enable/disable IPv4 AS route server client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client6": {
             "type": "option",
             "help": "Enable/disable IPv6 AS route server client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client-vpnv4": {
             "type": "option",
             "help": "Enable/disable VPNv4 AS route server client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 AS route server client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client-evpn": {
             "type": "option",
             "help": "Enable/disable L2VPN EVPN AS route server client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to IPv4 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change6": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to IPv6 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change-vpnv4": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to VPNv4 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change-vpnv6": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to VPNv6 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change-evpn": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to L2VPN EVPN route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "shutdown": {
             "type": "option",
             "help": "Enable/disable shutdown this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration": {
             "type": "option",
             "help": "Enable/disable allow IPv4 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration6": {
             "type": "option",
             "help": "Enable/disable allow IPv6 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration-vpnv4": {
             "type": "option",
             "help": "Enable/disable allow VPNv4 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration-evpn": {
             "type": "option",
             "help": "Enable/disable L2VPN EVPN inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "as-override": {
             "type": "option",
             "help": "Enable/disable replace peer AS with own AS for IPv4.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "as-override6": {
             "type": "option",
             "help": "Enable/disable replace peer AS with own AS for IPv6.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "strict-capability-match": {
             "type": "option",
             "help": "Enable/disable strict capability matching.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "default-originate-routemap": {
             "type": "string",
@@ -1004,31 +1004,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IPv4 Only give warning message when limit is exceeded.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only6": {
             "type": "option",
             "help": "Enable/disable IPv6 Only give warning message when limit is exceeded.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only-vpnv4": {
             "type": "option",
             "help": "Enable/disable only giving warning message when limit is exceeded for VPNv4 routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only-vpnv6": {
             "type": "option",
             "help": "Enable/disable warning message when limit is exceeded for VPNv6 routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only-evpn": {
             "type": "option",
             "help": "Enable/disable only sending warning message when exceeding limit of L2VPN EVPN routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "prefix-list-in": {
             "type": "string",
@@ -1093,13 +1093,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Do not prepend local-as to incoming updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "local-as-replace-as": {
             "type": "option",
             "help": "Replace real AS with local-as in outgoing updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "retain-stale-time": {
             "type": "integer",
@@ -1196,31 +1196,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "IPv4 Send community attribute to neighbor.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community6": {
             "type": "option",
             "help": "IPv6 Send community attribute to neighbor.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community-vpnv4": {
             "type": "option",
             "help": "Send community attribute to neighbor for VPNv4 address family.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community-vpnv6": {
             "type": "option",
             "help": "Enable/disable sending community attribute to this neighbor for VPNv6 address family.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community-evpn": {
             "type": "option",
             "help": "Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "keep-alive-timer": {
             "type": "integer",
@@ -1279,25 +1279,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IPv4 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "additional-path6": {
             "type": "option",
             "help": "Enable/disable IPv6 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "additional-path-vpnv4": {
             "type": "option",
             "help": "Enable/disable VPNv4 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "additional-path-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "adv-additional-path": {
             "type": "integer",
@@ -1366,31 +1366,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IPv4 Enable to allow my AS in AS path.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable6": {
             "type": "option",
             "help": "Enable/disable IPv6 Enable to allow my AS in AS path.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable-vpnv4": {
             "type": "option",
             "help": "Enable/disable to allow my AS in AS path for VPNv4 route.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable-vpnv6": {
             "type": "option",
             "help": "Enable/disable use of my AS in AS path for VPNv6 route.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in-enable-evpn": {
             "type": "option",
             "help": "Enable/disable to allow my AS in AS path for L2VPN EVPN route.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowas-in": {
             "type": "integer",
@@ -1431,373 +1431,373 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "IPv4 List of attributes that should be unchanged.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "attribute-unchanged6": {
             "type": "option",
             "help": "IPv6 List of attributes that should be unchanged.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "attribute-unchanged-vpnv4": {
             "type": "option",
             "help": "List of attributes that should be unchanged for VPNv4 route.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "attribute-unchanged-vpnv6": {
             "type": "option",
             "help": "List of attributes that should not be changed for VPNv6 route.",
             "default": "",
-            "options": ["as-path", "med", "next-hop"],
+            "options": [{"help": "AS path.", "label": "As Path", "name": "as-path"}, {"help": "MED.", "label": "Med", "name": "med"}, {"help": "Next hop.", "label": "Next Hop", "name": "next-hop"}],
         },
         "activate": {
             "type": "option",
             "help": "Enable/disable address family IPv4 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate6": {
             "type": "option",
             "help": "Enable/disable address family IPv6 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate-vpnv4": {
             "type": "option",
             "help": "Enable/disable address family VPNv4 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate-vpnv6": {
             "type": "option",
             "help": "Enable/disable address family VPNv6 for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "activate-evpn": {
             "type": "option",
             "help": "Enable/disable address family L2VPN EVPN for this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "bfd": {
             "type": "option",
             "help": "Enable/disable BFD for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-dynamic": {
             "type": "option",
             "help": "Enable/disable advertise dynamic capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-orf": {
             "type": "option",
             "help": "Accept/Send IPv4 ORF lists to/from this neighbor.",
             "default": "none",
-            "options": ["none", "receive", "send", "both"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Receive ORF lists.", "label": "Receive", "name": "receive"}, {"help": "Send ORF list.", "label": "Send", "name": "send"}, {"help": "Send and receive ORF lists.", "label": "Both", "name": "both"}],
         },
         "capability-orf6": {
             "type": "option",
             "help": "Accept/Send IPv6 ORF lists to/from this neighbor.",
             "default": "none",
-            "options": ["none", "receive", "send", "both"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Receive ORF lists.", "label": "Receive", "name": "receive"}, {"help": "Send ORF list.", "label": "Send", "name": "send"}, {"help": "Send and receive ORF lists.", "label": "Both", "name": "both"}],
         },
         "capability-graceful-restart": {
             "type": "option",
             "help": "Enable/disable advertise IPv4 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart6": {
             "type": "option",
             "help": "Enable/disable advertise IPv6 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart-vpnv4": {
             "type": "option",
             "help": "Enable/disable advertise VPNv4 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart-vpnv6": {
             "type": "option",
             "help": "Enable/disable advertisement of VPNv6 graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-graceful-restart-evpn": {
             "type": "option",
             "help": "Enable/disable advertisement of L2VPN EVPN graceful restart capability to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-route-refresh": {
             "type": "option",
             "help": "Enable/disable advertise route refresh capability to this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-default-originate": {
             "type": "option",
             "help": "Enable/disable advertise default IPv4 route to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "capability-default-originate6": {
             "type": "option",
             "help": "Enable/disable advertise default IPv6 route to this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "dont-capability-negotiate": {
             "type": "option",
             "help": "Do not negotiate capabilities with this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "ebgp-enforce-multihop": {
             "type": "option",
             "help": "Enable/disable allow multi-hop EBGP neighbors.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "link-down-failover": {
             "type": "option",
             "help": "Enable/disable failover upon link down.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "stale-route": {
             "type": "option",
             "help": "Enable/disable stale route after neighbor down.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self": {
             "type": "option",
             "help": "Enable/disable IPv4 next-hop calculation for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self6": {
             "type": "option",
             "help": "Enable/disable IPv6 next-hop calculation for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-rr": {
             "type": "option",
             "help": "Enable/disable setting nexthop's address to interface's IPv4 address for route-reflector routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-rr6": {
             "type": "option",
             "help": "Enable/disable setting nexthop's address to interface's IPv6 address for route-reflector routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-vpnv4": {
             "type": "option",
             "help": "Enable/disable setting VPNv4 next-hop to interface's IP address for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "next-hop-self-vpnv6": {
             "type": "option",
             "help": "Enable/disable use of outgoing interface's IP address as VPNv6 next-hop for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "override-capability": {
             "type": "option",
             "help": "Enable/disable override result of capability negotiation.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "passive": {
             "type": "option",
             "help": "Enable/disable sending of open messages to this neighbor.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as": {
             "type": "option",
             "help": "Enable/disable remove private AS number from IPv4 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as6": {
             "type": "option",
             "help": "Enable/disable remove private AS number from IPv6 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as-vpnv4": {
             "type": "option",
             "help": "Enable/disable remove private AS number from VPNv4 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as-vpnv6": {
             "type": "option",
             "help": "Enable/disable to remove private AS number from VPNv6 outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "remove-private-as-evpn": {
             "type": "option",
             "help": "Enable/disable removing private AS number from L2VPN EVPN outbound updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client": {
             "type": "option",
             "help": "Enable/disable IPv4 AS route reflector client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client6": {
             "type": "option",
             "help": "Enable/disable IPv6 AS route reflector client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client-vpnv4": {
             "type": "option",
             "help": "Enable/disable VPNv4 AS route reflector client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 AS route reflector client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-reflector-client-evpn": {
             "type": "option",
             "help": "Enable/disable L2VPN EVPN AS route reflector client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client": {
             "type": "option",
             "help": "Enable/disable IPv4 AS route server client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client6": {
             "type": "option",
             "help": "Enable/disable IPv6 AS route server client.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client-vpnv4": {
             "type": "option",
             "help": "Enable/disable VPNv4 AS route server client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 AS route server client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-server-client-evpn": {
             "type": "option",
             "help": "Enable/disable L2VPN EVPN AS route server client for this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to IPv4 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change6": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to IPv6 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change-vpnv4": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to VPNv4 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change-vpnv6": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to VPNv6 route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "rr-attr-allow-change-evpn": {
             "type": "option",
             "help": "Enable/disable allowing change of route attributes when advertising to L2VPN EVPN route reflector clients.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "shutdown": {
             "type": "option",
             "help": "Enable/disable shutdown this neighbor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration": {
             "type": "option",
             "help": "Enable/disable allow IPv4 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration6": {
             "type": "option",
             "help": "Enable/disable allow IPv6 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration-vpnv4": {
             "type": "option",
             "help": "Enable/disable allow VPNv4 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "soft-reconfiguration-evpn": {
             "type": "option",
             "help": "Enable/disable L2VPN EVPN inbound soft reconfiguration.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "as-override": {
             "type": "option",
             "help": "Enable/disable replace peer AS with own AS for IPv4.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "as-override6": {
             "type": "option",
             "help": "Enable/disable replace peer AS with own AS for IPv6.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "strict-capability-match": {
             "type": "option",
             "help": "Enable/disable strict capability matching.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "default-originate-routemap": {
             "type": "string",
@@ -2000,31 +2000,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IPv4 Only give warning message when limit is exceeded.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only6": {
             "type": "option",
             "help": "Enable/disable IPv6 Only give warning message when limit is exceeded.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only-vpnv4": {
             "type": "option",
             "help": "Enable/disable only giving warning message when limit is exceeded for VPNv4 routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only-vpnv6": {
             "type": "option",
             "help": "Enable/disable warning message when limit is exceeded for VPNv6 routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "maximum-prefix-warning-only-evpn": {
             "type": "option",
             "help": "Enable/disable only sending warning message when exceeding limit of L2VPN EVPN routes.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "prefix-list-in": {
             "type": "string",
@@ -2096,13 +2096,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Do not prepend local-as to incoming updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "local-as-replace-as": {
             "type": "option",
             "help": "Replace real AS with local-as in outgoing updates.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "retain-stale-time": {
             "type": "integer",
@@ -2199,31 +2199,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "IPv4 Send community attribute to neighbor.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community6": {
             "type": "option",
             "help": "IPv6 Send community attribute to neighbor.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community-vpnv4": {
             "type": "option",
             "help": "Send community attribute to neighbor for VPNv4 address family.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community-vpnv6": {
             "type": "option",
             "help": "Enable/disable sending community attribute to this neighbor for VPNv6 address family.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "send-community-evpn": {
             "type": "option",
             "help": "Enable/disable sending community attribute to neighbor for L2VPN EVPN address family.",
             "default": "both",
-            "options": ["standard", "extended", "both", "disable"],
+            "options": [{"help": "Standard.", "label": "Standard", "name": "standard"}, {"help": "Extended.", "label": "Extended", "name": "extended"}, {"help": "Both.", "label": "Both", "name": "both"}, {"help": "Disable", "label": "Disable", "name": "disable"}],
         },
         "keep-alive-timer": {
             "type": "integer",
@@ -2282,25 +2282,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable IPv4 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "additional-path6": {
             "type": "option",
             "help": "Enable/disable IPv6 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "additional-path-vpnv4": {
             "type": "option",
             "help": "Enable/disable VPNv4 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "additional-path-vpnv6": {
             "type": "option",
             "help": "Enable/disable VPNv6 additional-path capability.",
             "default": "disable",
-            "options": ["send", "receive", "both", "disable"],
+            "options": [{"help": "Enable sending additional paths.", "label": "Send", "name": "send"}, {"help": "Enable receiving additional paths.", "label": "Receive", "name": "receive"}, {"help": "Enable sending and receiving additional paths.", "label": "Both", "name": "both"}, {"help": "Disable additional paths.", "label": "Disable", "name": "disable"}],
         },
         "adv-additional-path": {
             "type": "integer",
@@ -2419,13 +2419,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure insurance of BGP network route existence in IGP.",
             "default": "global",
-            "options": ["global", "enable", "disable"],
+            "options": [{"help": "Use global network sync value.", "label": "Global", "name": "global"}, {"help": "Enable network sync per prefix.", "label": "Enable", "name": "enable"}, {"help": "Disable network sync per prefix.", "label": "Disable", "name": "disable"}],
         },
         "backdoor": {
             "type": "option",
             "help": "Enable/disable route as backdoor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-map": {
             "type": "string",
@@ -2459,13 +2459,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure insurance of BGP network route existence in IGP.",
             "default": "global",
-            "options": ["global", "enable", "disable"],
+            "options": [{"help": "Use global network sync value.", "label": "Global", "name": "global"}, {"help": "Enable network sync per prefix.", "label": "Enable", "name": "enable"}, {"help": "Disable network sync per prefix.", "label": "Disable", "name": "disable"}],
         },
         "backdoor": {
             "type": "option",
             "help": "Enable/disable route as backdoor.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-map": {
             "type": "string",
@@ -2486,7 +2486,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-map": {
             "type": "string",
@@ -2507,7 +2507,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "route-map": {
             "type": "string",
@@ -2557,7 +2557,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "VRF role.",
             "default": "standalone",
-            "options": ["standalone", "ce", "pe"],
+            "options": [{"help": "Stand-alone VRF.", "label": "Standalone", "name": "standalone"}, {"help": "CE VRF.", "label": "Ce", "name": "ce"}, {"help": "PE VRF.", "label": "Pe", "name": "pe"}],
         },
         "rd": {
             "type": "string",
@@ -2595,7 +2595,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "VRF role.",
             "default": "standalone",
-            "options": ["standalone", "ce", "pe"],
+            "options": [{"help": "Stand-alone VRF.", "label": "Standalone", "name": "standalone"}, {"help": "CE VRF.", "label": "Ce", "name": "ce"}, {"help": "PE VRF.", "label": "Pe", "name": "pe"}],
         },
         "rd": {
             "type": "string",
@@ -2627,118 +2627,118 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ALWAYS_COMPARE_MED = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_BESTPATH_AS_PATH_IGNORE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_BESTPATH_CMP_CONFED_ASPATH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_BESTPATH_CMP_ROUTERID = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_BESTPATH_MED_CONFED = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_BESTPATH_MED_MISSING_AS_WORST = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_CLIENT_TO_CLIENT_REFLECTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DAMPENING = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DETERMINISTIC_MED = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_EBGP_MULTIPATH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_IBGP_MULTIPATH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ENFORCE_FIRST_AS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_FAST_EXTERNAL_FAILOVER = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOG_NEIGHBOUR_CHANGES = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_NETWORK_IMPORT_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_IGNORE_OPTIONAL_CAPABILITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ADDITIONAL_PATH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ADDITIONAL_PATH6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ADDITIONAL_PATH_VPNV4 = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_ADDITIONAL_PATH_VPNV6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_MULTIPATH_RECURSIVE_DISTANCE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_RECURSIVE_NEXT_HOP = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_RECURSIVE_INHERIT_PRIORITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_TAG_RESOLVE_MODE = [
-    "disable",
-    "preferred",
-    "merge",
-    "merge-all",
+    "disable",  # Disable tag-match mode.
+    "preferred",  # Use tag-match if a BGP route resolution with another route containing the same tag is successful.
+    "merge",  # Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces or child interfaces have appeared in best-match.
+    "merge-all",  # Merge tag-match with best-match if they are using different routes. The result will exclude the next hops of tag-match whose interfaces have appeared in best-match.
 ]
 VALID_BODY_SYNCHRONIZATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_GRACEFUL_RESTART = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_GRACEFUL_END_ON_TIMER = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_CROSS_FAMILY_CONDITIONAL_ADV = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -2865,7 +2865,7 @@ def validate_router_bgp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "as": True,
-        ...     "always-compare-med": "enable",  # Valid enum value
+        ...     "always-compare-med": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_bgp_post(payload)
         >>> assert is_valid == True

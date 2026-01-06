@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "virtual_wan/sla_log",
     "category": "monitor",
     "api_path": "virtual-wan/sla-log",
-    "help": "Monitor endpoint for virtual-wan/sla-log",
+    "help": "Retrieve logs of SLA probe results for the specified SD-WAN SLA or health check name.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

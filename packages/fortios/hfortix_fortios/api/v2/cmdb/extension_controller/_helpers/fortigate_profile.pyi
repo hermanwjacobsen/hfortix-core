@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_EXTENSION: Literal["lan-extension"]
+VALID_BODY_EXTENSION: Literal[{"description": "LAN extension", "help": "LAN extension.", "label": "Lan Extension", "name": "lan-extension"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

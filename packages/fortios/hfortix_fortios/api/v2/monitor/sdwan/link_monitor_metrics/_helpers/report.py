@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "sdwan/link_monitor_metrics/report",
     "category": "monitor",
     "api_path": "sdwan/link-monitor-metrics/report",
-    "help": "Configuration for sdwan/link-monitor-metrics/report",
+    "help": "Report the application-level performance metrics collected by other fabric devices.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

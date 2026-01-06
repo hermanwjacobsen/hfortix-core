@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Save:
     """
-    Configuration for system/config-revision/save
+    Create a new config revision checkpoint.
     
     Path: system/config_revision/save
     Category: monitor

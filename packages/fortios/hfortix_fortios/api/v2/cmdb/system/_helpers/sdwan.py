@@ -151,7 +151,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable selection of ADVPN based on SDWAN information.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable selection of ADVPN based on SDWAN information.", "label": "Enable", "name": "enable"}, {"help": "Disable selection of ADVPN based on SDWAN information.", "label": "Disable", "name": "disable"}],
         },
         "advpn-health-check": {
             "type": "string",
@@ -163,7 +163,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Method of selecting member if more than one meets the SLA.",
             "default": "cfg-order",
-            "options": ["cfg-order", "fib-best-match", "priority", "input-device"],
+            "options": [{"help": "Members that meet the SLA are selected in the order they are configured.", "label": "Cfg Order", "name": "cfg-order"}, {"help": "Members that meet the SLA are selected that match the longest prefix in the routing table.", "label": "Fib Best Match", "name": "fib-best-match"}, {"help": "Members that meet the SLA are reselected again based link-cost-factor.", "label": "Priority", "name": "priority"}, {"help": "Members that meet the SLA are selected by matching the input device.", "label": "Input Device", "name": "input-device"}],
         },
         "minimum-sla-meet-members": {
             "type": "integer",
@@ -285,7 +285,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this interface in the SD-WAN.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this interface in the SD-WAN.", "label": "Disable", "name": "disable"}, {"help": "Enable this interface in the SD-WAN.", "label": "Enable", "name": "enable"}],
         },
         "transport-group": {
             "type": "integer",
@@ -312,7 +312,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable use of FortiGuard predefined server.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable use of FortiGuard predefined server.", "label": "Disable", "name": "disable"}, {"help": "Enable use of FortiGuard predefined server.", "label": "Enable", "name": "enable"}],
         },
         "fortiguard-name": {
             "type": "string",
@@ -324,19 +324,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable transmission of probe packets.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable transmission of probe packets.", "label": "Disable", "name": "disable"}, {"help": "Enable transmission of probe packets.", "label": "Enable", "name": "enable"}],
         },
         "addr-mode": {
             "type": "option",
             "help": "Address mode (IPv4 or IPv6).",
             "default": "ipv4",
-            "options": ["ipv4", "ipv6"],
+            "options": [{"help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}],
         },
         "system-dns": {
             "type": "option",
             "help": "Enable/disable system DNS as the probe server.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable system DNS as the probe server.", "label": "Disable", "name": "disable"}, {"help": "Enable system DNS as the probe server.", "label": "Enable", "name": "enable"}],
         },
         "server": {
             "type": "string",
@@ -348,13 +348,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "The mode determining how to detect the server.",
             "default": "active",
-            "options": ["active", "passive", "prefer-passive", "remote", "agent-based"],
+            "options": [{"help": "The probes are sent actively.", "label": "Active", "name": "active"}, {"help": "The traffic measures health without probes.", "label": "Passive", "name": "passive"}, {"help": "The probes are sent in case of no new traffic.", "label": "Prefer Passive", "name": "prefer-passive"}, {"help": "Link health obtained from remote peers.", "label": "Remote", "name": "remote"}, {"help": "Traffic health is measured from the fabric connectors.", "label": "Agent Based", "name": "agent-based"}],
         },
         "protocol": {
             "type": "option",
             "help": "Protocol used to determine if the FortiGate can communicate with the server.",
             "default": "ping",
-            "options": ["ping", "tcp-echo", "udp-echo", "http", "https", "twamp", "dns", "tcp-connect", "ftp"],
+            "options": [{"help": "Use PING to test the link with the server.", "label": "Ping", "name": "ping"}, {"help": "Use TCP echo to test the link with the server.", "label": "Tcp Echo", "name": "tcp-echo"}, {"help": "Use UDP echo to test the link with the server.", "label": "Udp Echo", "name": "udp-echo"}, {"help": "Use HTTP-GET to test the link with the server.", "label": "Http", "name": "http"}, {"help": "Use HTTPS-GET to test the link with the server.", "label": "Https", "name": "https"}, {"help": "Use TWAMP to test the link with the server.", "label": "Twamp", "name": "twamp"}, {"help": "Use DNS query to test the link with the server.", "label": "Dns", "name": "dns"}, {"help": "Use a full TCP connection to test the link with the server.", "label": "Tcp Connect", "name": "tcp-connect"}, {"help": "Use FTP to test the link with the server.", "label": "Ftp", "name": "ftp"}],
         },
         "port": {
             "type": "integer",
@@ -367,13 +367,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Method to measure the quality of tcp-connect.",
             "default": "half-open",
-            "options": ["half-open", "half-close"],
+            "options": [{"help": "Measure the round trip between syn and ack.", "label": "Half Open", "name": "half-open"}, {"help": "Measure the round trip between fin and ack.", "label": "Half Close", "name": "half-close"}],
         },
         "security-mode": {
             "type": "option",
             "help": "Twamp controller security mode.",
             "default": "none",
-            "options": ["none", "authentication"],
+            "options": [{"help": "Unauthenticated mode.", "label": "None", "name": "none"}, {"help": "Authenticated mode.", "label": "Authentication", "name": "authentication"}],
         },
         "user": {
             "type": "string",
@@ -404,7 +404,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "FTP mode.",
             "default": "passive",
-            "options": ["passive", "port"],
+            "options": [{"help": "The FTP health-check initiates and establishes the data connection.", "label": "Passive", "name": "passive"}, {"help": "The FTP server initiates and establishes the data connection.", "label": "Port", "name": "port"}],
         },
         "ftp-file": {
             "type": "string",
@@ -499,19 +499,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable update cascade interface.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable update cascade interface.", "label": "Enable", "name": "enable"}, {"help": "Disable update cascade interface.", "label": "Disable", "name": "disable"}],
         },
         "update-static-route": {
             "type": "option",
             "help": "Enable/disable updating the static route.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable updating the static route.", "label": "Enable", "name": "enable"}, {"help": "Disable updating the static route.", "label": "Disable", "name": "disable"}],
+        },
+        "update-bgp-route": {
+            "type": "option",
+            "help": "Enable/disable updating the BGP route.",
+            "default": "disable",
+            "options": [{"help": "Enable updating the BGP route.", "label": "Enable", "name": "enable"}, {"help": "Disable updating the BGP route.", "label": "Disable", "name": "disable"}],
         },
         "embed-measured-health": {
             "type": "option",
             "help": "Enable/disable embedding measured health information.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable embed measured health.", "label": "Enable", "name": "enable"}, {"help": "Disable embed measured health.", "label": "Disable", "name": "disable"}],
         },
         "sla-id-redistribute": {
             "type": "integer",
@@ -601,7 +607,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Codec to use for MOS calculation (default = g711).",
             "default": "g711",
-            "options": ["g711", "g722", "g729"],
+            "options": [{"help": "Calculate MOS based on the G.711 codec.", "label": "G711", "name": "g711"}, {"help": "Calculate MOS based on the G.722 codec.", "label": "G722", "name": "g722"}, {"help": "Calculate MOS based on the G.729 codec.", "label": "G729", "name": "g729"}],
         },
         "class-id": {
             "type": "integer",
@@ -662,13 +668,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Address mode (IPv4 or IPv6).",
             "default": "ipv4",
-            "options": ["ipv4", "ipv6"],
+            "options": [{"help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}],
         },
         "load-balance": {
             "type": "option",
             "help": "Enable/disable load-balance.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable load-balance.", "label": "Enable", "name": "enable"}, {"help": "Disable load-balance.", "label": "Disable", "name": "disable"}],
         },
         "input-device": {
             "type": "string",
@@ -678,7 +684,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable negation of input device match.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable negation of input device match.", "label": "Enable", "name": "enable"}, {"help": "Disable negation of input device match.", "label": "Disable", "name": "disable"}],
         },
         "input-zone": {
             "type": "string",
@@ -688,13 +694,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Control how the SD-WAN rule sets the priority of interfaces in the SD-WAN.",
             "default": "manual",
-            "options": ["auto", "manual", "priority", "sla"],
+            "options": [{"help": "Assign interfaces a priority based on quality.", "label": "Auto", "name": "auto"}, {"help": "Assign interfaces a priority manually.", "label": "Manual", "name": "manual"}, {"help": "Assign interfaces a priority based on the link-cost-factor quality of the interface.", "label": "Priority", "name": "priority"}, {"help": "Assign interfaces a priority based on selected SLA settings.", "label": "Sla", "name": "sla"}],
         },
         "zone-mode": {
             "type": "option",
             "help": "Enable/disable zone mode.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Traffic steered based on zone.", "label": "Enable", "name": "enable"}, {"help": "Traffic steered based on member.", "label": "Disable", "name": "disable"}],
         },
         "minimum-sla-meet-members": {
             "type": "integer",
@@ -707,25 +713,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Hash algorithm for selected priority members for load balance mode.",
             "default": "round-robin",
-            "options": ["round-robin", "source-ip-based", "source-dest-ip-based", "inbandwidth", "outbandwidth", "bibandwidth"],
+            "options": [{"help": "All traffic are distributed to selected interfaces in equal portions and circular order.", "label": "Round Robin", "name": "round-robin"}, {"help": "All traffic from a source IP is sent to the same interface.", "label": "Source Ip Based", "name": "source-ip-based"}, {"help": "All traffic from a source IP to a destination IP is sent to the same interface.", "label": "Source Dest Ip Based", "name": "source-dest-ip-based"}, {"help": "All traffic are distributed to a selected interface with most available bandwidth for incoming traffic.", "label": "Inbandwidth", "name": "inbandwidth"}, {"help": "All traffic are distributed to a selected interface with most available bandwidth for outgoing traffic.", "label": "Outbandwidth", "name": "outbandwidth"}, {"help": "All traffic are distributed to a selected interface with most available bandwidth for both incoming and outgoing traffic.", "label": "Bibandwidth", "name": "bibandwidth"}],
         },
         "shortcut-priority": {
             "type": "option",
             "help": "High priority of ADVPN shortcut for this service.",
             "default": "auto",
-            "options": ["enable", "disable", "auto"],
+            "options": [{"help": "Enable a high priority of ADVPN shortcut for this service.", "label": "Enable", "name": "enable"}, {"help": "Disable a high priority of ADVPN shortcut for this service.", "label": "Disable", "name": "disable"}, {"help": "Auto enable a high priority of ADVPN shortcut for this service if ADVPN2.0 enabled.", "label": "Auto", "name": "auto"}],
         },
         "role": {
             "type": "option",
             "help": "Service role to work with neighbor.",
             "default": "standalone",
-            "options": ["standalone", "primary", "secondary"],
+            "options": [{"help": "Standalone service.", "label": "Standalone", "name": "standalone"}, {"help": "Primary service for primary neighbor.", "label": "Primary", "name": "primary"}, {"help": "Secondary service for secondary neighbor.", "label": "Secondary", "name": "secondary"}],
         },
         "standalone-action": {
             "type": "option",
             "help": "Enable/disable service when selected neighbor role is standalone while service role is not standalone.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable service when selected neighbor role is standalone.", "label": "Enable", "name": "enable"}, {"help": "Disable service when selected neighbor role is standalone.", "label": "Disable", "name": "disable"}],
         },
         "quality-link": {
             "type": "integer",
@@ -787,7 +793,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable negation of destination address match.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable destination address negation.", "label": "Enable", "name": "enable"}, {"help": "Disable destination address negation.", "label": "Disable", "name": "disable"}],
         },
         "src": {
             "type": "string",
@@ -805,7 +811,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable negation of source address match.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable source address negation.", "label": "Enable", "name": "enable"}, {"help": "Disable source address negation.", "label": "Disable", "name": "disable"}],
         },
         "users": {
             "type": "string",
@@ -819,7 +825,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable use of Internet service for application-based load balancing.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable cloud service to support application-based load balancing.", "label": "Enable", "name": "enable"}, {"help": "Disable cloud service to support application-based load balancing.", "label": "Disable", "name": "disable"}],
         },
         "internet-service-custom": {
             "type": "string",
@@ -861,7 +867,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Link cost factor.",
             "default": "latency",
-            "options": ["latency", "jitter", "packet-loss", "inbandwidth", "outbandwidth", "bibandwidth", "custom-profile-1"],
+            "options": [{"help": "Select link based on latency.", "label": "Latency", "name": "latency"}, {"help": "Select link based on jitter.", "label": "Jitter", "name": "jitter"}, {"help": "Select link based on packet loss.", "label": "Packet Loss", "name": "packet-loss"}, {"help": "Select link based on available bandwidth of incoming traffic.", "label": "Inbandwidth", "name": "inbandwidth"}, {"help": "Select link based on available bandwidth of outgoing traffic.", "label": "Outbandwidth", "name": "outbandwidth"}, {"help": "Select link based on available bandwidth of bidirectional traffic.", "label": "Bibandwidth", "name": "bibandwidth"}, {"help": "Select link based on customized profile.", "label": "Custom Profile 1", "name": "custom-profile-1"}],
         },
         "packet-loss-weight": {
             "type": "integer",
@@ -909,19 +915,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SLA stickiness (default = disable).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Traffic remains in the original session path if the path is within the SLA.", "label": "Enable", "name": "enable"}, {"help": "Traffic switches to the best path regardless of the SLA.", "label": "Disable", "name": "disable"}],
         },
         "dscp-forward": {
             "type": "option",
             "help": "Enable/disable forward traffic DSCP tag.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable use of forward DSCP tag.", "label": "Enable", "name": "enable"}, {"help": "Disable use of forward DSCP tag.", "label": "Disable", "name": "disable"}],
         },
         "dscp-reverse": {
             "type": "option",
             "help": "Enable/disable reverse traffic DSCP tag.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable use of reverse DSCP tag.", "label": "Enable", "name": "enable"}, {"help": "Disable use of reverse DSCP tag.", "label": "Disable", "name": "disable"}],
         },
         "dscp-forward-tag": {
             "type": "user",
@@ -949,61 +955,61 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable SD-WAN service.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable SD-WAN service.", "label": "Enable", "name": "enable"}, {"help": "Disable SD-WAN service.", "label": "Disable", "name": "disable"}],
         },
         "gateway": {
             "type": "option",
             "help": "Enable/disable SD-WAN service gateway.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable SD-WAN service gateway.", "label": "Enable", "name": "enable"}, {"help": "Disable SD-WAN service gateway.", "label": "Disable", "name": "disable"}],
         },
         "default": {
             "type": "option",
             "help": "Enable/disable use of SD-WAN as default service.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable use of SD-WAN as default service.", "label": "Enable", "name": "enable"}, {"help": "Disable use of SD-WAN as default service.", "label": "Disable", "name": "disable"}],
         },
         "sla-compare-method": {
             "type": "option",
             "help": "Method to compare SLA value for SLA mode.",
             "default": "order",
-            "options": ["order", "number"],
+            "options": [{"help": "Compare SLA value based on the order of health-check.", "label": "Order", "name": "order"}, {"help": "Compare SLA value based on the number of satisfied health-check.  Limits health-checks to only configured member interfaces.", "label": "Number", "name": "number"}],
         },
         "fib-best-match-force": {
             "type": "option",
             "help": "Enable/disable force using fib-best-match oif as outgoing interface.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Do not force using fib-best-match oif as outgoing interface.", "label": "Disable", "name": "disable"}, {"help": "Force using fib-best-match oif as outgoing interface.", "label": "Enable", "name": "enable"}],
         },
         "tie-break": {
             "type": "option",
             "help": "Method of selecting member if more than one meets the SLA.",
             "default": "zone",
-            "options": ["zone", "cfg-order", "fib-best-match", "priority", "input-device"],
+            "options": [{"help": "Use the setting that is configured for the members\u0027 zone.", "label": "Zone", "name": "zone"}, {"help": "Members that meet the SLA are selected in the order they are configured.", "label": "Cfg Order", "name": "cfg-order"}, {"help": "Members that meet the SLA are selected that match the longest prefix in the routing table.", "label": "Fib Best Match", "name": "fib-best-match"}, {"help": "Select the best members that meet the SLA based on link-cost-factor.", "label": "Priority", "name": "priority"}, {"help": "Members that meet the SLA are selected by matching the input device.", "label": "Input Device", "name": "input-device"}],
         },
         "use-shortcut-sla": {
             "type": "option",
             "help": "Enable/disable use of ADVPN shortcut for quality comparison.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable use of ADVPN shortcut for quality comparison.", "label": "Enable", "name": "enable"}, {"help": "Disable use of ADVPN shortcut for quality comparison.", "label": "Disable", "name": "disable"}],
         },
         "passive-measurement": {
             "type": "option",
             "help": "Enable/disable passive measurement based on the service criteria.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable passive measurement of user traffic.", "label": "Enable", "name": "enable"}, {"help": "Disable passive measurement of user traffic.", "label": "Disable", "name": "disable"}],
         },
         "agent-exclusive": {
             "type": "option",
             "help": "Set/unset the service as agent use exclusively.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Set the service as agent use exclusively.", "label": "Enable", "name": "enable"}, {"help": "Unset the service as agent use exclusively.", "label": "Disable", "name": "disable"}],
         },
         "shortcut": {
             "type": "option",
             "help": "Enable/disable shortcut for this service.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable use of ADVPN shortcut for this service.", "label": "Enable", "name": "enable"}, {"help": "Disable use of ADVPN shortcut for this service.", "label": "Disable", "name": "disable"}],
         },
         "comment": {
             "type": "var-string",
@@ -1041,19 +1047,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "What metric to select the neighbor.",
             "default": "sla",
-            "options": ["sla", "speedtest"],
+            "options": [{"help": "Select neighbor based on SLA link quality.", "label": "Sla", "name": "sla"}, {"help": "Select neighbor based on the speedtest status.", "label": "Speedtest", "name": "speedtest"}],
         },
         "role": {
             "type": "option",
             "help": "Role of neighbor.",
             "default": "standalone",
-            "options": ["standalone", "primary", "secondary"],
+            "options": [{"help": "Standalone neighbor.", "label": "Standalone", "name": "standalone"}, {"help": "Primary neighbor.", "label": "Primary", "name": "primary"}, {"help": "Secondary neighbor.", "label": "Secondary", "name": "secondary"}],
         },
         "route-metric": {
             "type": "option",
             "help": "Route-metric of neighbor.",
             "default": "preferable",
-            "options": ["preferable", "priority"],
+            "options": [{"help": "Select neighbor based on its hc to match bgp preferable/unpreferable route_map.", "label": "Preferable", "name": "preferable"}, {"help": "Select neighbor based on its members\u0027 priority-in-sla/priority-out-sla value.", "label": "Priority", "name": "priority"}],
         },
         "health-check": {
             "type": "string",
@@ -1114,19 +1120,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure packet duplication method.",
             "default": "disable",
-            "options": ["disable", "force", "on-demand"],
+            "options": [{"help": "Disable packet duplication.", "label": "Disable", "name": "disable"}, {"help": "Duplicate packets across all interface members of the SD-WAN zone.", "label": "Force", "name": "force"}, {"help": "Duplicate packets across all interface members of the SD-WAN zone based on the link quality.", "label": "On Demand", "name": "on-demand"}],
         },
         "sla-match-service": {
             "type": "option",
             "help": "Enable/disable packet duplication matching health-check SLAs in service rule.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable packet duplication matching health-check SLAs in service rule (matching all SLAs of current defined service).", "label": "Enable", "name": "enable"}, {"help": "Disable packet duplication matching health-check SLAs in service rule (matching all SLAs of all defined health-check).", "label": "Disable", "name": "disable"}],
         },
         "packet-de-duplication": {
             "type": "option",
             "help": "Enable/disable discarding of packets that have been duplicated.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable discarding of packets that have been duplicated.", "label": "Enable", "name": "enable"}, {"help": "Disable discarding of packets that have been duplicated.", "label": "Disable", "name": "disable"}],
         },
     },
 }
@@ -1134,27 +1140,27 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable SD-WAN.
+    "enable",  # Enable SD-WAN.
 ]
 VALID_BODY_LOAD_BALANCE_MODE = [
-    "source-ip-based",
-    "weight-based",
-    "usage-based",
-    "source-dest-ip-based",
-    "measured-volume-based",
+    "source-ip-based",  # Source IP load balancing. All traffic from a source IP is sent to the same interface.
+    "weight-based",  # Weight-based load balancing. Interfaces with higher weights have higher priority and get more traffic.
+    "usage-based",  # Usage-based load balancing. All traffic is sent to the first interface on the list. When the bandwidth on that interface exceeds the spill-over limit new traffic is sent to the next interface.
+    "source-dest-ip-based",  # Source and destination IP load balancing. All traffic from a source IP to a destination IP is sent to the same interface.
+    "measured-volume-based",  # Volume-based load balancing. Traffic is load balanced based on traffic volume (in bytes). More traffic is sent to interfaces with higher volume ratios.
 ]
 VALID_BODY_SPEEDTEST_BYPASS_ROUTING = [
-    "disable",
-    "enable",
+    "disable",  # Disable SD-WAN.
+    "enable",  # Enable SD-WAN.
 ]
 VALID_BODY_NEIGHBOR_HOLD_DOWN = [
-    "enable",
-    "disable",
+    "enable",  # Enable hold switching from the secondary neighbor to the primary neighbor.
+    "disable",  # Disable hold switching from the secondary neighbor to the primary neighbor.
 ]
 VALID_BODY_FAIL_DETECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable status checking.
+    "disable",  # Disable status checking.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1279,7 +1285,7 @@ def validate_system_sdwan_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Disable SD-WAN.', 'label': 'Disable', 'description': 'Disable SD-WAN'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_sdwan_post(payload)
         >>> assert is_valid == True

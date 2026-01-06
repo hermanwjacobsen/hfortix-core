@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/interface/poe_usage",
     "category": "monitor",
     "api_path": "system/interface/poe-usage",
-    "help": "Configuration for system/interface/poe-usage",
+    "help": "Retrieve PoE usage stats across all VDOMs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

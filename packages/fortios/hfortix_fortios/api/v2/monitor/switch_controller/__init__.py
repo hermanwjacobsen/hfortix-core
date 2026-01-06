@@ -4,11 +4,11 @@ from . import fsw_firmware
 from . import isl_lockdown
 from . import managed_switch
 from . import mclag_icl
+from . import nac_device
 from . import recommendation
 from .detected_device import DetectedDevice
 from .known_nac_device_criteria_list import KnownNacDeviceCriteriaList
 from .matched_devices import MatchedDevices
-from .nac_device import NacDevice
 
 __all__ = [
     "DetectedDevice",
@@ -37,8 +37,8 @@ class SwitchController:
         self.isl_lockdown = isl_lockdown.IslLockdown(client)
         self.managed_switch = managed_switch.ManagedSwitch(client)
         self.mclag_icl = mclag_icl.MclagIcl(client)
+        self.nac_device = nac_device.NacDevice(client)
         self.recommendation = recommendation.Recommendation(client)
         self.detected_device = DetectedDevice(client)
         self.known_nac_device_criteria_list = KnownNacDeviceCriteriaList(client)
         self.matched_devices = MatchedDevices(client)
-        self.nac_device = NacDevice(client)

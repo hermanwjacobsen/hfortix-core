@@ -14,7 +14,7 @@ class AuthPortalPayload(TypedDict, total=False):
     portal_addr: NotRequired[str]  # Address (or FQDN) of the authentication portal.
     portal_addr6: NotRequired[str]  # IPv6 address (or FQDN) of authentication portal.
     identity_based_route: NotRequired[str]  # Name of the identity-based route that applies to this portal
-    proxy_auth: NotRequired[Literal["enable", "disable"]]  # Enable/disable authentication by proxy daemon (default = dis
+    proxy_auth: NotRequired[Literal[{"description": "Users are authenticated by proxy daemon", "help": "Users are authenticated by proxy daemon.", "label": "Enable", "name": "enable"}, {"description": "Users are not authenticated by proxy daemon", "help": "Users are not authenticated by proxy daemon.", "label": "Disable", "name": "disable"}]]  # Enable/disable authentication by proxy daemon (default = dis
 
 
 class AuthPortal:
@@ -45,7 +45,7 @@ class AuthPortal:
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
-        proxy_auth: Literal["enable", "disable"] | None = ...,
+        proxy_auth: Literal[{"description": "Users are authenticated by proxy daemon", "help": "Users are authenticated by proxy daemon.", "label": "Enable", "name": "enable"}, {"description": "Users are not authenticated by proxy daemon", "help": "Users are not authenticated by proxy daemon.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -58,7 +58,7 @@ class AuthPortal:
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
-        proxy_auth: Literal["enable", "disable"] | None = ...,
+        proxy_auth: Literal[{"description": "Users are authenticated by proxy daemon", "help": "Users are authenticated by proxy daemon.", "label": "Enable", "name": "enable"}, {"description": "Users are not authenticated by proxy daemon", "help": "Users are not authenticated by proxy daemon.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

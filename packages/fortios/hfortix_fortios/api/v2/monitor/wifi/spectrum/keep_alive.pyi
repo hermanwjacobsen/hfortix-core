@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class KeepAlive:
     """
-    Configuration for wifi/spectrum/keep-alive
+    Extend duration of an existing spectrum analysis for a specific FortiAP.
     
     Path: wifi/spectrum/keep_alive
     Category: monitor

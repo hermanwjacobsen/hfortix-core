@@ -93,8 +93,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LOG_VIOLATIONS = [
-    "enable",
-    "disable",
+    "enable",  # Enable log violations for IP source guard logging.
+    "disable",  # Disable log violations for IP source guard logging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -219,7 +219,7 @@ def validate_switch_controller_ip_source_guard_log_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "log-violations": "enable",  # Valid enum value
+        ...     "log-violations": "{'name': 'enable', 'help': 'Enable log violations for IP source guard logging.', 'label': 'Enable', 'description': 'Enable log violations for IP source guard logging'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_ip_source_guard_log_post(payload)
         >>> assert is_valid == True

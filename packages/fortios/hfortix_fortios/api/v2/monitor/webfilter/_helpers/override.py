@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webfilter/override",
     "category": "monitor",
     "api_path": "webfilter/override",
-    "help": "Monitor endpoint for webfilter/override",
+    "help": "List all administrative and user initiated webfilter overrides.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

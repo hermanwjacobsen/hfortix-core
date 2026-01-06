@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/firmware/upgrade",
     "category": "monitor",
     "api_path": "system/firmware/upgrade",
-    "help": "Configuration for system/firmware/upgrade",
+    "help": "Upgrade firmware image on this device.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

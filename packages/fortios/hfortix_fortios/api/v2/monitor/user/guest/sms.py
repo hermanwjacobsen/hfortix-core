@@ -56,7 +56,7 @@ class Sms:
         """
         Retrieve user/guest/sms configuration.
 
-        Configuration for user/guest/sms
+        Sent guest login details via SMS.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

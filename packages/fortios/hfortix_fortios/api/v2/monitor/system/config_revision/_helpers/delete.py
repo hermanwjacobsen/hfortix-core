@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_revision/delete",
     "category": "monitor",
     "api_path": "system/config-revision/delete",
-    "help": "Configuration for system/config-revision/delete",
+    "help": "Deletes one or more system configuration revisions.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

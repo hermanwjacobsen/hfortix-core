@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve extender_controller/extender/reset configuration.
 
-        Configuration for extender-controller/extender/reset
+        Reset a specific FortiExtender unit.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

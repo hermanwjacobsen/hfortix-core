@@ -11,11 +11,11 @@ class ReverseConnectorPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Reverse-Connector name
-    status: NotRequired[Literal["enable", "disable"]]  # Reverse-Connector status.
+    status: NotRequired[Literal[{"description": "Enable the reverse-connector", "help": "Enable the reverse-connector.", "label": "Enable", "name": "enable"}, {"description": "Disable the reverse-connector", "help": "Disable the reverse-connector.", "label": "Disable", "name": "disable"}]]  # Reverse-Connector status.
     address: str  # Connector service edge adress(IP or FQDN).
     port: NotRequired[int]  # Port number that traffic uses to connect to connector servic
     health_check_interval: NotRequired[int]  # Health check interval in seconds (0 - 600, default = 60, 0 =
-    ssl_max_version: NotRequired[Literal["tls-1.1", "tls-1.2", "tls-1.3"]]  # Highest TLS version acceptable from a server.
+    ssl_max_version: NotRequired[Literal[{"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}]]  # Highest TLS version acceptable from a server.
     certificate: NotRequired[str]  # The name of the certificate to use for SSL handshake.
     trusted_server_ca: NotRequired[str]  # Trusted Server CA certificate used by SSL connection.
 
@@ -46,11 +46,11 @@ class ReverseConnector:
         self,
         payload_dict: ReverseConnectorPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the reverse-connector", "help": "Enable the reverse-connector.", "label": "Enable", "name": "enable"}, {"description": "Disable the reverse-connector", "help": "Disable the reverse-connector.", "label": "Disable", "name": "disable"}] | None = ...,
         address: str | None = ...,
         port: int | None = ...,
         health_check_interval: int | None = ...,
-        ssl_max_version: Literal["tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal[{"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}] | None = ...,
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,
@@ -62,11 +62,11 @@ class ReverseConnector:
         self,
         payload_dict: ReverseConnectorPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable the reverse-connector", "help": "Enable the reverse-connector.", "label": "Enable", "name": "enable"}, {"description": "Disable the reverse-connector", "help": "Disable the reverse-connector.", "label": "Disable", "name": "disable"}] | None = ...,
         address: str | None = ...,
         port: int | None = ...,
         health_check_interval: int | None = ...,
-        ssl_max_version: Literal["tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
+        ssl_max_version: Literal[{"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}] | None = ...,
         certificate: str | None = ...,
         trusted_server_ca: str | None = ...,
         vdom: str | bool | None = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RecordList:
     """
-    Monitor endpoint for endpoint-control/record-list
+    List endpoint records. This should only be used when you need to retrieve endpoint information from FortiEMS.
     
     Path: endpoint_control/record_list
     Category: monitor

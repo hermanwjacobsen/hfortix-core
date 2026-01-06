@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for system/debug/download
+    Download debug report for technical support.
     
     Path: system/debug/download
     Category: monitor

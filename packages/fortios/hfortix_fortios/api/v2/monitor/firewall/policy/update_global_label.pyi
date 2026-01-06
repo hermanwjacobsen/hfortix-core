@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class UpdateGlobalLabel:
     """
-    Configuration for firewall/policy/update-global-label
+    Update the global-label of group starting with the provided leading policy ID.
     
     Path: firewall/policy/update_global_label
     Category: monitor

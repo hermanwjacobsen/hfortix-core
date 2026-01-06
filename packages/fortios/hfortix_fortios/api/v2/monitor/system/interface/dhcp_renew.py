@@ -56,7 +56,7 @@ class DhcpRenew:
         """
         Retrieve system/interface/dhcp_renew configuration.
 
-        Configuration for system/interface/dhcp-renew
+        Renew DHCP lease of an interface.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

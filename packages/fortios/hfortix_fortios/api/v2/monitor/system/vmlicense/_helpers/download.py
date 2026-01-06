@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/vmlicense/download",
     "category": "monitor",
     "api_path": "system/vmlicense/download",
-    "help": "Configuration for system/vmlicense/download",
+    "help": "Download Flex-VM license and reboot immediately if successful.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

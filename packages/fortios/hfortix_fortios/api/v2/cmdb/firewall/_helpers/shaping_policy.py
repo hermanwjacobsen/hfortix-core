@@ -423,37 +423,37 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable traffic shaping policy.
+    "disable",  # Disable traffic shaping policy.
 ]
 VALID_BODY_IP_VERSION = [
-    "4",
-    "6",
+    "4",  # Use IPv4 addressing for Configuration Method.
+    "6",  # Use IPv6 addressing for Configuration Method.
 ]
 VALID_BODY_TRAFFIC_TYPE = [
-    "forwarding",
-    "local-in",
-    "local-out",
+    "forwarding",  # Forwarding traffic.
+    "local-in",  # Local-in traffic.
+    "local-out",  # Local-out traffic.
 ]
 VALID_BODY_INTERNET_SERVICE = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Service in shaping-policy.
+    "disable",  # Disable use of Internet Service in shaping-policy.
 ]
 VALID_BODY_INTERNET_SERVICE_SRC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Service source in shaping-policy.
+    "disable",  # Disable use of Internet Service source in shaping-policy.
 ]
 VALID_BODY_TOS_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable TOS match negate.
+    "disable",  # Disable TOS match negate.
 ]
 VALID_BODY_DIFFSERV_FORWARD = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting forward (original) traffic DiffServ.
+    "disable",  # Disable setting forward (original) traffic DiffServ.
 ]
 VALID_BODY_DIFFSERV_REVERSE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting reverse (reply) traffic DiffServ.
+    "disable",  # Disable setting reverse (reply) traffic DiffServ.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -584,7 +584,7 @@ def validate_firewall_shaping_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "srcaddr": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable traffic shaping policy.', 'label': 'Enable', 'description': 'Enable traffic shaping policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_shaping_policy_post(payload)
         >>> assert is_valid == True

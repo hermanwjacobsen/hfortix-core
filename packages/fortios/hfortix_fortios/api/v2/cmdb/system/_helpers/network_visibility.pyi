@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_DESTINATION_VISIBILITY: Literal["disable", "enable"]
-VALID_BODY_SOURCE_LOCATION: Literal["disable", "enable"]
-VALID_BODY_DESTINATION_HOSTNAME_VISIBILITY: Literal["disable", "enable"]
-VALID_BODY_DESTINATION_LOCATION: Literal["disable", "enable"]
+VALID_BODY_DESTINATION_VISIBILITY: Literal[{"description": "Disable logging of destination visibility", "help": "Disable logging of destination visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination visibility", "help": "Enable logging of destination visibility.", "label": "Enable", "name": "enable"}]
+VALID_BODY_SOURCE_LOCATION: Literal[{"description": "Disable logging of source geographical location visibility", "help": "Disable logging of source geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of source geographical location visibility", "help": "Enable logging of source geographical location visibility.", "label": "Enable", "name": "enable"}]
+VALID_BODY_DESTINATION_HOSTNAME_VISIBILITY: Literal[{"description": "Disable logging of destination hostname visibility", "help": "Disable logging of destination hostname visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination hostname visibility", "help": "Enable logging of destination hostname visibility.", "label": "Enable", "name": "enable"}]
+VALID_BODY_DESTINATION_LOCATION: Literal[{"description": "Disable logging of destination geographical location visibility", "help": "Disable logging of destination geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination geographical location visibility", "help": "Enable logging of destination geographical location visibility.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

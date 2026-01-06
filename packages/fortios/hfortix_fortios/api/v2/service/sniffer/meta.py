@@ -56,7 +56,7 @@ class Meta:
         """
         Retrieve sniffer/meta configuration.
 
-        Configuration for sniffer/meta
+        Returns system limitations & meta information of packet capture feature.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

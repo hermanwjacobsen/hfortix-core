@@ -1,11 +1,11 @@
 """FortiOS CMDB - Local category"""
 
 from .create import Create
-from .import_setting import ImportSetting
+from .import_ import Import
 
 __all__ = [
     "Create",
-    "ImportSetting",
+    "Import",
     "Local",
 ]
 
@@ -20,4 +20,4 @@ class Local:
             client: HTTP client instance for API communication
         """
         self.create = Create(client)
-        self.import_setting = ImportSetting(client)
+        self.import_ = Import(client)

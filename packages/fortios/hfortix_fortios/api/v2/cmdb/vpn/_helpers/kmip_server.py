@@ -130,7 +130,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable KMIP server.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable server.", "label": "Enable", "name": "enable"}, {"help": "Disable server.", "label": "Disable", "name": "disable"}],
         },
         "server": {
             "type": "string",
@@ -159,21 +159,21 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_SERVER_IDENTITY_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable server identity check.
+    "disable",  # Disable server identity check.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -304,7 +304,7 @@ def validate_vpn_kmip_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server-list": True,
-        ...     "ssl-min-proto-version": "default",  # Valid enum value
+        ...     "ssl-min-proto-version": "{'name': 'default', 'help': 'Follow system global setting.', 'label': 'Default', 'description': 'Follow system global setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_kmip_server_post(payload)
         >>> assert is_valid == True

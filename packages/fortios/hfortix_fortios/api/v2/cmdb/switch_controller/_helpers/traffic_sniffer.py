@@ -149,9 +149,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MODE = [
-    "erspan-auto",
-    "rspan",
-    "none",
+    "erspan-auto",  # Mirror traffic using a GRE tunnel.
+    "rspan",  # Mirror traffic on a layer2 VLAN.
+    "none",  # Disable traffic mirroring (sniffer).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -276,7 +276,7 @@ def validate_switch_controller_traffic_sniffer_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "mode": "erspan-auto",  # Valid enum value
+        ...     "mode": "{'name': 'erspan-auto', 'help': 'Mirror traffic using a GRE tunnel.', 'label': 'Erspan Auto', 'description': 'Mirror traffic using a GRE tunnel'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_traffic_sniffer_post(payload)
         >>> assert is_valid == True

@@ -136,6 +136,7 @@ class Rule:
         transaction_based: str | None = None,
         web_portal: str | None = None,
         comments: str | None = None,
+        session_logout: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -201,6 +202,7 @@ class Rule:
             transaction_based=transaction_based,
             web_portal=web_portal,
             comments=comments,
+            session_logout=session_logout,
             data=payload_dict,
         )
         
@@ -244,6 +246,7 @@ class Rule:
         transaction_based: str | None = None,
         web_portal: str | None = None,
         comments: str | None = None,
+        session_logout: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -311,6 +314,7 @@ class Rule:
             transaction_based=transaction_based,
             web_portal=web_portal,
             comments=comments,
+            session_logout=session_logout,
             data=payload_dict,
         )
 

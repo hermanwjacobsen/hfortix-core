@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TunnelDown:
     """
-    Configuration for vpn/ipsec/tunnel_down
+    Bring down a specific IPsec VPN tunnel.
     
     Path: vpn/ipsec/tunnel_down
     Category: monitor

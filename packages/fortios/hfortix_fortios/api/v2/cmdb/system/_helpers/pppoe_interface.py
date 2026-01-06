@@ -62,6 +62,8 @@ FIELDS_WITH_DEFAULTS = {
     "ipunnumbered": "0.0.0.0",
     "pppoe-unnumbered-negotiate": "enable",
     "idle-timeout": 0,
+    "multilink": "disable",
+    "mrru": 1500,
     "disc-retry-timeout": 1,
     "padt-retry-timeout": 1,
     "service-name": "",
@@ -97,6 +99,8 @@ FIELD_TYPES = {
     "ipunnumbered": "ipv4-address",  # PPPoE unnumbered IP.
     "pppoe-unnumbered-negotiate": "option",  # Enable/disable PPPoE unnumbered negotiation.
     "idle-timeout": "integer",  # PPPoE auto disconnect after idle timeout (0-4294967295 sec).
+    "multilink": "option",  # Enable/disable PPP multilink support.
+    "mrru": "integer",  # PPP MRRU (296 - 65535, default = 1500).
     "disc-retry-timeout": "integer",  # PPPoE discovery init timeout value in (0-4294967295 sec).
     "padt-retry-timeout": "integer",  # PPPoE terminate timeout value in (0-4294967295 sec).
     "service-name": "string",  # PPPoE service name.
@@ -118,6 +122,8 @@ FIELD_DESCRIPTIONS = {
     "ipunnumbered": "PPPoE unnumbered IP.",
     "pppoe-unnumbered-negotiate": "Enable/disable PPPoE unnumbered negotiation.",
     "idle-timeout": "PPPoE auto disconnect after idle timeout (0-4294967295 sec).",
+    "multilink": "Enable/disable PPP multilink support.",
+    "mrru": "PPP MRRU (296 - 65535, default = 1500).",
     "disc-retry-timeout": "PPPoE discovery init timeout value in (0-4294967295 sec).",
     "padt-retry-timeout": "PPPoE terminate timeout value in (0-4294967295 sec).",
     "service-name": "PPPoE service name.",
@@ -132,6 +138,7 @@ FIELD_CONSTRAINTS = {
     "device": {"type": "string", "max_length": 15},
     "username": {"type": "string", "max_length": 64},
     "idle-timeout": {"type": "integer", "min": 0, "max": 4294967295},
+    "mrru": {"type": "integer", "min": 296, "max": 65535},
     "disc-retry-timeout": {"type": "integer", "min": 0, "max": 4294967295},
     "padt-retry-timeout": {"type": "integer", "min": 0, "max": 4294967295},
     "service-name": {"type": "string", "max_length": 63},
@@ -147,33 +154,37 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DIAL_ON_DEMAND = [
-    "enable",
-    "disable",
+    "enable",  # Enable dial on demand.
+    "disable",  # Disable dial on demand.
 ]
 VALID_BODY_IPV6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPv6CP.
+    "disable",  # Disable IPv6CP.
 ]
 VALID_BODY_PPPOE_EGRESS_COS = [
-    "cos0",
-    "cos1",
-    "cos2",
-    "cos3",
-    "cos4",
-    "cos5",
-    "cos6",
-    "cos7",
+    "cos0",  # CoS 0.
+    "cos1",  # CoS 1.
+    "cos2",  # CoS 2.
+    "cos3",  # CoS 3.
+    "cos4",  # CoS 4.
+    "cos5",  # CoS 5.
+    "cos6",  # CoS 6.
+    "cos7",  # CoS 7.
 ]
 VALID_BODY_AUTH_TYPE = [
-    "auto",
-    "pap",
-    "chap",
-    "mschapv1",
-    "mschapv2",
+    "auto",  # Automatically choose the authentication method.
+    "pap",  # PAP authentication.
+    "chap",  # CHAP authentication.
+    "mschapv1",  # MS-CHAPv1 authentication.
+    "mschapv2",  # MS-CHAPv2 authentication.
 ]
 VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable PPPoE unnumbered negotiation.
+    "disable",  # Disable PPPoE unnumbered negotiation.
+]
+VALID_BODY_MULTILINK = [
+    "enable",  # Enable PPP multilink support.
+    "disable",  # Disable PPP multilink support.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -303,7 +314,7 @@ def validate_system_pppoe_interface_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "device": True,
-        ...     "dial-on-demand": "enable",  # Valid enum value
+        ...     "dial-on-demand": "{'name': 'enable', 'help': 'Enable dial on demand.', 'label': 'Enable', 'description': 'Enable dial on demand'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_pppoe_interface_post(payload)
         >>> assert is_valid == True
@@ -376,6 +387,16 @@ def validate_system_pppoe_interface_post(
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}"
             error_msg += f"\n  → Example: pppoe-unnumbered-negotiate='{{ VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE[0] }}'"
             return (False, error_msg)
+    if "multilink" in payload:
+        value = payload["multilink"]
+        if value not in VALID_BODY_MULTILINK:
+            desc = FIELD_DESCRIPTIONS.get("multilink", "")
+            error_msg = f"Invalid value for 'multilink': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_MULTILINK)}"
+            error_msg += f"\n  → Example: multilink='{{ VALID_BODY_MULTILINK[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -438,6 +459,13 @@ def validate_system_pppoe_interface_put(
             return (
                 False,
                 f"Invalid value for 'pppoe-unnumbered-negotiate'='{value}'. Must be one of: {', '.join(VALID_BODY_PPPOE_UNNUMBERED_NEGOTIATE)}",
+            )
+    if "multilink" in payload:
+        value = payload["multilink"]
+        if value not in VALID_BODY_MULTILINK:
+            return (
+                False,
+                f"Invalid value for 'multilink'='{value}'. Must be one of: {', '.join(VALID_BODY_MULTILINK)}",
             )
 
     return (True, None)
@@ -727,9 +755,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure the PPPoE interfaces.",
-    "total_fields": 17,
+    "total_fields": 19,
     "required_fields_count": 1,
-    "fields_with_defaults_count": 16,
+    "fields_with_defaults_count": 18,
 }
 
 

@@ -116,7 +116,7 @@ class VdomDns:
         vdom_dns: str | None = None,
         primary: str | None = None,
         secondary: str | None = None,
-        protocol: str | None = None,
+        protocol: str | list | None = None,
         ssl_certificate: str | None = None,
         server_hostname: str | list | None = None,
         ip6_primary: str | None = None,

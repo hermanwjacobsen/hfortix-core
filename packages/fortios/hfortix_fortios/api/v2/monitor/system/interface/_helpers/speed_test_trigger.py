@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/interface/speed_test_trigger",
     "category": "monitor",
     "api_path": "system/interface/speed-test-trigger",
-    "help": "Configuration for system/interface/speed-test-trigger",
+    "help": "Run a speed-test on the given interface.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

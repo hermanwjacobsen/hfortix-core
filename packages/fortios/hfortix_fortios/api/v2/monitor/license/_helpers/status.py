@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "license/status",
     "category": "monitor",
     "api_path": "license/status",
-    "help": "Configuration for license/status",
+    "help": "Get current license & registration status.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

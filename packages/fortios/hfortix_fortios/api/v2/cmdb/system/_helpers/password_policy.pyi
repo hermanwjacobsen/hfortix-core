@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_APPLY_TO: Literal["admin-password", "ipsec-preshared-key"]
-VALID_BODY_EXPIRE_STATUS: Literal["enable", "disable"]
-VALID_BODY_REUSE_PASSWORD: Literal["enable", "disable"]
-VALID_BODY_LOGIN_LOCKOUT_UPON_WEAKER_ENCRYPTION: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable password policy", "help": "Enable password policy.", "label": "Enable", "name": "enable"}, {"description": "Disable password policy", "help": "Disable password policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_APPLY_TO: Literal[{"description": "Apply to administrator passwords", "help": "Apply to administrator passwords.", "label": "Admin Password", "name": "admin-password"}, {"description": "Apply to IPsec pre-shared keys", "help": "Apply to IPsec pre-shared keys.", "label": "Ipsec Preshared Key", "name": "ipsec-preshared-key"}]
+VALID_BODY_EXPIRE_STATUS: Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}]
+VALID_BODY_REUSE_PASSWORD: Literal[{"description": "Administrators are allowed to reuse the same password up to a limit", "help": "Administrators are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Administrators must create a new password", "help": "Administrators must create a new password.", "label": "Disable", "name": "disable"}]
+VALID_BODY_LOGIN_LOCKOUT_UPON_WEAKER_ENCRYPTION: Literal[{"description": "Enable administrative user login lockout upon downgrade", "help": "Enable administrative user login lockout upon downgrade.", "label": "Enable", "name": "enable"}, {"description": "Disable administrative user login lockout upon downgrade", "help": "Disable administrative user login lockout upon downgrade.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

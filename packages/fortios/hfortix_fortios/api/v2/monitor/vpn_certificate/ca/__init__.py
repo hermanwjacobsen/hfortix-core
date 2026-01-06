@@ -1,10 +1,10 @@
 """FortiOS CMDB - Ca category"""
 
-from .import_setting import ImportSetting
+from .import_ import Import
 
 __all__ = [
     "Ca",
-    "ImportSetting",
+    "Import",
 ]
 
 
@@ -17,4 +17,4 @@ class Ca:
         Args:
             client: HTTP client instance for API communication
         """
-        self.import_setting = ImportSetting(client)
+        self.import_ = Import(client)

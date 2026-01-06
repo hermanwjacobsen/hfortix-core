@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "extender_controller/extender",
     "category": "monitor",
     "api_path": "extender-controller/extender",
-    "help": "Monitor endpoint for extender-controller/extender",
+    "help": "Retrieve statistics for specific configured FortiExtender units.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

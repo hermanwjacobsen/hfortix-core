@@ -230,40 +230,40 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SRCADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable source address negate.
+    "disable",  # Disable source address negate.
 ]
 VALID_BODY_INTERNET_SERVICE6_SRC = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of IPv6 Internet Services source in local-in policy.
+    "disable",  # Disable use of IPv6 Internet Services source in local-in policy.
 ]
 VALID_BODY_DSTADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable destination address negate.
+    "disable",  # Disable destination address negate.
 ]
 VALID_BODY_ACTION = [
-    "accept",
-    "deny",
+    "accept",  # Allow local-in traffic matching this policy.
+    "deny",  # Deny or block local-in traffic matching this policy.
 ]
 VALID_BODY_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated service match.
+    "disable",  # Disable negated service match.
 ]
 VALID_BODY_INTERNET_SERVICE6_SRC_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated IPv6 Internet Service source match.
+    "disable",  # Disable negated IPv6 Internet Service source match.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this local-in policy.
+    "disable",  # Disable this local-in policy.
 ]
 VALID_BODY_VIRTUAL_PATCH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-in traffic logging.
+    "disable",  # Disable local-in traffic logging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -394,7 +394,7 @@ def validate_firewall_local_in_policy6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "intf": True,
-        ...     "srcaddr-negate": "enable",  # Valid enum value
+        ...     "srcaddr-negate": "{'name': 'enable', 'help': 'Enable source address negate.', 'label': 'Enable', 'description': 'Enable source address negate'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_local_in_policy6_post(payload)
         >>> assert is_valid == True

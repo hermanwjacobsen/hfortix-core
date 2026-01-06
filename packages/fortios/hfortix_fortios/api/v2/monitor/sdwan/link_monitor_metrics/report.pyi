@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Report:
     """
-    Configuration for sdwan/link-monitor-metrics/report
+    Report the application-level performance metrics collected by other fabric devices.
     
     Path: sdwan/link_monitor_metrics/report
     Category: monitor

@@ -143,7 +143,7 @@ NESTED_SCHEMAS = {
             "help": "Run immediately or at a scheduled time.",
             "required": True,
             "default": "immediate",
-            "options": ["immediate", "scheduled"],
+            "options": [{"help": "Begin the upgrade immediately.", "label": "Immediate", "name": "immediate"}, {"help": "Begin the upgrade at a configured time.", "label": "Scheduled", "name": "scheduled"}],
         },
         "maximum-minutes": {
             "type": "integer",
@@ -176,13 +176,13 @@ NESTED_SCHEMAS = {
             "help": "Fortinet device type.",
             "required": True,
             "default": "fortigate",
-            "options": ["fortigate", "fortiswitch", "fortiap", "fortiextender"],
+            "options": [{"help": "This device is a FortiGate.", "label": "Fortigate", "name": "fortigate"}, {"help": "This device is a FortiSwitch.", "label": "Fortiswitch", "name": "fortiswitch"}, {"help": "This device is a FortiAP.", "label": "Fortiap", "name": "fortiap"}, {"help": "This device is a FortiExtender.", "label": "Fortiextender", "name": "fortiextender"}],
         },
         "allow-download": {
             "type": "option",
             "help": "Enable/disable download firmware images.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Allow download of images.", "label": "Enable", "name": "enable"}, {"help": "Disable download of images.", "label": "Disable", "name": "disable"}],
         },
         "coordinating-fortigate": {
             "type": "string",
@@ -194,7 +194,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Upgrade failure reason.",
             "default": "none",
-            "options": ["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"],
+            "options": [{"help": "No failure.", "label": "None", "name": "none"}, {"help": "An internal error occurred.", "label": "Internal", "name": "internal"}, {"help": "The upgrade timed out.", "label": "Timeout", "name": "timeout"}, {"help": "The device type was not supported by the FortiGate.", "label": "Device Type Unsupported", "name": "device-type-unsupported"}, {"help": "The image could not be downloaded.", "label": "Download Failed", "name": "download-failed"}, {"help": "The device was disconnected from the FortiGate.", "label": "Device Missing", "name": "device-missing"}, {"help": "An image matching the device and version could not be found.", "label": "Version Unavailable", "name": "version-unavailable"}, {"help": "The image could not be pushed to the device.", "label": "Staging Failed", "name": "staging-failed"}, {"help": "The device could not be rebooted.", "label": "Reboot Failed", "name": "reboot-failed"}, {"help": "The device did not reconnect after rebooting.", "label": "Device Not Reconnected", "name": "device-not-reconnected"}, {"help": "A device in the Security Fabric tree was not ready.", "label": "Node Not Ready", "name": "node-not-ready"}, {"help": "The coordinating FortiGate did not confirm the upgrade.", "label": "No Final Confirmation", "name": "no-final-confirmation"}, {"help": "A downstream FortiGate did not initiate final confirmation.", "label": "No Confirmation Query", "name": "no-confirmation-query"}, {"help": "Configuration errors encountered during the upgrade.", "label": "Config Error Log Nonempty", "name": "config-error-log-nonempty"}, {"help": "The Security Fabric is disabled on the root FortiGate", "label": "Csf Tree Not Supported", "name": "csf-tree-not-supported"}, {"help": "Firmware changed after the upgrade was set up.", "label": "Firmware Changed", "name": "firmware-changed"}, {"help": "A device in the Security Fabric tree failed.", "label": "Node Failed", "name": "node-failed"}, {"help": "The firmware image is missing and download is not allowed", "label": "Image Missing", "name": "image-missing"}],
         },
     },
 }
@@ -202,48 +202,48 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disabled",
-    "initialized",
-    "downloading",
-    "device-disconnected",
-    "ready",
-    "coordinating",
-    "staging",
-    "final-check",
-    "upgrade-devices",
-    "cancelled",
-    "confirmed",
-    "done",
-    "failed",
+    "disabled",  # No federated upgrade has been configured.
+    "initialized",  # The upgrade has been configured.
+    "downloading",  # The image is downloading in preparation for the upgrade.
+    "device-disconnected",  # The image downloads are complete, but one or more devices have disconnected.
+    "ready",  # The image download finished and the upgrade is pending.
+    "coordinating",  # The upgrade is coordinating with other running upgrades.
+    "staging",  # The upgrade is confirmed and images are being staged.
+    "final-check",  # The upgrade is ready and final checks are in progress.
+    "upgrade-devices",  # The upgrade is ready and devices are being rebooted.
+    "cancelled",  # The upgrade was cancelled due to the tree not being ready.
+    "confirmed",  # The upgrade was confirmed and reboots are running.
+    "done",  # The upgrade completed successfully.
+    "failed",  # The upgrade failed due to a local issue.
 ]
 VALID_BODY_SOURCE = [
-    "user",
-    "auto-firmware-upgrade",
-    "forced-upgrade",
+    "user",  # Upgrade configured based on user input.
+    "auto-firmware-upgrade",  # Upgrade configured by the FortiGuard auto-firmware-upgrade feature.
+    "forced-upgrade",  # Forced upgrade due to no support contract or end-of-life firmware.
 ]
 VALID_BODY_FAILURE_REASON = [
-    "none",
-    "internal",
-    "timeout",
-    "device-type-unsupported",
-    "download-failed",
-    "device-missing",
-    "version-unavailable",
-    "staging-failed",
-    "reboot-failed",
-    "device-not-reconnected",
-    "node-not-ready",
-    "no-final-confirmation",
-    "no-confirmation-query",
-    "config-error-log-nonempty",
-    "csf-tree-not-supported",
-    "firmware-changed",
-    "node-failed",
-    "image-missing",
+    "none",  # No failure.
+    "internal",  # An internal error occurred.
+    "timeout",  # The upgrade timed out.
+    "device-type-unsupported",  # The device type was not supported by the FortiGate.
+    "download-failed",  # The image could not be downloaded.
+    "device-missing",  # The device was disconnected from the FortiGate.
+    "version-unavailable",  # An image matching the device and version could not be found.
+    "staging-failed",  # The image could not be pushed to the device.
+    "reboot-failed",  # The device could not be rebooted.
+    "device-not-reconnected",  # The device did not reconnect after rebooting.
+    "node-not-ready",  # A device in the Security Fabric tree was not ready.
+    "no-final-confirmation",  # The coordinating FortiGate did not confirm the upgrade.
+    "no-confirmation-query",  # A downstream FortiGate did not initiate final confirmation.
+    "config-error-log-nonempty",  # Configuration errors encountered during the upgrade.
+    "csf-tree-not-supported",  # The Security Fabric is disabled on the root FortiGate
+    "firmware-changed",  # Firmware changed after the upgrade was set up.
+    "node-failed",  # A device in the Security Fabric tree failed.
+    "image-missing",  # The firmware image is missing and download is not allowed
 ]
 VALID_BODY_IGNORE_SIGNING_ERRORS = [
-    "enable",
-    "disable",
+    "enable",  # Allow use of FortiGate images that are unsigned.
+    "disable",  # Reject use of FortiGate images that are unsigned.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -370,7 +370,7 @@ def validate_system_federated_upgrade_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "known-ha-members": True,
-        ...     "status": "disabled",  # Valid enum value
+        ...     "status": "{'name': 'disabled', 'help': 'No federated upgrade has been configured.', 'label': 'Disabled', 'description': 'No federated upgrade has been configured'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_federated_upgrade_post(payload)
         >>> assert is_valid == True

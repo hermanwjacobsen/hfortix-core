@@ -56,7 +56,7 @@ class Stop:
         """
         Retrieve sniffer/stop configuration.
 
-        Configuration for sniffer/stop
+        Stop a running packet capture.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

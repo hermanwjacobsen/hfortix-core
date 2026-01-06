@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["default", "folder"]
-VALID_BODY_CATEGORY: Literal["default", "ztna-ems-tag", "ztna-geo-tag"]
-VALID_BODY_ALLOW_ROUTING: Literal["enable", "disable"]
-VALID_BODY_EXCLUDE: Literal["enable", "disable"]
-VALID_BODY_FABRIC_OBJECT: Literal["enable", "disable"]
+VALID_BODY_TYPE: Literal[{"description": "Default address group type (address may belong to multiple groups)", "help": "Default address group type (address may belong to multiple groups).", "label": "Default", "name": "default"}, {"description": "Address folder group (members may not belong to any other group)", "help": "Address folder group (members may not belong to any other group).", "label": "Folder", "name": "folder"}]
+VALID_BODY_CATEGORY: Literal[{"description": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy)", "help": "Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy).", "label": "Default", "name": "default"}, {"description": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy", "help": "Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy.", "label": "Ztna Ems Tag", "name": "ztna-ems-tag"}, {"description": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy", "help": "Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy.", "label": "Ztna Geo Tag", "name": "ztna-geo-tag"}]
+VALID_BODY_ALLOW_ROUTING: Literal[{"description": "Enable use of this group in routing configurations", "help": "Enable use of this group in routing configurations.", "label": "Enable", "name": "enable"}, {"description": "Disable use of this group in routing configurations", "help": "Disable use of this group in routing configurations.", "label": "Disable", "name": "disable"}]
+VALID_BODY_EXCLUDE: Literal[{"description": "Enable address exclusion", "help": "Enable address exclusion.", "label": "Enable", "name": "enable"}, {"description": "Disable address exclusion", "help": "Disable address exclusion.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FABRIC_OBJECT: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

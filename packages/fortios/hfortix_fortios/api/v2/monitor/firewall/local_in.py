@@ -56,7 +56,7 @@ class LocalIn:
         """
         Retrieve firewall/local_in configuration.
 
-        Configuration for firewall/local-in
+        List implicit and explicit local-in firewall policies.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

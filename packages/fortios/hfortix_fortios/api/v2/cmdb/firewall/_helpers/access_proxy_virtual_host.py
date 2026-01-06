@@ -103,7 +103,6 @@ FIELD_DESCRIPTIONS = {
 # Field constraints (string lengths, integer ranges)
 FIELD_CONSTRAINTS = {
     "name": {"type": "string", "max_length": 79},
-    "ssl-certificate": {"type": "string", "max_length": 79},
     "host": {"type": "string", "max_length": 79},
     "replacemsg-group": {"type": "string", "max_length": 35},
 }
@@ -123,21 +122,21 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_HOST_TYPE = [
-    "sub-string",
-    "wildcard",
+    "sub-string",  # Match the pattern if a string contains the sub-string.
+    "wildcard",  # Match the pattern with wildcards.
 ]
 VALID_BODY_EMPTY_CERT_ACTION = [
-    "accept",
-    "block",
-    "accept-unmanageable",
+    "accept",  # Accept the SSL handshake if the client certificate is empty.
+    "block",  # Block the SSL handshake if the client certificate is empty.
+    "accept-unmanageable",  # Accept the SSL handshake only if the end-point is unmanageable.
 ]
 VALID_BODY_USER_AGENT_DETECT = [
-    "disable",
-    "enable",
+    "disable",  # Disable detecting unknown devices by HTTP user-agent if no client certificate is provided.
+    "enable",  # Enable detecting unknown devices by HTTP user-agent if no client certificate is provided.
 ]
 VALID_BODY_CLIENT_CERT = [
-    "disable",
-    "enable",
+    "disable",  # Disable client certificate request.
+    "enable",  # Enable client certificate request.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -268,7 +267,7 @@ def validate_firewall_access_proxy_virtual_host_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "ssl-certificate": True,
-        ...     "host-type": "sub-string",  # Valid enum value
+        ...     "host-type": "{'name': 'sub-string', 'help': 'Match the pattern if a string contains the sub-string.', 'label': 'Sub String', 'description': 'Match the pattern if a string contains the sub-string'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_access_proxy_virtual_host_post(payload)
         >>> assert is_valid == True

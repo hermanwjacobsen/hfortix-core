@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/session/close_multiple",
     "category": "monitor",
     "api_path": "firewall/session/close-multiple",
-    "help": "Configuration for firewall/session/close-multiple",
+    "help": "Close multiple IPv4 firewall sessions which match the provided criteria.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -272,80 +272,80 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ACTION_TYPE = [
-    "email",
-    "fortiexplorer-notification",
-    "alert",
-    "disable-ssid",
-    "system-actions",
-    "quarantine",
-    "quarantine-forticlient",
-    "quarantine-nsx",
-    "quarantine-fortinac",
-    "ban-ip",
-    "aws-lambda",
-    "azure-function",
-    "google-cloud-function",
-    "alicloud-function",
-    "webhook",
-    "cli-script",
-    "diagnose-script",
-    "regular-expression",
-    "slack-notification",
-    "microsoft-teams-notification",
+    "email",  # Send notification email.
+    "fortiexplorer-notification",  # Send push notification to FortiExplorer.
+    "alert",  # Generate FortiOS dashboard alert.
+    "disable-ssid",  # Disable interface.
+    "system-actions",  # Perform immediate system operations on this FortiGate unit.
+    "quarantine",  # Quarantine host.
+    "quarantine-forticlient",  # Quarantine FortiClient by EMS.
+    "quarantine-nsx",  # Quarantine NSX instance.
+    "quarantine-fortinac",  # Quarantine host by FortiNAC.
+    "ban-ip",  # Ban IP address.
+    "aws-lambda",  # Send log data to integrated AWS service.
+    "azure-function",  # Send log data to an Azure function.
+    "google-cloud-function",  # Send log data to a Google Cloud function.
+    "alicloud-function",  # Send log data to an AliCloud function.
+    "webhook",  # Send an HTTP request.
+    "cli-script",  # Run CLI script.
+    "diagnose-script",  # Run diagnose script.
+    "regular-expression",  # Match pattern on input text.
+    "slack-notification",  # Send a notification message to a Slack incoming webhook.
+    "microsoft-teams-notification",  # Send a notification message to a Microsoft Teams incoming webhook.
 ]
 VALID_BODY_SYSTEM_ACTION = [
-    "reboot",
-    "shutdown",
-    "backup-config",
+    "reboot",  # Reboot this FortiGate unit.
+    "shutdown",  # Shutdown this FortiGate unit.
+    "backup-config",  # Backup current configuration to the disk revisions.
 ]
 VALID_BODY_FORTICARE_EMAIL = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of your FortiCare email address as the email-to address.
+    "disable",  # Disable use of your FortiCare email address as the email-to address.
 ]
 VALID_BODY_AZURE_FUNCTION_AUTHORIZATION = [
-    "anonymous",
-    "function",
-    "admin",
+    "anonymous",  # Anonymous authorization level (No authorization required).
+    "function",  # Function authorization level (Function or Host Key required).
+    "admin",  # Admin authorization level (Master Host Key required).
 ]
 VALID_BODY_ALICLOUD_FUNCTION_AUTHORIZATION = [
-    "anonymous",
-    "function",
+    "anonymous",  # Anonymous authorization (No authorization required).
+    "function",  # Function authorization (Authorization required).
 ]
 VALID_BODY_MESSAGE_TYPE = [
-    "text",
-    "json",
-    "form-data",
+    "text",  # Plaintext.
+    "json",  # Custom JSON.
+    "form-data",  # Multipart/form-data
 ]
 VALID_BODY_REPLACEMENT_MESSAGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable replacement message.
+    "disable",  # Disable replacement message.
 ]
 VALID_BODY_PROTOCOL = [
-    "http",
-    "https",
+    "http",  # HTTP.
+    "https",  # HTTPS.
 ]
 VALID_BODY_METHOD = [
-    "post",
-    "put",
-    "get",
-    "patch",
-    "delete",
+    "post",  # POST.
+    "put",  # PUT.
+    "get",  # GET.
+    "patch",  # PATCH.
+    "delete",  # DELETE.
 ]
 VALID_BODY_VERIFY_HOST_CERT = [
-    "enable",
-    "disable",
+    "enable",  # Enable verification of the remote host certificate.
+    "disable",  # Disable verification of the remote host certificate.
 ]
 VALID_BODY_FILE_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # The output of the diag CLI will only be files.
+    "disable",  # The output of the diag CLI will be in raw text, output larger than 64KB will be in files.
 ]
 VALID_BODY_EXECUTE_SECURITY_FABRIC = [
-    "enable",
-    "disable",
+    "enable",  # CLI script executes on all FortiGate units in the Security Fabric.
+    "disable",  # CLI script executes only on the FortiGate unit that the stitch is triggered.
 ]
 VALID_BODY_LOG_DEBUG_PRINT = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging debug print output from diagnose action.
+    "disable",  # Disable logging debug print output from diagnose action.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -476,7 +476,7 @@ def validate_system_automation_action_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "system-action": True,
-        ...     "action-type": "email",  # Valid enum value
+        ...     "action-type": "{'name': 'email', 'help': 'Send notification email.', 'label': 'Email', 'description': 'Send notification email'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_automation_action_post(payload)
         >>> assert is_valid == True

@@ -12,7 +12,7 @@ class ReplacemsgGroupPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Group name.
     comment: NotRequired[str]  # Comment.
-    group_type: Literal["default", "utm", "auth"]  # Group type.
+    group_type: Literal[{"description": "Per-vdom replacement messages", "help": "Per-vdom replacement messages.", "label": "Default", "name": "default"}, {"description": "For use with UTM settings in firewall policies", "help": "For use with UTM settings in firewall policies.", "label": "Utm", "name": "utm"}, {"description": "For use with authentication pages in firewall policies", "help": "For use with authentication pages in firewall policies.", "label": "Auth", "name": "auth"}]  # Group type.
     mail: NotRequired[list[dict[str, Any]]]  # Replacement message table entries.
     http: NotRequired[list[dict[str, Any]]]  # Replacement message table entries.
     webproxy: NotRequired[list[dict[str, Any]]]  # Replacement message table entries.
@@ -58,7 +58,7 @@ class ReplacemsgGroup:
         payload_dict: ReplacemsgGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
+        group_type: Literal[{"description": "Per-vdom replacement messages", "help": "Per-vdom replacement messages.", "label": "Default", "name": "default"}, {"description": "For use with UTM settings in firewall policies", "help": "For use with UTM settings in firewall policies.", "label": "Utm", "name": "utm"}, {"description": "For use with authentication pages in firewall policies", "help": "For use with authentication pages in firewall policies.", "label": "Auth", "name": "auth"}] | None = ...,
         mail: list[dict[str, Any]] | None = ...,
         http: list[dict[str, Any]] | None = ...,
         webproxy: list[dict[str, Any]] | None = ...,
@@ -85,7 +85,7 @@ class ReplacemsgGroup:
         payload_dict: ReplacemsgGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        group_type: Literal["default", "utm", "auth"] | None = ...,
+        group_type: Literal[{"description": "Per-vdom replacement messages", "help": "Per-vdom replacement messages.", "label": "Default", "name": "default"}, {"description": "For use with UTM settings in firewall policies", "help": "For use with UTM settings in firewall policies.", "label": "Utm", "name": "utm"}, {"description": "For use with authentication pages in firewall policies", "help": "For use with authentication pages in firewall policies.", "label": "Auth", "name": "auth"}] | None = ...,
         mail: list[dict[str, Any]] | None = ...,
         http: list[dict[str, Any]] | None = ...,
         webproxy: list[dict[str, Any]] | None = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Disconnect:
     """
-    Configuration for system/modem/disconnect
+    Trigger a disconnect for the configured modem.
     
     Path: system/modem/disconnect
     Category: monitor

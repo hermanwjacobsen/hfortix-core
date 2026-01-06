@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HourlyDiskUsage:
     """
-    Monitor endpoint for log/hourly-disk-usage
+    Return historic hourly disk usage in bytes.
     
     Path: log/hourly_disk_usage
     Category: monitor

@@ -56,7 +56,7 @@ class Firmware:
         """
         Retrieve system/firmware configuration.
 
-        Configuration for system/firmware
+        Retrieve a list of firmware images available to use for upgrade on this device.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

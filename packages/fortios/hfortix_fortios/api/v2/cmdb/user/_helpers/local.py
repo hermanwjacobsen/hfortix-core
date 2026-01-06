@@ -186,43 +186,43 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable user.
+    "disable",  # Disable user.
 ]
 VALID_BODY_TYPE = [
-    "password",
-    "radius",
-    "tacacs+",
-    "ldap",
-    "saml",
+    "password",  # Password authentication.
+    "radius",  # RADIUS server authentication.
+    "tacacs+",  # TACACS+ server authentication.
+    "ldap",  # LDAP server authentication.
+    "saml",  # SAML server authentication.
 ]
 VALID_BODY_TWO_FACTOR = [
-    "disable",
-    "fortitoken",
-    "fortitoken-cloud",
-    "email",
-    "sms",
+    "disable",  # disable
+    "fortitoken",  # FortiToken
+    "fortitoken-cloud",  # FortiToken Cloud Service.
+    "email",  # Email authentication code.
+    "sms",  # SMS authentication code.
 ]
 VALID_BODY_TWO_FACTOR_AUTHENTICATION = [
-    "fortitoken",
-    "email",
-    "sms",
+    "fortitoken",  # FortiToken authentication.
+    "email",  # Email one time password.
+    "sms",  # SMS one time password.
 ]
 VALID_BODY_TWO_FACTOR_NOTIFICATION = [
-    "email",
-    "sms",
+    "email",  # Email notification for activation code.
+    "sms",  # SMS notification for activation code.
 ]
 VALID_BODY_SMS_SERVER = [
-    "fortiguard",
-    "custom",
+    "fortiguard",  # Send SMS by FortiGuard.
+    "custom",  # Send SMS by custom server.
 ]
 VALID_BODY_AUTH_CONCURRENT_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable auth-concurrent-override.
+    "disable",  # Disable auth-concurrent-override.
 ]
 VALID_BODY_USERNAME_SENSITIVITY = [
-    "disable",
-    "enable",
+    "disable",  # Ignore case and accents. Username at prompt not required to match case or accents.
+    "enable",  # Do not ignore case and accents. Username at prompt must be an exact match.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -353,7 +353,7 @@ def validate_user_local_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "passwd": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable user.', 'label': 'Enable', 'description': 'Enable user'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_local_post(payload)
         >>> assert is_valid == True

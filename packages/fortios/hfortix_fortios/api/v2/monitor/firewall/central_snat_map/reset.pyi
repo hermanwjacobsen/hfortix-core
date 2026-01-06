@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for firewall/central-snat-map/reset
+    Reset traffic statistics for all firewall central SNAT policies.
     
     Path: firewall/central_snat_map/reset
     Category: monitor

@@ -24,7 +24,7 @@ from .city import City
 from .country import Country
 from .decrypted_traffic_mirror import DecryptedTrafficMirror
 from .dnstranslation import Dnstranslation
-from .global_setting import GlobalSetting
+from .global_ import Global
 from .identity_based_route import IdentityBasedRoute
 from .interface_policy import InterfacePolicy
 from .interface_policy6 import InterfacePolicy6
@@ -99,7 +99,7 @@ __all__ = [
     "DosPolicy",
     "DosPolicy6",
     "Firewall",
-    "GlobalSetting",
+    "Global",
     "IdentityBasedRoute",
     "InterfacePolicy",
     "InterfacePolicy6",
@@ -197,7 +197,7 @@ class Firewall:
         self.country = Country(client)
         self.decrypted_traffic_mirror = DecryptedTrafficMirror(client)
         self.dnstranslation = Dnstranslation(client)
-        self.global_setting = GlobalSetting(client)
+        self.global_ = Global(client)
         self.identity_based_route = IdentityBasedRoute(client)
         self.interface_policy = InterfacePolicy(client)
         self.interface_policy6 = InterfacePolicy6(client)

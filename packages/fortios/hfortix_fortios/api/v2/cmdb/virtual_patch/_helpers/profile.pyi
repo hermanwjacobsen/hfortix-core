@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SEVERITY: Literal["info", "low", "medium", "high", "critical"]
-VALID_BODY_ACTION: Literal["pass", "block"]
-VALID_BODY_LOG: Literal["enable", "disable"]
+VALID_BODY_SEVERITY: Literal[{"description": "info    low:low    medium:medium    high:high    critical:critical", "help": "info", "label": "Info", "name": "info"}, {"help": "low", "label": "Low", "name": "low"}, {"help": "medium", "label": "Medium", "name": "medium"}, {"help": "high", "label": "High", "name": "high"}, {"help": "critical", "label": "Critical", "name": "critical"}]
+VALID_BODY_ACTION: Literal[{"description": "Allows session that match the profile", "help": "Allows session that match the profile.", "label": "Pass", "name": "pass"}, {"description": "Blocks sessions that match the profile", "help": "Blocks sessions that match the profile.", "label": "Block", "name": "block"}]
+VALID_BODY_LOG: Literal[{"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}, {"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

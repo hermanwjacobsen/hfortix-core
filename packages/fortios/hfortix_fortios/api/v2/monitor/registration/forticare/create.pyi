@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Create:
     """
-    Configuration for registration/forticare/create
+    Create a new FortiCare account.
     
     Path: registration/forticare/create
     Category: monitor

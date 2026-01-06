@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InterfaceLog:
     """
-    Monitor endpoint for virtual-wan/interface-log
+    Retrieve log of SD-WAN interface quality information.
     
     Path: virtual_wan/interface_log
     Category: monitor

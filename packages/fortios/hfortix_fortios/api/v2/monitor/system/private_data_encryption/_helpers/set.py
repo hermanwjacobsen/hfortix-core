@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/private_data_encryption/set",
     "category": "monitor",
     "api_path": "system/private-data-encryption/set",
-    "help": "Configuration for system/private-data-encryption/set",
+    "help": "Sets private data encryption. To be deprecated and replaced by the CMDB REST API.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

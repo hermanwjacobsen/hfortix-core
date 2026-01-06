@@ -95,10 +95,10 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_IMAGE_TYPE = [
-    "gif",
-    "jpg",
-    "tiff",
-    "png",
+    "gif",  # GIF image.
+    "jpg",  # JPEG image.
+    "tiff",  # TIFF image.
+    "png",  # PNG image.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -226,7 +226,7 @@ def validate_system_replacemsg_image_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "image-type": "gif",  # Valid enum value
+        ...     "image-type": "{'name': 'gif', 'help': 'GIF image.', 'label': 'Gif', 'description': 'GIF image'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_replacemsg_image_post(payload)
         >>> assert is_valid == True

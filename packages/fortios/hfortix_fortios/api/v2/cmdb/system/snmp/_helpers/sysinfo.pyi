@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_ENGINE_ID_TYPE: Literal["text", "hex", "mac"]
-VALID_BODY_APPEND_INDEX: Literal["enable", "disable"]
-VALID_BODY_NON_MGMT_VDOM_QUERY: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ENGINE_ID_TYPE: Literal[{"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "Octets format", "help": "Octets format.", "label": "Hex", "name": "hex"}, {"description": "MAC address format", "help": "MAC address format.", "label": "Mac", "name": "mac"}]
+VALID_BODY_APPEND_INDEX: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_NON_MGMT_VDOM_QUERY: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

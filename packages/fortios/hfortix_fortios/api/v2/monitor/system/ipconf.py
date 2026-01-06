@@ -56,7 +56,7 @@ class Ipconf:
         """
         Retrieve system/ipconf configuration.
 
-        Configuration for system/ipconf
+        Determine if there is an IP conflict for a specific IP using ARP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

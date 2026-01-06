@@ -56,7 +56,7 @@ class Eject:
         """
         Retrieve system/usb_device/eject configuration.
 
-        Configuration for system/usb-device/eject
+        Eject USB drives for safe removal.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

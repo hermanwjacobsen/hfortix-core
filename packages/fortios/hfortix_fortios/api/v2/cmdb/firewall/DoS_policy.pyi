@@ -11,7 +11,7 @@ class DosPolicyPayload(TypedDict, total=False):
         }
     """
     policyid: NotRequired[int]  # Policy ID.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this policy.
+    status: NotRequired[Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable this policy.
     name: NotRequired[str]  # Policy name.
     comments: NotRequired[str]  # Comment.
     interface: str  # Incoming interface name from available interfaces.
@@ -47,7 +47,7 @@ class DosPolicy:
         self,
         payload_dict: DosPolicyPayload | None = ...,
         policyid: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
@@ -64,7 +64,7 @@ class DosPolicy:
         self,
         payload_dict: DosPolicyPayload | None = ...,
         policyid: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,

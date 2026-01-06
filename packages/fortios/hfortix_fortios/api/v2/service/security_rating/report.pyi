@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Report:
     """
-    Configuration for security-rating/report
+    Retrieve full report of all Security Rating tests.
     
     Path: security_rating/report
     Category: service

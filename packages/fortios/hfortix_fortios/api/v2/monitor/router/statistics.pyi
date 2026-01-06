@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Statistics:
     """
-    Configuration for router/statistics
+    Retrieve routing table statistics, including number of matched routes.
     
     Path: router/statistics
     Category: monitor

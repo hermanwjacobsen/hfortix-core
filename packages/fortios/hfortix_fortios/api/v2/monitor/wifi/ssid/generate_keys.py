@@ -56,7 +56,7 @@ class GenerateKeys:
         """
         Retrieve wifi/ssid/generate_keys configuration.
 
-        Configuration for wifi/ssid/generate-keys
+        Generate pre-shared keys for specific multi pre-shared key profile.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

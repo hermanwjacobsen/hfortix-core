@@ -11,9 +11,9 @@ class FastFallbackPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Configure a name for the fast-fallback entry.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the fast-fallback entry.
-    connection_mode: NotRequired[Literal["sequentially", "simultaneously"]]  # Connection mode for multiple destinations.
-    protocol: NotRequired[Literal["IPv4-first", "IPv6-first", "IPv4-only", "IPv6-only"]]  # Connection protocols for multiple destinations.
+    status: NotRequired[Literal[{"description": "Enable Status of the entry", "help": "Enable Status of the entry.", "label": "Enable", "name": "enable"}, {"description": "Disable Status of the entry", "help": "Disable Status of the entry.", "label": "Disable", "name": "disable"}]]  # Enable/disable the fast-fallback entry.
+    connection_mode: NotRequired[Literal[{"description": "Connect the different destinations sequentially", "help": "Connect the different destinations sequentially.", "label": "Sequentially", "name": "sequentially"}, {"description": "Connect the different destinations simultaneously", "help": "Connect the different destinations simultaneously.", "label": "Simultaneously", "name": "simultaneously"}]]  # Connection mode for multiple destinations.
+    protocol: NotRequired[Literal[{"description": "Connect IPv4 destinations first", "help": "Connect IPv4 destinations first.", "label": "Ipv4 First", "name": "IPv4-first"}, {"description": "Connect IPv6 destinations first", "help": "Connect IPv6 destinations first.", "label": "Ipv6 First", "name": "IPv6-first"}, {"description": "Connect IPv4 destinations only", "help": "Connect IPv4 destinations only.", "label": "Ipv4 Only", "name": "IPv4-only"}, {"description": "Connect IPv6 destinations only", "help": "Connect IPv6 destinations only.", "label": "Ipv6 Only", "name": "IPv6-only"}]]  # Connection protocols for multiple destinations.
     connection_timeout: NotRequired[int]  # Number of milliseconds to wait before starting another conne
 
 
@@ -43,9 +43,9 @@ class FastFallback:
         self,
         payload_dict: FastFallbackPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        connection_mode: Literal["sequentially", "simultaneously"] | None = ...,
-        protocol: Literal["IPv4-first", "IPv6-first", "IPv4-only", "IPv6-only"] | None = ...,
+        status: Literal[{"description": "Enable Status of the entry", "help": "Enable Status of the entry.", "label": "Enable", "name": "enable"}, {"description": "Disable Status of the entry", "help": "Disable Status of the entry.", "label": "Disable", "name": "disable"}] | None = ...,
+        connection_mode: Literal[{"description": "Connect the different destinations sequentially", "help": "Connect the different destinations sequentially.", "label": "Sequentially", "name": "sequentially"}, {"description": "Connect the different destinations simultaneously", "help": "Connect the different destinations simultaneously.", "label": "Simultaneously", "name": "simultaneously"}] | None = ...,
+        protocol: Literal[{"description": "Connect IPv4 destinations first", "help": "Connect IPv4 destinations first.", "label": "Ipv4 First", "name": "IPv4-first"}, {"description": "Connect IPv6 destinations first", "help": "Connect IPv6 destinations first.", "label": "Ipv6 First", "name": "IPv6-first"}, {"description": "Connect IPv4 destinations only", "help": "Connect IPv4 destinations only.", "label": "Ipv4 Only", "name": "IPv4-only"}, {"description": "Connect IPv6 destinations only", "help": "Connect IPv6 destinations only.", "label": "Ipv6 Only", "name": "IPv6-only"}] | None = ...,
         connection_timeout: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -56,9 +56,9 @@ class FastFallback:
         self,
         payload_dict: FastFallbackPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        connection_mode: Literal["sequentially", "simultaneously"] | None = ...,
-        protocol: Literal["IPv4-first", "IPv6-first", "IPv4-only", "IPv6-only"] | None = ...,
+        status: Literal[{"description": "Enable Status of the entry", "help": "Enable Status of the entry.", "label": "Enable", "name": "enable"}, {"description": "Disable Status of the entry", "help": "Disable Status of the entry.", "label": "Disable", "name": "disable"}] | None = ...,
+        connection_mode: Literal[{"description": "Connect the different destinations sequentially", "help": "Connect the different destinations sequentially.", "label": "Sequentially", "name": "sequentially"}, {"description": "Connect the different destinations simultaneously", "help": "Connect the different destinations simultaneously.", "label": "Simultaneously", "name": "simultaneously"}] | None = ...,
+        protocol: Literal[{"description": "Connect IPv4 destinations first", "help": "Connect IPv4 destinations first.", "label": "Ipv4 First", "name": "IPv4-first"}, {"description": "Connect IPv6 destinations first", "help": "Connect IPv6 destinations first.", "label": "Ipv6 First", "name": "IPv6-first"}, {"description": "Connect IPv4 destinations only", "help": "Connect IPv4 destinations only.", "label": "Ipv4 Only", "name": "IPv4-only"}, {"description": "Connect IPv6 destinations only", "help": "Connect IPv6 destinations only.", "label": "Ipv6 Only", "name": "IPv6-only"}] | None = ...,
         connection_timeout: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

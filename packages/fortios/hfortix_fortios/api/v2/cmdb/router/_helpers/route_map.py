@@ -105,7 +105,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Action.",
             "default": "permit",
-            "options": ["permit", "deny"],
+            "options": [{"help": "Permit.", "label": "Permit", "name": "permit"}, {"help": "Deny.", "label": "Deny", "name": "deny"}],
         },
         "match-as-path": {
             "type": "string",
@@ -129,19 +129,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable exact matching of communities.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable exact matching of communities.", "label": "Enable", "name": "enable"}, {"help": "Disable exact matching of communities.", "label": "Disable", "name": "disable"}],
         },
         "match-extcommunity-exact": {
             "type": "option",
             "help": "Enable/disable exact matching of extended communities.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable exact matching of extended communities.", "label": "Enable", "name": "enable"}, {"help": "Disable exact matching of extended communities.", "label": "Disable", "name": "disable"}],
         },
         "match-origin": {
             "type": "option",
             "help": "Match BGP origin code.",
             "default": "none",
-            "options": ["none", "egp", "igp", "incomplete"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Remote EGP.", "label": "Egp", "name": "egp"}, {"help": "Local IGP.", "label": "Igp", "name": "igp"}, {"help": "Unknown heritage.", "label": "Incomplete", "name": "incomplete"}],
         },
         "match-interface": {
             "type": "string",
@@ -184,7 +184,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Match route type.",
             "default": "",
-            "options": ["external-type1", "external-type2", "none"],
+            "options": [{"help": "External type 1.", "label": "External Type1", "name": "external-type1"}, {"help": "External type 2.", "label": "External Type2", "name": "external-type2"}, {"help": "No type specified.", "label": "None", "name": "none"}],
         },
         "match-tag": {
             "type": "integer",
@@ -199,6 +199,12 @@ NESTED_SCHEMAS = {
             "default": "",
             "min_value": 0,
             "max_value": 511,
+        },
+        "match-suppress": {
+            "type": "option",
+            "help": "Enable/disable matching of suppressed original neighbor.",
+            "default": "disable",
+            "options": [{"help": "Enable matching of suppressed original neighbor.", "label": "Enable", "name": "enable"}, {"help": "Disable matching of suppressed original neighbor.", "label": "Disable", "name": "disable"}],
         },
         "set-aggregator-as": {
             "type": "integer",
@@ -217,7 +223,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Specify preferred action of set-aspath.",
             "default": "prepend",
-            "options": ["prepend", "replace"],
+            "options": [{"help": "Prepend.", "label": "Prepend", "name": "prepend"}, {"help": "Replace.", "label": "Replace", "name": "replace"}],
         },
         "set-aspath": {
             "type": "string",
@@ -227,7 +233,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable BGP atomic aggregate attribute.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable BGP atomic aggregate attribute.", "label": "Enable", "name": "enable"}, {"help": "Disable BGP atomic aggregate attribute.", "label": "Disable", "name": "disable"}],
         },
         "set-community-delete": {
             "type": "string",
@@ -243,7 +249,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable adding set-community to existing community.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable adding set-community to existing community.", "label": "Enable", "name": "enable"}, {"help": "Disable adding set-community to existing community.", "label": "Disable", "name": "disable"}],
         },
         "set-dampening-reachability-half-life": {
             "type": "integer",
@@ -341,7 +347,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Metric type.",
             "default": "",
-            "options": ["external-type1", "external-type2", "none"],
+            "options": [{"help": "External type 1.", "label": "External Type1", "name": "external-type1"}, {"help": "External type 2.", "label": "External Type2", "name": "external-type2"}, {"help": "No type specified.", "label": "None", "name": "none"}],
         },
         "set-originator-id": {
             "type": "ipv4-address-any",
@@ -352,7 +358,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "BGP origin code.",
             "default": "none",
-            "options": ["none", "egp", "igp", "incomplete"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Remote EGP.", "label": "Egp", "name": "egp"}, {"help": "Local IGP.", "label": "Igp", "name": "igp"}, {"help": "Unknown heritage.", "label": "Incomplete", "name": "incomplete"}],
         },
         "set-tag": {
             "type": "integer",

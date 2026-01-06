@@ -1,6 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_STATUS: Literal[{"description": "Enable Sovereign SASE", "help": "Enable Sovereign SASE.", "label": "Enable", "name": "enable"}, {"description": "Disable Sovereign SASE", "help": "Disable Sovereign SASE.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -23,6 +24,7 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_STATUS",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ReverseIpLookup:
     """
-    Configuration for network/reverse-ip-lookup
+    Retrieve the resolved DNS domain name for a given IP address.
     
     Path: network/reverse_ip_lookup
     Category: monitor

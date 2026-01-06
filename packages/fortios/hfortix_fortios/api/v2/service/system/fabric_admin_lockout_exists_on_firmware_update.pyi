@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FabricAdminLockoutExistsOnFirmwareUpdate:
     """
-    Configuration for system/fabric-admin-lockout-exists-on-firmware-update
+    Check if there exists a FortiGate in the Fabric that has an administrative user that will get locked out if firmware is updated to a version that does not support safer passwords.
     
     Path: system/fabric_admin_lockout_exists_on_firmware_update
     Category: service

@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_CONNECTION_MODE: Literal["sequentially", "simultaneously"]
-VALID_BODY_PROTOCOL: Literal["IPv4-first", "IPv6-first", "IPv4-only", "IPv6-only"]
+VALID_BODY_STATUS: Literal[{"description": "Enable Status of the entry", "help": "Enable Status of the entry.", "label": "Enable", "name": "enable"}, {"description": "Disable Status of the entry", "help": "Disable Status of the entry.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CONNECTION_MODE: Literal[{"description": "Connect the different destinations sequentially", "help": "Connect the different destinations sequentially.", "label": "Sequentially", "name": "sequentially"}, {"description": "Connect the different destinations simultaneously", "help": "Connect the different destinations simultaneously.", "label": "Simultaneously", "name": "simultaneously"}]
+VALID_BODY_PROTOCOL: Literal[{"description": "Connect IPv4 destinations first", "help": "Connect IPv4 destinations first.", "label": "Ipv4 First", "name": "IPv4-first"}, {"description": "Connect IPv6 destinations first", "help": "Connect IPv6 destinations first.", "label": "Ipv6 First", "name": "IPv6-first"}, {"description": "Connect IPv4 destinations only", "help": "Connect IPv4 destinations only.", "label": "Ipv4 Only", "name": "IPv4-only"}, {"description": "Connect IPv6 destinations only", "help": "Connect IPv6 destinations only.", "label": "Ipv6 Only", "name": "IPv6-only"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

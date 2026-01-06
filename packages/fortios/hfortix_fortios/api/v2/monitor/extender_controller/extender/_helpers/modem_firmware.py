@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "extender_controller/extender/modem_firmware",
     "category": "monitor",
     "api_path": "extender-controller/extender/modem-firmware",
-    "help": "Configuration for extender-controller/extender/modem-firmware",
+    "help": "List all available FortiExtender modem firmware images on FortiCloud.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

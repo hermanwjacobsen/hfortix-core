@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/policy/reset",
     "category": "monitor",
     "api_path": "firewall/policy/reset",
-    "help": "Configuration for firewall/policy/reset",
+    "help": "Reset traffic statistics for all firewall policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

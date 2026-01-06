@@ -56,7 +56,7 @@ class RegisterDevice:
         """
         Retrieve registration/forticloud/register_device configuration.
 
-        Configuration for registration/forticloud/register-device
+        Register a device to FortiCloud through FortiGate. Currently FortiSwitches, FortiAPs and FortiExtenders are supported.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

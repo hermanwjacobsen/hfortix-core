@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ManualUpdate:
     """
-    Configuration for system/fortiguard/manual-update
+    Manually update entitlements.
     
     Path: system/fortiguard/manual_update
     Category: monitor

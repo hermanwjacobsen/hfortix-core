@@ -56,7 +56,7 @@ class ConfigScript:
         """
         Retrieve system/config_script configuration.
 
-        Configuration for system/config-script
+        Retrieve the information about config scripts.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

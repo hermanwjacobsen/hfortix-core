@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Override:
     """
-    Monitor endpoint for webfilter/override
+    List all administrative and user initiated webfilter overrides.
     
     Path: webfilter/override
     Category: monitor

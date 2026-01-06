@@ -119,8 +119,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FABRIC_OBJECT = [
-    "enable",
-    "disable",
+    "enable",  # Object is set as a security fabric-wide global object.
+    "disable",  # Object is local to this security fabric member.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -251,7 +251,7 @@ def validate_firewall_schedule_onetime_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "fabric-object": "enable",  # Valid enum value
+        ...     "fabric-object": "{'name': 'enable', 'help': 'Object is set as a security fabric-wide global object.', 'label': 'Enable', 'description': 'Object is set as a security fabric-wide global object'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_schedule_onetime_post(payload)
         >>> assert is_valid == True

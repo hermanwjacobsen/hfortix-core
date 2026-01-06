@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "ips/hold_signatures",
     "category": "monitor",
     "api_path": "ips/hold-signatures",
-    "help": "Monitor endpoint for ips/hold-signatures",
+    "help": "Return a list of IPS signatures that are on hold due to active hold time.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

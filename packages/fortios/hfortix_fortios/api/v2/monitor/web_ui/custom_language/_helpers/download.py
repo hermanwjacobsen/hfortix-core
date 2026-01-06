@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "web_ui/custom_language/download",
     "category": "monitor",
     "api_path": "web-ui/custom-language/download",
-    "help": "Configuration for web-ui/custom-language/download",
+    "help": "Download a custom language file.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

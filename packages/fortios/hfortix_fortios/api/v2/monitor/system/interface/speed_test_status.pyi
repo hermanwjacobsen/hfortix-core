@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SpeedTestStatus:
     """
-    Configuration for system/interface/speed-test-status
+    Retrieve the current status of a speed-test with the results if finished.
     
     Path: system/interface/speed_test_status
     Category: monitor

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TunnelUp:
     """
-    Configuration for vpn/ipsec/tunnel_up
+    Bring up a specific IPsec VPN tunnel.
     
     Path: vpn/ipsec/tunnel_up
     Category: monitor

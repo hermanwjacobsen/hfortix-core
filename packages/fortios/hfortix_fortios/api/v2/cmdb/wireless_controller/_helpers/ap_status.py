@@ -100,9 +100,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "rogue",
-    "accepted",
-    "suppressed",
+    "rogue",  # Rogue AP.
+    "accepted",  # Accepted AP.
+    "suppressed",  # Suppressed AP.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -230,7 +230,7 @@ def validate_wireless_controller_ap_status_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "rogue",  # Valid enum value
+        ...     "status": "{'name': 'rogue', 'help': 'Rogue AP.', 'label': 'Rogue', 'description': 'Rogue AP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_ap_status_post(payload)
         >>> assert is_valid == True

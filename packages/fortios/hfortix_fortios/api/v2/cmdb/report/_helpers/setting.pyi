@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PDF_REPORT: Literal["enable", "disable"]
-VALID_BODY_FORTIVIEW: Literal["enable", "disable"]
-VALID_BODY_REPORT_SOURCE: Literal["forward-traffic", "sniffer-traffic", "local-deny-traffic"]
+VALID_BODY_PDF_REPORT: Literal[{"description": "Enable PDF report", "help": "Enable PDF report.", "label": "Enable", "name": "enable"}, {"description": "Disable PDF report", "help": "Disable PDF report.", "label": "Disable", "name": "disable"}]
+VALID_BODY_FORTIVIEW: Literal[{"description": "Enable historical FortiView", "help": "Enable historical FortiView.", "label": "Enable", "name": "enable"}, {"description": "Disable historical FortiView", "help": "Disable historical FortiView.", "label": "Disable", "name": "disable"}]
+VALID_BODY_REPORT_SOURCE: Literal[{"description": "Report includes forward traffic logs", "help": "Report includes forward traffic logs.", "label": "Forward Traffic", "name": "forward-traffic"}, {"description": "Report includes sniffer traffic logs", "help": "Report includes sniffer traffic logs.", "label": "Sniffer Traffic", "name": "sniffer-traffic"}, {"description": "Report includes local deny traffic logs", "help": "Report includes local deny traffic logs.", "label": "Local Deny Traffic", "name": "local-deny-traffic"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

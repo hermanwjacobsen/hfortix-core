@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/address6_dynamic",
     "category": "monitor",
     "api_path": "firewall/address6-dynamic",
-    "help": "Configuration for firewall/address6-dynamic",
+    "help": "List of IPv6 Fabric Connector address objects and the IPs they resolve to.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

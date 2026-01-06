@@ -56,7 +56,7 @@ class SetStatus:
         """
         Retrieve wifi/managed_ap/set_status configuration.
 
-        Configuration for wifi/managed_ap/set_status
+        Update administrative state for a given FortiAP (enable or disable authorization).
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

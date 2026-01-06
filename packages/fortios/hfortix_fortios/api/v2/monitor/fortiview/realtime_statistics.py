@@ -56,7 +56,7 @@ class RealtimeStatistics:
         """
         Retrieve fortiview/realtime_statistics configuration.
 
-        Configuration for fortiview/realtime-statistics
+        Retrieve realtime drill-down and summary data for FortiView.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

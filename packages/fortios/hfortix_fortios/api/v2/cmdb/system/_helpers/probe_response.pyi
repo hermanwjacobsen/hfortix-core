@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TTL_MODE: Literal["reinit", "decrease", "retain"]
-VALID_BODY_MODE: Literal["none", "http-probe", "twamp"]
-VALID_BODY_SECURITY_MODE: Literal["none", "authentication"]
+VALID_BODY_TTL_MODE: Literal[{"description": "Reinitialize TTL", "help": "Reinitialize TTL.", "label": "Reinit", "name": "reinit"}, {"description": "Decrease TTL", "help": "Decrease TTL.", "label": "Decrease", "name": "decrease"}, {"description": "Retain TTL", "help": "Retain TTL.", "label": "Retain", "name": "retain"}]
+VALID_BODY_MODE: Literal[{"description": "Disable probe", "help": "Disable probe.", "label": "None", "name": "none"}, {"description": "HTTP probe", "help": "HTTP probe.", "label": "Http Probe", "name": "http-probe"}, {"description": "Two way active measurement protocol", "help": "Two way active measurement protocol.", "label": "Twamp", "name": "twamp"}]
+VALID_BODY_SECURITY_MODE: Literal[{"description": "Unauthenticated mode", "help": "Unauthenticated mode.", "label": "None", "name": "none"}, {"description": "Authenticated mode", "help": "Authenticated mode.", "label": "Authentication", "name": "authentication"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

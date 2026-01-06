@@ -56,7 +56,7 @@ class ClearAll:
         """
         Retrieve wifi/rogue_ap/clear_all configuration.
 
-        Configuration for wifi/rogue_ap/clear_all
+        Clear all detected rogue APs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

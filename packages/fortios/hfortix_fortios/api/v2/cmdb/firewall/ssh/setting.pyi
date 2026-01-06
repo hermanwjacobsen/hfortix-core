@@ -18,7 +18,7 @@ class SettingPayload(TypedDict, total=False):
     hostkey_ecdsa384: NotRequired[str]  # ECDSA nid384 certificate used by SSH proxy.
     hostkey_ecdsa521: NotRequired[str]  # ECDSA nid384 certificate used by SSH proxy.
     hostkey_ed25519: NotRequired[str]  # ED25519 hostkey used by SSH proxy.
-    host_trusted_checking: NotRequired[Literal["enable", "disable"]]  # Enable/disable host trusted checking.
+    host_trusted_checking: NotRequired[Literal[{"description": "Enable host key trusted checking", "help": "Enable host key trusted checking.", "label": "Enable", "name": "enable"}, {"description": "Disable host key trusted checking", "help": "Disable host key trusted checking.", "label": "Disable", "name": "disable"}]]  # Enable/disable host trusted checking.
 
 
 class Setting:
@@ -53,7 +53,7 @@ class Setting:
         hostkey_ecdsa384: str | None = ...,
         hostkey_ecdsa521: str | None = ...,
         hostkey_ed25519: str | None = ...,
-        host_trusted_checking: Literal["enable", "disable"] | None = ...,
+        host_trusted_checking: Literal[{"description": "Enable host key trusted checking", "help": "Enable host key trusted checking.", "label": "Enable", "name": "enable"}, {"description": "Disable host key trusted checking", "help": "Disable host key trusted checking.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -70,7 +70,7 @@ class Setting:
         hostkey_ecdsa384: str | None = ...,
         hostkey_ecdsa521: str | None = ...,
         hostkey_ed25519: str | None = ...,
-        host_trusted_checking: Literal["enable", "disable"] | None = ...,
+        host_trusted_checking: Literal[{"description": "Enable host key trusted checking", "help": "Enable host key trusted checking.", "label": "Enable", "name": "enable"}, {"description": "Disable host key trusted checking", "help": "Disable host key trusted checking.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/modem/disconnect",
     "category": "monitor",
     "api_path": "system/modem/disconnect",
-    "help": "Configuration for system/modem/disconnect",
+    "help": "Trigger a disconnect for the configured modem.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

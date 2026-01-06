@@ -113,8 +113,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_UNAVAIL_ACTION = [
-    "revoke",
-    "ignore",
+    "revoke",  # Revoke certificate if server is unavailable.
+    "ignore",  # Ignore OCSP check if server is unavailable.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -242,7 +242,7 @@ def validate_vpn_certificate_ocsp_server_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "unavail-action": "revoke",  # Valid enum value
+        ...     "unavail-action": "{'name': 'revoke', 'help': 'Revoke certificate if server is unavailable.', 'label': 'Revoke', 'description': 'Revoke certificate if server is unavailable'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_certificate_ocsp_server_post(payload)
         >>> assert is_valid == True

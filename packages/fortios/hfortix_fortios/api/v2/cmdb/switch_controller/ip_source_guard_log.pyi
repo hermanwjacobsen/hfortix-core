@@ -10,7 +10,7 @@ class IpSourceGuardLogPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    log_violations: NotRequired[Literal["enable", "disable"]]  # Enable/Disable log violations for IP source guard logging.
+    log_violations: NotRequired[Literal[{"description": "Enable log violations for IP source guard logging", "help": "Enable log violations for IP source guard logging.", "label": "Enable", "name": "enable"}, {"description": "Disable log violations for IP source guard logging", "help": "Disable log violations for IP source guard logging.", "label": "Disable", "name": "disable"}]]  # Enable/Disable log violations for IP source guard logging.
     violation_timer: NotRequired[int]  # IP source gurad log violation timer in seconds (0 - 1500, de
 
 
@@ -38,7 +38,7 @@ class IpSourceGuardLog:
     def post(
         self,
         payload_dict: IpSourceGuardLogPayload | None = ...,
-        log_violations: Literal["enable", "disable"] | None = ...,
+        log_violations: Literal[{"description": "Enable log violations for IP source guard logging", "help": "Enable log violations for IP source guard logging.", "label": "Enable", "name": "enable"}, {"description": "Disable log violations for IP source guard logging", "help": "Disable log violations for IP source guard logging.", "label": "Disable", "name": "disable"}] | None = ...,
         violation_timer: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -48,7 +48,7 @@ class IpSourceGuardLog:
     def put(
         self,
         payload_dict: IpSourceGuardLogPayload | None = ...,
-        log_violations: Literal["enable", "disable"] | None = ...,
+        log_violations: Literal[{"description": "Enable log violations for IP source guard logging", "help": "Enable log violations for IP source guard logging.", "label": "Enable", "name": "enable"}, {"description": "Disable log violations for IP source guard logging", "help": "Disable log violations for IP source guard logging.", "label": "Disable", "name": "disable"}] | None = ...,
         violation_timer: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -11,8 +11,8 @@ class QueuePolicyPayload(TypedDict, total=False):
         }
     """
     name: str  # QoS policy name.
-    schedule: Literal["strict", "round-robin", "weighted"]  # COS queue scheduling.
-    rate_by: Literal["kbps", "percent"]  # COS queue rate by kbps or percent.
+    schedule: Literal[{"description": "Strict scheduling (queue7: highest priority, queue0: lowest priority)", "help": "Strict scheduling (queue7: highest priority, queue0: lowest priority).", "label": "Strict", "name": "strict"}, {"description": "Round robin scheduling", "help": "Round robin scheduling.", "label": "Round Robin", "name": "round-robin"}, {"description": "Weighted round robin scheduling", "help": "Weighted round robin scheduling.", "label": "Weighted", "name": "weighted"}]  # COS queue scheduling.
+    rate_by: Literal[{"description": "Rate by kbps", "help": "Rate by kbps.", "label": "Kbps", "name": "kbps"}, {"description": "Rate by percent", "help": "Rate by percent.", "label": "Percent", "name": "percent"}]  # COS queue rate by kbps or percent.
     cos_queue: NotRequired[list[dict[str, Any]]]  # COS queue configuration.
 
 
@@ -42,8 +42,8 @@ class QueuePolicy:
         self,
         payload_dict: QueuePolicyPayload | None = ...,
         name: str | None = ...,
-        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
-        rate_by: Literal["kbps", "percent"] | None = ...,
+        schedule: Literal[{"description": "Strict scheduling (queue7: highest priority, queue0: lowest priority)", "help": "Strict scheduling (queue7: highest priority, queue0: lowest priority).", "label": "Strict", "name": "strict"}, {"description": "Round robin scheduling", "help": "Round robin scheduling.", "label": "Round Robin", "name": "round-robin"}, {"description": "Weighted round robin scheduling", "help": "Weighted round robin scheduling.", "label": "Weighted", "name": "weighted"}] | None = ...,
+        rate_by: Literal[{"description": "Rate by kbps", "help": "Rate by kbps.", "label": "Kbps", "name": "kbps"}, {"description": "Rate by percent", "help": "Rate by percent.", "label": "Percent", "name": "percent"}] | None = ...,
         cos_queue: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -54,8 +54,8 @@ class QueuePolicy:
         self,
         payload_dict: QueuePolicyPayload | None = ...,
         name: str | None = ...,
-        schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
-        rate_by: Literal["kbps", "percent"] | None = ...,
+        schedule: Literal[{"description": "Strict scheduling (queue7: highest priority, queue0: lowest priority)", "help": "Strict scheduling (queue7: highest priority, queue0: lowest priority).", "label": "Strict", "name": "strict"}, {"description": "Round robin scheduling", "help": "Round robin scheduling.", "label": "Round Robin", "name": "round-robin"}, {"description": "Weighted round robin scheduling", "help": "Weighted round robin scheduling.", "label": "Weighted", "name": "weighted"}] | None = ...,
+        rate_by: Literal[{"description": "Rate by kbps", "help": "Rate by kbps.", "label": "Kbps", "name": "kbps"}, {"description": "Rate by percent", "help": "Rate by percent.", "label": "Percent", "name": "percent"}] | None = ...,
         cos_queue: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -126,28 +126,28 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTHENTICATION = [
-    "null",
-    "md5",
-    "sha1",
-    "sha256",
-    "sha384",
-    "sha512",
+    "null",  # Null.
+    "md5",  # MD5.
+    "sha1",  # SHA1.
+    "sha256",  # SHA256.
+    "sha384",  # SHA384.
+    "sha512",  # SHA512.
 ]
 VALID_BODY_ENCRYPTION = [
-    "null",
-    "des",
-    "3des",
-    "aes128",
-    "aes192",
-    "aes256",
-    "aria128",
-    "aria192",
-    "aria256",
-    "seed",
+    "null",  # Null.
+    "des",  # DES.
+    "3des",  # 3DES.
+    "aes128",  # AES128.
+    "aes192",  # AES192.
+    "aes256",  # AES256.
+    "aria128",  # ARIA128.
+    "aria192",  # ARIA192.
+    "aria256",  # ARIA256.
+    "seed",  # Seed.
 ]
 VALID_BODY_NPU_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable NPU offloading.
+    "disable",  # Disable NPU offloading.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -278,7 +278,7 @@ def validate_vpn_ipsec_manualkey_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "authentication": "null",  # Valid enum value
+        ...     "authentication": "{'name': 'null', 'help': 'Null.', 'label': 'Null', 'description': 'Null'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_vpn_ipsec_manualkey_post(payload)
         >>> assert is_valid == True

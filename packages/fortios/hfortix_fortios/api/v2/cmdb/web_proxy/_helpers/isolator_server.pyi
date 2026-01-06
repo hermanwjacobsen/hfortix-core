@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ADDR_TYPE: Literal["ip", "ipv6", "fqdn"]
-VALID_BODY_INTERFACE_SELECT_METHOD: Literal["sdwan", "specify"]
-VALID_BODY_MASQUERADE: Literal["enable", "disable"]
+VALID_BODY_ADDR_TYPE: Literal[{"description": "Use an IPv4 address for the forwarding proxy server", "help": "Use an IPv4 address for the forwarding proxy server.", "label": "Ip", "name": "ip"}, {"description": "Use an IPv6 address for the forwarding proxy server", "help": "Use an IPv6 address for the forwarding proxy server.", "label": "Ipv6", "name": "ipv6"}, {"description": "Use the FQDN for the forwarding proxy server", "help": "Use the FQDN for the forwarding proxy server.", "label": "Fqdn", "name": "fqdn"}]
+VALID_BODY_INTERFACE_SELECT_METHOD: Literal[{"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]
+VALID_BODY_MASQUERADE: Literal[{"help": "Enable use of the IP address of the outgoing interface as the client IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable use of the IP address of the outgoing interface as the client IP address", "help": "Disable use of the IP address of the outgoing interface as the client IP address.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/network/status",
     "category": "monitor",
     "api_path": "wifi/network/status",
-    "help": "Configuration for wifi/network/status",
+    "help": "When FortiWiFi is in client mode, retrieve status of currently connected WiFi network, if any.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -11,11 +11,11 @@ class DnsServerPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # DNS server name.
-    mode: NotRequired[Literal["recursive", "non-recursive", "forward-only", "resolver"]]  # DNS server mode.
+    mode: NotRequired[Literal[{"description": "Shadow DNS database and forward", "help": "Shadow DNS database and forward.", "label": "Recursive", "name": "recursive"}, {"description": "Public DNS database only", "help": "Public DNS database only.", "label": "Non Recursive", "name": "non-recursive"}, {"description": "Forward only", "help": "Forward only.", "label": "Forward Only", "name": "forward-only"}, {"description": "Recursive resolver mode", "help": "Recursive resolver mode.", "label": "Resolver", "name": "resolver"}]]  # DNS server mode.
     dnsfilter_profile: NotRequired[str]  # DNS filter profile.
-    doh: NotRequired[Literal["enable", "disable"]]  # Enable/disable DNS over HTTPS/443 (default = disable).
-    doh3: NotRequired[Literal["enable", "disable"]]  # Enable/disable DNS over QUIC/HTTP3/443 (default = disable).
-    doq: NotRequired[Literal["enable", "disable"]]  # Enable/disable DNS over QUIC/853 (default = disable).
+    doh: NotRequired[Literal[{"description": "Enable DNS over HTTPS", "help": "Enable DNS over HTTPS.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTPS", "help": "Disable DNS over HTTPS.", "label": "Disable", "name": "disable"}]]  # Enable/disable DNS over HTTPS/443 (default = disable).
+    doh3: NotRequired[Literal[{"description": "Enable DNS over HTTP3/QUIC", "help": "Enable DNS over HTTP3/QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTP3/QUIC", "help": "Disable DNS over HTTP3/QUIC.", "label": "Disable", "name": "disable"}]]  # Enable/disable DNS over QUIC/HTTP3/443 (default = disable).
+    doq: NotRequired[Literal[{"description": "Enable DNS over QUIC", "help": "Enable DNS over QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over QUIC", "help": "Disable DNS over QUIC.", "label": "Disable", "name": "disable"}]]  # Enable/disable DNS over QUIC/853 (default = disable).
 
 
 class DnsServer:
@@ -44,11 +44,11 @@ class DnsServer:
         self,
         payload_dict: DnsServerPayload | None = ...,
         name: str | None = ...,
-        mode: Literal["recursive", "non-recursive", "forward-only", "resolver"] | None = ...,
+        mode: Literal[{"description": "Shadow DNS database and forward", "help": "Shadow DNS database and forward.", "label": "Recursive", "name": "recursive"}, {"description": "Public DNS database only", "help": "Public DNS database only.", "label": "Non Recursive", "name": "non-recursive"}, {"description": "Forward only", "help": "Forward only.", "label": "Forward Only", "name": "forward-only"}, {"description": "Recursive resolver mode", "help": "Recursive resolver mode.", "label": "Resolver", "name": "resolver"}] | None = ...,
         dnsfilter_profile: str | None = ...,
-        doh: Literal["enable", "disable"] | None = ...,
-        doh3: Literal["enable", "disable"] | None = ...,
-        doq: Literal["enable", "disable"] | None = ...,
+        doh: Literal[{"description": "Enable DNS over HTTPS", "help": "Enable DNS over HTTPS.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTPS", "help": "Disable DNS over HTTPS.", "label": "Disable", "name": "disable"}] | None = ...,
+        doh3: Literal[{"description": "Enable DNS over HTTP3/QUIC", "help": "Enable DNS over HTTP3/QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTP3/QUIC", "help": "Disable DNS over HTTP3/QUIC.", "label": "Disable", "name": "disable"}] | None = ...,
+        doq: Literal[{"description": "Enable DNS over QUIC", "help": "Enable DNS over QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over QUIC", "help": "Disable DNS over QUIC.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -58,11 +58,11 @@ class DnsServer:
         self,
         payload_dict: DnsServerPayload | None = ...,
         name: str | None = ...,
-        mode: Literal["recursive", "non-recursive", "forward-only", "resolver"] | None = ...,
+        mode: Literal[{"description": "Shadow DNS database and forward", "help": "Shadow DNS database and forward.", "label": "Recursive", "name": "recursive"}, {"description": "Public DNS database only", "help": "Public DNS database only.", "label": "Non Recursive", "name": "non-recursive"}, {"description": "Forward only", "help": "Forward only.", "label": "Forward Only", "name": "forward-only"}, {"description": "Recursive resolver mode", "help": "Recursive resolver mode.", "label": "Resolver", "name": "resolver"}] | None = ...,
         dnsfilter_profile: str | None = ...,
-        doh: Literal["enable", "disable"] | None = ...,
-        doh3: Literal["enable", "disable"] | None = ...,
-        doq: Literal["enable", "disable"] | None = ...,
+        doh: Literal[{"description": "Enable DNS over HTTPS", "help": "Enable DNS over HTTPS.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTPS", "help": "Disable DNS over HTTPS.", "label": "Disable", "name": "disable"}] | None = ...,
+        doh3: Literal[{"description": "Enable DNS over HTTP3/QUIC", "help": "Enable DNS over HTTP3/QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over HTTP3/QUIC", "help": "Disable DNS over HTTP3/QUIC.", "label": "Disable", "name": "disable"}] | None = ...,
+        doq: Literal[{"description": "Enable DNS over QUIC", "help": "Enable DNS over QUIC.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS over QUIC", "help": "Disable DNS over QUIC.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Status:
     """
-    Configuration for endpoint-control/ems/status
+    Retrieve EMS connection status for a specific EMS.
     
     Path: endpoint_control/ems/status
     Category: monitor

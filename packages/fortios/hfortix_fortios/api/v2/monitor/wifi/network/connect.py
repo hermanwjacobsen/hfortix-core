@@ -56,7 +56,7 @@ class Connect:
         """
         Retrieve wifi/network/connect configuration.
 
-        Configuration for wifi/network/connect
+        When FortiWiFi is in client mode, connect to the specified network, if configured in the 'wifi' interface.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

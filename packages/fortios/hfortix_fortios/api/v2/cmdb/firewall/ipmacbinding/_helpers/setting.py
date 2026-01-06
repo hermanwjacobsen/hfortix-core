@@ -95,16 +95,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_BINDTHROUGHFW = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP/MAC binding for packets that would normally go through the firewall.
+    "disable",  # Disable IP/MAC binding for packets that would normally go through the firewall.
 ]
 VALID_BODY_BINDTOFW = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP/MAC binding for packets that would normally go to the firewall.
+    "disable",  # Disable IP/MAC binding for packets that would normally go to the firewall.
 ]
 VALID_BODY_UNDEFINEDHOST = [
-    "allow",
-    "block",
+    "allow",  # Allow packets from MAC addresses not in the IP/MAC list.
+    "block",  # Block packets from MAC addresses not in the IP/MAC list.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -229,7 +229,7 @@ def validate_firewall_ipmacbinding_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "bindthroughfw": "enable",  # Valid enum value
+        ...     "bindthroughfw": "{'name': 'enable', 'help': 'Enable IP/MAC binding for packets that would normally go through the firewall.', 'label': 'Enable', 'description': 'Enable IP/MAC binding for packets that would normally go through the firewall'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ipmacbinding_setting_post(payload)
         >>> assert is_valid == True

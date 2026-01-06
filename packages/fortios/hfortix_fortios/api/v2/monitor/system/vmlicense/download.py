@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve system/vmlicense/download configuration.
 
-        Configuration for system/vmlicense/download
+        Download Flex-VM license and reboot immediately if successful.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

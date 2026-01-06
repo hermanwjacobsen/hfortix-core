@@ -14,9 +14,10 @@ class RecurringPayload(TypedDict, total=False):
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
     start: str  # Time of day to start the schedule, format hh:mm.
     end: str  # Time of day to end the schedule, format hh:mm.
-    day: NotRequired[Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"]]  # One or more days of the week on which the schedule is valid.
+    day: NotRequired[Literal[{"description": "Sunday", "help": "Sunday.", "label": "Sunday", "name": "sunday"}, {"description": "Monday", "help": "Monday.", "label": "Monday", "name": "monday"}, {"description": "Tuesday", "help": "Tuesday.", "label": "Tuesday", "name": "tuesday"}, {"description": "Wednesday", "help": "Wednesday.", "label": "Wednesday", "name": "wednesday"}, {"description": "Thursday", "help": "Thursday.", "label": "Thursday", "name": "thursday"}, {"description": "Friday", "help": "Friday.", "label": "Friday", "name": "friday"}, {"description": "Saturday", "help": "Saturday.", "label": "Saturday", "name": "saturday"}, {"description": "None", "help": "None.", "label": "None", "name": "none"}]]  # One or more days of the week on which the schedule is valid.
+    label_day: NotRequired[Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "1 AM - 4 AM    early-morning:4 AM - 7 AM", "help": "1 AM - 4 AM", "label": "Over Night", "name": "over-night"}, {"help": "4 AM - 7 AM.", "label": "Early Morning", "name": "early-morning"}, {"description": "7 AM - 10 AM", "help": "7 AM - 10 AM.", "label": "Morning", "name": "morning"}, {"description": "10 AM - 1 PM", "help": "10 AM - 1 PM.", "label": "Midday", "name": "midday"}, {"description": "1 PM - 4 PM", "help": "1 PM - 4 PM.", "label": "Afternoon", "name": "afternoon"}, {"description": "4 PM - 7 PM", "help": "4 PM - 7 PM.", "label": "Evening", "name": "evening"}, {"description": "7 PM - 10 PM", "help": "7 PM - 10 PM.", "label": "Night", "name": "night"}, {"description": "10 PM - 1 AM", "help": "10 PM - 1 AM.", "label": "Late Night", "name": "late-night"}]]  # Configure a window during the time of day in which the sched
     color: NotRequired[int]  # Color of icon on the GUI.
-    fabric_object: NotRequired[Literal["enable", "disable"]]  # Security Fabric global object setting.
+    fabric_object: NotRequired[Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}]]  # Security Fabric global object setting.
 
 
 class Recurring:
@@ -48,9 +49,10 @@ class Recurring:
         uuid: str | None = ...,
         start: str | None = ...,
         end: str | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"] | None = ...,
+        day: Literal[{"description": "Sunday", "help": "Sunday.", "label": "Sunday", "name": "sunday"}, {"description": "Monday", "help": "Monday.", "label": "Monday", "name": "monday"}, {"description": "Tuesday", "help": "Tuesday.", "label": "Tuesday", "name": "tuesday"}, {"description": "Wednesday", "help": "Wednesday.", "label": "Wednesday", "name": "wednesday"}, {"description": "Thursday", "help": "Thursday.", "label": "Thursday", "name": "thursday"}, {"description": "Friday", "help": "Friday.", "label": "Friday", "name": "friday"}, {"description": "Saturday", "help": "Saturday.", "label": "Saturday", "name": "saturday"}, {"description": "None", "help": "None.", "label": "None", "name": "none"}] | None = ...,
+        label_day: Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "1 AM - 4 AM    early-morning:4 AM - 7 AM", "help": "1 AM - 4 AM", "label": "Over Night", "name": "over-night"}, {"help": "4 AM - 7 AM.", "label": "Early Morning", "name": "early-morning"}, {"description": "7 AM - 10 AM", "help": "7 AM - 10 AM.", "label": "Morning", "name": "morning"}, {"description": "10 AM - 1 PM", "help": "10 AM - 1 PM.", "label": "Midday", "name": "midday"}, {"description": "1 PM - 4 PM", "help": "1 PM - 4 PM.", "label": "Afternoon", "name": "afternoon"}, {"description": "4 PM - 7 PM", "help": "4 PM - 7 PM.", "label": "Evening", "name": "evening"}, {"description": "7 PM - 10 PM", "help": "7 PM - 10 PM.", "label": "Night", "name": "night"}, {"description": "10 PM - 1 AM", "help": "10 PM - 1 AM.", "label": "Late Night", "name": "late-night"}] | None = ...,
         color: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -63,9 +65,10 @@ class Recurring:
         uuid: str | None = ...,
         start: str | None = ...,
         end: str | None = ...,
-        day: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "none"] | None = ...,
+        day: Literal[{"description": "Sunday", "help": "Sunday.", "label": "Sunday", "name": "sunday"}, {"description": "Monday", "help": "Monday.", "label": "Monday", "name": "monday"}, {"description": "Tuesday", "help": "Tuesday.", "label": "Tuesday", "name": "tuesday"}, {"description": "Wednesday", "help": "Wednesday.", "label": "Wednesday", "name": "wednesday"}, {"description": "Thursday", "help": "Thursday.", "label": "Thursday", "name": "thursday"}, {"description": "Friday", "help": "Friday.", "label": "Friday", "name": "friday"}, {"description": "Saturday", "help": "Saturday.", "label": "Saturday", "name": "saturday"}, {"description": "None", "help": "None.", "label": "None", "name": "none"}] | None = ...,
+        label_day: Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "1 AM - 4 AM    early-morning:4 AM - 7 AM", "help": "1 AM - 4 AM", "label": "Over Night", "name": "over-night"}, {"help": "4 AM - 7 AM.", "label": "Early Morning", "name": "early-morning"}, {"description": "7 AM - 10 AM", "help": "7 AM - 10 AM.", "label": "Morning", "name": "morning"}, {"description": "10 AM - 1 PM", "help": "10 AM - 1 PM.", "label": "Midday", "name": "midday"}, {"description": "1 PM - 4 PM", "help": "1 PM - 4 PM.", "label": "Afternoon", "name": "afternoon"}, {"description": "4 PM - 7 PM", "help": "4 PM - 7 PM.", "label": "Evening", "name": "evening"}, {"description": "7 PM - 10 PM", "help": "7 PM - 10 PM.", "label": "Night", "name": "night"}, {"description": "10 PM - 1 AM", "help": "10 PM - 1 AM.", "label": "Late Night", "name": "late-night"}] | None = ...,
         color: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
+        fabric_object: Literal[{"description": "Object is set as a security fabric-wide global object", "help": "Object is set as a security fabric-wide global object.", "label": "Enable", "name": "enable"}, {"description": "Object is local to this security fabric member", "help": "Object is local to this security fabric member.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

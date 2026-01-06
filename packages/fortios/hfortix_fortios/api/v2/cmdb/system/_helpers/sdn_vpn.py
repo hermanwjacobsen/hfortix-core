@@ -159,16 +159,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_REMOTE_TYPE = [
-    "vgw",
-    "tgw",
+    "vgw",  # Virtual private gateway.
+    "tgw",  # Transit gateway.
 ]
 VALID_BODY_ROUTING_TYPE = [
-    "static",
-    "dynamic",
+    "static",  # Static routing.
+    "dynamic",  # Dynamic routing.
 ]
 VALID_BODY_NAT_TRAVERSAL = [
-    "disable",
-    "enable",
+    "disable",  # Disable NAT traversal.
+    "enable",  # Enable NAT traversal.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -299,7 +299,7 @@ def validate_system_sdn_vpn_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "sdn": True,
-        ...     "remote-type": "vgw",  # Valid enum value
+        ...     "remote-type": "{'name': 'vgw', 'help': 'Virtual private gateway.', 'label': 'Vgw', 'description': 'Virtual private gateway'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_sdn_vpn_post(payload)
         >>> assert is_valid == True

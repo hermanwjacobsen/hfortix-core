@@ -10,7 +10,7 @@ class RipngPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    default_information_originate: NotRequired[Literal["enable", "disable"]]  # Enable/disable generation of default route.
+    default_information_originate: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable generation of default route.
     default_metric: NotRequired[int]  # Default metric.
     max_out_metric: NotRequired[int]  # Maximum metric allowed to output(0 means 'not set').
     distance: NotRequired[list[dict[str, Any]]]  # Distance.
@@ -51,7 +51,7 @@ class Ripng:
     def post(
         self,
         payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
+        default_information_originate: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
         distance: list[dict[str, Any]] | None = ...,
@@ -74,7 +74,7 @@ class Ripng:
     def put(
         self,
         payload_dict: RipngPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
+        default_information_originate: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
         distance: list[dict[str, Any]] | None = ...,

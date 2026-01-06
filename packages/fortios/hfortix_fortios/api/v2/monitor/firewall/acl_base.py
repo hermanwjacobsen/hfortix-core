@@ -56,7 +56,7 @@ class Acl:
         """
         Retrieve firewall/acl configuration.
 
-        Configuration for firewall/acl
+        List counters for all IPv4 ACL.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

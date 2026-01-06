@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/sdn_connector/validate_gcp_key",
     "category": "monitor",
     "api_path": "system/sdn-connector/validate-gcp-key",
-    "help": "Configuration for system/sdn-connector/validate-gcp-key",
+    "help": "Validate a string representing a private key from GCP in PEM format.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

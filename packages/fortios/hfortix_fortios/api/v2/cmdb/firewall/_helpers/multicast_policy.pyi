@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_SNAT: Literal["enable", "disable"]
-VALID_BODY_ACTION: Literal["accept", "deny"]
-VALID_BODY_UTM_STATUS: Literal["enable", "disable"]
-VALID_BODY_LOGTRAFFIC: Literal["all", "utm", "disable"]
-VALID_BODY_AUTO_ASIC_OFFLOAD: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SNAT: Literal[{"description": "Enable source NAT", "help": "Enable source NAT.", "label": "Enable", "name": "enable"}, {"description": "Disable source NAT", "help": "Disable source NAT.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ACTION: Literal[{"description": "Accept traffic matching the policy", "help": "Accept traffic matching the policy.", "label": "Accept", "name": "accept"}, {"description": "Deny or block traffic matching the policy", "help": "Deny or block traffic matching the policy.", "label": "Deny", "name": "deny"}]
+VALID_BODY_UTM_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_LOGTRAFFIC: Literal[{"description": "Enable logging traffic accepted by this policy", "help": "Enable logging traffic accepted by this policy.", "label": "All", "name": "all"}, {"description": "Log traffic that has a security profile applied to it", "help": "Log traffic that has a security profile applied to it.", "label": "Utm", "name": "utm"}, {"description": "Disable all logging for this policy", "help": "Disable all logging for this policy.", "label": "Disable", "name": "disable"}]
+VALID_BODY_AUTO_ASIC_OFFLOAD: Literal[{"description": "Enable hardware acceleration offloading", "help": "Enable hardware acceleration offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable offloading for hardware acceleration", "help": "Disable offloading for hardware acceleration.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

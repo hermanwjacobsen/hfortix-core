@@ -132,8 +132,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_VERIFY_TRANSFORMED_PATTERN = [
-    "enable",
-    "disable",
+    "enable",  # Enable verification for transformed pattern.
+    "disable",  # Disable verification for transformed pattern.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -263,7 +263,7 @@ def validate_dlp_data_type_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "verify-transformed-pattern": "enable",  # Valid enum value
+        ...     "verify-transformed-pattern": "{'name': 'enable', 'help': 'Enable verification for transformed pattern.', 'label': 'Enable', 'description': 'Enable verification for transformed pattern'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_dlp_data_type_post(payload)
         >>> assert is_valid == True

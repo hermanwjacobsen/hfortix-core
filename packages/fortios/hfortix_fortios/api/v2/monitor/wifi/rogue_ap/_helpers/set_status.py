@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/rogue_ap/set_status",
     "category": "monitor",
     "api_path": "wifi/rogue_ap/set_status",
-    "help": "Configuration for wifi/rogue_ap/set_status",
+    "help": "Mark detected APs as rogue APs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

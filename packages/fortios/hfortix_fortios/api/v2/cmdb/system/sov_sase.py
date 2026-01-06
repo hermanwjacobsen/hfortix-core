@@ -56,7 +56,7 @@ class SovSase:
         """
         Retrieve system/sov_sase configuration.
 
-        Configuration for system/sov-sase
+        Configure Sovereign SASE.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -113,6 +113,7 @@ class SovSase:
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        status: str | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
         **kwargs: Any,
@@ -120,10 +121,11 @@ class SovSase:
         """
         Update existing system/sov_sase object.
 
-        Configuration for system/sov-sase
+        Configure Sovereign SASE.
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            status: Enable/disable Sovereign SASE.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             **kwargs: Additional parameters
@@ -155,6 +157,7 @@ class SovSase:
         # Build payload using helper function
         # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
         payload_data = build_cmdb_payload(
+            status=status,
             data=payload_dict,
         )
         
@@ -202,7 +205,7 @@ class SovSase:
             >>> print(SovSase.help())
             
             >>> # Get field information
-            >>> print(SovSase.help("name"))
+            >>> print(SovSase.help("status"))
         """
         from ._helpers.sov_sase import (
             get_schema_info,
@@ -301,7 +304,7 @@ class SovSase:
             Field metadata dict or None if field doesn't exist
 
         Examples:
-            >>> info = SovSase.field_info("name")
+            >>> info = SovSase.field_info("status")
             >>> print(f"Type: {info['type']}")
             >>> if 'options' in info:
             ...     print(f"Options: {info['options']}")
@@ -323,7 +326,7 @@ class SovSase:
             Tuple of (is_valid, error_message)
 
         Examples:
-            >>> is_valid, error = SovSase.validate_field("name", "test")
+            >>> is_valid, error = SovSase.validate_field("status", "test")
             >>> if not is_valid:
             ...     print(f"Validation error: {error}")
         """

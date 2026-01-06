@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/admin/change_vdom_mode",
     "category": "monitor",
     "api_path": "system/admin/change-vdom-mode",
-    "help": "Configuration for system/admin/change-vdom-mode",
+    "help": "Switch between VDOM modes.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "utm/blacklisted_certificates",
     "category": "monitor",
     "api_path": "utm/blacklisted-certificates",
-    "help": "Configuration for utm/blacklisted-certificates/statistics",
+    "help": "Retrieve a list of blacklisted SSL certificates.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

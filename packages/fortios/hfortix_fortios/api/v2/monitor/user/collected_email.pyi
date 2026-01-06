@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CollectedEmail:
     """
-    Monitor endpoint for user/collected-email
+    List email addresses collected from captive portal.
     
     Path: user/collected_email
     Category: monitor

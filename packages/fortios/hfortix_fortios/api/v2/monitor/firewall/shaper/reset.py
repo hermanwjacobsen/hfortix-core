@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve firewall/shaper/reset configuration.
 
-        Configuration for firewall/shaper/reset
+        Reset statistics for all configured traffic shapers.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

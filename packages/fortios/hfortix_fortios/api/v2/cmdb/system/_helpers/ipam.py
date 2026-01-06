@@ -159,7 +159,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure role of interface to match.",
             "default": "any",
-            "options": ["any", "lan", "wan", "dmz", "undefined"],
+            "options": [{"help": "Match any interface role.", "label": "Any", "name": "any"}, {"help": "Match interface role lan.", "label": "Lan", "name": "lan"}, {"help": "Match interface role wan.", "label": "Wan", "name": "wan"}, {"help": "Match interface role dmz.", "label": "Dmz", "name": "dmz"}, {"help": "Match interface role undefined.", "label": "Undefined", "name": "undefined"}],
         },
         "pool": {
             "type": "string",
@@ -170,7 +170,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable DHCP server for matching IPAM interfaces.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable DHCP server on matched IPAM interface.", "label": "Enable", "name": "enable"}, {"help": "Disable DHCP server on matched IPAM interface.", "label": "Disable", "name": "disable"}],
         },
     },
 }
@@ -178,31 +178,31 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable integration with IP address management services.
+    "disable",  # Disable integration with IP address management services.
 ]
 VALID_BODY_SERVER_TYPE = [
-    "fabric-root",
+    "fabric-root",  # Use the IPAM server running on the Security Fabric root.
 ]
 VALID_BODY_AUTOMATIC_CONFLICT_RESOLUTION = [
-    "disable",
-    "enable",
+    "disable",  # Disable automatic conflict resolution.
+    "enable",  # Enable automatic conflict resolution.
 ]
 VALID_BODY_REQUIRE_SUBNET_SIZE_MATCH = [
-    "disable",
-    "enable",
+    "disable",  # Disable requiring subnet sizes to match.
+    "enable",  # Enable requiring subnet sizes to match.
 ]
 VALID_BODY_MANAGE_LAN_ADDRESSES = [
-    "disable",
-    "enable",
+    "disable",  # Disable LAN interface address management by default.
+    "enable",  # Enable LAN interface address management by default.
 ]
 VALID_BODY_MANAGE_LAN_EXTENSION_ADDRESSES = [
-    "disable",
-    "enable",
+    "disable",  # Disable FortiExtender LAN extension interface address management by default.
+    "enable",  # Enable FortiExtender LAN extension interface address management by default.
 ]
 VALID_BODY_MANAGE_SSID_ADDRESSES = [
-    "disable",
-    "enable",
+    "disable",  # Disable FortiAP SSID address management by default.
+    "enable",  # Enable FortiAP SSID address management by default.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -327,7 +327,7 @@ def validate_system_ipam_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable integration with IP address management services.', 'label': 'Enable', 'description': 'Enable integration with IP address management services'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ipam_post(payload)
         >>> assert is_valid == True

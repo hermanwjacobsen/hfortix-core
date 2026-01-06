@@ -11,16 +11,16 @@ class IsolatorServerPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Server name.
-    addr_type: NotRequired[Literal["ip", "ipv6", "fqdn"]]  # Address type of the forwarding proxy server: IP or FQDN.
+    addr_type: NotRequired[Literal[{"description": "Use an IPv4 address for the forwarding proxy server", "help": "Use an IPv4 address for the forwarding proxy server.", "label": "Ip", "name": "ip"}, {"description": "Use an IPv6 address for the forwarding proxy server", "help": "Use an IPv6 address for the forwarding proxy server.", "label": "Ipv6", "name": "ipv6"}, {"description": "Use the FQDN for the forwarding proxy server", "help": "Use the FQDN for the forwarding proxy server.", "label": "Fqdn", "name": "fqdn"}]]  # Address type of the forwarding proxy server: IP or FQDN.
     ip: NotRequired[str]  # Forward proxy server IP address.
     ipv6: NotRequired[str]  # Forward proxy server IPv6 address.
     fqdn: NotRequired[str]  # Forward server Fully Qualified Domain Name (FQDN).
     port: NotRequired[int]  # Port number that the forwarding server expects to receive HT
-    interface_select_method: NotRequired[Literal["sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
+    interface_select_method: NotRequired[Literal[{"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]]  # Specify how to select outgoing interface to reach server.
     interface: str  # Specify outgoing interface to reach server.
     vrf_select: NotRequired[int]  # VRF ID used for connection to server.
     comment: NotRequired[str]  # Comment.
-    masquerade: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of the of the IP address of the outgoing 
+    masquerade: NotRequired[Literal[{"help": "Enable use of the IP address of the outgoing interface as the client IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable use of the IP address of the outgoing interface as the client IP address", "help": "Disable use of the IP address of the outgoing interface as the client IP address.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of the IP address of the outgoing interfa
 
 
 class IsolatorServer:
@@ -49,16 +49,16 @@ class IsolatorServer:
         self,
         payload_dict: IsolatorServerPayload | None = ...,
         name: str | None = ...,
-        addr_type: Literal["ip", "ipv6", "fqdn"] | None = ...,
+        addr_type: Literal[{"description": "Use an IPv4 address for the forwarding proxy server", "help": "Use an IPv4 address for the forwarding proxy server.", "label": "Ip", "name": "ip"}, {"description": "Use an IPv6 address for the forwarding proxy server", "help": "Use an IPv6 address for the forwarding proxy server.", "label": "Ipv6", "name": "ipv6"}, {"description": "Use the FQDN for the forwarding proxy server", "help": "Use the FQDN for the forwarding proxy server.", "label": "Fqdn", "name": "fqdn"}] | None = ...,
         ip: str | None = ...,
         ipv6: str | None = ...,
         fqdn: str | None = ...,
         port: int | None = ...,
-        interface_select_method: Literal["sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         comment: str | None = ...,
-        masquerade: Literal["enable", "disable"] | None = ...,
+        masquerade: Literal[{"help": "Enable use of the IP address of the outgoing interface as the client IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable use of the IP address of the outgoing interface as the client IP address", "help": "Disable use of the IP address of the outgoing interface as the client IP address.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -68,16 +68,16 @@ class IsolatorServer:
         self,
         payload_dict: IsolatorServerPayload | None = ...,
         name: str | None = ...,
-        addr_type: Literal["ip", "ipv6", "fqdn"] | None = ...,
+        addr_type: Literal[{"description": "Use an IPv4 address for the forwarding proxy server", "help": "Use an IPv4 address for the forwarding proxy server.", "label": "Ip", "name": "ip"}, {"description": "Use an IPv6 address for the forwarding proxy server", "help": "Use an IPv6 address for the forwarding proxy server.", "label": "Ipv6", "name": "ipv6"}, {"description": "Use the FQDN for the forwarding proxy server", "help": "Use the FQDN for the forwarding proxy server.", "label": "Fqdn", "name": "fqdn"}] | None = ...,
         ip: str | None = ...,
         ipv6: str | None = ...,
         fqdn: str | None = ...,
         port: int | None = ...,
-        interface_select_method: Literal["sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         comment: str | None = ...,
-        masquerade: Literal["enable", "disable"] | None = ...,
+        masquerade: Literal[{"help": "Enable use of the IP address of the outgoing interface as the client IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable use of the IP address of the outgoing interface as the client IP address", "help": "Disable use of the IP address of the outgoing interface as the client IP address.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

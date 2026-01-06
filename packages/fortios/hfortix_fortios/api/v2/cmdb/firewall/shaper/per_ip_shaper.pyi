@@ -12,12 +12,12 @@ class PerIpShaperPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Traffic shaper name.
     max_bandwidth: NotRequired[int]  # Upper bandwidth limit enforced by this shaper (0 - 80000000)
-    bandwidth_unit: NotRequired[Literal["kbps", "mbps", "gbps"]]  # Unit of measurement for maximum bandwidth for this shaper (K
+    bandwidth_unit: NotRequired[Literal[{"description": "Kilobits per second", "help": "Kilobits per second.", "label": "Kbps", "name": "kbps"}, {"description": "Megabits per second", "help": "Megabits per second.", "label": "Mbps", "name": "mbps"}, {"description": "Gigabits per second", "help": "Gigabits per second.", "label": "Gbps", "name": "gbps"}]]  # Unit of measurement for maximum bandwidth for this shaper (K
     max_concurrent_session: NotRequired[int]  # Maximum number of concurrent sessions allowed by this shaper
     max_concurrent_tcp_session: NotRequired[int]  # Maximum number of concurrent TCP sessions allowed by this sh
     max_concurrent_udp_session: NotRequired[int]  # Maximum number of concurrent UDP sessions allowed by this sh
-    diffserv_forward: NotRequired[Literal["enable", "disable"]]  # Enable/disable changing the Forward (original) DiffServ sett
-    diffserv_reverse: NotRequired[Literal["enable", "disable"]]  # Enable/disable changing the Reverse (reply) DiffServ setting
+    diffserv_forward: NotRequired[Literal[{"description": "Enable setting forward (original) traffic DiffServ", "help": "Enable setting forward (original) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting forward (original) traffic DiffServ", "help": "Disable setting forward (original) traffic DiffServ.", "label": "Disable", "name": "disable"}]]  # Enable/disable changing the Forward (original) DiffServ sett
+    diffserv_reverse: NotRequired[Literal[{"description": "Enable setting reverse (reply) traffic DiffServ", "help": "Enable setting reverse (reply) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting reverse (reply) traffic DiffServ", "help": "Disable setting reverse (reply) traffic DiffServ.", "label": "Disable", "name": "disable"}]]  # Enable/disable changing the Reverse (reply) DiffServ setting
     diffservcode_forward: NotRequired[str]  # Forward (original) DiffServ setting to be applied to traffic
     diffservcode_rev: NotRequired[str]  # Reverse (reply) DiffServ setting to be applied to traffic ac
 
@@ -49,12 +49,12 @@ class PerIpShaper:
         payload_dict: PerIpShaperPayload | None = ...,
         name: str | None = ...,
         max_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
+        bandwidth_unit: Literal[{"description": "Kilobits per second", "help": "Kilobits per second.", "label": "Kbps", "name": "kbps"}, {"description": "Megabits per second", "help": "Megabits per second.", "label": "Mbps", "name": "mbps"}, {"description": "Gigabits per second", "help": "Gigabits per second.", "label": "Gbps", "name": "gbps"}] | None = ...,
         max_concurrent_session: int | None = ...,
         max_concurrent_tcp_session: int | None = ...,
         max_concurrent_udp_session: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffserv_forward: Literal[{"description": "Enable setting forward (original) traffic DiffServ", "help": "Enable setting forward (original) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting forward (original) traffic DiffServ", "help": "Disable setting forward (original) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
+        diffserv_reverse: Literal[{"description": "Enable setting reverse (reply) traffic DiffServ", "help": "Enable setting reverse (reply) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting reverse (reply) traffic DiffServ", "help": "Disable setting reverse (reply) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,
@@ -67,12 +67,12 @@ class PerIpShaper:
         payload_dict: PerIpShaperPayload | None = ...,
         name: str | None = ...,
         max_bandwidth: int | None = ...,
-        bandwidth_unit: Literal["kbps", "mbps", "gbps"] | None = ...,
+        bandwidth_unit: Literal[{"description": "Kilobits per second", "help": "Kilobits per second.", "label": "Kbps", "name": "kbps"}, {"description": "Megabits per second", "help": "Megabits per second.", "label": "Mbps", "name": "mbps"}, {"description": "Gigabits per second", "help": "Gigabits per second.", "label": "Gbps", "name": "gbps"}] | None = ...,
         max_concurrent_session: int | None = ...,
         max_concurrent_tcp_session: int | None = ...,
         max_concurrent_udp_session: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffserv_forward: Literal[{"description": "Enable setting forward (original) traffic DiffServ", "help": "Enable setting forward (original) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting forward (original) traffic DiffServ", "help": "Disable setting forward (original) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
+        diffserv_reverse: Literal[{"description": "Enable setting reverse (reply) traffic DiffServ", "help": "Enable setting reverse (reply) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting reverse (reply) traffic DiffServ", "help": "Disable setting reverse (reply) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         vdom: str | bool | None = ...,

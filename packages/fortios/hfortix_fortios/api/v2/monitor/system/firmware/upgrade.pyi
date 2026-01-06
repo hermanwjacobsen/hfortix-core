@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upgrade:
     """
-    Configuration for system/firmware/upgrade
+    Upgrade firmware image on this device.
     
     Path: system/firmware/upgrade
     Category: monitor

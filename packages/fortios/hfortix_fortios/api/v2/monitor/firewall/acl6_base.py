@@ -56,7 +56,7 @@ class Acl6:
         """
         Retrieve firewall/acl6 configuration.
 
-        Configuration for firewall/acl6
+        List counters for all IPv6 ACL.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

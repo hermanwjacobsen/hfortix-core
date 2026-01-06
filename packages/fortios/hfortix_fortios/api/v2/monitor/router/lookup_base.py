@@ -56,7 +56,7 @@ class Lookup:
         """
         Retrieve router/lookup configuration.
 
-        Configuration for router/lookup
+        Performs a route lookup by querying the routing table.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

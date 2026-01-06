@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TopApplications:
     """
-    Configuration for system/traffic-history/top-applications
+    Retrieve top FortiView applications traffic stats by bandwidth.
     
     Path: system/traffic_history/top_applications
     Category: monitor

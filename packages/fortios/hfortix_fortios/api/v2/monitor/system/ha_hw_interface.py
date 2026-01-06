@@ -56,7 +56,7 @@ class HaHwInterface:
         """
         Retrieve system/ha_hw_interface configuration.
 
-        Configuration for system/ha-hw-interface
+        Get HA NPU hardware interface status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

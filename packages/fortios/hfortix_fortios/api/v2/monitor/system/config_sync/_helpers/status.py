@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/config_sync/status",
     "category": "monitor",
     "api_path": "system/config-sync/status",
-    "help": "Configuration for system/config-sync/status",
+    "help": "Get configuration sync status of SLBC cluster master and slave.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

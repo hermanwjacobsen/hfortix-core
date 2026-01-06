@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_NTPSYNC: Literal["enable", "disable"]
-VALID_BODY_TYPE: Literal["fortiguard", "custom"]
-VALID_BODY_SERVER_MODE: Literal["enable", "disable"]
-VALID_BODY_AUTHENTICATION: Literal["enable", "disable"]
-VALID_BODY_KEY_TYPE: Literal["MD5", "SHA1", "SHA256"]
+VALID_BODY_NTPSYNC: Literal[{"description": "Enable synchronization with NTP Server", "help": "Enable synchronization with NTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with NTP Server", "help": "Disable synchronization with NTP Server.", "label": "Disable", "name": "disable"}]
+VALID_BODY_TYPE: Literal[{"description": "Use the FortiGuard NTP server", "help": "Use the FortiGuard NTP server.", "label": "Fortiguard", "name": "fortiguard"}, {"description": "Use any other available NTP server", "help": "Use any other available NTP server.", "label": "Custom", "name": "custom"}]
+VALID_BODY_SERVER_MODE: Literal[{"description": "Enable FortiGate NTP Server Mode", "help": "Enable FortiGate NTP Server Mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate NTP Server Mode", "help": "Disable FortiGate NTP Server Mode.", "label": "Disable", "name": "disable"}]
+VALID_BODY_AUTHENTICATION: Literal[{"description": "Enable authentication", "help": "Enable authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable authentication", "help": "Disable authentication.", "label": "Disable", "name": "disable"}]
+VALID_BODY_KEY_TYPE: Literal[{"description": "Use MD5 to authenticate the message", "help": "Use MD5 to authenticate the message.", "label": "Md5", "name": "MD5"}, {"description": "Use SHA1 to authenticate the message", "help": "Use SHA1 to authenticate the message.", "label": "Sha1", "name": "SHA1"}, {"description": "Use SHA256 to authenticate the message", "help": "Use SHA256 to authenticate the message.", "label": "Sha256", "name": "SHA256"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

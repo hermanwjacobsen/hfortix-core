@@ -56,7 +56,7 @@ class Statistics:
         """
         Retrieve router/statistics configuration.
 
-        Configuration for router/statistics
+        Retrieve routing table statistics, including number of matched routes.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

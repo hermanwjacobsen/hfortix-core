@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Restart:
     """
-    Configuration for wifi/managed_ap/restart
+    Restart a given FortiAP.
     
     Path: wifi/managed_ap/restart
     Category: monitor

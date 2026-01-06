@@ -56,7 +56,7 @@ class InterfaceConnectedAdminsInfo:
         """
         Retrieve system/interface_connected_admins_info configuration.
 
-        Configuration for system/interface-connected-admins-info
+        Return admins info that are connected to current interface.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

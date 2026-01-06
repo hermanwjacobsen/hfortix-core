@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Create:
     """
-    Configuration for vpn-certificate/local/create
+    Generate a new certificate signed by Fortinet_CA_SSL.
     
     Path: vpn_certificate/local/create
     Category: monitor

@@ -133,8 +133,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "src",
-    "dst",
+    "src",  # Source group.
+    "dst",  # Destination group.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -264,7 +264,7 @@ def validate_firewall_proxy_addrgrp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "member": True,
-        ...     "type": "src",  # Valid enum value
+        ...     "type": "{'name': 'src', 'help': 'Source group.', 'label': 'Src', 'description': 'Source group'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_proxy_addrgrp_post(payload)
         >>> assert is_valid == True

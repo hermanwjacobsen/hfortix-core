@@ -10,7 +10,7 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging to WebTrends.
+    status: NotRequired[Literal[{"description": "Enable logging to WebTrends", "help": "Enable logging to WebTrends.", "label": "Enable", "name": "enable"}, {"description": "Disble logging to WebTrends", "help": "Disble logging to WebTrends.", "label": "Disable", "name": "disable"}]]  # Enable/disable logging to WebTrends.
     server: NotRequired[str]  # Address of the remote WebTrends server.
 
 
@@ -38,7 +38,7 @@ class Setting:
     def post(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable logging to WebTrends", "help": "Enable logging to WebTrends.", "label": "Enable", "name": "enable"}, {"description": "Disble logging to WebTrends", "help": "Disble logging to WebTrends.", "label": "Disable", "name": "disable"}] | None = ...,
         server: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -48,7 +48,7 @@ class Setting:
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable logging to WebTrends", "help": "Enable logging to WebTrends.", "label": "Enable", "name": "enable"}, {"description": "Disble logging to WebTrends", "help": "Disble logging to WebTrends.", "label": "Disable", "name": "disable"}] | None = ...,
         server: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

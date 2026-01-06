@@ -73,6 +73,7 @@ FIELDS_WITH_DEFAULTS = {
     "epg-name": "",
     "sdn-tag": "",
     "sdn-addr-type": "private",
+    "passive-fqdn-learning": "enable",
     "fabric-object": "disable",
 }
 
@@ -119,6 +120,7 @@ FIELD_TYPES = {
     "filter": "var-string",  # Match criteria filter.
     "list": "string",  # IP address list.
     "sdn-addr-type": "option",  # Type of addresses to collect.
+    "passive-fqdn-learning": "option",  # Enable/disable passive learning of FQDNs.  When enabled, the
     "fabric-object": "option",  # Security Fabric global object setting.
 }
 
@@ -151,6 +153,7 @@ FIELD_DESCRIPTIONS = {
     "filter": "Match criteria filter.",
     "list": "IP address list.",
     "sdn-addr-type": "Type of addresses to collect.",
+    "passive-fqdn-learning": "Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).",
     "fabric-object": "Security Fabric global object setting.",
 }
 
@@ -211,7 +214,7 @@ NESTED_SCHEMAS = {
             "help": "Subnet segment type.",
             "required": True,
             "default": "any",
-            "options": ["any", "specific"],
+            "options": [{"help": "Wildcard.", "label": "Any", "name": "any"}, {"help": "Specific subnet segment address.", "label": "Specific", "name": "specific"}],
         },
         "value": {
             "type": "string",
@@ -235,28 +238,32 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "ipprefix",
-    "iprange",
-    "fqdn",
-    "geography",
-    "dynamic",
-    "template",
-    "mac",
-    "route-tag",
-    "wildcard",
+    "ipprefix",  # Uses the IP prefix to define a range of IPv6 addresses.
+    "iprange",  # Range of IPv6 addresses between two specified addresses (inclusive).
+    "fqdn",  # Fully qualified domain name.
+    "geography",  # IPv6 addresses from a specified country.
+    "dynamic",  # Dynamic address object for SDN.
+    "template",  # Template.
+    "mac",  # Range of MAC addresses.
+    "route-tag",  # route-tag addresses.
+    "wildcard",  # Standard IPv6 using a wildcard subnet mask.
 ]
 VALID_BODY_HOST_TYPE = [
-    "any",
-    "specific",
+    "any",  # Wildcard.
+    "specific",  # Specific host address.
 ]
 VALID_BODY_SDN_ADDR_TYPE = [
-    "private",
-    "public",
-    "all",
+    "private",  # Collect private addresses only.
+    "public",  # Collect public addresses only.
+    "all",  # Collect both public and private addresses.
+]
+VALID_BODY_PASSIVE_FQDN_LEARNING = [
+    "disable",  # Disable passive learning of FQDNs.
+    "enable",  # Enable passive learning of FQDNs.
 ]
 VALID_BODY_FABRIC_OBJECT = [
-    "enable",
-    "disable",
+    "enable",  # Object is set as a security fabric-wide global object.
+    "disable",  # Object is local to this security fabric member.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -387,7 +394,7 @@ def validate_firewall_address6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "template": True,
-        ...     "type": "ipprefix",  # Valid enum value
+        ...     "type": "{'name': 'ipprefix', 'help': 'Uses the IP prefix to define a range of IPv6 addresses.', 'label': 'Ipprefix', 'description': 'Uses the IP prefix to define a range of IPv6 addresses'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_address6_post(payload)
         >>> assert is_valid == True
@@ -439,6 +446,16 @@ def validate_firewall_address6_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_SDN_ADDR_TYPE)}"
             error_msg += f"\n  → Example: sdn-addr-type='{{ VALID_BODY_SDN_ADDR_TYPE[0] }}'"
+            return (False, error_msg)
+    if "passive-fqdn-learning" in payload:
+        value = payload["passive-fqdn-learning"]
+        if value not in VALID_BODY_PASSIVE_FQDN_LEARNING:
+            desc = FIELD_DESCRIPTIONS.get("passive-fqdn-learning", "")
+            error_msg = f"Invalid value for 'passive-fqdn-learning': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PASSIVE_FQDN_LEARNING)}"
+            error_msg += f"\n  → Example: passive-fqdn-learning='{{ VALID_BODY_PASSIVE_FQDN_LEARNING[0] }}'"
             return (False, error_msg)
     if "fabric-object" in payload:
         value = payload["fabric-object"]
@@ -498,6 +515,13 @@ def validate_firewall_address6_put(
             return (
                 False,
                 f"Invalid value for 'sdn-addr-type'='{value}'. Must be one of: {', '.join(VALID_BODY_SDN_ADDR_TYPE)}",
+            )
+    if "passive-fqdn-learning" in payload:
+        value = payload["passive-fqdn-learning"]
+        if value not in VALID_BODY_PASSIVE_FQDN_LEARNING:
+            return (
+                False,
+                f"Invalid value for 'passive-fqdn-learning'='{value}'. Must be one of: {', '.join(VALID_BODY_PASSIVE_FQDN_LEARNING)}",
             )
     if "fabric-object" in payload:
         value = payload["fabric-object"]
@@ -794,9 +818,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure IPv6 firewall addresses.",
-    "total_fields": 28,
+    "total_fields": 29,
     "required_fields_count": 2,
-    "fields_with_defaults_count": 21,
+    "fields_with_defaults_count": 22,
 }
 
 

@@ -4,10 +4,10 @@ from . import autoupdate
 from . import dhcp
 from . import dhcp6
 from . import lldp
+from . import modem3g
 from . import replacemsg
 from . import security_rating
 from . import snmp
-from . import x3g_modem
 from .accprofile import Accprofile
 from .acme import Acme
 from .admin import Admin
@@ -51,7 +51,7 @@ from .ftm_push import FtmPush
 from .geneve import Geneve
 from .geoip_country import GeoipCountry
 from .geoip_override import GeoipOverride
-from .global_setting import GlobalSetting
+from .global_ import Global
 from .gre_tunnel import GreTunnel
 from .ha import Ha
 from .ha_monitor import HaMonitor
@@ -128,7 +128,6 @@ from .virtual_wire_pair import VirtualWirePair
 from .vne_interface import VneInterface
 from .vxlan import Vxlan
 from .wccp import Wccp
-from .x3g_modem_custom import X3gModemCustom
 from .zone import Zone
 
 __all__ = [
@@ -178,7 +177,7 @@ __all__ = [
     "Geneve",
     "GeoipCountry",
     "GeoipOverride",
-    "GlobalSetting",
+    "Global",
     "GreTunnel",
     "Ha",
     "HaMonitor",
@@ -199,6 +198,7 @@ __all__ = [
     "MacAddressTable",
     "MobileTunnel",
     "Modem",
+    "Modem3g",
     "NdProxy",
     "Netflow",
     "NetworkVisibility",
@@ -260,8 +260,6 @@ __all__ = [
     "VneInterface",
     "Vxlan",
     "Wccp",
-    "X3gModem",
-    "X3gModemCustom",
     "Zone",
 ]
 
@@ -279,10 +277,10 @@ class System:
         self.dhcp = dhcp.Dhcp(client)
         self.dhcp6 = dhcp6.Dhcp6(client)
         self.lldp = lldp.Lldp(client)
+        self.modem3g = modem3g.Modem3g(client)
         self.replacemsg = replacemsg.Replacemsg(client)
         self.security_rating = security_rating.SecurityRating(client)
         self.snmp = snmp.Snmp(client)
-        self.x3g_modem = x3g_modem.X3gModem(client)
         self.accprofile = Accprofile(client)
         self.acme = Acme(client)
         self.admin = Admin(client)
@@ -326,7 +324,7 @@ class System:
         self.geneve = Geneve(client)
         self.geoip_country = GeoipCountry(client)
         self.geoip_override = GeoipOverride(client)
-        self.global_setting = GlobalSetting(client)
+        self.global_ = Global(client)
         self.gre_tunnel = GreTunnel(client)
         self.ha = Ha(client)
         self.ha_monitor = HaMonitor(client)
@@ -403,5 +401,4 @@ class System:
         self.vne_interface = VneInterface(client)
         self.vxlan = Vxlan(client)
         self.wccp = Wccp(client)
-        self.x3g_modem_custom = X3gModemCustom(client)
         self.zone = Zone(client)

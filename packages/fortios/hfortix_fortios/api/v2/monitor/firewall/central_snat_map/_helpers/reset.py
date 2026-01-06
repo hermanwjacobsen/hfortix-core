@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/central_snat_map/reset",
     "category": "monitor",
     "api_path": "firewall/central-snat-map/reset",
-    "help": "Configuration for firewall/central-snat-map/reset",
+    "help": "Reset traffic statistics for all firewall central SNAT policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

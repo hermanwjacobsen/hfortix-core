@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticloud/migrate",
     "category": "monitor",
     "api_path": "registration/forticloud/migrate",
-    "help": "Configuration for registration/forticloud/migrate",
+    "help": "Migrate standalone FortiGate Cloud account to FortiCloud.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -114,13 +114,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_CONDITION_TYPE = [
-    "cpu",
-    "memory",
-    "vpn",
+    "cpu",  # CPU usage condition,
+    "memory",  # Memory usage condition,
+    "vpn",  # VPN state condition.
 ]
 VALID_BODY_VPN_TUNNEL_STATE = [
-    "tunnel-up",
-    "tunnel-down",
+    "tunnel-up",  # VPN tunnel is up.
+    "tunnel-down",  # VPN tunnel is down.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -248,7 +248,7 @@ def validate_system_automation_condition_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "condition-type": "cpu",  # Valid enum value
+        ...     "condition-type": "{'name': 'cpu', 'help': 'CPU usage condition,', 'label': 'Cpu', 'description': 'CPU usage condition,    memory:Memory usage condition,    vpn:VPN state condition'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_automation_condition_post(payload)
         >>> assert is_valid == True

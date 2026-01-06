@@ -56,7 +56,7 @@ class Info:
         """
         Retrieve system/config_revision/info configuration.
 
-        Configuration for system/config-revision/info
+        Retrieve meta information for a specific configuration revision.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

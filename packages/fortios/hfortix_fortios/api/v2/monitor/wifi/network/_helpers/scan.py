@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/network/scan",
     "category": "monitor",
     "api_path": "wifi/network/scan",
-    "help": "Configuration for wifi/network/scan",
+    "help": "When FortiWiFi is in client mode, start a scan for local WiFi networks.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

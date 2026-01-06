@@ -10,7 +10,7 @@ class QuarantinePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    quarantine: NotRequired[Literal["enable", "disable"]]  # Enable/disable quarantine.
+    quarantine: NotRequired[Literal[{"description": "Enable quarantine", "help": "Enable quarantine.", "label": "Enable", "name": "enable"}, {"description": "Disable quarantine", "help": "Disable quarantine.", "label": "Disable", "name": "disable"}]]  # Enable/disable quarantine.
     traffic_policy: NotRequired[str]  # Traffic policy for quarantined MACs.
     firewall_groups: NotRequired[str]  # Firewall address group which includes all quarantine MAC add
     targets: NotRequired[list[dict[str, Any]]]  # Quarantine entry to hold multiple MACs.
@@ -40,7 +40,7 @@ class Quarantine:
     def post(
         self,
         payload_dict: QuarantinePayload | None = ...,
-        quarantine: Literal["enable", "disable"] | None = ...,
+        quarantine: Literal[{"description": "Enable quarantine", "help": "Enable quarantine.", "label": "Enable", "name": "enable"}, {"description": "Disable quarantine", "help": "Disable quarantine.", "label": "Disable", "name": "disable"}] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
         targets: list[dict[str, Any]] | None = ...,
@@ -52,7 +52,7 @@ class Quarantine:
     def put(
         self,
         payload_dict: QuarantinePayload | None = ...,
-        quarantine: Literal["enable", "disable"] | None = ...,
+        quarantine: Literal[{"description": "Enable quarantine", "help": "Enable quarantine.", "label": "Enable", "name": "enable"}, {"description": "Disable quarantine", "help": "Disable quarantine.", "label": "Disable", "name": "disable"}] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
         targets: list[dict[str, Any]] | None = ...,

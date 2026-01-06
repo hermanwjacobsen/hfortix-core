@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "sniffer/meta",
     "category": "service",
     "api_path": "sniffer/meta",
-    "help": "Configuration for sniffer/meta",
+    "help": "Returns system limitations & meta information of packet capture feature.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

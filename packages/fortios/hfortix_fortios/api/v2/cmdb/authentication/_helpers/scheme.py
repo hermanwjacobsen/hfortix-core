@@ -63,6 +63,7 @@ FIELDS_WITH_DEFAULTS = {
     "require-tfa": "disable",
     "fsso-guest": "disable",
     "user-cert": "disable",
+    "cert-http-header": "disable",
     "ssh-ca": "",
     "external-idp": "",
     "group-attr-type": "display-name",
@@ -97,6 +98,7 @@ FIELD_TYPES = {
     "require-tfa": "option",  # Enable/disable two-factor authentication (default = disable)
     "fsso-guest": "option",  # Enable/disable user fsso-guest authentication (default = dis
     "user-cert": "option",  # Enable/disable authentication with user certificate (default
+    "cert-http-header": "option",  # Enable/disable authentication with user certificate in Clien
     "user-database": "string",  # Authentication server to contain user information; "local-us
     "ssh-ca": "string",  # SSH CA name.
     "external-idp": "string",  # External identity provider configuration.
@@ -118,6 +120,7 @@ FIELD_DESCRIPTIONS = {
     "require-tfa": "Enable/disable two-factor authentication (default = disable).",
     "fsso-guest": "Enable/disable user fsso-guest authentication (default = disable).",
     "user-cert": "Enable/disable authentication with user certificate (default = disable).",
+    "cert-http-header": "Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).",
     "user-database": "Authentication server to contain user information; \"local-user-db\" (default) or \"123\" (for LDAP).",
     "ssh-ca": "SSH CA name.",
     "external-idp": "External identity provider configuration.",
@@ -154,45 +157,49 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_METHOD = [
-    "ntlm",
-    "basic",
-    "digest",
-    "form",
-    "negotiate",
-    "fsso",
-    "rsso",
-    "ssh-publickey",
-    "cert",
-    "saml",
-    "entra-sso",
+    "ntlm",  # NTLM authentication.
+    "basic",  # Basic HTTP authentication.
+    "digest",  # Digest HTTP authentication.
+    "form",  # Form-based HTTP authentication.
+    "negotiate",  # Negotiate authentication.
+    "fsso",  # Fortinet Single Sign-On (FSSO) authentication.
+    "rsso",  # RADIUS Single Sign-On (RSSO) authentication.
+    "ssh-publickey",  # Public key based SSH authentication.
+    "cert",  # Client certificate authentication.
+    "saml",  # SAML authentication.
+    "entra-sso",  # Entra ID based Single Sign-On (SSO) authentication.
 ]
 VALID_BODY_NEGOTIATE_NTLM = [
-    "enable",
-    "disable",
+    "enable",  # Enable negotiate authentication for NTLM.
+    "disable",  # Disable negotiate authentication for NTLM.
 ]
 VALID_BODY_REQUIRE_TFA = [
-    "enable",
-    "disable",
+    "enable",  # Enable two-factor authentication.
+    "disable",  # Disable two-factor authentication.
 ]
 VALID_BODY_FSSO_GUEST = [
-    "enable",
-    "disable",
+    "enable",  # Enable user fsso-guest authentication.
+    "disable",  # Disable user fsso-guest authentication.
 ]
 VALID_BODY_USER_CERT = [
-    "enable",
-    "disable",
+    "enable",  # Enable client certificate field authentication.
+    "disable",  # Disable client certificate field authentication.
+]
+VALID_BODY_CERT_HTTP_HEADER = [
+    "enable",  # Enable client certificate authentication with HTTP header (RFC9440).
+    "disable",  # Disable client certificate authentication with HTTP header (RFC9440).
 ]
 VALID_BODY_GROUP_ATTR_TYPE = [
-    "display-name",
-    "external-id",
+    "display-name",  # Display name.
+    "external-id",  # External ID.
 ]
 VALID_BODY_DIGEST_ALGO = [
-    "md5",
-    "sha-256",
+    "md5",  # MD5.
+    "sha-256",  # SHA-256.
 ]
 VALID_BODY_DIGEST_RFC2069 = [
-    "enable",
-    "disable",
+    "enable",  # Enable support for the deprecated RFC2069 Digest Client (no cnonce field).
+    "disable",  # Disable support for the deprecated RFC2069 Digest Client (no cnonce field).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -322,7 +329,7 @@ def validate_authentication_scheme_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "method": True,
-        ...     "method": "ntlm",  # Valid enum value
+        ...     "method": "{'name': 'ntlm', 'help': 'NTLM authentication.', 'label': 'Ntlm', 'description': 'NTLM authentication'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_authentication_scheme_post(payload)
         >>> assert is_valid == True
@@ -394,6 +401,16 @@ def validate_authentication_scheme_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_USER_CERT)}"
             error_msg += f"\n  → Example: user-cert='{{ VALID_BODY_USER_CERT[0] }}'"
+            return (False, error_msg)
+    if "cert-http-header" in payload:
+        value = payload["cert-http-header"]
+        if value not in VALID_BODY_CERT_HTTP_HEADER:
+            desc = FIELD_DESCRIPTIONS.get("cert-http-header", "")
+            error_msg = f"Invalid value for 'cert-http-header': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_CERT_HTTP_HEADER)}"
+            error_msg += f"\n  → Example: cert-http-header='{{ VALID_BODY_CERT_HTTP_HEADER[0] }}'"
             return (False, error_msg)
     if "group-attr-type" in payload:
         value = payload["group-attr-type"]
@@ -487,6 +504,13 @@ def validate_authentication_scheme_put(
             return (
                 False,
                 f"Invalid value for 'user-cert'='{value}'. Must be one of: {', '.join(VALID_BODY_USER_CERT)}",
+            )
+    if "cert-http-header" in payload:
+        value = payload["cert-http-header"]
+        if value not in VALID_BODY_CERT_HTTP_HEADER:
+            return (
+                False,
+                f"Invalid value for 'cert-http-header'='{value}'. Must be one of: {', '.join(VALID_BODY_CERT_HTTP_HEADER)}",
             )
     if "group-attr-type" in payload:
         value = payload["group-attr-type"]
@@ -797,9 +821,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure Authentication Schemes.",
-    "total_fields": 17,
+    "total_fields": 18,
     "required_fields_count": 1,
-    "fields_with_defaults_count": 16,
+    "fields_with_defaults_count": 17,
 }
 
 

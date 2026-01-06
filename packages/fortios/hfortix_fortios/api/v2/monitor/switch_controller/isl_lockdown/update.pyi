@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for switch-controller/isl-lockdown/update
+    Enable/disable ISL lockdown.
     
     Path: switch_controller/isl_lockdown/update
     Category: monitor

@@ -56,7 +56,7 @@ class Revoke:
         """
         Retrieve system/dhcp/revoke configuration.
 
-        Configuration for system/dhcp/revoke
+        Revoke IPv4 DHCP leases.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -174,24 +174,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PERSISTENT_COOKIE = [
-    "enable",
-    "disable",
+    "enable",  # Enable persistent cookie.
+    "disable",  # Disable persistent cookie.
 ]
 VALID_BODY_IP_AUTH_COOKIE = [
-    "enable",
-    "disable",
+    "enable",  # Enable persistent cookie for IP-based authentication.
+    "disable",  # Disable persistent cookie for IP-based authentication.
 ]
 VALID_BODY_CAPTIVE_PORTAL_TYPE = [
-    "fqdn",
-    "ip",
+    "fqdn",  # Use FQDN for captive portal.
+    "ip",  # Use an IP address for captive portal.
 ]
 VALID_BODY_CERT_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_AUTH_HTTPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -316,7 +316,7 @@ def validate_authentication_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "persistent-cookie": "enable",  # Valid enum value
+        ...     "persistent-cookie": "{'name': 'enable', 'help': 'Enable persistent cookie.', 'label': 'Enable', 'description': 'Enable persistent cookie'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_authentication_setting_post(payload)
         >>> assert is_valid == True

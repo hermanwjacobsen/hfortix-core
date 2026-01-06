@@ -128,7 +128,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure refresh direction.",
             "default": "both",
-            "options": ["both", "outgoing", "incoming"],
+            "options": [{"help": "Refresh both directions.", "label": "Both", "name": "both"}, {"help": "Refresh outgoing direction (original).", "label": "Outgoing", "name": "outgoing"}, {"help": "Refresh incoming direction (reply).", "label": "Incoming", "name": "incoming"}],
         },
     },
 }

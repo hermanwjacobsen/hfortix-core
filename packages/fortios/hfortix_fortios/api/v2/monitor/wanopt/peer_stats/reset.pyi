@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for wanopt/peer_stats/reset
+    Reset WAN opt peer statistics.
     
     Path: wanopt/peer_stats/reset
     Category: monitor

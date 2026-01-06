@@ -54,7 +54,7 @@ class DiskAnomaly:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get anomaly logs."""
-        return self._client.get("/log/disk/anomaly/raw", **kwargs)
+        return self._client.get("log", "/log/disk/anomaly/raw", **kwargs)
 
 
 class DiskAppCtrl:
@@ -68,7 +68,7 @@ class DiskAppCtrl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get app_ctrl logs."""
-        return self._client.get("/log/disk/app-ctrl/raw", **kwargs)
+        return self._client.get("log", "/log/disk/app-ctrl/raw", **kwargs)
 
 
 class DiskAppCtrlArchive:
@@ -81,7 +81,7 @@ class DiskAppCtrlArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/disk/app-ctrl/archive", **kwargs)
+        return self._client.get("log", "/log/disk/app-ctrl/archive", **kwargs)
 
 
 class DiskAppCtrlArchiveDownload:
@@ -94,7 +94,7 @@ class DiskAppCtrlArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/disk/app-ctrl/archive-download", **kwargs)
+        return self._client.get("log", "/log/disk/app-ctrl/archive-download", **kwargs)
 
 
 class DiskCifs:
@@ -106,7 +106,7 @@ class DiskCifs:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get cifs logs."""
-        return self._client.get("/log/disk/cifs/raw", **kwargs)
+        return self._client.get("log", "/log/disk/cifs/raw", **kwargs)
 
 
 class DiskDlp:
@@ -118,7 +118,7 @@ class DiskDlp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dlp logs."""
-        return self._client.get("/log/disk/dlp/raw", **kwargs)
+        return self._client.get("log", "/log/disk/dlp/raw", **kwargs)
 
 
 class DiskDns:
@@ -130,7 +130,7 @@ class DiskDns:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dns logs."""
-        return self._client.get("/log/disk/dns/raw", **kwargs)
+        return self._client.get("log", "/log/disk/dns/raw", **kwargs)
 
 
 class DiskEmailfilter:
@@ -142,7 +142,7 @@ class DiskEmailfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get emailfilter logs."""
-        return self._client.get("/log/disk/emailfilter/raw", **kwargs)
+        return self._client.get("log", "/log/disk/emailfilter/raw", **kwargs)
 
 
 class DiskEvent:
@@ -175,7 +175,7 @@ class DiskEventComplianceCheck:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get compliance-check event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventConnector:
@@ -188,7 +188,7 @@ class DiskEventConnector:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get connector event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventEndpoint:
@@ -201,7 +201,7 @@ class DiskEventEndpoint:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get endpoint event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventFortiextender:
@@ -214,7 +214,7 @@ class DiskEventFortiextender:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiextender event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventHa:
@@ -227,7 +227,7 @@ class DiskEventHa:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ha event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventRouter:
@@ -240,7 +240,7 @@ class DiskEventRouter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get router event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventSecurityRating:
@@ -253,7 +253,7 @@ class DiskEventSecurityRating:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get security-rating event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventSystem:
@@ -266,7 +266,7 @@ class DiskEventSystem:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get system event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventUser:
@@ -279,7 +279,7 @@ class DiskEventUser:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get user event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventVpn:
@@ -292,7 +292,7 @@ class DiskEventVpn:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get vpn event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventWad:
@@ -305,7 +305,7 @@ class DiskEventWad:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wad event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskEventWireless:
@@ -318,7 +318,7 @@ class DiskEventWireless:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wireless event logs."""
-        return self._client.get(f"/log/disk/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/event/{self._subtype}/raw", **kwargs)
 
 
 class DiskFileFilter:
@@ -330,7 +330,7 @@ class DiskFileFilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get file_filter logs."""
-        return self._client.get("/log/disk/file-filter/raw", **kwargs)
+        return self._client.get("log", "/log/disk/file-filter/raw", **kwargs)
 
 
 class DiskGtp:
@@ -342,7 +342,7 @@ class DiskGtp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get gtp logs."""
-        return self._client.get("/log/disk/gtp/raw", **kwargs)
+        return self._client.get("log", "/log/disk/gtp/raw", **kwargs)
 
 
 class DiskIps:
@@ -356,7 +356,7 @@ class DiskIps:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ips logs."""
-        return self._client.get("/log/disk/ips/raw", **kwargs)
+        return self._client.get("log", "/log/disk/ips/raw", **kwargs)
 
 
 class DiskIpsArchive:
@@ -369,7 +369,7 @@ class DiskIpsArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/disk/ips/archive", **kwargs)
+        return self._client.get("log", "/log/disk/ips/archive", **kwargs)
 
 
 class DiskIpsArchiveDownload:
@@ -382,7 +382,7 @@ class DiskIpsArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/disk/ips/archive-download", **kwargs)
+        return self._client.get("log", "/log/disk/ips/archive-download", **kwargs)
 
 
 class DiskSsh:
@@ -394,7 +394,7 @@ class DiskSsh:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssh logs."""
-        return self._client.get("/log/disk/ssh/raw", **kwargs)
+        return self._client.get("log", "/log/disk/ssh/raw", **kwargs)
 
 
 class DiskSsl:
@@ -406,7 +406,7 @@ class DiskSsl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssl logs."""
-        return self._client.get("/log/disk/ssl/raw", **kwargs)
+        return self._client.get("log", "/log/disk/ssl/raw", **kwargs)
 
 
 class DiskTraffic:
@@ -433,7 +433,7 @@ class DiskTrafficFortiview:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiview traffic logs."""
-        return self._client.get(f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
 
 
 class DiskTrafficForward:
@@ -446,7 +446,7 @@ class DiskTrafficForward:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get forward traffic logs."""
-        return self._client.get(f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
 
 
 class DiskTrafficLocal:
@@ -459,7 +459,7 @@ class DiskTrafficLocal:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get local traffic logs."""
-        return self._client.get(f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
 
 
 class DiskTrafficMulticast:
@@ -472,7 +472,7 @@ class DiskTrafficMulticast:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get multicast traffic logs."""
-        return self._client.get(f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
 
 
 class DiskTrafficSniffer:
@@ -485,7 +485,7 @@ class DiskTrafficSniffer:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get sniffer traffic logs."""
-        return self._client.get(f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
 
 
 class DiskTrafficThreat:
@@ -498,7 +498,7 @@ class DiskTrafficThreat:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get threat traffic logs."""
-        return self._client.get(f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/disk/traffic/{self._subtype}/raw", **kwargs)
 
 
 class DiskVirus:
@@ -510,7 +510,7 @@ class DiskVirus:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get virus logs."""
-        return self._client.get("/log/disk/virus/raw", **kwargs)
+        return self._client.get("log", "/log/disk/virus/raw", **kwargs)
 
 
 class DiskVoip:
@@ -522,7 +522,7 @@ class DiskVoip:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get voip logs."""
-        return self._client.get("/log/disk/voip/raw", **kwargs)
+        return self._client.get("log", "/log/disk/voip/raw", **kwargs)
 
 
 class DiskWaf:
@@ -534,7 +534,7 @@ class DiskWaf:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get waf logs."""
-        return self._client.get("/log/disk/waf/raw", **kwargs)
+        return self._client.get("log", "/log/disk/waf/raw", **kwargs)
 
 
 class DiskWebfilter:
@@ -546,4 +546,4 @@ class DiskWebfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get webfilter logs."""
-        return self._client.get("/log/disk/webfilter/raw", **kwargs)
+        return self._client.get("log", "/log/disk/webfilter/raw", **kwargs)

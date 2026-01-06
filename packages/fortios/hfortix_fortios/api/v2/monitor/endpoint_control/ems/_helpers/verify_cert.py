@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/ems/verify_cert",
     "category": "monitor",
     "api_path": "endpoint-control/ems/verify-cert",
-    "help": "Configuration for endpoint-control/ems/verify-cert",
+    "help": "Verify EMS server certificate for a specific EMS.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -14,20 +14,20 @@ class ShapingPolicyPayload(TypedDict, total=False):
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
     name: NotRequired[str]  # Shaping policy name.
     comment: NotRequired[str]  # Comments.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this traffic shaping policy.
-    ip_version: NotRequired[Literal["4", "6"]]  # Apply this traffic shaping policy to IPv4 or IPv6 traffic.
-    traffic_type: NotRequired[Literal["forwarding", "local-in", "local-out"]]  # Traffic type.
+    status: NotRequired[Literal[{"description": "Enable traffic shaping policy", "help": "Enable traffic shaping policy.", "label": "Enable", "name": "enable"}, {"description": "Disable traffic shaping policy", "help": "Disable traffic shaping policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable this traffic shaping policy.
+    ip_version: NotRequired[Literal[{"description": "Use IPv4 addressing for Configuration Method", "help": "Use IPv4 addressing for Configuration Method.", "label": "4", "name": "4"}, {"description": "Use IPv6 addressing for Configuration Method", "help": "Use IPv6 addressing for Configuration Method.", "label": "6", "name": "6"}]]  # Apply this traffic shaping policy to IPv4 or IPv6 traffic.
+    traffic_type: NotRequired[Literal[{"description": "Forwarding traffic", "help": "Forwarding traffic.", "label": "Forwarding", "name": "forwarding"}, {"description": "Local-in traffic", "help": "Local-in traffic.", "label": "Local In", "name": "local-in"}, {"description": "Local-out traffic", "help": "Local-out traffic.", "label": "Local Out", "name": "local-out"}]]  # Traffic type.
     srcaddr: list[dict[str, Any]]  # IPv4 source address and address group names.
     dstaddr: list[dict[str, Any]]  # IPv4 destination address and address group names.
     srcaddr6: list[dict[str, Any]]  # IPv6 source address and address group names.
     dstaddr6: list[dict[str, Any]]  # IPv6 destination address and address group names.
-    internet_service: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of Internet Services for this policy. If 
+    internet_service: NotRequired[Literal[{"description": "Enable use of Internet Service in shaping-policy", "help": "Enable use of Internet Service in shaping-policy.", "label": "Enable", "name": "enable"}, {"description": "Disable use of Internet Service in shaping-policy", "help": "Disable use of Internet Service in shaping-policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of Internet Services for this policy. If 
     internet_service_name: NotRequired[list[dict[str, Any]]]  # Internet Service ID.
     internet_service_group: NotRequired[list[dict[str, Any]]]  # Internet Service group name.
     internet_service_custom: NotRequired[list[dict[str, Any]]]  # Custom Internet Service name.
     internet_service_custom_group: NotRequired[list[dict[str, Any]]]  # Custom Internet Service group name.
     internet_service_fortiguard: NotRequired[list[dict[str, Any]]]  # FortiGuard Internet Service name.
-    internet_service_src: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of Internet Services in source for this p
+    internet_service_src: NotRequired[Literal[{"description": "Enable use of Internet Service source in shaping-policy", "help": "Enable use of Internet Service source in shaping-policy.", "label": "Enable", "name": "enable"}, {"description": "Disable use of Internet Service source in shaping-policy", "help": "Disable use of Internet Service source in shaping-policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of Internet Services in source for this p
     internet_service_src_name: NotRequired[list[dict[str, Any]]]  # Internet Service source name.
     internet_service_src_group: NotRequired[list[dict[str, Any]]]  # Internet Service source group name.
     internet_service_src_custom: NotRequired[list[dict[str, Any]]]  # Custom Internet Service source name.
@@ -45,13 +45,13 @@ class ShapingPolicyPayload(TypedDict, total=False):
     dstintf: list[dict[str, Any]]  # One or more outgoing (egress) interfaces.
     tos_mask: NotRequired[str]  # Non-zero bit positions are used for comparison while zero bi
     tos: NotRequired[str]  # ToS (Type of Service) value used for comparison.
-    tos_negate: NotRequired[Literal["enable", "disable"]]  # Enable negated TOS match.
+    tos_negate: NotRequired[Literal[{"description": "Enable TOS match negate", "help": "Enable TOS match negate.", "label": "Enable", "name": "enable"}, {"description": "Disable TOS match negate", "help": "Disable TOS match negate.", "label": "Disable", "name": "disable"}]]  # Enable negated TOS match.
     traffic_shaper: NotRequired[str]  # Traffic shaper to apply to traffic forwarded by the firewall
     traffic_shaper_reverse: NotRequired[str]  # Traffic shaper to apply to response traffic received by the 
     per_ip_shaper: NotRequired[str]  # Per-IP traffic shaper to apply with this policy.
     class_id: NotRequired[int]  # Traffic class ID.
-    diffserv_forward: NotRequired[Literal["enable", "disable"]]  # Enable to change packet's DiffServ values to the specified d
-    diffserv_reverse: NotRequired[Literal["enable", "disable"]]  # Enable to change packet's reverse (reply) DiffServ values to
+    diffserv_forward: NotRequired[Literal[{"description": "Enable setting forward (original) traffic DiffServ", "help": "Enable setting forward (original) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting forward (original) traffic DiffServ", "help": "Disable setting forward (original) traffic DiffServ.", "label": "Disable", "name": "disable"}]]  # Enable to change packet's DiffServ values to the specified d
+    diffserv_reverse: NotRequired[Literal[{"description": "Enable setting reverse (reply) traffic DiffServ", "help": "Enable setting reverse (reply) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting reverse (reply) traffic DiffServ", "help": "Disable setting reverse (reply) traffic DiffServ.", "label": "Disable", "name": "disable"}]]  # Enable to change packet's reverse (reply) DiffServ values to
     diffservcode_forward: NotRequired[str]  # Change packet's DiffServ to this value.
     diffservcode_rev: NotRequired[str]  # Change packet's reverse (reply) DiffServ to this value.
     cos_mask: NotRequired[str]  # VLAN CoS evaluated bits.
@@ -87,20 +87,20 @@ class ShapingPolicy:
         uuid: str | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        status: Literal[{"description": "Enable traffic shaping policy", "help": "Enable traffic shaping policy.", "label": "Enable", "name": "enable"}, {"description": "Disable traffic shaping policy", "help": "Disable traffic shaping policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 addressing for Configuration Method", "help": "Use IPv4 addressing for Configuration Method.", "label": "4", "name": "4"}, {"description": "Use IPv6 addressing for Configuration Method", "help": "Use IPv6 addressing for Configuration Method.", "label": "6", "name": "6"}] | None = ...,
+        traffic_type: Literal[{"description": "Forwarding traffic", "help": "Forwarding traffic.", "label": "Forwarding", "name": "forwarding"}, {"description": "Local-in traffic", "help": "Local-in traffic.", "label": "Local In", "name": "local-in"}, {"description": "Local-out traffic", "help": "Local-out traffic.", "label": "Local Out", "name": "local-out"}] | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
         srcaddr6: list[dict[str, Any]] | None = ...,
         dstaddr6: list[dict[str, Any]] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service: Literal[{"description": "Enable use of Internet Service in shaping-policy", "help": "Enable use of Internet Service in shaping-policy.", "label": "Enable", "name": "enable"}, {"description": "Disable use of Internet Service in shaping-policy", "help": "Disable use of Internet Service in shaping-policy.", "label": "Disable", "name": "disable"}] | None = ...,
         internet_service_name: list[dict[str, Any]] | None = ...,
         internet_service_group: list[dict[str, Any]] | None = ...,
         internet_service_custom: list[dict[str, Any]] | None = ...,
         internet_service_custom_group: list[dict[str, Any]] | None = ...,
         internet_service_fortiguard: list[dict[str, Any]] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src: Literal[{"description": "Enable use of Internet Service source in shaping-policy", "help": "Enable use of Internet Service source in shaping-policy.", "label": "Enable", "name": "enable"}, {"description": "Disable use of Internet Service source in shaping-policy", "help": "Disable use of Internet Service source in shaping-policy.", "label": "Disable", "name": "disable"}] | None = ...,
         internet_service_src_name: list[dict[str, Any]] | None = ...,
         internet_service_src_group: list[dict[str, Any]] | None = ...,
         internet_service_src_custom: list[dict[str, Any]] | None = ...,
@@ -118,13 +118,13 @@ class ShapingPolicy:
         dstintf: list[dict[str, Any]] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
+        tos_negate: Literal[{"description": "Enable TOS match negate", "help": "Enable TOS match negate.", "label": "Enable", "name": "enable"}, {"description": "Disable TOS match negate", "help": "Disable TOS match negate.", "label": "Disable", "name": "disable"}] | None = ...,
         traffic_shaper: str | None = ...,
         traffic_shaper_reverse: str | None = ...,
         per_ip_shaper: str | None = ...,
         class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffserv_forward: Literal[{"description": "Enable setting forward (original) traffic DiffServ", "help": "Enable setting forward (original) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting forward (original) traffic DiffServ", "help": "Disable setting forward (original) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
+        diffserv_reverse: Literal[{"description": "Enable setting reverse (reply) traffic DiffServ", "help": "Enable setting reverse (reply) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting reverse (reply) traffic DiffServ", "help": "Disable setting reverse (reply) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         cos_mask: str | None = ...,
@@ -141,20 +141,20 @@ class ShapingPolicy:
         uuid: str | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
+        status: Literal[{"description": "Enable traffic shaping policy", "help": "Enable traffic shaping policy.", "label": "Enable", "name": "enable"}, {"description": "Disable traffic shaping policy", "help": "Disable traffic shaping policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip_version: Literal[{"description": "Use IPv4 addressing for Configuration Method", "help": "Use IPv4 addressing for Configuration Method.", "label": "4", "name": "4"}, {"description": "Use IPv6 addressing for Configuration Method", "help": "Use IPv6 addressing for Configuration Method.", "label": "6", "name": "6"}] | None = ...,
+        traffic_type: Literal[{"description": "Forwarding traffic", "help": "Forwarding traffic.", "label": "Forwarding", "name": "forwarding"}, {"description": "Local-in traffic", "help": "Local-in traffic.", "label": "Local In", "name": "local-in"}, {"description": "Local-out traffic", "help": "Local-out traffic.", "label": "Local Out", "name": "local-out"}] | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
         srcaddr6: list[dict[str, Any]] | None = ...,
         dstaddr6: list[dict[str, Any]] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
+        internet_service: Literal[{"description": "Enable use of Internet Service in shaping-policy", "help": "Enable use of Internet Service in shaping-policy.", "label": "Enable", "name": "enable"}, {"description": "Disable use of Internet Service in shaping-policy", "help": "Disable use of Internet Service in shaping-policy.", "label": "Disable", "name": "disable"}] | None = ...,
         internet_service_name: list[dict[str, Any]] | None = ...,
         internet_service_group: list[dict[str, Any]] | None = ...,
         internet_service_custom: list[dict[str, Any]] | None = ...,
         internet_service_custom_group: list[dict[str, Any]] | None = ...,
         internet_service_fortiguard: list[dict[str, Any]] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
+        internet_service_src: Literal[{"description": "Enable use of Internet Service source in shaping-policy", "help": "Enable use of Internet Service source in shaping-policy.", "label": "Enable", "name": "enable"}, {"description": "Disable use of Internet Service source in shaping-policy", "help": "Disable use of Internet Service source in shaping-policy.", "label": "Disable", "name": "disable"}] | None = ...,
         internet_service_src_name: list[dict[str, Any]] | None = ...,
         internet_service_src_group: list[dict[str, Any]] | None = ...,
         internet_service_src_custom: list[dict[str, Any]] | None = ...,
@@ -172,13 +172,13 @@ class ShapingPolicy:
         dstintf: list[dict[str, Any]] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
+        tos_negate: Literal[{"description": "Enable TOS match negate", "help": "Enable TOS match negate.", "label": "Enable", "name": "enable"}, {"description": "Disable TOS match negate", "help": "Disable TOS match negate.", "label": "Disable", "name": "disable"}] | None = ...,
         traffic_shaper: str | None = ...,
         traffic_shaper_reverse: str | None = ...,
         per_ip_shaper: str | None = ...,
         class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
+        diffserv_forward: Literal[{"description": "Enable setting forward (original) traffic DiffServ", "help": "Enable setting forward (original) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting forward (original) traffic DiffServ", "help": "Disable setting forward (original) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
+        diffserv_reverse: Literal[{"description": "Enable setting reverse (reply) traffic DiffServ", "help": "Enable setting reverse (reply) traffic DiffServ.", "label": "Enable", "name": "enable"}, {"description": "Disable setting reverse (reply) traffic DiffServ", "help": "Disable setting reverse (reply) traffic DiffServ.", "label": "Disable", "name": "disable"}] | None = ...,
         diffservcode_forward: str | None = ...,
         diffservcode_rev: str | None = ...,
         cos_mask: str | None = ...,

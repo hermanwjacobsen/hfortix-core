@@ -56,7 +56,7 @@ class ApplicationList:
         """
         Retrieve azure/application_list configuration.
 
-        Configuration for azure/application-list
+        Retrieve a list of Azure applications that can be used for configuring an Azure SDN connector.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

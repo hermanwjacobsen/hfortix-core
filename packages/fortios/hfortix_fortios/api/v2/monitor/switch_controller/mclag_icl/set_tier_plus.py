@@ -56,7 +56,7 @@ class SetTierPlus:
         """
         Retrieve switch_controller/mclag_icl/set_tier_plus configuration.
 
-        Configuration for switch-controller/mclag-icl/set-tier-plus
+        Setup a tier 2/3 MC-LAG link between a pair of FortiSwitches.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

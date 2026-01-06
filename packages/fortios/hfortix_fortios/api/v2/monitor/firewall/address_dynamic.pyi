@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AddressDynamic:
     """
-    Configuration for firewall/address-dynamic
+    List of Fabric Connector address objects and the IPs they resolve to.
     
     Path: firewall/address_dynamic
     Category: monitor

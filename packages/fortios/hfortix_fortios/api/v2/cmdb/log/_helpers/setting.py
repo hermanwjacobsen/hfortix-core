@@ -73,9 +73,11 @@ FIELDS_WITH_DEFAULTS = {
     "syslog-override": "disable",
     "rest-api-set": "disable",
     "rest-api-get": "disable",
+    "rest-api-performance": "disable",
     "long-live-session-stat": "enable",
     "extended-utm-log": "disable",
     "zone-name": "disable",
+    "web-svc-perf": "disable",
     "anonymization-hash": "",
 }
 
@@ -117,9 +119,11 @@ FIELD_TYPES = {
     "syslog-override": "option",  # Enable/disable override Syslog settings.
     "rest-api-set": "option",  # Enable/disable REST API POST/PUT/DELETE request logging.
     "rest-api-get": "option",  # Enable/disable REST API GET request logging.
+    "rest-api-performance": "option",  # Enable/disable REST API memory and performance stats in rest
     "long-live-session-stat": "option",  # Enable/disable long-live-session statistics logging.
     "extended-utm-log": "option",  # Enable/disable extended UTM logging.
     "zone-name": "option",  # Enable/disable zone name logging.
+    "web-svc-perf": "option",  # Enable/disable web-svc performance logging.
     "custom-log-fields": "string",  # Custom fields to append to all log messages.
     "anonymization-hash": "string",  # User name anonymization hash salt.
 }
@@ -148,9 +152,11 @@ FIELD_DESCRIPTIONS = {
     "syslog-override": "Enable/disable override Syslog settings.",
     "rest-api-set": "Enable/disable REST API POST/PUT/DELETE request logging.",
     "rest-api-get": "Enable/disable REST API GET request logging.",
+    "rest-api-performance": "Enable/disable REST API memory and performance stats in rest-api-get/set logs.",
     "long-live-session-stat": "Enable/disable long-live-session statistics logging.",
     "extended-utm-log": "Enable/disable extended UTM logging.",
     "zone-name": "Enable/disable zone name logging.",
+    "web-svc-perf": "Enable/disable web-svc performance logging.",
     "custom-log-fields": "Custom fields to append to all log messages.",
     "anonymization-hash": "User name anonymization hash salt.",
 }
@@ -175,104 +181,112 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_RESOLVE_IP = [
-    "enable",
-    "disable",
+    "enable",  # Enable adding resolved domain names to traffic logs.
+    "disable",  # Disable adding resolved domain names to traffic logs.
 ]
 VALID_BODY_RESOLVE_PORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable adding resolved service names to traffic logs.
+    "disable",  # Disable adding resolved service names to traffic logs.
 ]
 VALID_BODY_LOG_USER_IN_UPPER = [
-    "enable",
-    "disable",
+    "enable",  # Enable logs with user-in-upper.
+    "disable",  # Disable logs with user-in-upper.
 ]
 VALID_BODY_FWPOLICY_IMPLICIT_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable implicit firewall policy logging.
+    "disable",  # Disable implicit firewall policy logging.
 ]
 VALID_BODY_FWPOLICY6_IMPLICIT_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable implicit firewall policy6 logging.
+    "disable",  # Disable implicit firewall policy6 logging.
 ]
 VALID_BODY_EXTENDED_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable extended traffic logging.
+    "disable",  # Disable extended traffic logging.
 ]
 VALID_BODY_LOCAL_IN_ALLOW = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-in-allow logging.
+    "disable",  # Disable local-in-allow logging.
 ]
 VALID_BODY_LOCAL_IN_DENY_UNICAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-in-deny-unicast logging.
+    "disable",  # Disable local-in-deny-unicast logging.
 ]
 VALID_BODY_LOCAL_IN_DENY_BROADCAST = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-in-deny-broadcast logging.
+    "disable",  # Disable local-in-deny-broadcast logging.
 ]
 VALID_BODY_LOCAL_IN_POLICY_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-in-policy logging.
+    "disable",  # Disable local-in-policy logging.
 ]
 VALID_BODY_LOCAL_OUT = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-out logging.
+    "disable",  # Disable local-out logging.
 ]
 VALID_BODY_LOCAL_OUT_IOC_DETECTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable local-out traffic IoC detection. Requires local-out to be enabled.
+    "disable",  # Disable local-out traffic IoC detection.
 ]
 VALID_BODY_DAEMON_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable daemon logging.
+    "disable",  # Disable daemon logging.
 ]
 VALID_BODY_NEIGHBOR_EVENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable neighbor event logging.
+    "disable",  # Disable neighbor event logging.
 ]
 VALID_BODY_BRIEF_TRAFFIC_FORMAT = [
-    "enable",
-    "disable",
+    "enable",  # Enable brief format traffic logging.
+    "disable",  # Disable brief format traffic logging.
 ]
 VALID_BODY_USER_ANONYMIZE = [
-    "enable",
-    "disable",
+    "enable",  # Enable anonymizing user names in log messages.
+    "disable",  # Disable anonymizing user names in log messages.
 ]
 VALID_BODY_EXPOLICY_IMPLICIT_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable proxy firewall implicit policy logging.
+    "disable",  # Disable proxy firewall implicit policy logging.
 ]
 VALID_BODY_LOG_POLICY_COMMENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable inserting policy comments into traffic logs.
+    "disable",  # Disable inserting policy comments into traffic logs.
 ]
 VALID_BODY_FAZ_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable override FortiAnalyzer settings.
+    "disable",  # Disable override FortiAnalyzer settings.
 ]
 VALID_BODY_SYSLOG_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable override Syslog settings.
+    "disable",  # Disable override Syslog settings.
 ]
 VALID_BODY_REST_API_SET = [
-    "enable",
-    "disable",
+    "enable",  # Enable POST/PUT/DELETE REST API logging.
+    "disable",  # Disable POST/PUT/DELETE REST API logging.
 ]
 VALID_BODY_REST_API_GET = [
-    "enable",
-    "disable",
+    "enable",  # Enable GET REST API logging.
+    "disable",  # Disable GET REST API logging.
+]
+VALID_BODY_REST_API_PERFORMANCE = [
+    "enable",  # Enable REST API performance stats in REST API logs.
+    "disable",  # Disable REST API performance stats in REST API logs.
 ]
 VALID_BODY_LONG_LIVE_SESSION_STAT = [
-    "enable",
-    "disable",
+    "enable",  # Enable long-live-session statistics logging.
+    "disable",  # Disable long-live-session statistics logging.
 ]
 VALID_BODY_EXTENDED_UTM_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable extended UTM logging.
+    "disable",  # Disable extended UTM logging.
 ]
 VALID_BODY_ZONE_NAME = [
-    "enable",
-    "disable",
+    "enable",  # Enable zone name logging.
+    "disable",  # Disable zone name logging.
+]
+VALID_BODY_WEB_SVC_PERF = [
+    "enable",  # Enable web-svc performance logging.
+    "disable",  # Disable web-svc performance logging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -397,7 +411,7 @@ def validate_log_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "resolve-ip": "enable",  # Valid enum value
+        ...     "resolve-ip": "{'name': 'enable', 'help': 'Enable adding resolved domain names to traffic logs.', 'label': 'Enable', 'description': 'Enable adding resolved domain names to traffic logs'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_setting_post(payload)
         >>> assert is_valid == True
@@ -640,6 +654,16 @@ def validate_log_setting_post(
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REST_API_GET)}"
             error_msg += f"\n  → Example: rest-api-get='{{ VALID_BODY_REST_API_GET[0] }}'"
             return (False, error_msg)
+    if "rest-api-performance" in payload:
+        value = payload["rest-api-performance"]
+        if value not in VALID_BODY_REST_API_PERFORMANCE:
+            desc = FIELD_DESCRIPTIONS.get("rest-api-performance", "")
+            error_msg = f"Invalid value for 'rest-api-performance': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REST_API_PERFORMANCE)}"
+            error_msg += f"\n  → Example: rest-api-performance='{{ VALID_BODY_REST_API_PERFORMANCE[0] }}'"
+            return (False, error_msg)
     if "long-live-session-stat" in payload:
         value = payload["long-live-session-stat"]
         if value not in VALID_BODY_LONG_LIVE_SESSION_STAT:
@@ -669,6 +693,16 @@ def validate_log_setting_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ZONE_NAME)}"
             error_msg += f"\n  → Example: zone-name='{{ VALID_BODY_ZONE_NAME[0] }}'"
+            return (False, error_msg)
+    if "web-svc-perf" in payload:
+        value = payload["web-svc-perf"]
+        if value not in VALID_BODY_WEB_SVC_PERF:
+            desc = FIELD_DESCRIPTIONS.get("web-svc-perf", "")
+            error_msg = f"Invalid value for 'web-svc-perf': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WEB_SVC_PERF)}"
+            error_msg += f"\n  → Example: web-svc-perf='{{ VALID_BODY_WEB_SVC_PERF[0] }}'"
             return (False, error_msg)
 
     return (True, None)
@@ -852,6 +886,13 @@ def validate_log_setting_put(
                 False,
                 f"Invalid value for 'rest-api-get'='{value}'. Must be one of: {', '.join(VALID_BODY_REST_API_GET)}",
             )
+    if "rest-api-performance" in payload:
+        value = payload["rest-api-performance"]
+        if value not in VALID_BODY_REST_API_PERFORMANCE:
+            return (
+                False,
+                f"Invalid value for 'rest-api-performance'='{value}'. Must be one of: {', '.join(VALID_BODY_REST_API_PERFORMANCE)}",
+            )
     if "long-live-session-stat" in payload:
         value = payload["long-live-session-stat"]
         if value not in VALID_BODY_LONG_LIVE_SESSION_STAT:
@@ -872,6 +913,13 @@ def validate_log_setting_put(
             return (
                 False,
                 f"Invalid value for 'zone-name'='{value}'. Must be one of: {', '.join(VALID_BODY_ZONE_NAME)}",
+            )
+    if "web-svc-perf" in payload:
+        value = payload["web-svc-perf"]
+        if value not in VALID_BODY_WEB_SVC_PERF:
+            return (
+                False,
+                f"Invalid value for 'web-svc-perf'='{value}'. Must be one of: {', '.join(VALID_BODY_WEB_SVC_PERF)}",
             )
 
     return (True, None)
@@ -1159,9 +1207,9 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "log/setting",
     "help": "Configure general log settings.",
-    "total_fields": 27,
+    "total_fields": 29,
     "required_fields_count": 0,
-    "fields_with_defaults_count": 26,
+    "fields_with_defaults_count": 28,
 }
 
 

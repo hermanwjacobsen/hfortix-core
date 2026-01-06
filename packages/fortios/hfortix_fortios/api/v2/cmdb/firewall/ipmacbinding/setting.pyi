@@ -10,9 +10,9 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    bindthroughfw: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of IP/MAC binding to filter packets that 
-    bindtofw: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of IP/MAC binding to filter packets that 
-    undefinedhost: Literal["allow", "block"]  # Select action to take on packets with IP/MAC addresses not i
+    bindthroughfw: NotRequired[Literal[{"description": "Enable IP/MAC binding for packets that would normally go through the firewall", "help": "Enable IP/MAC binding for packets that would normally go through the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go through the firewall", "help": "Disable IP/MAC binding for packets that would normally go through the firewall.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of IP/MAC binding to filter packets that 
+    bindtofw: NotRequired[Literal[{"description": "Enable IP/MAC binding for packets that would normally go to the firewall", "help": "Enable IP/MAC binding for packets that would normally go to the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go to the firewall", "help": "Disable IP/MAC binding for packets that would normally go to the firewall.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of IP/MAC binding to filter packets that 
+    undefinedhost: Literal[{"description": "Allow packets from MAC addresses not in the IP/MAC list", "help": "Allow packets from MAC addresses not in the IP/MAC list.", "label": "Allow", "name": "allow"}, {"description": "Block packets from MAC addresses not in the IP/MAC list", "help": "Block packets from MAC addresses not in the IP/MAC list.", "label": "Block", "name": "block"}]  # Select action to take on packets with IP/MAC addresses not i
 
 
 class Setting:
@@ -39,9 +39,9 @@ class Setting:
     def post(
         self,
         payload_dict: SettingPayload | None = ...,
-        bindthroughfw: Literal["enable", "disable"] | None = ...,
-        bindtofw: Literal["enable", "disable"] | None = ...,
-        undefinedhost: Literal["allow", "block"] | None = ...,
+        bindthroughfw: Literal[{"description": "Enable IP/MAC binding for packets that would normally go through the firewall", "help": "Enable IP/MAC binding for packets that would normally go through the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go through the firewall", "help": "Disable IP/MAC binding for packets that would normally go through the firewall.", "label": "Disable", "name": "disable"}] | None = ...,
+        bindtofw: Literal[{"description": "Enable IP/MAC binding for packets that would normally go to the firewall", "help": "Enable IP/MAC binding for packets that would normally go to the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go to the firewall", "help": "Disable IP/MAC binding for packets that would normally go to the firewall.", "label": "Disable", "name": "disable"}] | None = ...,
+        undefinedhost: Literal[{"description": "Allow packets from MAC addresses not in the IP/MAC list", "help": "Allow packets from MAC addresses not in the IP/MAC list.", "label": "Allow", "name": "allow"}, {"description": "Block packets from MAC addresses not in the IP/MAC list", "help": "Block packets from MAC addresses not in the IP/MAC list.", "label": "Block", "name": "block"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -50,9 +50,9 @@ class Setting:
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
-        bindthroughfw: Literal["enable", "disable"] | None = ...,
-        bindtofw: Literal["enable", "disable"] | None = ...,
-        undefinedhost: Literal["allow", "block"] | None = ...,
+        bindthroughfw: Literal[{"description": "Enable IP/MAC binding for packets that would normally go through the firewall", "help": "Enable IP/MAC binding for packets that would normally go through the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go through the firewall", "help": "Disable IP/MAC binding for packets that would normally go through the firewall.", "label": "Disable", "name": "disable"}] | None = ...,
+        bindtofw: Literal[{"description": "Enable IP/MAC binding for packets that would normally go to the firewall", "help": "Enable IP/MAC binding for packets that would normally go to the firewall.", "label": "Enable", "name": "enable"}, {"description": "Disable IP/MAC binding for packets that would normally go to the firewall", "help": "Disable IP/MAC binding for packets that would normally go to the firewall.", "label": "Disable", "name": "disable"}] | None = ...,
+        undefinedhost: Literal[{"description": "Allow packets from MAC addresses not in the IP/MAC list", "help": "Allow packets from MAC addresses not in the IP/MAC list.", "label": "Allow", "name": "allow"}, {"description": "Block packets from MAC addresses not in the IP/MAC list", "help": "Block packets from MAC addresses not in the IP/MAC list.", "label": "Block", "name": "block"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

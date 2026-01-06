@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GenerateKey:
     """
-    Configuration for system/api-user/generate-key
+    Generate a new api-key for the specified api-key-auth admin. The old api-key will be replaced. The response contains the only chance to read the new api-key plaintext in the api_key field.
     
     Path: system/api_user/generate_key
     Category: monitor

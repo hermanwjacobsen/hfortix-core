@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/managed_switch/cable_status",
     "category": "monitor",
     "api_path": "switch-controller/managed-switch/cable-status",
-    "help": "Configuration for switch-controller/managed-switch/cable-status",
+    "help": "Diagnose cable information for a port. Virtual FortiSwitches and FortiLink ports are not supported.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -143,25 +143,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Report page paper.",
             "default": "a4",
-            "options": ["a4", "letter"],
+            "options": [{"help": "A4 paper.", "label": "A4", "name": "a4"}, {"help": "Letter paper.", "label": "Letter", "name": "letter"}],
         },
         "column-break-before": {
             "type": "option",
             "help": "Report page auto column break before heading.",
             "default": "",
-            "options": ["heading1", "heading2", "heading3"],
+            "options": [{"help": "Column break before heading 1.", "label": "Heading1", "name": "heading1"}, {"help": "Column break before heading 2.", "label": "Heading2", "name": "heading2"}, {"help": "Column break before heading 3.", "label": "Heading3", "name": "heading3"}],
         },
         "page-break-before": {
             "type": "option",
             "help": "Report page auto page break before heading.",
             "default": "",
-            "options": ["heading1", "heading2", "heading3"],
+            "options": [{"help": "Page break before heading 1.", "label": "Heading1", "name": "heading1"}, {"help": "Page break before heading 2.", "label": "Heading2", "name": "heading2"}, {"help": "Page break before heading 3.", "label": "Heading3", "name": "heading3"}],
         },
         "options": {
             "type": "option",
             "help": "Report page options.",
             "default": "",
-            "options": ["header-on-first-page", "footer-on-first-page"],
+            "options": [{"help": "Show header on first page.", "label": "Header On First Page", "name": "header-on-first-page"}, {"help": "Show footer on first page.", "label": "Footer On First Page", "name": "footer-on-first-page"}],
         },
         "header": {
             "type": "string",
@@ -190,7 +190,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Report item type.",
             "default": "text",
-            "options": ["text", "image", "chart", "misc"],
+            "options": [{"help": "Text.", "label": "Text", "name": "text"}, {"help": "Image.", "label": "Image", "name": "image"}, {"help": "Chart.", "label": "Chart", "name": "chart"}, {"help": "Miscellaneous.", "label": "Misc", "name": "misc"}],
         },
         "style": {
             "type": "string",
@@ -213,7 +213,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Report item text component.",
             "default": "text",
-            "options": ["text", "heading1", "heading2", "heading3"],
+            "options": [{"help": "Normal text.", "label": "Text", "name": "text"}, {"help": "Heading 1.", "label": "Heading1", "name": "heading1"}, {"help": "Heading 2.", "label": "Heading2", "name": "heading2"}, {"help": "Heading 3.", "label": "Heading3", "name": "heading3"}],
         },
         "content": {
             "type": "string",
@@ -237,13 +237,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Report chart options.",
             "default": "include-no-data hide-title show-caption",
-            "options": ["include-no-data", "hide-title", "show-caption"],
+            "options": [{"help": "Include chart with no data.", "label": "Include No Data", "name": "include-no-data"}, {"help": "Hide chart title.", "label": "Hide Title", "name": "hide-title"}, {"help": "Show chart caption.", "label": "Show Caption", "name": "show-caption"}],
         },
         "misc-component": {
             "type": "option",
             "help": "Report item miscellaneous component.",
             "default": "hline",
-            "options": ["hline", "page-break", "column-break", "section-start"],
+            "options": [{"help": "Horizontal line.", "label": "Hline", "name": "hline"}, {"help": "Page break.", "label": "Page Break", "name": "page-break"}, {"help": "Column break.", "label": "Column Break", "name": "column-break"}, {"help": "Section start.", "label": "Section Start", "name": "section-start"}],
         },
         "title": {
             "type": "string",
@@ -257,36 +257,36 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OPTIONS = [
-    "include-table-of-content",
-    "auto-numbering-heading",
-    "view-chart-as-heading",
-    "show-html-navbar-before-heading",
-    "dummy-option",
+    "include-table-of-content",  # Include table of content in the report.
+    "auto-numbering-heading",  # Prepend heading with auto numbering.
+    "view-chart-as-heading",  # Auto add heading for each chart.
+    "show-html-navbar-before-heading",  # Show HTML navigation bar before each heading.
+    "dummy-option",  # Use this option if you need none of the above options.
 ]
 VALID_BODY_FORMAT = [
-    "pdf",
+    "pdf",  # PDF.
 ]
 VALID_BODY_SCHEDULE_TYPE = [
-    "demand",
-    "daily",
-    "weekly",
+    "demand",  # Run on demand.
+    "daily",  # Schedule daily.
+    "weekly",  # Schedule weekly.
 ]
 VALID_BODY_DAY = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
+    "sunday",  # Sunday.
+    "monday",  # Monday.
+    "tuesday",  # Tuesday.
+    "wednesday",  # Wednesday.
+    "thursday",  # Thursday.
+    "friday",  # Friday.
+    "saturday",  # Saturday.
 ]
 VALID_BODY_CUTOFF_OPTION = [
-    "run-time",
-    "custom",
+    "run-time",  # Run time.
+    "custom",  # Custom.
 ]
 VALID_BODY_EMAIL_SEND = [
-    "enable",
-    "disable",
+    "enable",  # Enable sending emails after generating reports.
+    "disable",  # Disable sending emails after generating reports.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -416,7 +416,7 @@ def validate_report_layout_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "style-theme": True,
-        ...     "options": "include-table-of-content",  # Valid enum value
+        ...     "options": "{'name': 'include-table-of-content', 'help': 'Include table of content in the report.', 'label': 'Include Table Of Content', 'description': 'Include table of content in the report'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_report_layout_post(payload)
         >>> assert is_valid == True

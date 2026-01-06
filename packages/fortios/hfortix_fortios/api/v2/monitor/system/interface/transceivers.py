@@ -56,7 +56,7 @@ class Transceivers:
         """
         Retrieve system/interface/transceivers configuration.
 
-        Configuration for system/interface/transceivers
+        Get a list of transceivers being used by the FortiGate.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

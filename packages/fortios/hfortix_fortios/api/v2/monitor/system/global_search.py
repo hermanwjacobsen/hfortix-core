@@ -56,7 +56,7 @@ class GlobalSearch:
         """
         Retrieve system/global_search configuration.
 
-        Configuration for system/global-search
+        Search for CMDB table objects based on search phrase.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

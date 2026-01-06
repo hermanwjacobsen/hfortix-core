@@ -56,7 +56,7 @@ class Upgrade:
         """
         Retrieve extender_controller/extender/upgrade configuration.
 
-        Configuration for extender-controller/extender/upgrade
+        Upgrade FortiExtender.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

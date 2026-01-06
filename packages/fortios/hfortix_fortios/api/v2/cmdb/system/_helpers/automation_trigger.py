@@ -189,63 +189,63 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TRIGGER_TYPE = [
-    "event-based",
-    "scheduled",
+    "event-based",  # Event based trigger.
+    "scheduled",  # Scheduled trigger.
 ]
 VALID_BODY_EVENT_TYPE = [
-    "ioc",
-    "event-log",
-    "reboot",
-    "low-memory",
-    "high-cpu",
-    "license-near-expiry",
-    "local-cert-near-expiry",
-    "ha-failover",
-    "config-change",
-    "security-rating-summary",
-    "virus-ips-db-updated",
-    "faz-event",
-    "incoming-webhook",
-    "fabric-event",
-    "ips-logs",
-    "anomaly-logs",
-    "virus-logs",
-    "ssh-logs",
-    "webfilter-violation",
-    "traffic-violation",
-    "stitch",
+    "ioc",  # Indicator of compromise detected.
+    "event-log",  # Use log ID as trigger.
+    "reboot",  # Device reboot.
+    "low-memory",  # Conserve mode due to low memory.
+    "high-cpu",  # High CPU usage.
+    "license-near-expiry",  # License near expiration date.
+    "local-cert-near-expiry",  # The local certificate near expiration date.
+    "ha-failover",  # HA failover.
+    "config-change",  # Configuration change.
+    "security-rating-summary",  # Security rating summary.
+    "virus-ips-db-updated",  # Virus and IPS database updated.
+    "faz-event",  # FortiAnalyzer event.
+    "incoming-webhook",  # Incoming webhook call.
+    "fabric-event",  # Fabric connector event.
+    "ips-logs",  # IPS logs.
+    "anomaly-logs",  # Anomaly logs.
+    "virus-logs",  # Virus logs.
+    "ssh-logs",  # SSH logs.
+    "webfilter-violation",  # Webfilter violation.
+    "traffic-violation",  # Traffic violation.
+    "stitch",  # Specified stitch has been triggered.
 ]
 VALID_BODY_LICENSE_TYPE = [
-    "forticare-support",
-    "fortiguard-webfilter",
-    "fortiguard-antispam",
-    "fortiguard-antivirus",
-    "fortiguard-ips",
-    "fortiguard-management",
-    "forticloud",
-    "any",
+    "forticare-support",  # FortiCare support license.
+    "fortiguard-webfilter",  # FortiGuard web filter license.
+    "fortiguard-antispam",  # FortiGuard antispam license.
+    "fortiguard-antivirus",  # FortiGuard AntiVirus license.
+    "fortiguard-ips",  # FortiGuard IPS license.
+    "fortiguard-management",  # FortiGuard management service license.
+    "forticloud",  # FortiCloud license.
+    "any",  # Any license.
 ]
 VALID_BODY_REPORT_TYPE = [
-    "posture",
-    "coverage",
-    "optimization",
-    "any",
+    "posture",  # Posture report.
+    "coverage",  # Coverage report.
+    "optimization",  # Optimization report
+    "any",  # Any report.
 ]
 VALID_BODY_TRIGGER_FREQUENCY = [
-    "hourly",
-    "daily",
-    "weekly",
-    "monthly",
-    "once",
+    "hourly",  # Run hourly.
+    "daily",  # Run daily.
+    "weekly",  # Run weekly.
+    "monthly",  # Run monthly.
+    "once",  # Run once at specified date time.
 ]
 VALID_BODY_TRIGGER_WEEKDAY = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
+    "sunday",  # Sunday.
+    "monday",  # Monday.
+    "tuesday",  # Tuesday.
+    "wednesday",  # Wednesday.
+    "thursday",  # Thursday.
+    "friday",  # Friday.
+    "saturday",  # Saturday.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -376,7 +376,7 @@ def validate_system_automation_trigger_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "stitch-name": True,
-        ...     "trigger-type": "event-based",  # Valid enum value
+        ...     "trigger-type": "{'name': 'event-based', 'help': 'Event based trigger.', 'label': 'Event Based', 'description': 'Event based trigger'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_automation_trigger_post(payload)
         >>> assert is_valid == True

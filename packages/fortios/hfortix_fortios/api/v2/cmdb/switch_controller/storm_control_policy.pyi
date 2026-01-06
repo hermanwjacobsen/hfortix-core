@@ -12,12 +12,12 @@ class StormControlPolicyPayload(TypedDict, total=False):
     """
     name: str  # Storm control policy name.
     description: NotRequired[str]  # Description of the storm control policy.
-    storm_control_mode: NotRequired[Literal["global", "override", "disabled"]]  # Set Storm control mode.
+    storm_control_mode: NotRequired[Literal[{"description": "Apply Global or switch level storm control configuration", "help": "Apply Global or switch level storm control configuration.", "label": "Global", "name": "global"}, {"description": "Override global and switch level storm control to use port level configuration", "help": "Override global and switch level storm control to use port level configuration.", "label": "Override", "name": "override"}, {"description": "Disable storm control on the port entirely overriding global and switch level storm control", "help": "Disable storm control on the port entirely overriding global and switch level storm control.", "label": "Disabled", "name": "disabled"}]]  # Set Storm control mode.
     rate: NotRequired[int]  # Threshold rate in packets per second at which storm traffic 
     burst_size_level: NotRequired[int]  # Increase level to handle bursty traffic (0 - 4, default = 0)
-    unknown_unicast: NotRequired[Literal["enable", "disable"]]  # Enable/disable storm control to drop/allow unknown unicast t
-    unknown_multicast: NotRequired[Literal["enable", "disable"]]  # Enable/disable storm control to drop/allow unknown multicast
-    broadcast: NotRequired[Literal["enable", "disable"]]  # Enable/disable storm control to drop/allow broadcast traffic
+    unknown_unicast: NotRequired[Literal[{"description": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown unicast traffic to allow all packets", "help": "Disable storm control for unknown unicast traffic to allow all packets.", "label": "Disable", "name": "disable"}]]  # Enable/disable storm control to drop/allow unknown unicast t
+    unknown_multicast: NotRequired[Literal[{"description": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown multicast traffic to allow all packets", "help": "Disable storm control for unknown multicast traffic to allow all packets.", "label": "Disable", "name": "disable"}]]  # Enable/disable storm control to drop/allow unknown multicast
+    broadcast: NotRequired[Literal[{"description": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for broadcast traffic to allow all packets", "help": "Disable storm control for broadcast traffic to allow all packets.", "label": "Disable", "name": "disable"}]]  # Enable/disable storm control to drop/allow broadcast traffic
 
 
 class StormControlPolicy:
@@ -47,12 +47,12 @@ class StormControlPolicy:
         payload_dict: StormControlPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
+        storm_control_mode: Literal[{"description": "Apply Global or switch level storm control configuration", "help": "Apply Global or switch level storm control configuration.", "label": "Global", "name": "global"}, {"description": "Override global and switch level storm control to use port level configuration", "help": "Override global and switch level storm control to use port level configuration.", "label": "Override", "name": "override"}, {"description": "Disable storm control on the port entirely overriding global and switch level storm control", "help": "Disable storm control on the port entirely overriding global and switch level storm control.", "label": "Disabled", "name": "disabled"}] | None = ...,
         rate: int | None = ...,
         burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
+        unknown_unicast: Literal[{"description": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown unicast traffic to allow all packets", "help": "Disable storm control for unknown unicast traffic to allow all packets.", "label": "Disable", "name": "disable"}] | None = ...,
+        unknown_multicast: Literal[{"description": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown multicast traffic to allow all packets", "help": "Disable storm control for unknown multicast traffic to allow all packets.", "label": "Disable", "name": "disable"}] | None = ...,
+        broadcast: Literal[{"description": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for broadcast traffic to allow all packets", "help": "Disable storm control for broadcast traffic to allow all packets.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -63,12 +63,12 @@ class StormControlPolicy:
         payload_dict: StormControlPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
+        storm_control_mode: Literal[{"description": "Apply Global or switch level storm control configuration", "help": "Apply Global or switch level storm control configuration.", "label": "Global", "name": "global"}, {"description": "Override global and switch level storm control to use port level configuration", "help": "Override global and switch level storm control to use port level configuration.", "label": "Override", "name": "override"}, {"description": "Disable storm control on the port entirely overriding global and switch level storm control", "help": "Disable storm control on the port entirely overriding global and switch level storm control.", "label": "Disabled", "name": "disabled"}] | None = ...,
         rate: int | None = ...,
         burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
+        unknown_unicast: Literal[{"description": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown unicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown unicast traffic to allow all packets", "help": "Disable storm control for unknown unicast traffic to allow all packets.", "label": "Disable", "name": "disable"}] | None = ...,
+        unknown_multicast: Literal[{"description": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for unknown multicast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for unknown multicast traffic to allow all packets", "help": "Disable storm control for unknown multicast traffic to allow all packets.", "label": "Disable", "name": "disable"}] | None = ...,
+        broadcast: Literal[{"description": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits", "help": "Enable storm control for broadcast traffic to drop packets which exceed configured rate limits.", "label": "Enable", "name": "enable"}, {"description": "Disable storm control for broadcast traffic to allow all packets", "help": "Disable storm control for broadcast traffic to allow all packets.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class AvailableCertificates:
     """
-    Monitor endpoint for system/available-certificates
+    Get available certificates.
     
     Path: system/available_certificates
     Category: monitor

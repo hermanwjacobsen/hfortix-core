@@ -11,24 +11,24 @@ class DnsDatabasePayload(TypedDict, total=False):
         }
     """
     name: str  # Zone name.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this DNS zone.
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable this DNS zone.
     domain: str  # Domain name.
-    allow_transfer: NotRequired[str]  # DNS zone transfer IP address list.
-    type: Literal["primary", "secondary"]  # Zone type (primary to manage entries directly, secondary to 
-    view: Literal["shadow", "public", "shadow-ztna", "proxy"]  # Zone view (public to serve public clients, shadow to serve i
+    allow_transfer: NotRequired[list[dict[str, Any]]]  # DNS zone transfer IP address list.
+    type: Literal[{"description": "Primary DNS zone, to manage entries directly", "help": "Primary DNS zone, to manage entries directly.", "label": "Primary", "name": "primary"}, {"description": "Secondary DNS zone, to import entries from other DNS zones", "help": "Secondary DNS zone, to import entries from other DNS zones.", "label": "Secondary", "name": "secondary"}]  # Zone type (primary to manage entries directly, secondary to 
+    view: Literal[{"description": "Shadow DNS zone to serve internal clients", "help": "Shadow DNS zone to serve internal clients.", "label": "Shadow", "name": "shadow"}, {"description": "Public DNS zone to serve public clients", "help": "Public DNS zone to serve public clients.", "label": "Public", "name": "public"}, {"description": "implicit DNS zone for ztna dox tunnel", "help": "implicit DNS zone for ztna dox tunnel.", "label": "Shadow Ztna", "name": "shadow-ztna"}, {"description": "Shadow DNS zone for internal proxy", "help": "Shadow DNS zone for internal proxy.", "label": "Proxy", "name": "proxy"}]  # Zone view (public to serve public clients, shadow to serve i
     ip_primary: NotRequired[str]  # IP address of primary DNS server. Entries in this primary DN
     primary_name: NotRequired[str]  # Domain name of the default DNS server for this zone.
     contact: NotRequired[str]  # Email address of the administrator for this zone. You can sp
     ttl: int  # Default time-to-live value for the entries of this DNS zone 
-    authoritative: Literal["enable", "disable"]  # Enable/disable authoritative zone.
-    forwarder: NotRequired[str]  # DNS zone forwarder IP address list.
+    authoritative: Literal[{"description": "Enable authoritative zone", "help": "Enable authoritative zone.", "label": "Enable", "name": "enable"}, {"description": "Disable authoritative zone", "help": "Disable authoritative zone.", "label": "Disable", "name": "disable"}]  # Enable/disable authoritative zone.
+    forwarder: NotRequired[list[dict[str, Any]]]  # DNS zone forwarder IP address list.
     forwarder6: NotRequired[str]  # Forwarder IPv6 address.
     source_ip: NotRequired[str]  # Source IP for forwarding to DNS server.
     source_ip6: NotRequired[str]  # IPv6 source IP address for forwarding to DNS server.
     source_ip_interface: NotRequired[str]  # IP address of the specified interface as the source IP addre
     rr_max: NotRequired[int]  # Maximum number of resource records (10 - 65536, 0 means infi
     dns_entry: list[dict[str, Any]]  # DNS entry.
-    interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
+    interface_select_method: NotRequired[Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]]  # Specify how to select outgoing interface to reach server.
     interface: str  # Specify outgoing interface to reach server.
     vrf_select: NotRequired[int]  # VRF ID used for connection to server.
 
@@ -59,24 +59,24 @@ class DnsDatabase:
         self,
         payload_dict: DnsDatabasePayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         domain: str | None = ...,
-        allow_transfer: str | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
-        view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
+        allow_transfer: list[dict[str, Any]] | None = ...,
+        type: Literal[{"description": "Primary DNS zone, to manage entries directly", "help": "Primary DNS zone, to manage entries directly.", "label": "Primary", "name": "primary"}, {"description": "Secondary DNS zone, to import entries from other DNS zones", "help": "Secondary DNS zone, to import entries from other DNS zones.", "label": "Secondary", "name": "secondary"}] | None = ...,
+        view: Literal[{"description": "Shadow DNS zone to serve internal clients", "help": "Shadow DNS zone to serve internal clients.", "label": "Shadow", "name": "shadow"}, {"description": "Public DNS zone to serve public clients", "help": "Public DNS zone to serve public clients.", "label": "Public", "name": "public"}, {"description": "implicit DNS zone for ztna dox tunnel", "help": "implicit DNS zone for ztna dox tunnel.", "label": "Shadow Ztna", "name": "shadow-ztna"}, {"description": "Shadow DNS zone for internal proxy", "help": "Shadow DNS zone for internal proxy.", "label": "Proxy", "name": "proxy"}] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
         contact: str | None = ...,
         ttl: int | None = ...,
-        authoritative: Literal["enable", "disable"] | None = ...,
-        forwarder: str | None = ...,
+        authoritative: Literal[{"description": "Enable authoritative zone", "help": "Enable authoritative zone.", "label": "Enable", "name": "enable"}, {"description": "Disable authoritative zone", "help": "Disable authoritative zone.", "label": "Disable", "name": "disable"}] | None = ...,
+        forwarder: list[dict[str, Any]] | None = ...,
         forwarder6: str | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
         dns_entry: list[dict[str, Any]] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
@@ -88,24 +88,24 @@ class DnsDatabase:
         self,
         payload_dict: DnsDatabasePayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         domain: str | None = ...,
-        allow_transfer: str | None = ...,
-        type: Literal["primary", "secondary"] | None = ...,
-        view: Literal["shadow", "public", "shadow-ztna", "proxy"] | None = ...,
+        allow_transfer: list[dict[str, Any]] | None = ...,
+        type: Literal[{"description": "Primary DNS zone, to manage entries directly", "help": "Primary DNS zone, to manage entries directly.", "label": "Primary", "name": "primary"}, {"description": "Secondary DNS zone, to import entries from other DNS zones", "help": "Secondary DNS zone, to import entries from other DNS zones.", "label": "Secondary", "name": "secondary"}] | None = ...,
+        view: Literal[{"description": "Shadow DNS zone to serve internal clients", "help": "Shadow DNS zone to serve internal clients.", "label": "Shadow", "name": "shadow"}, {"description": "Public DNS zone to serve public clients", "help": "Public DNS zone to serve public clients.", "label": "Public", "name": "public"}, {"description": "implicit DNS zone for ztna dox tunnel", "help": "implicit DNS zone for ztna dox tunnel.", "label": "Shadow Ztna", "name": "shadow-ztna"}, {"description": "Shadow DNS zone for internal proxy", "help": "Shadow DNS zone for internal proxy.", "label": "Proxy", "name": "proxy"}] | None = ...,
         ip_primary: str | None = ...,
         primary_name: str | None = ...,
         contact: str | None = ...,
         ttl: int | None = ...,
-        authoritative: Literal["enable", "disable"] | None = ...,
-        forwarder: str | None = ...,
+        authoritative: Literal[{"description": "Enable authoritative zone", "help": "Enable authoritative zone.", "label": "Enable", "name": "enable"}, {"description": "Disable authoritative zone", "help": "Disable authoritative zone.", "label": "Disable", "name": "disable"}] | None = ...,
+        forwarder: list[dict[str, Any]] | None = ...,
         forwarder6: str | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
         dns_entry: list[dict[str, Any]] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,

@@ -56,7 +56,7 @@ class Ippool:
         """
         Retrieve firewall/ippool configuration.
 
-        Configuration for firewall/ippool
+        List IPv4 pool statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -97,9 +97,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADDR_MODE = [
-    "ipv4",
-    "ipv6",
-    "both",
+    "ipv4",  # IPv4 mode.
+    "ipv6",  # IPv6 mode.
+    "both",  # Both IPv4 and IPv6 mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -224,7 +224,7 @@ def validate_firewall_internet_service_append_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "addr-mode": "ipv4",  # Valid enum value
+        ...     "addr-mode": "{'name': 'ipv4', 'help': 'IPv4 mode.', 'label': 'Ipv4', 'description': 'IPv4 mode'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_internet_service_append_post(payload)
         >>> assert is_valid == True

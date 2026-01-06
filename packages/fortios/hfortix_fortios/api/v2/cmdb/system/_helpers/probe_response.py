@@ -109,18 +109,18 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TTL_MODE = [
-    "reinit",
-    "decrease",
-    "retain",
+    "reinit",  # Reinitialize TTL.
+    "decrease",  # Decrease TTL.
+    "retain",  # Retain TTL.
 ]
 VALID_BODY_MODE = [
-    "none",
-    "http-probe",
-    "twamp",
+    "none",  # Disable probe.
+    "http-probe",  # HTTP probe.
+    "twamp",  # Two way active measurement protocol.
 ]
 VALID_BODY_SECURITY_MODE = [
-    "none",
-    "authentication",
+    "none",  # Unauthenticated mode.
+    "authentication",  # Authenticated mode.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -245,7 +245,7 @@ def validate_system_probe_response_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ttl-mode": "reinit",  # Valid enum value
+        ...     "ttl-mode": "{'name': 'reinit', 'help': 'Reinitialize TTL.', 'label': 'Reinit', 'description': 'Reinitialize TTL'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_probe_response_post(payload)
         >>> assert is_valid == True

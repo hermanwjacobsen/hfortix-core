@@ -14,13 +14,13 @@ class ManualkeyPayload(TypedDict, total=False):
     interface: str  # Name of the physical, aggregate, or VLAN interface.
     remote_gw: str  # Peer gateway.
     local_gw: NotRequired[str]  # Local gateway.
-    authentication: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"]  # Authentication algorithm. Must be the same for both ends of 
-    encryption: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"]  # Encryption algorithm. Must be the same for both ends of the 
+    authentication: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "MD5", "help": "MD5.", "label": "Md5", "name": "md5"}, {"description": "SHA1", "help": "SHA1.", "label": "Sha1", "name": "sha1"}, {"description": "SHA256", "help": "SHA256.", "label": "Sha256", "name": "sha256"}, {"description": "SHA384", "help": "SHA384.", "label": "Sha384", "name": "sha384"}, {"description": "SHA512", "help": "SHA512.", "label": "Sha512", "name": "sha512"}]  # Authentication algorithm. Must be the same for both ends of 
+    encryption: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "DES", "help": "DES.", "label": "Des", "name": "des"}, {"description": "3DES", "help": "3DES.", "label": "3Des", "name": "3des"}, {"description": "AES128", "help": "AES128.", "label": "Aes128", "name": "aes128"}, {"description": "AES192", "help": "AES192.", "label": "Aes192", "name": "aes192"}, {"description": "AES256", "help": "AES256.", "label": "Aes256", "name": "aes256"}, {"description": "ARIA128", "help": "ARIA128.", "label": "Aria128", "name": "aria128"}, {"description": "ARIA192", "help": "ARIA192.", "label": "Aria192", "name": "aria192"}, {"description": "ARIA256", "help": "ARIA256.", "label": "Aria256", "name": "aria256"}, {"description": "Seed", "help": "Seed.", "label": "Seed", "name": "seed"}]  # Encryption algorithm. Must be the same for both ends of the 
     authkey: str  # Hexadecimal authentication key in 16-digit (8-byte) segments
     enckey: str  # Hexadecimal encryption key in 16-digit (8-byte) segments sep
     localspi: str  # Local SPI, a hexadecimal 8-digit (4-byte) tag. Discerns betw
     remotespi: str  # Remote SPI, a hexadecimal 8-digit (4-byte) tag. Discerns bet
-    npu_offload: NotRequired[Literal["enable", "disable"]]  # Enable/disable NPU offloading.
+    npu_offload: NotRequired[Literal[{"description": "Enable NPU offloading", "help": "Enable NPU offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable NPU offloading", "help": "Disable NPU offloading.", "label": "Disable", "name": "disable"}]]  # Enable/disable NPU offloading.
 
 
 class Manualkey:
@@ -52,13 +52,13 @@ class Manualkey:
         interface: str | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
-        authentication: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = ...,
-        encryption: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = ...,
+        authentication: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "MD5", "help": "MD5.", "label": "Md5", "name": "md5"}, {"description": "SHA1", "help": "SHA1.", "label": "Sha1", "name": "sha1"}, {"description": "SHA256", "help": "SHA256.", "label": "Sha256", "name": "sha256"}, {"description": "SHA384", "help": "SHA384.", "label": "Sha384", "name": "sha384"}, {"description": "SHA512", "help": "SHA512.", "label": "Sha512", "name": "sha512"}] | None = ...,
+        encryption: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "DES", "help": "DES.", "label": "Des", "name": "des"}, {"description": "3DES", "help": "3DES.", "label": "3Des", "name": "3des"}, {"description": "AES128", "help": "AES128.", "label": "Aes128", "name": "aes128"}, {"description": "AES192", "help": "AES192.", "label": "Aes192", "name": "aes192"}, {"description": "AES256", "help": "AES256.", "label": "Aes256", "name": "aes256"}, {"description": "ARIA128", "help": "ARIA128.", "label": "Aria128", "name": "aria128"}, {"description": "ARIA192", "help": "ARIA192.", "label": "Aria192", "name": "aria192"}, {"description": "ARIA256", "help": "ARIA256.", "label": "Aria256", "name": "aria256"}, {"description": "Seed", "help": "Seed.", "label": "Seed", "name": "seed"}] | None = ...,
         authkey: str | None = ...,
         enckey: str | None = ...,
         localspi: str | None = ...,
         remotespi: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
+        npu_offload: Literal[{"description": "Enable NPU offloading", "help": "Enable NPU offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable NPU offloading", "help": "Disable NPU offloading.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -71,13 +71,13 @@ class Manualkey:
         interface: str | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
-        authentication: Literal["null", "md5", "sha1", "sha256", "sha384", "sha512"] | None = ...,
-        encryption: Literal["null", "des", "3des", "aes128", "aes192", "aes256", "aria128", "aria192", "aria256", "seed"] | None = ...,
+        authentication: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "MD5", "help": "MD5.", "label": "Md5", "name": "md5"}, {"description": "SHA1", "help": "SHA1.", "label": "Sha1", "name": "sha1"}, {"description": "SHA256", "help": "SHA256.", "label": "Sha256", "name": "sha256"}, {"description": "SHA384", "help": "SHA384.", "label": "Sha384", "name": "sha384"}, {"description": "SHA512", "help": "SHA512.", "label": "Sha512", "name": "sha512"}] | None = ...,
+        encryption: Literal[{"description": "Null", "help": "Null.", "label": "Null", "name": "null"}, {"description": "DES", "help": "DES.", "label": "Des", "name": "des"}, {"description": "3DES", "help": "3DES.", "label": "3Des", "name": "3des"}, {"description": "AES128", "help": "AES128.", "label": "Aes128", "name": "aes128"}, {"description": "AES192", "help": "AES192.", "label": "Aes192", "name": "aes192"}, {"description": "AES256", "help": "AES256.", "label": "Aes256", "name": "aes256"}, {"description": "ARIA128", "help": "ARIA128.", "label": "Aria128", "name": "aria128"}, {"description": "ARIA192", "help": "ARIA192.", "label": "Aria192", "name": "aria192"}, {"description": "ARIA256", "help": "ARIA256.", "label": "Aria256", "name": "aria256"}, {"description": "Seed", "help": "Seed.", "label": "Seed", "name": "seed"}] | None = ...,
         authkey: str | None = ...,
         enckey: str | None = ...,
         localspi: str | None = ...,
         remotespi: str | None = ...,
-        npu_offload: Literal["enable", "disable"] | None = ...,
+        npu_offload: Literal[{"description": "Enable NPU offloading", "help": "Enable NPU offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable NPU offloading", "help": "Disable NPU offloading.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

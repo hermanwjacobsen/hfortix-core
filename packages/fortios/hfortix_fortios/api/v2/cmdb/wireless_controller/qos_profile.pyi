@@ -16,19 +16,19 @@ class QosProfilePayload(TypedDict, total=False):
     downlink: NotRequired[int]  # Maximum downlink bandwidth for Virtual Access Points (VAPs) 
     uplink_sta: NotRequired[int]  # Maximum uplink bandwidth for clients (0 - 2097152 Kbps, defa
     downlink_sta: NotRequired[int]  # Maximum downlink bandwidth for clients (0 - 2097152 Kbps, de
-    burst: NotRequired[Literal["enable", "disable"]]  # Enable/disable client rate burst.
-    wmm: NotRequired[Literal["enable", "disable"]]  # Enable/disable WiFi multi-media (WMM) control.
-    wmm_uapsd: NotRequired[Literal["enable", "disable"]]  # Enable/disable WMM Unscheduled Automatic Power Save Delivery
-    call_admission_control: NotRequired[Literal["enable", "disable"]]  # Enable/disable WMM call admission control.
+    burst: NotRequired[Literal[{"description": "Enable client rate burst", "help": "Enable client rate burst.", "label": "Enable", "name": "enable"}, {"description": "Disable client rate burst", "help": "Disable client rate burst.", "label": "Disable", "name": "disable"}]]  # Enable/disable client rate burst.
+    wmm: NotRequired[Literal[{"description": "Enable WiFi multi-media (WMM) control", "help": "Enable WiFi multi-media (WMM) control.", "label": "Enable", "name": "enable"}, {"description": "Disable WiFi multi-media (WMM) control", "help": "Disable WiFi multi-media (WMM) control.", "label": "Disable", "name": "disable"}]]  # Enable/disable WiFi multi-media (WMM) control.
+    wmm_uapsd: NotRequired[Literal[{"description": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Disable", "name": "disable"}]]  # Enable/disable WMM Unscheduled Automatic Power Save Delivery
+    call_admission_control: NotRequired[Literal[{"description": "Enable WMM call admission control", "help": "Enable WMM call admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM call admission control", "help": "Disable WMM call admission control.", "label": "Disable", "name": "disable"}]]  # Enable/disable WMM call admission control.
     call_capacity: NotRequired[int]  # Maximum number of Voice over WLAN (VoWLAN) phones allowed (0
-    bandwidth_admission_control: NotRequired[Literal["enable", "disable"]]  # Enable/disable WMM bandwidth admission control.
+    bandwidth_admission_control: NotRequired[Literal[{"description": "Enable WMM bandwidth admission control", "help": "Enable WMM bandwidth admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM bandwidth admission control", "help": "Disable WMM bandwidth admission control.", "label": "Disable", "name": "disable"}]]  # Enable/disable WMM bandwidth admission control.
     bandwidth_capacity: NotRequired[int]  # Maximum bandwidth capacity allowed (1 - 600000 Kbps, default
-    dscp_wmm_mapping: NotRequired[Literal["enable", "disable"]]  # Enable/disable Differentiated Services Code Point (DSCP) map
+    dscp_wmm_mapping: NotRequired[Literal[{"description": "Enable Differentiated Services Code Point (DSCP) mapping", "help": "Enable Differentiated Services Code Point (DSCP) mapping.", "label": "Enable", "name": "enable"}, {"description": "Disable Differentiated Services Code Point (DSCP) mapping", "help": "Disable Differentiated Services Code Point (DSCP) mapping.", "label": "Disable", "name": "disable"}]]  # Enable/disable Differentiated Services Code Point (DSCP) map
     dscp_wmm_vo: NotRequired[list[dict[str, Any]]]  # DSCP mapping for voice access (default = 48 56).
     dscp_wmm_vi: NotRequired[list[dict[str, Any]]]  # DSCP mapping for video access (default = 32 40).
     dscp_wmm_be: NotRequired[list[dict[str, Any]]]  # DSCP mapping for best effort access (default = 0 24).
     dscp_wmm_bk: NotRequired[list[dict[str, Any]]]  # DSCP mapping for background access (default = 8 16).
-    wmm_dscp_marking: NotRequired[Literal["enable", "disable"]]  # Enable/disable WMM Differentiated Services Code Point (DSCP)
+    wmm_dscp_marking: NotRequired[Literal[{"description": "Enable WMM Differentiated Services Code Point (DSCP) marking", "help": "Enable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Differentiated Services Code Point (DSCP) marking", "help": "Disable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Disable", "name": "disable"}]]  # Enable/disable WMM Differentiated Services Code Point (DSCP)
     wmm_vo_dscp: NotRequired[int]  # DSCP marking for voice access (default = 48).
     wmm_vi_dscp: NotRequired[int]  # DSCP marking for video access (default = 32).
     wmm_be_dscp: NotRequired[int]  # DSCP marking for best effort access (default = 0).
@@ -66,19 +66,19 @@ class QosProfile:
         downlink: int | None = ...,
         uplink_sta: int | None = ...,
         downlink_sta: int | None = ...,
-        burst: Literal["enable", "disable"] | None = ...,
-        wmm: Literal["enable", "disable"] | None = ...,
-        wmm_uapsd: Literal["enable", "disable"] | None = ...,
-        call_admission_control: Literal["enable", "disable"] | None = ...,
+        burst: Literal[{"description": "Enable client rate burst", "help": "Enable client rate burst.", "label": "Enable", "name": "enable"}, {"description": "Disable client rate burst", "help": "Disable client rate burst.", "label": "Disable", "name": "disable"}] | None = ...,
+        wmm: Literal[{"description": "Enable WiFi multi-media (WMM) control", "help": "Enable WiFi multi-media (WMM) control.", "label": "Enable", "name": "enable"}, {"description": "Disable WiFi multi-media (WMM) control", "help": "Disable WiFi multi-media (WMM) control.", "label": "Disable", "name": "disable"}] | None = ...,
+        wmm_uapsd: Literal[{"description": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Disable", "name": "disable"}] | None = ...,
+        call_admission_control: Literal[{"description": "Enable WMM call admission control", "help": "Enable WMM call admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM call admission control", "help": "Disable WMM call admission control.", "label": "Disable", "name": "disable"}] | None = ...,
         call_capacity: int | None = ...,
-        bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
+        bandwidth_admission_control: Literal[{"description": "Enable WMM bandwidth admission control", "help": "Enable WMM bandwidth admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM bandwidth admission control", "help": "Disable WMM bandwidth admission control.", "label": "Disable", "name": "disable"}] | None = ...,
         bandwidth_capacity: int | None = ...,
-        dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
+        dscp_wmm_mapping: Literal[{"description": "Enable Differentiated Services Code Point (DSCP) mapping", "help": "Enable Differentiated Services Code Point (DSCP) mapping.", "label": "Enable", "name": "enable"}, {"description": "Disable Differentiated Services Code Point (DSCP) mapping", "help": "Disable Differentiated Services Code Point (DSCP) mapping.", "label": "Disable", "name": "disable"}] | None = ...,
         dscp_wmm_vo: list[dict[str, Any]] | None = ...,
         dscp_wmm_vi: list[dict[str, Any]] | None = ...,
         dscp_wmm_be: list[dict[str, Any]] | None = ...,
         dscp_wmm_bk: list[dict[str, Any]] | None = ...,
-        wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
+        wmm_dscp_marking: Literal[{"description": "Enable WMM Differentiated Services Code Point (DSCP) marking", "help": "Enable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Differentiated Services Code Point (DSCP) marking", "help": "Disable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Disable", "name": "disable"}] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
         wmm_be_dscp: int | None = ...,
@@ -97,19 +97,19 @@ class QosProfile:
         downlink: int | None = ...,
         uplink_sta: int | None = ...,
         downlink_sta: int | None = ...,
-        burst: Literal["enable", "disable"] | None = ...,
-        wmm: Literal["enable", "disable"] | None = ...,
-        wmm_uapsd: Literal["enable", "disable"] | None = ...,
-        call_admission_control: Literal["enable", "disable"] | None = ...,
+        burst: Literal[{"description": "Enable client rate burst", "help": "Enable client rate burst.", "label": "Enable", "name": "enable"}, {"description": "Disable client rate burst", "help": "Disable client rate burst.", "label": "Disable", "name": "disable"}] | None = ...,
+        wmm: Literal[{"description": "Enable WiFi multi-media (WMM) control", "help": "Enable WiFi multi-media (WMM) control.", "label": "Enable", "name": "enable"}, {"description": "Disable WiFi multi-media (WMM) control", "help": "Disable WiFi multi-media (WMM) control.", "label": "Disable", "name": "disable"}] | None = ...,
+        wmm_uapsd: Literal[{"description": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Enable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode", "help": "Disable WMM Unscheduled Automatic Power Save Delivery (U-APSD) power save mode.", "label": "Disable", "name": "disable"}] | None = ...,
+        call_admission_control: Literal[{"description": "Enable WMM call admission control", "help": "Enable WMM call admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM call admission control", "help": "Disable WMM call admission control.", "label": "Disable", "name": "disable"}] | None = ...,
         call_capacity: int | None = ...,
-        bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
+        bandwidth_admission_control: Literal[{"description": "Enable WMM bandwidth admission control", "help": "Enable WMM bandwidth admission control.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM bandwidth admission control", "help": "Disable WMM bandwidth admission control.", "label": "Disable", "name": "disable"}] | None = ...,
         bandwidth_capacity: int | None = ...,
-        dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
+        dscp_wmm_mapping: Literal[{"description": "Enable Differentiated Services Code Point (DSCP) mapping", "help": "Enable Differentiated Services Code Point (DSCP) mapping.", "label": "Enable", "name": "enable"}, {"description": "Disable Differentiated Services Code Point (DSCP) mapping", "help": "Disable Differentiated Services Code Point (DSCP) mapping.", "label": "Disable", "name": "disable"}] | None = ...,
         dscp_wmm_vo: list[dict[str, Any]] | None = ...,
         dscp_wmm_vi: list[dict[str, Any]] | None = ...,
         dscp_wmm_be: list[dict[str, Any]] | None = ...,
         dscp_wmm_bk: list[dict[str, Any]] | None = ...,
-        wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
+        wmm_dscp_marking: Literal[{"description": "Enable WMM Differentiated Services Code Point (DSCP) marking", "help": "Enable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Enable", "name": "enable"}, {"description": "Disable WMM Differentiated Services Code Point (DSCP) marking", "help": "Disable WMM Differentiated Services Code Point (DSCP) marking.", "label": "Disable", "name": "disable"}] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
         wmm_be_dscp: int | None = ...,

@@ -11,7 +11,7 @@ class KrbKeytabPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Kerberos keytab entry name.
-    pac_data: NotRequired[Literal["enable", "disable"]]  # Enable/disable parsing PAC data in the ticket.
+    pac_data: NotRequired[Literal[{"description": "Enable parsing PAC data in the ticket", "help": "Enable parsing PAC data in the ticket.", "label": "Enable", "name": "enable"}, {"description": "Disable parsing PAC data in the ticket", "help": "Disable parsing PAC data in the ticket.", "label": "Disable", "name": "disable"}]]  # Enable/disable parsing PAC data in the ticket.
     principal: str  # Kerberos service principal. For example, HTTP/myfgt.example.
     ldap_server: NotRequired[list[dict[str, Any]]]  # LDAP server name(s).
     keytab: str  # Base64 coded keytab file containing a pre-shared key.
@@ -43,7 +43,7 @@ class KrbKeytab:
         self,
         payload_dict: KrbKeytabPayload | None = ...,
         name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
+        pac_data: Literal[{"description": "Enable parsing PAC data in the ticket", "help": "Enable parsing PAC data in the ticket.", "label": "Enable", "name": "enable"}, {"description": "Disable parsing PAC data in the ticket", "help": "Disable parsing PAC data in the ticket.", "label": "Disable", "name": "disable"}] | None = ...,
         principal: str | None = ...,
         ldap_server: list[dict[str, Any]] | None = ...,
         keytab: str | None = ...,
@@ -56,7 +56,7 @@ class KrbKeytab:
         self,
         payload_dict: KrbKeytabPayload | None = ...,
         name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
+        pac_data: Literal[{"description": "Enable parsing PAC data in the ticket", "help": "Enable parsing PAC data in the ticket.", "label": "Enable", "name": "enable"}, {"description": "Disable parsing PAC data in the ticket", "help": "Disable parsing PAC data in the ticket.", "label": "Disable", "name": "disable"}] | None = ...,
         principal: str | None = ...,
         ldap_server: list[dict[str, Any]] | None = ...,
         keytab: str | None = ...,

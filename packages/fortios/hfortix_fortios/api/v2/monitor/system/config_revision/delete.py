@@ -56,7 +56,7 @@ class Delete:
         """
         Retrieve system/config_revision/delete configuration.
 
-        Configuration for system/config-revision/delete
+        Deletes one or more system configuration revisions.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

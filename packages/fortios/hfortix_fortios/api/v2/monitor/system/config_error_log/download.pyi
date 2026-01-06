@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for system/config-error-log/download
+    Download the error log of the configuration management database.
     
     Path: system/config_error_log/download
     Category: monitor

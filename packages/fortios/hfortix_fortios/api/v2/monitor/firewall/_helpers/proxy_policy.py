@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/proxy_policy",
     "category": "monitor",
     "api_path": "firewall/proxy-policy",
-    "help": "Monitor endpoint for firewall/proxy-policy",
+    "help": "List traffic statistics for all explicit proxy policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "license/forticare_resellers",
     "category": "monitor",
     "api_path": "license/forticare-resellers",
-    "help": "Configuration for license/forticare-resellers",
+    "help": "Get current FortiCare resellers for the requested country.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

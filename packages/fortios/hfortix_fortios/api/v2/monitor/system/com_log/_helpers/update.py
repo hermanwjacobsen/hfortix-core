@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/com_log/update",
     "category": "monitor",
     "api_path": "system/com-log/update",
-    "help": "Configuration for system/com-log/update",
+    "help": "Fetch system com-log file dump progress.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

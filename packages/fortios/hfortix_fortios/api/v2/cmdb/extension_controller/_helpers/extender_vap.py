@@ -161,48 +161,48 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "local-vap",
-    "lan-ext-vap",
+    "local-vap",  # Local VAP.
+    "lan-ext-vap",  # Lan Extension VAP.
 ]
 VALID_BODY_BROADCAST_SSID = [
-    "disable",
-    "enable",
+    "disable",  # Disable broadcast SSID.
+    "enable",  # Enable broadcast SSID.
 ]
 VALID_BODY_SECURITY = [
-    "OPEN",
-    "WPA2-Personal",
-    "WPA-WPA2-Personal",
-    "WPA3-SAE",
-    "WPA3-SAE-Transition",
-    "WPA2-Enterprise",
-    "WPA3-Enterprise-only",
-    "WPA3-Enterprise-transition",
-    "WPA3-Enterprise-192-bit",
+    "OPEN",  # Wi-Fi security OPEN
+    "WPA2-Personal",  # Wi-Fi security WPA2 Personal
+    "WPA-WPA2-Personal",  # Wi-Fi security WPA-WPA2 Personal
+    "WPA3-SAE",  # Wi-Fi security WPA3 SAE
+    "WPA3-SAE-Transition",  # Wi-Fi security WPA3 SAE Transition
+    "WPA2-Enterprise",  # Wi-Fi security WPA2 Enterprise
+    "WPA3-Enterprise-only",  # Wi-Fi security WPA3 Enterprise only
+    "WPA3-Enterprise-transition",  # Wi-Fi security WPA3 Enterprise Transition
+    "WPA3-Enterprise-192-bit",  # Wi-Fi security WPA3 Enterprise 192-bit
 ]
 VALID_BODY_PMF = [
-    "disabled",
-    "optional",
-    "required",
+    "disabled",  # Disable PMF (Protected Management Frames).
+    "optional",  # Set PMF (Protected Management Frames) optional.
+    "required",  # Require PMF (Protected Management Frames).
 ]
 VALID_BODY_TARGET_WAKE_TIME = [
-    "disable",
-    "enable",
+    "disable",  # Disable target wake time.
+    "enable",  # Enable target wake time.
 ]
 VALID_BODY_BSS_COLOR_PARTIAL = [
-    "disable",
-    "enable",
+    "disable",  # Disable bss color partial.
+    "enable",  # Enable bss color partial.
 ]
 VALID_BODY_MU_MIMO = [
-    "disable",
-    "enable",
+    "disable",  # Disable multi-user MIMO.
+    "enable",  # Enable multi-user MIMO.
 ]
 VALID_BODY_ALLOWACCESS = [
-    "ping",
-    "telnet",
-    "http",
-    "https",
-    "ssh",
-    "snmp",
+    "ping",  # PING access.
+    "telnet",  # TELNET access.
+    "http",  # HTTP access.
+    "https",  # HTTPS access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -333,7 +333,7 @@ def validate_extension_controller_extender_vap_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "type": True,
-        ...     "type": "local-vap",  # Valid enum value
+        ...     "type": "{'name': 'local-vap', 'help': 'Local VAP.', 'label': 'Local Vap', 'description': 'Local VAP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_extension_controller_extender_vap_post(payload)
         >>> assert is_valid == True

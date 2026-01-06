@@ -125,7 +125,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this entry.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable this entry.", "label": "Enable", "name": "enable"}, {"help": "Disable this entry.", "label": "Disable", "name": "disable"}],
         },
     },
 }
@@ -133,9 +133,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MATCH_TYPE = [
-    "match-all",
-    "match-any",
-    "match-eval",
+    "match-all",  # Match all entries.
+    "match-any",  # Match any entries.
+    "match-eval",  # Match an expression evaluation.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -266,7 +266,7 @@ def validate_dlp_sensor_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "match-type": "match-all",  # Valid enum value
+        ...     "match-type": "{'name': 'match-all', 'help': 'Match all entries.', 'label': 'Match All', 'description': 'Match all entries'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_dlp_sensor_post(payload)
         >>> assert is_valid == True

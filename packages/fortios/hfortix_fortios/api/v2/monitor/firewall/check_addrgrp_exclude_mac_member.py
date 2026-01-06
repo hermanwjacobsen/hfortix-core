@@ -56,7 +56,7 @@ class CheckAddrgrpExcludeMacMember:
         """
         Retrieve firewall/check_addrgrp_exclude_mac_member configuration.
 
-        Configuration for firewall/check-addrgrp-exclude-mac-member
+        Check if the IPv4 or IPv6 address group should exclude mac address type member.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HistoricalStatistics:
     """
-    Configuration for fortiview/historical-statistics
+    Retrieve historical drill-down and summary data for FortiView.
     
     Path: fortiview/historical_statistics
     Category: monitor

@@ -56,7 +56,7 @@ class Restart:
         """
         Retrieve switch_controller/managed_switch/restart configuration.
 
-        Configuration for switch-controller/managed-switch/restart
+        Restart a given FortiSwitch.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

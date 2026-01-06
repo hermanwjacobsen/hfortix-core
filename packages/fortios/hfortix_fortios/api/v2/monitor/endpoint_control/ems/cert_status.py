@@ -56,7 +56,7 @@ class CertStatus:
         """
         Retrieve endpoint_control/ems/cert_status configuration.
 
-        Configuration for endpoint-control/ems/cert-status
+        Retrieve authentication status of the EMS server certificate for a specific EMS.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

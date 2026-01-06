@@ -11,7 +11,7 @@ class FtgdLocalRatingPayload(TypedDict, total=False):
         }
     """
     url: str  # URL to rate locally.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable local rating.
+    status: NotRequired[Literal[{"description": "Enable local rating", "help": "Enable local rating.", "label": "Enable", "name": "enable"}, {"description": "Disable local rating", "help": "Disable local rating.", "label": "Disable", "name": "disable"}]]  # Enable/disable local rating.
     comment: NotRequired[str]  # Comment.
     rating: str  # Local rating.
 
@@ -42,7 +42,7 @@ class FtgdLocalRating:
         self,
         payload_dict: FtgdLocalRatingPayload | None = ...,
         url: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable local rating", "help": "Enable local rating.", "label": "Enable", "name": "enable"}, {"description": "Disable local rating", "help": "Disable local rating.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         rating: str | None = ...,
         vdom: str | bool | None = ...,
@@ -54,7 +54,7 @@ class FtgdLocalRating:
         self,
         payload_dict: FtgdLocalRatingPayload | None = ...,
         url: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable local rating", "help": "Enable local rating.", "label": "Enable", "name": "enable"}, {"description": "Disable local rating", "help": "Disable local rating.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         rating: str | None = ...,
         vdom: str | bool | None = ...,

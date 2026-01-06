@@ -56,7 +56,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         """
         Retrieve system/fabric_admin_lockout_exists_on_firmware_update configuration.
 
-        Configuration for system/fabric-admin-lockout-exists-on-firmware-update
+        Check if there exists a FortiGate in the Fabric that has an administrative user that will get locked out if firmware is updated to a version that does not support safer passwords.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

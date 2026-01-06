@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["disable", "enable"]
+VALID_BODY_STATUS: Literal[{"description": "Disable SNMP", "help": "Disable SNMP.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP", "help": "Enable SNMP.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

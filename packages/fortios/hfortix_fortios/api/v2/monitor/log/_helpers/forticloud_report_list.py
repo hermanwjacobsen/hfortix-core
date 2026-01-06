@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/forticloud_report_list",
     "category": "monitor",
     "api_path": "log/forticloud-report-list",
-    "help": "Configuration for log/forticloud-report-list",
+    "help": "Get FortiCloud report list.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

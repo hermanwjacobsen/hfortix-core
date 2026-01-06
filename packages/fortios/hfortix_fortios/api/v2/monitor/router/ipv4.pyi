@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Ipv4:
     """
-    Monitor endpoint for router/ipv4
+    List all active IPv4 routing table entries.
     
     Path: router/ipv4
     Category: monitor

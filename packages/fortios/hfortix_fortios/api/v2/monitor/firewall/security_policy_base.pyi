@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SecurityPolicy:
     """
-    Monitor endpoint for firewall/security-policy
+    List IPS engine statistics for security policies.
     
     Path: firewall/security_policy
     Category: monitor

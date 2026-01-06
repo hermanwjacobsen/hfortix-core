@@ -56,7 +56,7 @@ class Stats:
         """
         Retrieve webcache/stats configuration.
 
-        Configuration for webcache/stats
+        Retrieve webcache statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

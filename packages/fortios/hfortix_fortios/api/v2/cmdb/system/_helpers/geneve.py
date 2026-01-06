@@ -115,12 +115,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "ethernet",
-    "ppp",
+    "ethernet",  # Internal packet includes Ethernet header.
+    "ppp",  # Internal packet does not include Ethernet header.
 ]
 VALID_BODY_IP_VERSION = [
-    "ipv4-unicast",
-    "ipv6-unicast",
+    "ipv4-unicast",  # Use IPv4 unicast addressing over the GENEVE.
+    "ipv6-unicast",  # Use IPv6 unicast addressing over the GENEVE.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -250,7 +250,7 @@ def validate_system_geneve_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "type": "ethernet",  # Valid enum value
+        ...     "type": "{'name': 'ethernet', 'help': 'Internal packet includes Ethernet header.', 'label': 'Ethernet', 'description': 'Internal packet includes Ethernet header'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_geneve_post(payload)
         >>> assert is_valid == True

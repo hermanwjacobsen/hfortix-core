@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CurrentDiskUsage:
     """
-    Configuration for log/current-disk-usage
+    Return current used, free and total disk bytes.
     
     Path: log/current_disk_usage
     Category: monitor

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Ssl:
     """
-    Configuration for vpn/ssl/stats
+    Retrieve a list of all Agentless VPN sessions and sub-sessions.
     
     Path: vpn/ssl
     Category: monitor

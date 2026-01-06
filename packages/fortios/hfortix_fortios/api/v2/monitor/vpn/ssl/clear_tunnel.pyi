@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ClearTunnel:
     """
-    Configuration for vpn/ssl/clear_tunnel
+    Remove all active tunnel sessions in current virtual domain.
     
     Path: vpn/ssl/clear_tunnel
     Category: monitor

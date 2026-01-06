@@ -2,7 +2,12 @@
 
 from . import admin
 from . import api_user
+from . import automation_action
 from . import automation_stitch
+from . import available_interfaces
+from . import botnet
+from . import botnet_domains
+from . import central_management
 from . import certificate
 from . import change_password
 from . import cluster
@@ -30,11 +35,16 @@ from . import ipam
 from . import logdisk
 from . import lte_modem
 from . import modem
+from . import modem5g
+from . import ntp
 from . import object
 from . import os
 from . import password_policy_conform
+from . import performance
 from . import private_data_encryption
 from . import process
+from . import resource
+from . import sandbox
 from . import sdn_connector
 from . import time
 from . import traffic_history
@@ -42,15 +52,9 @@ from . import upgrade_report
 from . import usb_device
 from . import usb_log
 from . import vmlicense
-from . import x5g_modem
 from .acme_certificate_status import AcmeCertificateStatus
 from .acquired_dns import AcquiredDns
-from .automation_action import AutomationAction
 from .available_certificates import AvailableCertificates
-from .available_interfaces import AvailableInterfaces
-from .botnet import Botnet
-from .botnet_domains import BotnetDomains
-from .central_management import CentralManagement
 from .check_port_availability import CheckPortAvailability
 from .current_admins import CurrentAdmins
 from .global_resources import GlobalResources
@@ -65,13 +69,10 @@ from .ha_table_checksums import HaTableChecksums
 from .interface_connected_admins_info import InterfaceConnectedAdminsInfo
 from .ipconf import Ipconf
 from .link_monitor import LinkMonitor
+from .modem3g import Modem3g
 from .monitor_sensor import MonitorSensor
-from .ntp import Ntp
-from .performance import Performance
 from .resolve_fqdn import ResolveFqdn
-from .resource import Resource
 from .running_processes import RunningProcesses
-from .sandbox import Sandbox
 from .sensor_info import SensorInfo
 from .status import Status
 from .storage import Storage
@@ -80,7 +81,6 @@ from .trusted_cert_authorities import TrustedCertAuthorities
 from .vdom_link import VdomLink
 from .vdom_resource import VdomResource
 from .vm_information import VmInformation
-from .x3g_modem import X3gModem
 
 __all__ = [
     "AcmeCertificateStatus",
@@ -135,6 +135,8 @@ __all__ = [
     "Logdisk",
     "LteModem",
     "Modem",
+    "Modem3g",
+    "Modem5g",
     "MonitorSensor",
     "Ntp",
     "Object",
@@ -163,8 +165,6 @@ __all__ = [
     "VdomResource",
     "VmInformation",
     "Vmlicense",
-    "X3gModem",
-    "X5gModem",
 ]
 
 
@@ -179,7 +179,12 @@ class System:
         """
         self.admin = admin.Admin(client)
         self.api_user = api_user.ApiUser(client)
+        self.automation_action = automation_action.AutomationAction(client)
         self.automation_stitch = automation_stitch.AutomationStitch(client)
+        self.available_interfaces = available_interfaces.AvailableInterfaces(client)
+        self.botnet = botnet.Botnet(client)
+        self.botnet_domains = botnet_domains.BotnetDomains(client)
+        self.central_management = central_management.CentralManagement(client)
         self.certificate = certificate.Certificate(client)
         self.change_password = change_password.ChangePassword(client)
         self.cluster = cluster.Cluster(client)
@@ -207,11 +212,16 @@ class System:
         self.logdisk = logdisk.Logdisk(client)
         self.lte_modem = lte_modem.LteModem(client)
         self.modem = modem.Modem(client)
+        self.modem5g = modem5g.Modem5g(client)
+        self.ntp = ntp.Ntp(client)
         self.object = object.Object(client)
         self.os = os.Os(client)
         self.password_policy_conform = password_policy_conform.PasswordPolicyConform(client)
+        self.performance = performance.Performance(client)
         self.private_data_encryption = private_data_encryption.PrivateDataEncryption(client)
         self.process = process.Process(client)
+        self.resource = resource.Resource(client)
+        self.sandbox = sandbox.Sandbox(client)
         self.sdn_connector = sdn_connector.SdnConnector(client)
         self.time = time.Time(client)
         self.traffic_history = traffic_history.TrafficHistory(client)
@@ -219,15 +229,9 @@ class System:
         self.usb_device = usb_device.UsbDevice(client)
         self.usb_log = usb_log.UsbLog(client)
         self.vmlicense = vmlicense.Vmlicense(client)
-        self.x5g_modem = x5g_modem.X5gModem(client)
         self.acme_certificate_status = AcmeCertificateStatus(client)
         self.acquired_dns = AcquiredDns(client)
-        self.automation_action = AutomationAction(client)
         self.available_certificates = AvailableCertificates(client)
-        self.available_interfaces = AvailableInterfaces(client)
-        self.botnet = Botnet(client)
-        self.botnet_domains = BotnetDomains(client)
-        self.central_management = CentralManagement(client)
         self.check_port_availability = CheckPortAvailability(client)
         self.current_admins = CurrentAdmins(client)
         self.global_resources = GlobalResources(client)
@@ -242,13 +246,10 @@ class System:
         self.interface_connected_admins_info = InterfaceConnectedAdminsInfo(client)
         self.ipconf = Ipconf(client)
         self.link_monitor = LinkMonitor(client)
+        self.modem3g = Modem3g(client)
         self.monitor_sensor = MonitorSensor(client)
-        self.ntp = Ntp(client)
-        self.performance = Performance(client)
         self.resolve_fqdn = ResolveFqdn(client)
-        self.resource = Resource(client)
         self.running_processes = RunningProcesses(client)
-        self.sandbox = Sandbox(client)
         self.sensor_info = SensorInfo(client)
         self.status = Status(client)
         self.storage = Storage(client)
@@ -257,4 +258,3 @@ class System:
         self.vdom_link = VdomLink(client)
         self.vdom_resource = VdomResource(client)
         self.vm_information = VmInformation(client)
-        self.x3g_modem = X3gModem(client)

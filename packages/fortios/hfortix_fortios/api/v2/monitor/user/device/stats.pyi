@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stats:
     """
-    Configuration for user/device/stats
+    Retrieve user devices stats from device store by given stat item.
     
     Path: user/device/stats
     Category: monitor

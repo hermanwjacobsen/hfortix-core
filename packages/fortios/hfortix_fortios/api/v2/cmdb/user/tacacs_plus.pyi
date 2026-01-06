@@ -19,10 +19,10 @@ class TacacsPlusPayload(TypedDict, total=False):
     secondary_key: NotRequired[str]  # Key to access the secondary server.
     tertiary_key: NotRequired[str]  # Key to access the tertiary server.
     status_ttl: NotRequired[int]  # Time for which server reachability is cached so that when a 
-    authen_type: NotRequired[Literal["mschap", "chap", "pap", "ascii", "auto"]]  # Allowed authentication protocols/methods.
-    authorization: NotRequired[Literal["enable", "disable"]]  # Enable/disable TACACS+ authorization.
+    authen_type: NotRequired[Literal[{"description": "MSCHAP", "help": "MSCHAP.", "label": "Mschap", "name": "mschap"}, {"description": "CHAP", "help": "CHAP.", "label": "Chap", "name": "chap"}, {"description": "PAP", "help": "PAP.", "label": "Pap", "name": "pap"}, {"description": "ASCII", "help": "ASCII.", "label": "Ascii", "name": "ascii"}, {"description": "Use PAP, MSCHAP, and CHAP (in that order)", "help": "Use PAP, MSCHAP, and CHAP (in that order).", "label": "Auto", "name": "auto"}]]  # Allowed authentication protocols/methods.
+    authorization: NotRequired[Literal[{"description": "Enable TACACS+ authorization", "help": "Enable TACACS+ authorization.", "label": "Enable", "name": "enable"}, {"description": "Disable TACACS+ authorization", "help": "Disable TACACS+ authorization.", "label": "Disable", "name": "disable"}]]  # Enable/disable TACACS+ authorization.
     source_ip: NotRequired[str]  # Source IP address for communications to TACACS+ server.
-    interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
+    interface_select_method: NotRequired[Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]]  # Specify how to select outgoing interface to reach server.
     interface: str  # Specify outgoing interface to reach server.
     vrf_select: NotRequired[int]  # VRF ID used for connection to server.
 
@@ -61,10 +61,10 @@ class TacacsPlus:
         secondary_key: str | None = ...,
         tertiary_key: str | None = ...,
         status_ttl: int | None = ...,
-        authen_type: Literal["mschap", "chap", "pap", "ascii", "auto"] | None = ...,
-        authorization: Literal["enable", "disable"] | None = ...,
+        authen_type: Literal[{"description": "MSCHAP", "help": "MSCHAP.", "label": "Mschap", "name": "mschap"}, {"description": "CHAP", "help": "CHAP.", "label": "Chap", "name": "chap"}, {"description": "PAP", "help": "PAP.", "label": "Pap", "name": "pap"}, {"description": "ASCII", "help": "ASCII.", "label": "Ascii", "name": "ascii"}, {"description": "Use PAP, MSCHAP, and CHAP (in that order)", "help": "Use PAP, MSCHAP, and CHAP (in that order).", "label": "Auto", "name": "auto"}] | None = ...,
+        authorization: Literal[{"description": "Enable TACACS+ authorization", "help": "Enable TACACS+ authorization.", "label": "Enable", "name": "enable"}, {"description": "Disable TACACS+ authorization", "help": "Disable TACACS+ authorization.", "label": "Disable", "name": "disable"}] | None = ...,
         source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
@@ -84,10 +84,10 @@ class TacacsPlus:
         secondary_key: str | None = ...,
         tertiary_key: str | None = ...,
         status_ttl: int | None = ...,
-        authen_type: Literal["mschap", "chap", "pap", "ascii", "auto"] | None = ...,
-        authorization: Literal["enable", "disable"] | None = ...,
+        authen_type: Literal[{"description": "MSCHAP", "help": "MSCHAP.", "label": "Mschap", "name": "mschap"}, {"description": "CHAP", "help": "CHAP.", "label": "Chap", "name": "chap"}, {"description": "PAP", "help": "PAP.", "label": "Pap", "name": "pap"}, {"description": "ASCII", "help": "ASCII.", "label": "Ascii", "name": "ascii"}, {"description": "Use PAP, MSCHAP, and CHAP (in that order)", "help": "Use PAP, MSCHAP, and CHAP (in that order).", "label": "Auto", "name": "auto"}] | None = ...,
+        authorization: Literal[{"description": "Enable TACACS+ authorization", "help": "Enable TACACS+ authorization.", "label": "Enable", "name": "enable"}, {"description": "Disable TACACS+ authorization", "help": "Disable TACACS+ authorization.", "label": "Disable", "name": "disable"}] | None = ...,
         source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,

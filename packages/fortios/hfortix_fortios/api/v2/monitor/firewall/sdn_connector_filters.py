@@ -56,7 +56,7 @@ class SdnConnectorFilters:
         """
         Retrieve firewall/sdn_connector_filters configuration.
 
-        Configuration for firewall/sdn-connector-filters
+        List all available filters for a specified SDN Fabric Connector. Used for Fabric Connector address objects.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

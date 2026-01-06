@@ -11,8 +11,8 @@ class FortishieldPayload(TypedDict, total=False):
         }
     """
     spam_submit_srv: str  # Hostname of the spam submission server.
-    spam_submit_force: NotRequired[Literal["enable", "disable"]]  # Enable/disable force insertion of a new mime entity for the 
-    spam_submit_txt2htm: NotRequired[Literal["enable", "disable"]]  # Enable/disable conversion of text email to HTML email.
+    spam_submit_force: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable force insertion of a new mime entity for the 
+    spam_submit_txt2htm: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable conversion of text email to HTML email.
 
 
 class Fortishield:
@@ -40,8 +40,8 @@ class Fortishield:
         self,
         payload_dict: FortishieldPayload | None = ...,
         spam_submit_srv: str | None = ...,
-        spam_submit_force: Literal["enable", "disable"] | None = ...,
-        spam_submit_txt2htm: Literal["enable", "disable"] | None = ...,
+        spam_submit_force: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        spam_submit_txt2htm: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -51,8 +51,8 @@ class Fortishield:
         self,
         payload_dict: FortishieldPayload | None = ...,
         spam_submit_srv: str | None = ...,
-        spam_submit_force: Literal["enable", "disable"] | None = ...,
-        spam_submit_txt2htm: Literal["enable", "disable"] | None = ...,
+        spam_submit_force: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        spam_submit_txt2htm: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

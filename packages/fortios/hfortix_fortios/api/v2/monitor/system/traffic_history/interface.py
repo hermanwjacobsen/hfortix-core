@@ -56,7 +56,7 @@ class Interface:
         """
         Retrieve system/traffic_history/interface configuration.
 
-        Configuration for system/traffic-history/interface
+        Retrieve history traffic stats for an interface.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

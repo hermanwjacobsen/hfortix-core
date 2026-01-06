@@ -11,9 +11,9 @@ class ApcfgProfilePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # AP local configuration profile name.
-    ap_family: NotRequired[Literal["fap", "fap-u", "fap-c"]]  # FortiAP family type (default = fap).
+    ap_family: NotRequired[Literal[{"description": "FortiAP Family", "help": "FortiAP Family.", "label": "Fap", "name": "fap"}, {"description": "FortiAP-U Family", "help": "FortiAP-U Family.", "label": "Fap U", "name": "fap-u"}, {"description": "FortiAP-C Family", "help": "FortiAP-C Family.", "label": "Fap C", "name": "fap-c"}]]  # FortiAP family type (default = fap).
     comment: NotRequired[str]  # Comment.
-    ac_type: NotRequired[Literal["default", "specify", "apcfg"]]  # Validation controller type (default = default).
+    ac_type: NotRequired[Literal[{"description": "This controller is the one and only controller that the AP could join after applying AP local configuration", "help": "This controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Default", "name": "default"}, {"description": "Specified controller is the one and only controller that the AP could join after applying AP local configuration", "help": "Specified controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Specify", "name": "specify"}, {"description": "Any controller defined by AP local configuration after applying AP local configuration", "help": "Any controller defined by AP local configuration after applying AP local configuration.", "label": "Apcfg", "name": "apcfg"}]]  # Validation controller type (default = default).
     ac_timer: NotRequired[int]  # Maximum waiting time for the AP to join the validation contr
     ac_ip: NotRequired[str]  # IP address of the validation controller that AP must be able
     ac_port: NotRequired[int]  # Port of the validation controller that AP must be able to jo
@@ -46,9 +46,9 @@ class ApcfgProfile:
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
         name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
+        ap_family: Literal[{"description": "FortiAP Family", "help": "FortiAP Family.", "label": "Fap", "name": "fap"}, {"description": "FortiAP-U Family", "help": "FortiAP-U Family.", "label": "Fap U", "name": "fap-u"}, {"description": "FortiAP-C Family", "help": "FortiAP-C Family.", "label": "Fap C", "name": "fap-c"}] | None = ...,
         comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
+        ac_type: Literal[{"description": "This controller is the one and only controller that the AP could join after applying AP local configuration", "help": "This controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Default", "name": "default"}, {"description": "Specified controller is the one and only controller that the AP could join after applying AP local configuration", "help": "Specified controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Specify", "name": "specify"}, {"description": "Any controller defined by AP local configuration after applying AP local configuration", "help": "Any controller defined by AP local configuration after applying AP local configuration.", "label": "Apcfg", "name": "apcfg"}] | None = ...,
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
@@ -62,9 +62,9 @@ class ApcfgProfile:
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
         name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
+        ap_family: Literal[{"description": "FortiAP Family", "help": "FortiAP Family.", "label": "Fap", "name": "fap"}, {"description": "FortiAP-U Family", "help": "FortiAP-U Family.", "label": "Fap U", "name": "fap-u"}, {"description": "FortiAP-C Family", "help": "FortiAP-C Family.", "label": "Fap C", "name": "fap-c"}] | None = ...,
         comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
+        ac_type: Literal[{"description": "This controller is the one and only controller that the AP could join after applying AP local configuration", "help": "This controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Default", "name": "default"}, {"description": "Specified controller is the one and only controller that the AP could join after applying AP local configuration", "help": "Specified controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Specify", "name": "specify"}, {"description": "Any controller defined by AP local configuration after applying AP local configuration", "help": "Any controller defined by AP local configuration after applying AP local configuration.", "label": "Apcfg", "name": "apcfg"}] | None = ...,
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,

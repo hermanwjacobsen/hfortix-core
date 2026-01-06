@@ -118,7 +118,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Cryptographic algorithm.",
             "default": "md5",
-            "options": ["md5", "hmac-sha1", "hmac-sha256", "hmac-sha384", "hmac-sha512", "cmac-aes128"],
+            "options": [{"help": "MD5.", "label": "Md5", "name": "md5"}, {"help": "HMAC-SHA1.", "label": "Hmac Sha1", "name": "hmac-sha1"}, {"help": "HMAC-SHA256.", "label": "Hmac Sha256", "name": "hmac-sha256"}, {"help": "HMAC-SHA384.", "label": "Hmac Sha384", "name": "hmac-sha384"}, {"help": "HMAC-SHA512.", "label": "Hmac Sha512", "name": "hmac-sha512"}, {"help": "CMAC-AES128.", "label": "Cmac Aes128", "name": "cmac-aes128"}],
         },
     },
 }

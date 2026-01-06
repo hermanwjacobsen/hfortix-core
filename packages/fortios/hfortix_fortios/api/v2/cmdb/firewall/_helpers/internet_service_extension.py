@@ -103,7 +103,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Address mode (IPv4 or IPv6).",
             "default": "ipv4",
-            "options": ["ipv4", "ipv6"],
+            "options": [{"help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}],
         },
         "protocol": {
             "type": "integer",
@@ -137,7 +137,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Address mode (IPv4 or IPv6).",
             "default": "ipv4",
-            "options": ["ipv4", "ipv6"],
+            "options": [{"help": "IPv4 mode.", "label": "Ipv4", "name": "ipv4"}, {"help": "IPv6 mode.", "label": "Ipv6", "name": "ipv6"}],
         },
         "protocol": {
             "type": "integer",

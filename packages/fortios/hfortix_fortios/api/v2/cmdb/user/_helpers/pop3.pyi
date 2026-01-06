@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SECURE: Literal["none", "starttls", "pop3s"]
-VALID_BODY_SSL_MIN_PROTO_VERSION: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
+VALID_BODY_SECURE: Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "Use StartTLS", "help": "Use StartTLS.", "label": "Starttls", "name": "starttls"}, {"description": "Use POP3 over SSL", "help": "Use POP3 over SSL.", "label": "Pop3S", "name": "pop3s"}]
+VALID_BODY_SSL_MIN_PROTO_VERSION: Literal[{"description": "Follow system global setting", "help": "Follow system global setting.", "label": "Default", "name": "default"}, {"description": "SSLv3", "help": "SSLv3.", "label": "Sslv3", "name": "SSLv3"}, {"description": "TLSv1", "help": "TLSv1.", "label": "Tlsv1", "name": "TLSv1"}, {"description": "TLSv1", "help": "TLSv1.1.", "label": "Tlsv1 1", "name": "TLSv1-1"}, {"description": "TLSv1", "help": "TLSv1.2.", "label": "Tlsv1 2", "name": "TLSv1-2"}, {"description": "TLSv1", "help": "TLSv1.3.", "label": "Tlsv1 3", "name": "TLSv1-3"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

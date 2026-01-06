@@ -113,7 +113,7 @@ class Setting:
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
-        auth_type: str | None = None,
+        auth_type: str | list | None = None,
         auth_cert: str | None = None,
         auth_ca_cert: str | None = None,
         auth_secure_http: str | None = None,

@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve wanopt/peer_stats/reset configuration.
 
-        Configuration for wanopt/peer_stats/reset
+        Reset WAN opt peer statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

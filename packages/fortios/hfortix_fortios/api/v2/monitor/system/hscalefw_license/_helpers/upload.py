@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/hscalefw_license/upload",
     "category": "monitor",
     "api_path": "system/hscalefw-license/upload",
-    "help": "Configuration for system/hscalefw-license/upload",
+    "help": "Update Hyperscale firewall license for hardware acceleration using license key.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

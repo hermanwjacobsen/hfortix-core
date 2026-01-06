@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MATCH_TYPE: Literal["match-all", "match-any", "match-eval"]
+VALID_BODY_MATCH_TYPE: Literal[{"description": "Match all entries", "help": "Match all entries.", "label": "Match All", "name": "match-all"}, {"description": "Match any entries", "help": "Match any entries.", "label": "Match Any", "name": "match-any"}, {"description": "Match an expression evaluation", "help": "Match an expression evaluation.", "label": "Match Eval", "name": "match-eval"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

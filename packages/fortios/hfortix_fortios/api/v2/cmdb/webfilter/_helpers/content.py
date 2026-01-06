@@ -106,14 +106,14 @@ NESTED_SCHEMAS = {
             "help": "Banned word pattern type: wildcard pattern or Perl regular expression.",
             "required": True,
             "default": "wildcard",
-            "options": ["wildcard", "regexp"],
+            "options": [{"help": "Wildcard pattern.", "label": "Wildcard", "name": "wildcard"}, {"help": "Perl regular expression.", "label": "Regexp", "name": "regexp"}],
         },
         "status": {
             "type": "option",
             "help": "Enable/disable banned word.",
             "required": True,
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "score": {
             "type": "integer",
@@ -128,7 +128,7 @@ NESTED_SCHEMAS = {
             "help": "Block or exempt word when a match is found.",
             "required": True,
             "default": "block",
-            "options": ["block", "exempt"],
+            "options": [{"help": "Block matches.", "label": "Block", "name": "block"}, {"help": "Exempt matches.", "label": "Exempt", "name": "exempt"}],
         },
     },
 }

@@ -11,11 +11,11 @@ class UrlMatchPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Configure a name for the URL to be exempted.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable exempting the URLs matching the URL pattern f
+    status: NotRequired[Literal[{"description": "Enable exempting the matching URLs", "help": "Enable exempting the matching URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting the matching URLs", "help": "Disable exempting the matching URLs.", "label": "Disable", "name": "disable"}]]  # Enable/disable exempting the URLs matching the URL pattern f
     url_pattern: str  # URL pattern to be exempted from web proxy forwarding, cachin
     forward_server: NotRequired[str]  # Forward server name.
     fast_fallback: NotRequired[str]  # Fast fallback configuration entry name.
-    cache_exemption: NotRequired[Literal["enable", "disable"]]  # Enable/disable exempting this URL pattern from caching.
+    cache_exemption: NotRequired[Literal[{"description": "Enable exempting this URL pattern from caching", "help": "Enable exempting this URL pattern from caching.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting this URL pattern from caching", "help": "Disable exempting this URL pattern from caching.", "label": "Disable", "name": "disable"}]]  # Enable/disable exempting this URL pattern from caching.
     comment: NotRequired[str]  # Comment.
 
 
@@ -45,11 +45,11 @@ class UrlMatch:
         self,
         payload_dict: UrlMatchPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable exempting the matching URLs", "help": "Enable exempting the matching URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting the matching URLs", "help": "Disable exempting the matching URLs.", "label": "Disable", "name": "disable"}] | None = ...,
         url_pattern: str | None = ...,
         forward_server: str | None = ...,
         fast_fallback: str | None = ...,
-        cache_exemption: Literal["enable", "disable"] | None = ...,
+        cache_exemption: Literal[{"description": "Enable exempting this URL pattern from caching", "help": "Enable exempting this URL pattern from caching.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting this URL pattern from caching", "help": "Disable exempting this URL pattern from caching.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -60,11 +60,11 @@ class UrlMatch:
         self,
         payload_dict: UrlMatchPayload | None = ...,
         name: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable exempting the matching URLs", "help": "Enable exempting the matching URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting the matching URLs", "help": "Disable exempting the matching URLs.", "label": "Disable", "name": "disable"}] | None = ...,
         url_pattern: str | None = ...,
         forward_server: str | None = ...,
         fast_fallback: str | None = ...,
-        cache_exemption: Literal["enable", "disable"] | None = ...,
+        cache_exemption: Literal[{"description": "Enable exempting this URL pattern from caching", "help": "Enable exempting this URL pattern from caching.", "label": "Enable", "name": "enable"}, {"description": "Disable exempting this URL pattern from caching", "help": "Disable exempting this URL pattern from caching.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

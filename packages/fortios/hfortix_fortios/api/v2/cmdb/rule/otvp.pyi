@@ -11,13 +11,13 @@ class OtvpPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Rule name.
-    status: NotRequired[Literal["disable", "enable"]]  # Print all OT patch rules information.
-    log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging.
-    log_packet: NotRequired[Literal["disable", "enable"]]  # Enable/disable packet logging.
-    action: NotRequired[Literal["pass", "block"]]  # Action.
+    status: NotRequired[Literal[{"help": "Disable status.", "name": "disable"}, {"help": "Enable status.", "name": "enable"}]]  # Print all OT patch rules information.
+    log: NotRequired[Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging.
+    log_packet: NotRequired[Literal[{"description": "Disable packet logging", "help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"description": "Enable packet logging", "help": "Enable packet logging.", "label": "Enable", "name": "enable"}]]  # Enable/disable packet logging.
+    action: NotRequired[Literal[{"description": "Pass or allow matching traffic", "help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}]]  # Action.
     group: NotRequired[str]  # Group.
     severity: NotRequired[str]  # Severity.
-    location: NotRequired[str]  # Vulnerable location.
+    location: NotRequired[list[dict[str, Any]]]  # Vulnerable location.
     os: NotRequired[str]  # Vulnerable operation systems.
     application: NotRequired[str]  # Vulnerable applications.
     service: NotRequired[str]  # Vulnerable service.
@@ -53,13 +53,13 @@ class Otvp:
         self,
         payload_dict: OtvpPayload | None = ...,
         name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
+        status: Literal[{"help": "Disable status.", "name": "disable"}, {"help": "Enable status.", "name": "enable"}] | None = ...,
+        log: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        log_packet: Literal[{"description": "Disable packet logging", "help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"description": "Enable packet logging", "help": "Enable packet logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        action: Literal[{"description": "Pass or allow matching traffic", "help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}] | None = ...,
         group: str | None = ...,
         severity: str | None = ...,
-        location: str | None = ...,
+        location: list[dict[str, Any]] | None = ...,
         os: str | None = ...,
         application: str | None = ...,
         service: str | None = ...,
@@ -76,13 +76,13 @@ class Otvp:
         self,
         payload_dict: OtvpPayload | None = ...,
         name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
+        status: Literal[{"help": "Disable status.", "name": "disable"}, {"help": "Enable status.", "name": "enable"}] | None = ...,
+        log: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        log_packet: Literal[{"description": "Disable packet logging", "help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"description": "Enable packet logging", "help": "Enable packet logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        action: Literal[{"description": "Pass or allow matching traffic", "help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}] | None = ...,
         group: str | None = ...,
         severity: str | None = ...,
-        location: str | None = ...,
+        location: list[dict[str, Any]] | None = ...,
         os: str | None = ...,
         application: str | None = ...,
         service: str | None = ...,

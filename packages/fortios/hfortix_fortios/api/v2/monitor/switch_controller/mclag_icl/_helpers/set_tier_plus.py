@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/mclag_icl/set_tier_plus",
     "category": "monitor",
     "api_path": "switch-controller/mclag-icl/set-tier-plus",
-    "help": "Configuration for switch-controller/mclag-icl/set-tier-plus",
+    "help": "Setup a tier 2/3 MC-LAG link between a pair of FortiSwitches.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

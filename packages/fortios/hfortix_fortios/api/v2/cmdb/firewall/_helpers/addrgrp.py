@@ -158,25 +158,25 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "default",
-    "folder",
+    "default",  # Default address group type (address may belong to multiple groups).
+    "folder",  # Address folder group (members may not belong to any other group).
 ]
 VALID_BODY_CATEGORY = [
-    "default",
-    "ztna-ems-tag",
-    "ztna-geo-tag",
+    "default",  # Default address group category (cannot be used as ztna-ems-tag/ztna-geo-tag in policy).
+    "ztna-ems-tag",  # Members must be ztna-ems-tag group or ems-tag address, can be used as ztna-ems-tag in policy.
+    "ztna-geo-tag",  # Members must be ztna-geo-tag group or geographic address, can be used as ztna-geo-tag in policy.
 ]
 VALID_BODY_ALLOW_ROUTING = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of this group in routing configurations.
+    "disable",  # Disable use of this group in routing configurations.
 ]
 VALID_BODY_EXCLUDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable address exclusion.
+    "disable",  # Disable address exclusion.
 ]
 VALID_BODY_FABRIC_OBJECT = [
-    "enable",
-    "disable",
+    "enable",  # Object is set as a security fabric-wide global object.
+    "disable",  # Object is local to this security fabric member.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -307,7 +307,7 @@ def validate_firewall_addrgrp_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "type": "default",  # Valid enum value
+        ...     "type": "{'name': 'default', 'help': 'Default address group type (address may belong to multiple groups).', 'label': 'Default', 'description': 'Default address group type (address may belong to multiple groups)'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_addrgrp_post(payload)
         >>> assert is_valid == True

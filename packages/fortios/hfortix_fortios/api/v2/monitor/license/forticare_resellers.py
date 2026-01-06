@@ -56,7 +56,7 @@ class ForticareResellers:
         """
         Retrieve license/forticare_resellers configuration.
 
-        Configuration for license/forticare-resellers
+        Get current FortiCare resellers for the requested country.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

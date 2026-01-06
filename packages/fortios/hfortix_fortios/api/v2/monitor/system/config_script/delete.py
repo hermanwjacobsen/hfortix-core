@@ -56,7 +56,7 @@ class Delete:
         """
         Retrieve system/config_script/delete configuration.
 
-        Configuration for system/config-script/delete
+        Delete the history of config scripts.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

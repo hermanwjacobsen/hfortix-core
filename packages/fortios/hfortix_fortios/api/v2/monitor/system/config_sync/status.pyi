@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Status:
     """
-    Configuration for system/config-sync/status
+    Get configuration sync status of SLBC cluster master and slave.
     
     Path: system/config_sync/status
     Category: monitor

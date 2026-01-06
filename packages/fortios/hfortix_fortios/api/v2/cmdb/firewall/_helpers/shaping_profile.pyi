@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["policing", "queuing"]
-VALID_BODY_NPU_OFFLOADING: Literal["disable", "enable"]
+VALID_BODY_TYPE: Literal[{"description": "Enable policing mode", "help": "Enable policing mode.", "label": "Policing", "name": "policing"}, {"description": "Enable queuing mode", "help": "Enable queuing mode.", "label": "Queuing", "name": "queuing"}]
+VALID_BODY_NPU_OFFLOADING: Literal[{"description": "Diable shaper offloading", "help": "Diable shaper offloading.", "label": "Disable", "name": "disable"}, {"description": "Enable shaper offloading", "help": "Enable shaper offloading.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

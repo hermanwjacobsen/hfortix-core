@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PseConfig:
     """
-    Configuration for switch-controller/recommendation/pse-config
+    Execute switch recommendation for pse-config to prevent PSE-PSE scenarios.
     
     Path: switch_controller/recommendation/pse_config
     Category: monitor

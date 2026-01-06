@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TunnelResetStats:
     """
-    Configuration for vpn/ipsec/tunnel_reset_stats
+    Reset statistics for a specific IPsec VPN tunnel.
     
     Path: vpn/ipsec/tunnel_reset_stats
     Category: monitor

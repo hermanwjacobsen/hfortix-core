@@ -1,10 +1,10 @@
 """FortiOS CMDB - Utm category"""
 
+from . import antivirus
+from . import blacklisted_certificates
 from . import rating_lookup
-from .antivirus import Antivirus
 from .app_lookup import AppLookup
 from .application_categories import ApplicationCategories
-from .blacklisted_certificates import BlacklistedCertificates
 
 __all__ = [
     "Antivirus",
@@ -25,8 +25,8 @@ class Utm:
         Args:
             client: HTTP client instance for API communication
         """
+        self.antivirus = antivirus.Antivirus(client)
+        self.blacklisted_certificates = blacklisted_certificates.BlacklistedCertificates(client)
         self.rating_lookup = rating_lookup.RatingLookup(client)
-        self.antivirus = Antivirus(client)
         self.app_lookup = AppLookup(client)
         self.application_categories = ApplicationCategories(client)
-        self.blacklisted_certificates = BlacklistedCertificates(client)

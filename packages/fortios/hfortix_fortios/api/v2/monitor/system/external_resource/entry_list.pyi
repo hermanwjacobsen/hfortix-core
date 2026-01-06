@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class EntryList:
     """
-    Configuration for system/external-resource/entry-list
+    Retrieve resource file status with a list of valid/invalid entries for the specific external resource. Empty lines and comment lines are not returned.
     
     Path: system/external_resource/entry_list
     Category: monitor

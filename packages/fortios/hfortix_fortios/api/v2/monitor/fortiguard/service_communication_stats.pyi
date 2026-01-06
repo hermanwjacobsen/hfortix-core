@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ServiceCommunicationStats:
     """
-    Configuration for fortiguard/service-communication-stats
+    Retrieve historical statistics for communication with FortiGuard services.
     
     Path: fortiguard/service_communication_stats
     Category: monitor

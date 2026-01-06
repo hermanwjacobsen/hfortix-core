@@ -56,7 +56,7 @@ class FortianalyzerStatus:
         """
         Retrieve license/fortianalyzer_status configuration.
 
-        Configuration for license/fortianalyzer-status
+        Get current license & registration status for the connected FortiAnalyzer.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -51,6 +51,13 @@ REQUIRED_FIELDS = [
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
+    "name": "",
+    "comment": "",
+    "lw-protocol": "basics-station",
+    "cups-server": "",
+    "cups-server-port": 0,
+    "tc-server": "",
+    "tc-server-port": 0,
 }
 
 # ============================================================================
@@ -69,14 +76,38 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "name": "string",  # LoRaWAN profile name.
+    "comment": "string",  # Comment.
+    "lw-protocol": "option",  # Configure LoRaWAN protocol (default = basics-station)
+    "cups-server": "string",  # CUPS (Configuration and Update Server) domain name or IP add
+    "cups-server-port": "integer",  # CUPS Port value of LoRaWAN device.
+    "cups-api-key": "password",  # CUPS API key of LoRaWAN device.
+    "tc-server": "string",  # TC (Traffic Controller) domain name or IP address of LoRaWAN
+    "tc-server-port": "integer",  # TC Port value of LoRaWAN device.
+    "tc-api-key": "password",  # TC API key of LoRaWAN device.
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "name": "LoRaWAN profile name.",
+    "comment": "Comment.",
+    "lw-protocol": "Configure LoRaWAN protocol (default = basics-station)",
+    "cups-server": "CUPS (Configuration and Update Server) domain name or IP address of LoRaWAN device.",
+    "cups-server-port": "CUPS Port value of LoRaWAN device.",
+    "cups-api-key": "CUPS API key of LoRaWAN device.",
+    "tc-server": "TC (Traffic Controller) domain name or IP address of LoRaWAN device.",
+    "tc-server-port": "TC Port value of LoRaWAN device.",
+    "tc-api-key": "TC API key of LoRaWAN device.",
 }
 
 # Field constraints (string lengths, integer ranges)
 FIELD_CONSTRAINTS = {
+    "name": {"type": "string", "max_length": 35},
+    "comment": {"type": "string", "max_length": 63},
+    "cups-server": {"type": "string", "max_length": 255},
+    "cups-server-port": {"type": "integer", "min": 0, "max": 65535},
+    "tc-server": {"type": "string", "max_length": 255},
+    "tc-server-port": {"type": "integer", "min": 0, "max": 65535},
 }
 
 # Nested schemas (for table/list fields with children)
@@ -85,6 +116,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_LW_PROTOCOL = [
+    "basics-station",  # Configure LoRaWAN protocol to Basics Station.
+    "packet-forwarder",  # Configure LoRaWAN protocol to UDP Packet Forwarder.
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -113,6 +148,9 @@ def validate_wireless_controller_lw_profile_get(
         >>> is_valid, error = validate_wireless_controller_lw_profile_get()
         >>> assert is_valid == True
         
+        >>> # Valid - Get specific item by name
+        >>> is_valid, error = validate_wireless_controller_lw_profile_get(name="test-item")
+        >>> assert is_valid == True
         
         >>> # Valid - With filters
         >>> is_valid, error = validate_wireless_controller_lw_profile_get(
@@ -206,6 +244,18 @@ def validate_wireless_controller_lw_profile_post(
         >>> is_valid, error = validate_wireless_controller_lw_profile_post(payload)
         >>> assert is_valid == True
         
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "lw-protocol": "{'name': 'basics-station', 'help': 'Configure LoRaWAN protocol to Basics Station.', 'label': 'Basics Station'}",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_wireless_controller_lw_profile_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["lw-protocol"] = "invalid-value"
+        >>> is_valid, error = validate_wireless_controller_lw_profile_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
         
         >>> # ❌ Invalid - Missing required field
         >>> payload = {}  # Empty payload
@@ -219,6 +269,16 @@ def validate_wireless_controller_lw_profile_post(
         return (False, error)
 
     # Step 2: Validate enum values
+    if "lw-protocol" in payload:
+        value = payload["lw-protocol"]
+        if value not in VALID_BODY_LW_PROTOCOL:
+            desc = FIELD_DESCRIPTIONS.get("lw-protocol", "")
+            error_msg = f"Invalid value for 'lw-protocol': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_LW_PROTOCOL)}"
+            error_msg += f"\n  → Example: lw-protocol='{{ VALID_BODY_LW_PROTOCOL[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -247,6 +307,13 @@ def validate_wireless_controller_lw_profile_put(
         >>> is_valid, error = validate_wireless_controller_lw_profile_put(payload)
     """
     # Step 1: Validate enum values
+    if "lw-protocol" in payload:
+        value = payload["lw-protocol"]
+        if value not in VALID_BODY_LW_PROTOCOL:
+            return (
+                False,
+                f"Invalid value for 'lw-protocol'='{value}'. Must be one of: {', '.join(VALID_BODY_LW_PROTOCOL)}",
+            )
 
     return (True, None)
 
@@ -532,10 +599,12 @@ SCHEMA_INFO = {
     "endpoint": "wireless_controller/lw_profile",
     "category": "cmdb",
     "api_path": "wireless-controller/lw-profile",
-    "help": "Configuration for wireless-controller/lw-profile",
-    "total_fields": 0,
+    "mkey": "name",
+    "mkey_type": "string",
+    "help": "Configure LoRaWAN profile.",
+    "total_fields": 9,
     "required_fields_count": 0,
-    "fields_with_defaults_count": 0,
+    "fields_with_defaults_count": 7,
 }
 
 

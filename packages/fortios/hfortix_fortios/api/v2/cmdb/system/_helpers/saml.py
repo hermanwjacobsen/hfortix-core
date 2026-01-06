@@ -70,6 +70,7 @@ FIELDS_WITH_DEFAULTS = {
     "idp-single-logout-url": "",
     "idp-cert": "",
     "server-address": "",
+    "require-signed-resp-and-asrt": "disable",
     "tolerance": 5,
     "life": 30,
 }
@@ -105,6 +106,7 @@ FIELD_TYPES = {
     "idp-single-logout-url": "string",  # IDP single logout URL.
     "idp-cert": "string",  # IDP certificate name.
     "server-address": "string",  # Server address.
+    "require-signed-resp-and-asrt": "option",  # Require both response and assertion from IDP to be signed wh
     "tolerance": "integer",  # Tolerance to the range of time when the assertion is valid (
     "life": "integer",  # Length of the range of time when the assertion is valid (in 
     "service-providers": "string",  # Authorized service providers.
@@ -127,6 +129,7 @@ FIELD_DESCRIPTIONS = {
     "idp-single-logout-url": "IDP single logout URL.",
     "idp-cert": "IDP certificate name.",
     "server-address": "Server address.",
+    "require-signed-resp-and-asrt": "Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).",
     "tolerance": "Tolerance to the range of time when the assertion is valid (in minutes).",
     "life": "Length of the range of time when the assertion is valid (in minutes).",
     "service-providers": "Authorized service providers.",
@@ -170,7 +173,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "SP binding protocol.",
             "default": "post",
-            "options": ["post", "redirect"],
+            "options": [{"help": "HTTP POST binding.", "label": "Post", "name": "post"}, {"help": "HTTP Redirect binding.", "label": "Redirect", "name": "redirect"}],
         },
         "sp-cert": {
             "type": "string",
@@ -232,20 +235,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable SAML authentication.
+    "disable",  # Disable SAML authentication.
 ]
 VALID_BODY_ROLE = [
-    "identity-provider",
-    "service-provider",
+    "identity-provider",  # Identity Provider.
+    "service-provider",  # Service Provider.
 ]
 VALID_BODY_DEFAULT_LOGIN_PAGE = [
-    "normal",
-    "sso",
+    "normal",  # Use local login page as default.
+    "sso",  # Use IdP's Single Sign-On page as default.
 ]
 VALID_BODY_BINDING_PROTOCOL = [
-    "post",
-    "redirect",
+    "post",  # HTTP POST binding.
+    "redirect",  # HTTP Redirect binding.
+]
+VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT = [
+    "enable",  # Both response and assertion must be signed and valid.
+    "disable",  # At least one of response or assertion must be signed and valid.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -373,7 +380,7 @@ def validate_system_saml_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "default-profile": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable SAML authentication.', 'label': 'Enable', 'description': 'Enable SAML authentication'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_saml_post(payload)
         >>> assert is_valid == True
@@ -436,6 +443,16 @@ def validate_system_saml_post(
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_BINDING_PROTOCOL)}"
             error_msg += f"\n  → Example: binding-protocol='{{ VALID_BODY_BINDING_PROTOCOL[0] }}'"
             return (False, error_msg)
+    if "require-signed-resp-and-asrt" in payload:
+        value = payload["require-signed-resp-and-asrt"]
+        if value not in VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT:
+            desc = FIELD_DESCRIPTIONS.get("require-signed-resp-and-asrt", "")
+            error_msg = f"Invalid value for 'require-signed-resp-and-asrt': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT)}"
+            error_msg += f"\n  → Example: require-signed-resp-and-asrt='{{ VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -491,6 +508,13 @@ def validate_system_saml_put(
             return (
                 False,
                 f"Invalid value for 'binding-protocol'='{value}'. Must be one of: {', '.join(VALID_BODY_BINDING_PROTOCOL)}",
+            )
+    if "require-signed-resp-and-asrt" in payload:
+        value = payload["require-signed-resp-and-asrt"]
+        if value not in VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT:
+            return (
+                False,
+                f"Invalid value for 'require-signed-resp-and-asrt'='{value}'. Must be one of: {', '.join(VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT)}",
             )
 
     return (True, None)
@@ -778,9 +802,9 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "system/saml",
     "help": "Global settings for SAML authentication.",
-    "total_fields": 18,
+    "total_fields": 19,
     "required_fields_count": 4,
-    "fields_with_defaults_count": 17,
+    "fields_with_defaults_count": 18,
 }
 
 

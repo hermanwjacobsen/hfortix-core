@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "security_rating/report",
     "category": "service",
     "api_path": "security-rating/report",
-    "help": "Configuration for security-rating/report",
+    "help": "Retrieve full report of all Security Rating tests.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

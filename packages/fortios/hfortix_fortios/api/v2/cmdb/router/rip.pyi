@@ -10,7 +10,7 @@ class RipPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    default_information_originate: NotRequired[Literal["enable", "disable"]]  # Enable/disable generation of default route.
+    default_information_originate: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable generation of default route.
     default_metric: NotRequired[int]  # Default metric.
     max_out_metric: NotRequired[int]  # Maximum metric allowed to output(0 means 'not set').
     distance: NotRequired[list[dict[str, Any]]]  # Distance.
@@ -23,7 +23,7 @@ class RipPayload(TypedDict, total=False):
     update_timer: NotRequired[int]  # Update timer in seconds.
     timeout_timer: NotRequired[int]  # Timeout timer in seconds.
     garbage_timer: NotRequired[int]  # Garbage timer in seconds.
-    version: NotRequired[Literal["1", "2"]]  # RIP version.
+    version: NotRequired[Literal[{"description": "Version 1", "help": "Version 1.", "label": "1", "name": "1"}, {"description": "Version 2", "help": "Version 2.", "label": "2", "name": "2"}]]  # RIP version.
     interface: NotRequired[list[dict[str, Any]]]  # RIP interface configuration.
 
 
@@ -51,7 +51,7 @@ class Rip:
     def post(
         self,
         payload_dict: RipPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
+        default_information_originate: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
         distance: list[dict[str, Any]] | None = ...,
@@ -64,7 +64,7 @@ class Rip:
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        version: Literal["1", "2"] | None = ...,
+        version: Literal[{"description": "Version 1", "help": "Version 1.", "label": "1", "name": "1"}, {"description": "Version 2", "help": "Version 2.", "label": "2", "name": "2"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -74,7 +74,7 @@ class Rip:
     def put(
         self,
         payload_dict: RipPayload | None = ...,
-        default_information_originate: Literal["enable", "disable"] | None = ...,
+        default_information_originate: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
         distance: list[dict[str, Any]] | None = ...,
@@ -87,7 +87,7 @@ class Rip:
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        version: Literal["1", "2"] | None = ...,
+        version: Literal[{"description": "Version 1", "help": "Version 1.", "label": "1", "name": "1"}, {"description": "Version 2", "help": "Version 2.", "label": "2", "name": "2"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

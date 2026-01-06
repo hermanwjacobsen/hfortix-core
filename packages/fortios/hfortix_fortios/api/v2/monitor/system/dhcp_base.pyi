@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Dhcp:
     """
-    Monitor endpoint for system/dhcp
+    List all DHCP and DHCPv6 leases.
     
     Path: system/dhcp
     Category: monitor

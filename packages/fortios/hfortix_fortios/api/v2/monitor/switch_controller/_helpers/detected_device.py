@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/detected_device",
     "category": "monitor",
     "api_path": "switch-controller/detected-device",
-    "help": "Monitor endpoint for switch-controller/detected-device",
+    "help": "Retrieve a list of devices detected on all switches.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

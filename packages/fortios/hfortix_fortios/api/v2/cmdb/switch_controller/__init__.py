@@ -10,7 +10,7 @@ from .custom_command import CustomCommand
 from .dynamic_port_policy import DynamicPortPolicy
 from .flow_tracking import FlowTracking
 from .fortilink_settings import FortilinkSettings
-from .global_setting import GlobalSetting
+from .global_ import Global
 from .igmp_snooping import IgmpSnooping
 from .ip_source_guard_log import IpSourceGuardLog
 from .lldp_profile import LldpProfile
@@ -38,7 +38,7 @@ from .traffic_policy import TrafficPolicy
 from .traffic_sniffer import TrafficSniffer
 from .virtual_port_pool import VirtualPortPool
 from .vlan_policy import VlanPolicy
-from .x802_1X_settings import X8021xSettings
+from .x802_1x_settings import X8021xSettings
 
 __all__ = [
     "Acl",
@@ -47,7 +47,7 @@ __all__ = [
     "DynamicPortPolicy",
     "FlowTracking",
     "FortilinkSettings",
-    "GlobalSetting",
+    "Global",
     "IgmpSnooping",
     "InitialConfig",
     "IpSourceGuardLog",
@@ -103,7 +103,7 @@ class SwitchController:
         self.dynamic_port_policy = DynamicPortPolicy(client)
         self.flow_tracking = FlowTracking(client)
         self.fortilink_settings = FortilinkSettings(client)
-        self.global_setting = GlobalSetting(client)
+        self.global_ = Global(client)
         self.igmp_snooping = IgmpSnooping(client)
         self.ip_source_guard_log = IpSourceGuardLog(client)
         self.lldp_profile = LldpProfile(client)
@@ -131,4 +131,4 @@ class SwitchController:
         self.traffic_sniffer = TrafficSniffer(client)
         self.virtual_port_pool = VirtualPortPool(client)
         self.vlan_policy = VlanPolicy(client)
-        self.x802_1X_settings = X8021xSettings(client)
+        self.x802_1x_settings = X8021xSettings(client)

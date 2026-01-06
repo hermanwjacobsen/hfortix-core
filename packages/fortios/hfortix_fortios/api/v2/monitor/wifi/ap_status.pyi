@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ApStatus:
     """
-    Configuration for wifi/ap_status
+    Retrieve statistics for all managed FortiAPs.
     
     Path: wifi/ap_status
     Category: monitor

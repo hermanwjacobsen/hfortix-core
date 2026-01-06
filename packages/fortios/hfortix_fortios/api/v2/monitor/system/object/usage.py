@@ -56,7 +56,7 @@ class Usage:
         """
         Retrieve system/object/usage configuration.
 
-        Configuration for system/object/usage
+        Retrieve all objects that are currently using as well as objects that can use the given object.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

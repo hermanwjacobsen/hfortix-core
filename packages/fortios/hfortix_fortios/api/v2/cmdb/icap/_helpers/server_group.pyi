@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_LDB_METHOD: Literal["weighted", "least-session", "active-passive"]
+VALID_BODY_LDB_METHOD: Literal[{"description": "Load balance traffic to forward servers based on assigned weights", "help": "Load balance traffic to forward servers based on assigned weights.", "label": "Weighted", "name": "weighted"}, {"description": "Send new sessions to the server with lowest session count", "help": "Send new sessions to the server with lowest session count.", "label": "Least Session", "name": "least-session"}, {"description": "Send new sessions to active server with high weight", "help": "Send new sessions to active server with high weight.", "label": "Active Passive", "name": "active-passive"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

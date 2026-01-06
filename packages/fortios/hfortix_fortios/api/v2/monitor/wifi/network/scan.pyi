@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Scan:
     """
-    Configuration for wifi/network/scan
+    When FortiWiFi is in client mode, start a scan for local WiFi networks.
     
     Path: wifi/network/scan
     Category: monitor

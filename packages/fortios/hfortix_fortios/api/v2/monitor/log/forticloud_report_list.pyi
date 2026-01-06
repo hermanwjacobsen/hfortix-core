@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ForticloudReportList:
     """
-    Configuration for log/forticloud-report-list
+    Get FortiCloud report list.
     
     Path: log/forticloud_report_list
     Category: monitor

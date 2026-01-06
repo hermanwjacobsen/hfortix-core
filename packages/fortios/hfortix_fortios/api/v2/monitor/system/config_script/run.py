@@ -56,7 +56,7 @@ class Run:
         """
         Retrieve system/config_script/run configuration.
 
-        Configuration for system/config-script/run
+        Run remote config scripts.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

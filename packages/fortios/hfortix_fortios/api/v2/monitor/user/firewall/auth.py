@@ -56,7 +56,7 @@ class Auth:
         """
         Retrieve user/firewall/auth configuration.
 
-        Configuration for user/firewall/auth
+        Trigger authentication for a single firewall user.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

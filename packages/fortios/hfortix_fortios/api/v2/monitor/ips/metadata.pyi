@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Metadata:
     """
-    Configuration for ips/metadata
+    Returns IPS meta data.
     
     Path: ips/metadata
     Category: monitor

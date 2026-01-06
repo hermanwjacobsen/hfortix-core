@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InternetServiceBasic:
     """
-    Monitor endpoint for firewall/internet-service-basic
+    List internet services with basic information.
     
     Path: firewall/internet_service_basic
     Category: monitor

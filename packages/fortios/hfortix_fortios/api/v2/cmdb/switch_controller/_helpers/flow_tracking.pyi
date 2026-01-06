@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_SAMPLE_MODE: Literal["local", "perimeter", "device-ingress"]
-VALID_BODY_FORMAT: Literal["netflow1", "netflow5", "netflow9", "ipfix"]
-VALID_BODY_LEVEL: Literal["vlan", "ip", "port", "proto", "mac"]
+VALID_BODY_SAMPLE_MODE: Literal[{"description": "Set local mode which samples on the specific switch port", "help": "Set local mode which samples on the specific switch port.", "label": "Local", "name": "local"}, {"description": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress", "help": "Set perimeter mode which samples on all switch fabric ports and fortilink port at the ingress.", "label": "Perimeter", "name": "perimeter"}, {"description": "Set device -ingress mode which samples across all switch ports at the ingress", "help": "Set device -ingress mode which samples across all switch ports at the ingress.", "label": "Device Ingress", "name": "device-ingress"}]
+VALID_BODY_FORMAT: Literal[{"description": "Netflow version 1 sampling", "help": "Netflow version 1 sampling.", "label": "Netflow1", "name": "netflow1"}, {"description": "Netflow version 5 sampling", "help": "Netflow version 5 sampling.", "label": "Netflow5", "name": "netflow5"}, {"description": "Netflow version 9 sampling", "help": "Netflow version 9 sampling.", "label": "Netflow9", "name": "netflow9"}, {"description": "Ipfix sampling", "help": "Ipfix sampling.", "label": "Ipfix", "name": "ipfix"}]
+VALID_BODY_LEVEL: Literal[{"description": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol/tos/vlan from the sample packet.", "label": "Vlan", "name": "vlan"}, {"description": "Collects srcip/dstip from the sample packet", "help": "Collects srcip/dstip from the sample packet.", "label": "Ip", "name": "ip"}, {"description": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet", "help": "Collects srcip/dstip/srcport/dstport/protocol from the sample packet.", "label": "Port", "name": "port"}, {"description": "Collects srcip/dstip/protocol from the sample packet", "help": "Collects srcip/dstip/protocol from the sample packet.", "label": "Proto", "name": "proto"}, {"description": "Collects smac/dmac from the sample packet", "help": "Collects smac/dmac from the sample packet.", "label": "Mac", "name": "mac"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

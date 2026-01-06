@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Answers:
     """
-    Configuration for fortiguard/answers
+    Retrieve a list of questions on answers.fortinet.com
     
     Path: fortiguard/answers
     Category: monitor

@@ -56,7 +56,7 @@ class Select:
         """
         Retrieve system/change_password/select configuration.
 
-        Configuration for system/change-password/select
+        Save admin and guest-admin passwords. To be deprecated and replaced by the CMDB REST API.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

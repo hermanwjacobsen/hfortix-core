@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/vlan_probe",
     "category": "monitor",
     "api_path": "wifi/vlan-probe",
-    "help": "Configuration for wifi/vlan-probe",
+    "help": "Retrieve the VLAN probe results.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -11,7 +11,7 @@ class ReplacemsgImagePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Image name.
-    image_type: NotRequired[Literal["gif", "jpg", "tiff", "png"]]  # Image type.
+    image_type: NotRequired[Literal[{"description": "GIF image", "help": "GIF image.", "label": "Gif", "name": "gif"}, {"description": "JPEG image", "help": "JPEG image.", "label": "Jpg", "name": "jpg"}, {"description": "TIFF image", "help": "TIFF image.", "label": "Tiff", "name": "tiff"}, {"description": "PNG image", "help": "PNG image.", "label": "Png", "name": "png"}]]  # Image type.
     image_base64: NotRequired[str]  # Image data.
 
 
@@ -41,7 +41,7 @@ class ReplacemsgImage:
         self,
         payload_dict: ReplacemsgImagePayload | None = ...,
         name: str | None = ...,
-        image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
+        image_type: Literal[{"description": "GIF image", "help": "GIF image.", "label": "Gif", "name": "gif"}, {"description": "JPEG image", "help": "JPEG image.", "label": "Jpg", "name": "jpg"}, {"description": "TIFF image", "help": "TIFF image.", "label": "Tiff", "name": "tiff"}, {"description": "PNG image", "help": "PNG image.", "label": "Png", "name": "png"}] | None = ...,
         image_base64: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -52,7 +52,7 @@ class ReplacemsgImage:
         self,
         payload_dict: ReplacemsgImagePayload | None = ...,
         name: str | None = ...,
-        image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
+        image_type: Literal[{"description": "GIF image", "help": "GIF image.", "label": "Gif", "name": "gif"}, {"description": "JPEG image", "help": "JPEG image.", "label": "Jpg", "name": "jpg"}, {"description": "TIFF image", "help": "TIFF image.", "label": "Tiff", "name": "tiff"}, {"description": "PNG image", "help": "PNG image.", "label": "Png", "name": "png"}] | None = ...,
         image_base64: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

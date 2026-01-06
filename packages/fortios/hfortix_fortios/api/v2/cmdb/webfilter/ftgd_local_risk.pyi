@@ -11,7 +11,7 @@ class FtgdLocalRiskPayload(TypedDict, total=False):
         }
     """
     url: str  # URL to rate locally.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable local risk score.
+    status: NotRequired[Literal[{"description": "Enable local risk level", "help": "Enable local risk level.", "label": "Enable", "name": "enable"}, {"description": "Disable local risk level", "help": "Disable local risk level.", "label": "Disable", "name": "disable"}]]  # Enable/disable local risk score.
     comment: NotRequired[str]  # Comment.
     risk_score: int  # Local risk score.
 
@@ -42,7 +42,7 @@ class FtgdLocalRisk:
         self,
         payload_dict: FtgdLocalRiskPayload | None = ...,
         url: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable local risk level", "help": "Enable local risk level.", "label": "Enable", "name": "enable"}, {"description": "Disable local risk level", "help": "Disable local risk level.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,
@@ -54,7 +54,7 @@ class FtgdLocalRisk:
         self,
         payload_dict: FtgdLocalRiskPayload | None = ...,
         url: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable local risk level", "help": "Enable local risk level.", "label": "Enable", "name": "enable"}, {"description": "Disable local risk level", "help": "Disable local risk level.", "label": "Disable", "name": "disable"}] | None = ...,
         comment: str | None = ...,
         risk_score: int | None = ...,
         vdom: str | bool | None = ...,

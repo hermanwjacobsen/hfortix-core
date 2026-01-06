@@ -56,7 +56,7 @@ class Poe:
         """
         Retrieve system/interface/poe configuration.
 
-        Configuration for system/interface/poe
+        Retrieve PoE statistics for system interfaces.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

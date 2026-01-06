@@ -11,15 +11,15 @@ class ServerPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Server name.
-    addr_type: NotRequired[Literal["ip4", "ip6", "fqdn"]]  # Address type of the remote ICAP server: IPv4, IPv6 or FQDN.
+    addr_type: NotRequired[Literal[{"description": "Use an IPv4 address for the remote ICAP server", "help": "Use an IPv4 address for the remote ICAP server.", "label": "Ip4", "name": "ip4"}, {"description": "Use an IPv6 address for the remote ICAP server", "help": "Use an IPv6 address for the remote ICAP server.", "label": "Ip6", "name": "ip6"}, {"description": "Use the FQDN for the forwarding proxy server", "help": "Use the FQDN for the forwarding proxy server.", "label": "Fqdn", "name": "fqdn"}]]  # Address type of the remote ICAP server: IPv4, IPv6 or FQDN.
     ip_address: str  # IPv4 address of the ICAP server.
     ip6_address: str  # IPv6 address of the ICAP server.
     fqdn: NotRequired[str]  # ICAP remote server Fully Qualified Domain Name (FQDN).
     port: NotRequired[int]  # ICAP server port.
     max_connections: NotRequired[int]  # Maximum number of concurrent connections to ICAP server (unl
-    secure: NotRequired[Literal["disable", "enable"]]  # Enable/disable secure connection to ICAP server.
+    secure: NotRequired[Literal[{"description": "Disable connection to secure ICAP server", "help": "Disable connection to secure ICAP server.", "label": "Disable", "name": "disable"}, {"description": "Enable connection to secure ICAP server", "help": "Enable connection to secure ICAP server.", "label": "Enable", "name": "enable"}]]  # Enable/disable secure connection to ICAP server.
     ssl_cert: NotRequired[str]  # CA certificate name.
-    healthcheck: NotRequired[Literal["disable", "enable"]]  # Enable/disable ICAP remote server health checking. Attempts 
+    healthcheck: NotRequired[Literal[{"description": "Disable health checking", "help": "Disable health checking.", "label": "Disable", "name": "disable"}, {"description": "Enable health checking", "help": "Enable health checking.", "label": "Enable", "name": "enable"}]]  # Enable/disable ICAP remote server health checking. Attempts 
     healthcheck_service: str  # ICAP Service name to use for health checks.
 
 
@@ -49,15 +49,15 @@ class Server:
         self,
         payload_dict: ServerPayload | None = ...,
         name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
+        addr_type: Literal[{"description": "Use an IPv4 address for the remote ICAP server", "help": "Use an IPv4 address for the remote ICAP server.", "label": "Ip4", "name": "ip4"}, {"description": "Use an IPv6 address for the remote ICAP server", "help": "Use an IPv6 address for the remote ICAP server.", "label": "Ip6", "name": "ip6"}, {"description": "Use the FQDN for the forwarding proxy server", "help": "Use the FQDN for the forwarding proxy server.", "label": "Fqdn", "name": "fqdn"}] | None = ...,
         ip_address: str | None = ...,
         ip6_address: str | None = ...,
         fqdn: str | None = ...,
         port: int | None = ...,
         max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
+        secure: Literal[{"description": "Disable connection to secure ICAP server", "help": "Disable connection to secure ICAP server.", "label": "Disable", "name": "disable"}, {"description": "Enable connection to secure ICAP server", "help": "Enable connection to secure ICAP server.", "label": "Enable", "name": "enable"}] | None = ...,
         ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
+        healthcheck: Literal[{"description": "Disable health checking", "help": "Disable health checking.", "label": "Disable", "name": "disable"}, {"description": "Enable health checking", "help": "Enable health checking.", "label": "Enable", "name": "enable"}] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -68,15 +68,15 @@ class Server:
         self,
         payload_dict: ServerPayload | None = ...,
         name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
+        addr_type: Literal[{"description": "Use an IPv4 address for the remote ICAP server", "help": "Use an IPv4 address for the remote ICAP server.", "label": "Ip4", "name": "ip4"}, {"description": "Use an IPv6 address for the remote ICAP server", "help": "Use an IPv6 address for the remote ICAP server.", "label": "Ip6", "name": "ip6"}, {"description": "Use the FQDN for the forwarding proxy server", "help": "Use the FQDN for the forwarding proxy server.", "label": "Fqdn", "name": "fqdn"}] | None = ...,
         ip_address: str | None = ...,
         ip6_address: str | None = ...,
         fqdn: str | None = ...,
         port: int | None = ...,
         max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
+        secure: Literal[{"description": "Disable connection to secure ICAP server", "help": "Disable connection to secure ICAP server.", "label": "Disable", "name": "disable"}, {"description": "Enable connection to secure ICAP server", "help": "Enable connection to secure ICAP server.", "label": "Enable", "name": "enable"}] | None = ...,
         ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
+        healthcheck: Literal[{"description": "Disable health checking", "help": "Disable health checking.", "label": "Disable", "name": "disable"}, {"description": "Enable health checking", "help": "Enable health checking.", "label": "Enable", "name": "enable"}] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

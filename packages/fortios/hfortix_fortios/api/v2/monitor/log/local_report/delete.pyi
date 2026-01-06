@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Delete:
     """
-    Configuration for log/local-report/delete
+    Delete a local report.
     
     Path: log/local_report/delete
     Category: monitor

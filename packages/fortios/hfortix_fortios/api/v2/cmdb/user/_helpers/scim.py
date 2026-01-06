@@ -121,20 +121,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable System for Cross-domain Identity Management (SCIM).
+    "disable",  # Disable System for Cross-domain Identity Management (SCIM).
 ]
 VALID_BODY_AUTH_METHOD = [
-    "token",
-    "base",
+    "token",  # Bearer token.
+    "base",  # Base.
 ]
 VALID_BODY_CLIENT_IDENTITY_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable client identity check.
+    "disable",  # Disable client identity check.
 ]
 VALID_BODY_CASCADE = [
-    "disable",
-    "enable",
+    "disable",  # Disable setting.
+    "enable",  # Enable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -264,7 +264,7 @@ def validate_user_scim_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable System for Cross-domain Identity Management (SCIM).', 'label': 'Enable', 'description': 'Enable System for Cross-domain Identity Management (SCIM)'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_scim_post(payload)
         >>> assert is_valid == True

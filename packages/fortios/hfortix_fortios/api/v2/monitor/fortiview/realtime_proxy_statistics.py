@@ -56,7 +56,7 @@ class RealtimeProxyStatistics:
         """
         Retrieve fortiview/realtime_proxy_statistics configuration.
 
-        Configuration for fortiview/realtime-proxy-statistics
+        Retrieve realtime drill-down and summary data for proxy session FortiView statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

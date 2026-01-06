@@ -128,28 +128,28 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_CACHE_MODE = [
-    "ttl",
-    "db-ver",
+    "ttl",  # Expire cache items by time-to-live.
+    "db-ver",  # Expire cache items when the server DB version changes.
 ]
 VALID_BODY_CACHE_PREFIX_MATCH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_OVRD_AUTH_HTTPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WARN_AUTH_HTTPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_CLOSE_PORTS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_EMBED_IMAGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -274,7 +274,7 @@ def validate_webfilter_fortiguard_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "cache-mode": "ttl",  # Valid enum value
+        ...     "cache-mode": "{'name': 'ttl', 'help': 'Expire cache items by time-to-live.', 'label': 'Ttl', 'description': 'Expire cache items by time-to-live'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_webfilter_fortiguard_post(payload)
         >>> assert is_valid == True

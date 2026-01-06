@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Sessions:
     """
-    Configuration for firewall/sessions
+    List all active firewall sessions (optionally filtered).
     
     Path: firewall/sessions
     Category: monitor

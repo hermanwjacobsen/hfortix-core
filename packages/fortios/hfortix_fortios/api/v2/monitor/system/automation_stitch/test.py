@@ -56,7 +56,7 @@ class Test:
         """
         Retrieve system/automation_stitch/test configuration.
 
-        Configuration for system/automation-stitch/test
+        Triggers an automation stitch for testing purposes.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

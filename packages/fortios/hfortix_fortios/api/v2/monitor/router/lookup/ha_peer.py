@@ -56,7 +56,7 @@ class HaPeer:
         """
         Retrieve router/lookup/ha_peer configuration.
 
-        Configuration for router/lookup/ha-peer
+        Performs a route lookup by querying the routing table of an HA peer.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

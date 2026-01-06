@@ -120,7 +120,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Priority.",
             "default": "high",
-            "options": ["top", "critical", "high", "medium", "low"],
+            "options": [{"help": "Top priority.", "label": "Top", "name": "top"}, {"help": "Critical priority.", "label": "Critical", "name": "critical"}, {"help": "High priority.", "label": "High", "name": "high"}, {"help": "Medium priority.", "label": "Medium", "name": "medium"}, {"help": "Low priority.", "label": "Low", "name": "low"}],
         },
         "guaranteed-bandwidth-percentage": {
             "type": "integer",
@@ -184,12 +184,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "policing",
-    "queuing",
+    "policing",  # Enable policing mode.
+    "queuing",  # Enable queuing mode.
 ]
 VALID_BODY_NPU_OFFLOADING = [
-    "disable",
-    "enable",
+    "disable",  # Diable shaper offloading.
+    "enable",  # Enable shaper offloading.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -319,7 +319,7 @@ def validate_firewall_shaping_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "profile-name": True,
-        ...     "type": "policing",  # Valid enum value
+        ...     "type": "{'name': 'policing', 'help': 'Enable policing mode.', 'label': 'Policing', 'description': 'Enable policing mode'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_shaping_profile_post(payload)
         >>> assert is_valid == True

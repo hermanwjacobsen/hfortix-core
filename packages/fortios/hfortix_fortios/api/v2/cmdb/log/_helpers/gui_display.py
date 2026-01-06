@@ -95,16 +95,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_RESOLVE_HOSTS = [
-    "enable",
-    "disable",
+    "enable",  # Enable resolving IP addresses to hostnames.
+    "disable",  # Disable resolving IP addresses to hostnames.
 ]
 VALID_BODY_RESOLVE_APPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable unknown applications on the GUI.
+    "disable",  # Disable unknown applications on the GUI.
 ]
 VALID_BODY_FORTIVIEW_UNSCANNED_APPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable showing unscanned traffic.
+    "disable",  # Disable showing unscanned traffic.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -229,7 +229,7 @@ def validate_log_gui_display_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "resolve-hosts": "enable",  # Valid enum value
+        ...     "resolve-hosts": "{'name': 'enable', 'help': 'Enable resolving IP addresses to hostnames.', 'label': 'Enable', 'description': 'Enable resolving IP addresses to hostnames'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_gui_display_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Gtp:
     """
-    Monitor endpoint for firewall/gtp
+    Retrieve a list of GTP tunnels
     
     Path: firewall/gtp
     Category: monitor

@@ -11,8 +11,8 @@ class OverridePayload(TypedDict, total=False):
         }
     """
     id: NotRequired[int]  # Override rule ID.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable override rule.
-    scope: NotRequired[Literal["user", "user-group", "ip", "ip6"]]  # Override either the specific user, user group, IPv4 address,
+    status: NotRequired[Literal[{"description": "Enable override rule", "help": "Enable override rule.", "label": "Enable", "name": "enable"}, {"description": "Disable override rule", "help": "Disable override rule.", "label": "Disable", "name": "disable"}]]  # Enable/disable override rule.
+    scope: NotRequired[Literal[{"description": "Override the specified user", "help": "Override the specified user.", "label": "User", "name": "user"}, {"description": "Override the specified user group", "help": "Override the specified user group.", "label": "User Group", "name": "user-group"}, {"description": "Override the specified IP address", "help": "Override the specified IP address.", "label": "Ip", "name": "ip"}, {"description": "Override the specified IPv6 address", "help": "Override the specified IPv6 address.", "label": "Ip6", "name": "ip6"}]]  # Override either the specific user, user group, IPv4 address,
     ip: str  # IPv4 address which the override applies.
     user: str  # Name of the user which the override applies.
     user_group: str  # Specify the user group for which the override applies.
@@ -49,8 +49,8 @@ class Override:
         self,
         payload_dict: OverridePayload | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        scope: Literal["user", "user-group", "ip", "ip6"] | None = ...,
+        status: Literal[{"description": "Enable override rule", "help": "Enable override rule.", "label": "Enable", "name": "enable"}, {"description": "Disable override rule", "help": "Disable override rule.", "label": "Disable", "name": "disable"}] | None = ...,
+        scope: Literal[{"description": "Override the specified user", "help": "Override the specified user.", "label": "User", "name": "user"}, {"description": "Override the specified user group", "help": "Override the specified user group.", "label": "User Group", "name": "user-group"}, {"description": "Override the specified IP address", "help": "Override the specified IP address.", "label": "Ip", "name": "ip"}, {"description": "Override the specified IPv6 address", "help": "Override the specified IPv6 address.", "label": "Ip6", "name": "ip6"}] | None = ...,
         ip: str | None = ...,
         user: str | None = ...,
         user_group: str | None = ...,
@@ -68,8 +68,8 @@ class Override:
         self,
         payload_dict: OverridePayload | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        scope: Literal["user", "user-group", "ip", "ip6"] | None = ...,
+        status: Literal[{"description": "Enable override rule", "help": "Enable override rule.", "label": "Enable", "name": "enable"}, {"description": "Disable override rule", "help": "Disable override rule.", "label": "Disable", "name": "disable"}] | None = ...,
+        scope: Literal[{"description": "Override the specified user", "help": "Override the specified user.", "label": "User", "name": "user"}, {"description": "Override the specified user group", "help": "Override the specified user group.", "label": "User Group", "name": "user-group"}, {"description": "Override the specified IP address", "help": "Override the specified IP address.", "label": "Ip", "name": "ip"}, {"description": "Override the specified IPv6 address", "help": "Override the specified IPv6 address.", "label": "Ip6", "name": "ip6"}] | None = ...,
         ip: str | None = ...,
         user: str | None = ...,
         user_group: str | None = ...,

@@ -11,9 +11,9 @@ class ForwardServerGroupPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Configure a forward server group consisting one or multiple 
-    affinity: NotRequired[Literal["enable", "disable"]]  # Enable/disable affinity, attaching a source-ip's traffic to 
-    ldb_method: NotRequired[Literal["weighted", "least-session", "active-passive"]]  # Load balance method: weighted or least-session.
-    group_down_option: NotRequired[Literal["block", "pass"]]  # Action to take when all of the servers in the forward server
+    affinity: NotRequired[Literal[{"description": "Enable affinity", "help": "Enable affinity.", "label": "Enable", "name": "enable"}, {"description": "Disable affinity", "help": "Disable affinity.", "label": "Disable", "name": "disable"}]]  # Enable/disable affinity, attaching a source-ip's traffic to 
+    ldb_method: NotRequired[Literal[{"description": "Load balance traffic to forward servers based on assigned weights", "help": "Load balance traffic to forward servers based on assigned weights. Weights are ratios of total number of sessions.", "label": "Weighted", "name": "weighted"}, {"description": "Send new sessions to the server with lowest session count", "help": "Send new sessions to the server with lowest session count.", "label": "Least Session", "name": "least-session"}, {"description": "Send new sessions to the next active server in the list", "help": "Send new sessions to the next active server in the list. Servers are selected with highest weight first and then in order as they are configured. Traffic switches back to the first server upon failure recovery.", "label": "Active Passive", "name": "active-passive"}]]  # Load balance method: weighted or least-session.
+    group_down_option: NotRequired[Literal[{"description": "Block sessions until at least one server in the group is back up", "help": "Block sessions until at least one server in the group is back up.", "label": "Block", "name": "block"}, {"description": "Pass sessions to their destination bypassing servers in the forward server group", "help": "Pass sessions to their destination bypassing servers in the forward server group.", "label": "Pass", "name": "pass"}]]  # Action to take when all of the servers in the forward server
     server_list: NotRequired[list[dict[str, Any]]]  # Add web forward servers to a list to form a server group. Op
 
 
@@ -43,9 +43,9 @@ class ForwardServerGroup:
         self,
         payload_dict: ForwardServerGroupPayload | None = ...,
         name: str | None = ...,
-        affinity: Literal["enable", "disable"] | None = ...,
-        ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        group_down_option: Literal["block", "pass"] | None = ...,
+        affinity: Literal[{"description": "Enable affinity", "help": "Enable affinity.", "label": "Enable", "name": "enable"}, {"description": "Disable affinity", "help": "Disable affinity.", "label": "Disable", "name": "disable"}] | None = ...,
+        ldb_method: Literal[{"description": "Load balance traffic to forward servers based on assigned weights", "help": "Load balance traffic to forward servers based on assigned weights. Weights are ratios of total number of sessions.", "label": "Weighted", "name": "weighted"}, {"description": "Send new sessions to the server with lowest session count", "help": "Send new sessions to the server with lowest session count.", "label": "Least Session", "name": "least-session"}, {"description": "Send new sessions to the next active server in the list", "help": "Send new sessions to the next active server in the list. Servers are selected with highest weight first and then in order as they are configured. Traffic switches back to the first server upon failure recovery.", "label": "Active Passive", "name": "active-passive"}] | None = ...,
+        group_down_option: Literal[{"description": "Block sessions until at least one server in the group is back up", "help": "Block sessions until at least one server in the group is back up.", "label": "Block", "name": "block"}, {"description": "Pass sessions to their destination bypassing servers in the forward server group", "help": "Pass sessions to their destination bypassing servers in the forward server group.", "label": "Pass", "name": "pass"}] | None = ...,
         server_list: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -56,9 +56,9 @@ class ForwardServerGroup:
         self,
         payload_dict: ForwardServerGroupPayload | None = ...,
         name: str | None = ...,
-        affinity: Literal["enable", "disable"] | None = ...,
-        ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        group_down_option: Literal["block", "pass"] | None = ...,
+        affinity: Literal[{"description": "Enable affinity", "help": "Enable affinity.", "label": "Enable", "name": "enable"}, {"description": "Disable affinity", "help": "Disable affinity.", "label": "Disable", "name": "disable"}] | None = ...,
+        ldb_method: Literal[{"description": "Load balance traffic to forward servers based on assigned weights", "help": "Load balance traffic to forward servers based on assigned weights. Weights are ratios of total number of sessions.", "label": "Weighted", "name": "weighted"}, {"description": "Send new sessions to the server with lowest session count", "help": "Send new sessions to the server with lowest session count.", "label": "Least Session", "name": "least-session"}, {"description": "Send new sessions to the next active server in the list", "help": "Send new sessions to the next active server in the list. Servers are selected with highest weight first and then in order as they are configured. Traffic switches back to the first server upon failure recovery.", "label": "Active Passive", "name": "active-passive"}] | None = ...,
+        group_down_option: Literal[{"description": "Block sessions until at least one server in the group is back up", "help": "Block sessions until at least one server in the group is back up.", "label": "Block", "name": "block"}, {"description": "Pass sessions to their destination bypassing servers in the forward server group", "help": "Pass sessions to their destination bypassing servers in the forward server group.", "label": "Pass", "name": "pass"}] | None = ...,
         server_list: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

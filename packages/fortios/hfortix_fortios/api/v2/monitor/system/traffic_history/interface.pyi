@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Interface:
     """
-    Configuration for system/traffic-history/interface
+    Retrieve history traffic stats for an interface.
     
     Path: system/traffic_history/interface
     Category: monitor

@@ -204,25 +204,25 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "default",
-    "fortinac",
+    "default",  # All other unspecified types of servers.
+    "fortinac",  # FortiNAC server.
 ]
 VALID_BODY_LDAP_POLL = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic fetching of groups from LDAP server.
+    "disable",  # Disable automatic fetching of groups from LDAP server.
 ]
 VALID_BODY_SSL = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of SSL.
+    "disable",  # Disable use of SSL.
 ]
 VALID_BODY_SSL_SERVER_HOST_IP_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable server host/IP verification.
+    "disable",  # Disable server host/IP verification.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -353,7 +353,7 @@ def validate_user_fsso_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "type": "default",  # Valid enum value
+        ...     "type": "{'name': 'default', 'help': 'All other unspecified types of servers.', 'label': 'Default', 'description': 'All other unspecified types of servers'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_fsso_post(payload)
         >>> assert is_valid == True

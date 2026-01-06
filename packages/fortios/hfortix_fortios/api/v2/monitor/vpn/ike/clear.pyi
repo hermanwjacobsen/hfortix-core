@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Clear:
     """
-    Configuration for vpn/ike/clear
+    Clear IKE gateways.
     
     Path: vpn/ike/clear
     Category: monitor

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/dnat",
     "category": "monitor",
     "api_path": "firewall/dnat",
-    "help": "Configuration for firewall/dnat",
+    "help": "List hit count statistics for firewall virtual IP/server.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

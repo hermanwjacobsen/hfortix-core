@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/station_capability",
     "category": "monitor",
     "api_path": "wifi/station-capability",
-    "help": "Monitor endpoint for wifi/station-capability",
+    "help": "Retrieve a list of stations and their capability to connect to detected access points.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

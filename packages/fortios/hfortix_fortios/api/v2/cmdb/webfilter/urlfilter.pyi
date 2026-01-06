@@ -13,10 +13,10 @@ class UrlfilterPayload(TypedDict, total=False):
     id: int  # ID.
     name: str  # Name of URL filter list.
     comment: NotRequired[str]  # Optional comments.
-    one_arm_ips_urlfilter: NotRequired[Literal["enable", "disable"]]  # Enable/disable DNS resolver for one-arm IPS URL filter opera
-    ip_addr_block: NotRequired[Literal["enable", "disable"]]  # Enable/disable blocking URLs when the hostname appears as an
-    ip4_mapped_ip6: NotRequired[Literal["enable", "disable"]]  # Enable/disable matching of IPv4 mapped IPv6 URLs.
-    include_subdomains: NotRequired[Literal["enable", "disable"]]  # Enable/disable matching subdomains. Applies only to simple t
+    one_arm_ips_urlfilter: NotRequired[Literal[{"description": "Enable DNS resolver for one-arm IPS URL filter operation", "help": "Enable DNS resolver for one-arm IPS URL filter operation.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS resolver for one-arm IPS URL filter operation", "help": "Disable DNS resolver for one-arm IPS URL filter operation.", "label": "Disable", "name": "disable"}]]  # Enable/disable DNS resolver for one-arm IPS URL filter opera
+    ip_addr_block: NotRequired[Literal[{"description": "Enable blocking URLs when the hostname appears as an IP address", "help": "Enable blocking URLs when the hostname appears as an IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable blocking URLs when the hostname appears as an IP address", "help": "Disable blocking URLs when the hostname appears as an IP address.", "label": "Disable", "name": "disable"}]]  # Enable/disable blocking URLs when the hostname appears as an
+    ip4_mapped_ip6: NotRequired[Literal[{"description": "Enable matching IPv4 mapped IPv6 URLs", "help": "Enable matching IPv4 mapped IPv6 URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable matching IPv4 mapped IPv6 URLs", "help": "Disable matching IPv4 mapped IPv6 URLs.", "label": "Disable", "name": "disable"}]]  # Enable/disable matching of IPv4 mapped IPv6 URLs.
+    include_subdomains: NotRequired[Literal[{"description": "Enable matching subdomains", "help": "Enable matching subdomains. Applies only to simple type.", "label": "Enable", "name": "enable"}, {"description": "Disable matching subdomains", "help": "Disable matching subdomains. Applies only to simple type.", "label": "Disable", "name": "disable"}]]  # Enable/disable matching subdomains. Applies only to simple t
     entries: list[dict[str, Any]]  # URL filter entries.
 
 
@@ -48,10 +48,10 @@ class Urlfilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        one_arm_ips_urlfilter: Literal["enable", "disable"] | None = ...,
-        ip_addr_block: Literal["enable", "disable"] | None = ...,
-        ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
-        include_subdomains: Literal["enable", "disable"] | None = ...,
+        one_arm_ips_urlfilter: Literal[{"description": "Enable DNS resolver for one-arm IPS URL filter operation", "help": "Enable DNS resolver for one-arm IPS URL filter operation.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS resolver for one-arm IPS URL filter operation", "help": "Disable DNS resolver for one-arm IPS URL filter operation.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip_addr_block: Literal[{"description": "Enable blocking URLs when the hostname appears as an IP address", "help": "Enable blocking URLs when the hostname appears as an IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable blocking URLs when the hostname appears as an IP address", "help": "Disable blocking URLs when the hostname appears as an IP address.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip4_mapped_ip6: Literal[{"description": "Enable matching IPv4 mapped IPv6 URLs", "help": "Enable matching IPv4 mapped IPv6 URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable matching IPv4 mapped IPv6 URLs", "help": "Disable matching IPv4 mapped IPv6 URLs.", "label": "Disable", "name": "disable"}] | None = ...,
+        include_subdomains: Literal[{"description": "Enable matching subdomains", "help": "Enable matching subdomains. Applies only to simple type.", "label": "Enable", "name": "enable"}, {"description": "Disable matching subdomains", "help": "Disable matching subdomains. Applies only to simple type.", "label": "Disable", "name": "disable"}] | None = ...,
         entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -64,10 +64,10 @@ class Urlfilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        one_arm_ips_urlfilter: Literal["enable", "disable"] | None = ...,
-        ip_addr_block: Literal["enable", "disable"] | None = ...,
-        ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
-        include_subdomains: Literal["enable", "disable"] | None = ...,
+        one_arm_ips_urlfilter: Literal[{"description": "Enable DNS resolver for one-arm IPS URL filter operation", "help": "Enable DNS resolver for one-arm IPS URL filter operation.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS resolver for one-arm IPS URL filter operation", "help": "Disable DNS resolver for one-arm IPS URL filter operation.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip_addr_block: Literal[{"description": "Enable blocking URLs when the hostname appears as an IP address", "help": "Enable blocking URLs when the hostname appears as an IP address.", "label": "Enable", "name": "enable"}, {"description": "Disable blocking URLs when the hostname appears as an IP address", "help": "Disable blocking URLs when the hostname appears as an IP address.", "label": "Disable", "name": "disable"}] | None = ...,
+        ip4_mapped_ip6: Literal[{"description": "Enable matching IPv4 mapped IPv6 URLs", "help": "Enable matching IPv4 mapped IPv6 URLs.", "label": "Enable", "name": "enable"}, {"description": "Disable matching IPv4 mapped IPv6 URLs", "help": "Disable matching IPv4 mapped IPv6 URLs.", "label": "Disable", "name": "disable"}] | None = ...,
+        include_subdomains: Literal[{"description": "Enable matching subdomains", "help": "Enable matching subdomains. Applies only to simple type.", "label": "Enable", "name": "enable"}, {"description": "Disable matching subdomains", "help": "Disable matching subdomains. Applies only to simple type.", "label": "Disable", "name": "disable"}] | None = ...,
         entries: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

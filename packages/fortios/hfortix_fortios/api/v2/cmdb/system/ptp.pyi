@@ -10,12 +10,12 @@ class PtpPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable setting the FortiGate system time by synchron
-    mode: NotRequired[Literal["multicast", "hybrid"]]  # Multicast transmission or hybrid transmission.
-    delay_mechanism: NotRequired[Literal["E2E", "P2P"]]  # End to end delay detection or peer to peer delay detection.
+    status: NotRequired[Literal[{"description": "Enable synchronization with PTP Server", "help": "Enable synchronization with PTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with PTP Server", "help": "Disable synchronization with PTP Server.", "label": "Disable", "name": "disable"}]]  # Enable/disable setting the FortiGate system time by synchron
+    mode: NotRequired[Literal[{"description": "Send PTP packets with multicast", "help": "Send PTP packets with multicast.", "label": "Multicast", "name": "multicast"}, {"description": "Send PTP packets with unicast and multicast", "help": "Send PTP packets with unicast and multicast.", "label": "Hybrid", "name": "hybrid"}]]  # Multicast transmission or hybrid transmission.
+    delay_mechanism: NotRequired[Literal[{"description": "End to end delay detection", "help": "End to end delay detection.", "label": "E2E", "name": "E2E"}, {"description": "Peer to peer delay detection", "help": "Peer to peer delay detection.", "label": "P2P", "name": "P2P"}]]  # End to end delay detection or peer to peer delay detection.
     request_interval: NotRequired[int]  # The delay request value is the logarithmic mean interval in 
     interface: str  # PTP client will reply through this interface.
-    server_mode: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiGate PTP server mode. Your FortiGate bec
+    server_mode: NotRequired[Literal[{"description": "Enable FortiGate PTP server mode", "help": "Enable FortiGate PTP server mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate PTP server mode", "help": "Disable FortiGate PTP server mode.", "label": "Disable", "name": "disable"}]]  # Enable/disable FortiGate PTP server mode. Your FortiGate bec
     server_interface: NotRequired[list[dict[str, Any]]]  # FortiGate interface(s) with PTP server mode enabled. Devices
 
 
@@ -43,12 +43,12 @@ class Ptp:
     def post(
         self,
         payload_dict: PtpPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        mode: Literal["multicast", "hybrid"] | None = ...,
-        delay_mechanism: Literal["E2E", "P2P"] | None = ...,
+        status: Literal[{"description": "Enable synchronization with PTP Server", "help": "Enable synchronization with PTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with PTP Server", "help": "Disable synchronization with PTP Server.", "label": "Disable", "name": "disable"}] | None = ...,
+        mode: Literal[{"description": "Send PTP packets with multicast", "help": "Send PTP packets with multicast.", "label": "Multicast", "name": "multicast"}, {"description": "Send PTP packets with unicast and multicast", "help": "Send PTP packets with unicast and multicast.", "label": "Hybrid", "name": "hybrid"}] | None = ...,
+        delay_mechanism: Literal[{"description": "End to end delay detection", "help": "End to end delay detection.", "label": "E2E", "name": "E2E"}, {"description": "Peer to peer delay detection", "help": "Peer to peer delay detection.", "label": "P2P", "name": "P2P"}] | None = ...,
         request_interval: int | None = ...,
         interface: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
+        server_mode: Literal[{"description": "Enable FortiGate PTP server mode", "help": "Enable FortiGate PTP server mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate PTP server mode", "help": "Disable FortiGate PTP server mode.", "label": "Disable", "name": "disable"}] | None = ...,
         server_interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -58,12 +58,12 @@ class Ptp:
     def put(
         self,
         payload_dict: PtpPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        mode: Literal["multicast", "hybrid"] | None = ...,
-        delay_mechanism: Literal["E2E", "P2P"] | None = ...,
+        status: Literal[{"description": "Enable synchronization with PTP Server", "help": "Enable synchronization with PTP Server.", "label": "Enable", "name": "enable"}, {"description": "Disable synchronization with PTP Server", "help": "Disable synchronization with PTP Server.", "label": "Disable", "name": "disable"}] | None = ...,
+        mode: Literal[{"description": "Send PTP packets with multicast", "help": "Send PTP packets with multicast.", "label": "Multicast", "name": "multicast"}, {"description": "Send PTP packets with unicast and multicast", "help": "Send PTP packets with unicast and multicast.", "label": "Hybrid", "name": "hybrid"}] | None = ...,
+        delay_mechanism: Literal[{"description": "End to end delay detection", "help": "End to end delay detection.", "label": "E2E", "name": "E2E"}, {"description": "Peer to peer delay detection", "help": "Peer to peer delay detection.", "label": "P2P", "name": "P2P"}] | None = ...,
         request_interval: int | None = ...,
         interface: str | None = ...,
-        server_mode: Literal["enable", "disable"] | None = ...,
+        server_mode: Literal[{"description": "Enable FortiGate PTP server mode", "help": "Enable FortiGate PTP server mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiGate PTP server mode", "help": "Disable FortiGate PTP server mode.", "label": "Disable", "name": "disable"}] | None = ...,
         server_interface: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

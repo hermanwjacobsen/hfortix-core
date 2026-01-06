@@ -9,40 +9,46 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.0-beta**
+> **⚠️ BETA STATUS - Version 0.5.0-beta + Schema v1.7.0**
 >
-> - **Current Version**: 0.5.0-beta (Under Development - January 4, 2026)
-> - **Major Release**: Complete code regeneration with 1,219 endpoints
+> - **Current Version**: 0.5.0-beta (Under Development - January 6, 2026)
+> - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
+> - **Implementation**: Basic API (60% complete) - Pydantic models pending
 > - **Breaking Changes**: Convenience wrappers removed - use direct API access
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
-> **⚠️ Version 0.5.0 introduces breaking changes**: All convenience wrappers have been removed
-> in favor of 100% auto-generated endpoints. All implementations remain in **BETA** until version 1.0.0.
+> **📊 Implementation Status:** Schema generation complete (100%), Pydantic model generation pending (0%)
+> See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for detailed roadmap.
 
-**FortiOS 7.6.5 Coverage (January 4, 2026):**
+**FortiOS 7.6.5 Coverage (Schema v1.7.0 - January 6, 2026):**
 
-- **CMDB API**: 886 endpoints (100% coverage) - Full configuration management 🔷 Beta
-- **Monitor API**: 295 endpoints (100% coverage) - Complete monitoring capabilities 🔷 Beta
-- **Log API**: 38 endpoints (5 destinations × multiple subtypes) - Log query support 🔷 Beta
-- **Overall**: **1,219 total endpoints** (100% coverage) - Fully auto-generated 🎉
+- **CMDB API**: 561 schemas (100% coverage) - Full configuration management 🔷 Beta
+- **Monitor API**: 490 schemas (100% coverage) - Complete monitoring capabilities 🔷 Beta
+- **Log API**: 286 schemas (100% coverage) - Log query support 🔷 Beta
+- **Service API**: 11 schemas (100% coverage) - Service operations 🔷 Beta
+- **Overall**: **1,348 total schemas** (+394 vs v1.6.0, +41%) - Enhanced metadata 🎉
 
-**Code Generation (v0.5.0):**
+**Code Generation Status:**
 
-- ✨ **100% Auto-Generated**: All 1,219 endpoints generated from FortiOS API schemas
-- 📝 **Complete Type Stubs**: Full `.pyi` stub files for perfect IDE autocomplete
-- ✅ **Auto-Generated Tests**: Basic test coverage for all endpoints
-- 🔍 **Enhanced Validators**: Schema-based validation for all 1,219 endpoints
-- 🚀 **Swagger Fallback**: Automatic fallback to Swagger docs when API unavailable
-- 📊 **Smart Generator**: Handles all edge cases (3-part paths, log parameterization, etc.)
+✅ **Completed (100%):**
+- ✅ **Schema v1.7.0**: 1,348 endpoints with capabilities, complexity, relationships
+- ✅ **Basic API Classes**: 2,129 endpoint files with CRUD methods
+- ✅ **Type Hints**: Full type annotations on all method parameters
+- ✅ **Validators**: 260+ validation helper modules
+- ✅ **Docstrings**: Comprehensive documentation with examples
 
-**Validation Coverage (v0.5.0):**
+� **In Progress (0-20%):**
+- ❌ **Pydantic Models**: Not yet generated (Priority: HIGH, Effort: 1-2 days)
+- ❌ **Field Constraints**: No validation from schema (Priority: HIGH, Effort: 1-2 days)
+- ❌ **Relationships**: Not tracked in code (Priority: MEDIUM, Effort: 1 day)
+- ❌ **Capabilities**: Not exposed in classes (Priority: MEDIUM, Effort: 1 day)
 
-- 1,219 validation helper modules auto-generated for all endpoints
-- Schema-derived validators with enum, length, range, pattern validation
-- Required field validation across all applicable endpoints
-- Two-stage validation: required fields → field values
-- Automatic null payload handling
+**Overall Progress: 60% Complete**
+- Schema & Infrastructure: ✅ 100%
+- Basic API Generation: ✅ 100%
+- Advanced Features (Pydantic, validation): ❌ 0%
 
+**Next Steps:** See [TODO.md](TODO.md) for detailed task list and [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for comprehensive analysis.
 
 **Test Coverage:** 1,200+ auto-generated test files with basic smoke tests for all endpoints
 **Note:** All implementations remain in beta until version 1.0.0 with comprehensive unit test coverage.

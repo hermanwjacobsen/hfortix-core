@@ -116,17 +116,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AFFINITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable affinity.
+    "disable",  # Disable affinity.
 ]
 VALID_BODY_LDB_METHOD = [
-    "weighted",
-    "least-session",
-    "active-passive",
+    "weighted",  # Load balance traffic to forward servers based on assigned weights. Weights are ratios of total number of sessions.
+    "least-session",  # Send new sessions to the server with lowest session count.
+    "active-passive",  # Send new sessions to the next active server in the list. Servers are selected with highest weight first and then in order as they are configured. Traffic switches back to the first server upon failure recovery.
 ]
 VALID_BODY_GROUP_DOWN_OPTION = [
-    "block",
-    "pass",
+    "block",  # Block sessions until at least one server in the group is back up.
+    "pass",  # Pass sessions to their destination bypassing servers in the forward server group.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -254,7 +254,7 @@ def validate_web_proxy_forward_server_group_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "affinity": "enable",  # Valid enum value
+        ...     "affinity": "{'name': 'enable', 'help': 'Enable affinity.', 'label': 'Enable', 'description': 'Enable affinity'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_web_proxy_forward_server_group_post(payload)
         >>> assert is_valid == True

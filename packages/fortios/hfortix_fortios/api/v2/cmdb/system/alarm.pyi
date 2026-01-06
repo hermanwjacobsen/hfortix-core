@@ -10,8 +10,8 @@ class AlarmPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable alarm.
-    audible: NotRequired[Literal["enable", "disable"]]  # Enable/disable audible alarm.
+    status: NotRequired[Literal[{"description": "Enable alarm", "help": "Enable alarm.", "label": "Enable", "name": "enable"}, {"description": "Disable alarm", "help": "Disable alarm.", "label": "Disable", "name": "disable"}]]  # Enable/disable alarm.
+    audible: NotRequired[Literal[{"description": "Enable audible alarm", "help": "Enable audible alarm.", "label": "Enable", "name": "enable"}, {"description": "Disable audible alarm", "help": "Disable audible alarm.", "label": "Disable", "name": "disable"}]]  # Enable/disable audible alarm.
     groups: NotRequired[list[dict[str, Any]]]  # Alarm groups.
 
 
@@ -39,8 +39,8 @@ class Alarm:
     def post(
         self,
         payload_dict: AlarmPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        audible: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable alarm", "help": "Enable alarm.", "label": "Enable", "name": "enable"}, {"description": "Disable alarm", "help": "Disable alarm.", "label": "Disable", "name": "disable"}] | None = ...,
+        audible: Literal[{"description": "Enable audible alarm", "help": "Enable audible alarm.", "label": "Enable", "name": "enable"}, {"description": "Disable audible alarm", "help": "Disable audible alarm.", "label": "Disable", "name": "disable"}] | None = ...,
         groups: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -50,8 +50,8 @@ class Alarm:
     def put(
         self,
         payload_dict: AlarmPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        audible: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable alarm", "help": "Enable alarm.", "label": "Enable", "name": "enable"}, {"description": "Disable alarm", "help": "Disable alarm.", "label": "Disable", "name": "disable"}] | None = ...,
+        audible: Literal[{"description": "Enable audible alarm", "help": "Enable audible alarm.", "label": "Enable", "name": "enable"}, {"description": "Disable audible alarm", "help": "Disable audible alarm.", "label": "Disable", "name": "disable"}] | None = ...,
         groups: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/bgp/soft_reset_neighbor",
     "category": "monitor",
     "api_path": "router/bgp/soft-reset-neighbor",
-    "help": "Configuration for router/bgp/soft-reset-neighbor",
+    "help": "BGP Neighbor soft reset.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

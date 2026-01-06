@@ -56,7 +56,7 @@ class Lookup:
         """
         Retrieve network/ddns/lookup configuration.
 
-        Configuration for network/ddns/lookup
+        Check DDNS FQDN availability.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

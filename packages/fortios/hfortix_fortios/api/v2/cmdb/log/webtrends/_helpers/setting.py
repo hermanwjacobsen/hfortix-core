@@ -93,8 +93,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging to WebTrends.
+    "disable",  # Disble logging to WebTrends.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -219,7 +219,7 @@ def validate_log_webtrends_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable logging to WebTrends.', 'label': 'Enable', 'description': 'Enable logging to WebTrends'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_webtrends_setting_post(payload)
         >>> assert is_valid == True

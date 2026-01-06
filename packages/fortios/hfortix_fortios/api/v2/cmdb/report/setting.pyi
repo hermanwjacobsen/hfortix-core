@@ -10,9 +10,9 @@ class SettingPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    pdf_report: NotRequired[Literal["enable", "disable"]]  # Enable/disable PDF report.
-    fortiview: NotRequired[Literal["enable", "disable"]]  # Enable/disable historical FortiView.
-    report_source: NotRequired[Literal["forward-traffic", "sniffer-traffic", "local-deny-traffic"]]  # Report log source.
+    pdf_report: NotRequired[Literal[{"description": "Enable PDF report", "help": "Enable PDF report.", "label": "Enable", "name": "enable"}, {"description": "Disable PDF report", "help": "Disable PDF report.", "label": "Disable", "name": "disable"}]]  # Enable/disable PDF report.
+    fortiview: NotRequired[Literal[{"description": "Enable historical FortiView", "help": "Enable historical FortiView.", "label": "Enable", "name": "enable"}, {"description": "Disable historical FortiView", "help": "Disable historical FortiView.", "label": "Disable", "name": "disable"}]]  # Enable/disable historical FortiView.
+    report_source: NotRequired[Literal[{"description": "Report includes forward traffic logs", "help": "Report includes forward traffic logs.", "label": "Forward Traffic", "name": "forward-traffic"}, {"description": "Report includes sniffer traffic logs", "help": "Report includes sniffer traffic logs.", "label": "Sniffer Traffic", "name": "sniffer-traffic"}, {"description": "Report includes local deny traffic logs", "help": "Report includes local deny traffic logs.", "label": "Local Deny Traffic", "name": "local-deny-traffic"}]]  # Report log source.
     web_browsing_threshold: NotRequired[int]  # Web browsing time calculation threshold (3 - 15 min).
     top_n: NotRequired[int]  # Number of items to populate (1000 - 20000).
 
@@ -41,9 +41,9 @@ class Setting:
     def post(
         self,
         payload_dict: SettingPayload | None = ...,
-        pdf_report: Literal["enable", "disable"] | None = ...,
-        fortiview: Literal["enable", "disable"] | None = ...,
-        report_source: Literal["forward-traffic", "sniffer-traffic", "local-deny-traffic"] | None = ...,
+        pdf_report: Literal[{"description": "Enable PDF report", "help": "Enable PDF report.", "label": "Enable", "name": "enable"}, {"description": "Disable PDF report", "help": "Disable PDF report.", "label": "Disable", "name": "disable"}] | None = ...,
+        fortiview: Literal[{"description": "Enable historical FortiView", "help": "Enable historical FortiView.", "label": "Enable", "name": "enable"}, {"description": "Disable historical FortiView", "help": "Disable historical FortiView.", "label": "Disable", "name": "disable"}] | None = ...,
+        report_source: Literal[{"description": "Report includes forward traffic logs", "help": "Report includes forward traffic logs.", "label": "Forward Traffic", "name": "forward-traffic"}, {"description": "Report includes sniffer traffic logs", "help": "Report includes sniffer traffic logs.", "label": "Sniffer Traffic", "name": "sniffer-traffic"}, {"description": "Report includes local deny traffic logs", "help": "Report includes local deny traffic logs.", "label": "Local Deny Traffic", "name": "local-deny-traffic"}] | None = ...,
         web_browsing_threshold: int | None = ...,
         top_n: int | None = ...,
         vdom: str | bool | None = ...,
@@ -54,9 +54,9 @@ class Setting:
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
-        pdf_report: Literal["enable", "disable"] | None = ...,
-        fortiview: Literal["enable", "disable"] | None = ...,
-        report_source: Literal["forward-traffic", "sniffer-traffic", "local-deny-traffic"] | None = ...,
+        pdf_report: Literal[{"description": "Enable PDF report", "help": "Enable PDF report.", "label": "Enable", "name": "enable"}, {"description": "Disable PDF report", "help": "Disable PDF report.", "label": "Disable", "name": "disable"}] | None = ...,
+        fortiview: Literal[{"description": "Enable historical FortiView", "help": "Enable historical FortiView.", "label": "Enable", "name": "enable"}, {"description": "Disable historical FortiView", "help": "Disable historical FortiView.", "label": "Disable", "name": "disable"}] | None = ...,
+        report_source: Literal[{"description": "Report includes forward traffic logs", "help": "Report includes forward traffic logs.", "label": "Forward Traffic", "name": "forward-traffic"}, {"description": "Report includes sniffer traffic logs", "help": "Report includes sniffer traffic logs.", "label": "Sniffer Traffic", "name": "sniffer-traffic"}, {"description": "Report includes local deny traffic logs", "help": "Report includes local deny traffic logs.", "label": "Local Deny Traffic", "name": "local-deny-traffic"}] | None = ...,
         web_browsing_threshold: int | None = ...,
         top_n: int | None = ...,
         vdom: str | bool | None = ...,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/vdom_resource",
     "category": "monitor",
     "api_path": "system/vdom-resource",
-    "help": "Configuration for system/vdom-resource",
+    "help": "Retrieve VDOM resource information, including CPU and memory usage.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -56,7 +56,7 @@ class Reboot:
         """
         Retrieve system/os/reboot configuration.
 
-        Configuration for system/os/reboot
+        Immediately reboot this device.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class MatchedDevices:
     """
-    Monitor endpoint for switch-controller/matched-devices
+    Return a list of devices that match NAC and/or dynamic port policies.
     
     Path: switch_controller/matched_devices
     Category: monitor

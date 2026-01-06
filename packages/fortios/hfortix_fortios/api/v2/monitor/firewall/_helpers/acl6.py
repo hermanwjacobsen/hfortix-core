@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/acl6",
     "category": "monitor",
     "api_path": "firewall/acl6",
-    "help": "Configuration for firewall/acl6",
+    "help": "List counters for all IPv6 ACL.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

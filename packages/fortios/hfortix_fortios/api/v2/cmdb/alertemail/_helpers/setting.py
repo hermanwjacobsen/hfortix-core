@@ -205,94 +205,94 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FILTER_MODE = [
-    "category",
-    "threshold",
+    "category",  # Filter based on category.
+    "threshold",  # Filter based on severity.
 ]
 VALID_BODY_IPS_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPS logs in alert email.
+    "disable",  # Disable IPS logs in alert email.
 ]
 VALID_BODY_FIREWALL_AUTHENTICATION_FAILURE_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable firewall authentication failure logs in alert email.
+    "disable",  # Disable firewall authentication failure logs in alert email.
 ]
 VALID_BODY_HA_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable HA logs in alert email.
+    "disable",  # Disable HA logs in alert email.
 ]
 VALID_BODY_IPSEC_ERRORS_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPsec error logs in alert email.
+    "disable",  # Disable IPsec error logs in alert email.
 ]
 VALID_BODY_FDS_UPDATE_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGuard update logs in alert email.
+    "disable",  # Disable FortiGuard update logs in alert email.
 ]
 VALID_BODY_PPP_ERRORS_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable PPP error logs in alert email.
+    "disable",  # Disable PPP error logs in alert email.
 ]
 VALID_BODY_SSLVPN_AUTHENTICATION_ERRORS_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable Agentless VPN authentication error logs in alert email.
+    "disable",  # Disable Agentless VPN authentication error logs in alert email.
 ]
 VALID_BODY_ANTIVIRUS_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable antivirus logs in alert email.
+    "disable",  # Disable antivirus logs in alert email.
 ]
 VALID_BODY_WEBFILTER_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable web filter logs in alert email.
+    "disable",  # Disable web filter logs in alert email.
 ]
 VALID_BODY_CONFIGURATION_CHANGES_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable configuration change logs in alert email.
+    "disable",  # Disable configuration change logs in alert email.
 ]
 VALID_BODY_VIOLATION_TRAFFIC_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable violation traffic logs in alert email.
+    "disable",  # Disable violation traffic logs in alert email.
 ]
 VALID_BODY_ADMIN_LOGIN_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable administrator login/logout logs in alert email.
+    "disable",  # Disable administrator login/logout logs in alert email.
 ]
 VALID_BODY_FDS_LICENSE_EXPIRING_WARNING = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiGuard license expiration warnings in alert email.
+    "disable",  # Disable FortiGuard license expiration warnings in alert email.
 ]
 VALID_BODY_LOG_DISK_USAGE_WARNING = [
-    "enable",
-    "disable",
+    "enable",  # Enable disk usage warnings in alert email.
+    "disable",  # Disable disk usage warnings in alert email.
 ]
 VALID_BODY_FORTIGUARD_LOG_QUOTA_WARNING = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiCloud log quota warnings in alert email.
+    "disable",  # Disable FortiCloud log quota warnings in alert email.
 ]
 VALID_BODY_AMC_INTERFACE_BYPASS_MODE = [
-    "enable",
-    "disable",
+    "enable",  # Enable Fortinet Advanced Mezzanine Card (AMC) interface bypass mode logs in alert email.
+    "disable",  # Disable Fortinet Advanced Mezzanine Card (AMC) interface bypass mode logs in alert email.
 ]
 VALID_BODY_FIPS_CC_ERRORS = [
-    "enable",
-    "disable",
+    "enable",  # Enable FIPS and Common Criteria error logs in alert email.
+    "disable",  # Disable FIPS and Common Criteria error logs in alert email.
 ]
 VALID_BODY_FSSO_DISCONNECT_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging of FSSO collector agent disconnect.
+    "disable",  # Disable logging of FSSO collector agent disconnect.
 ]
 VALID_BODY_SSH_LOGS = [
-    "enable",
-    "disable",
+    "enable",  # Enable SSH logs in alert email.
+    "disable",  # Disable SSH logs in alert email.
 ]
 VALID_BODY_SEVERITY = [
-    "emergency",
-    "alert",
-    "critical",
-    "error",
-    "warning",
-    "notification",
-    "information",
-    "debug",
+    "emergency",  # Emergency level.
+    "alert",  # Alert level.
+    "critical",  # Critical level.
+    "error",  # Error level.
+    "warning",  # Warning level.
+    "notification",  # Notification level.
+    "information",  # Information level.
+    "debug",  # Debug level.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -417,7 +417,7 @@ def validate_alertemail_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "filter-mode": "category",  # Valid enum value
+        ...     "filter-mode": "{'name': 'category', 'help': 'Filter based on category.', 'label': 'Category', 'description': 'Filter based on category'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_alertemail_setting_post(payload)
         >>> assert is_valid == True

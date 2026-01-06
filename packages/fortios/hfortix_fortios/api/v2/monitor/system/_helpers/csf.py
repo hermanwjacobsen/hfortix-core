@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/csf",
     "category": "monitor",
     "api_path": "system/csf",
-    "help": "Monitor endpoint for system/csf/pending-authorizations",
+    "help": "Retrieve a full tree of downstream FortiGates registered to the Security Fabric.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -104,13 +104,13 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_HASH_TYPE = [
-    "md5",
-    "sha1",
-    "sha256",
+    "md5",  # MD5 hash value (32 characters in length).
+    "sha1",  # SHA1 hash value (40 characters in length).
+    "sha256",  # SHA256 hash value (64 characters in length).
 ]
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable AV exempt-list table entry.
+    "enable",  # Enable AV exempt-list table entry.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -241,7 +241,7 @@ def validate_antivirus_exempt_list_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "hash-type": "md5",  # Valid enum value
+        ...     "hash-type": "{'name': 'md5', 'help': 'MD5 hash value (32 characters in length).', 'label': 'Md5', 'description': 'MD5 hash value (32 characters in length)'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_antivirus_exempt_list_post(payload)
         >>> assert is_valid == True

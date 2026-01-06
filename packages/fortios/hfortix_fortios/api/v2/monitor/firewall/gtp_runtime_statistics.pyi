@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GtpRuntimeStatistics:
     """
-    Configuration for firewall/gtp-runtime-statistics
+    Retrieve runtime statistics for GTP.
     
     Path: firewall/gtp_runtime_statistics
     Category: monitor

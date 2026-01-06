@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/os/reboot",
     "category": "monitor",
     "api_path": "system/os/reboot",
-    "help": "Configuration for system/os/reboot",
+    "help": "Immediately reboot this device.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_WHICH: Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"]
+VALID_BODY_WHICH: Literal[{"description": "Firewall policy", "help": "Firewall policy.", "label": "Firewall", "name": "firewall"}, {"description": "Interface policy", "help": "Interface policy.", "label": "Interface", "name": "interface"}, {"description": "Interface policy6", "help": "Interface policy6.", "label": "Interface6", "name": "interface6"}, {"description": "Sniffer policy", "help": "Sniffer policy.", "label": "Sniffer", "name": "sniffer"}, {"description": "Sniffer policy6", "help": "Sniffer policy6.", "label": "Sniffer6", "name": "sniffer6"}, {"description": "explicit proxy policy", "help": "explicit proxy policy.", "label": "Explicit", "name": "explicit"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

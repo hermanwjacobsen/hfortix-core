@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/password_policy_conform/select",
     "category": "monitor",
     "api_path": "user/password-policy-conform/select",
-    "help": "Configuration for user/password-policy-conform/select",
+    "help": "Check if password adheres to local user password policy.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

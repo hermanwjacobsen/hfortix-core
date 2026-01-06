@@ -56,7 +56,7 @@ class AddUsers:
         """
         Retrieve user/banned/add_users configuration.
 
-        Configuration for user/banned/add_users
+        Immediately add one or more users to the banned list.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

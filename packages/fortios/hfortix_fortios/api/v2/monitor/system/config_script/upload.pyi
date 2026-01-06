@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for system/config-script/upload
+    Upload and run a new configuration script file.
     
     Path: system/config_script/upload
     Category: monitor

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/acl6/clear_counters",
     "category": "monitor",
     "api_path": "firewall/acl6/clear_counters",
-    "help": "Configuration for firewall/acl6/clear_counters",
+    "help": "Reset counters for one or more IPv6 ACLs by policy ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

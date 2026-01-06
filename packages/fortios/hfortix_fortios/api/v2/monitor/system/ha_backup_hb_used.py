@@ -56,7 +56,7 @@ class HaBackupHbUsed:
         """
         Retrieve system/ha_backup_hb_used configuration.
 
-        Configuration for system/ha-backup-hb-used
+        Get HA backup heartbeat interface usage.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

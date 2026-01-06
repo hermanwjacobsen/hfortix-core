@@ -146,7 +146,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Country in which this FEX will operate (default = NA).",
             "default": "--",
-            "options": ["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"],
+            "options": [{"help": "NO_COUNTRY_SET", "label": "  ", "name": "--"}, {"help": "AFGHANISTAN", "label": "Af", "name": "AF"}, {"help": "ALBANIA", "label": "Al", "name": "AL"}, {"help": "ALGERIA", "label": "Dz", "name": "DZ"}, {"help": "AMERICAN SAMOA", "label": "As", "name": "AS"}, {"help": "ANGOLA", "label": "Ao", "name": "AO"}, {"help": "ARGENTINA", "label": "Ar", "name": "AR"}, {"help": "ARMENIA", "label": "Am", "name": "AM"}, {"help": "AUSTRALIA", "label": "Au", "name": "AU"}, {"help": "AUSTRIA", "label": "At", "name": "AT"}, {"help": "AZERBAIJAN", "label": "Az", "name": "AZ"}, {"help": "BAHAMAS", "label": "Bs", "name": "BS"}, {"help": "BAHRAIN", "label": "Bh", "name": "BH"}, {"help": "BANGLADESH", "label": "Bd", "name": "BD"}, {"help": "BARBADOS", "label": "Bb", "name": "BB"}, {"help": "BELARUS", "label": "By", "name": "BY"}, {"help": "BELGIUM", "label": "Be", "name": "BE"}, {"help": "BELIZE", "label": "Bz", "name": "BZ"}, {"help": "BENIN", "label": "Bj", "name": "BJ"}, {"help": "BERMUDA", "label": "Bm", "name": "BM"}, {"help": "BHUTAN", "label": "Bt", "name": "BT"}, {"help": "BOLIVIA", "label": "Bo", "name": "BO"}, {"help": "BOSNIA AND HERZEGOVINA", "label": "Ba", "name": "BA"}, {"help": "BOTSWANA", "label": "Bw", "name": "BW"}, {"help": "BRAZIL", "label": "Br", "name": "BR"}, {"help": "BRUNEI DARUSSALAM", "label": "Bn", "name": "BN"}, {"help": "BULGARIA", "label": "Bg", "name": "BG"}, {"help": "BURKINA-FASO", "label": "Bf", "name": "BF"}, {"help": "CAMBODIA", "label": "Kh", "name": "KH"}, {"help": "CAMEROON", "label": "Cm", "name": "CM"}, {"help": "CAYMAN ISLANDS", "label": "Ky", "name": "KY"}, {"help": "CENTRAL AFRICA REPUBLIC", "label": "Cf", "name": "CF"}, {"help": "CHAD  ", "label": "Td", "name": "TD"}, {"help": "CHILE", "label": "Cl", "name": "CL"}, {"help": "CHINA", "label": "Cn", "name": "CN"}, {"help": "CHRISTMAS ISLAND", "label": "Cx", "name": "CX"}, {"help": "COLOMBIA", "label": "Co", "name": "CO"}, {"help": "CONGO REPUBLIC", "label": "Cg", "name": "CG"}, {"help": "DEMOCRATIC REPUBLIC OF CONGO", "label": "Cd", "name": "CD"}, {"help": "COSTA RICA", "label": "Cr", "name": "CR"}, {"help": "CROATIA", "label": "Hr", "name": "HR"}, {"help": "CYPRUS", "label": "Cy", "name": "CY"}, {"help": "CZECH REPUBLIC", "label": "Cz", "name": "CZ"}, {"help": "DENMARK", "label": "Dk", "name": "DK"}, {"help": "DJIBOUTI", "label": "Dj", "name": "DJ"}, {"help": "DOMINICA", "label": "Dm", "name": "DM"}, {"help": "DOMINICAN REPUBLIC", "label": "Do", "name": "DO"}, {"help": "ECUADOR", "label": "Ec", "name": "EC"}, {"help": "EGYPT", "label": "Eg", "name": "EG"}, {"help": "EL SALVADOR", "label": "Sv", "name": "SV"}, {"help": "ETHIOPIA", "label": "Et", "name": "ET"}, {"help": "ESTONIA", "label": "Ee", "name": "EE"}, {"help": "FRENCH GUIANA", "label": "Gf", "name": "GF"}, {"help": "FRENCH POLYNESIA", "label": "Pf", "name": "PF"}, {"help": "FAEROE ISLANDS", "label": "Fo", "name": "FO"}, {"help": "FIJI", "label": "Fj", "name": "FJ"}, {"help": "FINLAND", "label": "Fi", "name": "FI"}, {"help": "FRANCE", "label": "Fr", "name": "FR"}, {"help": "GABON", "label": "Ga", "name": "GA"}, {"help": "GEORGIA", "label": "Ge", "name": "GE"}, {"help": "GAMBIA", "label": "Gm", "name": "GM"}, {"help": "GERMANY", "label": "De", "name": "DE"}, {"help": "GHANA", "label": "Gh", "name": "GH"}, {"help": "GIBRALTAR", "label": "Gi", "name": "GI"}, {"help": "GREECE", "label": "Gr", "name": "GR"}, {"help": "GREENLAND", "label": "Gl", "name": "GL"}, {"help": "GRENADA", "label": "Gd", "name": "GD"}, {"help": "GUADELOUPE", "label": "Gp", "name": "GP"}, {"help": "GUAM", "label": "Gu", "name": "GU"}, {"help": "GUATEMALA", "label": "Gt", "name": "GT"}, {"help": "GUYANA", "label": "Gy", "name": "GY"}, {"help": "HAITI", "label": "Ht", "name": "HT"}, {"help": "HONDURAS", "label": "Hn", "name": "HN"}, {"help": "HONG KONG", "label": "Hk", "name": "HK"}, {"help": "HUNGARY", "label": "Hu", "name": "HU"}, {"help": "ICELAND", "label": "Is", "name": "IS"}, {"help": "INDIA", "label": "In", "name": "IN"}, {"help": "INDONESIA", "label": "Id", "name": "ID"}, {"help": "IRAQ", "label": "Iq", "name": "IQ"}, {"help": "IRELAND", "label": "Ie", "name": "IE"}, {"help": "ISLE OF MAN", "label": "Im", "name": "IM"}, {"help": "ISRAEL", "label": "Il", "name": "IL"}, {"help": "ITALY", "label": "It", "name": "IT"}, {"help": "COTE_D_IVOIRE", "label": "Ci", "name": "CI"}, {"help": "JAMAICA", "label": "Jm", "name": "JM"}, {"help": "JORDAN", "label": "Jo", "name": "JO"}, {"help": "KAZAKHSTAN", "label": "Kz", "name": "KZ"}, {"help": "KENYA", "label": "Ke", "name": "KE"}, {"help": "KOREA REPUBLIC", "label": "Kr", "name": "KR"}, {"help": "KUWAIT", "label": "Kw", "name": "KW"}, {"help": "LAOS", "label": "La", "name": "LA"}, {"help": "LATVIA", "label": "Lv", "name": "LV"}, {"help": "LEBANON", "label": "Lb", "name": "LB"}, {"help": "LESOTHO", "label": "Ls", "name": "LS"}, {"help": "LIBERIA", "label": "Lr", "name": "LR"}, {"help": "LIBYA", "label": "Ly", "name": "LY"}, {"help": "LIECHTENSTEIN", "label": "Li", "name": "LI"}, {"help": "LITHUANIA", "label": "Lt", "name": "LT"}, {"help": "LUXEMBOURG", "label": "Lu", "name": "LU"}, {"help": "MACAU SAR", "label": "Mo", "name": "MO"}, {"help": "MACEDONIA, FYRO", "label": "Mk", "name": "MK"}, {"help": "MADAGASCAR", "label": "Mg", "name": "MG"}, {"help": "MALAWI", "label": "Mw", "name": "MW"}, {"help": "MALAYSIA", "label": "My", "name": "MY"}, {"help": "MALDIVES", "label": "Mv", "name": "MV"}, {"help": "MALI", "label": "Ml", "name": "ML"}, {"help": "MALTA", "label": "Mt", "name": "MT"}, {"help": "MARSHALL ISLANDS", "label": "Mh", "name": "MH"}, {"help": "MARTINIQUE", "label": "Mq", "name": "MQ"}, {"help": "MAURITANIA", "label": "Mr", "name": "MR"}, {"help": "MAURITIUS", "label": "Mu", "name": "MU"}, {"help": "MAYOTTE", "label": "Yt", "name": "YT"}, {"help": "MEXICO", "label": "Mx", "name": "MX"}, {"help": "MICRONESIA", "label": "Fm", "name": "FM"}, {"help": "REPUBLIC OF MOLDOVA", "label": "Md", "name": "MD"}, {"help": "MONACO", "label": "Mc", "name": "MC"}, {"help": "MONGOLIA", "label": "Mn", "name": "MN"}, {"help": "MOROCCO", "label": "Ma", "name": "MA"}, {"help": "MOZAMBIQUE", "label": "Mz", "name": "MZ"}, {"help": "MYANMAR", "label": "Mm", "name": "MM"}, {"help": "NAMIBIA", "label": "Na", "name": "NA"}, {"help": "NEPAL", "label": "Np", "name": "NP"}, {"help": "NETHERLANDS", "label": "Nl", "name": "NL"}, {"help": "NETHERLANDS ANTILLES", "label": "An", "name": "AN"}, {"help": "ARUBA", "label": "Aw", "name": "AW"}, {"help": "NEW ZEALAND", "label": "Nz", "name": "NZ"}, {"help": "NICARAGUA", "label": "Ni", "name": "NI"}, {"help": "NIGER", "label": "Ne", "name": "NE"}, {"help": "NIGERIA", "label": "Ng", "name": "NG"}, {"help": "NORWAY", "label": "No", "name": "NO"}, {"help": "NORTHERN MARIANA ISLANDS", "label": "Mp", "name": "MP"}, {"help": "OMAN", "label": "Om", "name": "OM"}, {"help": "PAKISTAN", "label": "Pk", "name": "PK"}, {"help": "PALAU", "label": "Pw", "name": "PW"}, {"help": "PANAMA", "label": "Pa", "name": "PA"}, {"help": "PAPUA NEW GUINEA", "label": "Pg", "name": "PG"}, {"help": "PARAGUAY", "label": "Py", "name": "PY"}, {"help": "PERU", "label": "Pe", "name": "PE"}, {"help": "PHILIPPINES", "label": "Ph", "name": "PH"}, {"help": "POLAND", "label": "Pl", "name": "PL"}, {"help": "PORTUGAL", "label": "Pt", "name": "PT"}, {"help": "PUERTO RICO", "label": "Pr", "name": "PR"}, {"help": "QATAR", "label": "Qa", "name": "QA"}, {"help": "REUNION", "label": "Re", "name": "RE"}, {"help": "ROMANIA", "label": "Ro", "name": "RO"}, {"help": "RUSSIA", "label": "Ru", "name": "RU"}, {"help": "RWANDA", "label": "Rw", "name": "RW"}, {"help": "SAINT BARTHELEMY", "label": "Bl", "name": "BL"}, {"help": "SAINT KITTS AND NEVIS", "label": "Kn", "name": "KN"}, {"help": "SAINT LUCIA", "label": "Lc", "name": "LC"}, {"help": "SAINT MARTIN", "label": "Mf", "name": "MF"}, {"help": "SAINT PIERRE AND MIQUELON", "label": "Pm", "name": "PM"}, {"help": "SAINT VINCENT AND GRENADIENS", "label": "Vc", "name": "VC"}, {"help": "SAUDI ARABIA", "label": "Sa", "name": "SA"}, {"help": "SENEGAL", "label": "Sn", "name": "SN"}, {"help": "REPUBLIC OF SERBIA", "label": "Rs", "name": "RS"}, {"help": "MONTENEGRO", "label": "Me", "name": "ME"}, {"help": "SIERRA LEONE", "label": "Sl", "name": "SL"}, {"help": "SINGAPORE", "label": "Sg", "name": "SG"}, {"help": "SLOVAKIA", "label": "Sk", "name": "SK"}, {"help": "SLOVENIA", "label": "Si", "name": "SI"}, {"help": "SOMALIA", "label": "So", "name": "SO"}, {"help": "SOUTH AFRICA", "label": "Za", "name": "ZA"}, {"help": "SPAIN", "label": "Es", "name": "ES"}, {"help": "SRI LANKA", "label": "Lk", "name": "LK"}, {"help": "SURINAME", "label": "Sr", "name": "SR"}, {"help": "SWAZILAND", "label": "Sz", "name": "SZ"}, {"help": "SWEDEN", "label": "Se", "name": "SE"}, {"help": "SWITZERLAND", "label": "Ch", "name": "CH"}, {"help": "TAIWAN", "label": "Tw", "name": "TW"}, {"help": "TANZANIA", "label": "Tz", "name": "TZ"}, {"help": "THAILAND", "label": "Th", "name": "TH"}, {"help": "TIMOR-LESTE", "label": "Tl", "name": "TL"}, {"help": "TOGO", "label": "Tg", "name": "TG"}, {"help": "TRINIDAD AND TOBAGO", "label": "Tt", "name": "TT"}, {"help": "TUNISIA", "label": "Tn", "name": "TN"}, {"help": "TURKEY", "label": "Tr", "name": "TR"}, {"help": "TURKMENISTAN", "label": "Tm", "name": "TM"}, {"help": "UNITED ARAB EMIRATES", "label": "Ae", "name": "AE"}, {"help": "TURKS AND CAICOS", "label": "Tc", "name": "TC"}, {"help": "UGANDA", "label": "Ug", "name": "UG"}, {"help": "UKRAINE", "label": "Ua", "name": "UA"}, {"help": "UNITED KINGDOM", "label": "Gb", "name": "GB"}, {"help": "UNITED STATES2", "label": "Us", "name": "US"}, {"help": "UNITED STATES (PUBLIC SAFETY)", "label": "Ps", "name": "PS"}, {"help": "URUGUAY", "label": "Uy", "name": "UY"}, {"help": "UZBEKISTAN", "label": "Uz", "name": "UZ"}, {"help": "VANUATU", "label": "Vu", "name": "VU"}, {"help": "VENEZUELA", "label": "Ve", "name": "VE"}, {"help": "VIET NAM", "label": "Vn", "name": "VN"}, {"help": "VIRGIN ISLANDS", "label": "Vi", "name": "VI"}, {"help": "WALLIS AND FUTUNA", "label": "Wf", "name": "WF"}, {"help": "YEMEN", "label": "Ye", "name": "YE"}, {"help": "ZAMBIA", "label": "Zm", "name": "ZM"}, {"help": "ZIMBABWE", "label": "Zw", "name": "ZW"}, {"help": "JAPAN14", "label": "Jp", "name": "JP"}, {"help": "CANADA2", "label": "Ca", "name": "CA"}],
         },
         "radio-1": {
             "type": "string",
@@ -163,7 +163,7 @@ NESTED_SCHEMAS = {
             "help": "LAN extension link load balance strategy.",
             "required": True,
             "default": "activebackup",
-            "options": ["activebackup", "loadbalance"],
+            "options": [{"help": "FortiExtender LAN extension active-backup.", "label": "Activebackup", "name": "activebackup"}, {"help": "FortiExtender LAN extension load-balance.", "label": "Loadbalance", "name": "loadbalance"}],
         },
         "ipsec-tunnel": {
             "type": "string",
@@ -201,55 +201,55 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MODEL = [
-    "FX201E",
-    "FX211E",
-    "FX200F",
-    "FXA11F",
-    "FXE11F",
-    "FXA21F",
-    "FXE21F",
-    "FXA22F",
-    "FXE22F",
-    "FX212F",
-    "FX311F",
-    "FX312F",
-    "FX511F",
-    "FXR51G",
-    "FXN51G",
-    "FXW51G",
-    "FVG21F",
-    "FVA21F",
-    "FVG22F",
-    "FVA22F",
-    "FX04DA",
-    "FG",
-    "BS10FW",
-    "BS20GW",
-    "BS20GN",
-    "FVG51G",
-    "FXE11G",
-    "FX211G",
+    "FX201E",  # FEX-201E model.
+    "FX211E",  # FEX-211E model.
+    "FX200F",  # FEX-200F model.
+    "FXA11F",  # FEX-101F-AM model.
+    "FXE11F",  # FEX-101F-EA model.
+    "FXA21F",  # FEX-201F-AM model.
+    "FXE21F",  # FEX-201F-EA model.
+    "FXA22F",  # FEX-202F-AM model.
+    "FXE22F",  # FEX-202F-EA model.
+    "FX212F",  # FEX-212F model.
+    "FX311F",  # FEX-311F model.
+    "FX312F",  # FEX-312F model.
+    "FX511F",  # FEX-511F model.
+    "FXR51G",  # FER-511G model.
+    "FXN51G",  # FEX-511G model.
+    "FXW51G",  # FEX-511G-Wifi model.
+    "FVG21F",  # FEV-211F model.
+    "FVA21F",  # FEV-211F-AM model.
+    "FVG22F",  # FEV-212F model.
+    "FVA22F",  # FEV-212F-AM model.
+    "FX04DA",  # FX40D-AMEU model.
+    "FG",  # FG-CONNECTOR model.
+    "BS10FW",  # FBS-10FW model.
+    "BS20GW",  # FBS-20GW model.
+    "BS20GN",  # FBS-20G model.
+    "FVG51G",  # FEV-511G model.
+    "FXE11G",  # FEX-101G model.
+    "FX211G",  # FEX-211G model.
 ]
 VALID_BODY_EXTENSION = [
-    "wan-extension",
-    "lan-extension",
+    "wan-extension",  # WAN extension.
+    "lan-extension",  # LAN extension.
 ]
 VALID_BODY_ALLOWACCESS = [
-    "ping",
-    "telnet",
-    "http",
-    "https",
-    "ssh",
-    "snmp",
+    "ping",  # PING access.
+    "telnet",  # TELNET access.
+    "http",  # HTTP access.
+    "https",  # HTTPS access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
 ]
 VALID_BODY_LOGIN_PASSWORD_CHANGE = [
-    "yes",
-    "default",
-    "no",
+    "yes",  # Change the managed extender's administrator password. Use the login-password option to set the password.
+    "default",  # Keep the managed extender's administrator password set to the factory default.
+    "no",  # Do not change the managed extender's administrator password.
 ]
 VALID_BODY_ENFORCE_BANDWIDTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable to enforce bandwidth limit on LAN extension interface.
+    "disable",  # Disable to enforce bandwidth limit on LAN extension interface.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -380,7 +380,7 @@ def validate_extension_controller_extender_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "login-password": True,
-        ...     "model": "FX201E",  # Valid enum value
+        ...     "model": "{'name': 'FX201E', 'help': 'FEX-201E model.', 'label': 'Fx201E', 'description': 'FEX-201E model'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_extension_controller_extender_profile_post(payload)
         >>> assert is_valid == True

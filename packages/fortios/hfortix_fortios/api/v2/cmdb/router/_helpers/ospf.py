@@ -196,13 +196,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable shortcut option.",
             "default": "disable",
-            "options": ["disable", "enable", "default"],
+            "options": [{"help": "Disable shortcut option.", "label": "Disable", "name": "disable"}, {"help": "Enable shortcut option.", "label": "Enable", "name": "enable"}, {"help": "Default shortcut option.", "label": "Default", "name": "default"}],
         },
         "authentication": {
             "type": "option",
             "help": "Authentication type.",
             "default": "none",
-            "options": ["none", "text", "message-digest"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Text.", "label": "Text", "name": "text"}, {"help": "Message digest.", "label": "Message Digest", "name": "message-digest"}],
         },
         "default-cost": {
             "type": "integer",
@@ -215,25 +215,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "NSSA translator role type.",
             "default": "candidate",
-            "options": ["candidate", "never", "always"],
+            "options": [{"help": "Candidate.", "label": "Candidate", "name": "candidate"}, {"help": "Never.", "label": "Never", "name": "never"}, {"help": "Always.", "label": "Always", "name": "always"}],
         },
         "stub-type": {
             "type": "option",
             "help": "Stub summary setting.",
             "default": "summary",
-            "options": ["no-summary", "summary"],
+            "options": [{"help": "No summary.", "label": "No Summary", "name": "no-summary"}, {"help": "Summary.", "label": "Summary", "name": "summary"}],
         },
         "type": {
             "type": "option",
             "help": "Area type setting.",
             "default": "regular",
-            "options": ["regular", "nssa", "stub"],
+            "options": [{"help": "Regular.", "label": "Regular", "name": "regular"}, {"help": "NSSA.", "label": "Nssa", "name": "nssa"}, {"help": "Stub.", "label": "Stub", "name": "stub"}],
         },
         "nssa-default-information-originate": {
             "type": "option",
             "help": "Redistribute, advertise, or do not originate Type-7 default route into NSSA area.",
             "default": "disable",
-            "options": ["enable", "always", "disable"],
+            "options": [{"help": "Redistribute Type-7 default route from routing table.", "label": "Enable", "name": "enable"}, {"help": "Advertise a self-originated Type-7 default route.", "label": "Always", "name": "always"}, {"help": "Do not advertise Type-7 default route.", "label": "Disable", "name": "disable"}],
         },
         "nssa-default-information-originate-metric": {
             "type": "integer",
@@ -246,13 +246,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "OSPF metric type for default routes.",
             "default": "2",
-            "options": ["1", "2"],
+            "options": [{"help": "Type 1.", "label": "1", "name": "1"}, {"help": "Type 2.", "label": "2", "name": "2"}],
         },
         "nssa-redistribution": {
             "type": "option",
             "help": "Enable/disable redistribute into NSSA area.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable redistribute into NSSA area.", "label": "Enable", "name": "enable"}, {"help": "Disable redistribute into NSSA area.", "label": "Disable", "name": "disable"}],
         },
         "comments": {
             "type": "var-string",
@@ -300,13 +300,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable fast link failover.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable fast failover for VLAN interfaces.", "label": "Enable", "name": "enable"}, {"help": "Disable fast failover for VLAN interfaces.", "label": "Disable", "name": "disable"}],
         },
         "authentication": {
             "type": "option",
             "help": "Authentication type.",
             "default": "none",
-            "options": ["none", "text", "message-digest"],
+            "options": [{"help": "None.", "label": "None", "name": "none"}, {"help": "Text.", "label": "Text", "name": "text"}, {"help": "Message digest.", "label": "Message Digest", "name": "message-digest"}],
         },
         "authentication-key": {
             "type": "password",
@@ -379,7 +379,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable control of flooding out LSAs.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "mtu": {
             "type": "integer",
@@ -392,25 +392,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable ignore MTU.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "network-type": {
             "type": "option",
             "help": "Network type.",
             "default": "broadcast",
-            "options": ["broadcast", "non-broadcast", "point-to-point", "point-to-multipoint", "point-to-multipoint-non-broadcast"],
+            "options": [{"help": "Broadcast.", "label": "Broadcast", "name": "broadcast"}, {"help": "Non-broadcast.", "label": "Non Broadcast", "name": "non-broadcast"}, {"help": "Point-to-point.", "label": "Point To Point", "name": "point-to-point"}, {"help": "Point-to-multipoint.", "label": "Point To Multipoint", "name": "point-to-multipoint"}, {"help": "Point-to-multipoint and non-broadcast.", "label": "Point To Multipoint Non Broadcast", "name": "point-to-multipoint-non-broadcast"}],
         },
         "bfd": {
             "type": "option",
             "help": "Bidirectional Forwarding Detection (BFD).",
             "default": "global",
-            "options": ["global", "enable", "disable"],
+            "options": [{"help": "Follow global configuration.", "label": "Global", "name": "global"}, {"help": "Enable BFD on this interface.", "label": "Enable", "name": "enable"}, {"help": "Disable BFD on this interface.", "label": "Disable", "name": "disable"}],
         },
         "status": {
             "type": "option",
             "help": "Enable/disable status.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable status.", "label": "Disable", "name": "disable"}, {"help": "Enable status.", "label": "Enable", "name": "enable"}],
         },
         "resync-timeout": {
             "type": "integer",
@@ -520,7 +520,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable advertise status.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable advertise status.", "label": "Disable", "name": "disable"}, {"help": "Enable advertise status.", "label": "Enable", "name": "enable"}],
         },
     },
     "distribute-list": {
@@ -543,7 +543,7 @@ NESTED_SCHEMAS = {
             "help": "Protocol type.",
             "required": True,
             "default": "connected",
-            "options": ["connected", "static", "rip"],
+            "options": [{"help": "Connected type.", "label": "Connected", "name": "connected"}, {"help": "Static type.", "label": "Static", "name": "static"}, {"help": "RIP type.", "label": "Rip", "name": "rip"}],
         },
     },
     "redistribute": {
@@ -558,7 +558,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Status.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "metric": {
             "type": "integer",
@@ -577,7 +577,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Metric type.",
             "default": "2",
-            "options": ["1", "2"],
+            "options": [{"help": "Type 1.", "label": "1", "name": "1"}, {"help": "Type 2.", "label": "2", "name": "2"}],
         },
         "tag": {
             "type": "integer",
@@ -592,44 +592,44 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ABR_TYPE = [
-    "cisco",
-    "ibm",
-    "shortcut",
-    "standard",
+    "cisco",  # Cisco.
+    "ibm",  # IBM.
+    "shortcut",  # Shortcut.
+    "standard",  # Standard.
 ]
 VALID_BODY_DATABASE_OVERFLOW = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DEFAULT_INFORMATION_ORIGINATE = [
-    "enable",
-    "always",
-    "disable",
+    "enable",  # Enable setting.
+    "always",  # Always advertise the default router.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DEFAULT_INFORMATION_METRIC_TYPE = [
-    "1",
-    "2",
+    "1",  # Type 1.
+    "2",  # Type 2.
 ]
 VALID_BODY_RFC1583_COMPATIBLE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_BFD = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOG_NEIGHBOUR_CHANGES = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_RESTART_MODE = [
-    "none",
-    "lls",
-    "graceful-restart",
+    "none",  # Hitless restart disabled.
+    "lls",  # LLS mode.
+    "graceful-restart",  # Graceful Restart Mode.
 ]
 VALID_BODY_RESTART_ON_TOPOLOGY_CHANGE = [
-    "enable",
-    "disable",
+    "enable",  # Continue graceful restart upon topology change.
+    "disable",  # Exit graceful restart upon topology change.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -754,7 +754,7 @@ def validate_router_ospf_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "abr-type": "cisco",  # Valid enum value
+        ...     "abr-type": "{'name': 'cisco', 'help': 'Cisco.', 'label': 'Cisco', 'description': 'Cisco'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_router_ospf_post(payload)
         >>> assert is_valid == True

@@ -56,7 +56,7 @@ class RefreshServer:
         """
         Retrieve user/fsso/refresh_server configuration.
 
-        Configuration for user/fsso/refresh-server
+        Refresh remote agent group list for all fsso agents.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

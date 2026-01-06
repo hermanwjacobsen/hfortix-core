@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticare/login",
     "category": "monitor",
     "api_path": "registration/forticare/login",
-    "help": "Configuration for registration/forticare/login",
+    "help": "Login to FortiCare.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

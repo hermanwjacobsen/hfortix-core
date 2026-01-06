@@ -56,7 +56,7 @@ class DeviceStatus:
         """
         Retrieve registration/forticloud/device_status configuration.
 
-        Configuration for registration/forticloud/device-status
+        Fetch device registration status from FortiCloud. Currently FortiSwitch and FortiAP are supported.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -112,8 +112,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PROXY_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Users are authenticated by proxy daemon.
+    "disable",  # Users are not authenticated by proxy daemon.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -238,7 +238,7 @@ def validate_firewall_auth_portal_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "proxy-auth": "enable",  # Valid enum value
+        ...     "proxy-auth": "{'name': 'enable', 'help': 'Users are authenticated by proxy daemon.', 'label': 'Enable', 'description': 'Users are authenticated by proxy daemon'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_auth_portal_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TierPlusCandidates:
     """
-    Configuration for switch-controller/mclag-icl/tier-plus-candidates
+    Find a pair of FortiSwitches that are eligible to form a tier 2/3 MC-LAG.
     
     Path: switch_controller/mclag_icl/tier_plus_candidates
     Category: monitor

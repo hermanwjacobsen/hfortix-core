@@ -104,12 +104,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MANAGEMENT_INTERFACE = [
-    "internal",
-    "mgmt",
+    "internal",  # Use internal interface.
+    "mgmt",  # Use management interface.
 ]
 VALID_BODY_DEVICE_DETECTION = [
-    "disable",
-    "enable",
+    "disable",  # Disable dynamic detection of LLDP neighbor devices.
+    "enable",  # Enable dynamic detection of LLDP neighbor devices.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -234,7 +234,7 @@ def validate_switch_controller_lldp_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "management-interface": "internal",  # Valid enum value
+        ...     "management-interface": "{'name': 'internal', 'help': 'Use internal interface.', 'label': 'Internal', 'description': 'Use internal interface'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_lldp_settings_post(payload)
         >>> assert is_valid == True

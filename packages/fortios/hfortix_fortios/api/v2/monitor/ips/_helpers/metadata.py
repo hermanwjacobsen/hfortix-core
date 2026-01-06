@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "ips/metadata",
     "category": "monitor",
     "api_path": "ips/metadata",
-    "help": "Configuration for ips/metadata",
+    "help": "Returns IPS meta data.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

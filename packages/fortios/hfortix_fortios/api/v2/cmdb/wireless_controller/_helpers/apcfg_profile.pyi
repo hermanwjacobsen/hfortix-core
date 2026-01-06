@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_AP_FAMILY: Literal["fap", "fap-u", "fap-c"]
-VALID_BODY_AC_TYPE: Literal["default", "specify", "apcfg"]
+VALID_BODY_AP_FAMILY: Literal[{"description": "FortiAP Family", "help": "FortiAP Family.", "label": "Fap", "name": "fap"}, {"description": "FortiAP-U Family", "help": "FortiAP-U Family.", "label": "Fap U", "name": "fap-u"}, {"description": "FortiAP-C Family", "help": "FortiAP-C Family.", "label": "Fap C", "name": "fap-c"}]
+VALID_BODY_AC_TYPE: Literal[{"description": "This controller is the one and only controller that the AP could join after applying AP local configuration", "help": "This controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Default", "name": "default"}, {"description": "Specified controller is the one and only controller that the AP could join after applying AP local configuration", "help": "Specified controller is the one and only controller that the AP could join after applying AP local configuration.", "label": "Specify", "name": "specify"}, {"description": "Any controller defined by AP local configuration after applying AP local configuration", "help": "Any controller defined by AP local configuration after applying AP local configuration.", "label": "Apcfg", "name": "apcfg"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

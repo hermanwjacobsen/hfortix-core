@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_CACHE_MODE: Literal["ttl", "db-ver"]
-VALID_BODY_CACHE_PREFIX_MATCH: Literal["enable", "disable"]
-VALID_BODY_OVRD_AUTH_HTTPS: Literal["enable", "disable"]
-VALID_BODY_WARN_AUTH_HTTPS: Literal["enable", "disable"]
-VALID_BODY_CLOSE_PORTS: Literal["enable", "disable"]
-VALID_BODY_EMBED_IMAGE: Literal["enable", "disable"]
+VALID_BODY_CACHE_MODE: Literal[{"description": "Expire cache items by time-to-live", "help": "Expire cache items by time-to-live.", "label": "Ttl", "name": "ttl"}, {"description": "Expire cache items when the server DB version changes", "help": "Expire cache items when the server DB version changes.", "label": "Db Ver", "name": "db-ver"}]
+VALID_BODY_CACHE_PREFIX_MATCH: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_OVRD_AUTH_HTTPS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_WARN_AUTH_HTTPS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CLOSE_PORTS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_EMBED_IMAGE: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

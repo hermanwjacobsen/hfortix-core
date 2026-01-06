@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PolicyLookup:
     """
-    Configuration for firewall/policy-lookup
+    Performs a policy lookup by creating a dummy packet and asking the kernel which policy would be hit.
     
     Path: firewall/policy_lookup
     Category: monitor

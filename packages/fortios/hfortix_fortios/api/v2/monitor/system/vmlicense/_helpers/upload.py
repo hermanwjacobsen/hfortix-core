@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/vmlicense/upload",
     "category": "monitor",
     "api_path": "system/vmlicense/upload",
-    "help": "Configuration for system/vmlicense/upload",
+    "help": "Update VM license using uploaded file. Reboots immediately if successful.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

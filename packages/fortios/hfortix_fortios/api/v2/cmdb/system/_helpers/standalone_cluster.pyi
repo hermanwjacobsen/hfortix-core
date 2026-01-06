@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_LAYER2_CONNECTION: Literal["available", "unavailable"]
-VALID_BODY_ENCRYPTION: Literal["enable", "disable"]
-VALID_BODY_ASYMMETRIC_TRAFFIC_CONTROL: Literal["cps-preferred", "strict-anti-replay"]
-VALID_BODY_HELPER_TRAFFIC_BOUNCE: Literal["enable", "disable"]
-VALID_BODY_UTM_TRAFFIC_BOUNCE: Literal["enable", "disable"]
+VALID_BODY_LAYER2_CONNECTION: Literal[{"description": "There exist layer 2 connections among FGSP members", "help": "There exist layer 2 connections among FGSP members.", "label": "Available", "name": "available"}, {"description": "There does not exist layer 2 connection among FGSP members", "help": "There does not exist layer 2 connection among FGSP members.", "label": "Unavailable", "name": "unavailable"}]
+VALID_BODY_ENCRYPTION: Literal[{"description": "Enable encryption when synchronizing sessions", "help": "Enable encryption when synchronizing sessions.", "label": "Enable", "name": "enable"}, {"description": "Disable encryption when synchronizing sessions", "help": "Disable encryption when synchronizing sessions.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ASYMMETRIC_TRAFFIC_CONTROL: Literal[{"description": "Connection per second (CPS) preferred", "help": "Connection per second (CPS) preferred.", "label": "Cps Preferred", "name": "cps-preferred"}, {"description": "Strict anti-replay check", "help": "Strict anti-replay check.", "label": "Strict Anti Replay", "name": "strict-anti-replay"}]
+VALID_BODY_HELPER_TRAFFIC_BOUNCE: Literal[{"description": "Enable helper related traffic bounce", "help": "Enable helper related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable helper related traffic bounce", "help": "Disable helper related traffic bounce.", "label": "Disable", "name": "disable"}]
+VALID_BODY_UTM_TRAFFIC_BOUNCE: Literal[{"description": "Enable UTM related traffic bounce", "help": "Enable UTM related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM related traffic bounce", "help": "Disable UTM related traffic bounce.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

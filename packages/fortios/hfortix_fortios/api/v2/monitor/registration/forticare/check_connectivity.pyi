@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CheckConnectivity:
     """
-    Configuration for registration/forticare/check-connectivity
+    Check connectivity to FortiCare servers.
     
     Path: registration/forticare/check_connectivity
     Category: monitor

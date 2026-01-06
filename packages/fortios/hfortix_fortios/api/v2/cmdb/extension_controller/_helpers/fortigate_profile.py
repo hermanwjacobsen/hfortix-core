@@ -120,7 +120,7 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_EXTENSION = [
-    "lan-extension",
+    "lan-extension",  # LAN extension.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -250,7 +250,7 @@ def validate_extension_controller_fortigate_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "lan-extension": True,
-        ...     "extension": "lan-extension",  # Valid enum value
+        ...     "extension": "{'name': 'lan-extension', 'help': 'LAN extension.', 'label': 'Lan Extension', 'description': 'LAN extension'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_extension_controller_fortigate_profile_post(payload)
         >>> assert is_valid == True

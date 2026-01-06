@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "security_rating/recommendations",
     "category": "service",
     "api_path": "security-rating/recommendations",
-    "help": "Configuration for security-rating/recommendations",
+    "help": "Retrieve recommendations for Security Rating tests.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

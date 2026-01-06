@@ -54,7 +54,7 @@ class ForticloudAnomaly:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get anomaly logs."""
-        return self._client.get("/log/forticloud/anomaly/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/anomaly/raw", **kwargs)
 
 
 class ForticloudAppCtrl:
@@ -68,7 +68,7 @@ class ForticloudAppCtrl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get app_ctrl logs."""
-        return self._client.get("/log/forticloud/app-ctrl/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/app-ctrl/raw", **kwargs)
 
 
 class ForticloudAppCtrlArchive:
@@ -81,7 +81,7 @@ class ForticloudAppCtrlArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/forticloud/app-ctrl/archive", **kwargs)
+        return self._client.get("log", "/log/forticloud/app-ctrl/archive", **kwargs)
 
 
 class ForticloudAppCtrlArchiveDownload:
@@ -94,7 +94,7 @@ class ForticloudAppCtrlArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/forticloud/app-ctrl/archive-download", **kwargs)
+        return self._client.get("log", "/log/forticloud/app-ctrl/archive-download", **kwargs)
 
 
 class ForticloudCifs:
@@ -106,7 +106,7 @@ class ForticloudCifs:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get cifs logs."""
-        return self._client.get("/log/forticloud/cifs/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/cifs/raw", **kwargs)
 
 
 class ForticloudDlp:
@@ -118,7 +118,7 @@ class ForticloudDlp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dlp logs."""
-        return self._client.get("/log/forticloud/dlp/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/dlp/raw", **kwargs)
 
 
 class ForticloudDns:
@@ -130,7 +130,7 @@ class ForticloudDns:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get dns logs."""
-        return self._client.get("/log/forticloud/dns/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/dns/raw", **kwargs)
 
 
 class ForticloudEmailfilter:
@@ -142,7 +142,7 @@ class ForticloudEmailfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get emailfilter logs."""
-        return self._client.get("/log/forticloud/emailfilter/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/emailfilter/raw", **kwargs)
 
 
 class ForticloudEvent:
@@ -175,7 +175,7 @@ class ForticloudEventComplianceCheck:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get compliance-check event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventConnector:
@@ -188,7 +188,7 @@ class ForticloudEventConnector:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get connector event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventEndpoint:
@@ -201,7 +201,7 @@ class ForticloudEventEndpoint:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get endpoint event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventFortiextender:
@@ -214,7 +214,7 @@ class ForticloudEventFortiextender:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiextender event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventHa:
@@ -227,7 +227,7 @@ class ForticloudEventHa:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ha event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventRouter:
@@ -240,7 +240,7 @@ class ForticloudEventRouter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get router event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventSecurityRating:
@@ -253,7 +253,7 @@ class ForticloudEventSecurityRating:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get security-rating event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventSystem:
@@ -266,7 +266,7 @@ class ForticloudEventSystem:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get system event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventUser:
@@ -279,7 +279,7 @@ class ForticloudEventUser:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get user event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventVpn:
@@ -292,7 +292,7 @@ class ForticloudEventVpn:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get vpn event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventWad:
@@ -305,7 +305,7 @@ class ForticloudEventWad:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wad event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudEventWireless:
@@ -318,7 +318,7 @@ class ForticloudEventWireless:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get wireless event logs."""
-        return self._client.get(f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/event/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudFileFilter:
@@ -330,7 +330,7 @@ class ForticloudFileFilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get file_filter logs."""
-        return self._client.get("/log/forticloud/file-filter/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/file-filter/raw", **kwargs)
 
 
 class ForticloudGtp:
@@ -342,7 +342,7 @@ class ForticloudGtp:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get gtp logs."""
-        return self._client.get("/log/forticloud/gtp/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/gtp/raw", **kwargs)
 
 
 class ForticloudIps:
@@ -356,7 +356,7 @@ class ForticloudIps:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ips logs."""
-        return self._client.get("/log/forticloud/ips/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/ips/raw", **kwargs)
 
 
 class ForticloudIpsArchive:
@@ -369,7 +369,7 @@ class ForticloudIpsArchive:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive for {self._type}."""
-        return self._client.get("/log/forticloud/ips/archive", **kwargs)
+        return self._client.get("log", "/log/forticloud/ips/archive", **kwargs)
 
 
 class ForticloudIpsArchiveDownload:
@@ -382,7 +382,7 @@ class ForticloudIpsArchiveDownload:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get archive-download for {self._type}."""
-        return self._client.get("/log/forticloud/ips/archive-download", **kwargs)
+        return self._client.get("log", "/log/forticloud/ips/archive-download", **kwargs)
 
 
 class ForticloudSsh:
@@ -394,7 +394,7 @@ class ForticloudSsh:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssh logs."""
-        return self._client.get("/log/forticloud/ssh/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/ssh/raw", **kwargs)
 
 
 class ForticloudSsl:
@@ -406,7 +406,7 @@ class ForticloudSsl:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get ssl logs."""
-        return self._client.get("/log/forticloud/ssl/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/ssl/raw", **kwargs)
 
 
 class ForticloudTraffic:
@@ -433,7 +433,7 @@ class ForticloudTrafficFortiview:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get fortiview traffic logs."""
-        return self._client.get(f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudTrafficForward:
@@ -446,7 +446,7 @@ class ForticloudTrafficForward:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get forward traffic logs."""
-        return self._client.get(f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudTrafficLocal:
@@ -459,7 +459,7 @@ class ForticloudTrafficLocal:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get local traffic logs."""
-        return self._client.get(f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudTrafficMulticast:
@@ -472,7 +472,7 @@ class ForticloudTrafficMulticast:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get multicast traffic logs."""
-        return self._client.get(f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudTrafficSniffer:
@@ -485,7 +485,7 @@ class ForticloudTrafficSniffer:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get sniffer traffic logs."""
-        return self._client.get(f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudTrafficThreat:
@@ -498,7 +498,7 @@ class ForticloudTrafficThreat:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get threat traffic logs."""
-        return self._client.get(f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
+        return self._client.get("log", f"/log/forticloud/traffic/{self._subtype}/raw", **kwargs)
 
 
 class ForticloudVirus:
@@ -510,7 +510,7 @@ class ForticloudVirus:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get virus logs."""
-        return self._client.get("/log/forticloud/virus/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/virus/raw", **kwargs)
 
 
 class ForticloudVoip:
@@ -522,7 +522,7 @@ class ForticloudVoip:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get voip logs."""
-        return self._client.get("/log/forticloud/voip/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/voip/raw", **kwargs)
 
 
 class ForticloudWaf:
@@ -534,7 +534,7 @@ class ForticloudWaf:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get waf logs."""
-        return self._client.get("/log/forticloud/waf/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/waf/raw", **kwargs)
 
 
 class ForticloudWebfilter:
@@ -546,4 +546,4 @@ class ForticloudWebfilter:
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """Get webfilter logs."""
-        return self._client.get("/log/forticloud/webfilter/raw", **kwargs)
+        return self._client.get("log", "/log/forticloud/webfilter/raw", **kwargs)

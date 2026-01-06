@@ -11,9 +11,9 @@ class H2qpWanMetricPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # WAN metric name.
-    link_status: NotRequired[Literal["up", "down", "in-test"]]  # Link status.
-    symmetric_wan_link: NotRequired[Literal["symmetric", "asymmetric"]]  # WAN link symmetry.
-    link_at_capacity: NotRequired[Literal["enable", "disable"]]  # Link at capacity.
+    link_status: NotRequired[Literal[{"description": "Link up", "help": "Link up.", "label": "Up", "name": "up"}, {"description": "Link down", "help": "Link down.", "label": "Down", "name": "down"}, {"description": "Link in test state", "help": "Link in test state.", "label": "In Test", "name": "in-test"}]]  # Link status.
+    symmetric_wan_link: NotRequired[Literal[{"description": "Symmetric WAN link (uplink and downlink speeds are the same)", "help": "Symmetric WAN link (uplink and downlink speeds are the same).", "label": "Symmetric", "name": "symmetric"}, {"description": "Asymmetric WAN link (uplink and downlink speeds are not the same)", "help": "Asymmetric WAN link (uplink and downlink speeds are not the same).", "label": "Asymmetric", "name": "asymmetric"}]]  # WAN link symmetry.
+    link_at_capacity: NotRequired[Literal[{"description": "Link at capacity (not allow additional mobile devices to associate)", "help": "Link at capacity (not allow additional mobile devices to associate).", "label": "Enable", "name": "enable"}, {"description": "Link not at capacity (allow additional mobile devices to associate)", "help": "Link not at capacity (allow additional mobile devices to associate).", "label": "Disable", "name": "disable"}]]  # Link at capacity.
     uplink_speed: NotRequired[int]  # Uplink speed (in kilobits/s).
     downlink_speed: NotRequired[int]  # Downlink speed (in kilobits/s).
     uplink_load: NotRequired[int]  # Uplink load.
@@ -47,9 +47,9 @@ class H2qpWanMetric:
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
         name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
+        link_status: Literal[{"description": "Link up", "help": "Link up.", "label": "Up", "name": "up"}, {"description": "Link down", "help": "Link down.", "label": "Down", "name": "down"}, {"description": "Link in test state", "help": "Link in test state.", "label": "In Test", "name": "in-test"}] | None = ...,
+        symmetric_wan_link: Literal[{"description": "Symmetric WAN link (uplink and downlink speeds are the same)", "help": "Symmetric WAN link (uplink and downlink speeds are the same).", "label": "Symmetric", "name": "symmetric"}, {"description": "Asymmetric WAN link (uplink and downlink speeds are not the same)", "help": "Asymmetric WAN link (uplink and downlink speeds are not the same).", "label": "Asymmetric", "name": "asymmetric"}] | None = ...,
+        link_at_capacity: Literal[{"description": "Link at capacity (not allow additional mobile devices to associate)", "help": "Link at capacity (not allow additional mobile devices to associate).", "label": "Enable", "name": "enable"}, {"description": "Link not at capacity (allow additional mobile devices to associate)", "help": "Link not at capacity (allow additional mobile devices to associate).", "label": "Disable", "name": "disable"}] | None = ...,
         uplink_speed: int | None = ...,
         downlink_speed: int | None = ...,
         uplink_load: int | None = ...,
@@ -64,9 +64,9 @@ class H2qpWanMetric:
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
         name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
+        link_status: Literal[{"description": "Link up", "help": "Link up.", "label": "Up", "name": "up"}, {"description": "Link down", "help": "Link down.", "label": "Down", "name": "down"}, {"description": "Link in test state", "help": "Link in test state.", "label": "In Test", "name": "in-test"}] | None = ...,
+        symmetric_wan_link: Literal[{"description": "Symmetric WAN link (uplink and downlink speeds are the same)", "help": "Symmetric WAN link (uplink and downlink speeds are the same).", "label": "Symmetric", "name": "symmetric"}, {"description": "Asymmetric WAN link (uplink and downlink speeds are not the same)", "help": "Asymmetric WAN link (uplink and downlink speeds are not the same).", "label": "Asymmetric", "name": "asymmetric"}] | None = ...,
+        link_at_capacity: Literal[{"description": "Link at capacity (not allow additional mobile devices to associate)", "help": "Link at capacity (not allow additional mobile devices to associate).", "label": "Enable", "name": "enable"}, {"description": "Link not at capacity (allow additional mobile devices to associate)", "help": "Link not at capacity (allow additional mobile devices to associate).", "label": "Disable", "name": "disable"}] | None = ...,
         uplink_speed: int | None = ...,
         downlink_speed: int | None = ...,
         uplink_load: int | None = ...,

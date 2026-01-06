@@ -67,7 +67,7 @@ FIELDS_WITH_DEFAULTS = {
     "source-ip": "0.0.0.0",
     "source-ipv6": "::",
     "ha-direct": "disable",
-    "events": "cpu-high mem-low log-full intf-ip vpn-tun-up vpn-tun-down ha-switch ha-hb-failure ips-signature ips-anomaly av-virus av-oversize av-pattern av-fragmented fm-if-change bgp-established bgp-backward-transition ha-member-up ha-member-down ent-conf-change av-conserve av-bypass av-oversize-passed av-oversize-blocked ips-pkg-update ips-fail-open faz-disconnect faz wc-ap-up wc-ap-down fswctl-session-up fswctl-session-down load-balance-real-server-down per-cpu-high dhcp pool-usage ippool interface ospf-nbr-state-change ospf-virtnbr-state-change",
+    "events": "cpu-high mem-low log-full intf-ip vpn-tun-up vpn-tun-down ha-switch ha-hb-failure ips-signature ips-anomaly av-virus av-oversize av-pattern av-fragmented fm-if-change bgp-established bgp-backward-transition ha-member-up ha-member-down ent-conf-change av-conserve av-bypass av-oversize-passed av-oversize-blocked ips-pkg-update ips-fail-open faz-disconnect faz wc-ap-up wc-ap-down fswctl-session-up fswctl-session-down load-balance-real-server-down per-cpu-high dhcp pool-usage ippool interface ospf-nbr-state-change ospf-virtnbr-state-change bfd",
     "mib-view": "",
     "security-level": "no-auth-no-priv",
     "auth-proto": "sha",
@@ -172,88 +172,89 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_TRAP_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_QUERIES = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_HA_DIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_EVENTS = [
-    "cpu-high",
-    "mem-low",
-    "log-full",
-    "intf-ip",
-    "vpn-tun-up",
-    "vpn-tun-down",
-    "ha-switch",
-    "ha-hb-failure",
-    "ips-signature",
-    "ips-anomaly",
-    "av-virus",
-    "av-oversize",
-    "av-pattern",
-    "av-fragmented",
-    "fm-if-change",
-    "fm-conf-change",
-    "bgp-established",
-    "bgp-backward-transition",
-    "ha-member-up",
-    "ha-member-down",
-    "ent-conf-change",
-    "av-conserve",
-    "av-bypass",
-    "av-oversize-passed",
-    "av-oversize-blocked",
-    "ips-pkg-update",
-    "ips-fail-open",
-    "faz-disconnect",
-    "faz",
-    "wc-ap-up",
-    "wc-ap-down",
-    "fswctl-session-up",
-    "fswctl-session-down",
-    "load-balance-real-server-down",
-    "device-new",
-    "per-cpu-high",
-    "dhcp",
-    "pool-usage",
-    "ippool",
-    "interface",
-    "ospf-nbr-state-change",
-    "ospf-virtnbr-state-change",
+    "cpu-high",  # Send a trap when CPU usage is high.
+    "mem-low",  # Send a trap when used memory is high, free memory is low, or freeable memory is high.
+    "log-full",  # Send a trap when log disk space becomes low.
+    "intf-ip",  # Send a trap when an interface IP address is changed.
+    "vpn-tun-up",  # Send a trap when a VPN tunnel comes up.
+    "vpn-tun-down",  # Send a trap when a VPN tunnel goes down.
+    "ha-switch",  # Send a trap after an HA failover when the backup unit has taken over.
+    "ha-hb-failure",  # Send a trap when HA heartbeats are not received.
+    "ips-signature",  # Send a trap when IPS detects an attack.
+    "ips-anomaly",  # Send a trap when IPS finds an anomaly.
+    "av-virus",  # Send a trap when AntiVirus finds a virus.
+    "av-oversize",  # Send a trap when AntiVirus finds an oversized file.
+    "av-pattern",  # Send a trap when AntiVirus finds file matching pattern.
+    "av-fragmented",  # Send a trap when AntiVirus finds a fragmented file.
+    "fm-if-change",  # Send a trap when FortiManager interface changes. Send a FortiManager trap.
+    "fm-conf-change",  # Send a trap when a configuration change is made by a FortiGate administrator and the FortiGate is managed by FortiManager.
+    "bgp-established",  # Send a trap when a BGP FSM transitions to the established state.
+    "bgp-backward-transition",  # Send a trap when a BGP FSM goes from a high numbered state to a lower numbered state.
+    "ha-member-up",  # Send a trap when an HA cluster member goes up.
+    "ha-member-down",  # Send a trap when an HA cluster member goes down.
+    "ent-conf-change",  # Send a trap when an entity MIB change occurs (RFC4133).
+    "av-conserve",  # Send a trap when the FortiGate enters conserve mode.
+    "av-bypass",  # Send a trap when the FortiGate enters bypass mode.
+    "av-oversize-passed",  # Send a trap when AntiVirus passes an oversized file.
+    "av-oversize-blocked",  # Send a trap when AntiVirus blocks an oversized file.
+    "ips-pkg-update",  # Send a trap when the IPS signature database or engine is updated.
+    "ips-fail-open",  # Send a trap when the IPS network buffer is full.
+    "faz-disconnect",  # Send a trap when a FortiAnalyzer disconnects from the FortiGate.
+    "faz",  # Send a trap when Fortianalyzer main server failover and alternate server take over, or alternate server failover and main server take over.
+    "wc-ap-up",  # Send a trap when a managed FortiAP comes up.
+    "wc-ap-down",  # Send a trap when a managed FortiAP goes down.
+    "fswctl-session-up",  # Send a trap when a FortiSwitch controller session comes up.
+    "fswctl-session-down",  # Send a trap when a FortiSwitch controller session goes down.
+    "load-balance-real-server-down",  # Send a trap when a server load balance real server goes down.
+    "device-new",  # Send a trap when a new device is found.
+    "per-cpu-high",  # Send a trap when per-CPU usage is high.
+    "dhcp",  # Send a trap when the DHCP server exhausts the IP pool, an IP address already is in use, or a DHCP client interface received a DHCP-NAK.
+    "pool-usage",  # Send a trap about ippool usage.
+    "ippool",  # Send a trap for ippool events.
+    "interface",  # Send a trap for interface event.
+    "ospf-nbr-state-change",  # Send a trap when there has been a change in the state of a non-virtual OSPF neighbor.
+    "ospf-virtnbr-state-change",  # Send a trap when there has been a change in the state of an OSPF virtual neighbor.
+    "bfd",  # Send a trap for bfd event.
 ]
 VALID_BODY_SECURITY_LEVEL = [
-    "no-auth-no-priv",
-    "auth-no-priv",
-    "auth-priv",
+    "no-auth-no-priv",  # Message with no authentication and no privacy (encryption).
+    "auth-no-priv",  # Message with authentication but no privacy (encryption).
+    "auth-priv",  # Message with authentication and privacy (encryption).
 ]
 VALID_BODY_AUTH_PROTO = [
-    "md5",
-    "sha",
-    "sha224",
-    "sha256",
-    "sha384",
-    "sha512",
+    "md5",  # HMAC-MD5-96 authentication protocol.
+    "sha",  # HMAC-SHA-96 authentication protocol.
+    "sha224",  # HMAC-SHA224 authentication protocol.
+    "sha256",  # HMAC-SHA256 authentication protocol.
+    "sha384",  # HMAC-SHA384 authentication protocol.
+    "sha512",  # HMAC-SHA512 authentication protocol.
 ]
 VALID_BODY_PRIV_PROTO = [
-    "aes",
-    "des",
-    "aes256",
-    "aes256cisco",
+    "aes",  # CFB128-AES-128 symmetric encryption protocol.
+    "des",  # CBC-DES symmetric encryption protocol.
+    "aes256",  # CFB128-AES-256 symmetric encryption protocol.
+    "aes256cisco",  # CFB128-AES-256 symmetric encryption protocol compatible with CISCO.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -384,7 +385,7 @@ def validate_system_snmp_user_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_snmp_user_post(payload)
         >>> assert is_valid == True

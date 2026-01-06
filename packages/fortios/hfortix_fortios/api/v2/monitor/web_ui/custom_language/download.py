@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve web_ui/custom_language/download configuration.
 
-        Configuration for web-ui/custom-language/download
+        Download a custom language file.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

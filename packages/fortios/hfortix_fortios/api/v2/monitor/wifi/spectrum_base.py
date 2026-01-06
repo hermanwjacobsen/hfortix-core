@@ -56,7 +56,7 @@ class Spectrum:
         """
         Retrieve wifi/spectrum configuration.
 
-        Configuration for wifi/spectrum
+        Retrieve spectrum analysis information for a specific FortiAP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -10,8 +10,8 @@ class SysinfoPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable SNMP.
-    engine_id_type: NotRequired[Literal["text", "hex", "mac"]]  # Local SNMP engineID type (text/hex/mac).
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable SNMP.
+    engine_id_type: NotRequired[Literal[{"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "Octets format", "help": "Octets format.", "label": "Hex", "name": "hex"}, {"description": "MAC address format", "help": "MAC address format.", "label": "Mac", "name": "mac"}]]  # Local SNMP engineID type (text/hex/mac).
     engine_id: NotRequired[str]  # Local SNMP engineID string (maximum 27 characters).
     description: NotRequired[str]  # System description.
     contact_info: NotRequired[str]  # Contact information.
@@ -21,8 +21,8 @@ class SysinfoPayload(TypedDict, total=False):
     trap_log_full_threshold: NotRequired[int]  # Log disk usage when trap is sent.
     trap_free_memory_threshold: NotRequired[int]  # Free memory usage when trap is sent.
     trap_freeable_memory_threshold: NotRequired[int]  # Freeable memory usage when trap is sent.
-    append_index: NotRequired[Literal["enable", "disable"]]  # Enable/disable allowance of appending vdom or interface inde
-    non_mgmt_vdom_query: NotRequired[Literal["enable", "disable"]]  # Enable/disable allowance of SNMPv3 query from non-management
+    append_index: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable allowance of appending vdom or interface inde
+    non_mgmt_vdom_query: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable allowance of SNMPv3 query from non-management
 
 
 class Sysinfo:
@@ -49,8 +49,8 @@ class Sysinfo:
     def post(
         self,
         payload_dict: SysinfoPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        engine_id_type: Literal["text", "hex", "mac"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        engine_id_type: Literal[{"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "Octets format", "help": "Octets format.", "label": "Hex", "name": "hex"}, {"description": "MAC address format", "help": "MAC address format.", "label": "Mac", "name": "mac"}] | None = ...,
         engine_id: str | None = ...,
         description: str | None = ...,
         contact_info: str | None = ...,
@@ -60,8 +60,8 @@ class Sysinfo:
         trap_log_full_threshold: int | None = ...,
         trap_free_memory_threshold: int | None = ...,
         trap_freeable_memory_threshold: int | None = ...,
-        append_index: Literal["enable", "disable"] | None = ...,
-        non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
+        append_index: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        non_mgmt_vdom_query: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -70,8 +70,8 @@ class Sysinfo:
     def put(
         self,
         payload_dict: SysinfoPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        engine_id_type: Literal["text", "hex", "mac"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        engine_id_type: Literal[{"description": "Text format", "help": "Text format.", "label": "Text", "name": "text"}, {"description": "Octets format", "help": "Octets format.", "label": "Hex", "name": "hex"}, {"description": "MAC address format", "help": "MAC address format.", "label": "Mac", "name": "mac"}] | None = ...,
         engine_id: str | None = ...,
         description: str | None = ...,
         contact_info: str | None = ...,
@@ -81,8 +81,8 @@ class Sysinfo:
         trap_log_full_threshold: int | None = ...,
         trap_free_memory_threshold: int | None = ...,
         trap_freeable_memory_threshold: int | None = ...,
-        append_index: Literal["enable", "disable"] | None = ...,
-        non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
+        append_index: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        non_mgmt_vdom_query: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

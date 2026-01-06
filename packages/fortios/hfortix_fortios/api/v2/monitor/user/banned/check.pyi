@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Check:
     """
-    Configuration for user/banned/check
+    Check if an IPv4 or IPv6 address is banned administratively.
     
     Path: user/banned/check
     Category: monitor

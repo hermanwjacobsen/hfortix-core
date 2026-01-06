@@ -56,7 +56,7 @@ class CloseMultiple:
         """
         Retrieve firewall/session/close_multiple configuration.
 
-        Configuration for firewall/session/close-multiple
+        Close multiple IPv4 firewall sessions which match the provided criteria.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

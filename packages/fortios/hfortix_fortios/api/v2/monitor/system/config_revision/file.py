@@ -56,7 +56,7 @@ class File:
         """
         Retrieve system/config_revision/file configuration.
 
-        Configuration for system/config-revision/file
+        Download a specific configuration revision.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

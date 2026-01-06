@@ -56,7 +56,7 @@ class KeepAlive:
         """
         Retrieve wifi/spectrum/keep_alive configuration.
 
-        Configuration for wifi/spectrum/keep-alive
+        Extend duration of an existing spectrum analysis for a specific FortiAP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -102,7 +102,7 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "SCTP",
+    "SCTP",  # SCTP
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -230,7 +230,7 @@ def validate_firewall_ip_translation_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "type": "SCTP",  # Valid enum value
+        ...     "type": "{'name': 'SCTP', 'help': 'SCTP', 'label': 'Sctp', 'description': 'SCTP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ip_translation_post(payload)
         >>> assert is_valid == True

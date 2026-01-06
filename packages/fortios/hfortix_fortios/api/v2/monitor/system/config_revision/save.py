@@ -56,7 +56,7 @@ class Save:
         """
         Retrieve system/config_revision/save configuration.
 
-        Configuration for system/config-revision/save
+        Create a new config revision checkpoint.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

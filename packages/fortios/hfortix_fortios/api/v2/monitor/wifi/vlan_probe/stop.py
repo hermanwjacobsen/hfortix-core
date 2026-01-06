@@ -56,7 +56,7 @@ class Stop:
         """
         Retrieve wifi/vlan_probe/stop configuration.
 
-        Configuration for wifi/vlan-probe/stop
+        Stop a VLAN probe.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

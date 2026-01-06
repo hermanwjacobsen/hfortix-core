@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaChecksums:
     """
-    Monitor endpoint for system/ha-checksums
+    List of checksums for members of HA cluster.
     
     Path: system/ha_checksums
     Category: monitor

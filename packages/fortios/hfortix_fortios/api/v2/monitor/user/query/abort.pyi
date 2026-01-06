@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Abort:
     """
-    Configuration for user/query/abort
+    Abort a running user device unified query.
     
     Path: user/query/abort
     Category: monitor

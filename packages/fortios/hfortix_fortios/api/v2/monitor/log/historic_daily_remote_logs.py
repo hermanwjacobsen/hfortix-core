@@ -56,7 +56,7 @@ class HistoricDailyRemoteLogs:
         """
         Retrieve log/historic_daily_remote_logs configuration.
 
-        Configuration for log/historic-daily-remote-logs
+        Returns the amount of logs in bytes sent daily to a remote logging service (FortiCloud or FortiAnalyzer).
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

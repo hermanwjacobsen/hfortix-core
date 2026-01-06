@@ -97,8 +97,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MONITOR_VLAN = [
-    "enable",
-    "disable",
+    "enable",  # Enable monitor VLAN interfaces.
+    "disable",  # Disable monitor VLAN interfaces.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -223,7 +223,7 @@ def validate_system_ha_monitor_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "monitor-vlan": "enable",  # Valid enum value
+        ...     "monitor-vlan": "{'name': 'enable', 'help': 'Enable monitor VLAN interfaces.', 'label': 'Enable', 'description': 'Enable monitor VLAN interfaces'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ha_monitor_post(payload)
         >>> assert is_valid == True

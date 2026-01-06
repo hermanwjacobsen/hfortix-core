@@ -56,7 +56,7 @@ class Reset:
         """
         Retrieve log/stats/reset configuration.
 
-        Configuration for log/stats/reset
+        Reset logging statistics for all log devices.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

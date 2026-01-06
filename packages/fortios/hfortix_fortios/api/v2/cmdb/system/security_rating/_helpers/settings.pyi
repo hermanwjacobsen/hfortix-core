@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OVERRIDE_SYNC: Literal["enable", "disable"]
+VALID_BODY_OVERRIDE_SYNC: Literal[{"description": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Enable", "name": "enable"}, {"description": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

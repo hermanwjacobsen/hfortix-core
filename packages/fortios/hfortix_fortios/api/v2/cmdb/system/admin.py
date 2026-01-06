@@ -119,9 +119,9 @@ class Admin:
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        wildcard: str | None = None,
         remote_auth: str | None = None,
         remote_group: str | None = None,
+        wildcard: str | None = None,
         password: Any | None = None,
         peer_auth: str | None = None,
         peer_group: str | None = None,
@@ -182,10 +182,10 @@ class Admin:
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: User name.
-            wildcard: Enable/disable wildcard RADIUS authentication.
+            vdom: Virtual domain(s) that the administrator can access.
             remote_auth: Enable/disable authentication using a remote RADIUS, LDAP, or TACACS+ server.
             remote_group: User group name used for remote auth.
-            password: Admin user password.
+            wildcard: Enable/disable wildcard RADIUS authentication.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
             **kwargs: Additional parameters
@@ -218,9 +218,9 @@ class Admin:
         # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
         payload_data = build_cmdb_payload(
             name=name,
-            wildcard=wildcard,
             remote_auth=remote_auth,
             remote_group=remote_group,
+            wildcard=wildcard,
             password=password,
             peer_auth=peer_auth,
             peer_group=peer_group,
@@ -295,9 +295,9 @@ class Admin:
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
-        wildcard: str | None = None,
         remote_auth: str | None = None,
         remote_group: str | None = None,
+        wildcard: str | None = None,
         password: Any | None = None,
         peer_auth: str | None = None,
         peer_group: str | None = None,
@@ -358,10 +358,10 @@ class Admin:
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: User name.
-            wildcard: Enable/disable wildcard RADIUS authentication.
+            vdom: Virtual domain(s) that the administrator can access.
             remote_auth: Enable/disable authentication using a remote RADIUS, LDAP, or TACACS+ server.
             remote_group: User group name used for remote auth.
-            password: Admin user password.
+            wildcard: Enable/disable wildcard RADIUS authentication.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.
             **kwargs: Additional parameters
@@ -396,9 +396,9 @@ class Admin:
         # Note: Skip reserved parameters (data, vdom, raw_json, kwargs) and Python keywords from field list
         payload_data = build_cmdb_payload(
             name=name,
-            wildcard=wildcard,
             remote_auth=remote_auth,
             remote_group=remote_group,
+            wildcard=wildcard,
             password=password,
             peer_auth=peer_auth,
             peer_group=peer_group,

@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_INCLUDE_WEATHER_CHANNEL: Literal["enable", "disable"]
-VALID_BODY_INCLUDE_DFS_CHANNEL: Literal["enable", "disable"]
-VALID_BODY_OVERRIDE_DARRP_OPTIMIZE: Literal["enable", "disable"]
+VALID_BODY_INCLUDE_WEATHER_CHANNEL: Literal[{"description": "Include weather channel in darrp channel selection phase 1", "help": "Include weather channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude weather channel in darrp channel selection phase 1", "help": "Exclude weather channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INCLUDE_DFS_CHANNEL: Literal[{"description": "Include DFS channel in darrp channel selection phase 1", "help": "Include DFS channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude DFS channel in darrp channel selection phase 1", "help": "Exclude DFS channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}]
+VALID_BODY_OVERRIDE_DARRP_OPTIMIZE: Literal[{"description": "Override setting darrp-optimize and darrp-optimize-schedules", "help": "Override setting darrp-optimize and darrp-optimize-schedules.", "label": "Enable", "name": "enable"}, {"description": "Use setting darrp-optimize and darrp-optimize-schedules", "help": "Use setting darrp-optimize and darrp-optimize-schedules.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

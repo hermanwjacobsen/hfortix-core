@@ -1,9 +1,9 @@
 """FortiOS CMDB - Language category"""
 
-from .import_setting import ImportSetting
+from .import_ import Import
 
 __all__ = [
-    "ImportSetting",
+    "Import",
     "Language",
 ]
 
@@ -17,4 +17,4 @@ class Language:
         Args:
             client: HTTP client instance for API communication
         """
-        self.import_setting = ImportSetting(client)
+        self.import_ = Import(client)

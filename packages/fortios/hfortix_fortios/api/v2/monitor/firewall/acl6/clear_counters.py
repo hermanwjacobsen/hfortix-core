@@ -56,7 +56,7 @@ class ClearCounters:
         """
         Retrieve firewall/acl6/clear_counters configuration.
 
-        Configuration for firewall/acl6/clear_counters
+        Reset counters for one or more IPv6 ACLs by policy ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

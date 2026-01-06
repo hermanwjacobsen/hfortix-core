@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "utm/application_categories",
     "category": "monitor",
     "api_path": "utm/application-categories",
-    "help": "Monitor endpoint for utm/application-categories",
+    "help": "Retrieve a list of application control categories.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

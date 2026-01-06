@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_VDOM_NETFLOW: Literal["enable", "disable"]
+VALID_BODY_VDOM_NETFLOW: Literal[{"description": "Enable NetFlow per VDOM", "help": "Enable NetFlow per VDOM.", "label": "Enable", "name": "enable"}, {"description": "Disable NetFlow per VDOM", "help": "Disable NetFlow per VDOM.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

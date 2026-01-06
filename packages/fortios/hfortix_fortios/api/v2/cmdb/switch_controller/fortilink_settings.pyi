@@ -13,8 +13,8 @@ class FortilinkSettingsPayload(TypedDict, total=False):
     name: NotRequired[str]  # FortiLink settings name.
     fortilink: NotRequired[str]  # FortiLink interface to which this fortilink-setting belongs.
     inactive_timer: NotRequired[int]  # Time interval(minutes) to be included in the inactive device
-    link_down_flush: NotRequired[Literal["disable", "enable"]]  # Clear NAC and dynamic devices on switch ports on link down e
-    access_vlan_mode: NotRequired[Literal["legacy", "fail-open", "fail-close"]]  # Intra VLAN traffic behavior with loss of connection to the F
+    link_down_flush: NotRequired[Literal[{"description": "Disable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Disable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Disable", "name": "disable"}, {"description": "Enable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Enable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Enable", "name": "enable"}]]  # Clear NAC and dynamic devices on switch ports on link down e
+    access_vlan_mode: NotRequired[Literal[{"description": "Backward compatible behavior", "help": "Backward compatible behavior.", "label": "Legacy", "name": "legacy"}, {"description": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points", "help": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points.", "label": "Fail Open", "name": "fail-open"}, {"description": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked", "help": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked.", "label": "Fail Close", "name": "fail-close"}]]  # Intra VLAN traffic behavior with loss of connection to the F
     nac_ports: NotRequired[str]  # NAC specific configuration.
 
 
@@ -46,8 +46,8 @@ class FortilinkSettings:
         name: str | None = ...,
         fortilink: str | None = ...,
         inactive_timer: int | None = ...,
-        link_down_flush: Literal["disable", "enable"] | None = ...,
-        access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = ...,
+        link_down_flush: Literal[{"description": "Disable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Disable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Disable", "name": "disable"}, {"description": "Enable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Enable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Enable", "name": "enable"}] | None = ...,
+        access_vlan_mode: Literal[{"description": "Backward compatible behavior", "help": "Backward compatible behavior.", "label": "Legacy", "name": "legacy"}, {"description": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points", "help": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points.", "label": "Fail Open", "name": "fail-open"}, {"description": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked", "help": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked.", "label": "Fail Close", "name": "fail-close"}] | None = ...,
         nac_ports: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -60,8 +60,8 @@ class FortilinkSettings:
         name: str | None = ...,
         fortilink: str | None = ...,
         inactive_timer: int | None = ...,
-        link_down_flush: Literal["disable", "enable"] | None = ...,
-        access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = ...,
+        link_down_flush: Literal[{"description": "Disable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Disable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Disable", "name": "disable"}, {"description": "Enable clearing NAC and dynamic devices on a switch port when link down event happens", "help": "Enable clearing NAC and dynamic devices on a switch port when link down event happens.", "label": "Enable", "name": "enable"}] | None = ...,
+        access_vlan_mode: Literal[{"description": "Backward compatible behavior", "help": "Backward compatible behavior.", "label": "Legacy", "name": "legacy"}, {"description": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points", "help": "When connection to FortiGate is lost, traffic on the VLAN may continue directly between end points.", "label": "Fail Open", "name": "fail-open"}, {"description": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked", "help": "When connection to FortiGate is lost, traffic between endpoints on the VLAN is blocked.", "label": "Fail Close", "name": "fail-close"}] | None = ...,
         nac_ports: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CurrentAdmins:
     """
-    Monitor endpoint for system/current-admins
+    Return a list of currently logged in administrators.
     
     Path: system/current_admins
     Category: monitor

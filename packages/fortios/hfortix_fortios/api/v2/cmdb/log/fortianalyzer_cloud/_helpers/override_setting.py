@@ -89,8 +89,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging to FortiAnalyzer.
+    "disable",  # Disable logging to FortiAnalyzer.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -215,7 +215,7 @@ def validate_log_fortianalyzer_cloud_override_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable logging to FortiAnalyzer.', 'label': 'Enable', 'description': 'Enable logging to FortiAnalyzer'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_fortianalyzer_cloud_override_setting_post(payload)
         >>> assert is_valid == True

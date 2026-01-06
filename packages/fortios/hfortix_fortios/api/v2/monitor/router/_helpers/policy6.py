@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/policy6",
     "category": "monitor",
     "api_path": "router/policy6",
-    "help": "Monitor endpoint for router/policy6",
+    "help": "Retrieve a list of active IPv6 policy routes.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

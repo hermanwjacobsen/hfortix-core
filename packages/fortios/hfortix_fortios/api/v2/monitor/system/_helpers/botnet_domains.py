@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/botnet_domains",
     "category": "monitor",
     "api_path": "system/botnet-domains",
-    "help": "Monitor endpoint for system/botnet-domains/hits",
+    "help": "List all known domain-based botnet entries in FortiGuard botnet database.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

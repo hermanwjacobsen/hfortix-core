@@ -14,8 +14,8 @@ class IpipTunnelPayload(TypedDict, total=False):
     interface: str  # Interface name that is associated with the incoming traffic 
     remote_gw: str  # IPv4 address for the remote gateway.
     local_gw: str  # IPv4 address for the local gateway.
-    use_sdwan: NotRequired[Literal["disable", "enable"]]  # Enable/disable use of SD-WAN to reach remote gateway.
-    auto_asic_offload: NotRequired[Literal["enable", "disable"]]  # Enable/disable tunnel ASIC offloading.
+    use_sdwan: NotRequired[Literal[{"description": "Disable use of SD-WAN to reach remote gateway", "help": "Disable use of SD-WAN to reach remote gateway.", "label": "Disable", "name": "disable"}, {"description": "Enable use of SD-WAN to reach remote gateway", "help": "Enable use of SD-WAN to reach remote gateway.", "label": "Enable", "name": "enable"}]]  # Enable/disable use of SD-WAN to reach remote gateway.
+    auto_asic_offload: NotRequired[Literal[{"description": "Enable auto ASIC offloading", "help": "Enable auto ASIC offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable ASIC offloading", "help": "Disable ASIC offloading.", "label": "Disable", "name": "disable"}]]  # Enable/disable tunnel ASIC offloading.
 
 
 class IpipTunnel:
@@ -47,8 +47,8 @@ class IpipTunnel:
         interface: str | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        use_sdwan: Literal[{"description": "Disable use of SD-WAN to reach remote gateway", "help": "Disable use of SD-WAN to reach remote gateway.", "label": "Disable", "name": "disable"}, {"description": "Enable use of SD-WAN to reach remote gateway", "help": "Enable use of SD-WAN to reach remote gateway.", "label": "Enable", "name": "enable"}] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable auto ASIC offloading", "help": "Enable auto ASIC offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable ASIC offloading", "help": "Disable ASIC offloading.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -61,8 +61,8 @@ class IpipTunnel:
         interface: str | None = ...,
         remote_gw: str | None = ...,
         local_gw: str | None = ...,
-        use_sdwan: Literal["disable", "enable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        use_sdwan: Literal[{"description": "Disable use of SD-WAN to reach remote gateway", "help": "Disable use of SD-WAN to reach remote gateway.", "label": "Disable", "name": "disable"}, {"description": "Enable use of SD-WAN to reach remote gateway", "help": "Enable use of SD-WAN to reach remote gateway.", "label": "Enable", "name": "enable"}] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable auto ASIC offloading", "help": "Enable auto ASIC offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable ASIC offloading", "help": "Disable ASIC offloading.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

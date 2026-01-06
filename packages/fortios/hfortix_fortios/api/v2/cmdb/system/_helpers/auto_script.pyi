@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_START: Literal["manual", "auto"]
+VALID_BODY_START: Literal[{"description": "Starting manually", "help": "Starting manually.", "label": "Manual", "name": "manual"}, {"description": "Starting automatically", "help": "Starting automatically.", "label": "Auto", "name": "auto"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

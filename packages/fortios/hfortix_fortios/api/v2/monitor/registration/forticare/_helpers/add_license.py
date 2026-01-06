@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticare/add_license",
     "category": "monitor",
     "api_path": "registration/forticare/add-license",
-    "help": "Configuration for registration/forticare/add-license",
+    "help": "Add a FortiCare license.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

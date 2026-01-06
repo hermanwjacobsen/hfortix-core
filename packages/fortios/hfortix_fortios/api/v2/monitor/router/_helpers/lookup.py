@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/lookup",
     "category": "monitor",
     "api_path": "router/lookup",
-    "help": "Configuration for router/lookup",
+    "help": "Performs a route lookup by querying the routing table.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

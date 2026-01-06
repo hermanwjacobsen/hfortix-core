@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/euclid/reset",
     "category": "monitor",
     "api_path": "wifi/euclid/reset",
-    "help": "Configuration for wifi/euclid/reset",
+    "help": "Reset presence analytics statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

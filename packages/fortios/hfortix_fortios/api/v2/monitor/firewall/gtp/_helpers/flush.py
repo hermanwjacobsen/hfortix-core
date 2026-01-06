@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/gtp/flush",
     "category": "monitor",
     "api_path": "firewall/gtp/flush",
-    "help": "Configuration for firewall/gtp/flush",
+    "help": "Flush GTP tunnels.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

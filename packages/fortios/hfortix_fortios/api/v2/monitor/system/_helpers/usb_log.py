@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/usb_log",
     "category": "monitor",
     "api_path": "system/usb-log",
-    "help": "Configuration for system/usb-log",
+    "help": "Retrieve information about connected USB drives, including estimated log sizes.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

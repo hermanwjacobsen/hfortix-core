@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/security_policy/clear_counters",
     "category": "monitor",
     "api_path": "firewall/security-policy/clear_counters",
-    "help": "Configuration for firewall/security-policy/clear_counters",
+    "help": "Reset traffic statistics for one or more security policies by policy ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

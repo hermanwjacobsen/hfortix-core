@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/local_report/delete",
     "category": "monitor",
     "api_path": "log/local-report/delete",
-    "help": "Configuration for log/local-report/delete",
+    "help": "Delete a local report.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

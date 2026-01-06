@@ -55,9 +55,9 @@ REQUIRED_FIELDS = [
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
     "name": "",
-    "wildcard": "disable",
     "remote-auth": "disable",
     "remote-group": "",
+    "wildcard": "disable",
     "peer-auth": "disable",
     "peer-group": "",
     "trusthost1": "0.0.0.0 0.0.0.0",
@@ -120,9 +120,10 @@ DEPRECATED_FIELDS = {
 # Field types mapping
 FIELD_TYPES = {
     "name": "string",  # User name.
-    "wildcard": "option",  # Enable/disable wildcard RADIUS authentication.
+    "vdom": "string",  # Virtual domain(s) that the administrator can access.
     "remote-auth": "option",  # Enable/disable authentication using a remote RADIUS, LDAP, o
     "remote-group": "string",  # User group name used for remote auth.
+    "wildcard": "option",  # Enable/disable wildcard RADIUS authentication.
     "password": "password-2",  # Admin user password.
     "peer-auth": "option",  # Set to enable peer certificate authentication (for HTTPS adm
     "peer-group": "string",  # Name of peer group defined under config user group which has
@@ -149,7 +150,6 @@ FIELD_TYPES = {
     "accprofile": "string",  # Access profile for this administrator. Access profiles contr
     "allow-remove-admin-session": "option",  # Enable/disable allow admin session to be removed by privileg
     "comments": "var-string",  # Comment.
-    "vdom": "string",  # Virtual domain(s) that the administrator can access.
     "ssh-public-key1": "user",  # Public key of an SSH client. The client is authenticated wit
     "ssh-public-key2": "user",  # Public key of an SSH client. The client is authenticated wit
     "ssh-public-key3": "user",  # Public key of an SSH client. The client is authenticated wit
@@ -177,9 +177,10 @@ FIELD_TYPES = {
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
     "name": "User name.",
-    "wildcard": "Enable/disable wildcard RADIUS authentication.",
+    "vdom": "Virtual domain(s) that the administrator can access.",
     "remote-auth": "Enable/disable authentication using a remote RADIUS, LDAP, or TACACS+ server.",
     "remote-group": "User group name used for remote auth.",
+    "wildcard": "Enable/disable wildcard RADIUS authentication.",
     "password": "Admin user password.",
     "peer-auth": "Set to enable peer certificate authentication (for HTTPS admin access).",
     "peer-group": "Name of peer group defined under config user group which has PKI members. Used for peer certificate authentication (for HTTPS admin access).",
@@ -206,7 +207,6 @@ FIELD_DESCRIPTIONS = {
     "accprofile": "Access profile for this administrator. Access profiles control administrator access to FortiGate features.",
     "allow-remove-admin-session": "Enable/disable allow admin session to be removed by privileged admin users.",
     "comments": "Comment.",
-    "vdom": "Virtual domain(s) that the administrator can access.",
     "ssh-public-key1": "Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.",
     "ssh-public-key2": "Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.",
     "ssh-public-key3": "Public key of an SSH client. The client is authenticated without being asked for credentials. Create the public-private key pair in the SSH client application.",
@@ -270,57 +270,57 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
-VALID_BODY_WILDCARD = [
-    "enable",
-    "disable",
-]
 VALID_BODY_REMOTE_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable remote authentication.
+    "disable",  # Disable remote authentication.
+]
+VALID_BODY_WILDCARD = [
+    "enable",  # Enable username wildcard.
+    "disable",  # Disable username wildcard.
 ]
 VALID_BODY_PEER_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable peer.
+    "disable",  # Disable peer.
 ]
 VALID_BODY_ALLOW_REMOVE_ADMIN_SESSION = [
-    "enable",
-    "disable",
+    "enable",  # Enable allow-remove option.
+    "disable",  # Disable allow-remove option.
 ]
 VALID_BODY_ACCPROFILE_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable access profile override.
+    "disable",  # Disable access profile override.
 ]
 VALID_BODY_VDOM_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Enable VDOM override.
+    "disable",  # Disable VDOM override.
 ]
 VALID_BODY_FORCE_PASSWORD_CHANGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable force password change on next login.
+    "disable",  # Disable force password change on next login.
 ]
 VALID_BODY_TWO_FACTOR = [
-    "disable",
-    "fortitoken",
-    "fortitoken-cloud",
-    "email",
-    "sms",
+    "disable",  # Disable two-factor authentication.
+    "fortitoken",  # Use FortiToken or FortiToken mobile two-factor authentication.
+    "fortitoken-cloud",  # FortiToken Cloud Service.
+    "email",  # Send a two-factor authentication code to the configured email-to email address.
+    "sms",  # Send a two-factor authentication code to the configured sms-server and sms-phone.
 ]
 VALID_BODY_TWO_FACTOR_AUTHENTICATION = [
-    "fortitoken",
-    "email",
-    "sms",
+    "fortitoken",  # FortiToken authentication.
+    "email",  # Email one time password.
+    "sms",  # SMS one time password.
 ]
 VALID_BODY_TWO_FACTOR_NOTIFICATION = [
-    "email",
-    "sms",
+    "email",  # Email notification for activation code.
+    "sms",  # SMS notification for activation code.
 ]
 VALID_BODY_SMS_SERVER = [
-    "fortiguard",
-    "custom",
+    "fortiguard",  # Send SMS by FortiGuard.
+    "custom",  # Send SMS by custom server.
 ]
 VALID_BODY_GUEST_AUTH = [
-    "disable",
-    "enable",
+    "disable",  # Disable guest authentication.
+    "enable",  # Enable guest authentication.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -451,13 +451,13 @@ def validate_system_admin_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "remote-group": True,
-        ...     "wildcard": "enable",  # Valid enum value
+        ...     "remote-auth": "{'name': 'enable', 'help': 'Enable remote authentication.', 'label': 'Enable', 'description': 'Enable remote authentication'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_admin_post(payload)
         >>> assert is_valid == True
         
         >>> # ❌ Invalid - Wrong enum value
-        >>> payload["wildcard"] = "invalid-value"
+        >>> payload["remote-auth"] = "invalid-value"
         >>> is_valid, error = validate_system_admin_post(payload)
         >>> assert is_valid == False
         >>> assert "Invalid value" in error
@@ -474,16 +474,6 @@ def validate_system_admin_post(
         return (False, error)
 
     # Step 2: Validate enum values
-    if "wildcard" in payload:
-        value = payload["wildcard"]
-        if value not in VALID_BODY_WILDCARD:
-            desc = FIELD_DESCRIPTIONS.get("wildcard", "")
-            error_msg = f"Invalid value for 'wildcard': '{value}'"
-            if desc:
-                error_msg += f"\n  → Description: {desc}"
-            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WILDCARD)}"
-            error_msg += f"\n  → Example: wildcard='{{ VALID_BODY_WILDCARD[0] }}'"
-            return (False, error_msg)
     if "remote-auth" in payload:
         value = payload["remote-auth"]
         if value not in VALID_BODY_REMOTE_AUTH:
@@ -493,6 +483,16 @@ def validate_system_admin_post(
                 error_msg += f"\n  → Description: {desc}"
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_REMOTE_AUTH)}"
             error_msg += f"\n  → Example: remote-auth='{{ VALID_BODY_REMOTE_AUTH[0] }}'"
+            return (False, error_msg)
+    if "wildcard" in payload:
+        value = payload["wildcard"]
+        if value not in VALID_BODY_WILDCARD:
+            desc = FIELD_DESCRIPTIONS.get("wildcard", "")
+            error_msg = f"Invalid value for 'wildcard': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_WILDCARD)}"
+            error_msg += f"\n  → Example: wildcard='{{ VALID_BODY_WILDCARD[0] }}'"
             return (False, error_msg)
     if "peer-auth" in payload:
         value = payload["peer-auth"]
@@ -622,19 +622,19 @@ def validate_system_admin_put(
         >>> is_valid, error = validate_system_admin_put(payload)
     """
     # Step 1: Validate enum values
-    if "wildcard" in payload:
-        value = payload["wildcard"]
-        if value not in VALID_BODY_WILDCARD:
-            return (
-                False,
-                f"Invalid value for 'wildcard'='{value}'. Must be one of: {', '.join(VALID_BODY_WILDCARD)}",
-            )
     if "remote-auth" in payload:
         value = payload["remote-auth"]
         if value not in VALID_BODY_REMOTE_AUTH:
             return (
                 False,
                 f"Invalid value for 'remote-auth'='{value}'. Must be one of: {', '.join(VALID_BODY_REMOTE_AUTH)}",
+            )
+    if "wildcard" in payload:
+        value = payload["wildcard"]
+        if value not in VALID_BODY_WILDCARD:
+            return (
+                False,
+                f"Invalid value for 'wildcard'='{value}'. Must be one of: {', '.join(VALID_BODY_WILDCARD)}",
             )
     if "peer-auth" in payload:
         value = payload["peer-auth"]

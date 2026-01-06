@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/security_policy",
     "category": "monitor",
     "api_path": "firewall/security-policy",
-    "help": "Monitor endpoint for firewall/security-policy",
+    "help": "List IPS engine statistics for security policies.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -132,7 +132,7 @@ class SsoForticloudAdmin:
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             name: FortiCloud SSO admin name.
-            accprofile: FortiCloud SSO admin user access profile.
+            accprofile: FortiCloud SSO admin user access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.
             vdom: Virtual domain(s) that the administrator can access.
             vdom: Virtual domain name.
             raw_json: If True, return raw API response.
@@ -206,7 +206,7 @@ class SsoForticloudAdmin:
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: FortiCloud SSO admin name.
-            accprofile: FortiCloud SSO admin user access profile.
+            accprofile: FortiCloud SSO admin user access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.
             vdom: Virtual domain(s) that the administrator can access.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             raw_json: If True, return raw API response without processing.

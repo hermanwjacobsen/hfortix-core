@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Acl6:
     """
-    Configuration for firewall/acl6
+    List counters for all IPv6 ACL.
     
     Path: firewall/acl6
     Category: monitor

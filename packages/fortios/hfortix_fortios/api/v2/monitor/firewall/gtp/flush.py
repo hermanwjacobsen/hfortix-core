@@ -56,7 +56,7 @@ class Flush:
         """
         Retrieve firewall/gtp/flush configuration.
 
-        Configuration for firewall/gtp/flush
+        Flush GTP tunnels.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

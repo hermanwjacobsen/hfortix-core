@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class MonitorSensor:
     """
-    Configuration for system/monitor-sensor
+    Retrieve monitor sensor status.
     
     Path: system/monitor_sensor
     Category: monitor

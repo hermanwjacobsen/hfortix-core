@@ -12,7 +12,7 @@ class IpsecAggregatePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # IPsec aggregate name.
     member: list[dict[str, Any]]  # Member tunnels of the aggregate.
-    algorithm: NotRequired[Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"]]  # Frame distribution algorithm.
+    algorithm: NotRequired[Literal[{"description": "Use layer 3 address for distribution", "help": "Use layer 3 address for distribution.", "label": "L3", "name": "L3"}, {"description": "Use layer 4 information for distribution", "help": "Use layer 4 information for distribution.", "label": "L4", "name": "L4"}, {"description": "Per-packet round-robin distribution", "help": "Per-packet round-robin distribution.", "label": "Round Robin", "name": "round-robin"}, {"description": "Use first tunnel that is up for all traffic", "help": "Use first tunnel that is up for all traffic.", "label": "Redundant", "name": "redundant"}, {"description": "Weighted round-robin distribution", "help": "Weighted round-robin distribution.", "label": "Weighted Round Robin", "name": "weighted-round-robin"}]]  # Frame distribution algorithm.
 
 
 class IpsecAggregate:
@@ -42,7 +42,7 @@ class IpsecAggregate:
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
-        algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
+        algorithm: Literal[{"description": "Use layer 3 address for distribution", "help": "Use layer 3 address for distribution.", "label": "L3", "name": "L3"}, {"description": "Use layer 4 information for distribution", "help": "Use layer 4 information for distribution.", "label": "L4", "name": "L4"}, {"description": "Per-packet round-robin distribution", "help": "Per-packet round-robin distribution.", "label": "Round Robin", "name": "round-robin"}, {"description": "Use first tunnel that is up for all traffic", "help": "Use first tunnel that is up for all traffic.", "label": "Redundant", "name": "redundant"}, {"description": "Weighted round-robin distribution", "help": "Weighted round-robin distribution.", "label": "Weighted Round Robin", "name": "weighted-round-robin"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -53,7 +53,7 @@ class IpsecAggregate:
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
         member: list[dict[str, Any]] | None = ...,
-        algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
+        algorithm: Literal[{"description": "Use layer 3 address for distribution", "help": "Use layer 3 address for distribution.", "label": "L3", "name": "L3"}, {"description": "Use layer 4 information for distribution", "help": "Use layer 4 information for distribution.", "label": "L4", "name": "L4"}, {"description": "Per-packet round-robin distribution", "help": "Per-packet round-robin distribution.", "label": "Round Robin", "name": "round-robin"}, {"description": "Use first tunnel that is up for all traffic", "help": "Use first tunnel that is up for all traffic.", "label": "Redundant", "name": "redundant"}, {"description": "Weighted round-robin distribution", "help": "Weighted round-robin distribution.", "label": "Weighted Round Robin", "name": "weighted-round-robin"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

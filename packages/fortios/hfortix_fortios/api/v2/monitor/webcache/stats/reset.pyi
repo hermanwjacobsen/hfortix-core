@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for webcache/stats/reset
+    Reset all webcache statistics.
     
     Path: webcache/stats/reset
     Category: monitor

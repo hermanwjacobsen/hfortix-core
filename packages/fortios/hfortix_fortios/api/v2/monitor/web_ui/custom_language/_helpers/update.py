@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "web_ui/custom_language/update",
     "category": "monitor",
     "api_path": "web-ui/custom-language/update",
-    "help": "Configuration for web-ui/custom-language/update",
+    "help": "Update custom language file to this Fortigate.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

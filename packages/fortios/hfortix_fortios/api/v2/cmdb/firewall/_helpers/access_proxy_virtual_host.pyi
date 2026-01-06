@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_HOST_TYPE: Literal["sub-string", "wildcard"]
-VALID_BODY_EMPTY_CERT_ACTION: Literal["accept", "block", "accept-unmanageable"]
-VALID_BODY_USER_AGENT_DETECT: Literal["disable", "enable"]
-VALID_BODY_CLIENT_CERT: Literal["disable", "enable"]
+VALID_BODY_HOST_TYPE: Literal[{"description": "Match the pattern if a string contains the sub-string", "help": "Match the pattern if a string contains the sub-string.", "label": "Sub String", "name": "sub-string"}, {"description": "Match the pattern with wildcards", "help": "Match the pattern with wildcards.", "label": "Wildcard", "name": "wildcard"}]
+VALID_BODY_EMPTY_CERT_ACTION: Literal[{"description": "Accept the SSL handshake if the client certificate is empty", "help": "Accept the SSL handshake if the client certificate is empty.", "label": "Accept", "name": "accept"}, {"description": "Block the SSL handshake if the client certificate is empty", "help": "Block the SSL handshake if the client certificate is empty.", "label": "Block", "name": "block"}, {"description": "Accept the SSL handshake only if the end-point is unmanageable", "help": "Accept the SSL handshake only if the end-point is unmanageable.", "label": "Accept Unmanageable", "name": "accept-unmanageable"}]
+VALID_BODY_USER_AGENT_DETECT: Literal[{"description": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Disable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Disable", "name": "disable"}, {"description": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided", "help": "Enable detecting unknown devices by HTTP user-agent if no client certificate is provided.", "label": "Enable", "name": "enable"}]
+VALID_BODY_CLIENT_CERT: Literal[{"description": "Disable client certificate request", "help": "Disable client certificate request.", "label": "Disable", "name": "disable"}, {"description": "Enable client certificate request", "help": "Enable client certificate request.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

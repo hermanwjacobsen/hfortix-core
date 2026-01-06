@@ -56,7 +56,7 @@ class Stop:
         """
         Retrieve network/debug_flow/stop configuration.
 
-        Configuration for network/debug-flow/stop
+        Stop debug flow packet capture.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

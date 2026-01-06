@@ -117,8 +117,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OPTIONAL_VLANS = [
-    "enable",
-    "disable",
+    "enable",  # Enable auto-generated VLANs.
+    "disable",  # Disable auto-generated VLANs.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -243,7 +243,7 @@ def validate_switch_controller_initial_config_vlans_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "optional-vlans": "enable",  # Valid enum value
+        ...     "optional-vlans": "{'name': 'enable', 'help': 'Enable auto-generated VLANs.', 'label': 'Enable', 'description': 'Enable auto-generated VLANs'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_initial_config_vlans_post(payload)
         >>> assert is_valid == True

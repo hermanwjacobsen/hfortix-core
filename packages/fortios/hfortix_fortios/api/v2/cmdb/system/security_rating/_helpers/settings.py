@@ -89,8 +89,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OVERRIDE_SYNC = [
-    "enable",
-    "disable",
+    "enable",  # Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.
+    "disable",  # Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -215,7 +215,7 @@ def validate_system_security_rating_settings_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "override-sync": "enable",  # Valid enum value
+        ...     "override-sync": "{'name': 'enable', 'help': 'Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.', 'label': 'Enable', 'description': 'Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_security_rating_settings_post(payload)
         >>> assert is_valid == True

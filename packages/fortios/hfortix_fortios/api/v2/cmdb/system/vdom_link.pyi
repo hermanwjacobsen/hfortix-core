@@ -11,8 +11,8 @@ class VdomLinkPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # VDOM link name (maximum = 11 characters).
-    vcluster: NotRequired[Literal["vcluster1", "vcluster2"]]  # Virtual cluster.
-    type: NotRequired[Literal["ppp", "ethernet"]]  # VDOM link type: PPP or Ethernet.
+    vcluster: NotRequired[Literal[{"description": "Virtual cluster 1", "help": "Virtual cluster 1.", "label": "Vcluster1", "name": "vcluster1"}, {"description": "Virtual cluster 2", "help": "Virtual cluster 2.", "label": "Vcluster2", "name": "vcluster2"}]]  # Virtual cluster.
+    type: NotRequired[Literal[{"description": "PPP VDOM link", "help": "PPP VDOM link.", "label": "Ppp", "name": "ppp"}, {"description": "Ethernet VDOM link", "help": "Ethernet VDOM link.", "label": "Ethernet", "name": "ethernet"}]]  # VDOM link type: PPP or Ethernet.
 
 
 class VdomLink:
@@ -41,8 +41,8 @@ class VdomLink:
         self,
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
-        vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        vcluster: Literal[{"description": "Virtual cluster 1", "help": "Virtual cluster 1.", "label": "Vcluster1", "name": "vcluster1"}, {"description": "Virtual cluster 2", "help": "Virtual cluster 2.", "label": "Vcluster2", "name": "vcluster2"}] | None = ...,
+        type: Literal[{"description": "PPP VDOM link", "help": "PPP VDOM link.", "label": "Ppp", "name": "ppp"}, {"description": "Ethernet VDOM link", "help": "Ethernet VDOM link.", "label": "Ethernet", "name": "ethernet"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -52,8 +52,8 @@ class VdomLink:
         self,
         payload_dict: VdomLinkPayload | None = ...,
         name: str | None = ...,
-        vcluster: Literal["vcluster1", "vcluster2"] | None = ...,
-        type: Literal["ppp", "ethernet"] | None = ...,
+        vcluster: Literal[{"description": "Virtual cluster 1", "help": "Virtual cluster 1.", "label": "Vcluster1", "name": "vcluster1"}, {"description": "Virtual cluster 2", "help": "Virtual cluster 2.", "label": "Vcluster2", "name": "vcluster2"}] | None = ...,
+        type: Literal[{"description": "PPP VDOM link", "help": "PPP VDOM link.", "label": "Ppp", "name": "ppp"}, {"description": "Ethernet VDOM link", "help": "Ethernet VDOM link.", "label": "Ethernet", "name": "ethernet"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

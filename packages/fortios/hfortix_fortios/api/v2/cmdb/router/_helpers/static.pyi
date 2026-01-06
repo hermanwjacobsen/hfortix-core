@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_BLACKHOLE: Literal["enable", "disable"]
-VALID_BODY_DYNAMIC_GATEWAY: Literal["enable", "disable"]
-VALID_BODY_LINK_MONITOR_EXEMPT: Literal["enable", "disable"]
-VALID_BODY_BFD: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable static route", "help": "Enable static route.", "label": "Enable", "name": "enable"}, {"description": "Disable static route", "help": "Disable static route.", "label": "Disable", "name": "disable"}]
+VALID_BODY_BLACKHOLE: Literal[{"description": "Enable black hole", "help": "Enable black hole.", "label": "Enable", "name": "enable"}, {"description": "Disable black hole", "help": "Disable black hole.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DYNAMIC_GATEWAY: Literal[{"description": "Enable dynamic gateway", "help": "Enable dynamic gateway.", "label": "Enable", "name": "enable"}, {"description": "Disable dynamic gateway", "help": "Disable dynamic gateway.", "label": "Disable", "name": "disable"}]
+VALID_BODY_LINK_MONITOR_EXEMPT: Literal[{"description": "Keep this static route when link monitor or health check is down", "help": "Keep this static route when link monitor or health check is down.", "label": "Enable", "name": "enable"}, {"description": "Withdraw this static route when link monitor or health check is down", "help": "Withdraw this static route when link monitor or health check is down. (default)", "label": "Disable", "name": "disable"}]
+VALID_BODY_BFD: Literal[{"description": "Enable Bidirectional Forwarding Detection (BFD)", "help": "Enable Bidirectional Forwarding Detection (BFD).", "label": "Enable", "name": "enable"}, {"description": "Disable Bidirectional Forwarding Detection (BFD)", "help": "Disable Bidirectional Forwarding Detection (BFD).", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

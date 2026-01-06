@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/change_password/select",
     "category": "monitor",
     "api_path": "system/change-password/select",
-    "help": "Configuration for system/change-password/select",
+    "help": "Save admin and guest-admin passwords. To be deprecated and replaced by the CMDB REST API.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

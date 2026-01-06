@@ -56,7 +56,7 @@ class Diagnose:
         """
         Retrieve extender_controller/extender/diagnose configuration.
 
-        Configuration for extender-controller/extender/diagnose
+        Execute diagnotic commands.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

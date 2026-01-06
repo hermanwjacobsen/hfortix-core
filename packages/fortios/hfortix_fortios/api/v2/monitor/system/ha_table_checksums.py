@@ -56,7 +56,7 @@ class HaTableChecksums:
         """
         Retrieve system/ha_table_checksums configuration.
 
-        Configuration for system/ha-table-checksums
+        List of table checksums for members of HA cluster.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

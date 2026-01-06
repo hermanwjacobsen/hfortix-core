@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class DeviceStatus:
     """
-    Configuration for registration/forticloud/device-status
+    Fetch device registration status from FortiCloud. Currently FortiSwitch and FortiAP are supported.
     
     Path: registration/forticloud/device_status
     Category: monitor

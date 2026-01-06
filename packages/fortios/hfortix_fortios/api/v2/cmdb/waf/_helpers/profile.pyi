@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_EXTERNAL: Literal["disable", "enable"]
-VALID_BODY_EXTENDED_LOG: Literal["enable", "disable"]
+VALID_BODY_EXTERNAL: Literal[{"description": "Disable external inspection", "help": "Disable external inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable external inspection", "help": "Enable external inspection.", "label": "Enable", "name": "enable"}]
+VALID_BODY_EXTENDED_LOG: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

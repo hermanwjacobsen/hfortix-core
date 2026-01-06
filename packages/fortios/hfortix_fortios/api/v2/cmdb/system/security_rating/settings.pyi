@@ -10,7 +10,7 @@ class SettingsPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    override_sync: Literal["enable", "disable"]  # Enable/disable overriding Security Rating control settings s
+    override_sync: Literal[{"description": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Enable", "name": "enable"}, {"description": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Disable", "name": "disable"}]  # Enable/disable overriding Security Rating control settings s
 
 
 class Settings:
@@ -37,7 +37,7 @@ class Settings:
     def post(
         self,
         payload_dict: SettingsPayload | None = ...,
-        override_sync: Literal["enable", "disable"] | None = ...,
+        override_sync: Literal[{"description": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Enable", "name": "enable"}, {"description": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -46,7 +46,7 @@ class Settings:
     def put(
         self,
         payload_dict: SettingsPayload | None = ...,
-        override_sync: Literal["enable", "disable"] | None = ...,
+        override_sync: Literal[{"description": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Enable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Enable", "name": "enable"}, {"description": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate", "help": "Disable overriding the Security Rating control settings synced from the Security Fabric root FortiGate.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

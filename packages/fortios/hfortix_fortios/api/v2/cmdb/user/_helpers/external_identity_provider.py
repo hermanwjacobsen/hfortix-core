@@ -136,20 +136,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "ms-graph",
+    "ms-graph",  # Microsoft Graph server.
 ]
 VALID_BODY_VERSION = [
-    "v1.0",
-    "beta",
+    "v1.0",  # MS Graph REST API v1.0.
+    "beta",  # MS Graph REST API beta (debug build only).
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_SERVER_IDENTITY_CHECK = [
-    "disable",
-    "enable",
+    "disable",  # Do not check server's identity against its certificate and subject alternative name(s).
+    "enable",  # Check server's identity against its certificate and subject alternative name(s).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -280,7 +280,7 @@ def validate_user_external_identity_provider_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "type": True,
-        ...     "type": "ms-graph",  # Valid enum value
+        ...     "type": "{'name': 'ms-graph', 'help': 'Microsoft Graph server.', 'label': 'Ms Graph', 'description': 'Microsoft Graph server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_external_identity_provider_post(payload)
         >>> assert is_valid == True

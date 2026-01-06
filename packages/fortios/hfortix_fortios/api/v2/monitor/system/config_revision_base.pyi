@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ConfigRevision:
     """
-    Configuration for system/config-revision
+    Returns a list of system configuration revisions.
     
     Path: system/config_revision
     Category: monitor

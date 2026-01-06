@@ -56,7 +56,7 @@ class InternetServiceFqdn:
         """
         Retrieve firewall/internet_service_fqdn configuration.
 
-        Configuration for firewall/internet-service-fqdn
+        Map of internet service FQDNs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

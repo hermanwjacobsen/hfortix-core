@@ -12,13 +12,13 @@ class UserActivityPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # CASB user activity name.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    status: NotRequired[Literal["enable", "disable"]]  # CASB user activity status.
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # CASB user activity status.
     description: NotRequired[str]  # CASB user activity description.
-    type: NotRequired[Literal["built-in", "customized"]]  # CASB user activity type.
+    type: NotRequired[Literal[{"description": "Built-in CASB user-activity", "help": "Built-in CASB user-activity.", "label": "Built In", "name": "built-in"}, {"description": "User customized CASB user-activity", "help": "User customized CASB user-activity.", "label": "Customized", "name": "customized"}]]  # CASB user activity type.
     casb_name: NotRequired[str]  # CASB user activity signature name.
     application: str  # CASB SaaS application name.
-    category: NotRequired[Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]]  # CASB user activity category.
-    match_strategy: NotRequired[Literal["and", "or"]]  # CASB user activity match strategy.
+    category: NotRequired[Literal[{"description": "Activity control", "help": "Activity control.", "label": "Activity Control", "name": "activity-control"}, {"description": "Tenant control", "help": "Tenant control.", "label": "Tenant Control", "name": "tenant-control"}, {"description": "Domain control", "help": "Domain control.", "label": "Domain Control", "name": "domain-control"}, {"description": "Safe search control", "help": "Safe search control.", "label": "Safe Search Control", "name": "safe-search-control"}, {"description": "Advanced tenant control", "help": "Advanced tenant control.", "label": "Advanced Tenant Control", "name": "advanced-tenant-control"}, {"description": "User customized category", "help": "User customized category.", "label": "Other", "name": "other"}]]  # CASB user activity category.
+    match_strategy: NotRequired[Literal[{"description": "Match user activity using a logical AND operator", "help": "Match user activity using a logical AND operator.", "label": "And", "name": "and"}, {"description": "Match user activity using a logical OR operator", "help": "Match user activity using a logical OR operator.", "label": "Or", "name": "or"}]]  # CASB user activity match strategy.
     match: NotRequired[list[dict[str, Any]]]  # CASB user activity match rules.
     control_options: NotRequired[list[dict[str, Any]]]  # CASB control options.
 
@@ -50,13 +50,13 @@ class UserActivity:
         payload_dict: UserActivityPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type: Literal[{"description": "Built-in CASB user-activity", "help": "Built-in CASB user-activity.", "label": "Built In", "name": "built-in"}, {"description": "User customized CASB user-activity", "help": "User customized CASB user-activity.", "label": "Customized", "name": "customized"}] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
+        category: Literal[{"description": "Activity control", "help": "Activity control.", "label": "Activity Control", "name": "activity-control"}, {"description": "Tenant control", "help": "Tenant control.", "label": "Tenant Control", "name": "tenant-control"}, {"description": "Domain control", "help": "Domain control.", "label": "Domain Control", "name": "domain-control"}, {"description": "Safe search control", "help": "Safe search control.", "label": "Safe Search Control", "name": "safe-search-control"}, {"description": "Advanced tenant control", "help": "Advanced tenant control.", "label": "Advanced Tenant Control", "name": "advanced-tenant-control"}, {"description": "User customized category", "help": "User customized category.", "label": "Other", "name": "other"}] | None = ...,
+        match_strategy: Literal[{"description": "Match user activity using a logical AND operator", "help": "Match user activity using a logical AND operator.", "label": "And", "name": "and"}, {"description": "Match user activity using a logical OR operator", "help": "Match user activity using a logical OR operator.", "label": "Or", "name": "or"}] | None = ...,
         match: list[dict[str, Any]] | None = ...,
         control_options: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -69,13 +69,13 @@ class UserActivity:
         payload_dict: UserActivityPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         description: str | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        type: Literal[{"description": "Built-in CASB user-activity", "help": "Built-in CASB user-activity.", "label": "Built In", "name": "built-in"}, {"description": "User customized CASB user-activity", "help": "User customized CASB user-activity.", "label": "Customized", "name": "customized"}] | None = ...,
         casb_name: str | None = ...,
         application: str | None = ...,
-        category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
-        match_strategy: Literal["and", "or"] | None = ...,
+        category: Literal[{"description": "Activity control", "help": "Activity control.", "label": "Activity Control", "name": "activity-control"}, {"description": "Tenant control", "help": "Tenant control.", "label": "Tenant Control", "name": "tenant-control"}, {"description": "Domain control", "help": "Domain control.", "label": "Domain Control", "name": "domain-control"}, {"description": "Safe search control", "help": "Safe search control.", "label": "Safe Search Control", "name": "safe-search-control"}, {"description": "Advanced tenant control", "help": "Advanced tenant control.", "label": "Advanced Tenant Control", "name": "advanced-tenant-control"}, {"description": "User customized category", "help": "User customized category.", "label": "Other", "name": "other"}] | None = ...,
+        match_strategy: Literal[{"description": "Match user activity using a logical AND operator", "help": "Match user activity using a logical AND operator.", "label": "And", "name": "and"}, {"description": "Match user activity using a logical OR operator", "help": "Match user activity using a logical OR operator.", "label": "Or", "name": "or"}] | None = ...,
         match: list[dict[str, Any]] | None = ...,
         control_options: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

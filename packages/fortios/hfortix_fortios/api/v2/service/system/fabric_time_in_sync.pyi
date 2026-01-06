@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FabricTimeInSync:
     """
-    Configuration for system/fabric-time-in-sync
+    Checks whether the other FortiGate device's time in the Security Fabric is in sync with the specified utc timestamp (in seconds)
     
     Path: system/fabric_time_in_sync
     Category: service

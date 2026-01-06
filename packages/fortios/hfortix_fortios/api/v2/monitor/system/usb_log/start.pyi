@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Start:
     """
-    Configuration for system/usb-log/start
+    Start backup of logs from current VDOM to USB drive.
     
     Path: system/usb_log/start
     Category: monitor

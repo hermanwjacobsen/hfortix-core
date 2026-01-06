@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["default", "location"]
+VALID_BODY_TYPE: Literal[{"description": "Automatically generated Internet Service", "help": "Automatically generated Internet Service.", "label": "Default", "name": "default"}, {"description": "Geography location based Internet Service", "help": "Geography location based Internet Service.", "label": "Location", "name": "location"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

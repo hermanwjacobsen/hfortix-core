@@ -56,7 +56,7 @@ class TunnelResetStats:
         """
         Retrieve vpn/ipsec/tunnel_reset_stats configuration.
 
-        Configuration for vpn/ipsec/tunnel_reset_stats
+        Reset statistics for a specific IPsec VPN tunnel.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

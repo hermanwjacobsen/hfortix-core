@@ -117,12 +117,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_POLICER_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable policer config on the traffic policy.
+    "disable",  # Disable policer config on the traffic policy.
 ]
 VALID_BODY_TYPE = [
-    "ingress",
-    "egress",
+    "ingress",  # Ingress policy.
+    "egress",  # Egress policy.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -252,7 +252,7 @@ def validate_switch_controller_traffic_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "policer-status": "enable",  # Valid enum value
+        ...     "policer-status": "{'name': 'enable', 'help': 'Enable policer config on the traffic policy.', 'label': 'Enable', 'description': 'Enable policer config on the traffic policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_traffic_policy_post(payload)
         >>> assert is_valid == True

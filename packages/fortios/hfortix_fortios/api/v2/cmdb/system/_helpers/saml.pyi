@@ -1,10 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_ROLE: Literal["identity-provider", "service-provider"]
-VALID_BODY_DEFAULT_LOGIN_PAGE: Literal["normal", "sso"]
-VALID_BODY_BINDING_PROTOCOL: Literal["post", "redirect"]
+VALID_BODY_STATUS: Literal[{"description": "Enable SAML authentication", "help": "Enable SAML authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable SAML authentication", "help": "Disable SAML authentication.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ROLE: Literal[{"description": "Identity Provider", "help": "Identity Provider.", "label": "Identity Provider", "name": "identity-provider"}, {"description": "Service Provider", "help": "Service Provider.", "label": "Service Provider", "name": "service-provider"}]
+VALID_BODY_DEFAULT_LOGIN_PAGE: Literal[{"description": "Use local login page as default", "help": "Use local login page as default.", "label": "Normal", "name": "normal"}, {"description": "Use IdP\u0027s Single Sign-On page as default", "help": "Use IdP\u0027s Single Sign-On page as default.", "label": "Sso", "name": "sso"}]
+VALID_BODY_BINDING_PROTOCOL: Literal[{"description": "HTTP POST binding", "help": "HTTP POST binding.", "label": "Post", "name": "post"}, {"description": "HTTP Redirect binding", "help": "HTTP Redirect binding.", "label": "Redirect", "name": "redirect"}]
+VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT: Literal[{"description": "Both response and assertion must be signed and valid", "help": "Both response and assertion must be signed and valid.", "label": "Enable", "name": "enable"}, {"description": "At least one of response or assertion must be signed and valid", "help": "At least one of response or assertion must be signed and valid.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -31,6 +32,7 @@ __all__ = [
     "VALID_BODY_ROLE",
     "VALID_BODY_DEFAULT_LOGIN_PAGE",
     "VALID_BODY_BINDING_PROTOCOL",
+    "VALID_BODY_REQUIRE_SIGNED_RESP_AND_ASRT",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

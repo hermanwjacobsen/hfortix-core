@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Stop:
     """
-    Configuration for system/usb-log/stop
+    Stop backup of logs to USB drive.
     
     Path: system/usb_log/stop
     Category: monitor

@@ -56,7 +56,7 @@ class LanExtensionVdomStatus:
         """
         Retrieve extension_controller/lan_extension_vdom_status configuration.
 
-        Configuration for extension-controller/lan-extension-vdom-status
+        Retrieve information for the FortiGate LAN Extension VDOM.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

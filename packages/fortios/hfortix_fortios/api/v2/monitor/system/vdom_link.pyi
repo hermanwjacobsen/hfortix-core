@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class VdomLink:
     """
-    Monitor endpoint for system/vdom-link
+    Gets a list of all NPU VDOM Links and VDOM Links.
     
     Path: system/vdom_link
     Category: monitor

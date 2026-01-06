@@ -56,7 +56,7 @@ class Meta:
         """
         Retrieve wifi/meta configuration.
 
-        Configuration for wifi/meta
+        Retrieve WiFi related meta data.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

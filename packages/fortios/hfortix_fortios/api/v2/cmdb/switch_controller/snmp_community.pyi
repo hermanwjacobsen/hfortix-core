@@ -12,19 +12,19 @@ class SnmpCommunityPayload(TypedDict, total=False):
     """
     id: int  # SNMP community ID.
     name: str  # SNMP community name.
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable this SNMP community.
+    status: NotRequired[Literal[{"description": "Disable SNMP community", "help": "Disable SNMP community.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP community", "help": "Enable SNMP community.", "label": "Enable", "name": "enable"}]]  # Enable/disable this SNMP community.
     hosts: NotRequired[list[dict[str, Any]]]  # Configure IPv4 SNMP managers (hosts).
-    query_v1_status: NotRequired[Literal["disable", "enable"]]  # Enable/disable SNMP v1 queries.
+    query_v1_status: NotRequired[Literal[{"description": "Disable SNMP v1 queries", "help": "Disable SNMP v1 queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 queries", "help": "Enable SNMP v1 queries.", "label": "Enable", "name": "enable"}]]  # Enable/disable SNMP v1 queries.
     query_v1_port: NotRequired[int]  # SNMP v1 query port (default = 161).
-    query_v2c_status: NotRequired[Literal["disable", "enable"]]  # Enable/disable SNMP v2c queries.
+    query_v2c_status: NotRequired[Literal[{"description": "Disable SNMP v2c queries", "help": "Disable SNMP v2c queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c queries", "help": "Enable SNMP v2c queries.", "label": "Enable", "name": "enable"}]]  # Enable/disable SNMP v2c queries.
     query_v2c_port: NotRequired[int]  # SNMP v2c query port (default = 161).
-    trap_v1_status: NotRequired[Literal["disable", "enable"]]  # Enable/disable SNMP v1 traps.
+    trap_v1_status: NotRequired[Literal[{"description": "Disable SNMP v1 traps", "help": "Disable SNMP v1 traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 traps", "help": "Enable SNMP v1 traps.", "label": "Enable", "name": "enable"}]]  # Enable/disable SNMP v1 traps.
     trap_v1_lport: NotRequired[int]  # SNMP v2c trap local port (default = 162).
     trap_v1_rport: NotRequired[int]  # SNMP v2c trap remote port (default = 162).
-    trap_v2c_status: NotRequired[Literal["disable", "enable"]]  # Enable/disable SNMP v2c traps.
+    trap_v2c_status: NotRequired[Literal[{"description": "Disable SNMP v2c traps", "help": "Disable SNMP v2c traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c traps", "help": "Enable SNMP v2c traps.", "label": "Enable", "name": "enable"}]]  # Enable/disable SNMP v2c traps.
     trap_v2c_lport: NotRequired[int]  # SNMP v2c trap local port (default = 162).
     trap_v2c_rport: NotRequired[int]  # SNMP v2c trap remote port (default = 162).
-    events: NotRequired[Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]]  # SNMP notifications (traps) to send.
+    events: NotRequired[Literal[{"description": "Send a trap when CPU usage too high", "help": "Send a trap when CPU usage too high.", "label": "Cpu High", "name": "cpu-high"}, {"description": "Send a trap when available memory is low", "help": "Send a trap when available memory is low.", "label": "Mem Low", "name": "mem-low"}, {"description": "Send a trap when log disk space becomes low", "help": "Send a trap when log disk space becomes low.", "label": "Log Full", "name": "log-full"}, {"description": "Send a trap when an interface IP address is changed", "help": "Send a trap when an interface IP address is changed.", "label": "Intf Ip", "name": "intf-ip"}, {"description": "Send a trap when an entity MIB change occurs (RFC4133)", "help": "Send a trap when an entity MIB change occurs (RFC4133).", "label": "Ent Conf Change", "name": "ent-conf-change"}, {"description": "Send a trap for Learning event (add/delete/movefrom/moveto)", "help": "Send a trap for Learning event (add/delete/movefrom/moveto).", "label": "L2Mac", "name": "l2mac"}]]  # SNMP notifications (traps) to send.
 
 
 class SnmpCommunity:
@@ -54,19 +54,19 @@ class SnmpCommunity:
         payload_dict: SnmpCommunityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable SNMP community", "help": "Disable SNMP community.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP community", "help": "Enable SNMP community.", "label": "Enable", "name": "enable"}] | None = ...,
         hosts: list[dict[str, Any]] | None = ...,
-        query_v1_status: Literal["disable", "enable"] | None = ...,
+        query_v1_status: Literal[{"description": "Disable SNMP v1 queries", "help": "Disable SNMP v1 queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 queries", "help": "Enable SNMP v1 queries.", "label": "Enable", "name": "enable"}] | None = ...,
         query_v1_port: int | None = ...,
-        query_v2c_status: Literal["disable", "enable"] | None = ...,
+        query_v2c_status: Literal[{"description": "Disable SNMP v2c queries", "help": "Disable SNMP v2c queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c queries", "help": "Enable SNMP v2c queries.", "label": "Enable", "name": "enable"}] | None = ...,
         query_v2c_port: int | None = ...,
-        trap_v1_status: Literal["disable", "enable"] | None = ...,
+        trap_v1_status: Literal[{"description": "Disable SNMP v1 traps", "help": "Disable SNMP v1 traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 traps", "help": "Enable SNMP v1 traps.", "label": "Enable", "name": "enable"}] | None = ...,
         trap_v1_lport: int | None = ...,
         trap_v1_rport: int | None = ...,
-        trap_v2c_status: Literal["disable", "enable"] | None = ...,
+        trap_v2c_status: Literal[{"description": "Disable SNMP v2c traps", "help": "Disable SNMP v2c traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c traps", "help": "Enable SNMP v2c traps.", "label": "Enable", "name": "enable"}] | None = ...,
         trap_v2c_lport: int | None = ...,
         trap_v2c_rport: int | None = ...,
-        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | None = ...,
+        events: Literal[{"description": "Send a trap when CPU usage too high", "help": "Send a trap when CPU usage too high.", "label": "Cpu High", "name": "cpu-high"}, {"description": "Send a trap when available memory is low", "help": "Send a trap when available memory is low.", "label": "Mem Low", "name": "mem-low"}, {"description": "Send a trap when log disk space becomes low", "help": "Send a trap when log disk space becomes low.", "label": "Log Full", "name": "log-full"}, {"description": "Send a trap when an interface IP address is changed", "help": "Send a trap when an interface IP address is changed.", "label": "Intf Ip", "name": "intf-ip"}, {"description": "Send a trap when an entity MIB change occurs (RFC4133)", "help": "Send a trap when an entity MIB change occurs (RFC4133).", "label": "Ent Conf Change", "name": "ent-conf-change"}, {"description": "Send a trap for Learning event (add/delete/movefrom/moveto)", "help": "Send a trap for Learning event (add/delete/movefrom/moveto).", "label": "L2Mac", "name": "l2mac"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -77,19 +77,19 @@ class SnmpCommunity:
         payload_dict: SnmpCommunityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
+        status: Literal[{"description": "Disable SNMP community", "help": "Disable SNMP community.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP community", "help": "Enable SNMP community.", "label": "Enable", "name": "enable"}] | None = ...,
         hosts: list[dict[str, Any]] | None = ...,
-        query_v1_status: Literal["disable", "enable"] | None = ...,
+        query_v1_status: Literal[{"description": "Disable SNMP v1 queries", "help": "Disable SNMP v1 queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 queries", "help": "Enable SNMP v1 queries.", "label": "Enable", "name": "enable"}] | None = ...,
         query_v1_port: int | None = ...,
-        query_v2c_status: Literal["disable", "enable"] | None = ...,
+        query_v2c_status: Literal[{"description": "Disable SNMP v2c queries", "help": "Disable SNMP v2c queries.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c queries", "help": "Enable SNMP v2c queries.", "label": "Enable", "name": "enable"}] | None = ...,
         query_v2c_port: int | None = ...,
-        trap_v1_status: Literal["disable", "enable"] | None = ...,
+        trap_v1_status: Literal[{"description": "Disable SNMP v1 traps", "help": "Disable SNMP v1 traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v1 traps", "help": "Enable SNMP v1 traps.", "label": "Enable", "name": "enable"}] | None = ...,
         trap_v1_lport: int | None = ...,
         trap_v1_rport: int | None = ...,
-        trap_v2c_status: Literal["disable", "enable"] | None = ...,
+        trap_v2c_status: Literal[{"description": "Disable SNMP v2c traps", "help": "Disable SNMP v2c traps.", "label": "Disable", "name": "disable"}, {"description": "Enable SNMP v2c traps", "help": "Enable SNMP v2c traps.", "label": "Enable", "name": "enable"}] | None = ...,
         trap_v2c_lport: int | None = ...,
         trap_v2c_rport: int | None = ...,
-        events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"] | None = ...,
+        events: Literal[{"description": "Send a trap when CPU usage too high", "help": "Send a trap when CPU usage too high.", "label": "Cpu High", "name": "cpu-high"}, {"description": "Send a trap when available memory is low", "help": "Send a trap when available memory is low.", "label": "Mem Low", "name": "mem-low"}, {"description": "Send a trap when log disk space becomes low", "help": "Send a trap when log disk space becomes low.", "label": "Log Full", "name": "log-full"}, {"description": "Send a trap when an interface IP address is changed", "help": "Send a trap when an interface IP address is changed.", "label": "Intf Ip", "name": "intf-ip"}, {"description": "Send a trap when an entity MIB change occurs (RFC4133)", "help": "Send a trap when an entity MIB change occurs (RFC4133).", "label": "Ent Conf Change", "name": "ent-conf-change"}, {"description": "Send a trap for Learning event (add/delete/movefrom/moveto)", "help": "Send a trap for Learning event (add/delete/movefrom/moveto).", "label": "L2Mac", "name": "l2mac"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

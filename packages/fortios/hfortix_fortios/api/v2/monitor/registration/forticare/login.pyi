@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Login:
     """
-    Configuration for registration/forticare/login
+    Login to FortiCare.
     
     Path: registration/forticare/login
     Category: monitor

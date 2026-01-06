@@ -11,11 +11,11 @@ class SwitchProfilePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # FortiSwitch Profile name.
-    login_passwd_override: NotRequired[Literal["enable", "disable"]]  # Enable/disable overriding the admin administrator password f
+    login_passwd_override: NotRequired[Literal[{"description": "Override a managed FortiSwitch\u0027s admin administrator password", "help": "Override a managed FortiSwitch\u0027s admin administrator password.", "label": "Enable", "name": "enable"}, {"description": "Use the managed FortiSwitch admin administrator account password", "help": "Use the managed FortiSwitch admin administrator account password.", "label": "Disable", "name": "disable"}]]  # Enable/disable overriding the admin administrator password f
     login_passwd: NotRequired[str]  # Login password of managed FortiSwitch.
-    login: NotRequired[Literal["enable", "disable"]]  # Enable/disable FortiSwitch serial console.
-    revision_backup_on_logout: NotRequired[Literal["enable", "disable"]]  # Enable/disable automatic revision backup upon logout from Fo
-    revision_backup_on_upgrade: NotRequired[Literal["enable", "disable"]]  # Enable/disable automatic revision backup upon FortiSwitch im
+    login: NotRequired[Literal[{"description": "Enable FortiSwitch serial console", "help": "Enable FortiSwitch serial console.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiSwitch serial console", "help": "Disable FortiSwitch serial console.", "label": "Disable", "name": "disable"}]]  # Enable/disable FortiSwitch serial console.
+    revision_backup_on_logout: NotRequired[Literal[{"description": "Enable automatic revision backup upon logout from FortiSwitch", "help": "Enable automatic revision backup upon logout from FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon logout from FortiSwitch", "help": "Disable automatic revision backup upon logout from FortiSwitch.", "label": "Disable", "name": "disable"}]]  # Enable/disable automatic revision backup upon logout from Fo
+    revision_backup_on_upgrade: NotRequired[Literal[{"description": "Enable automatic revision backup upon FortiSwitch image upgrade", "help": "Enable automatic revision backup upon FortiSwitch image upgrade.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon FortiSwitch image upgrade", "help": "Disable automatic revision backup upon FortiSwitch image upgrade.", "label": "Disable", "name": "disable"}]]  # Enable/disable automatic revision backup upon FortiSwitch im
 
 
 class SwitchProfile:
@@ -44,11 +44,11 @@ class SwitchProfile:
         self,
         payload_dict: SwitchProfilePayload | None = ...,
         name: str | None = ...,
-        login_passwd_override: Literal["enable", "disable"] | None = ...,
+        login_passwd_override: Literal[{"description": "Override a managed FortiSwitch\u0027s admin administrator password", "help": "Override a managed FortiSwitch\u0027s admin administrator password.", "label": "Enable", "name": "enable"}, {"description": "Use the managed FortiSwitch admin administrator account password", "help": "Use the managed FortiSwitch admin administrator account password.", "label": "Disable", "name": "disable"}] | None = ...,
         login_passwd: str | None = ...,
-        login: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
+        login: Literal[{"description": "Enable FortiSwitch serial console", "help": "Enable FortiSwitch serial console.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiSwitch serial console", "help": "Disable FortiSwitch serial console.", "label": "Disable", "name": "disable"}] | None = ...,
+        revision_backup_on_logout: Literal[{"description": "Enable automatic revision backup upon logout from FortiSwitch", "help": "Enable automatic revision backup upon logout from FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon logout from FortiSwitch", "help": "Disable automatic revision backup upon logout from FortiSwitch.", "label": "Disable", "name": "disable"}] | None = ...,
+        revision_backup_on_upgrade: Literal[{"description": "Enable automatic revision backup upon FortiSwitch image upgrade", "help": "Enable automatic revision backup upon FortiSwitch image upgrade.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon FortiSwitch image upgrade", "help": "Disable automatic revision backup upon FortiSwitch image upgrade.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -58,11 +58,11 @@ class SwitchProfile:
         self,
         payload_dict: SwitchProfilePayload | None = ...,
         name: str | None = ...,
-        login_passwd_override: Literal["enable", "disable"] | None = ...,
+        login_passwd_override: Literal[{"description": "Override a managed FortiSwitch\u0027s admin administrator password", "help": "Override a managed FortiSwitch\u0027s admin administrator password.", "label": "Enable", "name": "enable"}, {"description": "Use the managed FortiSwitch admin administrator account password", "help": "Use the managed FortiSwitch admin administrator account password.", "label": "Disable", "name": "disable"}] | None = ...,
         login_passwd: str | None = ...,
-        login: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_logout: Literal["enable", "disable"] | None = ...,
-        revision_backup_on_upgrade: Literal["enable", "disable"] | None = ...,
+        login: Literal[{"description": "Enable FortiSwitch serial console", "help": "Enable FortiSwitch serial console.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiSwitch serial console", "help": "Disable FortiSwitch serial console.", "label": "Disable", "name": "disable"}] | None = ...,
+        revision_backup_on_logout: Literal[{"description": "Enable automatic revision backup upon logout from FortiSwitch", "help": "Enable automatic revision backup upon logout from FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon logout from FortiSwitch", "help": "Disable automatic revision backup upon logout from FortiSwitch.", "label": "Disable", "name": "disable"}] | None = ...,
+        revision_backup_on_upgrade: Literal[{"description": "Enable automatic revision backup upon FortiSwitch image upgrade", "help": "Enable automatic revision backup upon FortiSwitch image upgrade.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon FortiSwitch image upgrade", "help": "Disable automatic revision backup upon FortiSwitch image upgrade.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

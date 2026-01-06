@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/fortianalyzer_queue",
     "category": "monitor",
     "api_path": "log/fortianalyzer-queue",
-    "help": "Configuration for log/fortianalyzer-queue",
+    "help": "Retrieve information on FortiAnalyzer's queue state. Note:- FortiAnalyzer logs are queued only if upload-option is realtime.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

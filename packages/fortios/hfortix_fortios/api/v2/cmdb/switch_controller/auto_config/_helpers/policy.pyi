@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_POE_STATUS: Literal["enable", "disable"]
-VALID_BODY_IGMP_FLOOD_REPORT: Literal["enable", "disable"]
-VALID_BODY_IGMP_FLOOD_TRAFFIC: Literal["enable", "disable"]
+VALID_BODY_POE_STATUS: Literal[{"description": "Enable PoE status", "help": "Enable PoE status.", "label": "Enable", "name": "enable"}, {"description": "Disable PoE status", "help": "Disable PoE status.", "label": "Disable", "name": "disable"}]
+VALID_BODY_IGMP_FLOOD_REPORT: Literal[{"description": "Enable IGMP flood report", "help": "Enable IGMP flood report.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood report", "help": "Disable IGMP flood report.", "label": "Disable", "name": "disable"}]
+VALID_BODY_IGMP_FLOOD_TRAFFIC: Literal[{"description": "Enable IGMP flood traffic", "help": "Enable IGMP flood traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable IGMP flood traffic", "help": "Disable IGMP flood traffic.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

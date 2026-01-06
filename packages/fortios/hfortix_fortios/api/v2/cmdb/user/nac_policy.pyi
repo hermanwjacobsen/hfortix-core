@@ -12,11 +12,11 @@ class NacPolicyPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # NAC policy name.
     description: NotRequired[str]  # Description for the NAC policy matching pattern.
-    category: NotRequired[Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"]]  # Category of NAC policy.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable NAC policy.
-    match_type: NotRequired[Literal["dynamic", "override"]]  # Match and retain the devices based on the type.
+    category: NotRequired[Literal[{"description": "Device category", "help": "Device category.", "label": "Device", "name": "device"}, {"description": "Firewall user category", "help": "Firewall user category.", "label": "Firewall User", "name": "firewall-user"}, {"description": "EMS Tag category", "help": "EMS Tag category.", "label": "Ems Tag", "name": "ems-tag"}, {"description": "FortiVoice Tag category", "help": "FortiVoice Tag category.", "label": "Fortivoice Tag", "name": "fortivoice-tag"}, {"description": "Vulnerability category", "help": "Vulnerability category.", "label": "Vulnerability", "name": "vulnerability"}]]  # Category of NAC policy.
+    status: NotRequired[Literal[{"description": "Enable NAC policy", "help": "Enable NAC policy.", "label": "Enable", "name": "enable"}, {"description": "Disable NAC policy", "help": "Disable NAC policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable NAC policy.
+    match_type: NotRequired[Literal[{"description": "Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline", "help": "Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline.", "label": "Dynamic", "name": "dynamic"}, {"description": "Matched devices will be retained until the match-period", "help": "Matched devices will be retained until the match-period.", "label": "Override", "name": "override"}]]  # Match and retain the devices based on the type.
     match_period: NotRequired[int]  # Number of days the matched devices will be retained (0 - alw
-    match_remove: NotRequired[Literal["default", "link-down"]]  # Options to remove the matched override devices.
+    match_remove: NotRequired[Literal[{"description": "Remove the matched override devices based on the match period", "help": "Remove the matched override devices based on the match period.", "label": "Default", "name": "default"}, {"description": "Remove the matched override devices based on switch port link down event", "help": "Remove the matched override devices based on switch port link down event.", "label": "Link Down", "name": "link-down"}]]  # Options to remove the matched override devices.
     mac: NotRequired[str]  # NAC policy matching MAC address.
     hw_vendor: NotRequired[str]  # NAC policy matching hardware vendor.
     type: NotRequired[str]  # NAC policy matching type.
@@ -65,11 +65,11 @@ class NacPolicy:
         payload_dict: NacPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
+        category: Literal[{"description": "Device category", "help": "Device category.", "label": "Device", "name": "device"}, {"description": "Firewall user category", "help": "Firewall user category.", "label": "Firewall User", "name": "firewall-user"}, {"description": "EMS Tag category", "help": "EMS Tag category.", "label": "Ems Tag", "name": "ems-tag"}, {"description": "FortiVoice Tag category", "help": "FortiVoice Tag category.", "label": "Fortivoice Tag", "name": "fortivoice-tag"}, {"description": "Vulnerability category", "help": "Vulnerability category.", "label": "Vulnerability", "name": "vulnerability"}] | None = ...,
+        status: Literal[{"description": "Enable NAC policy", "help": "Enable NAC policy.", "label": "Enable", "name": "enable"}, {"description": "Disable NAC policy", "help": "Disable NAC policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        match_type: Literal[{"description": "Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline", "help": "Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline.", "label": "Dynamic", "name": "dynamic"}, {"description": "Matched devices will be retained until the match-period", "help": "Matched devices will be retained until the match-period.", "label": "Override", "name": "override"}] | None = ...,
         match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
+        match_remove: Literal[{"description": "Remove the matched override devices based on the match period", "help": "Remove the matched override devices based on the match period.", "label": "Default", "name": "default"}, {"description": "Remove the matched override devices based on switch port link down event", "help": "Remove the matched override devices based on switch port link down event.", "label": "Link Down", "name": "link-down"}] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
         type: str | None = ...,
@@ -99,11 +99,11 @@ class NacPolicy:
         payload_dict: NacPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        category: Literal["device", "firewall-user", "ems-tag", "fortivoice-tag", "vulnerability"] | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        match_type: Literal["dynamic", "override"] | None = ...,
+        category: Literal[{"description": "Device category", "help": "Device category.", "label": "Device", "name": "device"}, {"description": "Firewall user category", "help": "Firewall user category.", "label": "Firewall User", "name": "firewall-user"}, {"description": "EMS Tag category", "help": "EMS Tag category.", "label": "Ems Tag", "name": "ems-tag"}, {"description": "FortiVoice Tag category", "help": "FortiVoice Tag category.", "label": "Fortivoice Tag", "name": "fortivoice-tag"}, {"description": "Vulnerability category", "help": "Vulnerability category.", "label": "Vulnerability", "name": "vulnerability"}] | None = ...,
+        status: Literal[{"description": "Enable NAC policy", "help": "Enable NAC policy.", "label": "Enable", "name": "enable"}, {"description": "Disable NAC policy", "help": "Disable NAC policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        match_type: Literal[{"description": "Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline", "help": "Matched devices will be removed on dynamic events like link-down,device-inactivity,switch-offline.", "label": "Dynamic", "name": "dynamic"}, {"description": "Matched devices will be retained until the match-period", "help": "Matched devices will be retained until the match-period.", "label": "Override", "name": "override"}] | None = ...,
         match_period: int | None = ...,
-        match_remove: Literal["default", "link-down"] | None = ...,
+        match_remove: Literal[{"description": "Remove the matched override devices based on the match period", "help": "Remove the matched override devices based on the match period.", "label": "Default", "name": "default"}, {"description": "Remove the matched override devices based on switch port link down event", "help": "Remove the matched override devices based on switch port link down event.", "label": "Link Down", "name": "link-down"}] | None = ...,
         mac: str | None = ...,
         hw_vendor: str | None = ...,
         type: str | None = ...,

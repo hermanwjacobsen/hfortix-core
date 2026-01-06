@@ -239,82 +239,82 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SERVER_IDENTITY_CHECK = [
-    "enable",
-    "disable",
+    "enable",  # Enable server identity check.
+    "disable",  # Disable server identity check.
 ]
 VALID_BODY_TYPE = [
-    "simple",
-    "anonymous",
-    "regular",
+    "simple",  # Simple password authentication without search.
+    "anonymous",  # Bind using anonymous user search.
+    "regular",  # Bind using username/password and then search.
 ]
 VALID_BODY_TWO_FACTOR = [
-    "disable",
-    "fortitoken-cloud",
+    "disable",  # disable two-factor authentication.
+    "fortitoken-cloud",  # FortiToken Cloud Service.
 ]
 VALID_BODY_TWO_FACTOR_AUTHENTICATION = [
-    "fortitoken",
-    "email",
-    "sms",
+    "fortitoken",  # FortiToken authentication.
+    "email",  # Email one time password.
+    "sms",  # SMS one time password.
 ]
 VALID_BODY_TWO_FACTOR_NOTIFICATION = [
-    "email",
-    "sms",
+    "email",  # Email notification for activation code.
+    "sms",  # SMS notification for activation code.
 ]
 VALID_BODY_GROUP_MEMBER_CHECK = [
-    "user-attr",
-    "group-object",
-    "posix-group-object",
+    "user-attr",  # User attribute checking.
+    "group-object",  # Group object checking.
+    "posix-group-object",  # POSIX group object checking.
 ]
 VALID_BODY_SECURE = [
-    "disable",
-    "starttls",
-    "ldaps",
+    "disable",  # No SSL.
+    "starttls",  # Use StartTLS.
+    "ldaps",  # Use LDAPS.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_BODY_PASSWORD_EXPIRY_WARNING = [
-    "enable",
-    "disable",
+    "enable",  # Enable password expiry warnings.
+    "disable",  # Disable password expiry warnings.
 ]
 VALID_BODY_PASSWORD_RENEWAL = [
-    "enable",
-    "disable",
+    "enable",  # Enable online password renewal.
+    "disable",  # Disable online password renewal.
 ]
 VALID_BODY_ACCOUNT_KEY_PROCESSING = [
-    "same",
-    "strip",
+    "same",  # Same as subject identity field.
+    "strip",  # Strip domain string from subject identity field.
 ]
 VALID_BODY_ACCOUNT_KEY_CERT_FIELD = [
-    "othername",
-    "rfc822name",
-    "dnsname",
-    "cn",
+    "othername",  # Other name in SAN.
+    "rfc822name",  # RFC822 email address in SAN.
+    "dnsname",  # DNS name in SAN.
+    "cn",  # CN in subject.
 ]
 VALID_BODY_SEARCH_TYPE = [
-    "recursive",
+    "recursive",  # Recursively retrieve the user-group chain information of a user in a particular Microsoft AD domain.
 ]
 VALID_BODY_CLIENT_CERT_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable using client certificate for TLS authentication.
+    "disable",  # Disable using client certificate for TLS authentication.
 ]
 VALID_BODY_OBTAIN_USER_INFO = [
-    "enable",
-    "disable",
+    "enable",  # Enable obtaining of user information.
+    "disable",  # Disable obtaining of user information.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_ANTIPHISH = [
-    "enable",
-    "disable",
+    "enable",  # Enable AntiPhishing credential backend.
+    "disable",  # Disable AntiPhishing credential backend.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -445,7 +445,7 @@ def validate_user_ldap_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "server-identity-check": "enable",  # Valid enum value
+        ...     "server-identity-check": "{'name': 'enable', 'help': 'Enable server identity check.', 'label': 'Enable', 'description': 'Enable server identity check'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_ldap_post(payload)
         >>> assert is_valid == True

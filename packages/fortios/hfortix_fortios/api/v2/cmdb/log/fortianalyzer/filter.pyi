@@ -10,18 +10,18 @@ class FilterPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    severity: NotRequired[Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]]  # Lowest severity level to log.
-    forward_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable forward traffic logging.
-    local_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable local in or out traffic logging.
-    multicast_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable multicast traffic logging.
-    sniffer_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable sniffer traffic logging.
-    ztna_traffic: NotRequired[Literal["enable", "disable"]]  # Enable/disable ztna traffic logging.
-    http_transaction: NotRequired[Literal["enable", "disable"]]  # Enable/disable log HTTP transaction messages.
-    anomaly: NotRequired[Literal["enable", "disable"]]  # Enable/disable anomaly logging.
-    voip: NotRequired[Literal["enable", "disable"]]  # Enable/disable VoIP logging.
-    dlp_archive: NotRequired[Literal["enable", "disable"]]  # Enable/disable DLP archive logging.
-    gtp: NotRequired[Literal["enable", "disable"]]  # Enable/disable GTP messages logging.
-    forti_switch: NotRequired[Literal["enable", "disable"]]  # Enable/disable Forti-Switch logging.
+    severity: NotRequired[Literal[{"description": "Emergency level", "help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"description": "Alert level", "help": "Alert level.", "label": "Alert", "name": "alert"}, {"description": "Critical level", "help": "Critical level.", "label": "Critical", "name": "critical"}, {"description": "Error level", "help": "Error level.", "label": "Error", "name": "error"}, {"description": "Warning level", "help": "Warning level.", "label": "Warning", "name": "warning"}, {"description": "Notification level", "help": "Notification level.", "label": "Notification", "name": "notification"}, {"description": "Information level", "help": "Information level.", "label": "Information", "name": "information"}, {"description": "Debug level", "help": "Debug level.", "label": "Debug", "name": "debug"}]]  # Lowest severity level to log.
+    forward_traffic: NotRequired[Literal[{"description": "Enable forward traffic logging", "help": "Enable forward traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable forward traffic logging", "help": "Disable forward traffic logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable forward traffic logging.
+    local_traffic: NotRequired[Literal[{"description": "Enable local in or out traffic logging", "help": "Enable local in or out traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable local in or out traffic logging", "help": "Disable local in or out traffic logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable local in or out traffic logging.
+    multicast_traffic: NotRequired[Literal[{"description": "Enable multicast traffic logging", "help": "Enable multicast traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable multicast traffic logging", "help": "Disable multicast traffic logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable multicast traffic logging.
+    sniffer_traffic: NotRequired[Literal[{"description": "Enable sniffer traffic logging", "help": "Enable sniffer traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable sniffer traffic logging", "help": "Disable sniffer traffic logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable sniffer traffic logging.
+    ztna_traffic: NotRequired[Literal[{"description": "Enable ztna traffic logging", "help": "Enable ztna traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable ztna traffic logging", "help": "Disable ztna traffic logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable ztna traffic logging.
+    http_transaction: NotRequired[Literal[{"description": "Enable http transaction logging", "help": "Enable http transaction logging.", "label": "Enable", "name": "enable"}, {"description": "Disable http transaction logging", "help": "Disable http transaction logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable log HTTP transaction messages.
+    anomaly: NotRequired[Literal[{"description": "Enable anomaly logging", "help": "Enable anomaly logging.", "label": "Enable", "name": "enable"}, {"description": "Disable anomaly logging", "help": "Disable anomaly logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable anomaly logging.
+    voip: NotRequired[Literal[{"description": "Enable VoIP logging", "help": "Enable VoIP logging.", "label": "Enable", "name": "enable"}, {"description": "Disable VoIP logging", "help": "Disable VoIP logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable VoIP logging.
+    dlp_archive: NotRequired[Literal[{"description": "Enable DLP archive logging", "help": "Enable DLP archive logging.", "label": "Enable", "name": "enable"}, {"description": "Disable DLP archive logging", "help": "Disable DLP archive logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable DLP archive logging.
+    gtp: NotRequired[Literal[{"help": "Enable GTP messages logging.", "label": "Enable", "name": "enable"}, {"help": "Disable GTP messages logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable GTP messages logging.
+    forti_switch: NotRequired[Literal[{"description": "Enable Forti-Switch logging", "help": "Enable Forti-Switch logging.", "label": "Enable", "name": "enable"}, {"description": "Disable Forti-Switch logging", "help": "Disable Forti-Switch logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable Forti-Switch logging.
     free_style: NotRequired[list[dict[str, Any]]]  # Free style filters.
 
 
@@ -49,18 +49,18 @@ class Filter:
     def post(
         self,
         payload_dict: FilterPayload | None = ...,
-        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
-        forward_traffic: Literal["enable", "disable"] | None = ...,
-        local_traffic: Literal["enable", "disable"] | None = ...,
-        multicast_traffic: Literal["enable", "disable"] | None = ...,
-        sniffer_traffic: Literal["enable", "disable"] | None = ...,
-        ztna_traffic: Literal["enable", "disable"] | None = ...,
-        http_transaction: Literal["enable", "disable"] | None = ...,
-        anomaly: Literal["enable", "disable"] | None = ...,
-        voip: Literal["enable", "disable"] | None = ...,
-        dlp_archive: Literal["enable", "disable"] | None = ...,
-        gtp: Literal["enable", "disable"] | None = ...,
-        forti_switch: Literal["enable", "disable"] | None = ...,
+        severity: Literal[{"description": "Emergency level", "help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"description": "Alert level", "help": "Alert level.", "label": "Alert", "name": "alert"}, {"description": "Critical level", "help": "Critical level.", "label": "Critical", "name": "critical"}, {"description": "Error level", "help": "Error level.", "label": "Error", "name": "error"}, {"description": "Warning level", "help": "Warning level.", "label": "Warning", "name": "warning"}, {"description": "Notification level", "help": "Notification level.", "label": "Notification", "name": "notification"}, {"description": "Information level", "help": "Information level.", "label": "Information", "name": "information"}, {"description": "Debug level", "help": "Debug level.", "label": "Debug", "name": "debug"}] | None = ...,
+        forward_traffic: Literal[{"description": "Enable forward traffic logging", "help": "Enable forward traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable forward traffic logging", "help": "Disable forward traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        local_traffic: Literal[{"description": "Enable local in or out traffic logging", "help": "Enable local in or out traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable local in or out traffic logging", "help": "Disable local in or out traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        multicast_traffic: Literal[{"description": "Enable multicast traffic logging", "help": "Enable multicast traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable multicast traffic logging", "help": "Disable multicast traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        sniffer_traffic: Literal[{"description": "Enable sniffer traffic logging", "help": "Enable sniffer traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable sniffer traffic logging", "help": "Disable sniffer traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        ztna_traffic: Literal[{"description": "Enable ztna traffic logging", "help": "Enable ztna traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable ztna traffic logging", "help": "Disable ztna traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        http_transaction: Literal[{"description": "Enable http transaction logging", "help": "Enable http transaction logging.", "label": "Enable", "name": "enable"}, {"description": "Disable http transaction logging", "help": "Disable http transaction logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        anomaly: Literal[{"description": "Enable anomaly logging", "help": "Enable anomaly logging.", "label": "Enable", "name": "enable"}, {"description": "Disable anomaly logging", "help": "Disable anomaly logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        voip: Literal[{"description": "Enable VoIP logging", "help": "Enable VoIP logging.", "label": "Enable", "name": "enable"}, {"description": "Disable VoIP logging", "help": "Disable VoIP logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        dlp_archive: Literal[{"description": "Enable DLP archive logging", "help": "Enable DLP archive logging.", "label": "Enable", "name": "enable"}, {"description": "Disable DLP archive logging", "help": "Disable DLP archive logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        gtp: Literal[{"help": "Enable GTP messages logging.", "label": "Enable", "name": "enable"}, {"help": "Disable GTP messages logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        forti_switch: Literal[{"description": "Enable Forti-Switch logging", "help": "Enable Forti-Switch logging.", "label": "Enable", "name": "enable"}, {"description": "Disable Forti-Switch logging", "help": "Disable Forti-Switch logging.", "label": "Disable", "name": "disable"}] | None = ...,
         free_style: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -70,18 +70,18 @@ class Filter:
     def put(
         self,
         payload_dict: FilterPayload | None = ...,
-        severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"] | None = ...,
-        forward_traffic: Literal["enable", "disable"] | None = ...,
-        local_traffic: Literal["enable", "disable"] | None = ...,
-        multicast_traffic: Literal["enable", "disable"] | None = ...,
-        sniffer_traffic: Literal["enable", "disable"] | None = ...,
-        ztna_traffic: Literal["enable", "disable"] | None = ...,
-        http_transaction: Literal["enable", "disable"] | None = ...,
-        anomaly: Literal["enable", "disable"] | None = ...,
-        voip: Literal["enable", "disable"] | None = ...,
-        dlp_archive: Literal["enable", "disable"] | None = ...,
-        gtp: Literal["enable", "disable"] | None = ...,
-        forti_switch: Literal["enable", "disable"] | None = ...,
+        severity: Literal[{"description": "Emergency level", "help": "Emergency level.", "label": "Emergency", "name": "emergency"}, {"description": "Alert level", "help": "Alert level.", "label": "Alert", "name": "alert"}, {"description": "Critical level", "help": "Critical level.", "label": "Critical", "name": "critical"}, {"description": "Error level", "help": "Error level.", "label": "Error", "name": "error"}, {"description": "Warning level", "help": "Warning level.", "label": "Warning", "name": "warning"}, {"description": "Notification level", "help": "Notification level.", "label": "Notification", "name": "notification"}, {"description": "Information level", "help": "Information level.", "label": "Information", "name": "information"}, {"description": "Debug level", "help": "Debug level.", "label": "Debug", "name": "debug"}] | None = ...,
+        forward_traffic: Literal[{"description": "Enable forward traffic logging", "help": "Enable forward traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable forward traffic logging", "help": "Disable forward traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        local_traffic: Literal[{"description": "Enable local in or out traffic logging", "help": "Enable local in or out traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable local in or out traffic logging", "help": "Disable local in or out traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        multicast_traffic: Literal[{"description": "Enable multicast traffic logging", "help": "Enable multicast traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable multicast traffic logging", "help": "Disable multicast traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        sniffer_traffic: Literal[{"description": "Enable sniffer traffic logging", "help": "Enable sniffer traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable sniffer traffic logging", "help": "Disable sniffer traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        ztna_traffic: Literal[{"description": "Enable ztna traffic logging", "help": "Enable ztna traffic logging.", "label": "Enable", "name": "enable"}, {"description": "Disable ztna traffic logging", "help": "Disable ztna traffic logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        http_transaction: Literal[{"description": "Enable http transaction logging", "help": "Enable http transaction logging.", "label": "Enable", "name": "enable"}, {"description": "Disable http transaction logging", "help": "Disable http transaction logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        anomaly: Literal[{"description": "Enable anomaly logging", "help": "Enable anomaly logging.", "label": "Enable", "name": "enable"}, {"description": "Disable anomaly logging", "help": "Disable anomaly logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        voip: Literal[{"description": "Enable VoIP logging", "help": "Enable VoIP logging.", "label": "Enable", "name": "enable"}, {"description": "Disable VoIP logging", "help": "Disable VoIP logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        dlp_archive: Literal[{"description": "Enable DLP archive logging", "help": "Enable DLP archive logging.", "label": "Enable", "name": "enable"}, {"description": "Disable DLP archive logging", "help": "Disable DLP archive logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        gtp: Literal[{"help": "Enable GTP messages logging.", "label": "Enable", "name": "enable"}, {"help": "Disable GTP messages logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        forti_switch: Literal[{"description": "Enable Forti-Switch logging", "help": "Enable Forti-Switch logging.", "label": "Enable", "name": "enable"}, {"description": "Disable Forti-Switch logging", "help": "Disable Forti-Switch logging.", "label": "Disable", "name": "disable"}] | None = ...,
         free_style: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

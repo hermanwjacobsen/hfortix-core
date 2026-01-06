@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class PeerStats:
     """
-    Configuration for wanopt/peer_stats
+    Retrieve a list of WAN opt peer statistics.
     
     Path: wanopt/peer_stats
     Category: monitor

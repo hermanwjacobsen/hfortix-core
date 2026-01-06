@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_VERIFY_TRANSFORMED_PATTERN: Literal["enable", "disable"]
+VALID_BODY_VERIFY_TRANSFORMED_PATTERN: Literal[{"description": "Enable verification for transformed pattern", "help": "Enable verification for transformed pattern.", "label": "Enable", "name": "enable"}, {"description": "Disable verification for transformed pattern", "help": "Disable verification for transformed pattern.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

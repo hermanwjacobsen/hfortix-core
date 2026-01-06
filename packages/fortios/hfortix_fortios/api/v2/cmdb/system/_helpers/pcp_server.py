@@ -123,7 +123,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to respond to ARP requests for external IP (default = enable).",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable ARP reply.", "label": "Disable", "name": "disable"}, {"help": "Enable ARP reply.", "label": "Enable", "name": "enable"}],
         },
         "extip": {
             "type": "user",
@@ -169,13 +169,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Allowed PCP opcode.",
             "default": "map peer announce",
-            "options": ["map", "peer", "announce"],
+            "options": [{"help": "Allow opcode MAP.", "label": "Map", "name": "map"}, {"help": "Allow opcode PEER.", "label": "Peer", "name": "peer"}, {"help": "Allow opcode ANNOUNCE.", "label": "Announce", "name": "announce"}],
         },
         "third-party": {
             "type": "option",
             "help": "Allow/disallow third party option.",
             "default": "disallow",
-            "options": ["allow", "disallow"],
+            "options": [{"help": "Allow third party option.", "label": "Allow", "name": "allow"}, {"help": "Disallow third party opiton.", "label": "Disallow", "name": "disallow"}],
         },
         "third-party-subnet": {
             "type": "string",
@@ -185,7 +185,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable multicast announcements.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable multicast announcements.", "label": "Enable", "name": "enable"}, {"help": "Disable multicast announcements.", "label": "Disable", "name": "disable"}],
         },
         "announcement-count": {
             "type": "integer",
@@ -212,8 +212,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable PCP Server.
+    "disable",  # Disable PCP Server.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -338,7 +338,7 @@ def validate_system_pcp_server_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable PCP Server.', 'label': 'Enable', 'description': 'Enable PCP Server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_pcp_server_post(payload)
         >>> assert is_valid == True

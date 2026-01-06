@@ -56,7 +56,7 @@ class ClearCounters:
         """
         Retrieve firewall/multicast_policy6/clear_counters configuration.
 
-        Configuration for firewall/multicast-policy6/clear_counters
+        Reset traffic statistics for one or more firewall IPv6 multicast policies by policy ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve sniffer/download configuration.
 
-        Configuration for sniffer/download
+        Returns a PCAP file of the packet capture.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

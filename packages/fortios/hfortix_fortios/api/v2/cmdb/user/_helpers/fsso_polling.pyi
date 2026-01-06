@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_SMBV1: Literal["enable", "disable"]
-VALID_BODY_SMB_NTLMV1_AUTH: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SMBV1: Literal[{"description": "Enable support of SMBv1 for Samba", "help": "Enable support of SMBv1 for Samba.", "label": "Enable", "name": "enable"}, {"description": "Disable support of SMBv1 for Samba", "help": "Disable support of SMBv1 for Samba.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SMB_NTLMV1_AUTH: Literal[{"description": "Enable support of NTLMv1 for Samba authentication", "help": "Enable support of NTLMv1 for Samba authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable support of NTLMv1 for Samba authentication", "help": "Disable support of NTLMv1 for Samba authentication.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

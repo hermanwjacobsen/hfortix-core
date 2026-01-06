@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/ipconf",
     "category": "monitor",
     "api_path": "system/ipconf",
-    "help": "Configuration for system/ipconf",
+    "help": "Determine if there is an IP conflict for a specific IP using ARP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

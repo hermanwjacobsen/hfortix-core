@@ -13,9 +13,9 @@ class TemplatePayload(TypedDict, total=False):
     name: str  # Initial config template name.
     vlanid: int  # Unique VLAN ID.
     ip: NotRequired[str]  # Interface IPv4 address and subnet mask.
-    allowaccess: NotRequired[Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm"]]  # Permitted types of management access to this interface.
-    auto_ip: NotRequired[Literal["enable", "disable"]]  # Automatically allocate interface address and subnet block.
-    dhcp_server: NotRequired[Literal["enable", "disable"]]  # Enable/disable a DHCP server on this interface.
+    allowaccess: NotRequired[Literal[{"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "FortiManager access", "help": "FortiManager access.", "label": "Fgfm", "name": "fgfm"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}, {"description": "Probe access", "help": "Probe access.", "label": "Probe Response", "name": "probe-response"}, {"description": "Security Fabric access", "help": "Security Fabric access.", "label": "Fabric", "name": "fabric"}, {"description": "FTM access", "help": "FTM access.", "label": "Ftm", "name": "ftm"}]]  # Permitted types of management access to this interface.
+    auto_ip: NotRequired[Literal[{"description": "Enable auto-ip status", "help": "Enable auto-ip status.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-ip status", "help": "Disable auto-ip status.", "label": "Disable", "name": "disable"}]]  # Automatically allocate interface address and subnet block.
+    dhcp_server: NotRequired[Literal[{"description": "Enable DHCP server", "help": "Enable DHCP server.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server", "help": "Disable DHCP server.", "label": "Disable", "name": "disable"}]]  # Enable/disable a DHCP server on this interface.
 
 
 class Template:
@@ -46,9 +46,9 @@ class Template:
         name: str | None = ...,
         vlanid: int | None = ...,
         ip: str | None = ...,
-        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm"] | None = ...,
-        auto_ip: Literal["enable", "disable"] | None = ...,
-        dhcp_server: Literal["enable", "disable"] | None = ...,
+        allowaccess: Literal[{"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "FortiManager access", "help": "FortiManager access.", "label": "Fgfm", "name": "fgfm"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}, {"description": "Probe access", "help": "Probe access.", "label": "Probe Response", "name": "probe-response"}, {"description": "Security Fabric access", "help": "Security Fabric access.", "label": "Fabric", "name": "fabric"}, {"description": "FTM access", "help": "FTM access.", "label": "Ftm", "name": "ftm"}] | None = ...,
+        auto_ip: Literal[{"description": "Enable auto-ip status", "help": "Enable auto-ip status.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-ip status", "help": "Disable auto-ip status.", "label": "Disable", "name": "disable"}] | None = ...,
+        dhcp_server: Literal[{"description": "Enable DHCP server", "help": "Enable DHCP server.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server", "help": "Disable DHCP server.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -60,9 +60,9 @@ class Template:
         name: str | None = ...,
         vlanid: int | None = ...,
         ip: str | None = ...,
-        allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm"] | None = ...,
-        auto_ip: Literal["enable", "disable"] | None = ...,
-        dhcp_server: Literal["enable", "disable"] | None = ...,
+        allowaccess: Literal[{"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "FortiManager access", "help": "FortiManager access.", "label": "Fgfm", "name": "fgfm"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}, {"description": "Probe access", "help": "Probe access.", "label": "Probe Response", "name": "probe-response"}, {"description": "Security Fabric access", "help": "Security Fabric access.", "label": "Fabric", "name": "fabric"}, {"description": "FTM access", "help": "FTM access.", "label": "Ftm", "name": "ftm"}] | None = ...,
+        auto_ip: Literal[{"description": "Enable auto-ip status", "help": "Enable auto-ip status.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-ip status", "help": "Disable auto-ip status.", "label": "Disable", "name": "disable"}] | None = ...,
+        dhcp_server: Literal[{"description": "Enable DHCP server", "help": "Enable DHCP server.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server", "help": "Disable DHCP server.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

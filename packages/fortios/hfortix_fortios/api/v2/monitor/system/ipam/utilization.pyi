@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Utilization:
     """
-    Configuration for system/ipam/utilization
+    Retrieve IP utilization for IPAM.
     
     Path: system/ipam/utilization
     Category: monitor

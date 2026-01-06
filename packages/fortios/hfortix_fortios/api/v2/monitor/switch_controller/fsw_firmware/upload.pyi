@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Upload:
     """
-    Configuration for switch-controller/fsw-firmware/upload
+    Upload FortiSwitch firmware to the management FortiGate and then push to target FortiSwitches.
     
     Path: switch_controller/fsw_firmware/upload
     Category: monitor

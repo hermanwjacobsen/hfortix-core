@@ -103,18 +103,18 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable Status of the entry.
+    "disable",  # Disable Status of the entry.
 ]
 VALID_BODY_CONNECTION_MODE = [
-    "sequentially",
-    "simultaneously",
+    "sequentially",  # Connect the different destinations sequentially.
+    "simultaneously",  # Connect the different destinations simultaneously.
 ]
 VALID_BODY_PROTOCOL = [
-    "IPv4-first",
-    "IPv6-first",
-    "IPv4-only",
-    "IPv6-only",
+    "IPv4-first",  # Connect IPv4 destinations first.
+    "IPv6-first",  # Connect IPv6 destinations first.
+    "IPv4-only",  # Connect IPv4 destinations only.
+    "IPv6-only",  # Connect IPv6 destinations only.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -242,7 +242,7 @@ def validate_web_proxy_fast_fallback_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable Status of the entry.', 'label': 'Enable', 'description': 'Enable Status of the entry'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_web_proxy_fast_fallback_post(payload)
         >>> assert is_valid == True

@@ -56,7 +56,7 @@ class GtpStatistics:
         """
         Retrieve firewall/gtp_statistics configuration.
 
-        Configuration for firewall/gtp-statistics
+        Retrieve statistics for GTP.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

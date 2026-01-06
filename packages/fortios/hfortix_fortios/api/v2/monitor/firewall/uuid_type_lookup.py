@@ -56,7 +56,7 @@ class UuidTypeLookup:
         """
         Retrieve firewall/uuid_type_lookup configuration.
 
-        Configuration for firewall/uuid-type-lookup
+        Retrieve a mapping of UUIDs to their firewall object type for given UUIDs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/traffic_history/enable_app_bandwidth_tracking",
     "category": "monitor",
     "api_path": "system/traffic-history/enable-app-bandwidth-tracking",
-    "help": "Configuration for system/traffic-history/enable-app-bandwidth-tracking",
+    "help": "Enable FortiView application bandwidth tracking.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

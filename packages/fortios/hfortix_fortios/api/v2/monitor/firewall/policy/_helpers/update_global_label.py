@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/policy/update_global_label",
     "category": "monitor",
     "api_path": "firewall/policy/update-global-label",
-    "help": "Configuration for firewall/policy/update-global-label",
+    "help": "Update the global-label of group starting with the provided leading policy ID.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

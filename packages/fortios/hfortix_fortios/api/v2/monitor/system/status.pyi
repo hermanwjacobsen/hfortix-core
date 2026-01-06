@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Status:
     """
-    Configuration for system/status
+    Retrieve basic system status.
     
     Path: system/status
     Category: monitor

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Thumbnail:
     """
-    Configuration for user/info/thumbnail
+    Get user info thumbnail. Returns the first match to the filter.
     
     Path: user/info/thumbnail
     Category: monitor

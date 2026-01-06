@@ -135,12 +135,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "mpip",
-    "fortidata",
+    "mpip",  # Microsoft Purview Information Protection.
+    "fortidata",  # FortiData.
 ]
 VALID_BODY_MPIP_TYPE = [
-    "remote",
-    "local",
+    "remote",  # Remotely fetched MPIP labels.
+    "local",  # Locally configured MPIP labels.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -270,7 +270,7 @@ def validate_dlp_label_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "entries": True,
-        ...     "type": "mpip",  # Valid enum value
+        ...     "type": "{'name': 'mpip', 'help': 'Microsoft Purview Information Protection.', 'label': 'Mpip', 'description': 'Microsoft Purview Information Protection'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_dlp_label_post(payload)
         >>> assert is_valid == True

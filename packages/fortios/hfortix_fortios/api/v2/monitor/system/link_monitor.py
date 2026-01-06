@@ -56,7 +56,7 @@ class LinkMonitor:
         """
         Retrieve system/link_monitor configuration.
 
-        Configuration for system/link-monitor
+        Retrieve per-interface statistics for active link monitors.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

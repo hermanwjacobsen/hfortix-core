@@ -56,7 +56,7 @@ class TunnelDown:
         """
         Retrieve vpn/ipsec/tunnel_down configuration.
 
-        Configuration for vpn/ipsec/tunnel_down
+        Bring down a specific IPsec VPN tunnel.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -400,13 +400,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable active migration (default = disable).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable active migration.", "label": "Enable", "name": "enable"}, {"help": "Disable active migration.", "label": "Disable", "name": "disable"}],
         },
         "grease-quic-bit": {
             "type": "option",
             "help": "Enable/disable grease QUIC bit (default = enable).",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable grease QUIC bit.", "label": "Enable", "name": "enable"}, {"help": "Disable grease QUIC bit.", "label": "Disable", "name": "disable"}],
         },
     },
     "realservers": {
@@ -434,7 +434,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Set the status of the real server to active so that it can accept traffic, or on standby or disabled so no traffic is sent.",
             "default": "active",
-            "options": ["active", "standby", "disable"],
+            "options": [{"help": "Server status active.", "label": "Active", "name": "active"}, {"help": "Server status standby.", "label": "Standby", "name": "standby"}, {"help": "Server status disable.", "label": "Disable", "name": "disable"}],
         },
         "weight": {
             "type": "integer",
@@ -454,7 +454,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable to check the responsiveness of the real server before forwarding traffic.",
             "default": "vip",
-            "options": ["disable", "enable", "vip"],
+            "options": [{"help": "Disable per server health check.", "label": "Disable", "name": "disable"}, {"help": "Enable per server health check.", "label": "Enable", "name": "enable"}, {"help": "Use health check defined in VIP.", "label": "Vip", "name": "vip"}],
         },
         "http-host": {
             "type": "string",
@@ -466,7 +466,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable translation of hostname/IP from virtual server to real server.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable virtual hostname/IP translation.", "label": "Enable", "name": "enable"}, {"help": "Disable virtual hostname/IP translation.", "label": "Disable", "name": "disable"}],
         },
         "max-connections": {
             "type": "integer",
@@ -488,7 +488,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable certificate verification of the real server.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable certificate verification.", "label": "Enable", "name": "enable"}, {"help": "Disable certificate verification.", "label": "Disable", "name": "disable"}],
         },
     },
     "ssl-certificate": {
@@ -512,13 +512,13 @@ NESTED_SCHEMAS = {
             "help": "Cipher suite name.",
             "required": True,
             "default": "",
-            "options": ["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"],
+            "options": [{"help": "Cipher suite TLS-AES-128-GCM-SHA256.", "label": "Tls Aes 128 Gcm Sha256", "name": "TLS-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-AES-256-GCM-SHA384.", "label": "Tls Aes 256 Gcm Sha384", "name": "TLS-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-CHACHA20-POLY1305-SHA256.", "label": "Tls Chacha20 Poly1305 Sha256", "name": "TLS-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256.", "label": "Tls Ecdhe Rsa With Chacha20 Poly1305 Sha256", "name": "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256.", "label": "Tls Ecdhe Ecdsa With Chacha20 Poly1305 Sha256", "name": "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256.", "label": "Tls Dhe Rsa With Chacha20 Poly1305 Sha256", "name": "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-128-CBC-SHA.", "label": "Tls Dhe Rsa With Aes 128 Cbc Sha", "name": "TLS-DHE-RSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-256-CBC-SHA.", "label": "Tls Dhe Rsa With Aes 256 Cbc Sha", "name": "TLS-DHE-RSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Dhe Rsa With Aes 128 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Dhe Rsa With Aes 128 Gcm Sha256", "name": "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-256-CBC-SHA256.", "label": "Tls Dhe Rsa With Aes 256 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Dhe Rsa With Aes 256 Gcm Sha384", "name": "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-128-CBC-SHA.", "label": "Tls Dhe Dss With Aes 128 Cbc Sha", "name": "TLS-DHE-DSS-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-256-CBC-SHA.", "label": "Tls Dhe Dss With Aes 256 Cbc Sha", "name": "TLS-DHE-DSS-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-128-CBC-SHA256.", "label": "Tls Dhe Dss With Aes 128 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-128-GCM-SHA256.", "label": "Tls Dhe Dss With Aes 128 Gcm Sha256", "name": "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-256-CBC-SHA256.", "label": "Tls Dhe Dss With Aes 256 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-256-GCM-SHA384.", "label": "Tls Dhe Dss With Aes 256 Gcm Sha384", "name": "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA.", "label": "Tls Ecdhe Rsa With Aes 128 Cbc Sha", "name": "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Ecdhe Rsa With Aes 128 Cbc Sha256", "name": "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Ecdhe Rsa With Aes 128 Gcm Sha256", "name": "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA.", "label": "Tls Ecdhe Rsa With Aes 256 Cbc Sha", "name": "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384.", "label": "Tls Ecdhe Rsa With Aes 256 Cbc Sha384", "name": "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Ecdhe Rsa With Aes 256 Gcm Sha384", "name": "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA.", "label": "Tls Ecdhe Ecdsa With Aes 128 Cbc Sha", "name": "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Ecdhe Ecdsa With Aes 128 Cbc Sha256", "name": "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Ecdhe Ecdsa With Aes 128 Gcm Sha256", "name": "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA.", "label": "Tls Ecdhe Ecdsa With Aes 256 Cbc Sha", "name": "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384.", "label": "Tls Ecdhe Ecdsa With Aes 256 Cbc Sha384", "name": "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Ecdhe Ecdsa With Aes 256 Gcm Sha384", "name": "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-RSA-WITH-AES-128-CBC-SHA.", "label": "Tls Rsa With Aes 128 Cbc Sha", "name": "TLS-RSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-AES-256-CBC-SHA.", "label": "Tls Rsa With Aes 256 Cbc Sha", "name": "TLS-RSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Rsa With Aes 128 Cbc Sha256", "name": "TLS-RSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Rsa With Aes 128 Gcm Sha256", "name": "TLS-RSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-AES-256-CBC-SHA256.", "label": "Tls Rsa With Aes 256 Cbc Sha256", "name": "TLS-RSA-WITH-AES-256-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Rsa With Aes 256 Gcm Sha384", "name": "TLS-RSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-128-CBC-SHA.", "label": "Tls Rsa With Camellia 128 Cbc Sha", "name": "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-256-CBC-SHA.", "label": "Tls Rsa With Camellia 256 Cbc Sha", "name": "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256.", "label": "Tls Rsa With Camellia 128 Cbc Sha256", "name": "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256.", "label": "Tls Rsa With Camellia 256 Cbc Sha256", "name": "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Dhe Rsa With 3Des Ede Cbc Sha", "name": "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA.", "label": "Tls Dhe Rsa With Camellia 128 Cbc Sha", "name": "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA"}, {"help": "Cipher suite TLS-DSS-RSA-WITH-CAMELLIA-128-CBC-SHA.", "label": "Tls Dhe Dss With Camellia 128 Cbc Sha", "name": "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA.", "label": "Tls Dhe Rsa With Camellia 256 Cbc Sha", "name": "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA.", "label": "Tls Dhe Dss With Camellia 256 Cbc Sha", "name": "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256.", "label": "Tls Dhe Rsa With Camellia 128 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256.", "label": "Tls Dhe Dss With Camellia 128 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256.", "label": "Tls Dhe Rsa With Camellia 256 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256.", "label": "Tls Dhe Dss With Camellia 256 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-SEED-CBC-SHA.", "label": "Tls Dhe Rsa With Seed Cbc Sha", "name": "TLS-DHE-RSA-WITH-SEED-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-SEED-CBC-SHA.", "label": "Tls Dhe Dss With Seed Cbc Sha", "name": "TLS-DHE-DSS-WITH-SEED-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Dhe Rsa With Aria 128 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Dhe Rsa With Aria 256 Cbc Sha384", "name": "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Dhe Dss With Aria 128 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Dhe Dss With Aria 256 Cbc Sha384", "name": "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-RSA-WITH-SEED-CBC-SHA.", "label": "Tls Rsa With Seed Cbc Sha", "name": "TLS-RSA-WITH-SEED-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Rsa With Aria 128 Cbc Sha256", "name": "TLS-RSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Rsa With Aria 256 Cbc Sha384", "name": "TLS-RSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Ecdhe Rsa With Aria 128 Cbc Sha256", "name": "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Ecdhe Rsa With Aria 256 Cbc Sha384", "name": "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC_SHA256.", "label": "Tls Ecdhe Ecdsa With Aria 128 Cbc Sha256", "name": "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC_SHA384.", "label": "Tls Ecdhe Ecdsa With Aria 256 Cbc Sha384", "name": "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-RC4-128-SHA.", "label": "Tls Ecdhe Rsa With Rc4 128 Sha", "name": "TLS-ECDHE-RSA-WITH-RC4-128-SHA"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Ecdhe Rsa With 3Des Ede Cbc Sha", "name": "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Dhe Dss With 3Des Ede Cbc Sha", "name": "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Rsa With 3Des Ede Cbc Sha", "name": "TLS-RSA-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-RC4-128-MD5.", "label": "Tls Rsa With Rc4 128 Md5", "name": "TLS-RSA-WITH-RC4-128-MD5"}, {"help": "Cipher suite TLS-RSA-WITH-RC4-128-SHA.", "label": "Tls Rsa With Rc4 128 Sha", "name": "TLS-RSA-WITH-RC4-128-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-DES-CBC-SHA.", "label": "Tls Dhe Rsa With Des Cbc Sha", "name": "TLS-DHE-RSA-WITH-DES-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-DES-CBC-SHA.", "label": "Tls Dhe Dss With Des Cbc Sha", "name": "TLS-DHE-DSS-WITH-DES-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-DES-CBC-SHA.", "label": "Tls Rsa With Des Cbc Sha", "name": "TLS-RSA-WITH-DES-CBC-SHA"}],
         },
         "versions": {
             "type": "option",
             "help": "SSL/TLS versions that the cipher suite can be used with.",
             "default": "ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3",
-            "options": ["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "SSL 3.0.", "label": "Ssl 3.0", "name": "ssl-3.0"}, {"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
     },
     "ssl-server-cipher-suites": {
@@ -534,13 +534,13 @@ NESTED_SCHEMAS = {
             "help": "Cipher suite name.",
             "required": True,
             "default": "",
-            "options": ["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"],
+            "options": [{"help": "Cipher suite TLS-AES-128-GCM-SHA256.", "label": "Tls Aes 128 Gcm Sha256", "name": "TLS-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-AES-256-GCM-SHA384.", "label": "Tls Aes 256 Gcm Sha384", "name": "TLS-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-CHACHA20-POLY1305-SHA256.", "label": "Tls Chacha20 Poly1305 Sha256", "name": "TLS-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256.", "label": "Tls Ecdhe Rsa With Chacha20 Poly1305 Sha256", "name": "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256.", "label": "Tls Ecdhe Ecdsa With Chacha20 Poly1305 Sha256", "name": "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256.", "label": "Tls Dhe Rsa With Chacha20 Poly1305 Sha256", "name": "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-128-CBC-SHA.", "label": "Tls Dhe Rsa With Aes 128 Cbc Sha", "name": "TLS-DHE-RSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-256-CBC-SHA.", "label": "Tls Dhe Rsa With Aes 256 Cbc Sha", "name": "TLS-DHE-RSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Dhe Rsa With Aes 128 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Dhe Rsa With Aes 128 Gcm Sha256", "name": "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-256-CBC-SHA256.", "label": "Tls Dhe Rsa With Aes 256 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Dhe Rsa With Aes 256 Gcm Sha384", "name": "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-128-CBC-SHA.", "label": "Tls Dhe Dss With Aes 128 Cbc Sha", "name": "TLS-DHE-DSS-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-256-CBC-SHA.", "label": "Tls Dhe Dss With Aes 256 Cbc Sha", "name": "TLS-DHE-DSS-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-128-CBC-SHA256.", "label": "Tls Dhe Dss With Aes 128 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-128-GCM-SHA256.", "label": "Tls Dhe Dss With Aes 128 Gcm Sha256", "name": "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-256-CBC-SHA256.", "label": "Tls Dhe Dss With Aes 256 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-AES-256-GCM-SHA384.", "label": "Tls Dhe Dss With Aes 256 Gcm Sha384", "name": "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA.", "label": "Tls Ecdhe Rsa With Aes 128 Cbc Sha", "name": "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Ecdhe Rsa With Aes 128 Cbc Sha256", "name": "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Ecdhe Rsa With Aes 128 Gcm Sha256", "name": "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA.", "label": "Tls Ecdhe Rsa With Aes 256 Cbc Sha", "name": "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384.", "label": "Tls Ecdhe Rsa With Aes 256 Cbc Sha384", "name": "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Ecdhe Rsa With Aes 256 Gcm Sha384", "name": "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA.", "label": "Tls Ecdhe Ecdsa With Aes 128 Cbc Sha", "name": "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Ecdhe Ecdsa With Aes 128 Cbc Sha256", "name": "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Ecdhe Ecdsa With Aes 128 Gcm Sha256", "name": "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA.", "label": "Tls Ecdhe Ecdsa With Aes 256 Cbc Sha", "name": "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384.", "label": "Tls Ecdhe Ecdsa With Aes 256 Cbc Sha384", "name": "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Ecdhe Ecdsa With Aes 256 Gcm Sha384", "name": "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-RSA-WITH-AES-128-CBC-SHA.", "label": "Tls Rsa With Aes 128 Cbc Sha", "name": "TLS-RSA-WITH-AES-128-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-AES-256-CBC-SHA.", "label": "Tls Rsa With Aes 256 Cbc Sha", "name": "TLS-RSA-WITH-AES-256-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-AES-128-CBC-SHA256.", "label": "Tls Rsa With Aes 128 Cbc Sha256", "name": "TLS-RSA-WITH-AES-128-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-AES-128-GCM-SHA256.", "label": "Tls Rsa With Aes 128 Gcm Sha256", "name": "TLS-RSA-WITH-AES-128-GCM-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-AES-256-CBC-SHA256.", "label": "Tls Rsa With Aes 256 Cbc Sha256", "name": "TLS-RSA-WITH-AES-256-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-AES-256-GCM-SHA384.", "label": "Tls Rsa With Aes 256 Gcm Sha384", "name": "TLS-RSA-WITH-AES-256-GCM-SHA384"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-128-CBC-SHA.", "label": "Tls Rsa With Camellia 128 Cbc Sha", "name": "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-256-CBC-SHA.", "label": "Tls Rsa With Camellia 256 Cbc Sha", "name": "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256.", "label": "Tls Rsa With Camellia 128 Cbc Sha256", "name": "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256.", "label": "Tls Rsa With Camellia 256 Cbc Sha256", "name": "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Dhe Rsa With 3Des Ede Cbc Sha", "name": "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA.", "label": "Tls Dhe Rsa With Camellia 128 Cbc Sha", "name": "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA"}, {"help": "Cipher suite TLS-DSS-RSA-WITH-CAMELLIA-128-CBC-SHA.", "label": "Tls Dhe Dss With Camellia 128 Cbc Sha", "name": "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA.", "label": "Tls Dhe Rsa With Camellia 256 Cbc Sha", "name": "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA.", "label": "Tls Dhe Dss With Camellia 256 Cbc Sha", "name": "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256.", "label": "Tls Dhe Rsa With Camellia 128 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256.", "label": "Tls Dhe Dss With Camellia 128 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256.", "label": "Tls Dhe Rsa With Camellia 256 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256.", "label": "Tls Dhe Dss With Camellia 256 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-SEED-CBC-SHA.", "label": "Tls Dhe Rsa With Seed Cbc Sha", "name": "TLS-DHE-RSA-WITH-SEED-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-SEED-CBC-SHA.", "label": "Tls Dhe Dss With Seed Cbc Sha", "name": "TLS-DHE-DSS-WITH-SEED-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Dhe Rsa With Aria 128 Cbc Sha256", "name": "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Dhe Rsa With Aria 256 Cbc Sha384", "name": "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Dhe Dss With Aria 128 Cbc Sha256", "name": "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Dhe Dss With Aria 256 Cbc Sha384", "name": "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-RSA-WITH-SEED-CBC-SHA.", "label": "Tls Rsa With Seed Cbc Sha", "name": "TLS-RSA-WITH-SEED-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Rsa With Aria 128 Cbc Sha256", "name": "TLS-RSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-RSA-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Rsa With Aria 256 Cbc Sha384", "name": "TLS-RSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256.", "label": "Tls Ecdhe Rsa With Aria 128 Cbc Sha256", "name": "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384.", "label": "Tls Ecdhe Rsa With Aria 256 Cbc Sha384", "name": "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC_SHA256.", "label": "Tls Ecdhe Ecdsa With Aria 128 Cbc Sha256", "name": "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256"}, {"help": "Cipher suite TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC_SHA384.", "label": "Tls Ecdhe Ecdsa With Aria 256 Cbc Sha384", "name": "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-RC4-128-SHA.", "label": "Tls Ecdhe Rsa With Rc4 128 Sha", "name": "TLS-ECDHE-RSA-WITH-RC4-128-SHA"}, {"help": "Cipher suite TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Ecdhe Rsa With 3Des Ede Cbc Sha", "name": "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Dhe Dss With 3Des Ede Cbc Sha", "name": "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-3DES-EDE-CBC-SHA.", "label": "Tls Rsa With 3Des Ede Cbc Sha", "name": "TLS-RSA-WITH-3DES-EDE-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-RC4-128-MD5.", "label": "Tls Rsa With Rc4 128 Md5", "name": "TLS-RSA-WITH-RC4-128-MD5"}, {"help": "Cipher suite TLS-RSA-WITH-RC4-128-SHA.", "label": "Tls Rsa With Rc4 128 Sha", "name": "TLS-RSA-WITH-RC4-128-SHA"}, {"help": "Cipher suite TLS-DHE-RSA-WITH-DES-CBC-SHA.", "label": "Tls Dhe Rsa With Des Cbc Sha", "name": "TLS-DHE-RSA-WITH-DES-CBC-SHA"}, {"help": "Cipher suite TLS-DHE-DSS-WITH-DES-CBC-SHA.", "label": "Tls Dhe Dss With Des Cbc Sha", "name": "TLS-DHE-DSS-WITH-DES-CBC-SHA"}, {"help": "Cipher suite TLS-RSA-WITH-DES-CBC-SHA.", "label": "Tls Rsa With Des Cbc Sha", "name": "TLS-RSA-WITH-DES-CBC-SHA"}],
         },
         "versions": {
             "type": "option",
             "help": "SSL/TLS versions that the cipher suite can be used with.",
             "default": "ssl-3.0 tls-1.0 tls-1.1 tls-1.2 tls-1.3",
-            "options": ["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "SSL 3.0.", "label": "Ssl 3.0", "name": "ssl-3.0"}, {"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
     },
     "monitor": {
@@ -557,246 +557,246 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "static-nat",
-    "server-load-balance",
-    "access-proxy",
+    "static-nat",  # Static NAT.
+    "server-load-balance",  # Server load balance.
+    "access-proxy",  # Access proxy.
 ]
 VALID_BODY_SRC_VIP_FILTER = [
-    "disable",
-    "enable",
+    "disable",  # Match any destination for the reverse SNAT rule.
+    "enable",  # Match only destinations in 'src-filter' for the reverse SNAT rule.
 ]
 VALID_BODY_NAT_SOURCE_VIP = [
-    "disable",
-    "enable",
+    "disable",  # Disable nat-source-vip.
+    "enable",  # Perform SNAT on traffic from mappedip to the extip for all egress interfaces.
 ]
 VALID_BODY_NDP_REPLY = [
-    "disable",
-    "enable",
+    "disable",  # Disable this FortiGate unit's ability to respond to NDP requests for this virtual IP address.
+    "enable",  # Enable this FortiGate unit's ability to respond to NDP requests for this virtual IP address.
 ]
 VALID_BODY_PORTFORWARD = [
-    "disable",
-    "enable",
+    "disable",  # Disable port forward.
+    "enable",  # Enable/disable port forwarding.
 ]
 VALID_BODY_PROTOCOL = [
-    "tcp",
-    "udp",
-    "sctp",
+    "tcp",  # TCP.
+    "udp",  # UDP.
+    "sctp",  # SCTP.
 ]
 VALID_BODY_LDB_METHOD = [
-    "static",
-    "round-robin",
-    "weighted",
-    "least-session",
-    "least-rtt",
-    "first-alive",
-    "http-host",
+    "static",  # Distribute sessions based on source IP.
+    "round-robin",  # Distribute sessions based round robin order.
+    "weighted",  # Distribute sessions based on weight.
+    "least-session",  # Sends new sessions to the server with the lowest session count.
+    "least-rtt",  # Distribute new sessions to the server with lowest Round-Trip-Time.
+    "first-alive",  # Distribute sessions to the first server that is alive.
+    "http-host",  # Distribute sessions to servers based on host field in HTTP header.
 ]
 VALID_BODY_SERVER_TYPE = [
-    "http",
-    "https",
-    "imaps",
-    "pop3s",
-    "smtps",
-    "ssl",
-    "tcp",
-    "udp",
-    "ip",
+    "http",  # HTTP.
+    "https",  # HTTPS.
+    "imaps",  # IMAPS.
+    "pop3s",  # POP3S.
+    "smtps",  # SMTPS.
+    "ssl",  # SSL.
+    "tcp",  # TCP.
+    "udp",  # UDP.
+    "ip",  # IP.
 ]
 VALID_BODY_HTTP_REDIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable redirection of HTTP to HTTPS.
+    "disable",  # Disable redirection of HTTP to HTTPS.
 ]
 VALID_BODY_PERSISTENCE = [
-    "none",
-    "http-cookie",
-    "ssl-session-id",
+    "none",  # None.
+    "http-cookie",  # HTTP cookie.
+    "ssl-session-id",  # SSL session ID.
 ]
 VALID_BODY_H2_SUPPORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable HTTP2 support.
+    "disable",  # Disable HTTP2 support.
 ]
 VALID_BODY_H3_SUPPORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable HTTP3/QUIC support.
+    "disable",  # Disable HTTP3/QUIC support.
 ]
 VALID_BODY_NAT66 = [
-    "disable",
-    "enable",
+    "disable",  # Disable DNAT66.
+    "enable",  # Enable DNAT66.
 ]
 VALID_BODY_NAT64 = [
-    "disable",
-    "enable",
+    "disable",  # Disable DNAT64.
+    "enable",  # Enable DNAT64.
 ]
 VALID_BODY_ADD_NAT64_ROUTE = [
-    "disable",
-    "enable",
+    "disable",  # Disable adding NAT64 route.
+    "enable",  # Enable adding NAT64 route.
 ]
 VALID_BODY_EMPTY_CERT_ACTION = [
-    "accept",
-    "block",
-    "accept-unmanageable",
+    "accept",  # Accept the SSL handshake if the client certificate is empty.
+    "block",  # Block the SSL handshake if the client certificate is empty.
+    "accept-unmanageable",  # Accept the SSL handshake only if the end-point is unmanageable.
 ]
 VALID_BODY_USER_AGENT_DETECT = [
-    "disable",
-    "enable",
+    "disable",  # Disable detecting unknown devices by HTTP user-agent if no client certificate is provided.
+    "enable",  # Enable detecting unknown devices by HTTP user-agent if no client certificate is provided.
 ]
 VALID_BODY_CLIENT_CERT = [
-    "disable",
-    "enable",
+    "disable",  # Disable client certificate request.
+    "enable",  # Enable client certificate request.
 ]
 VALID_BODY_HTTP_COOKIE_DOMAIN_FROM_HOST = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of HTTP cookie domain from host field in HTTP (use http-cooke-domain setting).
+    "enable",  # Enable use of HTTP cookie domain from host field in HTTP.
 ]
 VALID_BODY_HTTP_COOKIE_SHARE = [
-    "disable",
-    "same-ip",
+    "disable",  # Only allow HTTP cookie to match this virtual server.
+    "same-ip",  # Allow HTTP cookie to match any virtual server with same IP.
 ]
 VALID_BODY_HTTPS_COOKIE_SECURE = [
-    "disable",
-    "enable",
+    "disable",  # Do not mark cookie as secure, allow sharing between an HTTP and HTTPS connection.
+    "enable",  # Mark inserted cookie as secure, cookie can only be used for HTTPS a connection.
 ]
 VALID_BODY_HTTP_MULTIPLEX = [
-    "enable",
-    "disable",
+    "enable",  # Enable HTTP session multiplexing.
+    "disable",  # Disable HTTP session multiplexing.
 ]
 VALID_BODY_HTTP_IP_HEADER = [
-    "enable",
-    "disable",
+    "enable",  # Enable adding HTTP header.
+    "disable",  # Disable adding HTTP header.
 ]
 VALID_BODY_OUTLOOK_WEB_ACCESS = [
-    "disable",
-    "enable",
+    "disable",  # Disable Outlook Web Access support.
+    "enable",  # Enable Outlook Web Access support.
 ]
 VALID_BODY_WEBLOGIC_SERVER = [
-    "disable",
-    "enable",
+    "disable",  # Do not add HTTP header indicating SSL offload for WebLogic server.
+    "enable",  # Add HTTP header indicating SSL offload for WebLogic server.
 ]
 VALID_BODY_WEBSPHERE_SERVER = [
-    "disable",
-    "enable",
+    "disable",  # Do not add HTTP header indicating SSL offload for WebSphere server.
+    "enable",  # Add HTTP header indicating SSL offload for WebSphere server.
 ]
 VALID_BODY_SSL_MODE = [
-    "half",
-    "full",
+    "half",  # Client to FortiGate SSL.
+    "full",  # Client to FortiGate and FortiGate to Server SSL.
 ]
 VALID_BODY_SSL_DH_BITS = [
-    "768",
-    "1024",
-    "1536",
-    "2048",
-    "3072",
-    "4096",
+    "768",  # 768-bit Diffie-Hellman prime.
+    "1024",  # 1024-bit Diffie-Hellman prime.
+    "1536",  # 1536-bit Diffie-Hellman prime.
+    "2048",  # 2048-bit Diffie-Hellman prime.
+    "3072",  # 3072-bit Diffie-Hellman prime.
+    "4096",  # 4096-bit Diffie-Hellman prime.
 ]
 VALID_BODY_SSL_ALGORITHM = [
-    "high",
-    "medium",
-    "low",
-    "custom",
+    "high",  # Use AES.
+    "medium",  # Use AES, 3DES, or RC4.
+    "low",  # Use AES, 3DES, RC4, or DES.
+    "custom",  # Use config ssl-cipher-suites to select the cipher suites that are allowed.
 ]
 VALID_BODY_SSL_SERVER_RENEGOTIATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable secure renegotiation.
+    "disable",  # Disable secure renegotiation.
 ]
 VALID_BODY_SSL_SERVER_ALGORITHM = [
-    "high",
-    "medium",
-    "low",
-    "custom",
-    "client",
+    "high",  # Use AES.
+    "medium",  # Use AES, 3DES, or RC4.
+    "low",  # Use AES, 3DES, RC4, or DES.
+    "custom",  # Use config ssl-server-cipher-suites to select the cipher suites that are allowed.
+    "client",  # Use the same encryption algorithms for client and server sessions.
 ]
 VALID_BODY_SSL_PFS = [
-    "require",
-    "deny",
-    "allow",
+    "require",  # Allow only Diffie-Hellman cipher-suites, so PFS is applied.
+    "deny",  # Allow only non-Diffie-Hellman cipher-suites, so PFS is not applied.
+    "allow",  # Allow use of any cipher suite so PFS may or may not be used depending on the cipher suite selected.
 ]
 VALID_BODY_SSL_MIN_VERSION = [
-    "ssl-3.0",
-    "tls-1.0",
-    "tls-1.1",
-    "tls-1.2",
-    "tls-1.3",
+    "ssl-3.0",  # SSL 3.0.
+    "tls-1.0",  # TLS 1.0.
+    "tls-1.1",  # TLS 1.1.
+    "tls-1.2",  # TLS 1.2.
+    "tls-1.3",  # TLS 1.3.
 ]
 VALID_BODY_SSL_MAX_VERSION = [
-    "ssl-3.0",
-    "tls-1.0",
-    "tls-1.1",
-    "tls-1.2",
-    "tls-1.3",
+    "ssl-3.0",  # SSL 3.0.
+    "tls-1.0",  # TLS 1.0.
+    "tls-1.1",  # TLS 1.1.
+    "tls-1.2",  # TLS 1.2.
+    "tls-1.3",  # TLS 1.3.
 ]
 VALID_BODY_SSL_SERVER_MIN_VERSION = [
-    "ssl-3.0",
-    "tls-1.0",
-    "tls-1.1",
-    "tls-1.2",
-    "tls-1.3",
-    "client",
+    "ssl-3.0",  # SSL 3.0.
+    "tls-1.0",  # TLS 1.0.
+    "tls-1.1",  # TLS 1.1.
+    "tls-1.2",  # TLS 1.2.
+    "tls-1.3",  # TLS 1.3.
+    "client",  # Use same value as client configuration.
 ]
 VALID_BODY_SSL_SERVER_MAX_VERSION = [
-    "ssl-3.0",
-    "tls-1.0",
-    "tls-1.1",
-    "tls-1.2",
-    "tls-1.3",
-    "client",
+    "ssl-3.0",  # SSL 3.0.
+    "tls-1.0",  # TLS 1.0.
+    "tls-1.1",  # TLS 1.1.
+    "tls-1.2",  # TLS 1.2.
+    "tls-1.3",  # TLS 1.3.
+    "client",  # Use same value as client configuration.
 ]
 VALID_BODY_SSL_ACCEPT_FFDHE_GROUPS = [
-    "enable",
-    "disable",
+    "enable",  # Accept FFDHE groups.
+    "disable",  # Do not accept FFDHE groups.
 ]
 VALID_BODY_SSL_SEND_EMPTY_FRAGS = [
-    "enable",
-    "disable",
+    "enable",  # Send empty fragments.
+    "disable",  # Do not send empty fragments.
 ]
 VALID_BODY_SSL_CLIENT_FALLBACK = [
-    "disable",
-    "enable",
+    "disable",  # Disable.
+    "enable",  # Enable.
 ]
 VALID_BODY_SSL_CLIENT_RENEGOTIATION = [
-    "allow",
-    "deny",
-    "secure",
+    "allow",  # Allow a SSL client to renegotiate.
+    "deny",  # Abort any SSL connection that attempts to renegotiate.
+    "secure",  # Reject any SSL connection that does not offer a RFC 5746 Secure Renegotiation Indication.
 ]
 VALID_BODY_SSL_CLIENT_SESSION_STATE_TYPE = [
-    "disable",
-    "time",
-    "count",
-    "both",
+    "disable",  # Do not keep session states.
+    "time",  # Expire session states after this many minutes.
+    "count",  # Expire session states when this maximum is reached.
+    "both",  # Expire session states based on time or count, whichever occurs first.
 ]
 VALID_BODY_SSL_SERVER_SESSION_STATE_TYPE = [
-    "disable",
-    "time",
-    "count",
-    "both",
+    "disable",  # Do not keep session states.
+    "time",  # Expire session states after this many minutes.
+    "count",  # Expire session states when this maximum is reached.
+    "both",  # Expire session states based on time or count, whichever occurs first.
 ]
 VALID_BODY_SSL_HTTP_LOCATION_CONVERSION = [
-    "enable",
-    "disable",
+    "enable",  # Enable HTTP location conversion.
+    "disable",  # Disable HTTP location conversion.
 ]
 VALID_BODY_SSL_HTTP_MATCH_HOST = [
-    "enable",
-    "disable",
+    "enable",  # Match HTTP host in response header.
+    "disable",  # Do not match HTTP host.
 ]
 VALID_BODY_SSL_HPKP = [
-    "disable",
-    "enable",
-    "report-only",
+    "disable",  # Do not add a HPKP header to each HTTP response.
+    "enable",  # Add a HPKP header to each a HTTP response.
+    "report-only",  # Add a HPKP Report-Only header to each HTTP response.
 ]
 VALID_BODY_SSL_HPKP_INCLUDE_SUBDOMAINS = [
-    "disable",
-    "enable",
+    "disable",  # HPKP header does not apply to subdomains.
+    "enable",  # HPKP header applies to subdomains.
 ]
 VALID_BODY_SSL_HSTS = [
-    "disable",
-    "enable",
+    "disable",  # Do not add a HSTS header to each a HTTP response.
+    "enable",  # Add a HSTS header to each HTTP response.
 ]
 VALID_BODY_SSL_HSTS_INCLUDE_SUBDOMAINS = [
-    "disable",
-    "enable",
+    "disable",  # HSTS header does not apply to subdomains.
+    "enable",  # HSTS header applies to subdomains.
 ]
 VALID_BODY_EMBEDDED_IPV4_ADDRESS = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.
+    "enable",  # Enable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -927,7 +927,7 @@ def validate_firewall_vip6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "extip": True,
-        ...     "type": "static-nat",  # Valid enum value
+        ...     "type": "{'name': 'static-nat', 'help': 'Static NAT.', 'label': 'Static Nat', 'description': 'Static NAT'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_vip6_post(payload)
         >>> assert is_valid == True

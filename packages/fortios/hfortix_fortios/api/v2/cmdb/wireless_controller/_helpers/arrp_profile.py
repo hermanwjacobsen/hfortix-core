@@ -176,16 +176,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_INCLUDE_WEATHER_CHANNEL = [
-    "enable",
-    "disable",
+    "enable",  # Include weather channel in darrp channel selection phase 1.
+    "disable",  # Exclude weather channel in darrp channel selection phase 1.
 ]
 VALID_BODY_INCLUDE_DFS_CHANNEL = [
-    "enable",
-    "disable",
+    "enable",  # Include DFS channel in darrp channel selection phase 1.
+    "disable",  # Exclude DFS channel in darrp channel selection phase 1.
 ]
 VALID_BODY_OVERRIDE_DARRP_OPTIMIZE = [
-    "enable",
-    "disable",
+    "enable",  # Override setting darrp-optimize and darrp-optimize-schedules.
+    "disable",  # Use setting darrp-optimize and darrp-optimize-schedules.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -313,7 +313,7 @@ def validate_wireless_controller_arrp_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "include-weather-channel": "enable",  # Valid enum value
+        ...     "include-weather-channel": "{'name': 'enable', 'help': 'Include weather channel in darrp channel selection phase 1.', 'label': 'Enable', 'description': 'Include weather channel in darrp channel selection phase 1'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_arrp_profile_post(payload)
         >>> assert is_valid == True

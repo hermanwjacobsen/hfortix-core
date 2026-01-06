@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MICRO_LOCATION: Literal["enable", "disable"]
+VALID_BODY_MICRO_LOCATION: Literal[{"description": "Enable Micro location", "help": "Enable Micro location.", "label": "Enable", "name": "enable"}, {"description": "Disable Micro location", "help": "Disable Micro location.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

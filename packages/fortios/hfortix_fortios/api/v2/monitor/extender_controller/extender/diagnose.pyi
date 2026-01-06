@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Diagnose:
     """
-    Configuration for extender-controller/extender/diagnose
+    Execute diagnotic commands.
     
     Path: extender_controller/extender/diagnose
     Category: monitor

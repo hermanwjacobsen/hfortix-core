@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for firewall/per-ip-shaper/reset
+    Reset statistics for all configured firewall per-IP traffic shapers.
     
     Path: firewall/per_ip_shaper/reset
     Category: monitor

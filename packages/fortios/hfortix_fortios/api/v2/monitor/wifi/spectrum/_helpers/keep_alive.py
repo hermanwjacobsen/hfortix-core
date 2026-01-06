@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/spectrum/keep_alive",
     "category": "monitor",
     "api_path": "wifi/spectrum/keep-alive",
-    "help": "Configuration for wifi/spectrum/keep-alive",
+    "help": "Extend duration of an existing spectrum analysis for a specific FortiAP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

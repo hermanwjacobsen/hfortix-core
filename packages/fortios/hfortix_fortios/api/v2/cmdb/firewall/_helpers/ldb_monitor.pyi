@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["ping", "tcp", "http", "https", "dns"]
-VALID_BODY_DNS_PROTOCOL: Literal["udp", "tcp"]
+VALID_BODY_TYPE: Literal[{"description": "PING health monitor", "help": "PING health monitor.", "label": "Ping", "name": "ping"}, {"description": "TCP-connect health monitor", "help": "TCP-connect health monitor.", "label": "Tcp", "name": "tcp"}, {"description": "HTTP-GET health monitor", "help": "HTTP-GET health monitor.", "label": "Http", "name": "http"}, {"description": "HTTP-GET health monitor with SSL", "help": "HTTP-GET health monitor with SSL.", "label": "Https", "name": "https"}, {"description": "DNS health monitor", "help": "DNS health monitor.", "label": "Dns", "name": "dns"}]
+VALID_BODY_DNS_PROTOCOL: Literal[{"description": "UDP", "help": "UDP.", "label": "Udp", "name": "udp"}, {"description": "TCP", "help": "TCP.", "label": "Tcp", "name": "tcp"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

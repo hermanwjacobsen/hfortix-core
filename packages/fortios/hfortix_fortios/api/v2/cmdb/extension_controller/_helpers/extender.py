@@ -215,46 +215,46 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AUTHORIZED = [
-    "discovered",
-    "disable",
-    "enable",
+    "discovered",  # Controller discovered this FortiExtender.
+    "disable",  # Controller is configured to not provide service to this FortiExtender.
+    "enable",  # Controller is configured to provide service to this FortiExtender.
 ]
 VALID_BODY_EXTENSION_TYPE = [
-    "wan-extension",
-    "lan-extension",
+    "wan-extension",  # FortiExtender WAN extension mode.
+    "lan-extension",  # FortiExtender LAN extension mode.
 ]
 VALID_BODY_OVERRIDE_ALLOWACCESS = [
-    "enable",
-    "disable",
+    "enable",  # Override the extender profile management access configuration.
+    "disable",  # Use the extender profile management access configuration.
 ]
 VALID_BODY_ALLOWACCESS = [
-    "ping",
-    "telnet",
-    "http",
-    "https",
-    "ssh",
-    "snmp",
+    "ping",  # PING access.
+    "telnet",  # TELNET access.
+    "http",  # HTTP access.
+    "https",  # HTTPS access.
+    "ssh",  # SSH access.
+    "snmp",  # SNMP access.
 ]
 VALID_BODY_OVERRIDE_LOGIN_PASSWORD_CHANGE = [
-    "enable",
-    "disable",
+    "enable",  # Override the WTP profile login-password (administrator password) setting.
+    "disable",  # Use the the WTP profile login-password (administrator password) setting.
 ]
 VALID_BODY_LOGIN_PASSWORD_CHANGE = [
-    "yes",
-    "default",
-    "no",
+    "yes",  # Change the managed extender's administrator password. Use the login-password option to set the password.
+    "default",  # Keep the managed extender's administrator password set to the factory default.
+    "no",  # Do not change the managed extender's administrator password.
 ]
 VALID_BODY_OVERRIDE_ENFORCE_BANDWIDTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable override of FortiExtender profile bandwidth setting.
+    "disable",  # Disable override of FortiExtender profile bandwidth setting.
 ]
 VALID_BODY_ENFORCE_BANDWIDTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable to enforce bandwidth limit on LAN extension interface.
+    "disable",  # Disable to enforce bandwidth limit on LAN extension interface.
 ]
 VALID_BODY_FIRMWARE_PROVISION_LATEST = [
-    "disable",
-    "once",
+    "disable",  # Do not automatically provision the latest available firmware.
+    "once",  # Automatically attempt a one-time upgrade to the latest available firmware version.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -385,7 +385,7 @@ def validate_extension_controller_extender_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "authorized": "discovered",  # Valid enum value
+        ...     "authorized": "{'name': 'discovered', 'help': 'Controller discovered this FortiExtender.', 'label': 'Discovered', 'description': 'Controller discovered this FortiExtender'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_extension_controller_extender_post(payload)
         >>> assert is_valid == True

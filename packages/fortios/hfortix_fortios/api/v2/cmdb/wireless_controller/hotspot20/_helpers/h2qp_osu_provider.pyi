@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OSU_METHOD: Literal["oma-dm", "soap-xml-spp", "reserved"]
+VALID_BODY_OSU_METHOD: Literal[{"description": "OMA DM", "help": "OMA DM.", "label": "Oma Dm", "name": "oma-dm"}, {"description": "SOAP XML SPP", "help": "SOAP XML SPP.", "label": "Soap Xml Spp", "name": "soap-xml-spp"}, {"description": "Reserved", "help": "Reserved.", "label": "Reserved", "name": "reserved"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

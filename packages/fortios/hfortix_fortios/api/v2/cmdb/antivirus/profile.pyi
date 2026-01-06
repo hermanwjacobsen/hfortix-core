@@ -13,13 +13,13 @@ class ProfilePayload(TypedDict, total=False):
     name: str  # Profile name.
     comment: NotRequired[str]  # Comment.
     replacemsg_group: NotRequired[str]  # Replacement message group customized for this profile.
-    feature_set: NotRequired[Literal["flow", "proxy"]]  # Flow/proxy feature set.
-    fortisandbox_mode: NotRequired[Literal["inline", "analytics-suspicious", "analytics-everything"]]  # FortiSandbox scan modes.
+    feature_set: NotRequired[Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}]]  # Flow/proxy feature set.
+    fortisandbox_mode: NotRequired[Literal[{"help": "FortiSandbox inline scan.", "label": "Inline", "name": "inline"}, {"description": "FortiSandbox post-transfer scan: submit supported files if heuristics or other methods determine they are suspicious", "help": "FortiSandbox post-transfer scan: submit supported files if heuristics or other methods determine they are suspicious.", "label": "Analytics Suspicious", "name": "analytics-suspicious"}, {"description": "FortiSandbox post-transfer scan: submit supported files for inspection", "help": "FortiSandbox post-transfer scan: submit supported files for inspection.", "label": "Analytics Everything", "name": "analytics-everything"}]]  # FortiSandbox scan modes.
     fortisandbox_max_upload: NotRequired[int]  # Maximum size of files that can be uploaded to FortiSandbox i
     analytics_ignore_filetype: NotRequired[int]  # Do not submit files matching this DLP file-pattern to FortiS
     analytics_accept_filetype: NotRequired[int]  # Only submit files matching this DLP file-pattern to FortiSan
-    analytics_db: NotRequired[Literal["disable", "enable"]]  # Enable/disable using the FortiSandbox signature database to 
-    mobile_malware_db: NotRequired[Literal["disable", "enable"]]  # Enable/disable using the mobile malware signature database.
+    analytics_db: NotRequired[Literal[{"description": "Use only the standard AV signature databases", "help": "Use only the standard AV signature databases.", "label": "Disable", "name": "disable"}, {"description": "Also use the FortiSandbox signature database", "help": "Also use the FortiSandbox signature database.", "label": "Enable", "name": "enable"}]]  # Enable/disable using the FortiSandbox signature database to 
+    mobile_malware_db: NotRequired[Literal[{"description": "Do not use the mobile malware signature database", "help": "Do not use the mobile malware signature database.", "label": "Disable", "name": "disable"}, {"description": "Also use the mobile malware signature database", "help": "Also use the mobile malware signature database.", "label": "Enable", "name": "enable"}]]  # Enable/disable using the mobile malware signature database.
     http: NotRequired[str]  # Configure HTTP AntiVirus options.
     ftp: NotRequired[str]  # Configure FTP AntiVirus options.
     imap: NotRequired[str]  # Configure IMAP AntiVirus options.
@@ -31,17 +31,18 @@ class ProfilePayload(TypedDict, total=False):
     ssh: NotRequired[str]  # Configure SFTP and SCP AntiVirus options.
     nac_quar: NotRequired[str]  # Configure AntiVirus quarantine settings.
     content_disarm: NotRequired[str]  # AV Content Disarm and Reconstruction settings.
-    outbreak_prevention_archive_scan: NotRequired[Literal["disable", "enable"]]  # Enable/disable outbreak-prevention archive scanning.
-    external_blocklist_enable_all: NotRequired[Literal["disable", "enable"]]  # Enable/disable all external blocklists.
+    outbreak_prevention_archive_scan: NotRequired[Literal[{"description": "Analyze files as sent, not the content of archives", "help": "Analyze files as sent, not the content of archives.", "label": "Disable", "name": "disable"}, {"description": "Analyze files including the content of archives", "help": "Analyze files including the content of archives.", "label": "Enable", "name": "enable"}]]  # Enable/disable outbreak-prevention archive scanning.
+    external_blocklist_enable_all: NotRequired[Literal[{"description": "Use configured external blocklists", "help": "Use configured external blocklists.", "label": "Disable", "name": "disable"}, {"description": "Enable all external blocklists", "help": "Enable all external blocklists.", "label": "Enable", "name": "enable"}]]  # Enable/disable all external blocklists.
     external_blocklist: NotRequired[list[dict[str, Any]]]  # One or more external malware block lists.
-    ems_threat_feed: NotRequired[Literal["disable", "enable"]]  # Enable/disable use of EMS threat feed when performing AntiVi
-    fortindr_error_action: NotRequired[Literal["log-only", "block", "ignore"]]  # Action to take if FortiNDR encounters an error.
-    fortindr_timeout_action: NotRequired[Literal["log-only", "block", "ignore"]]  # Action to take if FortiNDR encounters a scan timeout.
-    fortisandbox_error_action: NotRequired[Literal["log-only", "block", "ignore"]]  # Action to take if FortiSandbox inline scan encounters an err
-    fortisandbox_timeout_action: NotRequired[Literal["log-only", "block", "ignore"]]  # Action to take if FortiSandbox inline scan encounters a scan
-    av_virus_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable AntiVirus logging.
-    extended_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended logging for antivirus.
-    scan_mode: NotRequired[Literal["default", "legacy"]]  # Configure scan mode (default or legacy).
+    ems_threat_feed: NotRequired[Literal[{"description": "Disable use of EMS threat feed when performing AntiVirus scan", "help": "Disable use of EMS threat feed when performing AntiVirus scan.", "label": "Disable", "name": "disable"}, {"description": "Enable use of EMS threat feed when performing AntiVirus scan", "help": "Enable use of EMS threat feed when performing AntiVirus scan.", "label": "Enable", "name": "enable"}]]  # Enable/disable use of EMS threat feed when performing AntiVi
+    fortindr_error_action: NotRequired[Literal[{"help": "Log FortiNDR error, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiNDR error.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiNDR error.", "label": "Ignore", "name": "ignore"}]]  # Action to take if FortiNDR encounters an error.
+    fortindr_timeout_action: NotRequired[Literal[{"help": "Log FortiNDR scan timeout, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiNDR scan timeout.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiNDR scan timeout.", "label": "Ignore", "name": "ignore"}]]  # Action to take if FortiNDR encounters a scan timeout.
+    fortisandbox_scan_timeout: NotRequired[int]  # FortiSandbox inline scan timeout in seconds (30 - 180, defau
+    fortisandbox_error_action: NotRequired[Literal[{"help": "Log FortiSandbox inline scan error, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiSandbox inline scan error.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiSandbox inline scan error.", "label": "Ignore", "name": "ignore"}]]  # Action to take if FortiSandbox inline scan encounters an err
+    fortisandbox_timeout_action: NotRequired[Literal[{"help": "Log FortiSandbox inline scan timeout, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiSandbox inline scan timeout.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiSandbox inline scan timeout.", "label": "Ignore", "name": "ignore"}]]  # Action to take if FortiSandbox inline scan encounters a scan
+    av_virus_log: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable AntiVirus logging.
+    extended_log: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable extended logging for antivirus.
+    scan_mode: NotRequired[Literal[{"description": "On the fly decompression and scanning of certain archive files", "help": "On the fly decompression and scanning of certain archive files.", "label": "Default", "name": "default"}, {"description": "Scan archive files only after the entire file is received", "help": "Scan archive files only after the entire file is received.", "label": "Legacy", "name": "legacy"}]]  # Configure scan mode (default or legacy).
 
 
 class Profile:
@@ -72,13 +73,13 @@ class Profile:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        fortisandbox_mode: Literal["inline", "analytics-suspicious", "analytics-everything"] | None = ...,
+        feature_set: Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}] | None = ...,
+        fortisandbox_mode: Literal[{"help": "FortiSandbox inline scan.", "label": "Inline", "name": "inline"}, {"description": "FortiSandbox post-transfer scan: submit supported files if heuristics or other methods determine they are suspicious", "help": "FortiSandbox post-transfer scan: submit supported files if heuristics or other methods determine they are suspicious.", "label": "Analytics Suspicious", "name": "analytics-suspicious"}, {"description": "FortiSandbox post-transfer scan: submit supported files for inspection", "help": "FortiSandbox post-transfer scan: submit supported files for inspection.", "label": "Analytics Everything", "name": "analytics-everything"}] | None = ...,
         fortisandbox_max_upload: int | None = ...,
         analytics_ignore_filetype: int | None = ...,
         analytics_accept_filetype: int | None = ...,
-        analytics_db: Literal["disable", "enable"] | None = ...,
-        mobile_malware_db: Literal["disable", "enable"] | None = ...,
+        analytics_db: Literal[{"description": "Use only the standard AV signature databases", "help": "Use only the standard AV signature databases.", "label": "Disable", "name": "disable"}, {"description": "Also use the FortiSandbox signature database", "help": "Also use the FortiSandbox signature database.", "label": "Enable", "name": "enable"}] | None = ...,
+        mobile_malware_db: Literal[{"description": "Do not use the mobile malware signature database", "help": "Do not use the mobile malware signature database.", "label": "Disable", "name": "disable"}, {"description": "Also use the mobile malware signature database", "help": "Also use the mobile malware signature database.", "label": "Enable", "name": "enable"}] | None = ...,
         http: str | None = ...,
         ftp: str | None = ...,
         imap: str | None = ...,
@@ -90,17 +91,18 @@ class Profile:
         ssh: str | None = ...,
         nac_quar: str | None = ...,
         content_disarm: str | None = ...,
-        outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
-        external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
+        outbreak_prevention_archive_scan: Literal[{"description": "Analyze files as sent, not the content of archives", "help": "Analyze files as sent, not the content of archives.", "label": "Disable", "name": "disable"}, {"description": "Analyze files including the content of archives", "help": "Analyze files including the content of archives.", "label": "Enable", "name": "enable"}] | None = ...,
+        external_blocklist_enable_all: Literal[{"description": "Use configured external blocklists", "help": "Use configured external blocklists.", "label": "Disable", "name": "disable"}, {"description": "Enable all external blocklists", "help": "Enable all external blocklists.", "label": "Enable", "name": "enable"}] | None = ...,
         external_blocklist: list[dict[str, Any]] | None = ...,
-        ems_threat_feed: Literal["disable", "enable"] | None = ...,
-        fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
-        fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
-        fortisandbox_error_action: Literal["log-only", "block", "ignore"] | None = ...,
-        fortisandbox_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
-        av_virus_log: Literal["enable", "disable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        scan_mode: Literal["default", "legacy"] | None = ...,
+        ems_threat_feed: Literal[{"description": "Disable use of EMS threat feed when performing AntiVirus scan", "help": "Disable use of EMS threat feed when performing AntiVirus scan.", "label": "Disable", "name": "disable"}, {"description": "Enable use of EMS threat feed when performing AntiVirus scan", "help": "Enable use of EMS threat feed when performing AntiVirus scan.", "label": "Enable", "name": "enable"}] | None = ...,
+        fortindr_error_action: Literal[{"help": "Log FortiNDR error, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiNDR error.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiNDR error.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        fortindr_timeout_action: Literal[{"help": "Log FortiNDR scan timeout, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiNDR scan timeout.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiNDR scan timeout.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        fortisandbox_scan_timeout: int | None = ...,
+        fortisandbox_error_action: Literal[{"help": "Log FortiSandbox inline scan error, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiSandbox inline scan error.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiSandbox inline scan error.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        fortisandbox_timeout_action: Literal[{"help": "Log FortiSandbox inline scan timeout, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiSandbox inline scan timeout.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiSandbox inline scan timeout.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        av_virus_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        scan_mode: Literal[{"description": "On the fly decompression and scanning of certain archive files", "help": "On the fly decompression and scanning of certain archive files.", "label": "Default", "name": "default"}, {"description": "Scan archive files only after the entire file is received", "help": "Scan archive files only after the entire file is received.", "label": "Legacy", "name": "legacy"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -112,13 +114,13 @@ class Profile:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        fortisandbox_mode: Literal["inline", "analytics-suspicious", "analytics-everything"] | None = ...,
+        feature_set: Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}] | None = ...,
+        fortisandbox_mode: Literal[{"help": "FortiSandbox inline scan.", "label": "Inline", "name": "inline"}, {"description": "FortiSandbox post-transfer scan: submit supported files if heuristics or other methods determine they are suspicious", "help": "FortiSandbox post-transfer scan: submit supported files if heuristics or other methods determine they are suspicious.", "label": "Analytics Suspicious", "name": "analytics-suspicious"}, {"description": "FortiSandbox post-transfer scan: submit supported files for inspection", "help": "FortiSandbox post-transfer scan: submit supported files for inspection.", "label": "Analytics Everything", "name": "analytics-everything"}] | None = ...,
         fortisandbox_max_upload: int | None = ...,
         analytics_ignore_filetype: int | None = ...,
         analytics_accept_filetype: int | None = ...,
-        analytics_db: Literal["disable", "enable"] | None = ...,
-        mobile_malware_db: Literal["disable", "enable"] | None = ...,
+        analytics_db: Literal[{"description": "Use only the standard AV signature databases", "help": "Use only the standard AV signature databases.", "label": "Disable", "name": "disable"}, {"description": "Also use the FortiSandbox signature database", "help": "Also use the FortiSandbox signature database.", "label": "Enable", "name": "enable"}] | None = ...,
+        mobile_malware_db: Literal[{"description": "Do not use the mobile malware signature database", "help": "Do not use the mobile malware signature database.", "label": "Disable", "name": "disable"}, {"description": "Also use the mobile malware signature database", "help": "Also use the mobile malware signature database.", "label": "Enable", "name": "enable"}] | None = ...,
         http: str | None = ...,
         ftp: str | None = ...,
         imap: str | None = ...,
@@ -130,17 +132,18 @@ class Profile:
         ssh: str | None = ...,
         nac_quar: str | None = ...,
         content_disarm: str | None = ...,
-        outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
-        external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
+        outbreak_prevention_archive_scan: Literal[{"description": "Analyze files as sent, not the content of archives", "help": "Analyze files as sent, not the content of archives.", "label": "Disable", "name": "disable"}, {"description": "Analyze files including the content of archives", "help": "Analyze files including the content of archives.", "label": "Enable", "name": "enable"}] | None = ...,
+        external_blocklist_enable_all: Literal[{"description": "Use configured external blocklists", "help": "Use configured external blocklists.", "label": "Disable", "name": "disable"}, {"description": "Enable all external blocklists", "help": "Enable all external blocklists.", "label": "Enable", "name": "enable"}] | None = ...,
         external_blocklist: list[dict[str, Any]] | None = ...,
-        ems_threat_feed: Literal["disable", "enable"] | None = ...,
-        fortindr_error_action: Literal["log-only", "block", "ignore"] | None = ...,
-        fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
-        fortisandbox_error_action: Literal["log-only", "block", "ignore"] | None = ...,
-        fortisandbox_timeout_action: Literal["log-only", "block", "ignore"] | None = ...,
-        av_virus_log: Literal["enable", "disable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        scan_mode: Literal["default", "legacy"] | None = ...,
+        ems_threat_feed: Literal[{"description": "Disable use of EMS threat feed when performing AntiVirus scan", "help": "Disable use of EMS threat feed when performing AntiVirus scan.", "label": "Disable", "name": "disable"}, {"description": "Enable use of EMS threat feed when performing AntiVirus scan", "help": "Enable use of EMS threat feed when performing AntiVirus scan.", "label": "Enable", "name": "enable"}] | None = ...,
+        fortindr_error_action: Literal[{"help": "Log FortiNDR error, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiNDR error.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiNDR error.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        fortindr_timeout_action: Literal[{"help": "Log FortiNDR scan timeout, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiNDR scan timeout.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiNDR scan timeout.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        fortisandbox_scan_timeout: int | None = ...,
+        fortisandbox_error_action: Literal[{"help": "Log FortiSandbox inline scan error, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiSandbox inline scan error.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiSandbox inline scan error.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        fortisandbox_timeout_action: Literal[{"help": "Log FortiSandbox inline scan timeout, but allow the file.", "label": "Log Only", "name": "log-only"}, {"help": "Block the file on FortiSandbox inline scan timeout.", "label": "Block", "name": "block"}, {"help": "Do nothing on FortiSandbox inline scan timeout.", "label": "Ignore", "name": "ignore"}] | None = ...,
+        av_virus_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        scan_mode: Literal[{"description": "On the fly decompression and scanning of certain archive files", "help": "On the fly decompression and scanning of certain archive files.", "label": "Default", "name": "default"}, {"description": "Scan archive files only after the entire file is received", "help": "Scan archive files only after the entire file is received.", "label": "Legacy", "name": "legacy"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -56,7 +56,7 @@ class ReverseIpLookup:
         """
         Retrieve network/reverse_ip_lookup configuration.
 
-        Configuration for network/reverse-ip-lookup
+        Retrieve the resolved DNS domain name for a given IP address.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

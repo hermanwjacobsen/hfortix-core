@@ -1,6 +1,6 @@
 """FortiOS CMDB - Service category"""
 
-from .ldap import Ldap
+from . import ldap
 
 __all__ = [
     "Ldap",
@@ -17,4 +17,4 @@ class Service:
         Args:
             client: HTTP client instance for API communication
         """
-        self.ldap = Ldap(client)
+        self.ldap = ldap.Ldap(client)

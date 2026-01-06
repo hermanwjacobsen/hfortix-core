@@ -11,17 +11,17 @@ class PasswordPolicyPayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Password policy name.
-    expire_status: NotRequired[Literal["enable", "disable"]]  # Enable/disable password expiration.
+    expire_status: NotRequired[Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}]]  # Enable/disable password expiration.
     expire_days: NotRequired[int]  # Time in days before the user's password expires.
     warn_days: NotRequired[int]  # Time in days before a password expiration warning message is
-    expired_password_renewal: NotRequired[Literal["enable", "disable"]]  # Enable/disable renewal of a password that already is expired
+    expired_password_renewal: NotRequired[Literal[{"description": "Enable renewal of a password that already is expired", "help": "Enable renewal of a password that already is expired.", "label": "Enable", "name": "enable"}, {"description": "Disable renewal of a password that already is expired", "help": "Disable renewal of a password that already is expired.", "label": "Disable", "name": "disable"}]]  # Enable/disable renewal of a password that already is expired
     minimum_length: NotRequired[int]  # Minimum password length (8 - 128, default = 8).
     min_lower_case_letter: NotRequired[int]  # Minimum number of lowercase characters in password (0 - 128,
     min_upper_case_letter: NotRequired[int]  # Minimum number of uppercase characters in password (0 - 128,
     min_non_alphanumeric: NotRequired[int]  # Minimum number of non-alphanumeric characters in password (0
     min_number: NotRequired[int]  # Minimum number of numeric characters in password (0 - 128, d
     min_change_characters: NotRequired[int]  # Minimum number of unique characters in new password which do
-    reuse_password: NotRequired[Literal["enable", "disable"]]  # Enable/disable reuse of password. If both reuse-password and
+    reuse_password: NotRequired[Literal[{"description": "Users are allowed to reuse the same password up to a limit", "help": "Users are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Users must create a new password", "help": "Users must create a new password.", "label": "Disable", "name": "disable"}]]  # Enable/disable reuse of password. If both reuse-password and
     reuse_password_limit: NotRequired[int]  # Number of times passwords can be reused (0 - 20, default = 0
 
 
@@ -51,17 +51,17 @@ class PasswordPolicy:
         self,
         payload_dict: PasswordPolicyPayload | None = ...,
         name: str | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_status: Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}] | None = ...,
         expire_days: int | None = ...,
         warn_days: int | None = ...,
-        expired_password_renewal: Literal["enable", "disable"] | None = ...,
+        expired_password_renewal: Literal[{"description": "Enable renewal of a password that already is expired", "help": "Enable renewal of a password that already is expired.", "label": "Enable", "name": "enable"}, {"description": "Disable renewal of a password that already is expired", "help": "Disable renewal of a password that already is expired.", "label": "Disable", "name": "disable"}] | None = ...,
         minimum_length: int | None = ...,
         min_lower_case_letter: int | None = ...,
         min_upper_case_letter: int | None = ...,
         min_non_alphanumeric: int | None = ...,
         min_number: int | None = ...,
         min_change_characters: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password: Literal[{"description": "Users are allowed to reuse the same password up to a limit", "help": "Users are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Users must create a new password", "help": "Users must create a new password.", "label": "Disable", "name": "disable"}] | None = ...,
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -72,17 +72,17 @@ class PasswordPolicy:
         self,
         payload_dict: PasswordPolicyPayload | None = ...,
         name: str | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
+        expire_status: Literal[{"description": "Passwords expire after expire-day days", "help": "Passwords expire after expire-day days.", "label": "Enable", "name": "enable"}, {"description": "Passwords do not expire", "help": "Passwords do not expire.", "label": "Disable", "name": "disable"}] | None = ...,
         expire_days: int | None = ...,
         warn_days: int | None = ...,
-        expired_password_renewal: Literal["enable", "disable"] | None = ...,
+        expired_password_renewal: Literal[{"description": "Enable renewal of a password that already is expired", "help": "Enable renewal of a password that already is expired.", "label": "Enable", "name": "enable"}, {"description": "Disable renewal of a password that already is expired", "help": "Disable renewal of a password that already is expired.", "label": "Disable", "name": "disable"}] | None = ...,
         minimum_length: int | None = ...,
         min_lower_case_letter: int | None = ...,
         min_upper_case_letter: int | None = ...,
         min_non_alphanumeric: int | None = ...,
         min_number: int | None = ...,
         min_change_characters: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
+        reuse_password: Literal[{"description": "Users are allowed to reuse the same password up to a limit", "help": "Users are allowed to reuse the same password up to a limit.", "label": "Enable", "name": "enable"}, {"description": "Users must create a new password", "help": "Users must create a new password.", "label": "Disable", "name": "disable"}] | None = ...,
         reuse_password_limit: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

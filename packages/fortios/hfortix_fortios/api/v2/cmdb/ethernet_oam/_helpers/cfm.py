@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "ethernet_oam/cfm",
     "category": "cmdb",
     "api_path": "ethernet-oam/cfm",
-    "help": "Configuration for ethernet-oam/cfm",
+    "help": "Configuration for ethernet_oam/cfm",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -12,7 +12,7 @@ class RegionPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # FortiAP region name.
     comments: NotRequired[str]  # Comments.
-    grayscale: NotRequired[Literal["enable", "disable"]]  # Region image grayscale.
+    grayscale: NotRequired[Literal[{"description": "Enable region image grayscale", "help": "Enable region image grayscale.", "label": "Enable", "name": "enable"}, {"description": "Disable region image grayscale", "help": "Disable region image grayscale.", "label": "Disable", "name": "disable"}]]  # Region image grayscale.
     opacity: NotRequired[int]  # Region image opacity (0 - 100).
 
 
@@ -43,7 +43,7 @@ class Region:
         payload_dict: RegionPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        grayscale: Literal["enable", "disable"] | None = ...,
+        grayscale: Literal[{"description": "Enable region image grayscale", "help": "Enable region image grayscale.", "label": "Enable", "name": "enable"}, {"description": "Disable region image grayscale", "help": "Disable region image grayscale.", "label": "Disable", "name": "disable"}] | None = ...,
         opacity: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -55,7 +55,7 @@ class Region:
         payload_dict: RegionPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        grayscale: Literal["enable", "disable"] | None = ...,
+        grayscale: Literal[{"description": "Enable region image grayscale", "help": "Enable region image grayscale.", "label": "Enable", "name": "enable"}, {"description": "Disable region image grayscale", "help": "Disable region image grayscale.", "label": "Disable", "name": "disable"}] | None = ...,
         opacity: int | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

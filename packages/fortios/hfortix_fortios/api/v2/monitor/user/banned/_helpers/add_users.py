@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/banned/add_users",
     "category": "monitor",
     "api_path": "user/banned/add_users",
-    "help": "Configuration for user/banned/add_users",
+    "help": "Immediately add one or more users to the banned list.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -14,7 +14,7 @@ class NetflowPayload(TypedDict, total=False):
     inactive_flow_timeout: NotRequired[int]  # Timeout for periodic report of finished flows (10 - 600 sec,
     template_tx_timeout: NotRequired[int]  # Timeout for periodic template flowset transmission (60 - 864
     template_tx_counter: NotRequired[int]  # Counter of flowset records before resending a template flows
-    session_cache_size: NotRequired[Literal["min", "default", "max"]]  # Maximum RAM usage allowed for Netflow session cache.
+    session_cache_size: NotRequired[Literal[{"description": "Up to 0", "help": "Up to 0.5% of system RAM.", "label": "Min", "name": "min"}, {"description": "Up to 1% of system RAM", "help": "Up to 1% of system RAM.", "label": "Default", "name": "default"}, {"description": "Up to 2% of system RAM", "help": "Up to 2% of system RAM.", "label": "Max", "name": "max"}]]  # Maximum RAM usage allowed for Netflow session cache.
     exclusion_filters: NotRequired[list[dict[str, Any]]]  # Exclusion filters
     collectors: NotRequired[list[dict[str, Any]]]  # Netflow collectors.
 
@@ -47,7 +47,7 @@ class Netflow:
         inactive_flow_timeout: int | None = ...,
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
-        session_cache_size: Literal["min", "default", "max"] | None = ...,
+        session_cache_size: Literal[{"description": "Up to 0", "help": "Up to 0.5% of system RAM.", "label": "Min", "name": "min"}, {"description": "Up to 1% of system RAM", "help": "Up to 1% of system RAM.", "label": "Default", "name": "default"}, {"description": "Up to 2% of system RAM", "help": "Up to 2% of system RAM.", "label": "Max", "name": "max"}] | None = ...,
         exclusion_filters: list[dict[str, Any]] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -62,7 +62,7 @@ class Netflow:
         inactive_flow_timeout: int | None = ...,
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
-        session_cache_size: Literal["min", "default", "max"] | None = ...,
+        session_cache_size: Literal[{"description": "Up to 0", "help": "Up to 0.5% of system RAM.", "label": "Min", "name": "min"}, {"description": "Up to 1% of system RAM", "help": "Up to 1% of system RAM.", "label": "Default", "name": "default"}, {"description": "Up to 2% of system RAM", "help": "Up to 2% of system RAM.", "label": "Max", "name": "max"}] | None = ...,
         exclusion_filters: list[dict[str, Any]] | None = ...,
         collectors: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

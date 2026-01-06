@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_AUTO_ASIC_OFFLOAD: Literal["enable", "disable"]
-VALID_BODY_MODE: Literal["map-e", "fixed-ip", "ds-lite"]
+VALID_BODY_AUTO_ASIC_OFFLOAD: Literal[{"description": "Enable auto ASIC offloading", "help": "Enable auto ASIC offloading.", "label": "Enable", "name": "enable"}, {"description": "Disable ASIC offloading", "help": "Disable ASIC offloading.", "label": "Disable", "name": "disable"}]
+VALID_BODY_MODE: Literal[{"description": "Map-e mode", "help": "Map-e mode.", "label": "Map E", "name": "map-e"}, {"description": "Fixed-ip mode", "help": "Fixed-ip mode.", "label": "Fixed Ip", "name": "fixed-ip"}, {"description": "DS-Lite mode", "help": "DS-Lite mode.", "label": "Ds Lite", "name": "ds-lite"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

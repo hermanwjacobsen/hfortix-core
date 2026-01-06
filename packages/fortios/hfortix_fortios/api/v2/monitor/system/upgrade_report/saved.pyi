@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Saved:
     """
-    Configuration for system/upgrade-report/saved
+    Get the last generated upgrade report.
     
     Path: system/upgrade_report/saved
     Category: monitor

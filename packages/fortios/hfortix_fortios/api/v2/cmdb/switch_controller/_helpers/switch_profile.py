@@ -104,20 +104,20 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LOGIN_PASSWD_OVERRIDE = [
-    "enable",
-    "disable",
+    "enable",  # Override a managed FortiSwitch's admin administrator password.
+    "disable",  # Use the managed FortiSwitch admin administrator account password.
 ]
 VALID_BODY_LOGIN = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiSwitch serial console.
+    "disable",  # Disable FortiSwitch serial console.
 ]
 VALID_BODY_REVISION_BACKUP_ON_LOGOUT = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic revision backup upon logout from FortiSwitch.
+    "disable",  # Disable automatic revision backup upon logout from FortiSwitch.
 ]
 VALID_BODY_REVISION_BACKUP_ON_UPGRADE = [
-    "enable",
-    "disable",
+    "enable",  # Enable automatic revision backup upon FortiSwitch image upgrade.
+    "disable",  # Disable automatic revision backup upon FortiSwitch image upgrade.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -245,7 +245,7 @@ def validate_switch_controller_switch_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "login-passwd-override": "enable",  # Valid enum value
+        ...     "login-passwd-override": "{'name': 'enable', 'help': "Override a managed FortiSwitch's admin administrator password.", 'label': 'Enable', 'description': "Override a managed FortiSwitch's admin administrator password"}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_switch_controller_switch_profile_post(payload)
         >>> assert is_valid == True

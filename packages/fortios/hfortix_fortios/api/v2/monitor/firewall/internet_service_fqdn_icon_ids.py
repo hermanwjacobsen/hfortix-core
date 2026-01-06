@@ -56,7 +56,7 @@ class InternetServiceFqdnIconIds:
         """
         Retrieve firewall/internet_service_fqdn_icon_ids configuration.
 
-        Configuration for firewall/internet-service-fqdn-icon-ids
+        Map of internet service FQDN icon IDs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

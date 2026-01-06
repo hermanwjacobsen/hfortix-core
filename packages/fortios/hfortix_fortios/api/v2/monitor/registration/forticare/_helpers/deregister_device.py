@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "registration/forticare/deregister_device",
     "category": "monitor",
     "api_path": "registration/forticare/deregister-device",
-    "help": "Configuration for registration/forticare/deregister-device",
+    "help": "Deregister the FortiGate from a FortiCare account.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

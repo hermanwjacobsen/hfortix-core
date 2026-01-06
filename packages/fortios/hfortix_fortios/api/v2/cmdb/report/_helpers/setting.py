@@ -103,17 +103,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PDF_REPORT = [
-    "enable",
-    "disable",
+    "enable",  # Enable PDF report.
+    "disable",  # Disable PDF report.
 ]
 VALID_BODY_FORTIVIEW = [
-    "enable",
-    "disable",
+    "enable",  # Enable historical FortiView.
+    "disable",  # Disable historical FortiView.
 ]
 VALID_BODY_REPORT_SOURCE = [
-    "forward-traffic",
-    "sniffer-traffic",
-    "local-deny-traffic",
+    "forward-traffic",  # Report includes forward traffic logs.
+    "sniffer-traffic",  # Report includes sniffer traffic logs.
+    "local-deny-traffic",  # Report includes local deny traffic logs.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -238,7 +238,7 @@ def validate_report_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "pdf-report": "enable",  # Valid enum value
+        ...     "pdf-report": "{'name': 'enable', 'help': 'Enable PDF report.', 'label': 'Enable', 'description': 'Enable PDF report'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_report_setting_post(payload)
         >>> assert is_valid == True

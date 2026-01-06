@@ -56,7 +56,7 @@ class Clear:
         """
         Retrieve vpn/ike/clear configuration.
 
-        Configuration for vpn/ike/clear
+        Clear IKE gateways.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

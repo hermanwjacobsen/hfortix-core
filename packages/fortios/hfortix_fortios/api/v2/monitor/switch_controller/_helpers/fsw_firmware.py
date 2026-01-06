@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/fsw_firmware",
     "category": "monitor",
     "api_path": "switch-controller/fsw-firmware",
-    "help": "Configuration for switch-controller/fsw-firmware",
+    "help": "Retrieve a list of recommended firmware for managed FortiSwitches.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

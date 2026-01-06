@@ -56,7 +56,7 @@ class NetworkServiceDynamic:
         """
         Retrieve firewall/network_service_dynamic configuration.
 
-        Configuration for firewall/network-service-dynamic
+        List of dynamic network service IP address and port pairs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/disconnect_admins/select",
     "category": "monitor",
     "api_path": "system/disconnect-admins/select",
-    "help": "Configuration for system/disconnect-admins/select",
+    "help": "Disconnects logged in administrators.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

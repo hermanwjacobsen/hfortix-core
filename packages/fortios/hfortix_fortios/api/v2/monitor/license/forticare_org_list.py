@@ -56,7 +56,7 @@ class ForticareOrgList:
         """
         Retrieve license/forticare_org_list configuration.
 
-        Configuration for license/forticare-org-list
+        Get FortiCare organization size and industry lists.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

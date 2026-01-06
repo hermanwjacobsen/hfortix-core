@@ -10,9 +10,9 @@ class GuiDisplayPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    resolve_hosts: NotRequired[Literal["enable", "disable"]]  # Enable/disable resolving IP addresses to hostname in log mes
-    resolve_apps: NotRequired[Literal["enable", "disable"]]  # Resolve unknown applications on the GUI using Fortinet's rem
-    fortiview_unscanned_apps: NotRequired[Literal["enable", "disable"]]  # Enable/disable showing unscanned traffic in FortiView applic
+    resolve_hosts: NotRequired[Literal[{"description": "Enable resolving IP addresses to hostnames", "help": "Enable resolving IP addresses to hostnames.", "label": "Enable", "name": "enable"}, {"description": "Disable resolving IP addresses to hostnames", "help": "Disable resolving IP addresses to hostnames.", "label": "Disable", "name": "disable"}]]  # Enable/disable resolving IP addresses to hostname in log mes
+    resolve_apps: NotRequired[Literal[{"description": "Enable unknown applications on the GUI", "help": "Enable unknown applications on the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown applications on the GUI", "help": "Disable unknown applications on the GUI.", "label": "Disable", "name": "disable"}]]  # Resolve unknown applications on the GUI using Fortinet's rem
+    fortiview_unscanned_apps: NotRequired[Literal[{"description": "Enable showing unscanned traffic", "help": "Enable showing unscanned traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable showing unscanned traffic", "help": "Disable showing unscanned traffic.", "label": "Disable", "name": "disable"}]]  # Enable/disable showing unscanned traffic in FortiView applic
 
 
 class GuiDisplay:
@@ -39,9 +39,9 @@ class GuiDisplay:
     def post(
         self,
         payload_dict: GuiDisplayPayload | None = ...,
-        resolve_hosts: Literal["enable", "disable"] | None = ...,
-        resolve_apps: Literal["enable", "disable"] | None = ...,
-        fortiview_unscanned_apps: Literal["enable", "disable"] | None = ...,
+        resolve_hosts: Literal[{"description": "Enable resolving IP addresses to hostnames", "help": "Enable resolving IP addresses to hostnames.", "label": "Enable", "name": "enable"}, {"description": "Disable resolving IP addresses to hostnames", "help": "Disable resolving IP addresses to hostnames.", "label": "Disable", "name": "disable"}] | None = ...,
+        resolve_apps: Literal[{"description": "Enable unknown applications on the GUI", "help": "Enable unknown applications on the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown applications on the GUI", "help": "Disable unknown applications on the GUI.", "label": "Disable", "name": "disable"}] | None = ...,
+        fortiview_unscanned_apps: Literal[{"description": "Enable showing unscanned traffic", "help": "Enable showing unscanned traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable showing unscanned traffic", "help": "Disable showing unscanned traffic.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -50,9 +50,9 @@ class GuiDisplay:
     def put(
         self,
         payload_dict: GuiDisplayPayload | None = ...,
-        resolve_hosts: Literal["enable", "disable"] | None = ...,
-        resolve_apps: Literal["enable", "disable"] | None = ...,
-        fortiview_unscanned_apps: Literal["enable", "disable"] | None = ...,
+        resolve_hosts: Literal[{"description": "Enable resolving IP addresses to hostnames", "help": "Enable resolving IP addresses to hostnames.", "label": "Enable", "name": "enable"}, {"description": "Disable resolving IP addresses to hostnames", "help": "Disable resolving IP addresses to hostnames.", "label": "Disable", "name": "disable"}] | None = ...,
+        resolve_apps: Literal[{"description": "Enable unknown applications on the GUI", "help": "Enable unknown applications on the GUI.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown applications on the GUI", "help": "Disable unknown applications on the GUI.", "label": "Disable", "name": "disable"}] | None = ...,
+        fortiview_unscanned_apps: Literal[{"description": "Enable showing unscanned traffic", "help": "Enable showing unscanned traffic.", "label": "Enable", "name": "enable"}, {"description": "Disable showing unscanned traffic", "help": "Disable showing unscanned traffic.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

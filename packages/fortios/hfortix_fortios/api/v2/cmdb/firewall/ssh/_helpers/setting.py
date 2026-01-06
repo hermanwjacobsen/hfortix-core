@@ -121,8 +121,8 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_HOST_TRUSTED_CHECKING = [
-    "enable",
-    "disable",
+    "enable",  # Enable host key trusted checking.
+    "disable",  # Disable host key trusted checking.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -247,7 +247,7 @@ def validate_firewall_ssh_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "host-trusted-checking": "enable",  # Valid enum value
+        ...     "host-trusted-checking": "{'name': 'enable', 'help': 'Enable host key trusted checking.', 'label': 'Enable', 'description': 'Enable host key trusted checking'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ssh_setting_post(payload)
         >>> assert is_valid == True

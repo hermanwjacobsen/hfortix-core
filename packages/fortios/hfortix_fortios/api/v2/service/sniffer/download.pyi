@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for sniffer/download
+    Returns a PCAP file of the packet capture.
     
     Path: sniffer/download
     Category: service

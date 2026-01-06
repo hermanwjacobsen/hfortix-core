@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Transfer:
     """
-    Configuration for registration/forticare/transfer
+    Transfer to a new FortiCare account.
     
     Path: registration/forticare/transfer
     Category: monitor

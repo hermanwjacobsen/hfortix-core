@@ -126,17 +126,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADDR_TYPE = [
-    "ip4",
-    "ip6",
-    "fqdn",
+    "ip4",  # Use an IPv4 address for the remote ICAP server.
+    "ip6",  # Use an IPv6 address for the remote ICAP server.
+    "fqdn",  # Use the FQDN for the forwarding proxy server.
 ]
 VALID_BODY_SECURE = [
-    "disable",
-    "enable",
+    "disable",  # Disable connection to secure ICAP server.
+    "enable",  # Enable connection to secure ICAP server.
 ]
 VALID_BODY_HEALTHCHECK = [
-    "disable",
-    "enable",
+    "disable",  # Disable health checking.
+    "enable",  # Enable health checking.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -266,7 +266,7 @@ def validate_icap_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "healthcheck-service": True,
-        ...     "addr-type": "ip4",  # Valid enum value
+        ...     "addr-type": "{'name': 'ip4', 'help': 'Use an IPv4 address for the remote ICAP server.', 'label': 'Ip4', 'description': 'Use an IPv4 address for the remote ICAP server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_icap_server_post(payload)
         >>> assert is_valid == True

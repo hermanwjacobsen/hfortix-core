@@ -10,10 +10,10 @@ class NetworkVisibilityPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    destination_visibility: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of destination visibility.
-    source_location: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of source geographical location visib
-    destination_hostname_visibility: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of destination hostname visibility.
-    destination_location: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of destination geographical location 
+    destination_visibility: NotRequired[Literal[{"description": "Disable logging of destination visibility", "help": "Disable logging of destination visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination visibility", "help": "Enable logging of destination visibility.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging of destination visibility.
+    source_location: NotRequired[Literal[{"description": "Disable logging of source geographical location visibility", "help": "Disable logging of source geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of source geographical location visibility", "help": "Enable logging of source geographical location visibility.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging of source geographical location visib
+    destination_hostname_visibility: NotRequired[Literal[{"description": "Disable logging of destination hostname visibility", "help": "Disable logging of destination hostname visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination hostname visibility", "help": "Enable logging of destination hostname visibility.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging of destination hostname visibility.
+    destination_location: NotRequired[Literal[{"description": "Disable logging of destination geographical location visibility", "help": "Disable logging of destination geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination geographical location visibility", "help": "Enable logging of destination geographical location visibility.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging of destination geographical location 
 
 
 class NetworkVisibility:
@@ -40,10 +40,10 @@ class NetworkVisibility:
     def post(
         self,
         payload_dict: NetworkVisibilityPayload | None = ...,
-        destination_visibility: Literal["disable", "enable"] | None = ...,
-        source_location: Literal["disable", "enable"] | None = ...,
-        destination_hostname_visibility: Literal["disable", "enable"] | None = ...,
-        destination_location: Literal["disable", "enable"] | None = ...,
+        destination_visibility: Literal[{"description": "Disable logging of destination visibility", "help": "Disable logging of destination visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination visibility", "help": "Enable logging of destination visibility.", "label": "Enable", "name": "enable"}] | None = ...,
+        source_location: Literal[{"description": "Disable logging of source geographical location visibility", "help": "Disable logging of source geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of source geographical location visibility", "help": "Enable logging of source geographical location visibility.", "label": "Enable", "name": "enable"}] | None = ...,
+        destination_hostname_visibility: Literal[{"description": "Disable logging of destination hostname visibility", "help": "Disable logging of destination hostname visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination hostname visibility", "help": "Enable logging of destination hostname visibility.", "label": "Enable", "name": "enable"}] | None = ...,
+        destination_location: Literal[{"description": "Disable logging of destination geographical location visibility", "help": "Disable logging of destination geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination geographical location visibility", "help": "Enable logging of destination geographical location visibility.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -52,10 +52,10 @@ class NetworkVisibility:
     def put(
         self,
         payload_dict: NetworkVisibilityPayload | None = ...,
-        destination_visibility: Literal["disable", "enable"] | None = ...,
-        source_location: Literal["disable", "enable"] | None = ...,
-        destination_hostname_visibility: Literal["disable", "enable"] | None = ...,
-        destination_location: Literal["disable", "enable"] | None = ...,
+        destination_visibility: Literal[{"description": "Disable logging of destination visibility", "help": "Disable logging of destination visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination visibility", "help": "Enable logging of destination visibility.", "label": "Enable", "name": "enable"}] | None = ...,
+        source_location: Literal[{"description": "Disable logging of source geographical location visibility", "help": "Disable logging of source geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of source geographical location visibility", "help": "Enable logging of source geographical location visibility.", "label": "Enable", "name": "enable"}] | None = ...,
+        destination_hostname_visibility: Literal[{"description": "Disable logging of destination hostname visibility", "help": "Disable logging of destination hostname visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination hostname visibility", "help": "Enable logging of destination hostname visibility.", "label": "Enable", "name": "enable"}] | None = ...,
+        destination_location: Literal[{"description": "Disable logging of destination geographical location visibility", "help": "Disable logging of destination geographical location visibility.", "label": "Disable", "name": "disable"}, {"description": "Enable logging of destination geographical location visibility", "help": "Enable logging of destination geographical location visibility.", "label": "Enable", "name": "enable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

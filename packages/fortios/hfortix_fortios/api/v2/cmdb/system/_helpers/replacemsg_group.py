@@ -139,13 +139,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "http": {
@@ -165,13 +165,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "webproxy": {
@@ -191,13 +191,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "ftp": {
@@ -217,13 +217,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "fortiguard-wf": {
@@ -243,13 +243,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "spam": {
@@ -269,13 +269,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "alertmail": {
@@ -295,13 +295,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "admin": {
@@ -321,13 +321,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "auth": {
@@ -347,13 +347,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "sslvpn": {
@@ -373,13 +373,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "nac-quar": {
@@ -399,13 +399,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "traffic-quota": {
@@ -425,13 +425,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "utm": {
@@ -451,13 +451,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "custom-message": {
@@ -477,13 +477,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "icap": {
@@ -503,13 +503,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
     "automation": {
@@ -529,13 +529,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Header flag.",
             "default": "none",
-            "options": ["none", "http", "8bit"],
+            "options": [{"help": "No header type.", "label": "None", "name": "none"}, {"help": "HTTP", "label": "Http", "name": "http"}, {"help": "8 bit.", "label": "8Bit", "name": "8bit"}],
         },
         "format": {
             "type": "option",
             "help": "Format flag.",
             "default": "none",
-            "options": ["none", "text", "html"],
+            "options": [{"help": "No format type.", "label": "None", "name": "none"}, {"help": "Text format.", "label": "Text", "name": "text"}, {"help": "HTML format.", "label": "Html", "name": "html"}],
         },
     },
 }
@@ -543,9 +543,9 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_GROUP_TYPE = [
-    "default",
-    "utm",
-    "auth",
+    "default",  # Per-vdom replacement messages.
+    "utm",  # For use with UTM settings in firewall policies.
+    "auth",  # For use with authentication pages in firewall policies.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -673,7 +673,7 @@ def validate_system_replacemsg_group_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "group-type": "default",  # Valid enum value
+        ...     "group-type": "{'name': 'default', 'help': 'Per-vdom replacement messages.', 'label': 'Default', 'description': 'Per-vdom replacement messages'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_replacemsg_group_post(payload)
         >>> assert is_valid == True

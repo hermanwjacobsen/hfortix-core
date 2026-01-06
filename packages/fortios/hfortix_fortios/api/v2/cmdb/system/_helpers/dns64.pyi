@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_ALWAYS_SYNTHESIZE_AAAA_RECORD: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable DNS64", "help": "Enable DNS64.", "label": "Enable", "name": "enable"}, {"description": "Disable DNS64", "help": "Disable DNS64.", "label": "Disable", "name": "disable"}]
+VALID_BODY_ALWAYS_SYNTHESIZE_AAAA_RECORD: Literal[{"description": "Enable AAAA record synthesis", "help": "Enable AAAA record synthesis.", "label": "Enable", "name": "enable"}, {"description": "Disable AAAA record synthesis", "help": "Disable AAAA record synthesis.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

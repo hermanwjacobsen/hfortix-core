@@ -56,7 +56,7 @@ class Format:
         """
         Retrieve system/logdisk/format configuration.
 
-        Configuration for system/logdisk/format
+        Format log disk.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

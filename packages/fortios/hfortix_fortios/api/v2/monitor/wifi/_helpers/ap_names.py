@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/ap_names",
     "category": "monitor",
     "api_path": "wifi/ap-names",
-    "help": "Monitor endpoint for wifi/ap-names",
+    "help": "Retrieve list of objects, each containing the valid serial number prefix, platform short name ",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

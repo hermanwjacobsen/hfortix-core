@@ -12,8 +12,8 @@ class SaasApplicationPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # SaaS application name.
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable setting.
-    type: NotRequired[Literal["built-in", "customized"]]  # SaaS application type.
+    status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable setting.
+    type: NotRequired[Literal[{"description": "Built-in SaaS application", "help": "Built-in SaaS application.", "label": "Built In", "name": "built-in"}, {"description": "User customized SaaS appliciation", "help": "User customized SaaS appliciation.", "label": "Customized", "name": "customized"}]]  # SaaS application type.
     casb_name: NotRequired[str]  # SaaS application signature name.
     description: NotRequired[str]  # SaaS application description.
     domains: NotRequired[list[dict[str, Any]]]  # SaaS application domain list.
@@ -48,8 +48,8 @@ class SaasApplication:
         payload_dict: SaasApplicationPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Built-in SaaS application", "help": "Built-in SaaS application.", "label": "Built In", "name": "built-in"}, {"description": "User customized SaaS appliciation", "help": "User customized SaaS appliciation.", "label": "Customized", "name": "customized"}] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: list[dict[str, Any]] | None = ...,
@@ -65,8 +65,8 @@ class SaasApplication:
         payload_dict: SaasApplicationPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["built-in", "customized"] | None = ...,
+        status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Built-in SaaS application", "help": "Built-in SaaS application.", "label": "Built In", "name": "built-in"}, {"description": "User customized SaaS appliciation", "help": "User customized SaaS appliciation.", "label": "Customized", "name": "customized"}] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
         domains: list[dict[str, Any]] | None = ...,

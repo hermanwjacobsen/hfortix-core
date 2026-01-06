@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class VdomResource:
     """
-    Configuration for system/vdom-resource
+    Retrieve VDOM resource information, including CPU and memory usage.
     
     Path: system/vdom_resource
     Category: monitor

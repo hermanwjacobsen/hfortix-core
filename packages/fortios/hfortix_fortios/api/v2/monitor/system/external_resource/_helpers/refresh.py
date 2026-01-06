@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/external_resource/refresh",
     "category": "monitor",
     "api_path": "system/external-resource/refresh",
-    "help": "Configuration for system/external-resource/refresh",
+    "help": "Fetch the external resource file and refresh status for the specified external resource.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

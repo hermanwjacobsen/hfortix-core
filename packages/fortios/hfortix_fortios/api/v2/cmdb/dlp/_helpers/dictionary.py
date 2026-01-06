@@ -126,19 +126,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable ignore case.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable ignore case.", "label": "Enable", "name": "enable"}, {"help": "Disable ignore case.", "label": "Disable", "name": "disable"}],
         },
         "repeat": {
             "type": "option",
             "help": "Enable/disable repeat match.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable repeat match.", "label": "Enable", "name": "enable"}, {"help": "Disable repeat match.", "label": "Disable", "name": "disable"}],
         },
         "status": {
             "type": "option",
             "help": "Enable/disable this pattern.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable this pattern.", "label": "Enable", "name": "enable"}, {"help": "Disable this pattern.", "label": "Disable", "name": "disable"}],
         },
         "comment": {
             "type": "var-string",
@@ -151,12 +151,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_MATCH_TYPE = [
-    "match-all",
-    "match-any",
+    "match-all",  # Match all entries.
+    "match-any",  # Match any entries.
 ]
 VALID_BODY_MATCH_AROUND = [
-    "enable",
-    "disable",
+    "enable",  # Enable match-around support.
+    "disable",  # Disable match-around support.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -287,7 +287,7 @@ def validate_dlp_dictionary_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "match-type": "match-all",  # Valid enum value
+        ...     "match-type": "{'name': 'match-all', 'help': 'Match all entries.', 'label': 'Match All', 'description': 'Match all entries'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_dlp_dictionary_post(payload)
         >>> assert is_valid == True

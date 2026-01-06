@@ -100,6 +100,7 @@ FIELDS_WITH_DEFAULTS = {
     "server-cert": "",
     "server-ca-cert": "",
     "ibm-region": "dallas",
+    "par-id": "",
     "update-interval": 60,
 }
 
@@ -172,6 +173,7 @@ FIELD_TYPES = {
     "server-ca-cert": "string",  # Trust only those servers whose certificate is directly/indir
     "api-key": "password",  # IBM cloud API key or service ID API key.
     "ibm-region": "option",  # IBM cloud region name.
+    "par-id": "string",  # Public address range ID.
     "update-interval": "integer",  # Dynamic object update interval (30 - 3600 sec, default = 60,
 }
 
@@ -230,6 +232,7 @@ FIELD_DESCRIPTIONS = {
     "server-ca-cert": "Trust only those servers whose certificate is directly/indirectly signed by this certificate.",
     "api-key": "IBM cloud API key or service ID API key.",
     "ibm-region": "IBM cloud region name.",
+    "par-id": "Public address range ID.",
     "update-interval": "Dynamic object update interval (30 - 3600 sec, default = 60, 0 = disabled).",
 }
 
@@ -261,6 +264,7 @@ FIELD_CONSTRAINTS = {
     "group-name": {"type": "string", "max_length": 127},
     "server-cert": {"type": "string", "max_length": 127},
     "server-ca-cert": {"type": "string", "max_length": 127},
+    "par-id": {"type": "string", "max_length": 63},
     "update-interval": {"type": "integer", "min": 0, "max": 3600},
 }
 
@@ -409,69 +413,69 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable connection to this SDN Connector.
+    "enable",  # Enable connection to this SDN Connector.
 ]
 VALID_BODY_TYPE = [
-    "aci",
-    "alicloud",
-    "aws",
-    "azure",
-    "gcp",
-    "nsx",
-    "nuage",
-    "oci",
-    "openstack",
-    "kubernetes",
-    "vmware",
-    "sepm",
-    "aci-direct",
-    "ibm",
-    "nutanix",
-    "sap",
+    "aci",  # Application Centric Infrastructure (ACI).
+    "alicloud",  # AliCloud Service (ACS).
+    "aws",  # Amazon Web Services (AWS).
+    "azure",  # Microsoft Azure.
+    "gcp",  # Google Cloud Platform (GCP).
+    "nsx",  # VMware NSX.
+    "nuage",  # Nuage VSP.
+    "oci",  # Oracle Cloud Infrastructure.
+    "openstack",  # OpenStack.
+    "kubernetes",  # Kubernetes.
+    "vmware",  # VMware vSphere (vCenter & ESXi).
+    "sepm",  # Symantec Endpoint Protection Manager.
+    "aci-direct",  # Application Centric Infrastructure (ACI Direct Connection).
+    "ibm",  # IBM Cloud Infrastructure.
+    "nutanix",  # Nutanix Prism Central.
+    "sap",  # SAP Control.
 ]
 VALID_BODY_USE_METADATA_IAM = [
-    "disable",
-    "enable",
+    "disable",  # Disable using IAM role to call API.
+    "enable",  # Enable using IAM role to call API.
 ]
 VALID_BODY_MICROSOFT_365 = [
-    "disable",
-    "enable",
+    "disable",  # Azure SDN connector
+    "enable",  # Microsoft 365 SDN connector
 ]
 VALID_BODY_HA_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable use for FortiGate HA service.
+    "enable",  # Enable use for FortiGate HA service.
 ]
 VALID_BODY_VERIFY_CERTIFICATE = [
-    "disable",
-    "enable",
+    "disable",  # Disable server certificate verification.
+    "enable",  # Enable server certificate verification.
 ]
 VALID_BODY_ALT_RESOURCE_IP = [
-    "disable",
-    "enable",
+    "disable",  # Disable AWS alternative resource IP.
+    "enable",  # Enable AWS alternative resource IP.
 ]
 VALID_BODY_AZURE_REGION = [
-    "global",
-    "china",
-    "germany",
-    "usgov",
-    "local",
+    "global",  # Global Azure Server.
+    "china",  # China Azure Server.
+    "germany",  # Germany Azure Server.
+    "usgov",  # US Government Azure Server.
+    "local",  # Azure Stack Local Server.
 ]
 VALID_BODY_OCI_REGION_TYPE = [
-    "commercial",
-    "government",
+    "commercial",  # Commercial region.
+    "government",  # Government region.
 ]
 VALID_BODY_IBM_REGION = [
-    "dallas",
-    "washington-dc",
-    "london",
-    "frankfurt",
-    "sydney",
-    "tokyo",
-    "osaka",
-    "toronto",
-    "sao-paulo",
-    "madrid",
+    "dallas",  # US South (Dallas) Public Endpoint.
+    "washington-dc",  # US East (Washington DC) Public Endpoint.
+    "london",  # United Kingdom (London) Public Endpoint.
+    "frankfurt",  # Germany (Frankfurt) Public Endpoint.
+    "sydney",  # Australia (Sydney) Public Endpoint.
+    "tokyo",  # Japan (Tokyo) Public Endpoint.
+    "osaka",  # Japan (Osaka) Public Endpoint.
+    "toronto",  # Canada (Toronto) Public Endpoint.
+    "sao-paulo",  # Brazil (Sao Paulo) Public Endpoint.
+    "madrid",  # Spain (Madrid) Public Endpoint.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -602,7 +606,7 @@ def validate_system_sdn_connector_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Disable connection to this SDN Connector.', 'label': 'Disable', 'description': 'Disable connection to this SDN Connector'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_sdn_connector_post(payload)
         >>> assert is_valid == True
@@ -1111,9 +1115,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure connection to SDN Connector.",
-    "total_fields": 54,
+    "total_fields": 55,
     "required_fields_count": 11,
-    "fields_with_defaults_count": 39,
+    "fields_with_defaults_count": 40,
 }
 
 

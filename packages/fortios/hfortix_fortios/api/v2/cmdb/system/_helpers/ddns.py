@@ -172,37 +172,37 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_DDNS_SERVER = [
-    "dyndns.org",
-    "dyns.net",
-    "tzo.com",
-    "vavic.com",
-    "dipdns.net",
-    "now.net.cn",
-    "dhs.org",
-    "easydns.com",
-    "genericDDNS",
-    "FortiGuardDDNS",
-    "noip.com",
+    "dyndns.org",  # members.dyndns.org and dnsalias.com
+    "dyns.net",  # www.dyns.net
+    "tzo.com",  # rh.tzo.com
+    "vavic.com",  # Peanut Hull
+    "dipdns.net",  # dipdnsserver.dipdns.com
+    "now.net.cn",  # ip.todayisp.com
+    "dhs.org",  # members.dhs.org
+    "easydns.com",  # members.easydns.com
+    "genericDDNS",  # Generic DDNS based on RFC2136.
+    "FortiGuardDDNS",  # FortiGuard DDNS service.
+    "noip.com",  # dynupdate.no-ip.com
 ]
 VALID_BODY_ADDR_TYPE = [
-    "ipv4",
-    "ipv6",
+    "ipv4",  # Use IPv4 address of the interface.
+    "ipv6",  # Use IPv6 address of the interface.
 ]
 VALID_BODY_SERVER_TYPE = [
-    "ipv4",
-    "ipv6",
+    "ipv4",  # Use IPv4 addressing.
+    "ipv6",  # Use IPv6 addressing.
 ]
 VALID_BODY_DDNS_AUTH = [
-    "disable",
-    "tsig",
+    "disable",  # Disable DDNS authentication.
+    "tsig",  # Enable TSIG authentication based on RFC2845.
 ]
 VALID_BODY_USE_PUBLIC_IP = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of public IP address.
+    "enable",  # Enable use of public IP address.
 ]
 VALID_BODY_CLEAR_TEXT = [
-    "disable",
-    "enable",
+    "disable",  # Disable use of clear text connections.
+    "enable",  # Enable use of clear text connections.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -333,7 +333,7 @@ def validate_system_ddns_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "ddns-server": True,
-        ...     "ddns-server": "dyndns.org",  # Valid enum value
+        ...     "ddns-server": "{'name': 'dyndns.org', 'help': 'members.dyndns.org and dnsalias.com', 'label': 'Dyndns.Org'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ddns_post(payload)
         >>> assert is_valid == True

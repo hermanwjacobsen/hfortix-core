@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve switch_controller/fsw_firmware/download configuration.
 
-        Configuration for switch-controller/fsw-firmware/download
+        Download FortiSwitch firmware from FortiGuard to the FortiGate according to FortiSwitch image ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

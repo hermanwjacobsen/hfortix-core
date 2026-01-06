@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FortianalyzerQueue:
     """
-    Configuration for log/fortianalyzer-queue
+    Retrieve information on FortiAnalyzer's queue state. Note:- FortiAnalyzer logs are queued only if upload-option is realtime.
     
     Path: log/fortianalyzer_queue
     Category: monitor

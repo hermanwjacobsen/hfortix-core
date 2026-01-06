@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/automation_stitch/webhook",
     "category": "monitor",
     "api_path": "system/automation-stitch/webhook",
-    "help": "Configuration for system/automation-stitch/webhook",
+    "help": "Triggers an incoming webhook for an automation stitch.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

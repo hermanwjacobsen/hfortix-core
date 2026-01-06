@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/resolve_fqdn",
     "category": "monitor",
     "api_path": "system/resolve-fqdn",
-    "help": "Configuration for system/resolve-fqdn",
+    "help": "Resolves the provided FQDNs to FQDN -> IP mappings.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

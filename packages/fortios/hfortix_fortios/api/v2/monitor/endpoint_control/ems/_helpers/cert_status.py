@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/ems/cert_status",
     "category": "monitor",
     "api_path": "endpoint-control/ems/cert-status",
-    "help": "Configuration for endpoint-control/ems/cert-status",
+    "help": "Retrieve authentication status of the EMS server certificate for a specific EMS.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

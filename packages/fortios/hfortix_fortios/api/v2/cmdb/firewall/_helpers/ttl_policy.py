@@ -134,12 +134,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this TTL policy.
+    "disable",  # Disable this TTL policy.
 ]
 VALID_BODY_ACTION = [
-    "accept",
-    "deny",
+    "accept",  # Allow traffic matching this policy.
+    "deny",  # Deny or block traffic matching this policy.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -270,7 +270,7 @@ def validate_firewall_ttl_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "srcintf": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable this TTL policy.', 'label': 'Enable', 'description': 'Enable this TTL policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ttl_policy_post(payload)
         >>> assert is_valid == True

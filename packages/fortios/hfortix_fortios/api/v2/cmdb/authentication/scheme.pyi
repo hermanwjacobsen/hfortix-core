@@ -11,22 +11,23 @@ class SchemePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Authentication scheme name.
-    method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"]  # Authentication methods (default = basic).
-    negotiate_ntlm: NotRequired[Literal["enable", "disable"]]  # Enable/disable negotiate authentication for NTLM (default = 
+    method: Literal[{"description": "NTLM authentication", "help": "NTLM authentication.", "label": "Ntlm", "name": "ntlm"}, {"description": "Basic HTTP authentication", "help": "Basic HTTP authentication.", "label": "Basic", "name": "basic"}, {"description": "Digest HTTP authentication", "help": "Digest HTTP authentication.", "label": "Digest", "name": "digest"}, {"description": "Form-based HTTP authentication", "help": "Form-based HTTP authentication.", "label": "Form", "name": "form"}, {"description": "Negotiate authentication", "help": "Negotiate authentication.", "label": "Negotiate", "name": "negotiate"}, {"description": "Fortinet Single Sign-On (FSSO) authentication", "help": "Fortinet Single Sign-On (FSSO) authentication.", "label": "Fsso", "name": "fsso"}, {"description": "RADIUS Single Sign-On (RSSO) authentication", "help": "RADIUS Single Sign-On (RSSO) authentication.", "label": "Rsso", "name": "rsso"}, {"description": "Public key based SSH authentication", "help": "Public key based SSH authentication.", "label": "Ssh Publickey", "name": "ssh-publickey"}, {"description": "Client certificate authentication", "help": "Client certificate authentication.", "label": "Cert", "name": "cert"}, {"description": "SAML authentication", "help": "SAML authentication.", "label": "Saml", "name": "saml"}, {"description": "Entra ID based Single Sign-On (SSO) authentication", "help": "Entra ID based Single Sign-On (SSO) authentication.", "label": "Entra Sso", "name": "entra-sso"}]  # Authentication methods (default = basic).
+    negotiate_ntlm: NotRequired[Literal[{"description": "Enable negotiate authentication for NTLM", "help": "Enable negotiate authentication for NTLM.", "label": "Enable", "name": "enable"}, {"description": "Disable negotiate authentication for NTLM", "help": "Disable negotiate authentication for NTLM.", "label": "Disable", "name": "disable"}]]  # Enable/disable negotiate authentication for NTLM (default = 
     kerberos_keytab: NotRequired[str]  # Kerberos keytab setting.
     domain_controller: NotRequired[str]  # Domain controller setting.
     saml_server: NotRequired[str]  # SAML configuration.
     saml_timeout: NotRequired[int]  # SAML authentication timeout in seconds.
     fsso_agent_for_ntlm: NotRequired[str]  # FSSO agent to use for NTLM authentication.
-    require_tfa: NotRequired[Literal["enable", "disable"]]  # Enable/disable two-factor authentication (default = disable)
-    fsso_guest: NotRequired[Literal["enable", "disable"]]  # Enable/disable user fsso-guest authentication (default = dis
-    user_cert: NotRequired[Literal["enable", "disable"]]  # Enable/disable authentication with user certificate (default
+    require_tfa: NotRequired[Literal[{"description": "Enable two-factor authentication", "help": "Enable two-factor authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable two-factor authentication", "help": "Disable two-factor authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable two-factor authentication (default = disable)
+    fsso_guest: NotRequired[Literal[{"description": "Enable user fsso-guest authentication", "help": "Enable user fsso-guest authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable user fsso-guest authentication", "help": "Disable user fsso-guest authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable user fsso-guest authentication (default = dis
+    user_cert: NotRequired[Literal[{"description": "Enable client certificate field authentication", "help": "Enable client certificate field authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable client certificate field authentication", "help": "Disable client certificate field authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable authentication with user certificate (default
+    cert_http_header: NotRequired[Literal[{"description": "Enable client certificate authentication with HTTP header (RFC9440)", "help": "Enable client certificate authentication with HTTP header (RFC9440).", "label": "Enable", "name": "enable"}, {"description": "Disable client certificate authentication with HTTP header (RFC9440)", "help": "Disable client certificate authentication with HTTP header (RFC9440).", "label": "Disable", "name": "disable"}]]  # Enable/disable authentication with user certificate in Clien
     user_database: NotRequired[list[dict[str, Any]]]  # Authentication server to contain user information; "local-us
     ssh_ca: NotRequired[str]  # SSH CA name.
     external_idp: NotRequired[str]  # External identity provider configuration.
-    group_attr_type: NotRequired[Literal["display-name", "external-id"]]  # Group attribute type used to match SCIM groups (default = di
-    digest_algo: NotRequired[Literal["md5", "sha-256"]]  # Digest Authentication Algorithms.
-    digest_rfc2069: NotRequired[Literal["enable", "disable"]]  # Enable/disable support for the deprecated RFC2069 Digest Cli
+    group_attr_type: NotRequired[Literal[{"description": "Display name", "help": "Display name.", "label": "Display Name", "name": "display-name"}, {"description": "External ID", "help": "External ID.", "label": "External Id", "name": "external-id"}]]  # Group attribute type used to match SCIM groups (default = di
+    digest_algo: NotRequired[Literal[{"description": "MD5", "help": "MD5.", "label": "Md5", "name": "md5"}, {"description": "SHA-256", "help": "SHA-256.", "label": "Sha 256", "name": "sha-256"}]]  # Digest Authentication Algorithms.
+    digest_rfc2069: NotRequired[Literal[{"description": "Enable support for the deprecated RFC2069 Digest Client (no cnonce field)", "help": "Enable support for the deprecated RFC2069 Digest Client (no cnonce field).", "label": "Enable", "name": "enable"}, {"description": "Disable support for the deprecated RFC2069 Digest Client (no cnonce field)", "help": "Disable support for the deprecated RFC2069 Digest Client (no cnonce field).", "label": "Disable", "name": "disable"}]]  # Enable/disable support for the deprecated RFC2069 Digest Cli
 
 
 class Scheme:
@@ -55,22 +56,23 @@ class Scheme:
         self,
         payload_dict: SchemePayload | None = ...,
         name: str | None = ...,
-        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | None = ...,
-        negotiate_ntlm: Literal["enable", "disable"] | None = ...,
+        method: Literal[{"description": "NTLM authentication", "help": "NTLM authentication.", "label": "Ntlm", "name": "ntlm"}, {"description": "Basic HTTP authentication", "help": "Basic HTTP authentication.", "label": "Basic", "name": "basic"}, {"description": "Digest HTTP authentication", "help": "Digest HTTP authentication.", "label": "Digest", "name": "digest"}, {"description": "Form-based HTTP authentication", "help": "Form-based HTTP authentication.", "label": "Form", "name": "form"}, {"description": "Negotiate authentication", "help": "Negotiate authentication.", "label": "Negotiate", "name": "negotiate"}, {"description": "Fortinet Single Sign-On (FSSO) authentication", "help": "Fortinet Single Sign-On (FSSO) authentication.", "label": "Fsso", "name": "fsso"}, {"description": "RADIUS Single Sign-On (RSSO) authentication", "help": "RADIUS Single Sign-On (RSSO) authentication.", "label": "Rsso", "name": "rsso"}, {"description": "Public key based SSH authentication", "help": "Public key based SSH authentication.", "label": "Ssh Publickey", "name": "ssh-publickey"}, {"description": "Client certificate authentication", "help": "Client certificate authentication.", "label": "Cert", "name": "cert"}, {"description": "SAML authentication", "help": "SAML authentication.", "label": "Saml", "name": "saml"}, {"description": "Entra ID based Single Sign-On (SSO) authentication", "help": "Entra ID based Single Sign-On (SSO) authentication.", "label": "Entra Sso", "name": "entra-sso"}] | None = ...,
+        negotiate_ntlm: Literal[{"description": "Enable negotiate authentication for NTLM", "help": "Enable negotiate authentication for NTLM.", "label": "Enable", "name": "enable"}, {"description": "Disable negotiate authentication for NTLM", "help": "Disable negotiate authentication for NTLM.", "label": "Disable", "name": "disable"}] | None = ...,
         kerberos_keytab: str | None = ...,
         domain_controller: str | None = ...,
         saml_server: str | None = ...,
         saml_timeout: int | None = ...,
         fsso_agent_for_ntlm: str | None = ...,
-        require_tfa: Literal["enable", "disable"] | None = ...,
-        fsso_guest: Literal["enable", "disable"] | None = ...,
-        user_cert: Literal["enable", "disable"] | None = ...,
+        require_tfa: Literal[{"description": "Enable two-factor authentication", "help": "Enable two-factor authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable two-factor authentication", "help": "Disable two-factor authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        fsso_guest: Literal[{"description": "Enable user fsso-guest authentication", "help": "Enable user fsso-guest authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable user fsso-guest authentication", "help": "Disable user fsso-guest authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        user_cert: Literal[{"description": "Enable client certificate field authentication", "help": "Enable client certificate field authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable client certificate field authentication", "help": "Disable client certificate field authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        cert_http_header: Literal[{"description": "Enable client certificate authentication with HTTP header (RFC9440)", "help": "Enable client certificate authentication with HTTP header (RFC9440).", "label": "Enable", "name": "enable"}, {"description": "Disable client certificate authentication with HTTP header (RFC9440)", "help": "Disable client certificate authentication with HTTP header (RFC9440).", "label": "Disable", "name": "disable"}] | None = ...,
         user_database: list[dict[str, Any]] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
-        group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        digest_algo: Literal["md5", "sha-256"] | None = ...,
-        digest_rfc2069: Literal["enable", "disable"] | None = ...,
+        group_attr_type: Literal[{"description": "Display name", "help": "Display name.", "label": "Display Name", "name": "display-name"}, {"description": "External ID", "help": "External ID.", "label": "External Id", "name": "external-id"}] | None = ...,
+        digest_algo: Literal[{"description": "MD5", "help": "MD5.", "label": "Md5", "name": "md5"}, {"description": "SHA-256", "help": "SHA-256.", "label": "Sha 256", "name": "sha-256"}] | None = ...,
+        digest_rfc2069: Literal[{"description": "Enable support for the deprecated RFC2069 Digest Client (no cnonce field)", "help": "Enable support for the deprecated RFC2069 Digest Client (no cnonce field).", "label": "Enable", "name": "enable"}, {"description": "Disable support for the deprecated RFC2069 Digest Client (no cnonce field)", "help": "Disable support for the deprecated RFC2069 Digest Client (no cnonce field).", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -80,22 +82,23 @@ class Scheme:
         self,
         payload_dict: SchemePayload | None = ...,
         name: str | None = ...,
-        method: Literal["ntlm", "basic", "digest", "form", "negotiate", "fsso", "rsso", "ssh-publickey", "cert", "saml", "entra-sso"] | None = ...,
-        negotiate_ntlm: Literal["enable", "disable"] | None = ...,
+        method: Literal[{"description": "NTLM authentication", "help": "NTLM authentication.", "label": "Ntlm", "name": "ntlm"}, {"description": "Basic HTTP authentication", "help": "Basic HTTP authentication.", "label": "Basic", "name": "basic"}, {"description": "Digest HTTP authentication", "help": "Digest HTTP authentication.", "label": "Digest", "name": "digest"}, {"description": "Form-based HTTP authentication", "help": "Form-based HTTP authentication.", "label": "Form", "name": "form"}, {"description": "Negotiate authentication", "help": "Negotiate authentication.", "label": "Negotiate", "name": "negotiate"}, {"description": "Fortinet Single Sign-On (FSSO) authentication", "help": "Fortinet Single Sign-On (FSSO) authentication.", "label": "Fsso", "name": "fsso"}, {"description": "RADIUS Single Sign-On (RSSO) authentication", "help": "RADIUS Single Sign-On (RSSO) authentication.", "label": "Rsso", "name": "rsso"}, {"description": "Public key based SSH authentication", "help": "Public key based SSH authentication.", "label": "Ssh Publickey", "name": "ssh-publickey"}, {"description": "Client certificate authentication", "help": "Client certificate authentication.", "label": "Cert", "name": "cert"}, {"description": "SAML authentication", "help": "SAML authentication.", "label": "Saml", "name": "saml"}, {"description": "Entra ID based Single Sign-On (SSO) authentication", "help": "Entra ID based Single Sign-On (SSO) authentication.", "label": "Entra Sso", "name": "entra-sso"}] | None = ...,
+        negotiate_ntlm: Literal[{"description": "Enable negotiate authentication for NTLM", "help": "Enable negotiate authentication for NTLM.", "label": "Enable", "name": "enable"}, {"description": "Disable negotiate authentication for NTLM", "help": "Disable negotiate authentication for NTLM.", "label": "Disable", "name": "disable"}] | None = ...,
         kerberos_keytab: str | None = ...,
         domain_controller: str | None = ...,
         saml_server: str | None = ...,
         saml_timeout: int | None = ...,
         fsso_agent_for_ntlm: str | None = ...,
-        require_tfa: Literal["enable", "disable"] | None = ...,
-        fsso_guest: Literal["enable", "disable"] | None = ...,
-        user_cert: Literal["enable", "disable"] | None = ...,
+        require_tfa: Literal[{"description": "Enable two-factor authentication", "help": "Enable two-factor authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable two-factor authentication", "help": "Disable two-factor authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        fsso_guest: Literal[{"description": "Enable user fsso-guest authentication", "help": "Enable user fsso-guest authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable user fsso-guest authentication", "help": "Disable user fsso-guest authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        user_cert: Literal[{"description": "Enable client certificate field authentication", "help": "Enable client certificate field authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable client certificate field authentication", "help": "Disable client certificate field authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        cert_http_header: Literal[{"description": "Enable client certificate authentication with HTTP header (RFC9440)", "help": "Enable client certificate authentication with HTTP header (RFC9440).", "label": "Enable", "name": "enable"}, {"description": "Disable client certificate authentication with HTTP header (RFC9440)", "help": "Disable client certificate authentication with HTTP header (RFC9440).", "label": "Disable", "name": "disable"}] | None = ...,
         user_database: list[dict[str, Any]] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
-        group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        digest_algo: Literal["md5", "sha-256"] | None = ...,
-        digest_rfc2069: Literal["enable", "disable"] | None = ...,
+        group_attr_type: Literal[{"description": "Display name", "help": "Display name.", "label": "Display Name", "name": "display-name"}, {"description": "External ID", "help": "External ID.", "label": "External Id", "name": "external-id"}] | None = ...,
+        digest_algo: Literal[{"description": "MD5", "help": "MD5.", "label": "Md5", "name": "md5"}, {"description": "SHA-256", "help": "SHA-256.", "label": "Sha 256", "name": "sha-256"}] | None = ...,
+        digest_rfc2069: Literal[{"description": "Enable support for the deprecated RFC2069 Digest Client (no cnonce field)", "help": "Enable support for the deprecated RFC2069 Digest Client (no cnonce field).", "label": "Enable", "name": "enable"}, {"description": "Disable support for the deprecated RFC2069 Digest Client (no cnonce field)", "help": "Disable support for the deprecated RFC2069 Digest Client (no cnonce field).", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

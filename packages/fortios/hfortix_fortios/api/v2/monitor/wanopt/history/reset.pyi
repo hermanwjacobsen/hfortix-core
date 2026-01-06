@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for wanopt/history/reset
+    Reset WAN opt. statistics.
     
     Path: wanopt/history/reset
     Category: monitor

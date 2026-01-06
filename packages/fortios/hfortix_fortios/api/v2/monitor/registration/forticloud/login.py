@@ -56,7 +56,7 @@ class Login:
         """
         Retrieve registration/forticloud/login configuration.
 
-        Configuration for registration/forticloud/login
+        Login to FortiCloud.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

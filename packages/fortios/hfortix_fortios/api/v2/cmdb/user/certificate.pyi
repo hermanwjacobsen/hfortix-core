@@ -12,8 +12,8 @@ class CertificatePayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # User name.
     id: NotRequired[int]  # User ID.
-    status: Literal["enable", "disable"]  # Enable/disable allowing the certificate user to authenticate
-    type: Literal["single-certificate", "trusted-issuer"]  # Type of certificate authentication method.
+    status: Literal[{"description": "Enable user", "help": "Enable user.", "label": "Enable", "name": "enable"}, {"description": "Disable user", "help": "Disable user.", "label": "Disable", "name": "disable"}]  # Enable/disable allowing the certificate user to authenticate
+    type: Literal[{"description": "Single certificate", "help": "Single certificate.", "label": "Single Certificate", "name": "single-certificate"}, {"description": "Trusted CA issuer", "help": "Trusted CA issuer.", "label": "Trusted Issuer", "name": "trusted-issuer"}]  # Type of certificate authentication method.
     common_name: str  # Certificate common name.
     issuer: str  # CA certificate used for client certificate verification.
 
@@ -45,8 +45,8 @@ class Certificate:
         payload_dict: CertificatePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        status: Literal[{"description": "Enable user", "help": "Enable user.", "label": "Enable", "name": "enable"}, {"description": "Disable user", "help": "Disable user.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Single certificate", "help": "Single certificate.", "label": "Single Certificate", "name": "single-certificate"}, {"description": "Trusted CA issuer", "help": "Trusted CA issuer.", "label": "Trusted Issuer", "name": "trusted-issuer"}] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,
@@ -59,8 +59,8 @@ class Certificate:
         payload_dict: CertificatePayload | None = ...,
         name: str | None = ...,
         id: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        type: Literal["single-certificate", "trusted-issuer"] | None = ...,
+        status: Literal[{"description": "Enable user", "help": "Enable user.", "label": "Enable", "name": "enable"}, {"description": "Disable user", "help": "Disable user.", "label": "Disable", "name": "disable"}] | None = ...,
+        type: Literal[{"description": "Single certificate", "help": "Single certificate.", "label": "Single Certificate", "name": "single-certificate"}, {"description": "Trusted CA issuer", "help": "Trusted CA issuer.", "label": "Trusted Issuer", "name": "trusted-issuer"}] | None = ...,
         common_name: str | None = ...,
         issuer: str | None = ...,
         vdom: str | bool | None = ...,

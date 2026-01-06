@@ -12,14 +12,14 @@ class SdnVpnPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Public cloud VPN name.
     sdn: str  # SDN connector name.
-    remote_type: Literal["vgw", "tgw"]  # Type of remote device.
-    routing_type: Literal["static", "dynamic"]  # Type of routing.
+    remote_type: Literal[{"description": "Virtual private gateway", "help": "Virtual private gateway.", "label": "Vgw", "name": "vgw"}, {"description": "Transit gateway", "help": "Transit gateway.", "label": "Tgw", "name": "tgw"}]  # Type of remote device.
+    routing_type: Literal[{"description": "Static routing", "help": "Static routing.", "label": "Static", "name": "static"}, {"description": "Dynamic routing", "help": "Dynamic routing.", "label": "Dynamic", "name": "dynamic"}]  # Type of routing.
     vgw_id: str  # Virtual private gateway id.
     tgw_id: str  # Transit gateway id.
     subnet_id: NotRequired[str]  # AWS subnet id for TGW route propagation.
     bgp_as: int  # BGP Router AS number.
     cgw_gateway: str  # Public IP address of the customer gateway.
-    nat_traversal: NotRequired[Literal["disable", "enable"]]  # Enable/disable use for NAT traversal. Please enable if your 
+    nat_traversal: NotRequired[Literal[{"description": "Disable NAT traversal", "help": "Disable NAT traversal.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT traversal", "help": "Enable NAT traversal.", "label": "Enable", "name": "enable"}]]  # Enable/disable use for NAT traversal. Please enable if your 
     tunnel_interface: str  # Tunnel interface with public IP.
     internal_interface: str  # Internal interface with local subnet.
     local_cidr: str  # Local subnet address and subnet mask.
@@ -58,14 +58,14 @@ class SdnVpn:
         payload_dict: SdnVpnPayload | None = ...,
         name: str | None = ...,
         sdn: str | None = ...,
-        remote_type: Literal["vgw", "tgw"] | None = ...,
-        routing_type: Literal["static", "dynamic"] | None = ...,
+        remote_type: Literal[{"description": "Virtual private gateway", "help": "Virtual private gateway.", "label": "Vgw", "name": "vgw"}, {"description": "Transit gateway", "help": "Transit gateway.", "label": "Tgw", "name": "tgw"}] | None = ...,
+        routing_type: Literal[{"description": "Static routing", "help": "Static routing.", "label": "Static", "name": "static"}, {"description": "Dynamic routing", "help": "Dynamic routing.", "label": "Dynamic", "name": "dynamic"}] | None = ...,
         vgw_id: str | None = ...,
         tgw_id: str | None = ...,
         subnet_id: str | None = ...,
         bgp_as: int | None = ...,
         cgw_gateway: str | None = ...,
-        nat_traversal: Literal["disable", "enable"] | None = ...,
+        nat_traversal: Literal[{"description": "Disable NAT traversal", "help": "Disable NAT traversal.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT traversal", "help": "Enable NAT traversal.", "label": "Enable", "name": "enable"}] | None = ...,
         tunnel_interface: str | None = ...,
         internal_interface: str | None = ...,
         local_cidr: str | None = ...,
@@ -85,14 +85,14 @@ class SdnVpn:
         payload_dict: SdnVpnPayload | None = ...,
         name: str | None = ...,
         sdn: str | None = ...,
-        remote_type: Literal["vgw", "tgw"] | None = ...,
-        routing_type: Literal["static", "dynamic"] | None = ...,
+        remote_type: Literal[{"description": "Virtual private gateway", "help": "Virtual private gateway.", "label": "Vgw", "name": "vgw"}, {"description": "Transit gateway", "help": "Transit gateway.", "label": "Tgw", "name": "tgw"}] | None = ...,
+        routing_type: Literal[{"description": "Static routing", "help": "Static routing.", "label": "Static", "name": "static"}, {"description": "Dynamic routing", "help": "Dynamic routing.", "label": "Dynamic", "name": "dynamic"}] | None = ...,
         vgw_id: str | None = ...,
         tgw_id: str | None = ...,
         subnet_id: str | None = ...,
         bgp_as: int | None = ...,
         cgw_gateway: str | None = ...,
-        nat_traversal: Literal["disable", "enable"] | None = ...,
+        nat_traversal: Literal[{"description": "Disable NAT traversal", "help": "Disable NAT traversal.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT traversal", "help": "Enable NAT traversal.", "label": "Enable", "name": "enable"}] | None = ...,
         tunnel_interface: str | None = ...,
         internal_interface: str | None = ...,
         local_cidr: str | None = ...,

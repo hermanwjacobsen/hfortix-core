@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class DhcpStatus:
     """
-    Configuration for system/interface/dhcp-status
+    Retrieve the DHCP client status of an interface.
     
     Path: system/interface/dhcp_status
     Category: monitor

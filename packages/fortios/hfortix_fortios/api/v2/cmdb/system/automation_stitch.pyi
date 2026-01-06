@@ -12,10 +12,10 @@ class AutomationStitchPayload(TypedDict, total=False):
     """
     name: NotRequired[str]  # Name.
     description: NotRequired[str]  # Description.
-    status: Literal["enable", "disable"]  # Enable/disable this stitch.
+    status: Literal[{"description": "Enable stitch", "help": "Enable stitch.", "label": "Enable", "name": "enable"}, {"description": "Disable stitch", "help": "Disable stitch.", "label": "Disable", "name": "disable"}]  # Enable/disable this stitch.
     trigger: str  # Trigger name.
     condition: NotRequired[list[dict[str, Any]]]  # Automation conditions.
-    condition_logic: Literal["and", "or"]  # Apply AND/OR logic to the specified automation conditions.
+    condition_logic: Literal[{"description": "All specified conditions must be met", "help": "All specified conditions must be met.", "label": "And", "name": "and"}, {"description": "At least one specified condition needs to be met", "help": "At least one specified condition needs to be met.", "label": "Or", "name": "or"}]  # Apply AND/OR logic to the specified automation conditions.
     actions: NotRequired[list[dict[str, Any]]]  # Configure stitch actions.
     destination: NotRequired[list[dict[str, Any]]]  # Serial number/HA group-name of destination devices.
 
@@ -47,10 +47,10 @@ class AutomationStitch:
         payload_dict: AutomationStitchPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable stitch", "help": "Enable stitch.", "label": "Enable", "name": "enable"}, {"description": "Disable stitch", "help": "Disable stitch.", "label": "Disable", "name": "disable"}] | None = ...,
         trigger: str | None = ...,
         condition: list[dict[str, Any]] | None = ...,
-        condition_logic: Literal["and", "or"] | None = ...,
+        condition_logic: Literal[{"description": "All specified conditions must be met", "help": "All specified conditions must be met.", "label": "And", "name": "and"}, {"description": "At least one specified condition needs to be met", "help": "At least one specified condition needs to be met.", "label": "Or", "name": "or"}] | None = ...,
         actions: list[dict[str, Any]] | None = ...,
         destination: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -63,10 +63,10 @@ class AutomationStitch:
         payload_dict: AutomationStitchPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable stitch", "help": "Enable stitch.", "label": "Enable", "name": "enable"}, {"description": "Disable stitch", "help": "Disable stitch.", "label": "Disable", "name": "disable"}] | None = ...,
         trigger: str | None = ...,
         condition: list[dict[str, Any]] | None = ...,
-        condition_logic: Literal["and", "or"] | None = ...,
+        condition_logic: Literal[{"description": "All specified conditions must be met", "help": "All specified conditions must be met.", "label": "And", "name": "and"}, {"description": "At least one specified condition needs to be met", "help": "At least one specified condition needs to be met.", "label": "Or", "name": "or"}] | None = ...,
         actions: list[dict[str, Any]] | None = ...,
         destination: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

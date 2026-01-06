@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Disconnect:
     """
-    Configuration for system/ha-peer/disconnect
+    Update configuration of peer in HA cluster.
     
     Path: system/ha_peer/disconnect
     Category: monitor

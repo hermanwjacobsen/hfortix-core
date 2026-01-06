@@ -14,7 +14,7 @@ class ViewMapPayload(TypedDict, total=False):
     vdom_id: NotRequired[int]  # VDOM ID.
     policy_id: NotRequired[int]  # Policy ID.
     id_policy_id: NotRequired[int]  # ID-based policy ID.
-    which: NotRequired[Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"]]  # Policy.
+    which: NotRequired[Literal[{"description": "Firewall policy", "help": "Firewall policy.", "label": "Firewall", "name": "firewall"}, {"description": "Interface policy", "help": "Interface policy.", "label": "Interface", "name": "interface"}, {"description": "Interface policy6", "help": "Interface policy6.", "label": "Interface6", "name": "interface6"}, {"description": "Sniffer policy", "help": "Sniffer policy.", "label": "Sniffer", "name": "sniffer"}, {"description": "Sniffer policy6", "help": "Sniffer policy6.", "label": "Sniffer6", "name": "sniffer6"}, {"description": "explicit proxy policy", "help": "explicit proxy policy.", "label": "Explicit", "name": "explicit"}]]  # Policy.
 
 
 class ViewMap:
@@ -46,7 +46,7 @@ class ViewMap:
         vdom_id: int | None = ...,
         policy_id: int | None = ...,
         id_policy_id: int | None = ...,
-        which: Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"] | None = ...,
+        which: Literal[{"description": "Firewall policy", "help": "Firewall policy.", "label": "Firewall", "name": "firewall"}, {"description": "Interface policy", "help": "Interface policy.", "label": "Interface", "name": "interface"}, {"description": "Interface policy6", "help": "Interface policy6.", "label": "Interface6", "name": "interface6"}, {"description": "Sniffer policy", "help": "Sniffer policy.", "label": "Sniffer", "name": "sniffer"}, {"description": "Sniffer policy6", "help": "Sniffer policy6.", "label": "Sniffer6", "name": "sniffer6"}, {"description": "explicit proxy policy", "help": "explicit proxy policy.", "label": "Explicit", "name": "explicit"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -59,7 +59,7 @@ class ViewMap:
         vdom_id: int | None = ...,
         policy_id: int | None = ...,
         id_policy_id: int | None = ...,
-        which: Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"] | None = ...,
+        which: Literal[{"description": "Firewall policy", "help": "Firewall policy.", "label": "Firewall", "name": "firewall"}, {"description": "Interface policy", "help": "Interface policy.", "label": "Interface", "name": "interface"}, {"description": "Interface policy6", "help": "Interface policy6.", "label": "Interface6", "name": "interface6"}, {"description": "Sniffer policy", "help": "Sniffer policy.", "label": "Sniffer", "name": "sniffer"}, {"description": "Sniffer policy6", "help": "Sniffer policy6.", "label": "Sniffer6", "name": "sniffer6"}, {"description": "explicit proxy policy", "help": "explicit proxy policy.", "label": "Explicit", "name": "explicit"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

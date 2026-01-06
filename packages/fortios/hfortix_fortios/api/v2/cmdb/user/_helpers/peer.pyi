@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_MANDATORY_CA_VERIFY: Literal["enable", "disable"]
-VALID_BODY_CN_TYPE: Literal["string", "email", "FQDN", "ipv4", "ipv6"]
-VALID_BODY_MFA_MODE: Literal["none", "password", "subject-identity"]
-VALID_BODY_TWO_FACTOR: Literal["enable", "disable"]
+VALID_BODY_MANDATORY_CA_VERIFY: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CN_TYPE: Literal[{"description": "Normal string", "help": "Normal string.", "label": "String", "name": "string"}, {"description": "Email address", "help": "Email address.", "label": "Email", "name": "email"}, {"description": "Fully Qualified Domain Name", "help": "Fully Qualified Domain Name.", "label": "Fqdn", "name": "FQDN"}, {"description": "IPv4 address", "help": "IPv4 address.", "label": "Ipv4", "name": "ipv4"}, {"description": "IPv6 address", "help": "IPv6 address.", "label": "Ipv6", "name": "ipv6"}]
+VALID_BODY_MFA_MODE: Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "Specified username/password", "help": "Specified username/password.", "label": "Password", "name": "password"}, {"description": "Subject identity extracted from certificate", "help": "Subject identity extracted from certificate.", "label": "Subject Identity", "name": "subject-identity"}]
+VALID_BODY_TWO_FACTOR: Literal[{"description": "Enable 2-factor authentication", "help": "Enable 2-factor authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable 2-factor authentication", "help": "Disable 2-factor authentication.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

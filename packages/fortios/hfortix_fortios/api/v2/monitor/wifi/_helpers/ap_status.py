@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/ap_status",
     "category": "monitor",
     "api_path": "wifi/ap_status",
-    "help": "Configuration for wifi/ap_status",
+    "help": "Retrieve statistics for all managed FortiAPs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

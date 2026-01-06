@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "endpoint_control/record_list",
     "category": "monitor",
     "api_path": "endpoint-control/record-list",
-    "help": "Monitor endpoint for endpoint-control/record-list",
+    "help": "List endpoint records. This should only be used when you need to retrieve endpoint information from FortiEMS.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

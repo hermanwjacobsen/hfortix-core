@@ -14,8 +14,8 @@ class TrafficForwardProxyPayload(TypedDict, total=False):
     vip: NotRequired[str]  # Virtual IP name.
     host: NotRequired[str]  # Virtual or real host name.
     decrypted_traffic_mirror: NotRequired[str]  # Decrypted traffic mirror.
-    log_blocked_traffic: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of blocked traffic.
-    auth_portal: NotRequired[Literal["disable", "enable"]]  # Enable/disable authentication portal.
+    log_blocked_traffic: NotRequired[Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging of blocked traffic.
+    auth_portal: NotRequired[Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}]]  # Enable/disable authentication portal.
     auth_virtual_host: NotRequired[str]  # Virtual host for authentication portal.
     vip6: NotRequired[str]  # Virtual IPv6 name.
 
@@ -49,8 +49,8 @@ class TrafficForwardProxy:
         vip: str | None = ...,
         host: str | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
         vip6: str | None = ...,
         vdom: str | bool | None = ...,
@@ -65,8 +65,8 @@ class TrafficForwardProxy:
         vip: str | None = ...,
         host: str | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
         vip6: str | None = ...,
         vdom: str | bool | None = ...,

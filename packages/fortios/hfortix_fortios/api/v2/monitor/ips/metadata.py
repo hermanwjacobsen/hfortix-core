@@ -56,7 +56,7 @@ class Metadata:
         """
         Retrieve ips/metadata configuration.
 
-        Configuration for ips/metadata
+        Returns IPS meta data.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

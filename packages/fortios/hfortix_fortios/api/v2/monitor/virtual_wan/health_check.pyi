@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HealthCheck:
     """
-    Configuration for virtual-wan/health-check
+    Retrieve health-check statistics for each SD-WAN link. To be deprecated and replaced by /api/v2/monitor/virtual-wan/sla-log?latest=1&sla=<sla_name> for SLA health metrics 
     
     Path: virtual_wan/health_check
     Category: monitor

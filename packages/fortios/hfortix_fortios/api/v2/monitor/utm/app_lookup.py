@@ -56,7 +56,7 @@ class AppLookup:
         """
         Retrieve utm/app_lookup configuration.
 
-        Configuration for utm/app-lookup
+        Query ISDB to resolve hosts to application control entries.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

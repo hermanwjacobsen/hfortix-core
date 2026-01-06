@@ -170,7 +170,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "DHCPv6 option type.",
             "default": "hex",
-            "options": ["hex", "string", "ip6", "fqdn"],
+            "options": [{"help": "DHCPv6 option in hex.", "label": "Hex", "name": "hex"}, {"help": "DHCPv6 option in string.", "label": "String", "name": "string"}, {"help": "DHCPv6 option in IP6.", "label": "Ip6", "name": "ip6"}, {"help": "DHCPv6 option in domain search option format.", "label": "Fqdn", "name": "fqdn"}],
         },
         "value": {
             "type": "string",
@@ -187,7 +187,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable vendor class option matching. When enabled only DHCP requests with a matching VCI are served with this option.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable VCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable VCI matching.", "label": "Enable", "name": "enable"}],
         },
         "vci-string": {
             "type": "string",
@@ -249,7 +249,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable vendor class option matching. When enabled only DHCP requests with a matching VC are served with this range.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable VCI matching.", "label": "Disable", "name": "disable"}, {"help": "Enable VCI matching.", "label": "Enable", "name": "enable"}],
         },
         "vci-string": {
             "type": "string",
@@ -261,33 +261,33 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Enable this DHCPv6 server configuration.
+    "enable",  # Disable this DHCPv6 server configuration.
 ]
 VALID_BODY_RAPID_COMMIT = [
-    "disable",
-    "enable",
+    "disable",  # Do not allow rapid commit.
+    "enable",  # Allow rapid commit.
 ]
 VALID_BODY_DNS_SERVICE = [
-    "delegated",
-    "default",
-    "specify",
+    "delegated",  # Delegated DNS settings.
+    "default",  # Clients are assigned the FortiGate's configured DNS servers.
+    "specify",  # Specify up to 3 DNS servers in the DHCPv6 server configuration.
 ]
 VALID_BODY_DNS_SEARCH_LIST = [
-    "delegated",
-    "specify",
+    "delegated",  # Delegated the DNS search list.
+    "specify",  # Specify the DNS search list.
 ]
 VALID_BODY_DELEGATED_PREFIX_ROUTE = [
-    "disable",
-    "enable",
+    "disable",  # Disable automatically adding of routing for delegated prefix.
+    "enable",  # Enable automatically adding of routing for delegated prefix.
 ]
 VALID_BODY_IP_MODE = [
-    "range",
-    "delegated",
+    "range",  # Use range defined by start IP/end IP to assign client IP.
+    "delegated",  # Use delegated prefix method to assign client IP.
 ]
 VALID_BODY_PREFIX_MODE = [
-    "dhcp6",
-    "ra",
+    "dhcp6",  # Use delegated prefix from a DHCPv6 client.
+    "ra",  # Use prefix from RA.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -418,7 +418,7 @@ def validate_system_dhcp6_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Enable this DHCPv6 server configuration.', 'label': 'Disable', 'description': 'Enable this DHCPv6 server configuration'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_dhcp6_server_post(payload)
         >>> assert is_valid == True

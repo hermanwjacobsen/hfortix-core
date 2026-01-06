@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_UNKNOWN_UNICAST: Literal["enable", "disable"]
-VALID_BODY_UNKNOWN_MULTICAST: Literal["enable", "disable"]
-VALID_BODY_BROADCAST: Literal["enable", "disable"]
+VALID_BODY_UNKNOWN_UNICAST: Literal[{"description": "Enable unknown unicast storm control", "help": "Enable unknown unicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown unicast storm control", "help": "Disable unknown unicast storm control.", "label": "Disable", "name": "disable"}]
+VALID_BODY_UNKNOWN_MULTICAST: Literal[{"description": "Enable unknown multicast storm control", "help": "Enable unknown multicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast storm control", "help": "Disable unknown multicast storm control.", "label": "Disable", "name": "disable"}]
+VALID_BODY_BROADCAST: Literal[{"description": "Enable broadcast storm control", "help": "Enable broadcast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable broadcast storm control", "help": "Disable broadcast storm control.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

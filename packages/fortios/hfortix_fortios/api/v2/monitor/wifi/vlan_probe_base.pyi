@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class VlanProbe:
     """
-    Configuration for wifi/vlan-probe
+    Retrieve the VLAN probe results.
     
     Path: wifi/vlan_probe
     Category: monitor

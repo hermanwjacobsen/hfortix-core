@@ -1,6 +1,6 @@
 """FortiOS CMDB - Casb category"""
 
-from .saas_application import SaasApplication
+from . import saas_application
 
 __all__ = [
     "Casb",
@@ -17,4 +17,4 @@ class Casb:
         Args:
             client: HTTP client instance for API communication
         """
-        self.saas_application = SaasApplication(client)
+        self.saas_application = saas_application.SaasApplication(client)

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webproxy/pacfile/download",
     "category": "monitor",
     "api_path": "webproxy/pacfile/download",
-    "help": "Configuration for webproxy/pacfile/download",
+    "help": "Download webproxy PAC file.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_AUTH_METHOD: Literal["token", "base"]
-VALID_BODY_CLIENT_IDENTITY_CHECK: Literal["enable", "disable"]
-VALID_BODY_CASCADE: Literal["disable", "enable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable System for Cross-domain Identity Management (SCIM)", "help": "Enable System for Cross-domain Identity Management (SCIM).", "label": "Enable", "name": "enable"}, {"description": "Disable System for Cross-domain Identity Management (SCIM)", "help": "Disable System for Cross-domain Identity Management (SCIM).", "label": "Disable", "name": "disable"}]
+VALID_BODY_AUTH_METHOD: Literal[{"description": "Bearer token", "help": "Bearer token.", "label": "Token", "name": "token"}, {"description": "Base", "help": "Base.", "label": "Base", "name": "base"}]
+VALID_BODY_CLIENT_IDENTITY_CHECK: Literal[{"description": "Enable client identity check", "help": "Enable client identity check.", "label": "Enable", "name": "enable"}, {"description": "Disable client identity check", "help": "Disable client identity check.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CASCADE: Literal[{"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}, {"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

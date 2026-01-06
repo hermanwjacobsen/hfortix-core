@@ -56,7 +56,7 @@ class ValidateJsonpath:
         """
         Retrieve system/external_resource/validate_jsonpath configuration.
 
-        Configuration for system/external-resource/validate-jsonpath
+        Validate a JSON path name.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

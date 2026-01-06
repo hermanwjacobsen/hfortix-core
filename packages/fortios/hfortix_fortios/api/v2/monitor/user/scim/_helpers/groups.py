@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/scim/groups",
     "category": "monitor",
     "api_path": "user/scim/groups",
-    "help": "Configuration for user/scim/groups",
+    "help": "Get SCIM client group-names.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

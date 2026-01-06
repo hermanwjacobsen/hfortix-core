@@ -56,7 +56,7 @@ class Start:
         """
         Retrieve sniffer/start configuration.
 
-        Configuration for sniffer/start
+        Creates a new packet capture and starts it.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

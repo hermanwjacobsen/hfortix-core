@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/vip_overlap",
     "category": "monitor",
     "api_path": "firewall/vip-overlap",
-    "help": "Monitor endpoint for firewall/vip-overlap",
+    "help": "List any Virtual IPs that overlap with another Virtual IP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

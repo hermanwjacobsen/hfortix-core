@@ -12,9 +12,9 @@ class ProfilePayload(TypedDict, total=False):
     """
     name: str  # Profile name.
     comment: NotRequired[str]  # Comment.
-    severity: NotRequired[Literal["info", "low", "medium", "high", "critical"]]  # Relative severity of the signature (low, medium, high, criti
-    action: NotRequired[Literal["pass", "block"]]  # Action (pass/block).
-    log: NotRequired[Literal["enable", "disable"]]  # Enable/disable logging of detection.
+    severity: NotRequired[Literal[{"description": "info    low:low    medium:medium    high:high    critical:critical", "help": "info", "label": "Info", "name": "info"}, {"help": "low", "label": "Low", "name": "low"}, {"help": "medium", "label": "Medium", "name": "medium"}, {"help": "high", "label": "High", "name": "high"}, {"help": "critical", "label": "Critical", "name": "critical"}]]  # Relative severity of the signature (low, medium, high, criti
+    action: NotRequired[Literal[{"description": "Allows session that match the profile", "help": "Allows session that match the profile.", "label": "Pass", "name": "pass"}, {"description": "Blocks sessions that match the profile", "help": "Blocks sessions that match the profile.", "label": "Block", "name": "block"}]]  # Action (pass/block).
+    log: NotRequired[Literal[{"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}, {"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable logging of detection.
     exemption: NotRequired[list[dict[str, Any]]]  # Exempt devices or rules.
 
 
@@ -45,9 +45,9 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        severity: Literal["info", "low", "medium", "high", "critical"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        log: Literal["enable", "disable"] | None = ...,
+        severity: Literal[{"description": "info    low:low    medium:medium    high:high    critical:critical", "help": "info", "label": "Info", "name": "info"}, {"help": "low", "label": "Low", "name": "low"}, {"help": "medium", "label": "Medium", "name": "medium"}, {"help": "high", "label": "High", "name": "high"}, {"help": "critical", "label": "Critical", "name": "critical"}] | None = ...,
+        action: Literal[{"description": "Allows session that match the profile", "help": "Allows session that match the profile.", "label": "Pass", "name": "pass"}, {"description": "Blocks sessions that match the profile", "help": "Blocks sessions that match the profile.", "label": "Block", "name": "block"}] | None = ...,
+        log: Literal[{"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}, {"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}] | None = ...,
         exemption: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -59,9 +59,9 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        severity: Literal["info", "low", "medium", "high", "critical"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        log: Literal["enable", "disable"] | None = ...,
+        severity: Literal[{"description": "info    low:low    medium:medium    high:high    critical:critical", "help": "info", "label": "Info", "name": "info"}, {"help": "low", "label": "Low", "name": "low"}, {"help": "medium", "label": "Medium", "name": "medium"}, {"help": "high", "label": "High", "name": "high"}, {"help": "critical", "label": "Critical", "name": "critical"}] | None = ...,
+        action: Literal[{"description": "Allows session that match the profile", "help": "Allows session that match the profile.", "label": "Pass", "name": "pass"}, {"description": "Blocks sessions that match the profile", "help": "Blocks sessions that match the profile.", "label": "Block", "name": "block"}] | None = ...,
+        log: Literal[{"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}, {"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}] | None = ...,
         exemption: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -56,7 +56,7 @@ class PhysicalSwitch:
         """
         Retrieve system/physical_switch configuration.
 
-        Configuration for system/physical-switch
+        Configuration for system/physical_switch
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -120,7 +120,7 @@ class PhysicalSwitch:
         """
         Update existing system/physical_switch object.
 
-        Configuration for system/physical-switch
+        Configuration for system/physical_switch
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).

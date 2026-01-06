@@ -13,7 +13,7 @@ class AutoScriptPayload(TypedDict, total=False):
     name: NotRequired[str]  # Auto script name.
     interval: NotRequired[int]  # Repeat interval in seconds.
     repeat: NotRequired[int]  # Number of times to repeat this script (0 = infinite).
-    start: NotRequired[Literal["manual", "auto"]]  # Script starting mode.
+    start: NotRequired[Literal[{"description": "Starting manually", "help": "Starting manually.", "label": "Manual", "name": "manual"}, {"description": "Starting automatically", "help": "Starting automatically.", "label": "Auto", "name": "auto"}]]  # Script starting mode.
     script: NotRequired[str]  # List of FortiOS CLI commands to repeat.
     output_size: NotRequired[int]  # Number of megabytes to limit script output to (10 - 1024, de
     timeout: NotRequired[int]  # Maximum running time for this script in seconds (0 = no time
@@ -47,7 +47,7 @@ class AutoScript:
         name: str | None = ...,
         interval: int | None = ...,
         repeat: int | None = ...,
-        start: Literal["manual", "auto"] | None = ...,
+        start: Literal[{"description": "Starting manually", "help": "Starting manually.", "label": "Manual", "name": "manual"}, {"description": "Starting automatically", "help": "Starting automatically.", "label": "Auto", "name": "auto"}] | None = ...,
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
@@ -62,7 +62,7 @@ class AutoScript:
         name: str | None = ...,
         interval: int | None = ...,
         repeat: int | None = ...,
-        start: Literal["manual", "auto"] | None = ...,
+        start: Literal[{"description": "Starting manually", "help": "Starting manually.", "label": "Manual", "name": "manual"}, {"description": "Starting automatically", "help": "Starting automatically.", "label": "Auto", "name": "auto"}] | None = ...,
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,

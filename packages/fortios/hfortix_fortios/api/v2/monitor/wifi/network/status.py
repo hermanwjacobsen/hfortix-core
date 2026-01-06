@@ -56,7 +56,7 @@ class Status:
         """
         Retrieve wifi/network/status configuration.
 
-        Configuration for wifi/network/status
+        When FortiWiFi is in client mode, retrieve status of currently connected WiFi network, if any.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

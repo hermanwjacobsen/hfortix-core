@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_CONDITION_LOGIC: Literal["and", "or"]
+VALID_BODY_STATUS: Literal[{"description": "Enable stitch", "help": "Enable stitch.", "label": "Enable", "name": "enable"}, {"description": "Disable stitch", "help": "Disable stitch.", "label": "Disable", "name": "disable"}]
+VALID_BODY_CONDITION_LOGIC: Literal[{"description": "All specified conditions must be met", "help": "All specified conditions must be met.", "label": "And", "name": "and"}, {"description": "At least one specified condition needs to be met", "help": "At least one specified condition needs to be met.", "label": "Or", "name": "or"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

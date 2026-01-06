@@ -102,21 +102,21 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_NAME = [
-    "ftp",
-    "tftp",
-    "ras",
-    "h323",
-    "tns",
-    "mms",
-    "sip",
-    "pptp",
-    "rtsp",
-    "dns-udp",
-    "dns-tcp",
-    "pmap",
-    "rsh",
-    "dcerpc",
-    "mgcp",
+    "ftp",  # FTP.
+    "tftp",  # TFTP.
+    "ras",  # RAS.
+    "h323",  # H323.
+    "tns",  # TNS.
+    "mms",  # MMS.
+    "sip",  # SIP.
+    "pptp",  # PPTP.
+    "rtsp",  # RTSP.
+    "dns-udp",  # DNS UDP.
+    "dns-tcp",  # DNS TCP.
+    "pmap",  # PMAP.
+    "rsh",  # RSH.
+    "dcerpc",  # DCERPC.
+    "mgcp",  # MGCP.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -246,7 +246,7 @@ def validate_system_session_helper_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "name": "ftp",  # Valid enum value
+        ...     "name": "{'name': 'ftp', 'help': 'FTP.', 'label': 'Ftp', 'description': 'FTP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_session_helper_post(payload)
         >>> assert is_valid == True

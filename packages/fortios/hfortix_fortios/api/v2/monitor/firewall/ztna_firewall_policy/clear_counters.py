@@ -56,7 +56,7 @@ class ClearCounters:
         """
         Retrieve firewall/ztna_firewall_policy/clear_counters configuration.
 
-        Configuration for firewall/ztna-firewall-policy/clear-counters
+        Reset traffic statistics for one or more ZTNA firewall policies by policy ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

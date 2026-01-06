@@ -138,48 +138,48 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SSL_MODE = [
-    "half",
-    "full",
+    "half",  # Client to FortiGate SSL.
+    "full",  # Client to FortiGate and FortiGate to Server SSL.
 ]
 VALID_BODY_ADD_HEADER_X_FORWARDED_PROTO = [
-    "enable",
-    "disable",
+    "enable",  # Add X-Forwarded-Proto header.
+    "disable",  # Do not add X-Forwarded-Proto header.
 ]
 VALID_BODY_SSL_DH_BITS = [
-    "768",
-    "1024",
-    "1536",
-    "2048",
+    "768",  # 768-bit Diffie-Hellman prime.
+    "1024",  # 1024-bit Diffie-Hellman prime.
+    "1536",  # 1536-bit Diffie-Hellman prime.
+    "2048",  # 2048-bit Diffie-Hellman prime.
 ]
 VALID_BODY_SSL_ALGORITHM = [
-    "high",
-    "medium",
-    "low",
+    "high",  # High encryption. Allow only AES and ChaCha
+    "medium",  # Medium encryption. Allow AES, ChaCha, 3DES, and RC4.
+    "low",  # Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.
 ]
 VALID_BODY_SSL_CLIENT_RENEGOTIATION = [
-    "allow",
-    "deny",
-    "secure",
+    "allow",  # Allow a SSL client to renegotiate.
+    "deny",  # Abort any SSL connection that attempts to renegotiate.
+    "secure",  # Reject any SSL connection that does not offer a RFC 5746 Secure Renegotiation Indication.
 ]
 VALID_BODY_SSL_MIN_VERSION = [
-    "tls-1.0",
-    "tls-1.1",
-    "tls-1.2",
-    "tls-1.3",
+    "tls-1.0",  # TLS 1.0.
+    "tls-1.1",  # TLS 1.1.
+    "tls-1.2",  # TLS 1.2.
+    "tls-1.3",  # TLS 1.3.
 ]
 VALID_BODY_SSL_MAX_VERSION = [
-    "tls-1.0",
-    "tls-1.1",
-    "tls-1.2",
-    "tls-1.3",
+    "tls-1.0",  # TLS 1.0.
+    "tls-1.1",  # TLS 1.1.
+    "tls-1.2",  # TLS 1.2.
+    "tls-1.3",  # TLS 1.3.
 ]
 VALID_BODY_SSL_SEND_EMPTY_FRAGS = [
-    "enable",
-    "disable",
+    "enable",  # Send empty fragments.
+    "disable",  # Do not send empty fragments.
 ]
 VALID_BODY_URL_REWRITE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -307,7 +307,7 @@ def validate_firewall_ssl_server_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ssl-mode": "half",  # Valid enum value
+        ...     "ssl-mode": "{'name': 'half', 'help': 'Client to FortiGate SSL.', 'label': 'Half', 'description': 'Client to FortiGate SSL'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ssl_server_post(payload)
         >>> assert is_valid == True

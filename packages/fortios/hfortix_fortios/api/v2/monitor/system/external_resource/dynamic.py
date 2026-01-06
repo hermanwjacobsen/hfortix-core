@@ -56,7 +56,7 @@ class Dynamic:
         """
         Retrieve system/external_resource/dynamic configuration.
 
-        Configuration for system/external-resource/dynamic
+        Push updates to the specified external resource.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

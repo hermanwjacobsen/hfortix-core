@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/com_log/download",
     "category": "monitor",
     "api_path": "system/com-log/download",
-    "help": "Configuration for system/com-log/download",
+    "help": "Download com-log file (after file dump is complete).",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

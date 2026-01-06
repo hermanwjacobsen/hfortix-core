@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_ALLOWACCESS: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm"]
-VALID_BODY_AUTO_IP: Literal["enable", "disable"]
-VALID_BODY_DHCP_SERVER: Literal["enable", "disable"]
+VALID_BODY_ALLOWACCESS: Literal[{"description": "PING access", "help": "PING access.", "label": "Ping", "name": "ping"}, {"description": "HTTPS access", "help": "HTTPS access.", "label": "Https", "name": "https"}, {"description": "SSH access", "help": "SSH access.", "label": "Ssh", "name": "ssh"}, {"description": "SNMP access", "help": "SNMP access.", "label": "Snmp", "name": "snmp"}, {"description": "HTTP access", "help": "HTTP access.", "label": "Http", "name": "http"}, {"description": "TELNET access", "help": "TELNET access.", "label": "Telnet", "name": "telnet"}, {"description": "FortiManager access", "help": "FortiManager access.", "label": "Fgfm", "name": "fgfm"}, {"description": "RADIUS accounting access", "help": "RADIUS accounting access.", "label": "Radius Acct", "name": "radius-acct"}, {"description": "Probe access", "help": "Probe access.", "label": "Probe Response", "name": "probe-response"}, {"description": "Security Fabric access", "help": "Security Fabric access.", "label": "Fabric", "name": "fabric"}, {"description": "FTM access", "help": "FTM access.", "label": "Ftm", "name": "ftm"}]
+VALID_BODY_AUTO_IP: Literal[{"description": "Enable auto-ip status", "help": "Enable auto-ip status.", "label": "Enable", "name": "enable"}, {"description": "Disable auto-ip status", "help": "Disable auto-ip status.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DHCP_SERVER: Literal[{"description": "Enable DHCP server", "help": "Enable DHCP server.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server", "help": "Disable DHCP server.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

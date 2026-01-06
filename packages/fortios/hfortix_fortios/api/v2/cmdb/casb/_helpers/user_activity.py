@@ -130,7 +130,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "CASB user activity rules strategy.",
             "default": "and",
-            "options": ["and", "or"],
+            "options": [{"help": "Match user activity using a logical AND operator.", "label": "And", "name": "and"}, {"help": "Match user activity using a logical OR operator.", "label": "Or", "name": "or"}],
         },
         "rules": {
             "type": "string",
@@ -152,7 +152,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "CASB control option status.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "operations": {
             "type": "string",
@@ -164,24 +164,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_TYPE = [
-    "built-in",
-    "customized",
+    "built-in",  # Built-in CASB user-activity.
+    "customized",  # User customized CASB user-activity.
 ]
 VALID_BODY_CATEGORY = [
-    "activity-control",
-    "tenant-control",
-    "domain-control",
-    "safe-search-control",
-    "advanced-tenant-control",
-    "other",
+    "activity-control",  # Activity control.
+    "tenant-control",  # Tenant control.
+    "domain-control",  # Domain control.
+    "safe-search-control",  # Safe search control.
+    "advanced-tenant-control",  # Advanced tenant control.
+    "other",  # User customized category.
 ]
 VALID_BODY_MATCH_STRATEGY = [
-    "and",
-    "or",
+    "and",  # Match user activity using a logical AND operator.
+    "or",  # Match user activity using a logical OR operator.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -311,7 +311,7 @@ def validate_casb_user_activity_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "application": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_casb_user_activity_post(payload)
         >>> assert is_valid == True

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn_certificate/local/create",
     "category": "monitor",
     "api_path": "vpn-certificate/local/create",
-    "help": "Configuration for vpn-certificate/local/create",
+    "help": "Generate a new certificate signed by Fortinet_CA_SSL.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

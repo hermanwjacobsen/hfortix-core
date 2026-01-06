@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class LocalIn6:
     """
-    Configuration for firewall/local-in6
+    List implicit and explicit IPv6 local-in firewall policies.
     
     Path: firewall/local_in6
     Category: monitor

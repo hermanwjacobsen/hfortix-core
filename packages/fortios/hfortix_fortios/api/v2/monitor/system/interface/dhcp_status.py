@@ -56,7 +56,7 @@ class DhcpStatus:
         """
         Retrieve system/interface/dhcp_status configuration.
 
-        Configuration for system/interface/dhcp-status
+        Retrieve the DHCP client status of an interface.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

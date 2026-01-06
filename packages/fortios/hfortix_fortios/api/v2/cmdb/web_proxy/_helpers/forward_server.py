@@ -95,7 +95,7 @@ FIELD_TYPES = {
     "interface": "string",  # Specify outgoing interface to reach server.
     "vrf-select": "integer",  # VRF ID used for connection to server.
     "comment": "string",  # Comment.
-    "masquerade": "option",  # Enable/disable use of the of the IP address of the outgoing 
+    "masquerade": "option",  # Enable/disable use of the IP address of the outgoing interfa
     "healthcheck": "option",  # Enable/disable forward server health checking. Attempts to c
     "monitor": "string",  # URL for forward server health check monitoring (default = ww
     "server-down-option": "option",  # Action to take when the forward server is found to be down: 
@@ -115,7 +115,7 @@ FIELD_DESCRIPTIONS = {
     "interface": "Specify outgoing interface to reach server.",
     "vrf-select": "VRF ID used for connection to server.",
     "comment": "Comment.",
-    "masquerade": "Enable/disable use of the of the IP address of the outgoing interface as the client IP address (default = enable)",
+    "masquerade": "Enable/disable use of the IP address of the outgoing interface as the client IP address (default = enable)",
     "healthcheck": "Enable/disable forward server health checking. Attempts to connect through the remote forwarding server to a destination to verify that the forwarding server is operating normally.",
     "monitor": "URL for forward server health check monitoring (default = www.google.com).",
     "server-down-option": "Action to take when the forward server is found to be down: block sessions until the server is back up or pass sessions to their destination.",
@@ -142,25 +142,25 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADDR_TYPE = [
-    "ip",
-    "ipv6",
-    "fqdn",
+    "ip",  # Use an IPv4 address for the forwarding proxy server.
+    "ipv6",  # Use an IPv6 address for the forwarding proxy server.
+    "fqdn",  # Use the FQDN for the forwarding proxy server.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "sdwan",
-    "specify",
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_MASQUERADE = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of the IP address of the outgoing interface as the client IP address.
+    "disable",  # Disable use of the IP address of the outgoing interface as the client IP address.
 ]
 VALID_BODY_HEALTHCHECK = [
-    "disable",
-    "enable",
+    "disable",  # Disable health checking.
+    "enable",  # Enable health checking.
 ]
 VALID_BODY_SERVER_DOWN_OPTION = [
-    "block",
-    "pass",
+    "block",  # Block sessions until the server is back up.
+    "pass",  # Pass sessions to their destination bypassing the forward server.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -290,7 +290,7 @@ def validate_web_proxy_forward_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "addr-type": "ip",  # Valid enum value
+        ...     "addr-type": "{'name': 'ip', 'help': 'Use an IPv4 address for the forwarding proxy server.', 'label': 'Ip', 'description': 'Use an IPv4 address for the forwarding proxy server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_web_proxy_forward_server_post(payload)
         >>> assert is_valid == True

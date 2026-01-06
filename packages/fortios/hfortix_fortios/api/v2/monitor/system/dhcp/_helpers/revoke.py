@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/dhcp/revoke",
     "category": "monitor",
     "api_path": "system/dhcp/revoke",
-    "help": "Configuration for system/dhcp/revoke",
+    "help": "Revoke IPv4 DHCP leases.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

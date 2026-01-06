@@ -10,8 +10,8 @@ class Multicast6Payload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    multicast_routing: NotRequired[Literal["enable", "disable"]]  # Enable/disable IPv6 multicast routing.
-    multicast_pmtu: NotRequired[Literal["enable", "disable"]]  # Enable/disable PMTU for IPv6 multicast.
+    multicast_routing: NotRequired[Literal[{"description": "Enable IPv6 multicast routing", "help": "Enable IPv6 multicast routing.", "label": "Enable", "name": "enable"}, {"description": "Disable IPv6 multicast routing", "help": "Disable IPv6 multicast routing.", "label": "Disable", "name": "disable"}]]  # Enable/disable IPv6 multicast routing.
+    multicast_pmtu: NotRequired[Literal[{"description": "Enable PMTU for IPv6 multicast", "help": "Enable PMTU for IPv6 multicast.", "label": "Enable", "name": "enable"}, {"description": "Disable PMTU for IPv6 multicast", "help": "Disable PMTU for IPv6 multicast.", "label": "Disable", "name": "disable"}]]  # Enable/disable PMTU for IPv6 multicast.
     interface: NotRequired[list[dict[str, Any]]]  # Protocol Independent Multicast (PIM) interfaces.
     pim_sm_global: NotRequired[str]  # PIM sparse-mode global settings.
 
@@ -40,8 +40,8 @@ class Multicast6:
     def post(
         self,
         payload_dict: Multicast6Payload | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        multicast_pmtu: Literal["enable", "disable"] | None = ...,
+        multicast_routing: Literal[{"description": "Enable IPv6 multicast routing", "help": "Enable IPv6 multicast routing.", "label": "Enable", "name": "enable"}, {"description": "Disable IPv6 multicast routing", "help": "Disable IPv6 multicast routing.", "label": "Disable", "name": "disable"}] | None = ...,
+        multicast_pmtu: Literal[{"description": "Enable PMTU for IPv6 multicast", "help": "Enable PMTU for IPv6 multicast.", "label": "Enable", "name": "enable"}, {"description": "Disable PMTU for IPv6 multicast", "help": "Disable PMTU for IPv6 multicast.", "label": "Disable", "name": "disable"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
@@ -52,8 +52,8 @@ class Multicast6:
     def put(
         self,
         payload_dict: Multicast6Payload | None = ...,
-        multicast_routing: Literal["enable", "disable"] | None = ...,
-        multicast_pmtu: Literal["enable", "disable"] | None = ...,
+        multicast_routing: Literal[{"description": "Enable IPv6 multicast routing", "help": "Enable IPv6 multicast routing.", "label": "Enable", "name": "enable"}, {"description": "Disable IPv6 multicast routing", "help": "Disable IPv6 multicast routing.", "label": "Disable", "name": "disable"}] | None = ...,
+        multicast_pmtu: Literal[{"description": "Enable PMTU for IPv6 multicast", "help": "Enable PMTU for IPv6 multicast.", "label": "Enable", "name": "enable"}, {"description": "Disable PMTU for IPv6 multicast", "help": "Disable PMTU for IPv6 multicast.", "label": "Disable", "name": "disable"}] | None = ...,
         interface: list[dict[str, Any]] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,

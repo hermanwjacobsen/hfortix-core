@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn_certificate/csr/generate",
     "category": "monitor",
     "api_path": "vpn-certificate/csr/generate",
-    "help": "Configuration for vpn-certificate/csr/generate",
+    "help": "Generate a certificate signing request (CSR) and a private key. The CSR can be retrieved / downloaded from CLI, GUI and REST API.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

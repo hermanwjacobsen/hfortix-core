@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class CertNameAvailable:
     """
-    Configuration for vpn-certificate/cert-name-available
+    Check if the local certificate name is available to use.
     
     Path: vpn_certificate/cert_name_available
     Category: monitor

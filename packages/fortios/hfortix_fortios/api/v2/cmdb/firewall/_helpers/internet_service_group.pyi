@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_DIRECTION: Literal["source", "destination", "both"]
+VALID_BODY_DIRECTION: Literal[{"description": "As source when applied", "help": "As source when applied.", "label": "Source", "name": "source"}, {"description": "As destination when applied", "help": "As destination when applied.", "label": "Destination", "name": "destination"}, {"description": "Both directions when applied", "help": "Both directions when applied.", "label": "Both", "name": "both"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

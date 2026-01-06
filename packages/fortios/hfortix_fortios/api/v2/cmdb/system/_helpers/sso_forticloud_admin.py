@@ -72,14 +72,14 @@ DEPRECATED_FIELDS = {
 # Field types mapping
 FIELD_TYPES = {
     "name": "string",  # FortiCloud SSO admin name.
-    "accprofile": "string",  # FortiCloud SSO admin user access profile.
+    "accprofile": "string",  # FortiCloud SSO admin user access profile. Permission is set 
     "vdom": "string",  # Virtual domain(s) that the administrator can access.
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
     "name": "FortiCloud SSO admin name.",
-    "accprofile": "FortiCloud SSO admin user access profile.",
+    "accprofile": "FortiCloud SSO admin user access profile. Permission is set to read-only without a FortiGate Cloud Central Management license.",
     "vdom": "Virtual domain(s) that the administrator can access.",
 }
 

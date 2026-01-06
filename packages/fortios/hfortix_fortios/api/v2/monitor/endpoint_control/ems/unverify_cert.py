@@ -56,7 +56,7 @@ class UnverifyCert:
         """
         Retrieve endpoint_control/ems/unverify_cert configuration.
 
-        Configuration for endpoint-control/ems/unverify-cert
+        Unverify EMS server certificate for a specific EMS.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

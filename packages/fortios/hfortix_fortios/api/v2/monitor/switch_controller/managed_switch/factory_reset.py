@@ -56,7 +56,7 @@ class FactoryReset:
         """
         Retrieve switch_controller/managed_switch/factory_reset configuration.
 
-        Configuration for switch-controller/managed-switch/factory-reset
+        Send 'Factory Reset' command to a given FortiSwitch.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

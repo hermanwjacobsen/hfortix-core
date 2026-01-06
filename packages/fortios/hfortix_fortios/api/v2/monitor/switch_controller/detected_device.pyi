@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class DetectedDevice:
     """
-    Monitor endpoint for switch-controller/detected-device
+    Retrieve a list of devices detected on all switches.
     
     Path: switch_controller/detected_device
     Category: monitor

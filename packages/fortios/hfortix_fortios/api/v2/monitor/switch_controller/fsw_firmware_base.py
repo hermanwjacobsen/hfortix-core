@@ -56,7 +56,7 @@ class FswFirmware:
         """
         Retrieve switch_controller/fsw_firmware configuration.
 
-        Configuration for switch-controller/fsw-firmware
+        Retrieve a list of recommended firmware for managed FortiSwitches.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

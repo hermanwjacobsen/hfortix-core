@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class RealtimeStatistics:
     """
-    Configuration for fortiview/realtime-statistics
+    Retrieve realtime drill-down and summary data for FortiView.
     
     Path: fortiview/realtime_statistics
     Category: monitor

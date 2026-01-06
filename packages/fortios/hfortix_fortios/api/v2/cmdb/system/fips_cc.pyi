@@ -10,9 +10,9 @@ class FipsCcPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable ciphers for FIPS mode of operation.
+    status: NotRequired[Literal[{"description": "Enable FIPS-CC mode", "help": "Enable FIPS-CC mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FIPS-CC mode", "help": "Disable FIPS-CC mode.", "label": "Disable", "name": "disable"}]]  # Enable/disable ciphers for FIPS mode of operation.
     self_test_period: NotRequired[int]  # Self test period.
-    key_generation_self_test: NotRequired[Literal["enable", "disable"]]  # Enable/disable self tests after key generation.
+    key_generation_self_test: NotRequired[Literal[{"description": "Enable self tests after key generation", "help": "Enable self tests after key generation.", "label": "Enable", "name": "enable"}, {"description": "Disable self tests after key generation", "help": "Disable self tests after key generation.", "label": "Disable", "name": "disable"}]]  # Enable/disable self tests after key generation.
 
 
 class FipsCc:
@@ -39,9 +39,9 @@ class FipsCc:
     def post(
         self,
         payload_dict: FipsCcPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable FIPS-CC mode", "help": "Enable FIPS-CC mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FIPS-CC mode", "help": "Disable FIPS-CC mode.", "label": "Disable", "name": "disable"}] | None = ...,
         self_test_period: int | None = ...,
-        key_generation_self_test: Literal["enable", "disable"] | None = ...,
+        key_generation_self_test: Literal[{"description": "Enable self tests after key generation", "help": "Enable self tests after key generation.", "label": "Enable", "name": "enable"}, {"description": "Disable self tests after key generation", "help": "Disable self tests after key generation.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -50,9 +50,9 @@ class FipsCc:
     def put(
         self,
         payload_dict: FipsCcPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable FIPS-CC mode", "help": "Enable FIPS-CC mode.", "label": "Enable", "name": "enable"}, {"description": "Disable FIPS-CC mode", "help": "Disable FIPS-CC mode.", "label": "Disable", "name": "disable"}] | None = ...,
         self_test_period: int | None = ...,
-        key_generation_self_test: Literal["enable", "disable"] | None = ...,
+        key_generation_self_test: Literal[{"description": "Enable self tests after key generation", "help": "Enable self tests after key generation.", "label": "Enable", "name": "enable"}, {"description": "Disable self tests after key generation", "help": "Disable self tests after key generation.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

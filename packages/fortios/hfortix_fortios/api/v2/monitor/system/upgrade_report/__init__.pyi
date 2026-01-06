@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
+    from .current import Current
     from .exists import Exists
     from .saved import Saved
 
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
 class UpgradeReport:
     """Type stub for UpgradeReport."""
 
+    current: Current
     exists: Exists
     saved: Saved
 

@@ -118,7 +118,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "The command type (default = non-password).",
             "default": "non-password",
-            "options": ["non-password", "password"],
+            "options": [{"help": "Non-password command.", "label": "Non Password", "name": "non-password"}, {"help": "Password command.", "label": "Password", "name": "password"}],
         },
         "name": {
             "type": "string",
@@ -143,14 +143,14 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_AP_FAMILY = [
-    "fap",
-    "fap-u",
-    "fap-c",
+    "fap",  # FortiAP Family.
+    "fap-u",  # FortiAP-U Family.
+    "fap-c",  # FortiAP-C Family.
 ]
 VALID_BODY_AC_TYPE = [
-    "default",
-    "specify",
-    "apcfg",
+    "default",  # This controller is the one and only controller that the AP could join after applying AP local configuration.
+    "specify",  # Specified controller is the one and only controller that the AP could join after applying AP local configuration.
+    "apcfg",  # Any controller defined by AP local configuration after applying AP local configuration.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -278,7 +278,7 @@ def validate_wireless_controller_apcfg_profile_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "ap-family": "fap",  # Valid enum value
+        ...     "ap-family": "{'name': 'fap', 'help': 'FortiAP Family.', 'label': 'Fap', 'description': 'FortiAP Family'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_apcfg_profile_post(payload)
         >>> assert is_valid == True

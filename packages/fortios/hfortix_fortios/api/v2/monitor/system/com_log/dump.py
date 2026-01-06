@@ -56,7 +56,7 @@ class Dump:
         """
         Retrieve system/com_log/dump configuration.
 
-        Configuration for system/com-log/dump
+        Dump system com-log to file.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Start:
     """
-    Configuration for network/debug-flow/start
+    Start debug flow packet capture.
     
     Path: network/debug_flow/start
     Category: monitor

@@ -194,77 +194,77 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Log to local disk.
+    "disable",  # Do not log to local disk.
 ]
 VALID_BODY_IPS_ARCHIVE = [
-    "enable",
-    "disable",
+    "enable",  # Enable IPS packet archiving.
+    "disable",  # Disable IPS packet archiving.
 ]
 VALID_BODY_ROLL_SCHEDULE = [
-    "daily",
-    "weekly",
+    "daily",  # Check the log file once a day.
+    "weekly",  # Check the log file once a week.
 ]
 VALID_BODY_ROLL_DAY = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
+    "sunday",  # Sunday
+    "monday",  # Monday
+    "tuesday",  # Tuesday
+    "wednesday",  # Wednesday
+    "thursday",  # Thursday
+    "friday",  # Friday
+    "saturday",  # Saturday
 ]
 VALID_BODY_DISKFULL = [
-    "overwrite",
-    "nolog",
+    "overwrite",  # Overwrite the oldest logs when the log disk is full.
+    "nolog",  # Stop logging when the log disk is full.
 ]
 VALID_BODY_UPLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable uploading log files when they are rolled.
+    "disable",  # Disable uploading log files when they are rolled.
 ]
 VALID_BODY_UPLOAD_DESTINATION = [
-    "ftp-server",
+    "ftp-server",  # Upload rolled log files to an FTP server.
 ]
 VALID_BODY_UPLOADTYPE = [
-    "traffic",
-    "event",
-    "virus",
-    "webfilter",
-    "IPS",
-    "emailfilter",
-    "dlp-archive",
-    "anomaly",
-    "voip",
-    "dlp",
-    "app-ctrl",
-    "waf",
-    "gtp",
-    "dns",
-    "ssh",
-    "ssl",
-    "file-filter",
-    "icap",
-    "virtual-patch",
-    "debug",
+    "traffic",  # Upload traffic log.
+    "event",  # Upload event log.
+    "virus",  # Upload anti-virus log.
+    "webfilter",  # Upload web filter log.
+    "IPS",  # Upload IPS log.
+    "emailfilter",  # Upload spam filter log.
+    "dlp-archive",  # Upload DLP archive.
+    "anomaly",  # Upload anomaly log.
+    "voip",  # Upload VoIP log.
+    "dlp",  # Upload DLP log.
+    "app-ctrl",  # Upload application control log.
+    "waf",  # Upload web application firewall log.
+    "gtp",  # Upload GTP log.
+    "dns",  # Upload DNS log.
+    "ssh",  # Upload SSH log.
+    "ssl",  # Upload SSL log.
+    "file-filter",  # Upload file-filter log.
+    "icap",  # Upload ICAP log.
+    "virtual-patch",  # Upload virtual-patch log.
+    "debug",  # Upload debug log.
 ]
 VALID_BODY_UPLOADSCHED = [
-    "disable",
-    "enable",
+    "disable",  # Upload when rolling.
+    "enable",  # Scheduled upload.
 ]
 VALID_BODY_UPLOAD_DELETE_FILES = [
-    "enable",
-    "disable",
+    "enable",  # Delete log files after uploading.
+    "disable",  # Do not delete log files after uploading.
 ]
 VALID_BODY_UPLOAD_SSL_CONN = [
-    "default",
-    "high",
-    "low",
-    "disable",
+    "default",  # FTPS with high and medium encryption algorithms.
+    "high",  # FTPS with high encryption algorithms.
+    "low",  # FTPS with low encryption algorithms.
+    "disable",  # Disable FTPS communication.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "auto",
-    "sdwan",
-    "specify",
+    "auto",  # Set outgoing interface automatically.
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -392,7 +392,7 @@ def validate_log_disk_setting_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "uploaduser": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Log to local disk.', 'label': 'Enable', 'description': 'Log to local disk'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_log_disk_setting_post(payload)
         >>> assert is_valid == True

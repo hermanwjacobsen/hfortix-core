@@ -13,19 +13,19 @@ class ListPayload(TypedDict, total=False):
     name: str  # List name.
     comment: NotRequired[str]  # Comments.
     replacemsg_group: NotRequired[str]  # Replacement message group.
-    extended_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended logging.
-    other_application_action: NotRequired[Literal["pass", "block"]]  # Action for other applications.
-    app_replacemsg: NotRequired[Literal["disable", "enable"]]  # Enable/disable replacement messages for blocked applications
-    other_application_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging for other applications.
-    enforce_default_app_port: NotRequired[Literal["disable", "enable"]]  # Enable/disable default application port enforcement for allo
-    force_inclusion_ssl_di_sigs: NotRequired[Literal["disable", "enable"]]  # Enable/disable forced inclusion of SSL deep inspection signa
-    unknown_application_action: NotRequired[Literal["pass", "block"]]  # Pass or block traffic from unknown applications.
-    unknown_application_log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging for unknown applications.
-    p2p_block_list: NotRequired[Literal["skype", "edonkey", "bittorrent"]]  # P2P applications to be block listed.
-    deep_app_inspection: NotRequired[Literal["disable", "enable"]]  # Enable/disable deep application inspection.
-    options: NotRequired[Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"]]  # Basic application protocol signatures allowed by default.
+    extended_log: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable extended logging.
+    other_application_action: NotRequired[Literal[{"description": "Allow sessions matching an application in this application list", "help": "Allow sessions matching an application in this application list.", "label": "Pass", "name": "pass"}, {"description": "Block sessions matching an application in this application list", "help": "Block sessions matching an application in this application list.", "label": "Block", "name": "block"}]]  # Action for other applications.
+    app_replacemsg: NotRequired[Literal[{"description": "Disable replacement messages for blocked applications", "help": "Disable replacement messages for blocked applications.", "label": "Disable", "name": "disable"}, {"description": "Enable replacement messages for blocked applications", "help": "Enable replacement messages for blocked applications.", "label": "Enable", "name": "enable"}]]  # Enable/disable replacement messages for blocked applications
+    other_application_log: NotRequired[Literal[{"description": "Disable logging for other applications", "help": "Disable logging for other applications.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for other applications", "help": "Enable logging for other applications.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging for other applications.
+    enforce_default_app_port: NotRequired[Literal[{"description": "Disable default application port enforcement", "help": "Disable default application port enforcement.", "label": "Disable", "name": "disable"}, {"description": "Enable default application port enforcement", "help": "Enable default application port enforcement.", "label": "Enable", "name": "enable"}]]  # Enable/disable default application port enforcement for allo
+    force_inclusion_ssl_di_sigs: NotRequired[Literal[{"description": "Disable forced inclusion of signatures which normally require SSL deep inspection", "help": "Disable forced inclusion of signatures which normally require SSL deep inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable forced inclusion of signatures which normally require SSL deep inspection", "help": "Enable forced inclusion of signatures which normally require SSL deep inspection.", "label": "Enable", "name": "enable"}]]  # Enable/disable forced inclusion of SSL deep inspection signa
+    unknown_application_action: NotRequired[Literal[{"description": "Pass or allow unknown applications", "help": "Pass or allow unknown applications.", "label": "Pass", "name": "pass"}, {"description": "Drop or block unknown applications", "help": "Drop or block unknown applications.", "label": "Block", "name": "block"}]]  # Pass or block traffic from unknown applications.
+    unknown_application_log: NotRequired[Literal[{"description": "Disable logging for unknown applications", "help": "Disable logging for unknown applications.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for unknown applications", "help": "Enable logging for unknown applications.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging for unknown applications.
+    p2p_block_list: NotRequired[Literal[{"description": "Skype", "help": "Skype.", "label": "Skype", "name": "skype"}, {"description": "Edonkey", "help": "Edonkey.", "label": "Edonkey", "name": "edonkey"}, {"description": "Bit torrent", "help": "Bit torrent.", "label": "Bittorrent", "name": "bittorrent"}]]  # P2P applications to be block listed.
+    deep_app_inspection: NotRequired[Literal[{"description": "Disable deep application inspection", "help": "Disable deep application inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable deep application inspection", "help": "Enable deep application inspection.", "label": "Enable", "name": "enable"}]]  # Enable/disable deep application inspection.
+    options: NotRequired[Literal[{"description": "Allow DNS", "help": "Allow DNS.", "label": "Allow Dns", "name": "allow-dns"}, {"description": "Allow ICMP", "help": "Allow ICMP.", "label": "Allow Icmp", "name": "allow-icmp"}, {"description": "Allow generic HTTP web browsing", "help": "Allow generic HTTP web browsing.", "label": "Allow Http", "name": "allow-http"}, {"description": "Allow generic SSL communication", "help": "Allow generic SSL communication.", "label": "Allow Ssl", "name": "allow-ssl"}]]  # Basic application protocol signatures allowed by default.
     entries: NotRequired[list[dict[str, Any]]]  # Application list entries.
-    control_default_network_services: NotRequired[Literal["disable", "enable"]]  # Enable/disable enforcement of protocols over selected ports.
+    control_default_network_services: NotRequired[Literal[{"description": "Disable protocol enforcement over selected ports", "help": "Disable protocol enforcement over selected ports.", "label": "Disable", "name": "disable"}, {"description": "Enable protocol enforcement over selected ports", "help": "Enable protocol enforcement over selected ports.", "label": "Enable", "name": "enable"}]]  # Enable/disable enforcement of protocols over selected ports.
     default_network_services: NotRequired[list[dict[str, Any]]]  # Default network service entries.
 
 
@@ -57,19 +57,19 @@ class List:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        other_application_action: Literal["pass", "block"] | None = ...,
-        app_replacemsg: Literal["disable", "enable"] | None = ...,
-        other_application_log: Literal["disable", "enable"] | None = ...,
-        enforce_default_app_port: Literal["disable", "enable"] | None = ...,
-        force_inclusion_ssl_di_sigs: Literal["disable", "enable"] | None = ...,
-        unknown_application_action: Literal["pass", "block"] | None = ...,
-        unknown_application_log: Literal["disable", "enable"] | None = ...,
-        p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | None = ...,
-        deep_app_inspection: Literal["disable", "enable"] | None = ...,
-        options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        other_application_action: Literal[{"description": "Allow sessions matching an application in this application list", "help": "Allow sessions matching an application in this application list.", "label": "Pass", "name": "pass"}, {"description": "Block sessions matching an application in this application list", "help": "Block sessions matching an application in this application list.", "label": "Block", "name": "block"}] | None = ...,
+        app_replacemsg: Literal[{"description": "Disable replacement messages for blocked applications", "help": "Disable replacement messages for blocked applications.", "label": "Disable", "name": "disable"}, {"description": "Enable replacement messages for blocked applications", "help": "Enable replacement messages for blocked applications.", "label": "Enable", "name": "enable"}] | None = ...,
+        other_application_log: Literal[{"description": "Disable logging for other applications", "help": "Disable logging for other applications.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for other applications", "help": "Enable logging for other applications.", "label": "Enable", "name": "enable"}] | None = ...,
+        enforce_default_app_port: Literal[{"description": "Disable default application port enforcement", "help": "Disable default application port enforcement.", "label": "Disable", "name": "disable"}, {"description": "Enable default application port enforcement", "help": "Enable default application port enforcement.", "label": "Enable", "name": "enable"}] | None = ...,
+        force_inclusion_ssl_di_sigs: Literal[{"description": "Disable forced inclusion of signatures which normally require SSL deep inspection", "help": "Disable forced inclusion of signatures which normally require SSL deep inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable forced inclusion of signatures which normally require SSL deep inspection", "help": "Enable forced inclusion of signatures which normally require SSL deep inspection.", "label": "Enable", "name": "enable"}] | None = ...,
+        unknown_application_action: Literal[{"description": "Pass or allow unknown applications", "help": "Pass or allow unknown applications.", "label": "Pass", "name": "pass"}, {"description": "Drop or block unknown applications", "help": "Drop or block unknown applications.", "label": "Block", "name": "block"}] | None = ...,
+        unknown_application_log: Literal[{"description": "Disable logging for unknown applications", "help": "Disable logging for unknown applications.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for unknown applications", "help": "Enable logging for unknown applications.", "label": "Enable", "name": "enable"}] | None = ...,
+        p2p_block_list: Literal[{"description": "Skype", "help": "Skype.", "label": "Skype", "name": "skype"}, {"description": "Edonkey", "help": "Edonkey.", "label": "Edonkey", "name": "edonkey"}, {"description": "Bit torrent", "help": "Bit torrent.", "label": "Bittorrent", "name": "bittorrent"}] | None = ...,
+        deep_app_inspection: Literal[{"description": "Disable deep application inspection", "help": "Disable deep application inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable deep application inspection", "help": "Enable deep application inspection.", "label": "Enable", "name": "enable"}] | None = ...,
+        options: Literal[{"description": "Allow DNS", "help": "Allow DNS.", "label": "Allow Dns", "name": "allow-dns"}, {"description": "Allow ICMP", "help": "Allow ICMP.", "label": "Allow Icmp", "name": "allow-icmp"}, {"description": "Allow generic HTTP web browsing", "help": "Allow generic HTTP web browsing.", "label": "Allow Http", "name": "allow-http"}, {"description": "Allow generic SSL communication", "help": "Allow generic SSL communication.", "label": "Allow Ssl", "name": "allow-ssl"}] | None = ...,
         entries: list[dict[str, Any]] | None = ...,
-        control_default_network_services: Literal["disable", "enable"] | None = ...,
+        control_default_network_services: Literal[{"description": "Disable protocol enforcement over selected ports", "help": "Disable protocol enforcement over selected ports.", "label": "Disable", "name": "disable"}, {"description": "Enable protocol enforcement over selected ports", "help": "Enable protocol enforcement over selected ports.", "label": "Enable", "name": "enable"}] | None = ...,
         default_network_services: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -82,19 +82,19 @@ class List:
         name: str | None = ...,
         comment: str | None = ...,
         replacemsg_group: str | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        other_application_action: Literal["pass", "block"] | None = ...,
-        app_replacemsg: Literal["disable", "enable"] | None = ...,
-        other_application_log: Literal["disable", "enable"] | None = ...,
-        enforce_default_app_port: Literal["disable", "enable"] | None = ...,
-        force_inclusion_ssl_di_sigs: Literal["disable", "enable"] | None = ...,
-        unknown_application_action: Literal["pass", "block"] | None = ...,
-        unknown_application_log: Literal["disable", "enable"] | None = ...,
-        p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | None = ...,
-        deep_app_inspection: Literal["disable", "enable"] | None = ...,
-        options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        other_application_action: Literal[{"description": "Allow sessions matching an application in this application list", "help": "Allow sessions matching an application in this application list.", "label": "Pass", "name": "pass"}, {"description": "Block sessions matching an application in this application list", "help": "Block sessions matching an application in this application list.", "label": "Block", "name": "block"}] | None = ...,
+        app_replacemsg: Literal[{"description": "Disable replacement messages for blocked applications", "help": "Disable replacement messages for blocked applications.", "label": "Disable", "name": "disable"}, {"description": "Enable replacement messages for blocked applications", "help": "Enable replacement messages for blocked applications.", "label": "Enable", "name": "enable"}] | None = ...,
+        other_application_log: Literal[{"description": "Disable logging for other applications", "help": "Disable logging for other applications.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for other applications", "help": "Enable logging for other applications.", "label": "Enable", "name": "enable"}] | None = ...,
+        enforce_default_app_port: Literal[{"description": "Disable default application port enforcement", "help": "Disable default application port enforcement.", "label": "Disable", "name": "disable"}, {"description": "Enable default application port enforcement", "help": "Enable default application port enforcement.", "label": "Enable", "name": "enable"}] | None = ...,
+        force_inclusion_ssl_di_sigs: Literal[{"description": "Disable forced inclusion of signatures which normally require SSL deep inspection", "help": "Disable forced inclusion of signatures which normally require SSL deep inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable forced inclusion of signatures which normally require SSL deep inspection", "help": "Enable forced inclusion of signatures which normally require SSL deep inspection.", "label": "Enable", "name": "enable"}] | None = ...,
+        unknown_application_action: Literal[{"description": "Pass or allow unknown applications", "help": "Pass or allow unknown applications.", "label": "Pass", "name": "pass"}, {"description": "Drop or block unknown applications", "help": "Drop or block unknown applications.", "label": "Block", "name": "block"}] | None = ...,
+        unknown_application_log: Literal[{"description": "Disable logging for unknown applications", "help": "Disable logging for unknown applications.", "label": "Disable", "name": "disable"}, {"description": "Enable logging for unknown applications", "help": "Enable logging for unknown applications.", "label": "Enable", "name": "enable"}] | None = ...,
+        p2p_block_list: Literal[{"description": "Skype", "help": "Skype.", "label": "Skype", "name": "skype"}, {"description": "Edonkey", "help": "Edonkey.", "label": "Edonkey", "name": "edonkey"}, {"description": "Bit torrent", "help": "Bit torrent.", "label": "Bittorrent", "name": "bittorrent"}] | None = ...,
+        deep_app_inspection: Literal[{"description": "Disable deep application inspection", "help": "Disable deep application inspection.", "label": "Disable", "name": "disable"}, {"description": "Enable deep application inspection", "help": "Enable deep application inspection.", "label": "Enable", "name": "enable"}] | None = ...,
+        options: Literal[{"description": "Allow DNS", "help": "Allow DNS.", "label": "Allow Dns", "name": "allow-dns"}, {"description": "Allow ICMP", "help": "Allow ICMP.", "label": "Allow Icmp", "name": "allow-icmp"}, {"description": "Allow generic HTTP web browsing", "help": "Allow generic HTTP web browsing.", "label": "Allow Http", "name": "allow-http"}, {"description": "Allow generic SSL communication", "help": "Allow generic SSL communication.", "label": "Allow Ssl", "name": "allow-ssl"}] | None = ...,
         entries: list[dict[str, Any]] | None = ...,
-        control_default_network_services: Literal["disable", "enable"] | None = ...,
+        control_default_network_services: Literal[{"description": "Disable protocol enforcement over selected ports", "help": "Disable protocol enforcement over selected ports.", "label": "Disable", "name": "disable"}, {"description": "Enable protocol enforcement over selected ports", "help": "Enable protocol enforcement over selected ports.", "label": "Enable", "name": "enable"}] | None = ...,
         default_network_services: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

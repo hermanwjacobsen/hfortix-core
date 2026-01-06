@@ -14,14 +14,14 @@ class CustomPayload(TypedDict, total=False):
     signature: NotRequired[str]  # Custom signature enclosed in single quotes.
     rule_id: NotRequired[int]  # Signature ID.
     severity: NotRequired[str]  # Relative severity of the signature, from info to critical. L
-    location: NotRequired[str]  # Protect client or server traffic.
-    os: NotRequired[str]  # Operating system(s) that the signature protects. Blank for a
-    application: NotRequired[str]  # Applications to be protected. Blank for all applications.
+    location: NotRequired[list[dict[str, Any]]]  # Protect client or server traffic.
+    os: NotRequired[list[dict[str, Any]]]  # Operating system(s) that the signature protects. Blank for a
+    application: NotRequired[list[dict[str, Any]]]  # Applications to be protected. Blank for all applications.
     protocol: NotRequired[str]  # Protocol(s) that the signature scans. Blank for all protocol
-    status: NotRequired[Literal["disable", "enable"]]  # Enable/disable this signature.
-    log: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging.
-    log_packet: NotRequired[Literal["disable", "enable"]]  # Enable/disable packet logging.
-    action: NotRequired[Literal["pass", "block"]]  # Default action (pass or block) for this signature.
+    status: NotRequired[Literal[{"description": "Disable status", "help": "Disable status.", "label": "Disable", "name": "disable"}, {"description": "Enable status", "help": "Enable status.", "label": "Enable", "name": "enable"}]]  # Enable/disable this signature.
+    log: NotRequired[Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging.
+    log_packet: NotRequired[Literal[{"description": "Disable packet logging", "help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"description": "Enable packet logging", "help": "Enable packet logging.", "label": "Enable", "name": "enable"}]]  # Enable/disable packet logging.
+    action: NotRequired[Literal[{"description": "Pass or allow matching traffic", "help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}]]  # Default action (pass or block) for this signature.
     comment: NotRequired[str]  # Comment.
 
 
@@ -54,14 +54,14 @@ class Custom:
         signature: str | None = ...,
         rule_id: int | None = ...,
         severity: str | None = ...,
-        location: str | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
+        location: list[dict[str, Any]] | None = ...,
+        os: list[dict[str, Any]] | None = ...,
+        application: list[dict[str, Any]] | None = ...,
         protocol: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
+        status: Literal[{"description": "Disable status", "help": "Disable status.", "label": "Disable", "name": "disable"}, {"description": "Enable status", "help": "Enable status.", "label": "Enable", "name": "enable"}] | None = ...,
+        log: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        log_packet: Literal[{"description": "Disable packet logging", "help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"description": "Enable packet logging", "help": "Enable packet logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        action: Literal[{"description": "Pass or allow matching traffic", "help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -75,14 +75,14 @@ class Custom:
         signature: str | None = ...,
         rule_id: int | None = ...,
         severity: str | None = ...,
-        location: str | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
+        location: list[dict[str, Any]] | None = ...,
+        os: list[dict[str, Any]] | None = ...,
+        application: list[dict[str, Any]] | None = ...,
         protocol: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
+        status: Literal[{"description": "Disable status", "help": "Disable status.", "label": "Disable", "name": "disable"}, {"description": "Enable status", "help": "Enable status.", "label": "Enable", "name": "enable"}] | None = ...,
+        log: Literal[{"description": "Disable logging", "help": "Disable logging.", "label": "Disable", "name": "disable"}, {"description": "Enable logging", "help": "Enable logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        log_packet: Literal[{"description": "Disable packet logging", "help": "Disable packet logging.", "label": "Disable", "name": "disable"}, {"description": "Enable packet logging", "help": "Enable packet logging.", "label": "Enable", "name": "enable"}] | None = ...,
+        action: Literal[{"description": "Pass or allow matching traffic", "help": "Pass or allow matching traffic.", "label": "Pass", "name": "pass"}, {"description": "Block or drop matching traffic", "help": "Block or drop matching traffic.", "label": "Block", "name": "block"}] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

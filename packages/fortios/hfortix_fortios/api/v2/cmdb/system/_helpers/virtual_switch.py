@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/virtual_switch",
     "category": "cmdb",
     "api_path": "system/virtual-switch",
-    "help": "Configuration for system/virtual-switch",
+    "help": "Configuration for system/virtual_switch",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

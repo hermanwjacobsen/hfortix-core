@@ -165,85 +165,85 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Level of SSL inspection.",
             "default": "disable",
-            "options": ["disable", "certificate-inspection", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Inspect SSL handshake only.", "label": "Certificate Inspection", "name": "certificate-inspection"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-version": {
             "type": "option",
             "help": "Action based on the SSL version used being unsupported.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the version is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the version is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-cipher": {
             "type": "option",
             "help": "Action based on the SSL cipher used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the cipher is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the cipher is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-negotiation": {
             "type": "option",
             "help": "Action based on the SSL negotiation used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the negotiation is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the negotiation is not supported.", "label": "Block", "name": "block"}],
         },
         "expired-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is expired.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "revoked-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is revoked.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "untrusted-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is not issued by a trusted CA.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-timeout": {
             "type": "option",
             "help": "Action based on certificate validation timeout.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-failure": {
             "type": "option",
             "help": "Action based on certificate validation failure.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "sni-server-cert-check": {
             "type": "option",
             "help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.",
             "default": "enable",
-            "options": ["enable", "strict", "disable"],
+            "options": [{"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, use the CN in the server certificate to do URL filtering.", "label": "Enable", "name": "enable"}, {"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, close the connection.", "label": "Strict", "name": "strict"}, {"help": "Do not check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.", "label": "Disable", "name": "disable"}],
         },
         "cert-probe-failure": {
             "type": "option",
             "help": "Action based on certificate probe failure.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when unable to retrieve server\u0027s certificate for inspection.", "label": "Allow", "name": "allow"}, {"help": "Block the session when unable to retrieve server\u0027s certificate for inspection.", "label": "Block", "name": "block"}],
         },
         "encrypted-client-hello": {
             "type": "option",
             "help": "Block/allow session based on existence of encrypted-client-hello.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Pass the session when encrypted-client-hello exists.", "label": "Allow", "name": "allow"}, {"help": "Block the session when encrypted-client-hello exists.", "label": "Block", "name": "block"}],
         },
         "min-allowed-ssl-version": {
             "type": "option",
             "help": "Minimum SSL version to be allowed.",
             "default": "tls-1.1",
-            "options": ["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "SSL 3.0.", "label": "Ssl 3.0", "name": "ssl-3.0"}, {"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
     },
     "https": {
@@ -259,103 +259,103 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure protocol inspection status.",
             "default": "deep-inspection",
-            "options": ["disable", "certificate-inspection", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Inspect SSL handshake only.", "label": "Certificate Inspection", "name": "certificate-inspection"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "quic": {
             "type": "option",
             "help": "QUIC inspection status (default = inspect).",
             "default": "inspect",
-            "options": ["inspect", "bypass", "block"],
+            "options": [{"help": "Inspect QUIC traffic.", "label": "Inspect", "name": "inspect"}, {"help": "Bypass QUIC traffic.", "label": "Bypass", "name": "bypass"}, {"help": "Block QUIC traffic.", "label": "Block", "name": "block"}],
         },
         "udp-not-quic": {
             "type": "option",
             "help": "Action to be taken when matched UDP packet is not QUIC.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when UDP packet is not QUIC.", "label": "Allow", "name": "allow"}, {"help": "Block the session when UDP packet is not QUIC.", "label": "Block", "name": "block"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-version": {
             "type": "option",
             "help": "Action based on the SSL version used being unsupported.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the version is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the version is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-cipher": {
             "type": "option",
             "help": "Action based on the SSL cipher used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the cipher is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the cipher is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-negotiation": {
             "type": "option",
             "help": "Action based on the SSL negotiation used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the negotiation is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the negotiation is not supported.", "label": "Block", "name": "block"}],
         },
         "expired-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is expired.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "revoked-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is revoked.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "untrusted-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is not issued by a trusted CA.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-timeout": {
             "type": "option",
             "help": "Action based on certificate validation timeout.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-failure": {
             "type": "option",
             "help": "Action based on certificate validation failure.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "sni-server-cert-check": {
             "type": "option",
             "help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.",
             "default": "enable",
-            "options": ["enable", "strict", "disable"],
+            "options": [{"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, use the CN in the server certificate to do URL filtering.", "label": "Enable", "name": "enable"}, {"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, close the connection.", "label": "Strict", "name": "strict"}, {"help": "Do not check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.", "label": "Disable", "name": "disable"}],
         },
         "cert-probe-failure": {
             "type": "option",
             "help": "Action based on certificate probe failure.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when unable to retrieve server\u0027s certificate for inspection.", "label": "Allow", "name": "allow"}, {"help": "Block the session when unable to retrieve server\u0027s certificate for inspection.", "label": "Block", "name": "block"}],
         },
         "encrypted-client-hello": {
             "type": "option",
             "help": "Block/allow session based on existence of encrypted-client-hello.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Pass the session when encrypted-client-hello exists.", "label": "Allow", "name": "allow"}, {"help": "Block the session when encrypted-client-hello exists.", "label": "Block", "name": "block"}],
         },
         "min-allowed-ssl-version": {
             "type": "option",
             "help": "Minimum SSL version to be allowed.",
             "default": "tls-1.1",
-            "options": ["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "SSL 3.0.", "label": "Ssl 3.0", "name": "ssl-3.0"}, {"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
     },
     "ftps": {
@@ -371,73 +371,73 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure protocol inspection status.",
             "default": "deep-inspection",
-            "options": ["disable", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-version": {
             "type": "option",
             "help": "Action based on the SSL version used being unsupported.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the version is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the version is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-cipher": {
             "type": "option",
             "help": "Action based on the SSL cipher used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the cipher is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the cipher is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-negotiation": {
             "type": "option",
             "help": "Action based on the SSL negotiation used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the negotiation is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the negotiation is not supported.", "label": "Block", "name": "block"}],
         },
         "expired-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is expired.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "revoked-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is revoked.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "untrusted-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is not issued by a trusted CA.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-timeout": {
             "type": "option",
             "help": "Action based on certificate validation timeout.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-failure": {
             "type": "option",
             "help": "Action based on certificate validation failure.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "sni-server-cert-check": {
             "type": "option",
             "help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.",
             "default": "enable",
-            "options": ["enable", "strict", "disable"],
+            "options": [{"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, use the CN in the server certificate to do URL filtering.", "label": "Enable", "name": "enable"}, {"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, close the connection.", "label": "Strict", "name": "strict"}, {"help": "Do not check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.", "label": "Disable", "name": "disable"}],
         },
         "min-allowed-ssl-version": {
             "type": "option",
             "help": "Minimum SSL version to be allowed.",
             "default": "tls-1.1",
-            "options": ["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"],
+            "options": [{"help": "SSL 3.0.", "label": "Ssl 3.0", "name": "ssl-3.0"}, {"help": "TLS 1.0.", "label": "Tls 1.0", "name": "tls-1.0"}, {"help": "TLS 1.1.", "label": "Tls 1.1", "name": "tls-1.1"}, {"help": "TLS 1.2.", "label": "Tls 1.2", "name": "tls-1.2"}, {"help": "TLS 1.3.", "label": "Tls 1.3", "name": "tls-1.3"}],
         },
     },
     "imaps": {
@@ -453,73 +453,73 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure protocol inspection status.",
             "default": "deep-inspection",
-            "options": ["disable", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate.",
             "default": "inspect",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-version": {
             "type": "option",
             "help": "Action based on the SSL version used being unsupported.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the version is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the version is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-cipher": {
             "type": "option",
             "help": "Action based on the SSL cipher used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the cipher is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the cipher is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-negotiation": {
             "type": "option",
             "help": "Action based on the SSL negotiation used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the negotiation is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the negotiation is not supported.", "label": "Block", "name": "block"}],
         },
         "expired-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is expired.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "revoked-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is revoked.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "untrusted-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is not issued by a trusted CA.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-timeout": {
             "type": "option",
             "help": "Action based on certificate validation timeout.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-failure": {
             "type": "option",
             "help": "Action based on certificate validation failure.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "sni-server-cert-check": {
             "type": "option",
             "help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.",
             "default": "enable",
-            "options": ["enable", "strict", "disable"],
+            "options": [{"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, use the CN in the server certificate to do URL filtering.", "label": "Enable", "name": "enable"}, {"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, close the connection.", "label": "Strict", "name": "strict"}, {"help": "Do not check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.", "label": "Disable", "name": "disable"}],
         },
     },
     "pop3s": {
@@ -535,73 +535,73 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure protocol inspection status.",
             "default": "deep-inspection",
-            "options": ["disable", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate.",
             "default": "inspect",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-version": {
             "type": "option",
             "help": "Action based on the SSL version used being unsupported.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the version is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the version is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-cipher": {
             "type": "option",
             "help": "Action based on the SSL cipher used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the cipher is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the cipher is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-negotiation": {
             "type": "option",
             "help": "Action based on the SSL negotiation used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the negotiation is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the negotiation is not supported.", "label": "Block", "name": "block"}],
         },
         "expired-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is expired.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "revoked-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is revoked.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "untrusted-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is not issued by a trusted CA.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-timeout": {
             "type": "option",
             "help": "Action based on certificate validation timeout.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-failure": {
             "type": "option",
             "help": "Action based on certificate validation failure.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "sni-server-cert-check": {
             "type": "option",
             "help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.",
             "default": "enable",
-            "options": ["enable", "strict", "disable"],
+            "options": [{"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, use the CN in the server certificate to do URL filtering.", "label": "Enable", "name": "enable"}, {"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, close the connection.", "label": "Strict", "name": "strict"}, {"help": "Do not check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.", "label": "Disable", "name": "disable"}],
         },
     },
     "smtps": {
@@ -617,73 +617,73 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure protocol inspection status.",
             "default": "deep-inspection",
-            "options": ["disable", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate.",
             "default": "inspect",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-version": {
             "type": "option",
             "help": "Action based on the SSL version used being unsupported.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the version is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the version is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-cipher": {
             "type": "option",
             "help": "Action based on the SSL cipher used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the cipher is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the cipher is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-negotiation": {
             "type": "option",
             "help": "Action based on the SSL negotiation used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the negotiation is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the negotiation is not supported.", "label": "Block", "name": "block"}],
         },
         "expired-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is expired.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "revoked-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is revoked.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "untrusted-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is not issued by a trusted CA.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-timeout": {
             "type": "option",
             "help": "Action based on certificate validation timeout.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-failure": {
             "type": "option",
             "help": "Action based on certificate validation failure.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "sni-server-cert-check": {
             "type": "option",
             "help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.",
             "default": "enable",
-            "options": ["enable", "strict", "disable"],
+            "options": [{"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, use the CN in the server certificate to do URL filtering.", "label": "Enable", "name": "enable"}, {"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, close the connection.", "label": "Strict", "name": "strict"}, {"help": "Do not check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.", "label": "Disable", "name": "disable"}],
         },
     },
     "ssh": {
@@ -699,37 +699,37 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure protocol inspection status.",
             "default": "disable",
-            "options": ["disable", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "inspect-all": {
             "type": "option",
             "help": "Level of SSL inspection.",
             "default": "disable",
-            "options": ["disable", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "unsupported-version": {
             "type": "option",
             "help": "Action based on SSH version being unsupported.",
             "default": "bypass",
-            "options": ["bypass", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "ssh-tun-policy-check": {
             "type": "option",
             "help": "Enable/disable SSH tunnel policy check.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable SSH tunnel policy check.", "label": "Disable", "name": "disable"}, {"help": "Enable SSH tunnel policy check.", "label": "Enable", "name": "enable"}],
         },
         "ssh-algorithm": {
             "type": "option",
             "help": "Relative strength of encryption algorithms accepted during negotiation.",
             "default": "compatible",
-            "options": ["compatible", "high-encryption"],
+            "options": [{"help": "Allow a broader set of encryption algorithms for best compatibility.", "label": "Compatible", "name": "compatible"}, {"help": "Allow only AES-CTR, AES-GCM ciphers and high encryption algorithms.", "label": "High Encryption", "name": "high-encryption"}],
         },
     },
     "dot": {
@@ -737,85 +737,85 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure protocol inspection status.",
             "default": "disable",
-            "options": ["disable", "deep-inspection"],
+            "options": [{"help": "Disable.", "label": "Disable", "name": "disable"}, {"help": "Full SSL inspection.", "label": "Deep Inspection", "name": "deep-inspection"}],
         },
         "quic": {
             "type": "option",
             "help": "QUIC inspection status (default = inspect).",
             "default": "inspect",
-            "options": ["inspect", "bypass", "block"],
+            "options": [{"help": "Inspect QUIC traffic.", "label": "Inspect", "name": "inspect"}, {"help": "Bypass QUIC traffic.", "label": "Bypass", "name": "bypass"}, {"help": "Block QUIC traffic.", "label": "Block", "name": "block"}],
         },
         "udp-not-quic": {
             "type": "option",
             "help": "Action to be taken when matched UDP packet is not QUIC.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when UDP packet is not QUIC.", "label": "Allow", "name": "allow"}, {"help": "Block the session when UDP packet is not QUIC.", "label": "Block", "name": "block"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-version": {
             "type": "option",
             "help": "Action based on the SSL version used being unsupported.",
             "default": "block",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the version is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the version is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-cipher": {
             "type": "option",
             "help": "Action based on the SSL cipher used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the cipher is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the cipher is not supported.", "label": "Block", "name": "block"}],
         },
         "unsupported-ssl-negotiation": {
             "type": "option",
             "help": "Action based on the SSL negotiation used being unsupported.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Bypass the session when the negotiation is not supported.", "label": "Allow", "name": "allow"}, {"help": "Block the session when the negotiation is not supported.", "label": "Block", "name": "block"}],
         },
         "expired-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is expired.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "revoked-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is revoked.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "untrusted-server-cert": {
             "type": "option",
             "help": "Action based on server certificate is not issued by a trusted CA.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-timeout": {
             "type": "option",
             "help": "Action based on certificate validation timeout.",
             "default": "allow",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "cert-validation-failure": {
             "type": "option",
             "help": "Action based on certificate validation failure.",
             "default": "block",
-            "options": ["allow", "block", "ignore"],
+            "options": [{"help": "Allow the server certificate.", "label": "Allow", "name": "allow"}, {"help": "Block the session.", "label": "Block", "name": "block"}, {"help": "Re-sign the server certificate as trusted.", "label": "Ignore", "name": "ignore"}],
         },
         "sni-server-cert-check": {
             "type": "option",
             "help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.",
             "default": "enable",
-            "options": ["enable", "strict", "disable"],
+            "options": [{"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, use the CN in the server certificate to do URL filtering.", "label": "Enable", "name": "enable"}, {"help": "Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate. If mismatched, close the connection.", "label": "Strict", "name": "strict"}, {"help": "Do not check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.", "label": "Disable", "name": "disable"}],
         },
     },
     "ssl-exempt": {
@@ -831,7 +831,7 @@ NESTED_SCHEMAS = {
             "help": "Type of address object (IPv4 or IPv6) or FortiGuard category.",
             "required": True,
             "default": "fortiguard-category",
-            "options": ["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"],
+            "options": [{"help": "FortiGuard category.", "label": "Fortiguard Category", "name": "fortiguard-category"}, {"help": "Firewall IPv4 address.", "label": "Address", "name": "address"}, {"help": "Firewall IPv6 address.", "label": "Address6", "name": "address6"}, {"help": "Fully Qualified Domain Name with wildcard characters.", "label": "Wildcard Fqdn", "name": "wildcard-fqdn"}, {"help": "Regular expression FQDN.", "label": "Regex", "name": "regex"}],
         },
         "fortiguard-category": {
             "type": "integer",
@@ -907,37 +907,37 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Action based on received client certificate during the HTTPS handshake.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "smtps-client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate during the SMTPS handshake.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "pop3s-client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate during the POP3S handshake.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "imaps-client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate during the IMAPS handshake.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "ftps-client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate during the FTPS handshake.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
         "ssl-other-client-certificate": {
             "type": "option",
             "help": "Action based on received client certificate during an SSL protocol handshake.",
             "default": "bypass",
-            "options": ["bypass", "inspect", "block"],
+            "options": [{"help": "Bypass the session.", "label": "Bypass", "name": "bypass"}, {"help": "Inspect the session.", "label": "Inspect", "name": "inspect"}, {"help": "Block the session.", "label": "Block", "name": "block"}],
         },
     },
 }
@@ -945,58 +945,58 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ALLOWLIST = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_BLOCK_BLOCKLISTED_CERTIFICATES = [
-    "disable",
-    "enable",
+    "disable",  # Disable FortiGuard certificate blocklist.
+    "enable",  # Enable FortiGuard certificate blocklist.
 ]
 VALID_BODY_SERVER_CERT_MODE = [
-    "re-sign",
-    "replace",
+    "re-sign",  # Multiple clients connecting to multiple servers.
+    "replace",  # Protect an SSL server.
 ]
 VALID_BODY_USE_SSL_SERVER = [
-    "disable",
-    "enable",
+    "disable",  # Don't use SSL server configuration.
+    "enable",  # Use SSL server configuration.
 ]
 VALID_BODY_SSL_EXEMPTION_IP_RATING = [
-    "enable",
-    "disable",
+    "enable",  # Enable IP based URL rating.
+    "disable",  # Disable IP based URL rating.
 ]
 VALID_BODY_SSL_EXEMPTION_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of SSL exemptions.
+    "enable",  # Enable logging of SSL exemptions.
 ]
 VALID_BODY_SSL_ANOMALY_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of SSL anomalies.
+    "enable",  # Enable logging of SSL anomalies.
 ]
 VALID_BODY_SSL_NEGOTIATION_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of SSL negotiation events.
+    "enable",  # Enable logging of SSL negotiation events.
 ]
 VALID_BODY_SSL_SERVER_CERT_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of server certificate information.
+    "enable",  # Enable logging of server certificate information.
 ]
 VALID_BODY_SSL_HANDSHAKE_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging of TLS handshakes.
+    "enable",  # Enable logging of TLS handshakes.
 ]
 VALID_BODY_RPC_OVER_HTTPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable inspection of RPC over HTTPS.
+    "disable",  # Disable inspection of RPC over HTTPS.
 ]
 VALID_BODY_MAPI_OVER_HTTPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable inspection of MAPI over HTTPS.
+    "disable",  # Disable inspection of MAPI over HTTPS.
 ]
 VALID_BODY_SUPPORTED_ALPN = [
-    "http1-1",
-    "http2",
-    "all",
-    "none",
+    "http1-1",  # Enable all ALPN including HTTP1.1 except HTTP2 and SPDY.
+    "http2",  # Enable all ALPN including HTTP2 except HTTP1.1 and SPDY.
+    "all",  # Allow all ALPN extensions except SPDY.
+    "none",  # Do not use ALPN.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1127,7 +1127,7 @@ def validate_firewall_ssl_ssh_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "allowlist": "enable",  # Valid enum value
+        ...     "allowlist": "{'name': 'enable', 'help': 'Enable setting.', 'label': 'Enable', 'description': 'Enable setting'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_ssl_ssh_profile_post(payload)
         >>> assert is_valid == True

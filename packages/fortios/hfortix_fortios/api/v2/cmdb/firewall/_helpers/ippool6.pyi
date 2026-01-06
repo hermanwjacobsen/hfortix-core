@@ -1,9 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["overload", "nptv6"]
-VALID_BODY_NAT46: Literal["disable", "enable"]
-VALID_BODY_ADD_NAT46_ROUTE: Literal["disable", "enable"]
+VALID_BODY_TYPE: Literal[{"description": "IPv6 addresses in the IP pool can be shared by clients", "help": "IPv6 addresses in the IP pool can be shared by clients.", "label": "Overload", "name": "overload"}, {"description": "NPTv6 one to one mapping", "help": "NPTv6 one to one mapping.", "label": "Nptv6", "name": "nptv6"}]
+VALID_BODY_NAT46: Literal[{"description": "Disable NAT46", "help": "Disable NAT46.", "label": "Disable", "name": "disable"}, {"description": "Enable NAT46", "help": "Enable NAT46.", "label": "Enable", "name": "enable"}]
+VALID_BODY_ADD_NAT46_ROUTE: Literal[{"description": "Disable adding NAT46 route", "help": "Disable adding NAT46 route.", "label": "Disable", "name": "disable"}, {"description": "Enable adding NAT46 route", "help": "Enable adding NAT46 route.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

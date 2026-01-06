@@ -56,7 +56,7 @@ class Upgrade:
         """
         Retrieve system/firmware/upgrade configuration.
 
-        Configuration for system/firmware/upgrade
+        Upgrade firmware image on this device.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

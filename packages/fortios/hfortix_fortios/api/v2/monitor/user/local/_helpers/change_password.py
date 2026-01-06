@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/local/change_password",
     "category": "monitor",
     "api_path": "user/local/change-password",
-    "help": "Configuration for user/local/change-password",
+    "help": "Change password for local user.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

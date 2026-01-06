@@ -11,7 +11,7 @@ class FssoPayload(TypedDict, total=False):
         }
     """
     name: str  # Name.
-    type: NotRequired[Literal["default", "fortinac"]]  # Server type.
+    type: NotRequired[Literal[{"description": "All other unspecified types of servers", "help": "All other unspecified types of servers.", "label": "Default", "name": "default"}, {"description": "FortiNAC server", "help": "FortiNAC server.", "label": "Fortinac", "name": "fortinac"}]]  # Server type.
     server: str  # Domain name or IP address of the first FSSO collector agent.
     port: int  # Port of the first FSSO collector agent.
     password: NotRequired[str]  # Password of the first FSSO collector agent.
@@ -30,17 +30,17 @@ class FssoPayload(TypedDict, total=False):
     logon_timeout: NotRequired[int]  # Interval in minutes to keep logons after FSSO server down.
     ldap_server: NotRequired[str]  # LDAP server to get group information.
     group_poll_interval: NotRequired[int]  # Interval in minutes within to fetch groups from FSSO server,
-    ldap_poll: NotRequired[Literal["enable", "disable"]]  # Enable/disable automatic fetching of groups from LDAP server
+    ldap_poll: NotRequired[Literal[{"description": "Enable automatic fetching of groups from LDAP server", "help": "Enable automatic fetching of groups from LDAP server.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic fetching of groups from LDAP server", "help": "Disable automatic fetching of groups from LDAP server.", "label": "Disable", "name": "disable"}]]  # Enable/disable automatic fetching of groups from LDAP server
     ldap_poll_interval: NotRequired[int]  # Interval in minutes within to fetch groups from LDAP server.
     ldap_poll_filter: NotRequired[str]  # Filter used to fetch groups.
     user_info_server: NotRequired[str]  # LDAP server to get user information.
-    ssl: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of SSL.
+    ssl: NotRequired[Literal[{"description": "Enable use of SSL", "help": "Enable use of SSL.", "label": "Enable", "name": "enable"}, {"description": "Disable use of SSL", "help": "Disable use of SSL.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of SSL.
     sni: NotRequired[str]  # Server Name Indication.
-    ssl_server_host_ip_check: NotRequired[Literal["enable", "disable"]]  # Enable/disable server host/IP verification.
+    ssl_server_host_ip_check: NotRequired[Literal[{"description": "Enable server host/IP verification", "help": "Enable server host/IP verification.", "label": "Enable", "name": "enable"}, {"description": "Disable server host/IP verification", "help": "Disable server host/IP verification.", "label": "Disable", "name": "disable"}]]  # Enable/disable server host/IP verification.
     ssl_trusted_cert: NotRequired[str]  # Trusted server certificate or CA certificate.
     source_ip: NotRequired[str]  # Source IP for communications to FSSO agent.
     source_ip6: NotRequired[str]  # IPv6 source for communications to FSSO agent.
-    interface_select_method: NotRequired[Literal["auto", "sdwan", "specify"]]  # Specify how to select outgoing interface to reach server.
+    interface_select_method: NotRequired[Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]]  # Specify how to select outgoing interface to reach server.
     interface: str  # Specify outgoing interface to reach server.
     vrf_select: NotRequired[int]  # VRF ID used for connection to server.
 
@@ -71,7 +71,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type: Literal[{"description": "All other unspecified types of servers", "help": "All other unspecified types of servers.", "label": "Default", "name": "default"}, {"description": "FortiNAC server", "help": "FortiNAC server.", "label": "Fortinac", "name": "fortinac"}] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -90,17 +90,17 @@ class Fsso:
         logon_timeout: int | None = ...,
         ldap_server: str | None = ...,
         group_poll_interval: int | None = ...,
-        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll: Literal[{"description": "Enable automatic fetching of groups from LDAP server", "help": "Enable automatic fetching of groups from LDAP server.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic fetching of groups from LDAP server", "help": "Disable automatic fetching of groups from LDAP server.", "label": "Disable", "name": "disable"}] | None = ...,
         ldap_poll_interval: int | None = ...,
         ldap_poll_filter: str | None = ...,
         user_info_server: str | None = ...,
-        ssl: Literal["enable", "disable"] | None = ...,
+        ssl: Literal[{"description": "Enable use of SSL", "help": "Enable use of SSL.", "label": "Enable", "name": "enable"}, {"description": "Disable use of SSL", "help": "Disable use of SSL.", "label": "Disable", "name": "disable"}] | None = ...,
         sni: str | None = ...,
-        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_server_host_ip_check: Literal[{"description": "Enable server host/IP verification", "help": "Enable server host/IP verification.", "label": "Enable", "name": "enable"}, {"description": "Disable server host/IP verification", "help": "Disable server host/IP verification.", "label": "Disable", "name": "disable"}] | None = ...,
         ssl_trusted_cert: str | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,
@@ -112,7 +112,7 @@ class Fsso:
         self,
         payload_dict: FssoPayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "fortinac"] | None = ...,
+        type: Literal[{"description": "All other unspecified types of servers", "help": "All other unspecified types of servers.", "label": "Default", "name": "default"}, {"description": "FortiNAC server", "help": "FortiNAC server.", "label": "Fortinac", "name": "fortinac"}] | None = ...,
         server: str | None = ...,
         port: int | None = ...,
         password: str | None = ...,
@@ -131,17 +131,17 @@ class Fsso:
         logon_timeout: int | None = ...,
         ldap_server: str | None = ...,
         group_poll_interval: int | None = ...,
-        ldap_poll: Literal["enable", "disable"] | None = ...,
+        ldap_poll: Literal[{"description": "Enable automatic fetching of groups from LDAP server", "help": "Enable automatic fetching of groups from LDAP server.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic fetching of groups from LDAP server", "help": "Disable automatic fetching of groups from LDAP server.", "label": "Disable", "name": "disable"}] | None = ...,
         ldap_poll_interval: int | None = ...,
         ldap_poll_filter: str | None = ...,
         user_info_server: str | None = ...,
-        ssl: Literal["enable", "disable"] | None = ...,
+        ssl: Literal[{"description": "Enable use of SSL", "help": "Enable use of SSL.", "label": "Enable", "name": "enable"}, {"description": "Disable use of SSL", "help": "Disable use of SSL.", "label": "Disable", "name": "disable"}] | None = ...,
         sni: str | None = ...,
-        ssl_server_host_ip_check: Literal["enable", "disable"] | None = ...,
+        ssl_server_host_ip_check: Literal[{"description": "Enable server host/IP verification", "help": "Enable server host/IP verification.", "label": "Enable", "name": "enable"}, {"description": "Disable server host/IP verification", "help": "Disable server host/IP verification.", "label": "Disable", "name": "disable"}] | None = ...,
         ssl_trusted_cert: str | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
+        interface_select_method: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
         vdom: str | bool | None = ...,

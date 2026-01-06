@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Policy:
     """
-    Monitor endpoint for firewall/policy
+    List traffic statistics for firewall policies.
     
     Path: firewall/policy
     Category: monitor

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Update:
     """
-    Configuration for system/sdn-connector/update
+    Update an SDN connector's connection status.
     
     Path: system/sdn_connector/update
     Category: monitor

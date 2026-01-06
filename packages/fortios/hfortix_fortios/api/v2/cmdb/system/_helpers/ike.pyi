@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_DH_MULTIPROCESS: Literal["enable", "disable"]
-VALID_BODY_DH_MODE: Literal["software", "hardware"]
-VALID_BODY_DH_KEYPAIR_CACHE: Literal["enable", "disable"]
-VALID_BODY_DH_KEYPAIR_THROTTLE: Literal["enable", "disable"]
+VALID_BODY_DH_MULTIPROCESS: Literal[{"description": "Enable multiprocess Diffie-Hellman for IKE", "help": "Enable multiprocess Diffie-Hellman for IKE.", "label": "Enable", "name": "enable"}, {"description": "Disable multiprocess Diffie-Hellman for IKE", "help": "Disable multiprocess Diffie-Hellman for IKE.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DH_MODE: Literal[{"description": "Prefer CPU to perform Diffie-Hellman calculations", "help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"description": "Prefer CPX to perform Diffie-Hellman calculations", "help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}]
+VALID_BODY_DH_KEYPAIR_CACHE: Literal[{"description": "Enable Diffie-Hellman key pair cache", "help": "Enable Diffie-Hellman key pair cache.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache", "help": "Disable Diffie-Hellman key pair cache.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DH_KEYPAIR_THROTTLE: Literal[{"description": "Enable Diffie-Hellman key pair cache CPU throttling", "help": "Enable Diffie-Hellman key pair cache CPU throttling.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache CPU throttling", "help": "Disable Diffie-Hellman key pair cache CPU throttling.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

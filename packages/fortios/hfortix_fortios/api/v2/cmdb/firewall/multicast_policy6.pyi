@@ -12,20 +12,20 @@ class MulticastPolicy6Payload(TypedDict, total=False):
     """
     id: NotRequired[int]  # Policy ID (0 - 4294967294).
     uuid: NotRequired[str]  # Universally Unique Identifier (UUID; automatically assigned 
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this policy.
+    status: NotRequired[Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}]]  # Enable/disable this policy.
     name: NotRequired[str]  # Policy name.
     srcintf: str  # IPv6 source interface name.
     dstintf: str  # IPv6 destination interface name.
     srcaddr: list[dict[str, Any]]  # IPv6 source address name.
     dstaddr: list[dict[str, Any]]  # IPv6 destination address name.
-    action: NotRequired[Literal["accept", "deny"]]  # Accept or deny traffic matching the policy.
+    action: NotRequired[Literal[{"description": "Accept", "help": "Accept.", "label": "Accept", "name": "accept"}, {"description": "Deny", "help": "Deny.", "label": "Deny", "name": "deny"}]]  # Accept or deny traffic matching the policy.
     protocol: NotRequired[int]  # Integer value for the protocol type as defined by IANA (0 - 
     start_port: NotRequired[int]  # Integer value for starting TCP/UDP/SCTP destination port in 
     end_port: NotRequired[int]  # Integer value for ending TCP/UDP/SCTP destination port in ra
-    utm_status: NotRequired[Literal["enable", "disable"]]  # Enable to add an IPS security profile to the policy.
+    utm_status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable to add an IPS security profile to the policy.
     ips_sensor: NotRequired[str]  # Name of an existing IPS sensor.
-    logtraffic: NotRequired[Literal["all", "utm", "disable"]]  # Enable or disable logging. Log all sessions or security prof
-    auto_asic_offload: NotRequired[Literal["enable", "disable"]]  # Enable/disable offloading policy traffic for hardware accele
+    logtraffic: NotRequired[Literal[{"description": "Enable logging traffic accepted by this policy", "help": "Enable logging traffic accepted by this policy.", "label": "All", "name": "all"}, {"description": "Log traffic that has a security profile applied to it", "help": "Log traffic that has a security profile applied to it.", "label": "Utm", "name": "utm"}, {"description": "Disable all logging for this policy", "help": "Disable all logging for this policy.", "label": "Disable", "name": "disable"}]]  # Enable or disable logging. Log all sessions or security prof
+    auto_asic_offload: NotRequired[Literal[{"description": "Enable offloading policy traffic for hardware acceleration", "help": "Enable offloading policy traffic for hardware acceleration.", "label": "Enable", "name": "enable"}, {"description": "Disable offloading policy traffic for hardware acceleration", "help": "Disable offloading policy traffic for hardware acceleration.", "label": "Disable", "name": "disable"}]]  # Enable/disable offloading policy traffic for hardware accele
     comments: NotRequired[str]  # Comment.
 
 
@@ -56,20 +56,20 @@ class MulticastPolicy6:
         payload_dict: MulticastPolicy6Payload | None = ...,
         id: int | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
+        action: Literal[{"description": "Accept", "help": "Accept.", "label": "Accept", "name": "accept"}, {"description": "Deny", "help": "Deny.", "label": "Deny", "name": "deny"}] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
         end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
+        utm_status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal[{"description": "Enable logging traffic accepted by this policy", "help": "Enable logging traffic accepted by this policy.", "label": "All", "name": "all"}, {"description": "Log traffic that has a security profile applied to it", "help": "Log traffic that has a security profile applied to it.", "label": "Utm", "name": "utm"}, {"description": "Disable all logging for this policy", "help": "Disable all logging for this policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable offloading policy traffic for hardware acceleration", "help": "Enable offloading policy traffic for hardware acceleration.", "label": "Enable", "name": "enable"}, {"description": "Disable offloading policy traffic for hardware acceleration", "help": "Disable offloading policy traffic for hardware acceleration.", "label": "Disable", "name": "disable"}] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -81,20 +81,20 @@ class MulticastPolicy6:
         payload_dict: MulticastPolicy6Payload | None = ...,
         id: int | None = ...,
         uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable this policy", "help": "Enable this policy.", "label": "Enable", "name": "enable"}, {"description": "Disable this policy", "help": "Disable this policy.", "label": "Disable", "name": "disable"}] | None = ...,
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
         srcaddr: list[dict[str, Any]] | None = ...,
         dstaddr: list[dict[str, Any]] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
+        action: Literal[{"description": "Accept", "help": "Accept.", "label": "Accept", "name": "accept"}, {"description": "Deny", "help": "Deny.", "label": "Deny", "name": "deny"}] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
         end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
+        utm_status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
+        logtraffic: Literal[{"description": "Enable logging traffic accepted by this policy", "help": "Enable logging traffic accepted by this policy.", "label": "All", "name": "all"}, {"description": "Log traffic that has a security profile applied to it", "help": "Log traffic that has a security profile applied to it.", "label": "Utm", "name": "utm"}, {"description": "Disable all logging for this policy", "help": "Disable all logging for this policy.", "label": "Disable", "name": "disable"}] | None = ...,
+        auto_asic_offload: Literal[{"description": "Enable offloading policy traffic for hardware acceleration", "help": "Enable offloading policy traffic for hardware acceleration.", "label": "Enable", "name": "enable"}, {"description": "Disable offloading policy traffic for hardware acceleration", "help": "Disable offloading policy traffic for hardware acceleration.", "label": "Disable", "name": "disable"}] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/interface/poe",
     "category": "monitor",
     "api_path": "system/interface/poe",
-    "help": "Configuration for system/interface/poe",
+    "help": "Retrieve PoE statistics for system interfaces.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

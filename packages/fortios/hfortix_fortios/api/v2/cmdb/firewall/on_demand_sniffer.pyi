@@ -16,7 +16,7 @@ class OnDemandSnifferPayload(TypedDict, total=False):
     hosts: NotRequired[list[dict[str, Any]]]  # IPv4 or IPv6 hosts to filter in this traffic sniffer.
     ports: NotRequired[list[dict[str, Any]]]  # Ports to filter for in this traffic sniffer.
     protocols: NotRequired[list[dict[str, Any]]]  # Protocols to filter in this traffic sniffer.
-    non_ip_packet: NotRequired[Literal["enable", "disable"]]  # Include non-IP packets.
+    non_ip_packet: NotRequired[Literal[{"description": "Enable non-IP packets to be included capture", "help": "Enable non-IP packets to be included capture.", "label": "Enable", "name": "enable"}, {"description": "Disable non-IP packets to be included in capture", "help": "Disable non-IP packets to be included in capture.", "label": "Disable", "name": "disable"}]]  # Include non-IP packets.
     advanced_filter: NotRequired[str]  # Advanced freeform filter that will be used over existing fil
 
 
@@ -51,7 +51,7 @@ class OnDemandSniffer:
         hosts: list[dict[str, Any]] | None = ...,
         ports: list[dict[str, Any]] | None = ...,
         protocols: list[dict[str, Any]] | None = ...,
-        non_ip_packet: Literal["enable", "disable"] | None = ...,
+        non_ip_packet: Literal[{"description": "Enable non-IP packets to be included capture", "help": "Enable non-IP packets to be included capture.", "label": "Enable", "name": "enable"}, {"description": "Disable non-IP packets to be included in capture", "help": "Disable non-IP packets to be included in capture.", "label": "Disable", "name": "disable"}] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -67,7 +67,7 @@ class OnDemandSniffer:
         hosts: list[dict[str, Any]] | None = ...,
         ports: list[dict[str, Any]] | None = ...,
         protocols: list[dict[str, Any]] | None = ...,
-        non_ip_packet: Literal["enable", "disable"] | None = ...,
+        non_ip_packet: Literal[{"description": "Enable non-IP packets to be included capture", "help": "Enable non-IP packets to be included capture.", "label": "Enable", "name": "enable"}, {"description": "Disable non-IP packets to be included in capture", "help": "Disable non-IP packets to be included in capture.", "label": "Disable", "name": "disable"}] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

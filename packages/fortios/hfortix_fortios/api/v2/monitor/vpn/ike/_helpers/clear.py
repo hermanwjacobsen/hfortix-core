@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "vpn/ike/clear",
     "category": "monitor",
     "api_path": "vpn/ike/clear",
-    "help": "Configuration for vpn/ike/clear",
+    "help": "Clear IKE gateways.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

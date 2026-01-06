@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/network_service_dynamic",
     "category": "monitor",
     "api_path": "firewall/network-service-dynamic",
-    "help": "Configuration for firewall/network-service-dynamic",
+    "help": "List of dynamic network service IP address and port pairs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -56,7 +56,7 @@ class BackupAction:
         """
         Retrieve system/fortimanager/backup_action configuration.
 
-        Configuration for system/fortimanager/backup-action
+        Import or update from FortiManager objects.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

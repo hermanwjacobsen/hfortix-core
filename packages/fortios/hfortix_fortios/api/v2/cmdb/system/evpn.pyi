@@ -14,8 +14,8 @@ class EvpnPayload(TypedDict, total=False):
     rd: NotRequired[str]  # Route Distinguisher: AA:NN|A.B.C.D:NN.
     import_rt: NotRequired[list[dict[str, Any]]]  # List of import route targets.
     export_rt: NotRequired[list[dict[str, Any]]]  # List of export route targets.
-    ip_local_learning: NotRequired[Literal["enable", "disable"]]  # Enable/disable IP address local learning.
-    arp_suppression: NotRequired[Literal["enable", "disable"]]  # Enable/disable ARP suppression.
+    ip_local_learning: NotRequired[Literal[{"description": "Enable IP address local learning", "help": "Enable IP address local learning.", "label": "Enable", "name": "enable"}, {"description": "Disable IP address local learning", "help": "Disable IP address local learning.", "label": "Disable", "name": "disable"}]]  # Enable/disable IP address local learning.
+    arp_suppression: NotRequired[Literal[{"description": "Enable ARP suppression", "help": "Enable ARP suppression.", "label": "Enable", "name": "enable"}, {"description": "Disable ARP suppression", "help": "Disable ARP suppression.", "label": "Disable", "name": "disable"}]]  # Enable/disable ARP suppression.
 
 
 class Evpn:
@@ -47,8 +47,8 @@ class Evpn:
         rd: str | None = ...,
         import_rt: list[dict[str, Any]] | None = ...,
         export_rt: list[dict[str, Any]] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
+        ip_local_learning: Literal[{"description": "Enable IP address local learning", "help": "Enable IP address local learning.", "label": "Enable", "name": "enable"}, {"description": "Disable IP address local learning", "help": "Disable IP address local learning.", "label": "Disable", "name": "disable"}] | None = ...,
+        arp_suppression: Literal[{"description": "Enable ARP suppression", "help": "Enable ARP suppression.", "label": "Enable", "name": "enable"}, {"description": "Disable ARP suppression", "help": "Disable ARP suppression.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -61,8 +61,8 @@ class Evpn:
         rd: str | None = ...,
         import_rt: list[dict[str, Any]] | None = ...,
         export_rt: list[dict[str, Any]] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
+        ip_local_learning: Literal[{"description": "Enable IP address local learning", "help": "Enable IP address local learning.", "label": "Enable", "name": "enable"}, {"description": "Disable IP address local learning", "help": "Disable IP address local learning.", "label": "Disable", "name": "disable"}] | None = ...,
+        arp_suppression: Literal[{"description": "Enable ARP suppression", "help": "Enable ARP suppression.", "label": "Enable", "name": "enable"}, {"description": "Disable ARP suppression", "help": "Disable ARP suppression.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

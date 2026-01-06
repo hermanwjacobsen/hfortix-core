@@ -56,7 +56,7 @@ class Stats:
         """
         Retrieve user/device/stats configuration.
 
-        Configuration for user/device/stats
+        Retrieve user devices stats from device store by given stat item.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

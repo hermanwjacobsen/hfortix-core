@@ -56,7 +56,7 @@ class Upgrade:
         """
         Retrieve system/lte_modem/upgrade configuration.
 
-        Configuration for system/lte-modem/upgrade
+        Upgrade LTE modem firmware image on this device using uploaded files.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

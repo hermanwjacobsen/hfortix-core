@@ -111,12 +111,12 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PROXY = [
-    "enable",
-    "disable",
+    "enable",  # Enable communication to the proxy server in FortiGuard configuration.
+    "disable",  # Disable communication to the proxy server in FortiGuard configuration.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable FortiToken Mobile push services.
+    "disable",  # Disable FortiToken Mobile push services.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -241,7 +241,7 @@ def validate_system_ftm_push_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "proxy": "enable",  # Valid enum value
+        ...     "proxy": "{'name': 'enable', 'help': 'Enable communication to the proxy server in FortiGuard configuration.', 'label': 'Enable', 'description': 'Enable communication to the proxy server in FortiGuard configuration'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_ftm_push_post(payload)
         >>> assert is_valid == True

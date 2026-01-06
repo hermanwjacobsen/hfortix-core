@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "router/ipv6",
     "category": "monitor",
     "api_path": "router/ipv6",
-    "help": "Monitor endpoint for router/ipv6",
+    "help": "List all active IPv6 routing table entries.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

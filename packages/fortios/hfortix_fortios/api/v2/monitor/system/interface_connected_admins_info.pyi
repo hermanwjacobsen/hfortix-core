@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InterfaceConnectedAdminsInfo:
     """
-    Configuration for system/interface-connected-admins-info
+    Return admins info that are connected to current interface.
     
     Path: system/interface_connected_admins_info
     Category: monitor

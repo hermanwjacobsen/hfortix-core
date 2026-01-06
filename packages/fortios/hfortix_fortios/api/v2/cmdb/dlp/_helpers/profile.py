@@ -133,25 +133,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Select the severity or threat level that matches this filter.",
             "default": "medium",
-            "options": ["info", "low", "medium", "high", "critical"],
+            "options": [{"help": "Informational.", "label": "Info", "name": "info"}, {"help": "Low.", "label": "Low", "name": "low"}, {"help": "Medium.", "label": "Medium", "name": "medium"}, {"help": "High.", "label": "High", "name": "high"}, {"help": "Critical.", "label": "Critical", "name": "critical"}],
         },
         "type": {
             "type": "option",
             "help": "Select whether to check the content of messages (an email message) or files (downloaded files or email attachments).",
             "default": "file",
-            "options": ["file", "message"],
+            "options": [{"help": "Check the contents of downloaded or attached files.", "label": "File", "name": "file"}, {"help": "Check the contents of email messages, web pages, etc.", "label": "Message", "name": "message"}],
         },
         "proto": {
             "type": "option",
             "help": "Check messages or files over one or more of these protocols.",
             "default": "",
-            "options": ["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"],
+            "options": [{"help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"help": "POP3.", "label": "Pop3", "name": "pop3"}, {"help": "IMAP.", "label": "Imap", "name": "imap"}, {"help": "HTTP GET.", "label": "Http Get", "name": "http-get"}, {"help": "HTTP POST.", "label": "Http Post", "name": "http-post"}, {"help": "FTP.", "label": "Ftp", "name": "ftp"}, {"help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"help": "MAPI.", "label": "Mapi", "name": "mapi"}, {"help": "SFTP and SCP.", "label": "Ssh", "name": "ssh"}, {"help": "CIFS.", "label": "Cifs", "name": "cifs"}],
         },
         "filter-by": {
             "type": "option",
             "help": "Select the type of content to match.",
             "default": "none",
-            "options": ["sensor", "label", "fingerprint", "encrypted", "none"],
+            "options": [{"help": "Use DLP sensors to match content.", "label": "Sensor", "name": "sensor"}, {"help": "Use DLP labels to match content.", "label": "Label", "name": "label"}, {"help": "Match against a fingerprint sensitivity.", "label": "Fingerprint", "name": "fingerprint"}, {"help": "Look for encrypted files.", "label": "Encrypted", "name": "encrypted"}, {"help": "No content scan.", "label": "None", "name": "none"}],
         },
         "file-size": {
             "type": "integer",
@@ -195,13 +195,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable DLP archiving.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "No DLP archiving.", "label": "Disable", "name": "disable"}, {"help": "Enable full DLP archiving.", "label": "Enable", "name": "enable"}],
         },
         "action": {
             "type": "option",
             "help": "Action to take with content that this DLP profile matches.",
             "default": "allow",
-            "options": ["allow", "log-only", "block", "quarantine-ip"],
+            "options": [{"help": "Allow the content to pass through the FortiGate and do not create a log message.", "label": "Allow", "name": "allow"}, {"help": "Allow the content to pass through the FortiGate, but write a log message.", "label": "Log Only", "name": "log-only"}, {"help": "Block the content and write a log message.", "label": "Block", "name": "block"}, {"help": "Quarantine all traffic from the IP address and write a log message.", "label": "Quarantine Ip", "name": "quarantine-ip"}],
         },
         "expiry": {
             "type": "user",
@@ -214,49 +214,49 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FEATURE_SET = [
-    "flow",
-    "proxy",
+    "flow",  # Flow feature set.
+    "proxy",  # Proxy feature set.
 ]
 VALID_BODY_DLP_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable DLP logging.
+    "disable",  # Disable DLP logging.
 ]
 VALID_BODY_EXTENDED_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_NAC_QUAR_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable NAC quarantine logging.
+    "disable",  # Disable NAC quarantine logging.
 ]
 VALID_BODY_FULL_ARCHIVE_PROTO = [
-    "smtp",
-    "pop3",
-    "imap",
-    "http-get",
-    "http-post",
-    "ftp",
-    "nntp",
-    "mapi",
-    "ssh",
-    "cifs",
+    "smtp",  # SMTP.
+    "pop3",  # POP3.
+    "imap",  # IMAP.
+    "http-get",  # HTTP GET.
+    "http-post",  # HTTP POST.
+    "ftp",  # FTP.
+    "nntp",  # NNTP.
+    "mapi",  # MAPI.
+    "ssh",  # SFTP and SCP.
+    "cifs",  # CIFS.
 ]
 VALID_BODY_SUMMARY_PROTO = [
-    "smtp",
-    "pop3",
-    "imap",
-    "http-get",
-    "http-post",
-    "ftp",
-    "nntp",
-    "mapi",
-    "ssh",
-    "cifs",
+    "smtp",  # SMTP.
+    "pop3",  # POP3.
+    "imap",  # IMAP.
+    "http-get",  # HTTP GET.
+    "http-post",  # HTTP POST.
+    "ftp",  # FTP.
+    "nntp",  # NNTP.
+    "mapi",  # MAPI.
+    "ssh",  # SFTP and SCP.
+    "cifs",  # CIFS.
 ]
 VALID_BODY_FORTIDATA_ERROR_ACTION = [
-    "log-only",
-    "block",
-    "ignore",
+    "log-only",  # Log failure, but allow the file.
+    "block",  # Block the file.
+    "ignore",  # Behave as if FortiData returned no match.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -386,7 +386,7 @@ def validate_dlp_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "feature-set": "flow",  # Valid enum value
+        ...     "feature-set": "{'name': 'flow', 'help': 'Flow feature set.', 'label': 'Flow', 'description': 'Flow feature set'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_dlp_profile_post(payload)
         >>> assert is_valid == True

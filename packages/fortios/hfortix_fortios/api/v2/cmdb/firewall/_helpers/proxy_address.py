@@ -186,7 +186,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Case sensitivity in pattern.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Case insensitive in pattern.", "label": "Disable", "name": "disable"}, {"help": "Case sensitive in pattern.", "label": "Enable", "name": "enable"}],
         },
     },
     "tagging": {
@@ -220,45 +220,45 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "host-regex",
-    "url",
-    "category",
-    "method",
-    "ua",
-    "header",
-    "src-advanced",
-    "dst-advanced",
-    "saas",
+    "host-regex",  # Host regular expression.
+    "url",  # HTTP URL.
+    "category",  # FortiGuard URL catgegory.
+    "method",  # HTTP request method.
+    "ua",  # HTTP request user agent.
+    "header",  # HTTP request header.
+    "src-advanced",  # HTTP advanced source criteria.
+    "dst-advanced",  # HTTP advanced destination criteria.
+    "saas",  # SaaS application.
 ]
 VALID_BODY_REFERRER = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_METHOD = [
-    "get",
-    "post",
-    "put",
-    "head",
-    "connect",
-    "trace",
-    "options",
-    "delete",
-    "update",
-    "patch",
-    "other",
+    "get",  # GET method.
+    "post",  # POST method.
+    "put",  # PUT method.
+    "head",  # HEAD method.
+    "connect",  # CONNECT method.
+    "trace",  # TRACE method.
+    "options",  # OPTIONS method.
+    "delete",  # DELETE method.
+    "update",  # UPDATE method.
+    "patch",  # PATCH method.
+    "other",  # Other methods.
 ]
 VALID_BODY_UA = [
-    "chrome",
-    "ms",
-    "firefox",
-    "safari",
-    "ie",
-    "edge",
-    "other",
+    "chrome",  # Google Chrome.
+    "ms",  # Microsoft Internet Explorer or EDGE.
+    "firefox",  # Mozilla Firefox.
+    "safari",  # Apple Safari.
+    "ie",  # Microsoft Internet Explorer.
+    "edge",  # Microsoft Edge.
+    "other",  # Other browsers.
 ]
 VALID_BODY_CASE_SENSITIVITY = [
-    "disable",
-    "enable",
+    "disable",  # Case insensitive in pattern.
+    "enable",  # Case sensitive in pattern.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -389,7 +389,7 @@ def validate_firewall_proxy_address_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "host": True,
-        ...     "type": "host-regex",  # Valid enum value
+        ...     "type": "{'name': 'host-regex', 'help': 'Host regular expression.', 'label': 'Host Regex', 'description': 'Host regular expression'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_proxy_address_post(payload)
         >>> assert is_valid == True

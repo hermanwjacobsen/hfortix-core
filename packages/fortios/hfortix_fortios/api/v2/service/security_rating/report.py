@@ -56,7 +56,7 @@ class Report:
         """
         Retrieve security_rating/report configuration.
 
-        Configuration for security-rating/report
+        Retrieve full report of all Security Rating tests.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

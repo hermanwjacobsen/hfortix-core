@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "webfilter/trusted_urls",
     "category": "monitor",
     "api_path": "webfilter/trusted-urls",
-    "help": "Monitor endpoint for webfilter/trusted-urls",
+    "help": "List all URLs in FortiGuard trusted URL database.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

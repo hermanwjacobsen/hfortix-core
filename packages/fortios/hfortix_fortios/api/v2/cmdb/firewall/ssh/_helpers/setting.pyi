@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_HOST_TRUSTED_CHECKING: Literal["enable", "disable"]
+VALID_BODY_HOST_TRUSTED_CHECKING: Literal[{"description": "Enable host key trusted checking", "help": "Enable host key trusted checking.", "label": "Enable", "name": "enable"}, {"description": "Disable host key trusted checking", "help": "Disable host key trusted checking.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

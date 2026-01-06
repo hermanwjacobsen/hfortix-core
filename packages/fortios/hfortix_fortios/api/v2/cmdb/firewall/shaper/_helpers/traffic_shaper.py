@@ -149,34 +149,34 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_BANDWIDTH_UNIT = [
-    "kbps",
-    "mbps",
-    "gbps",
+    "kbps",  # Kilobits per second.
+    "mbps",  # Megabits per second.
+    "gbps",  # Gigabits per second.
 ]
 VALID_BODY_PRIORITY = [
-    "low",
-    "medium",
-    "high",
+    "low",  # Low priority.
+    "medium",  # Medium priority.
+    "high",  # High priority.
 ]
 VALID_BODY_PER_POLICY = [
-    "disable",
-    "enable",
+    "disable",  # All referring policies share one traffic shaper.
+    "enable",  # Each referring policy has its own traffic shaper.
 ]
 VALID_BODY_DIFFSERV = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting traffic DiffServ.
+    "disable",  # Disable setting traffic DiffServ.
 ]
 VALID_BODY_DSCP_MARKING_METHOD = [
-    "multi-stage",
-    "static",
+    "multi-stage",  # Multistage marking.
+    "static",  # Static marking.
 ]
 VALID_BODY_COS_MARKING = [
-    "enable",
-    "disable",
+    "enable",  # Enable VLAN CoS marking.
+    "disable",  # Disable VLAN CoS marking.
 ]
 VALID_BODY_COS_MARKING_METHOD = [
-    "multi-stage",
-    "static",
+    "multi-stage",  # Multi stage marking.
+    "static",  # Static marking.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -304,7 +304,7 @@ def validate_firewall_shaper_traffic_shaper_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "bandwidth-unit": "kbps",  # Valid enum value
+        ...     "bandwidth-unit": "{'name': 'kbps', 'help': 'Kilobits per second.', 'label': 'Kbps', 'description': 'Kilobits per second'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_shaper_traffic_shaper_post(payload)
         >>> assert is_valid == True

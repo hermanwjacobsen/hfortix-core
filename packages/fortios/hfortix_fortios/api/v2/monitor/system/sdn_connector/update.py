@@ -56,7 +56,7 @@ class Update:
         """
         Retrieve system/sdn_connector/update configuration.
 
-        Configuration for system/sdn-connector/update
+        Update an SDN connector's connection status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

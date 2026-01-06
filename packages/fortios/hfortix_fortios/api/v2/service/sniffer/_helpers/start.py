@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "sniffer/start",
     "category": "service",
     "api_path": "sniffer/start",
-    "help": "Configuration for sniffer/start",
+    "help": "Creates a new packet capture and starts it.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

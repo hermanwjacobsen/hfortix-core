@@ -11,12 +11,12 @@ class IkePayload(TypedDict, total=False):
         }
     """
     embryonic_limit: NotRequired[int]  # Maximum number of IPsec tunnels to negotiate simultaneously.
-    dh_multiprocess: NotRequired[Literal["enable", "disable"]]  # Enable/disable multiprocess Diffie-Hellman daemon for IKE.
+    dh_multiprocess: NotRequired[Literal[{"description": "Enable multiprocess Diffie-Hellman for IKE", "help": "Enable multiprocess Diffie-Hellman for IKE.", "label": "Enable", "name": "enable"}, {"description": "Disable multiprocess Diffie-Hellman for IKE", "help": "Disable multiprocess Diffie-Hellman for IKE.", "label": "Disable", "name": "disable"}]]  # Enable/disable multiprocess Diffie-Hellman daemon for IKE.
     dh_worker_count: NotRequired[int]  # Number of Diffie-Hellman workers to start.
-    dh_mode: NotRequired[Literal["software", "hardware"]]  # Use software (CPU) or hardware (CPX) to perform Diffie-Hellm
-    dh_keypair_cache: NotRequired[Literal["enable", "disable"]]  # Enable/disable Diffie-Hellman key pair cache.
+    dh_mode: NotRequired[Literal[{"description": "Prefer CPU to perform Diffie-Hellman calculations", "help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"description": "Prefer CPX to perform Diffie-Hellman calculations", "help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}]]  # Use software (CPU) or hardware (CPX) to perform Diffie-Hellm
+    dh_keypair_cache: NotRequired[Literal[{"description": "Enable Diffie-Hellman key pair cache", "help": "Enable Diffie-Hellman key pair cache.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache", "help": "Disable Diffie-Hellman key pair cache.", "label": "Disable", "name": "disable"}]]  # Enable/disable Diffie-Hellman key pair cache.
     dh_keypair_count: NotRequired[int]  # Number of key pairs to pre-generate for each Diffie-Hellman 
-    dh_keypair_throttle: NotRequired[Literal["enable", "disable"]]  # Enable/disable Diffie-Hellman key pair cache CPU throttling.
+    dh_keypair_throttle: NotRequired[Literal[{"description": "Enable Diffie-Hellman key pair cache CPU throttling", "help": "Enable Diffie-Hellman key pair cache CPU throttling.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache CPU throttling", "help": "Disable Diffie-Hellman key pair cache CPU throttling.", "label": "Disable", "name": "disable"}]]  # Enable/disable Diffie-Hellman key pair cache CPU throttling.
     dh_group_1: NotRequired[str]  # Diffie-Hellman group 1 (MODP-768).
     dh_group_2: NotRequired[str]  # Diffie-Hellman group 2 (MODP-1024).
     dh_group_5: NotRequired[str]  # Diffie-Hellman group 5 (MODP-1536).
@@ -61,12 +61,12 @@ class Ike:
         self,
         payload_dict: IkePayload | None = ...,
         embryonic_limit: int | None = ...,
-        dh_multiprocess: Literal["enable", "disable"] | None = ...,
+        dh_multiprocess: Literal[{"description": "Enable multiprocess Diffie-Hellman for IKE", "help": "Enable multiprocess Diffie-Hellman for IKE.", "label": "Enable", "name": "enable"}, {"description": "Disable multiprocess Diffie-Hellman for IKE", "help": "Disable multiprocess Diffie-Hellman for IKE.", "label": "Disable", "name": "disable"}] | None = ...,
         dh_worker_count: int | None = ...,
-        dh_mode: Literal["software", "hardware"] | None = ...,
-        dh_keypair_cache: Literal["enable", "disable"] | None = ...,
+        dh_mode: Literal[{"description": "Prefer CPU to perform Diffie-Hellman calculations", "help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"description": "Prefer CPX to perform Diffie-Hellman calculations", "help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}] | None = ...,
+        dh_keypair_cache: Literal[{"description": "Enable Diffie-Hellman key pair cache", "help": "Enable Diffie-Hellman key pair cache.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache", "help": "Disable Diffie-Hellman key pair cache.", "label": "Disable", "name": "disable"}] | None = ...,
         dh_keypair_count: int | None = ...,
-        dh_keypair_throttle: Literal["enable", "disable"] | None = ...,
+        dh_keypair_throttle: Literal[{"description": "Enable Diffie-Hellman key pair cache CPU throttling", "help": "Enable Diffie-Hellman key pair cache CPU throttling.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache CPU throttling", "help": "Disable Diffie-Hellman key pair cache CPU throttling.", "label": "Disable", "name": "disable"}] | None = ...,
         dh_group_1: str | None = ...,
         dh_group_2: str | None = ...,
         dh_group_5: str | None = ...,
@@ -93,12 +93,12 @@ class Ike:
         self,
         payload_dict: IkePayload | None = ...,
         embryonic_limit: int | None = ...,
-        dh_multiprocess: Literal["enable", "disable"] | None = ...,
+        dh_multiprocess: Literal[{"description": "Enable multiprocess Diffie-Hellman for IKE", "help": "Enable multiprocess Diffie-Hellman for IKE.", "label": "Enable", "name": "enable"}, {"description": "Disable multiprocess Diffie-Hellman for IKE", "help": "Disable multiprocess Diffie-Hellman for IKE.", "label": "Disable", "name": "disable"}] | None = ...,
         dh_worker_count: int | None = ...,
-        dh_mode: Literal["software", "hardware"] | None = ...,
-        dh_keypair_cache: Literal["enable", "disable"] | None = ...,
+        dh_mode: Literal[{"description": "Prefer CPU to perform Diffie-Hellman calculations", "help": "Prefer CPU to perform Diffie-Hellman calculations.", "label": "Software", "name": "software"}, {"description": "Prefer CPX to perform Diffie-Hellman calculations", "help": "Prefer CPX to perform Diffie-Hellman calculations.", "label": "Hardware", "name": "hardware"}] | None = ...,
+        dh_keypair_cache: Literal[{"description": "Enable Diffie-Hellman key pair cache", "help": "Enable Diffie-Hellman key pair cache.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache", "help": "Disable Diffie-Hellman key pair cache.", "label": "Disable", "name": "disable"}] | None = ...,
         dh_keypair_count: int | None = ...,
-        dh_keypair_throttle: Literal["enable", "disable"] | None = ...,
+        dh_keypair_throttle: Literal[{"description": "Enable Diffie-Hellman key pair cache CPU throttling", "help": "Enable Diffie-Hellman key pair cache CPU throttling.", "label": "Enable", "name": "enable"}, {"description": "Disable Diffie-Hellman key pair cache CPU throttling", "help": "Disable Diffie-Hellman key pair cache CPU throttling.", "label": "Disable", "name": "disable"}] | None = ...,
         dh_group_1: str | None = ...,
         dh_group_2: str | None = ...,
         dh_group_5: str | None = ...,

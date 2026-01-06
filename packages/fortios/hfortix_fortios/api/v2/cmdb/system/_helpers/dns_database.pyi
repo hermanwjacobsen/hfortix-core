@@ -1,11 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_TYPE: Literal["primary", "secondary"]
-VALID_BODY_VIEW: Literal["shadow", "public", "shadow-ztna", "proxy"]
-VALID_BODY_AUTHORITATIVE: Literal["enable", "disable"]
-VALID_BODY_INTERFACE_SELECT_METHOD: Literal["auto", "sdwan", "specify"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_TYPE: Literal[{"description": "Primary DNS zone, to manage entries directly", "help": "Primary DNS zone, to manage entries directly.", "label": "Primary", "name": "primary"}, {"description": "Secondary DNS zone, to import entries from other DNS zones", "help": "Secondary DNS zone, to import entries from other DNS zones.", "label": "Secondary", "name": "secondary"}]
+VALID_BODY_VIEW: Literal[{"description": "Shadow DNS zone to serve internal clients", "help": "Shadow DNS zone to serve internal clients.", "label": "Shadow", "name": "shadow"}, {"description": "Public DNS zone to serve public clients", "help": "Public DNS zone to serve public clients.", "label": "Public", "name": "public"}, {"description": "implicit DNS zone for ztna dox tunnel", "help": "implicit DNS zone for ztna dox tunnel.", "label": "Shadow Ztna", "name": "shadow-ztna"}, {"description": "Shadow DNS zone for internal proxy", "help": "Shadow DNS zone for internal proxy.", "label": "Proxy", "name": "proxy"}]
+VALID_BODY_AUTHORITATIVE: Literal[{"description": "Enable authoritative zone", "help": "Enable authoritative zone.", "label": "Enable", "name": "enable"}, {"description": "Disable authoritative zone", "help": "Disable authoritative zone.", "label": "Disable", "name": "disable"}]
+VALID_BODY_INTERFACE_SELECT_METHOD: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

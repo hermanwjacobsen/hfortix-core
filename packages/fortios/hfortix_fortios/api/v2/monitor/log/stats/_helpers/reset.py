@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/stats/reset",
     "category": "monitor",
     "api_path": "log/stats/reset",
-    "help": "Configuration for log/stats/reset",
+    "help": "Reset logging statistics for all log devices.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

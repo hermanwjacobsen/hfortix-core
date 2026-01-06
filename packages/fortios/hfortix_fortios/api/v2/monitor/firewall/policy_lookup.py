@@ -56,7 +56,7 @@ class PolicyLookup:
         """
         Retrieve firewall/policy_lookup configuration.
 
-        Configuration for firewall/policy-lookup
+        Performs a policy lookup by creating a dummy packet and asking the kernel which policy would be hit.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

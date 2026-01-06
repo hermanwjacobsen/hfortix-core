@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "switch_controller/known_nac_device_criteria_list",
     "category": "monitor",
     "api_path": "switch-controller/known-nac-device-criteria-list",
-    "help": "Monitor endpoint for switch-controller/known-nac-device-criteria-list",
+    "help": "Retrieve a list of commonly configured NAC devices.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

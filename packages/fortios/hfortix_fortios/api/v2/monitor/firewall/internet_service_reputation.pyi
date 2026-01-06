@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class InternetServiceReputation:
     """
-    Configuration for firewall/internet-service-reputation
+    List internet services with reputation information that exist at a given IP.
     
     Path: firewall/internet_service_reputation
     Category: monitor

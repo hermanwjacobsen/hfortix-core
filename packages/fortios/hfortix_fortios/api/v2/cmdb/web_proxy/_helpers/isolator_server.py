@@ -91,7 +91,7 @@ FIELD_TYPES = {
     "interface": "string",  # Specify outgoing interface to reach server.
     "vrf-select": "integer",  # VRF ID used for connection to server.
     "comment": "string",  # Comment.
-    "masquerade": "option",  # Enable/disable use of the of the IP address of the outgoing 
+    "masquerade": "option",  # Enable/disable use of the IP address of the outgoing interfa
 }
 
 # Field descriptions (help text from FortiOS API)
@@ -106,7 +106,7 @@ FIELD_DESCRIPTIONS = {
     "interface": "Specify outgoing interface to reach server.",
     "vrf-select": "VRF ID used for connection to server.",
     "comment": "Comment.",
-    "masquerade": "Enable/disable use of the of the IP address of the outgoing interface as the client IP address (default = enable)",
+    "masquerade": "Enable/disable use of the IP address of the outgoing interface as the client IP address (default = enable)",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -126,17 +126,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADDR_TYPE = [
-    "ip",
-    "ipv6",
-    "fqdn",
+    "ip",  # Use an IPv4 address for the forwarding proxy server.
+    "ipv6",  # Use an IPv6 address for the forwarding proxy server.
+    "fqdn",  # Use the FQDN for the forwarding proxy server.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "sdwan",
-    "specify",
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_MASQUERADE = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of the IP address of the outgoing interface as the client IP address.
+    "disable",  # Disable use of the IP address of the outgoing interface as the client IP address.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -266,7 +266,7 @@ def validate_web_proxy_isolator_server_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "addr-type": "ip",  # Valid enum value
+        ...     "addr-type": "{'name': 'ip', 'help': 'Use an IPv4 address for the forwarding proxy server.', 'label': 'Ip', 'description': 'Use an IPv4 address for the forwarding proxy server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_web_proxy_isolator_server_post(payload)
         >>> assert is_valid == True

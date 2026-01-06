@@ -56,7 +56,7 @@ class Logout:
         """
         Retrieve registration/forticloud/logout configuration.
 
-        Configuration for registration/forticloud/logout
+        Logout from FortiCloud.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

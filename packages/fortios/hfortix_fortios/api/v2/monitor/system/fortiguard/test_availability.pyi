@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class TestAvailability:
     """
-    Configuration for system/fortiguard/test-availability
+    Test availability of FortiGuard services.
     
     Path: system/fortiguard/test_availability
     Category: monitor

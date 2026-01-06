@@ -219,7 +219,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable policy.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable policy.", "label": "Enable", "name": "enable"}, {"help": "Disable policy.", "label": "Disable", "name": "disable"}],
         },
         "srcaddr": {
             "type": "string",
@@ -258,96 +258,96 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable the explicit web proxy.
+    "disable",  # Disable the explicit web proxy.
 ]
 VALID_BODY_SECURE_WEB_PROXY = [
-    "disable",
-    "enable",
-    "secure",
+    "disable",  # Disable secure webproxy.
+    "enable",  # Enable secure webproxy access.
+    "secure",  # Require secure webproxy access.
 ]
 VALID_BODY_FTP_OVER_HTTP = [
-    "enable",
-    "disable",
+    "enable",  # Enable FTP-over-HTTP sessions.
+    "disable",  # Disable FTP-over-HTTP sessions.
 ]
 VALID_BODY_SOCKS = [
-    "enable",
-    "disable",
+    "enable",  # Enable the SOCKS proxy.
+    "disable",  # Disable the SOCKS proxy.
 ]
 VALID_BODY_HTTP_CONNECTION_MODE = [
-    "static",
-    "multiplex",
-    "serverpool",
+    "static",  # Only one server connection exists during the proxy session.
+    "multiplex",  # Established connections are held until the proxy session ends.
+    "serverpool",  # Established connections are shared with other proxy sessions.
 ]
 VALID_BODY_CLIENT_CERT = [
-    "disable",
-    "enable",
+    "disable",  # Disable client certificate request.
+    "enable",  # Enable client certificate request.
 ]
 VALID_BODY_USER_AGENT_DETECT = [
-    "disable",
-    "enable",
+    "disable",  # Disable to detect unknown device by HTTP user-agent if no client certificate provided.
+    "enable",  # Enable to detect unknown device by HTTP user-agent if no client certificate provided.
 ]
 VALID_BODY_EMPTY_CERT_ACTION = [
-    "accept",
-    "block",
-    "accept-unmanageable",
+    "accept",  # Accept the SSL handshake if the client certificate is empty.
+    "block",  # Block the SSL handshake if the client certificate is empty.
+    "accept-unmanageable",  # Accept the SSL handshake only if the end-point is unmanageable.
 ]
 VALID_BODY_SSL_DH_BITS = [
-    "768",
-    "1024",
-    "1536",
-    "2048",
+    "768",  # 768-bit Diffie-Hellman prime.
+    "1024",  # 1024-bit Diffie-Hellman prime.
+    "1536",  # 1536-bit Diffie-Hellman prime.
+    "2048",  # 2048-bit Diffie-Hellman prime.
 ]
 VALID_BODY_INTERFACE_SELECT_METHOD = [
-    "sdwan",
-    "specify",
+    "sdwan",  # Set outgoing interface by SD-WAN or policy routing rules.
+    "specify",  # Set outgoing interface manually.
 ]
 VALID_BODY_IPV6_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable allowing an IPv6 web proxy destination.
+    "disable",  # Disable allowing an IPv6 web proxy destination.
 ]
 VALID_BODY_STRICT_GUEST = [
-    "enable",
-    "disable",
+    "enable",  # Enable strict guest user checking.
+    "disable",  # Disable strict guest user checking.
 ]
 VALID_BODY_PREF_DNS_RESULT = [
-    "ipv4",
-    "ipv6",
-    "ipv4-strict",
-    "ipv6-strict",
+    "ipv4",  # Send the IPv4 request first and then the IPv6 request. Use the DNS response that returns to the FortiGate first.
+    "ipv6",  # Send the IPv6 request first and then the IPv4 request. Use the DNS response that returns to the FortiGate first.
+    "ipv4-strict",  # Use the IPv4 DNS response. If the IPv6 DNS response arrives first, wait 50ms for the IPv4 response and then use the IPv4 response, otherwise the IPv6.
+    "ipv6-strict",  # Use the IPv6 DNS response. If the IPv4 DNS response arrives first, wait 50ms for the IPv6 response and then use the IPv6 response, otherwise the IPv4.
 ]
 VALID_BODY_UNKNOWN_HTTP_VERSION = [
-    "reject",
-    "best-effort",
+    "reject",  # Reject or tear down HTTP sessions that do not use HTTP 0.9, 1.0, or 1.1.
+    "best-effort",  # Assume all HTTP sessions comply with HTTP 0.9, 1.0, or 1.1. If a session uses a different HTTP version, it may not parse correctly and the connection may be lost.
 ]
 VALID_BODY_SEC_DEFAULT_ACTION = [
-    "accept",
-    "deny",
+    "accept",  # Accept requests. All explicit web proxy traffic is accepted whether there is an explicit web proxy policy or not.
+    "deny",  # Deny requests unless there is a matching explicit web proxy policy.
 ]
 VALID_BODY_HTTPS_REPLACEMENT_MESSAGE = [
-    "enable",
-    "disable",
+    "enable",  # Display a replacement message for HTTPS requests.
+    "disable",  # Do not display a replacement message for HTTPS requests.
 ]
 VALID_BODY_MESSAGE_UPON_SERVER_ERROR = [
-    "enable",
-    "disable",
+    "enable",  # Display a replacement message when a server error is detected.
+    "disable",  # Do not display a replacement message when a server error is detected.
 ]
 VALID_BODY_PAC_FILE_SERVER_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable Proxy Auto-Configuration (PAC).
+    "disable",  # Disable Proxy Auto-Configuration (PAC).
 ]
 VALID_BODY_PAC_FILE_THROUGH_HTTPS = [
-    "enable",
-    "disable",
+    "enable",  # Enable to get Proxy Auto-Configuration (PAC) through HTTPS.
+    "disable",  # Disable to get Proxy Auto-Configuration (PAC) through HTTPS.
 ]
 VALID_BODY_SSL_ALGORITHM = [
-    "high",
-    "medium",
-    "low",
+    "high",  # High encrption. Allow only AES and ChaCha.
+    "medium",  # Medium encryption. Allow AES, ChaCha, 3DES, and RC4.
+    "low",  # Low encryption. Allow AES, ChaCha, 3DES, RC4, and DES.
 ]
 VALID_BODY_TRACE_AUTH_NO_RSP = [
-    "enable",
-    "disable",
+    "enable",  # Enable logging timed-out authentication requests.
+    "disable",  # Disable logging timed-out authentication requests.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -474,7 +474,7 @@ def validate_web_proxy_explicit_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable the explicit web proxy.', 'label': 'Enable', 'description': 'Enable the explicit web proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_web_proxy_explicit_post(payload)
         >>> assert is_valid == True

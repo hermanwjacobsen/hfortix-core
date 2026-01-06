@@ -1,10 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_LOGIN_PASSWD_OVERRIDE: Literal["enable", "disable"]
-VALID_BODY_LOGIN: Literal["enable", "disable"]
-VALID_BODY_REVISION_BACKUP_ON_LOGOUT: Literal["enable", "disable"]
-VALID_BODY_REVISION_BACKUP_ON_UPGRADE: Literal["enable", "disable"]
+VALID_BODY_LOGIN_PASSWD_OVERRIDE: Literal[{"description": "Override a managed FortiSwitch\u0027s admin administrator password", "help": "Override a managed FortiSwitch\u0027s admin administrator password.", "label": "Enable", "name": "enable"}, {"description": "Use the managed FortiSwitch admin administrator account password", "help": "Use the managed FortiSwitch admin administrator account password.", "label": "Disable", "name": "disable"}]
+VALID_BODY_LOGIN: Literal[{"description": "Enable FortiSwitch serial console", "help": "Enable FortiSwitch serial console.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiSwitch serial console", "help": "Disable FortiSwitch serial console.", "label": "Disable", "name": "disable"}]
+VALID_BODY_REVISION_BACKUP_ON_LOGOUT: Literal[{"description": "Enable automatic revision backup upon logout from FortiSwitch", "help": "Enable automatic revision backup upon logout from FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon logout from FortiSwitch", "help": "Disable automatic revision backup upon logout from FortiSwitch.", "label": "Disable", "name": "disable"}]
+VALID_BODY_REVISION_BACKUP_ON_UPGRADE: Literal[{"description": "Enable automatic revision backup upon FortiSwitch image upgrade", "help": "Enable automatic revision backup upon FortiSwitch image upgrade.", "label": "Enable", "name": "enable"}, {"description": "Disable automatic revision backup upon FortiSwitch image upgrade", "help": "Disable automatic revision backup upon FortiSwitch image upgrade.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

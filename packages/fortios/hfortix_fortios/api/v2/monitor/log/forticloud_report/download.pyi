@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Download:
     """
-    Configuration for log/forticloud-report/download
+    Download PDF report from FortiCloud.
     
     Path: log/forticloud_report/download
     Category: monitor

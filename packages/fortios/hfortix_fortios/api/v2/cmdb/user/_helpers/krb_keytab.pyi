@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_PAC_DATA: Literal["enable", "disable"]
+VALID_BODY_PAC_DATA: Literal[{"description": "Enable parsing PAC data in the ticket", "help": "Enable parsing PAC data in the ticket.", "label": "Enable", "name": "enable"}, {"description": "Disable parsing PAC data in the ticket", "help": "Disable parsing PAC data in the ticket.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

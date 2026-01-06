@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Close:
     """
-    Configuration for firewall/session/close
+    Close a single firewall session that matches all provided criteria.
     
     Path: firewall/session/close
     Category: monitor

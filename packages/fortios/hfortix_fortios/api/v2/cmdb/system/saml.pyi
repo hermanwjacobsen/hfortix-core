@@ -10,12 +10,12 @@ class SamlPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable SAML authentication (default = disable).
-    role: NotRequired[Literal["identity-provider", "service-provider"]]  # SAML role.
-    default_login_page: Literal["normal", "sso"]  # Choose default login page.
+    status: NotRequired[Literal[{"description": "Enable SAML authentication", "help": "Enable SAML authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable SAML authentication", "help": "Disable SAML authentication.", "label": "Disable", "name": "disable"}]]  # Enable/disable SAML authentication (default = disable).
+    role: NotRequired[Literal[{"description": "Identity Provider", "help": "Identity Provider.", "label": "Identity Provider", "name": "identity-provider"}, {"description": "Service Provider", "help": "Service Provider.", "label": "Service Provider", "name": "service-provider"}]]  # SAML role.
+    default_login_page: Literal[{"description": "Use local login page as default", "help": "Use local login page as default.", "label": "Normal", "name": "normal"}, {"description": "Use IdP\u0027s Single Sign-On page as default", "help": "Use IdP\u0027s Single Sign-On page as default.", "label": "Sso", "name": "sso"}]  # Choose default login page.
     default_profile: str  # Default profile for new SSO admin.
     cert: NotRequired[str]  # Certificate to sign SAML messages.
-    binding_protocol: NotRequired[Literal["post", "redirect"]]  # IdP Binding protocol.
+    binding_protocol: NotRequired[Literal[{"description": "HTTP POST binding", "help": "HTTP POST binding.", "label": "Post", "name": "post"}, {"description": "HTTP Redirect binding", "help": "HTTP Redirect binding.", "label": "Redirect", "name": "redirect"}]]  # IdP Binding protocol.
     portal_url: NotRequired[str]  # SP portal URL.
     entity_id: str  # SP entity ID.
     single_sign_on_url: NotRequired[str]  # SP single sign-on URL.
@@ -25,6 +25,7 @@ class SamlPayload(TypedDict, total=False):
     idp_single_logout_url: NotRequired[str]  # IDP single logout URL.
     idp_cert: str  # IDP certificate name.
     server_address: str  # Server address.
+    require_signed_resp_and_asrt: NotRequired[Literal[{"description": "Both response and assertion must be signed and valid", "help": "Both response and assertion must be signed and valid.", "label": "Enable", "name": "enable"}, {"description": "At least one of response or assertion must be signed and valid", "help": "At least one of response or assertion must be signed and valid.", "label": "Disable", "name": "disable"}]]  # Require both response and assertion from IDP to be signed wh
     tolerance: NotRequired[int]  # Tolerance to the range of time when the assertion is valid (
     life: NotRequired[int]  # Length of the range of time when the assertion is valid (in 
     service_providers: NotRequired[list[dict[str, Any]]]  # Authorized service providers.
@@ -54,12 +55,12 @@ class Saml:
     def post(
         self,
         payload_dict: SamlPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        role: Literal["identity-provider", "service-provider"] | None = ...,
-        default_login_page: Literal["normal", "sso"] | None = ...,
+        status: Literal[{"description": "Enable SAML authentication", "help": "Enable SAML authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable SAML authentication", "help": "Disable SAML authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        role: Literal[{"description": "Identity Provider", "help": "Identity Provider.", "label": "Identity Provider", "name": "identity-provider"}, {"description": "Service Provider", "help": "Service Provider.", "label": "Service Provider", "name": "service-provider"}] | None = ...,
+        default_login_page: Literal[{"description": "Use local login page as default", "help": "Use local login page as default.", "label": "Normal", "name": "normal"}, {"description": "Use IdP\u0027s Single Sign-On page as default", "help": "Use IdP\u0027s Single Sign-On page as default.", "label": "Sso", "name": "sso"}] | None = ...,
         default_profile: str | None = ...,
         cert: str | None = ...,
-        binding_protocol: Literal["post", "redirect"] | None = ...,
+        binding_protocol: Literal[{"description": "HTTP POST binding", "help": "HTTP POST binding.", "label": "Post", "name": "post"}, {"description": "HTTP Redirect binding", "help": "HTTP Redirect binding.", "label": "Redirect", "name": "redirect"}] | None = ...,
         portal_url: str | None = ...,
         entity_id: str | None = ...,
         single_sign_on_url: str | None = ...,
@@ -69,6 +70,7 @@ class Saml:
         idp_single_logout_url: str | None = ...,
         idp_cert: str | None = ...,
         server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal[{"description": "Both response and assertion must be signed and valid", "help": "Both response and assertion must be signed and valid.", "label": "Enable", "name": "enable"}, {"description": "At least one of response or assertion must be signed and valid", "help": "At least one of response or assertion must be signed and valid.", "label": "Disable", "name": "disable"}] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
         service_providers: list[dict[str, Any]] | None = ...,
@@ -80,12 +82,12 @@ class Saml:
     def put(
         self,
         payload_dict: SamlPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        role: Literal["identity-provider", "service-provider"] | None = ...,
-        default_login_page: Literal["normal", "sso"] | None = ...,
+        status: Literal[{"description": "Enable SAML authentication", "help": "Enable SAML authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable SAML authentication", "help": "Disable SAML authentication.", "label": "Disable", "name": "disable"}] | None = ...,
+        role: Literal[{"description": "Identity Provider", "help": "Identity Provider.", "label": "Identity Provider", "name": "identity-provider"}, {"description": "Service Provider", "help": "Service Provider.", "label": "Service Provider", "name": "service-provider"}] | None = ...,
+        default_login_page: Literal[{"description": "Use local login page as default", "help": "Use local login page as default.", "label": "Normal", "name": "normal"}, {"description": "Use IdP\u0027s Single Sign-On page as default", "help": "Use IdP\u0027s Single Sign-On page as default.", "label": "Sso", "name": "sso"}] | None = ...,
         default_profile: str | None = ...,
         cert: str | None = ...,
-        binding_protocol: Literal["post", "redirect"] | None = ...,
+        binding_protocol: Literal[{"description": "HTTP POST binding", "help": "HTTP POST binding.", "label": "Post", "name": "post"}, {"description": "HTTP Redirect binding", "help": "HTTP Redirect binding.", "label": "Redirect", "name": "redirect"}] | None = ...,
         portal_url: str | None = ...,
         entity_id: str | None = ...,
         single_sign_on_url: str | None = ...,
@@ -95,6 +97,7 @@ class Saml:
         idp_single_logout_url: str | None = ...,
         idp_cert: str | None = ...,
         server_address: str | None = ...,
+        require_signed_resp_and_asrt: Literal[{"description": "Both response and assertion must be signed and valid", "help": "Both response and assertion must be signed and valid.", "label": "Enable", "name": "enable"}, {"description": "At least one of response or assertion must be signed and valid", "help": "At least one of response or assertion must be signed and valid.", "label": "Disable", "name": "disable"}] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
         service_providers: list[dict[str, Any]] | None = ...,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Info:
     """
-    Configuration for system/config-revision/info
+    Retrieve meta information for a specific configuration revision.
     
     Path: system/config_revision/info
     Category: monitor

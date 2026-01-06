@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_OVERRIDE_SIGNATURE_HOLD_BY_ID: Literal["enable", "disable"]
+VALID_BODY_OVERRIDE_SIGNATURE_HOLD_BY_ID: Literal[{"description": "Allow the signatures specified by IDs to be triggered even if they are on hold", "help": "Allow the signatures specified by IDs to be triggered even if they are on hold.", "label": "Enable", "name": "enable"}, {"description": "Do not trigger the signatures that are on hold", "help": "Do not trigger the signatures that are on hold.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

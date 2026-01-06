@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for wifi/euclid/reset
+    Reset presence analytics statistics.
     
     Path: wifi/euclid/reset
     Category: monitor

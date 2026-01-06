@@ -56,7 +56,7 @@ class RestoreStatus:
         """
         Retrieve system/config/restore_status configuration.
 
-        Configuration for system/config/restore-status
+        Check the status of the restoring system configuration session.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

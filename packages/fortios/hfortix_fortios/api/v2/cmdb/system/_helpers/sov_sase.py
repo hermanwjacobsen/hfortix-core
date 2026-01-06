@@ -51,6 +51,7 @@ REQUIRED_FIELDS = [
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
+    "status": "disable",
 }
 
 # ============================================================================
@@ -69,10 +70,12 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "status": "option",  # Enable/disable Sovereign SASE.
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "status": "Enable/disable Sovereign SASE.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -85,6 +88,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_STATUS = [
+    "enable",  # Enable Sovereign SASE.
+    "disable",  # Disable Sovereign SASE.
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -206,6 +213,18 @@ def validate_system_sov_sase_post(
         >>> is_valid, error = validate_system_sov_sase_post(payload)
         >>> assert is_valid == True
         
+        >>> # ✅ Valid - With enum field
+        >>> payload = {
+        ...     "status": "{'name': 'enable', 'help': 'Enable Sovereign SASE.', 'label': 'Enable', 'description': 'Enable Sovereign SASE'}",  # Valid enum value
+        ... }
+        >>> is_valid, error = validate_system_sov_sase_post(payload)
+        >>> assert is_valid == True
+        
+        >>> # ❌ Invalid - Wrong enum value
+        >>> payload["status"] = "invalid-value"
+        >>> is_valid, error = validate_system_sov_sase_post(payload)
+        >>> assert is_valid == False
+        >>> assert "Invalid value" in error
         
         >>> # ❌ Invalid - Missing required field
         >>> payload = {}  # Empty payload
@@ -219,6 +238,16 @@ def validate_system_sov_sase_post(
         return (False, error)
 
     # Step 2: Validate enum values
+    if "status" in payload:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            desc = FIELD_DESCRIPTIONS.get("status", "")
+            error_msg = f"Invalid value for 'status': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_STATUS)}"
+            error_msg += f"\n  → Example: status='{{ VALID_BODY_STATUS[0] }}'"
+            return (False, error_msg)
 
     return (True, None)
 
@@ -247,6 +276,13 @@ def validate_system_sov_sase_put(
         >>> is_valid, error = validate_system_sov_sase_put(payload)
     """
     # Step 1: Validate enum values
+    if "status" in payload:
+        value = payload["status"]
+        if value not in VALID_BODY_STATUS:
+            return (
+                False,
+                f"Invalid value for 'status'='{value}'. Must be one of: {', '.join(VALID_BODY_STATUS)}",
+            )
 
     return (True, None)
 
@@ -532,10 +568,10 @@ SCHEMA_INFO = {
     "endpoint": "system/sov_sase",
     "category": "cmdb",
     "api_path": "system/sov-sase",
-    "help": "Configuration for system/sov-sase",
-    "total_fields": 0,
+    "help": "Configure Sovereign SASE.",
+    "total_fields": 1,
     "required_fields_count": 0,
-    "fields_with_defaults_count": 0,
+    "fields_with_defaults_count": 1,
 }
 
 

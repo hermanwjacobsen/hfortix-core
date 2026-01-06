@@ -116,23 +116,23 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADDRESS = [
-    "disable",
-    "mandatory",
-    "optional",
+    "disable",  # Disable.
+    "mandatory",  # Mandatory.
+    "optional",  # Optional.
 ]
 VALID_BODY_DEVICE = [
-    "disable",
-    "mandatory",
-    "optional",
+    "disable",  # Disable.
+    "mandatory",  # Mandatory.
+    "optional",  # Optional.
 ]
 VALID_BODY_INTERFACE = [
-    "disable",
-    "mandatory",
-    "optional",
+    "disable",  # Disable.
+    "mandatory",  # Mandatory.
+    "optional",  # Optional.
 ]
 VALID_BODY_MULTIPLE = [
-    "enable",
-    "disable",
+    "enable",  # Enable multi-tagging.
+    "disable",  # Disable multi-tagging.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -260,7 +260,7 @@ def validate_system_object_tagging_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "address": "disable",  # Valid enum value
+        ...     "address": "{'name': 'disable', 'help': 'Disable.', 'label': 'Disable', 'description': 'Disable'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_object_tagging_post(payload)
         >>> assert is_valid == True

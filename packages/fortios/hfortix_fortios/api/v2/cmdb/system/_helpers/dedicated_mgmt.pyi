@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_DHCP_SERVER: Literal["enable", "disable"]
+VALID_BODY_STATUS: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]
+VALID_BODY_DHCP_SERVER: Literal[{"description": "Enable DHCP server on management port", "help": "Enable DHCP server on management port.", "label": "Enable", "name": "enable"}, {"description": "Disable DHCP server on management port", "help": "Disable DHCP server on management port.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

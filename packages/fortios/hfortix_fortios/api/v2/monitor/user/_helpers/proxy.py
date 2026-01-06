@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/proxy",
     "category": "monitor",
     "api_path": "user/proxy",
-    "help": "Configuration for user/proxy/count",
+    "help": "List authenticated firewall proxy users.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -108,55 +108,58 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PLATFORM_TYPE = [
-    "AP-11N",
-    "C24JE",
-    "421E",
-    "423E",
-    "221E",
-    "222E",
-    "223E",
-    "224E",
-    "231E",
-    "321E",
-    "431F",
-    "431FL",
-    "432F",
-    "432FR",
-    "433F",
-    "433FL",
-    "231F",
-    "231FL",
-    "234F",
-    "23JF",
-    "831F",
-    "231G",
-    "233G",
-    "234G",
-    "431G",
-    "432G",
-    "433G",
-    "231K",
-    "23JK",
-    "222KL",
-    "241K",
-    "243K",
-    "244K",
-    "441K",
-    "443K",
-    "U421E",
-    "U422EV",
-    "U423E",
-    "U221EV",
-    "U223EV",
-    "U24JEV",
-    "U321EV",
-    "U323EV",
-    "U431F",
-    "U433F",
-    "U231F",
-    "U234F",
-    "U432F",
-    "U231G",
+    "AP-11N",  # Default 11n AP.
+    "C24JE",  # FAPC24JE.
+    "421E",  # FAP421E.
+    "423E",  # FAP423E.
+    "221E",  # FAP221E.
+    "222E",  # FAP222E.
+    "223E",  # FAP223E.
+    "224E",  # FAP224E.
+    "231E",  # FAP231E.
+    "321E",  # FAP321E.
+    "431F",  # FAP431F.
+    "431FL",  # FAP431FL.
+    "432F",  # FAP432F.
+    "432FR",  # FAP432FR.
+    "433F",  # FAP433F.
+    "433FL",  # FAP433FL.
+    "231F",  # FAP231F.
+    "231FL",  # FAP231FL.
+    "234F",  # FAP234F.
+    "23JF",  # FAP23JF.
+    "831F",  # FAP831F.
+    "231G",  # FAP231G.
+    "233G",  # FAP233G.
+    "234G",  # FAP234G.
+    "431G",  # FAP431G.
+    "432G",  # FAP432G.
+    "433G",  # FAP433G.
+    "231K",  # FAP231K.
+    "231KD",  # FAP231KD.
+    "23JK",  # FAP23JK.
+    "222KL",  # FAP222KL.
+    "241K",  # FAP241K.
+    "243K",  # FAP243K.
+    "244K",  # FAP244K.
+    "441K",  # FAP441K.
+    "432K",  # FAP432K.
+    "443K",  # FAP443K.
+    "U421E",  # FAPU421EV.
+    "U422EV",  # FAPU422EV.
+    "U423E",  # FAPU423EV.
+    "U221EV",  # FAPU221EV.
+    "U223EV",  # FAPU223EV.
+    "U24JEV",  # FAPU24JEV.
+    "U321EV",  # FAPU321EV.
+    "U323EV",  # FAPU323EV.
+    "U431F",  # FAPU431F.
+    "U433F",  # FAPU433F.
+    "U231F",  # FAPU231F.
+    "U234F",  # FAPU234F.
+    "U432F",  # FAPU432F.
+    "U231G",  # FAPU231G.
+    "MVP",  # FAP MVP.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -284,7 +287,7 @@ def validate_wireless_controller_wtp_group_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "platform-type": "AP-11N",  # Valid enum value
+        ...     "platform-type": "{'name': 'AP-11N', 'help': 'Default 11n AP.', 'label': 'Ap 11N', 'description': 'Default 11n AP'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_wtp_group_post(payload)
         >>> assert is_valid == True

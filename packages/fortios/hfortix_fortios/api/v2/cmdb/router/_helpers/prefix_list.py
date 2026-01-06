@@ -105,7 +105,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Permit or deny this IP address and netmask prefix.",
             "default": "permit",
-            "options": ["permit", "deny"],
+            "options": [{"help": "Allow or permit packets that match this rule.", "label": "Permit", "name": "permit"}, {"help": "Deny packets that match this rule.", "label": "Deny", "name": "deny"}],
         },
         "prefix": {
             "type": "user",

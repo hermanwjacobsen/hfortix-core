@@ -209,25 +209,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable this anomaly.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable this status.", "label": "Disable", "name": "disable"}, {"help": "Enable this status.", "label": "Enable", "name": "enable"}],
         },
         "log": {
             "type": "option",
             "help": "Enable/disable anomaly logging.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable anomaly logging.", "label": "Enable", "name": "enable"}, {"help": "Disable anomaly logging.", "label": "Disable", "name": "disable"}],
         },
         "action": {
             "type": "option",
             "help": "Action taken when the threshold is reached.",
             "default": "pass",
-            "options": ["pass", "block"],
+            "options": [{"help": "Allow traffic but record a log message if logging is enabled.", "label": "Pass", "name": "pass"}, {"help": "Block traffic if this anomaly is found.", "label": "Block", "name": "block"}],
         },
         "quarantine": {
             "type": "option",
             "help": "Quarantine method.",
             "default": "none",
-            "options": ["none", "attacker"],
+            "options": [{"help": "Quarantine is disabled.", "label": "None", "name": "none"}, {"help": "Block all traffic sent from attacker\u0027s IP address. The attacker\u0027s IP address is also added to the banned user list. The target\u0027s address is not affected.", "label": "Attacker", "name": "attacker"}],
         },
         "quarantine-expiry": {
             "type": "user",
@@ -238,7 +238,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable quarantine logging.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable quarantine logging.", "label": "Disable", "name": "disable"}, {"help": "Enable quarantine logging.", "label": "Enable", "name": "enable"}],
         },
         "threshold": {
             "type": "integer",
@@ -260,61 +260,61 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable sniffer status.
+    "disable",  # Disable sniffer status.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "all",
-    "utm",
-    "disable",
+    "all",  # Log all sessions accepted or denied by this policy.
+    "utm",  # Log traffic that has a security profile applied to it.
+    "disable",  # Disable all logging for this policy.
 ]
 VALID_BODY_IPV6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable sniffer for IPv6 packets.
+    "disable",  # Disable sniffer for IPv6 packets.
 ]
 VALID_BODY_NON_IP = [
-    "enable",
-    "disable",
+    "enable",  # Enable sniffer for non-IP packets.
+    "disable",  # Disable sniffer for non-IP packets.
 ]
 VALID_BODY_APPLICATION_LIST_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_IPS_SENSOR_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DSRI = [
-    "enable",
-    "disable",
+    "enable",  # Enable DSRI.
+    "disable",  # Disable DSRI.
 ]
 VALID_BODY_AV_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEBFILTER_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_EMAILFILTER_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_DLP_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_IP_THREATFEED_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_FILE_FILTER_PROFILE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_IPS_DOS_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -445,7 +445,7 @@ def validate_firewall_sniffer_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "application-list": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable sniffer status.', 'label': 'Enable', 'description': 'Enable sniffer status'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_sniffer_post(payload)
         >>> assert is_valid == True

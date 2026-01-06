@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wanopt/history/reset",
     "category": "monitor",
     "api_path": "wanopt/history/reset",
-    "help": "Configuration for wanopt/history/reset",
+    "help": "Reset WAN opt. statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

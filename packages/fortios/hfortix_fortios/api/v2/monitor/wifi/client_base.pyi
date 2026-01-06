@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Client:
     """
-    Monitor endpoint for wifi/client
+    Retrieve a list of connected WiFi clients.
     
     Path: wifi/client
     Category: monitor

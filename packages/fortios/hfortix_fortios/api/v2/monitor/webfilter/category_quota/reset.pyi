@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for webfilter/category-quota/reset
+    Reset webfilter quota for user or IP.
     
     Path: webfilter/category_quota/reset
     Category: monitor

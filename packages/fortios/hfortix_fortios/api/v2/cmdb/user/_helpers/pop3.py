@@ -105,17 +105,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_SECURE = [
-    "none",
-    "starttls",
-    "pop3s",
+    "none",  # None.
+    "starttls",  # Use StartTLS.
+    "pop3s",  # Use POP3 over SSL.
 ]
 VALID_BODY_SSL_MIN_PROTO_VERSION = [
-    "default",
-    "SSLv3",
-    "TLSv1",
-    "TLSv1-1",
-    "TLSv1-2",
-    "TLSv1-3",
+    "default",  # Follow system global setting.
+    "SSLv3",  # SSLv3.
+    "TLSv1",  # TLSv1.
+    "TLSv1-1",  # TLSv1.1.
+    "TLSv1-2",  # TLSv1.2.
+    "TLSv1-3",  # TLSv1.3.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -245,7 +245,7 @@ def validate_user_pop3_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "secure": "none",  # Valid enum value
+        ...     "secure": "{'name': 'none', 'help': 'None.', 'label': 'None', 'description': 'None'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_user_pop3_post(payload)
         >>> assert is_valid == True

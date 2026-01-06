@@ -157,18 +157,18 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disable",
-    "enable",
+    "disable",  # Disable this mobile tunnel.
+    "enable",  # Enable this mobile tunnel.
 ]
 VALID_BODY_N_MHAE_KEY_TYPE = [
-    "ascii",
-    "base64",
+    "ascii",  # The authentication key is an ASCII string.
+    "base64",  # The authentication key is Base64 encoded.
 ]
 VALID_BODY_HASH_ALGORITHM = [
-    "hmac-md5",
+    "hmac-md5",  # Keyed MD5.
 ]
 VALID_BODY_TUNNEL_MODE = [
-    "gre",
+    "gre",  # GRE tunnel.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -298,7 +298,7 @@ def validate_system_mobile_tunnel_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "roaming-interface": True,
-        ...     "status": "disable",  # Valid enum value
+        ...     "status": "{'name': 'disable', 'help': 'Disable this mobile tunnel.', 'label': 'Disable', 'description': 'Disable this mobile tunnel'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_mobile_tunnel_post(payload)
         >>> assert is_valid == True

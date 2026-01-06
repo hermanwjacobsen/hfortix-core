@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_GROUP_TYPE: Literal["default", "utm", "auth"]
+VALID_BODY_GROUP_TYPE: Literal[{"description": "Per-vdom replacement messages", "help": "Per-vdom replacement messages.", "label": "Default", "name": "default"}, {"description": "For use with UTM settings in firewall policies", "help": "For use with UTM settings in firewall policies.", "label": "Utm", "name": "utm"}, {"description": "For use with authentication pages in firewall policies", "help": "For use with authentication pages in firewall policies.", "label": "Auth", "name": "auth"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

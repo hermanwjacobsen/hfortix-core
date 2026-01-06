@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "system/certificate/read_info",
     "category": "monitor",
     "api_path": "system/certificate/read-info",
-    "help": "Configuration for system/certificate/read-info",
+    "help": "Get certificate information from a certificate string.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

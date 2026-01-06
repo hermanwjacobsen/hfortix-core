@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "monitoring/npu_hpe",
     "category": "cmdb",
     "api_path": "monitoring/npu-hpe",
-    "help": "Configuration for monitoring/npu-hpe",
+    "help": "Configuration for monitoring/npu_hpe",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

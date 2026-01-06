@@ -10,10 +10,10 @@ class InterControllerPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    inter_controller_mode: NotRequired[Literal["disable", "l2-roaming", "1+1"]]  # Configure inter-controller mode (disable, l2-roaming, 1+1, d
-    l3_roaming: NotRequired[Literal["enable", "disable"]]  # Enable/disable layer 3 roaming (default = disable).
+    inter_controller_mode: NotRequired[Literal[{"description": "Disable inter-controller mode", "help": "Disable inter-controller mode.", "label": "Disable", "name": "disable"}, {"description": "Enable layer 2 roaming support between inter-controllers", "help": "Enable layer 2 roaming support between inter-controllers.", "label": "L2 Roaming", "name": "l2-roaming"}, {"description": "Enable 1+1 fast failover mode", "help": "Enable 1+1 fast failover mode.", "label": "1+1", "name": "1+1"}]]  # Configure inter-controller mode (disable, l2-roaming, 1+1, d
+    l3_roaming: NotRequired[Literal[{"description": "Enable layer 3 roaming", "help": "Enable layer 3 roaming.", "label": "Enable", "name": "enable"}, {"description": "Disable layer 3 roaming", "help": "Disable layer 3 roaming.", "label": "Disable", "name": "disable"}]]  # Enable/disable layer 3 roaming (default = disable).
     inter_controller_key: NotRequired[str]  # Secret key for inter-controller communications.
-    inter_controller_pri: NotRequired[Literal["primary", "secondary"]]  # Configure inter-controller's priority (primary or secondary,
+    inter_controller_pri: NotRequired[Literal[{"description": "Primary fast failover mode", "help": "Primary fast failover mode.", "label": "Primary", "name": "primary"}, {"description": "Secondary fast failover mode", "help": "Secondary fast failover mode.", "label": "Secondary", "name": "secondary"}]]  # Configure inter-controller's priority (primary or secondary,
     fast_failover_max: NotRequired[int]  # Maximum number of retransmissions for fast failover HA messa
     fast_failover_wait: NotRequired[int]  # Minimum wait time before an AP transitions from secondary co
     inter_controller_peer: NotRequired[list[dict[str, Any]]]  # Fast failover peer wireless controller list.
@@ -43,10 +43,10 @@ class InterController:
     def post(
         self,
         payload_dict: InterControllerPayload | None = ...,
-        inter_controller_mode: Literal["disable", "l2-roaming", "1+1"] | None = ...,
-        l3_roaming: Literal["enable", "disable"] | None = ...,
+        inter_controller_mode: Literal[{"description": "Disable inter-controller mode", "help": "Disable inter-controller mode.", "label": "Disable", "name": "disable"}, {"description": "Enable layer 2 roaming support between inter-controllers", "help": "Enable layer 2 roaming support between inter-controllers.", "label": "L2 Roaming", "name": "l2-roaming"}, {"description": "Enable 1+1 fast failover mode", "help": "Enable 1+1 fast failover mode.", "label": "1+1", "name": "1+1"}] | None = ...,
+        l3_roaming: Literal[{"description": "Enable layer 3 roaming", "help": "Enable layer 3 roaming.", "label": "Enable", "name": "enable"}, {"description": "Disable layer 3 roaming", "help": "Disable layer 3 roaming.", "label": "Disable", "name": "disable"}] | None = ...,
         inter_controller_key: str | None = ...,
-        inter_controller_pri: Literal["primary", "secondary"] | None = ...,
+        inter_controller_pri: Literal[{"description": "Primary fast failover mode", "help": "Primary fast failover mode.", "label": "Primary", "name": "primary"}, {"description": "Secondary fast failover mode", "help": "Secondary fast failover mode.", "label": "Secondary", "name": "secondary"}] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
         inter_controller_peer: list[dict[str, Any]] | None = ...,
@@ -58,10 +58,10 @@ class InterController:
     def put(
         self,
         payload_dict: InterControllerPayload | None = ...,
-        inter_controller_mode: Literal["disable", "l2-roaming", "1+1"] | None = ...,
-        l3_roaming: Literal["enable", "disable"] | None = ...,
+        inter_controller_mode: Literal[{"description": "Disable inter-controller mode", "help": "Disable inter-controller mode.", "label": "Disable", "name": "disable"}, {"description": "Enable layer 2 roaming support between inter-controllers", "help": "Enable layer 2 roaming support between inter-controllers.", "label": "L2 Roaming", "name": "l2-roaming"}, {"description": "Enable 1+1 fast failover mode", "help": "Enable 1+1 fast failover mode.", "label": "1+1", "name": "1+1"}] | None = ...,
+        l3_roaming: Literal[{"description": "Enable layer 3 roaming", "help": "Enable layer 3 roaming.", "label": "Enable", "name": "enable"}, {"description": "Disable layer 3 roaming", "help": "Disable layer 3 roaming.", "label": "Disable", "name": "disable"}] | None = ...,
         inter_controller_key: str | None = ...,
-        inter_controller_pri: Literal["primary", "secondary"] | None = ...,
+        inter_controller_pri: Literal[{"description": "Primary fast failover mode", "help": "Primary fast failover mode.", "label": "Primary", "name": "primary"}, {"description": "Secondary fast failover mode", "help": "Secondary fast failover mode.", "label": "Secondary", "name": "secondary"}] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
         inter_controller_peer: list[dict[str, Any]] | None = ...,

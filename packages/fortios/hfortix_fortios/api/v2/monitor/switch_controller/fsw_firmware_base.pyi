@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class FswFirmware:
     """
-    Configuration for switch-controller/fsw-firmware
+    Retrieve a list of recommended firmware for managed FortiSwitches.
     
     Path: switch_controller/fsw_firmware
     Category: monitor

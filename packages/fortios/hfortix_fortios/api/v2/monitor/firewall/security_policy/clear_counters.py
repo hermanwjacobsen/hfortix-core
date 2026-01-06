@@ -56,7 +56,7 @@ class ClearCounters:
         """
         Retrieve firewall/security_policy/clear_counters configuration.
 
-        Configuration for firewall/security-policy/clear_counters
+        Reset traffic statistics for one or more security policies by policy ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

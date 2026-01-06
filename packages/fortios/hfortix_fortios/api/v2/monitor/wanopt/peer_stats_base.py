@@ -56,7 +56,7 @@ class PeerStats:
         """
         Retrieve wanopt/peer_stats configuration.
 
-        Configuration for wanopt/peer_stats
+        Retrieve a list of WAN opt peer statistics.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

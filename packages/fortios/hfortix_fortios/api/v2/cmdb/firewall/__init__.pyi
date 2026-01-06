@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from .country import Country
     from .decrypted_traffic_mirror import DecryptedTrafficMirror
     from .dnstranslation import Dnstranslation
-    from .global_setting import GlobalSetting
+    from .global_ import Global
     from .identity_based_route import IdentityBasedRoute
     from .interface_policy import InterfacePolicy
     from .interface_policy6 import InterfacePolicy6
@@ -114,7 +114,7 @@ class Firewall:
     country: Country
     decrypted_traffic_mirror: DecryptedTrafficMirror
     dnstranslation: Dnstranslation
-    global_setting: GlobalSetting
+    global_: Global
     identity_based_route: IdentityBasedRoute
     interface_policy: InterfacePolicy
     interface_policy6: InterfacePolicy6

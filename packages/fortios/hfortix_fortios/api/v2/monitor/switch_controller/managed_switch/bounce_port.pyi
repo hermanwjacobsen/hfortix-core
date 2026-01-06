@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class BouncePort:
     """
-    Configuration for switch-controller/managed-switch/bounce-port
+    Reset the port to force all connected clients to re-request DHCP lease. All active client sessions will be terminated.
     
     Path: switch_controller/managed_switch/bounce_port
     Category: monitor

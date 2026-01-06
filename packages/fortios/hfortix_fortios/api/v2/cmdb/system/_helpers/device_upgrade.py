@@ -153,53 +153,53 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "disabled",
-    "initialized",
-    "downloading",
-    "device-disconnected",
-    "ready",
-    "coordinating",
-    "staging",
-    "final-check",
-    "upgrade-devices",
-    "cancelled",
-    "confirmed",
-    "done",
-    "failed",
+    "disabled",  # No federated upgrade has been configured.
+    "initialized",  # The upgrade has been configured.
+    "downloading",  # The image is downloading in preparation for the upgrade.
+    "device-disconnected",  # The image downloads are complete, but one or more devices have disconnected.
+    "ready",  # The image download finished and the upgrade is pending.
+    "coordinating",  # The upgrade is coordinating with other running upgrades.
+    "staging",  # The upgrade is confirmed and images are being staged.
+    "final-check",  # The upgrade is ready and final checks are in progress.
+    "upgrade-devices",  # The upgrade is ready and devices are being rebooted.
+    "cancelled",  # The upgrade was cancelled due to the tree not being ready.
+    "confirmed",  # The upgrade was confirmed and reboots are running.
+    "done",  # The upgrade completed successfully.
+    "failed",  # The upgrade failed due to a local issue.
 ]
 VALID_BODY_TIMING = [
-    "immediate",
-    "scheduled",
+    "immediate",  # Begin the upgrade immediately.
+    "scheduled",  # Begin the upgrade at a configured time.
 ]
 VALID_BODY_DEVICE_TYPE = [
-    "fortigate",
-    "fortiswitch",
-    "fortiap",
-    "fortiextender",
+    "fortigate",  # This device is a FortiGate.
+    "fortiswitch",  # This device is a FortiSwitch.
+    "fortiap",  # This device is a FortiAP.
+    "fortiextender",  # This device is a FortiExtender.
 ]
 VALID_BODY_ALLOW_DOWNLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Allow download of images.
+    "disable",  # Disable download of images.
 ]
 VALID_BODY_FAILURE_REASON = [
-    "none",
-    "internal",
-    "timeout",
-    "device-type-unsupported",
-    "download-failed",
-    "device-missing",
-    "version-unavailable",
-    "staging-failed",
-    "reboot-failed",
-    "device-not-reconnected",
-    "node-not-ready",
-    "no-final-confirmation",
-    "no-confirmation-query",
-    "config-error-log-nonempty",
-    "csf-tree-not-supported",
-    "firmware-changed",
-    "node-failed",
-    "image-missing",
+    "none",  # No failure.
+    "internal",  # An internal error occurred.
+    "timeout",  # The upgrade timed out.
+    "device-type-unsupported",  # The device type was not supported by the FortiGate.
+    "download-failed",  # The image could not be downloaded.
+    "device-missing",  # The device was disconnected from the FortiGate.
+    "version-unavailable",  # An image matching the device and version could not be found.
+    "staging-failed",  # The image could not be pushed to the device.
+    "reboot-failed",  # The device could not be rebooted.
+    "device-not-reconnected",  # The device did not reconnect after rebooting.
+    "node-not-ready",  # A device in the Security Fabric tree was not ready.
+    "no-final-confirmation",  # The coordinating FortiGate did not confirm the upgrade.
+    "no-confirmation-query",  # A downstream FortiGate did not initiate final confirmation.
+    "config-error-log-nonempty",  # Configuration errors encountered during the upgrade.
+    "csf-tree-not-supported",  # The Security Fabric is disabled on the root FortiGate
+    "firmware-changed",  # Firmware changed after the upgrade was set up.
+    "node-failed",  # A device in the Security Fabric tree failed.
+    "image-missing",  # The firmware image is missing and download is not allowed
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -330,7 +330,7 @@ def validate_system_device_upgrade_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "known-ha-members": True,
-        ...     "status": "disabled",  # Valid enum value
+        ...     "status": "{'name': 'disabled', 'help': 'No federated upgrade has been configured.', 'label': 'Disabled', 'description': 'No federated upgrade has been configured'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_device_upgrade_post(payload)
         >>> assert is_valid == True

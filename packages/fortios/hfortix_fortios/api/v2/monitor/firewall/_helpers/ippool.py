@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/ippool",
     "category": "monitor",
     "api_path": "firewall/ippool",
-    "help": "Configuration for firewall/ippool",
+    "help": "List IPv4 pool statistics.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

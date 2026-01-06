@@ -12,9 +12,9 @@ class StormControlPayload(TypedDict, total=False):
     """
     rate: NotRequired[int]  # Rate in packets per second at which storm control drops exce
     burst_size_level: NotRequired[int]  # Increase level to handle bursty traffic (0 - 4, default = 0)
-    unknown_unicast: NotRequired[Literal["enable", "disable"]]  # Enable/disable storm control to drop unknown unicast traffic
-    unknown_multicast: NotRequired[Literal["enable", "disable"]]  # Enable/disable storm control to drop unknown multicast traff
-    broadcast: NotRequired[Literal["enable", "disable"]]  # Enable/disable storm control to drop broadcast traffic.
+    unknown_unicast: NotRequired[Literal[{"description": "Enable unknown unicast storm control", "help": "Enable unknown unicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown unicast storm control", "help": "Disable unknown unicast storm control.", "label": "Disable", "name": "disable"}]]  # Enable/disable storm control to drop unknown unicast traffic
+    unknown_multicast: NotRequired[Literal[{"description": "Enable unknown multicast storm control", "help": "Enable unknown multicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast storm control", "help": "Disable unknown multicast storm control.", "label": "Disable", "name": "disable"}]]  # Enable/disable storm control to drop unknown multicast traff
+    broadcast: NotRequired[Literal[{"description": "Enable broadcast storm control", "help": "Enable broadcast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable broadcast storm control", "help": "Disable broadcast storm control.", "label": "Disable", "name": "disable"}]]  # Enable/disable storm control to drop broadcast traffic.
 
 
 class StormControl:
@@ -43,9 +43,9 @@ class StormControl:
         payload_dict: StormControlPayload | None = ...,
         rate: int | None = ...,
         burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
+        unknown_unicast: Literal[{"description": "Enable unknown unicast storm control", "help": "Enable unknown unicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown unicast storm control", "help": "Disable unknown unicast storm control.", "label": "Disable", "name": "disable"}] | None = ...,
+        unknown_multicast: Literal[{"description": "Enable unknown multicast storm control", "help": "Enable unknown multicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast storm control", "help": "Disable unknown multicast storm control.", "label": "Disable", "name": "disable"}] | None = ...,
+        broadcast: Literal[{"description": "Enable broadcast storm control", "help": "Enable broadcast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable broadcast storm control", "help": "Disable broadcast storm control.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -56,9 +56,9 @@ class StormControl:
         payload_dict: StormControlPayload | None = ...,
         rate: int | None = ...,
         burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
+        unknown_unicast: Literal[{"description": "Enable unknown unicast storm control", "help": "Enable unknown unicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown unicast storm control", "help": "Disable unknown unicast storm control.", "label": "Disable", "name": "disable"}] | None = ...,
+        unknown_multicast: Literal[{"description": "Enable unknown multicast storm control", "help": "Enable unknown multicast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable unknown multicast storm control", "help": "Disable unknown multicast storm control.", "label": "Disable", "name": "disable"}] | None = ...,
+        broadcast: Literal[{"description": "Enable broadcast storm control", "help": "Enable broadcast storm control.", "label": "Enable", "name": "enable"}, {"description": "Disable broadcast storm control", "help": "Disable broadcast storm control.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

@@ -10,13 +10,13 @@ class FtmPushPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    proxy: NotRequired[Literal["enable", "disable"]]  # Enable/disable communication to the proxy server in FortiGua
+    proxy: NotRequired[Literal[{"description": "Enable communication to the proxy server in FortiGuard configuration", "help": "Enable communication to the proxy server in FortiGuard configuration.", "label": "Enable", "name": "enable"}, {"description": "Disable communication to the proxy server in FortiGuard configuration", "help": "Disable communication to the proxy server in FortiGuard configuration.", "label": "Disable", "name": "disable"}]]  # Enable/disable communication to the proxy server in FortiGua
     interface: NotRequired[str]  # Interface of FortiToken Mobile push services server.
     server: NotRequired[str]  # IPv4 address or domain name of FortiToken Mobile push servic
     server_port: NotRequired[int]  # Port to communicate with FortiToken Mobile push services ser
     server_cert: NotRequired[str]  # Name of the server certificate to be used for SSL.
     server_ip: NotRequired[str]  # IPv4 address of FortiToken Mobile push services server (form
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable the use of FortiToken Mobile push services.
+    status: NotRequired[Literal[{"description": "Enable FortiToken Mobile push services", "help": "Enable FortiToken Mobile push services.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiToken Mobile push services", "help": "Disable FortiToken Mobile push services.", "label": "Disable", "name": "disable"}]]  # Enable/disable the use of FortiToken Mobile push services.
 
 
 class FtmPush:
@@ -43,13 +43,13 @@ class FtmPush:
     def post(
         self,
         payload_dict: FtmPushPayload | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
+        proxy: Literal[{"description": "Enable communication to the proxy server in FortiGuard configuration", "help": "Enable communication to the proxy server in FortiGuard configuration.", "label": "Enable", "name": "enable"}, {"description": "Disable communication to the proxy server in FortiGuard configuration", "help": "Disable communication to the proxy server in FortiGuard configuration.", "label": "Disable", "name": "disable"}] | None = ...,
         interface: str | None = ...,
         server: str | None = ...,
         server_port: int | None = ...,
         server_cert: str | None = ...,
         server_ip: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable FortiToken Mobile push services", "help": "Enable FortiToken Mobile push services.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiToken Mobile push services", "help": "Disable FortiToken Mobile push services.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -58,13 +58,13 @@ class FtmPush:
     def put(
         self,
         payload_dict: FtmPushPayload | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
+        proxy: Literal[{"description": "Enable communication to the proxy server in FortiGuard configuration", "help": "Enable communication to the proxy server in FortiGuard configuration.", "label": "Enable", "name": "enable"}, {"description": "Disable communication to the proxy server in FortiGuard configuration", "help": "Disable communication to the proxy server in FortiGuard configuration.", "label": "Disable", "name": "disable"}] | None = ...,
         interface: str | None = ...,
         server: str | None = ...,
         server_port: int | None = ...,
         server_cert: str | None = ...,
         server_ip: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable FortiToken Mobile push services", "help": "Enable FortiToken Mobile push services.", "label": "Enable", "name": "enable"}, {"description": "Disable FortiToken Mobile push services", "help": "Disable FortiToken Mobile push services.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

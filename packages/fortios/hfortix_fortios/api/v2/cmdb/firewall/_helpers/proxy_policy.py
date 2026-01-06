@@ -140,6 +140,7 @@ FIELD_TYPES = {
     "dstintf": "string",  # Destination interface names.
     "srcaddr": "string",  # Source address objects.
     "poolname": "string",  # Name of IP pool object.
+    "poolname6": "string",  # Name of IPv6 pool object.
     "dstaddr": "string",  # Destination address objects.
     "ztna-ems-tag": "string",  # ZTNA EMS Tag names.
     "ztna-tags-match-logic": "option",  # ZTNA tag matching logic.
@@ -226,6 +227,7 @@ FIELD_DESCRIPTIONS = {
     "dstintf": "Destination interface names.",
     "srcaddr": "Source address objects.",
     "poolname": "Name of IP pool object.",
+    "poolname6": "Name of IPv6 pool object.",
     "dstaddr": "Destination address objects.",
     "ztna-ems-tag": "ZTNA EMS Tag names.",
     "ztna-tags-match-logic": "ZTNA tag matching logic.",
@@ -393,6 +395,15 @@ NESTED_SCHEMAS = {
             "max_length": 79,
         },
     },
+    "poolname6": {
+        "name": {
+            "type": "string",
+            "help": "IPv6 pool name.",
+            "required": True,
+            "default": "",
+            "max_length": 79,
+        },
+    },
     "dstaddr": {
         "name": {
             "type": "string",
@@ -555,123 +566,123 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PROXY = [
-    "explicit-web",
-    "transparent-web",
-    "ftp",
-    "ssh",
-    "ssh-tunnel",
-    "access-proxy",
-    "ztna-proxy",
-    "wanopt",
+    "explicit-web",  # Explicit Web Proxy
+    "transparent-web",  # Transparent Web Proxy
+    "ftp",  # Explicit FTP Proxy
+    "ssh",  # SSH Proxy
+    "ssh-tunnel",  # SSH Tunnel
+    "access-proxy",  # Access Proxy
+    "ztna-proxy",  # ZTNA Proxy
+    "wanopt",  # WANopt Tunnel
 ]
 VALID_BODY_ZTNA_TAGS_MATCH_LOGIC = [
-    "or",
-    "and",
+    "or",  # Match ZTNA tags using a logical OR operator.
+    "and",  # Match ZTNA tags using a logical AND operator.
 ]
 VALID_BODY_DEVICE_OWNERSHIP = [
-    "enable",
-    "disable",
+    "enable",  # Enable device ownership.
+    "disable",  # Disable device ownership.
 ]
 VALID_BODY_INTERNET_SERVICE = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of Internet Services in policy.
+    "disable",  # Disable use of Internet Services in policy.
 ]
 VALID_BODY_INTERNET_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated Internet Service match.
+    "disable",  # Disable negated Internet Service match.
 ]
 VALID_BODY_INTERNET_SERVICE6 = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of IPv6 Internet Services in policy.
+    "disable",  # Disable use of IPv6 Internet Services in policy.
 ]
 VALID_BODY_INTERNET_SERVICE6_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated IPv6 Internet Service match.
+    "disable",  # Disable negated IPv6 Internet Service match.
 ]
 VALID_BODY_SRCADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable source address negate.
+    "disable",  # Disable destination address negate.
 ]
 VALID_BODY_DSTADDR_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable source address negate.
+    "disable",  # Disable destination address negate.
 ]
 VALID_BODY_ZTNA_EMS_TAG_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable ZTNA EMS tags negate.
+    "disable",  # Disable ZTNA EMS tags negate.
 ]
 VALID_BODY_SERVICE_NEGATE = [
-    "enable",
-    "disable",
+    "enable",  # Enable negated service match.
+    "disable",  # Disable negated service match.
 ]
 VALID_BODY_ACTION = [
-    "accept",
-    "deny",
-    "redirect",
-    "isolate",
+    "accept",  # Action accept.
+    "deny",  # Action deny.
+    "redirect",  # Action redirect.
+    "isolate",  # Action isolate.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "all",
-    "utm",
-    "disable",
+    "all",  # Log all sessions.
+    "utm",  # UTM event and matched application traffic log.
+    "disable",  # Disable traffic and application log.
 ]
 VALID_BODY_HTTP_TUNNEL_AUTH = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_SSH_POLICY_REDIRECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable SSH policy redirect.
+    "disable",  # Disable SSH policy redirect.
 ]
 VALID_BODY_TRANSPARENT = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of IP address of client to connect to server.
+    "disable",  # Disable use of IP address of client to connect to server.
 ]
 VALID_BODY_WEBCACHE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEBCACHE_HTTPS = [
-    "disable",
-    "enable",
+    "disable",  # Disable web cache for HTTPS.
+    "enable",  # Enable web cache for HTTPS.
 ]
 VALID_BODY_DISCLAIMER = [
-    "disable",
-    "domain",
-    "policy",
-    "user",
+    "disable",  # Disable disclaimer.
+    "domain",  # Display disclaimer for domain
+    "policy",  # Display disclaimer for policy
+    "user",  # Display disclaimer for current user
 ]
 VALID_BODY_UTM_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_PROFILE_TYPE = [
-    "single",
-    "group",
+    "single",  # Do not allow security profile groups.
+    "group",  # Allow security profile groups.
 ]
 VALID_BODY_LOGTRAFFIC_START = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOG_HTTP_TRANSACTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable HTTP transaction log.
+    "disable",  # Disable HTTP transaction log.
 ]
 VALID_BODY_BLOCK_NOTIFICATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_HTTPS_SUB_CATEGORY = [
-    "enable",
-    "disable",
+    "enable",  # Enable HTTPS sub-category policy matching.
+    "disable",  # Disable HTTPS sub-category policy matching.
 ]
 VALID_BODY_DETECT_HTTPS_IN_HTTP_REQUEST = [
-    "enable",
-    "disable",
+    "enable",  # Enable detection of HTTPS in HTTP request.
+    "disable",  # Disable detection of HTTPS in HTTP request.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -802,7 +813,7 @@ def validate_firewall_proxy_policy_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "proxy": True,
-        ...     "proxy": "explicit-web",  # Valid enum value
+        ...     "proxy": "{'name': 'explicit-web', 'help': 'Explicit Web Proxy', 'label': 'Explicit Web', 'description': 'Explicit Web Proxy    transparent-web:Transparent Web Proxy    ftp:Explicit FTP Proxy    ssh:SSH Proxy    ssh-tunnel:SSH Tunnel    access-proxy:Access Proxy    ztna-proxy:ZTNA Proxy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_proxy_policy_post(payload)
         >>> assert is_valid == True
@@ -1600,7 +1611,7 @@ SCHEMA_INFO = {
     "mkey": "policyid",
     "mkey_type": "integer",
     "help": "Configure proxy policies.",
-    "total_fields": 82,
+    "total_fields": 83,
     "required_fields_count": 5,
     "fields_with_defaults_count": 55,
 }

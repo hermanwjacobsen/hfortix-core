@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class SpeedTestTrigger:
     """
-    Configuration for system/interface/speed-test-trigger
+    Run a speed-test on the given interface.
     
     Path: system/interface/speed_test_trigger
     Category: monitor

@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["general", "fortimanager"]
+VALID_BODY_TYPE: Literal[{"description": "General HTTP proxy", "help": "General HTTP proxy.", "label": "General", "name": "general"}, {"description": "FortiManager SDN proxy", "help": "FortiManager SDN proxy.", "label": "Fortimanager", "name": "fortimanager"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

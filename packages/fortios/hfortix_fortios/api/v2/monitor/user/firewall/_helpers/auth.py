@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "user/firewall/auth",
     "category": "monitor",
     "api_path": "user/firewall/auth",
-    "help": "Configuration for user/firewall/auth",
+    "help": "Trigger authentication for a single firewall user.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

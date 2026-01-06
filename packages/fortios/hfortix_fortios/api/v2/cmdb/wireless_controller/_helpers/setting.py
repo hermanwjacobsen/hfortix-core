@@ -148,7 +148,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Actions taken for detected offending SSID.",
             "default": "log",
-            "options": ["log", "suppress"],
+            "options": [{"help": "Generate logs for detected offending SSID.", "label": "Log", "name": "log"}, {"help": "Suppress detected offending SSID.", "label": "Suppress", "name": "suppress"}],
         },
     },
     "darrp-optimize-schedules": {
@@ -165,231 +165,231 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_COUNTRY = [
-    "--",
-    "AF",
-    "AL",
-    "DZ",
-    "AS",
-    "AO",
-    "AR",
-    "AM",
-    "AU",
-    "AT",
-    "AZ",
-    "BS",
-    "BH",
-    "BD",
-    "BB",
-    "BY",
-    "BE",
-    "BZ",
-    "BJ",
-    "BM",
-    "BT",
-    "BO",
-    "BA",
-    "BW",
-    "BR",
-    "BN",
-    "BG",
-    "BF",
-    "KH",
-    "CM",
-    "KY",
-    "CF",
-    "TD",
-    "CL",
-    "CN",
-    "CX",
-    "CO",
-    "CG",
-    "CD",
-    "CR",
-    "HR",
-    "CY",
-    "CZ",
-    "DK",
-    "DJ",
-    "DM",
-    "DO",
-    "EC",
-    "EG",
-    "SV",
-    "ET",
-    "EE",
-    "GF",
-    "PF",
-    "FO",
-    "FJ",
-    "FI",
-    "FR",
-    "GA",
-    "GE",
-    "GM",
-    "DE",
-    "GH",
-    "GI",
-    "GR",
-    "GL",
-    "GD",
-    "GP",
-    "GU",
-    "GT",
-    "GY",
-    "HT",
-    "HN",
-    "HK",
-    "HU",
-    "IS",
-    "IN",
-    "ID",
-    "IQ",
-    "IE",
-    "IM",
-    "IL",
-    "IT",
-    "CI",
-    "JM",
-    "JO",
-    "KZ",
-    "KE",
-    "KR",
-    "KW",
-    "LA",
-    "LV",
-    "LB",
-    "LS",
-    "LR",
-    "LY",
-    "LI",
-    "LT",
-    "LU",
-    "MO",
-    "MK",
-    "MG",
-    "MW",
-    "MY",
-    "MV",
-    "ML",
-    "MT",
-    "MH",
-    "MQ",
-    "MR",
-    "MU",
-    "YT",
-    "MX",
-    "FM",
-    "MD",
-    "MC",
-    "MN",
-    "MA",
-    "MZ",
-    "MM",
-    "NA",
-    "NP",
-    "NL",
-    "AN",
-    "AW",
-    "NZ",
-    "NI",
-    "NE",
-    "NG",
-    "NO",
-    "MP",
-    "OM",
-    "PK",
-    "PW",
-    "PA",
-    "PG",
-    "PY",
-    "PE",
-    "PH",
-    "PL",
-    "PT",
-    "PR",
-    "QA",
-    "RE",
-    "RO",
-    "RU",
-    "RW",
-    "BL",
-    "KN",
-    "LC",
-    "MF",
-    "PM",
-    "VC",
-    "SA",
-    "SN",
-    "RS",
-    "ME",
-    "SL",
-    "SG",
-    "SK",
-    "SI",
-    "SO",
-    "ZA",
-    "ES",
-    "LK",
-    "SR",
-    "SZ",
-    "SE",
-    "CH",
-    "TW",
-    "TZ",
-    "TH",
-    "TL",
-    "TG",
-    "TT",
-    "TN",
-    "TR",
-    "TM",
-    "AE",
-    "TC",
-    "UG",
-    "UA",
-    "GB",
-    "US",
-    "PS",
-    "UY",
-    "UZ",
-    "VU",
-    "VE",
-    "VN",
-    "VI",
-    "WF",
-    "YE",
-    "ZM",
-    "ZW",
-    "JP",
-    "CA",
+    "--",  # NO_COUNTRY_SET
+    "AF",  # AFGHANISTAN
+    "AL",  # ALBANIA
+    "DZ",  # ALGERIA
+    "AS",  # AMERICAN SAMOA
+    "AO",  # ANGOLA
+    "AR",  # ARGENTINA
+    "AM",  # ARMENIA
+    "AU",  # AUSTRALIA
+    "AT",  # AUSTRIA
+    "AZ",  # AZERBAIJAN
+    "BS",  # BAHAMAS
+    "BH",  # BAHRAIN
+    "BD",  # BANGLADESH
+    "BB",  # BARBADOS
+    "BY",  # BELARUS
+    "BE",  # BELGIUM
+    "BZ",  # BELIZE
+    "BJ",  # BENIN
+    "BM",  # BERMUDA
+    "BT",  # BHUTAN
+    "BO",  # BOLIVIA
+    "BA",  # BOSNIA AND HERZEGOVINA
+    "BW",  # BOTSWANA
+    "BR",  # BRAZIL
+    "BN",  # BRUNEI DARUSSALAM
+    "BG",  # BULGARIA
+    "BF",  # BURKINA-FASO
+    "KH",  # CAMBODIA
+    "CM",  # CAMEROON
+    "KY",  # CAYMAN ISLANDS
+    "CF",  # CENTRAL AFRICA REPUBLIC
+    "TD",  # CHAD  
+    "CL",  # CHILE
+    "CN",  # CHINA
+    "CX",  # CHRISTMAS ISLAND
+    "CO",  # COLOMBIA
+    "CG",  # CONGO REPUBLIC
+    "CD",  # DEMOCRATIC REPUBLIC OF CONGO
+    "CR",  # COSTA RICA
+    "HR",  # CROATIA
+    "CY",  # CYPRUS
+    "CZ",  # CZECH REPUBLIC
+    "DK",  # DENMARK
+    "DJ",  # DJIBOUTI
+    "DM",  # DOMINICA
+    "DO",  # DOMINICAN REPUBLIC
+    "EC",  # ECUADOR
+    "EG",  # EGYPT
+    "SV",  # EL SALVADOR
+    "ET",  # ETHIOPIA
+    "EE",  # ESTONIA
+    "GF",  # FRENCH GUIANA
+    "PF",  # FRENCH POLYNESIA
+    "FO",  # FAEROE ISLANDS
+    "FJ",  # FIJI
+    "FI",  # FINLAND
+    "FR",  # FRANCE
+    "GA",  # GABON
+    "GE",  # GEORGIA
+    "GM",  # GAMBIA
+    "DE",  # GERMANY
+    "GH",  # GHANA
+    "GI",  # GIBRALTAR
+    "GR",  # GREECE
+    "GL",  # GREENLAND
+    "GD",  # GRENADA
+    "GP",  # GUADELOUPE
+    "GU",  # GUAM
+    "GT",  # GUATEMALA
+    "GY",  # GUYANA
+    "HT",  # HAITI
+    "HN",  # HONDURAS
+    "HK",  # HONG KONG
+    "HU",  # HUNGARY
+    "IS",  # ICELAND
+    "IN",  # INDIA
+    "ID",  # INDONESIA
+    "IQ",  # IRAQ
+    "IE",  # IRELAND
+    "IM",  # ISLE OF MAN
+    "IL",  # ISRAEL
+    "IT",  # ITALY
+    "CI",  # COTE_D_IVOIRE
+    "JM",  # JAMAICA
+    "JO",  # JORDAN
+    "KZ",  # KAZAKHSTAN
+    "KE",  # KENYA
+    "KR",  # KOREA REPUBLIC
+    "KW",  # KUWAIT
+    "LA",  # LAOS
+    "LV",  # LATVIA
+    "LB",  # LEBANON
+    "LS",  # LESOTHO
+    "LR",  # LIBERIA
+    "LY",  # LIBYA
+    "LI",  # LIECHTENSTEIN
+    "LT",  # LITHUANIA
+    "LU",  # LUXEMBOURG
+    "MO",  # MACAU SAR
+    "MK",  # MACEDONIA, FYRO
+    "MG",  # MADAGASCAR
+    "MW",  # MALAWI
+    "MY",  # MALAYSIA
+    "MV",  # MALDIVES
+    "ML",  # MALI
+    "MT",  # MALTA
+    "MH",  # MARSHALL ISLANDS
+    "MQ",  # MARTINIQUE
+    "MR",  # MAURITANIA
+    "MU",  # MAURITIUS
+    "YT",  # MAYOTTE
+    "MX",  # MEXICO
+    "FM",  # MICRONESIA
+    "MD",  # REPUBLIC OF MOLDOVA
+    "MC",  # MONACO
+    "MN",  # MONGOLIA
+    "MA",  # MOROCCO
+    "MZ",  # MOZAMBIQUE
+    "MM",  # MYANMAR
+    "NA",  # NAMIBIA
+    "NP",  # NEPAL
+    "NL",  # NETHERLANDS
+    "AN",  # NETHERLANDS ANTILLES
+    "AW",  # ARUBA
+    "NZ",  # NEW ZEALAND
+    "NI",  # NICARAGUA
+    "NE",  # NIGER
+    "NG",  # NIGERIA
+    "NO",  # NORWAY
+    "MP",  # NORTHERN MARIANA ISLANDS
+    "OM",  # OMAN
+    "PK",  # PAKISTAN
+    "PW",  # PALAU
+    "PA",  # PANAMA
+    "PG",  # PAPUA NEW GUINEA
+    "PY",  # PARAGUAY
+    "PE",  # PERU
+    "PH",  # PHILIPPINES
+    "PL",  # POLAND
+    "PT",  # PORTUGAL
+    "PR",  # PUERTO RICO
+    "QA",  # QATAR
+    "RE",  # REUNION
+    "RO",  # ROMANIA
+    "RU",  # RUSSIA
+    "RW",  # RWANDA
+    "BL",  # SAINT BARTHELEMY
+    "KN",  # SAINT KITTS AND NEVIS
+    "LC",  # SAINT LUCIA
+    "MF",  # SAINT MARTIN
+    "PM",  # SAINT PIERRE AND MIQUELON
+    "VC",  # SAINT VINCENT AND GRENADIENS
+    "SA",  # SAUDI ARABIA
+    "SN",  # SENEGAL
+    "RS",  # REPUBLIC OF SERBIA
+    "ME",  # MONTENEGRO
+    "SL",  # SIERRA LEONE
+    "SG",  # SINGAPORE
+    "SK",  # SLOVAKIA
+    "SI",  # SLOVENIA
+    "SO",  # SOMALIA
+    "ZA",  # SOUTH AFRICA
+    "ES",  # SPAIN
+    "LK",  # SRI LANKA
+    "SR",  # SURINAME
+    "SZ",  # SWAZILAND
+    "SE",  # SWEDEN
+    "CH",  # SWITZERLAND
+    "TW",  # TAIWAN
+    "TZ",  # TANZANIA
+    "TH",  # THAILAND
+    "TL",  # TIMOR-LESTE
+    "TG",  # TOGO
+    "TT",  # TRINIDAD AND TOBAGO
+    "TN",  # TUNISIA
+    "TR",  # TURKEY
+    "TM",  # TURKMENISTAN
+    "AE",  # UNITED ARAB EMIRATES
+    "TC",  # TURKS AND CAICOS
+    "UG",  # UGANDA
+    "UA",  # UKRAINE
+    "GB",  # UNITED KINGDOM
+    "US",  # UNITED STATES2
+    "PS",  # UNITED STATES (PUBLIC SAFETY)
+    "UY",  # URUGUAY
+    "UZ",  # UZBEKISTAN
+    "VU",  # VANUATU
+    "VE",  # VENEZUELA
+    "VN",  # VIET NAM
+    "VI",  # VIRGIN ISLANDS
+    "WF",  # WALLIS AND FUTUNA
+    "YE",  # YEMEN
+    "ZM",  # ZAMBIA
+    "ZW",  # ZIMBABWE
+    "JP",  # JAPAN14
+    "CA",  # CANADA2
 ]
 VALID_BODY_DUPLICATE_SSID = [
-    "enable",
-    "disable",
+    "enable",  # Allow VAPs to use the same SSID name in the same VDOM.
+    "disable",  # Do not allow VAPs to use the same SSID name in the same VDOM.
 ]
 VALID_BODY_FAPC_COMPATIBILITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable FAP-C series compatibility.
+    "disable",  # Disable FAP-C series compatibility.
 ]
 VALID_BODY_WFA_COMPATIBILITY = [
-    "enable",
-    "disable",
+    "enable",  # Enable Wi-Fi Alliance Certification compatibility.
+    "disable",  # Disable Wi-Fi Alliance Certification compatibility.
 ]
 VALID_BODY_PHISHING_SSID_DETECT = [
-    "enable",
-    "disable",
+    "enable",  # Enable phishing SSID detection.
+    "disable",  # Disable phishing SSID detection.
 ]
 VALID_BODY_FAKE_SSID_ACTION = [
-    "log",
-    "suppress",
+    "log",  # Write logs for detected fake SSID.
+    "suppress",  # Suppress detected fake SSID.
 ]
 VALID_BODY_FIRMWARE_PROVISION_ON_AUTHORIZATION = [
-    "enable",
-    "disable",
+    "enable",  # Enable firmware provision on authorization.
+    "disable",  # Disable firmware provision on authorization.
 ]
 VALID_BODY_ROLLING_WTP_UPGRADE = [
-    "enable",
-    "disable",
+    "enable",  # Enable rolling WTP upgrade.
+    "disable",  # Disable rolling WTP upgrade.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -514,7 +514,7 @@ def validate_wireless_controller_setting_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "country": "--",  # Valid enum value
+        ...     "country": "{'name': '--', 'help': 'NO_COUNTRY_SET', 'label': '  ', 'description': 'NO_COUNTRY_SET    AF:AFGHANISTAN    AL:ALBANIA    DZ:ALGERIA    AS:AMERICAN SAMOA    AO:ANGOLA    AR:ARGENTINA    AM:ARMENIA    AU:AUSTRALIA    AT:AUSTRIA    AZ:AZERBAIJAN    BS:BAHAMAS    BH:BAHRAIN    BD:BANGLADESH    BB:BARBADOS    BY:BELARUS    BE:BELGIUM    BZ:BELIZE    BJ:BENIN    BM:BERMUDA    BT:BHUTAN    BO:BOLIVIA    BA:BOSNIA AND HERZEGOVINA    BW:BOTSWANA    BR:BRAZIL    BN:BRUNEI DARUSSALAM    BG:BULGARIA    BF:BURKINA-FASO    KH:CAMBODIA    CM:CAMEROON    KY:CAYMAN ISLANDS    CF:CENTRAL AFRICA REPUBLIC    TD:CHAD      CL:CHILE    CN:CHINA    CX:CHRISTMAS ISLAND    CO:COLOMBIA    CG:CONGO REPUBLIC    CD:DEMOCRATIC REPUBLIC OF CONGO    CR:COSTA RICA    HR:CROATIA    CY:CYPRUS    CZ:CZECH REPUBLIC    DK:DENMARK    DJ:DJIBOUTI    DM:DOMINICA    DO:DOMINICAN REPUBLIC    EC:ECUADOR    EG:EGYPT    SV:EL SALVADOR    ET:ETHIOPIA    EE:ESTONIA    GF:FRENCH GUIANA    PF:FRENCH POLYNESIA    FO:FAEROE ISLANDS    FJ:FIJI    FI:FINLAND    FR:FRANCE    GA:GABON    GE:GEORGIA    GM:GAMBIA    DE:GERMANY    GH:GHANA    GI:GIBRALTAR    GR:GREECE    GL:GREENLAND    GD:GRENADA    GP:GUADELOUPE    GU:GUAM    GT:GUATEMALA    GY:GUYANA    HT:HAITI    HN:HONDURAS    HK:HONG KONG    HU:HUNGARY    IS:ICELAND    IN:INDIA    ID:INDONESIA    IQ:IRAQ    IE:IRELAND    IM:ISLE OF MAN    IL:ISRAEL    IT:ITALY    CI:COTE_D_IVOIRE    JM:JAMAICA    JO:JORDAN    KZ:KAZAKHSTAN    KE:KENYA    KR:KOREA REPUBLIC    KW:KUWAIT    LA:LAOS    LV:LATVIA    LB:LEBANON    LS:LESOTHO    LR:LIBERIA    LY:LIBYA    LI:LIECHTENSTEIN    LT:LITHUANIA    LU:LUXEMBOURG    MO:MACAU SAR    MK:MACEDONIA, FYRO    MG:MADAGASCAR    MW:MALAWI    MY:MALAYSIA    MV:MALDIVES    ML:MALI    MT:MALTA    MH:MARSHALL ISLANDS    MQ:MARTINIQUE    MR:MAURITANIA    MU:MAURITIUS    YT:MAYOTTE    MX:MEXICO    FM:MICRONESIA    MD:REPUBLIC OF MOLDOVA    MC:MONACO    MN:MONGOLIA    MA:MOROCCO    MZ:MOZAMBIQUE    MM:MYANMAR    NA:NAMIBIA    NP:NEPAL    NL:NETHERLANDS    AN:NETHERLANDS ANTILLES    AW:ARUBA    NZ:NEW ZEALAND    NI:NICARAGUA    NE:NIGER    NG:NIGERIA    NO:NORWAY    MP:NORTHERN MARIANA ISLANDS    OM:OMAN    PK:PAKISTAN    PW:PALAU    PA:PANAMA    PG:PAPUA NEW GUINEA    PY:PARAGUAY    PE:PERU    PH:PHILIPPINES    PL:POLAND    PT:PORTUGAL    PR:PUERTO RICO    QA:QATAR    RE:REUNION    RO:ROMANIA    RU:RUSSIA    RW:RWANDA    BL:SAINT BARTHELEMY    KN:SAINT KITTS AND NEVIS    LC:SAINT LUCIA    MF:SAINT MARTIN    PM:SAINT PIERRE AND MIQUELON    VC:SAINT VINCENT AND GRENADIENS    SA:SAUDI ARABIA    SN:SENEGAL    RS:REPUBLIC OF SERBIA    ME:MONTENEGRO    SL:SIERRA LEONE    SG:SINGAPORE    SK:SLOVAKIA    SI:SLOVENIA    SO:SOMALIA    ZA:SOUTH AFRICA    ES:SPAIN    LK:SRI LANKA    SR:SURINAME    SZ:SWAZILAND    SE:SWEDEN    CH:SWITZERLAND    TW:TAIWAN    TZ:TANZANIA    TH:THAILAND    TL:TIMOR-LESTE    TG:TOGO    TT:TRINIDAD AND TOBAGO    TN:TUNISIA    TR:TURKEY    TM:TURKMENISTAN    AE:UNITED ARAB EMIRATES    TC:TURKS AND CAICOS    UG:UGANDA    UA:UKRAINE    GB:UNITED KINGDOM    US:UNITED STATES2    PS:UNITED STATES (PUBLIC SAFETY)    UY:URUGUAY    UZ:UZBEKISTAN    VU:VANUATU    VE:VENEZUELA    VN:VIET NAM    VI:VIRGIN ISLANDS    WF:WALLIS AND FUTUNA    YE:YEMEN    ZM:ZAMBIA    ZW:ZIMBABWE    JP:JAPAN14    CA:CANADA2'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_setting_post(payload)
         >>> assert is_valid == True

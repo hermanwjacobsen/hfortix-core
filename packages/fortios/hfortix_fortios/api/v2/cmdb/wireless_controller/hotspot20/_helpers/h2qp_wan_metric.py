@@ -119,17 +119,17 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_LINK_STATUS = [
-    "up",
-    "down",
-    "in-test",
+    "up",  # Link up.
+    "down",  # Link down.
+    "in-test",  # Link in test state.
 ]
 VALID_BODY_SYMMETRIC_WAN_LINK = [
-    "symmetric",
-    "asymmetric",
+    "symmetric",  # Symmetric WAN link (uplink and downlink speeds are the same).
+    "asymmetric",  # Asymmetric WAN link (uplink and downlink speeds are not the same).
 ]
 VALID_BODY_LINK_AT_CAPACITY = [
-    "enable",
-    "disable",
+    "enable",  # Link at capacity (not allow additional mobile devices to associate).
+    "disable",  # Link not at capacity (allow additional mobile devices to associate).
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -257,7 +257,7 @@ def validate_wireless_controller_hotspot20_h2qp_wan_metric_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "link-status": "up",  # Valid enum value
+        ...     "link-status": "{'name': 'up', 'help': 'Link up.', 'label': 'Up', 'description': 'Link up'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_wireless_controller_hotspot20_h2qp_wan_metric_post(payload)
         >>> assert is_valid == True

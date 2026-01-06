@@ -12,17 +12,17 @@ class StandaloneClusterPayload(TypedDict, total=False):
     """
     standalone_group_id: NotRequired[int]  # Cluster group ID (0 - 255). Must be the same for all members
     group_member_id: NotRequired[int]  # Cluster member ID (0 - 15).
-    layer2_connection: NotRequired[Literal["available", "unavailable"]]  # Indicate whether layer 2 connections are present among FGSP 
-    session_sync_dev: NotRequired[str]  # Offload session-sync process to kernel and sync sessions usi
-    encryption: NotRequired[Literal["enable", "disable"]]  # Enable/disable encryption when synchronizing sessions.
+    layer2_connection: NotRequired[Literal[{"description": "There exist layer 2 connections among FGSP members", "help": "There exist layer 2 connections among FGSP members.", "label": "Available", "name": "available"}, {"description": "There does not exist layer 2 connection among FGSP members", "help": "There does not exist layer 2 connection among FGSP members.", "label": "Unavailable", "name": "unavailable"}]]  # Indicate whether layer 2 connections are present among FGSP 
+    session_sync_dev: NotRequired[list[dict[str, Any]]]  # Offload session-sync process to kernel and sync sessions usi
+    encryption: NotRequired[Literal[{"description": "Enable encryption when synchronizing sessions", "help": "Enable encryption when synchronizing sessions.", "label": "Enable", "name": "enable"}, {"description": "Disable encryption when synchronizing sessions", "help": "Disable encryption when synchronizing sessions.", "label": "Disable", "name": "disable"}]]  # Enable/disable encryption when synchronizing sessions.
     psksecret: str  # Pre-shared secret for session synchronization (ASCII string 
-    asymmetric_traffic_control: NotRequired[Literal["cps-preferred", "strict-anti-replay"]]  # Asymmetric traffic control mode.
+    asymmetric_traffic_control: NotRequired[Literal[{"description": "Connection per second (CPS) preferred", "help": "Connection per second (CPS) preferred.", "label": "Cps Preferred", "name": "cps-preferred"}, {"description": "Strict anti-replay check", "help": "Strict anti-replay check.", "label": "Strict Anti Replay", "name": "strict-anti-replay"}]]  # Asymmetric traffic control mode.
     cluster_peer: NotRequired[list[dict[str, Any]]]  # Configure FortiGate Session Life Support Protocol (FGSP) ses
     monitor_interface: NotRequired[list[dict[str, Any]]]  # Configure a list of interfaces on which to monitor itself. M
     pingsvr_monitor_interface: NotRequired[list[dict[str, Any]]]  # List of pingsvr monitor interface to check for remote IP mon
     monitor_prefix: NotRequired[list[dict[str, Any]]]  # Configure a list of routing prefixes to monitor.
-    helper_traffic_bounce: NotRequired[Literal["enable", "disable"]]  # Enable/disable helper related traffic bounce.
-    utm_traffic_bounce: NotRequired[Literal["enable", "disable"]]  # Enable/disable UTM related traffic bounce.
+    helper_traffic_bounce: NotRequired[Literal[{"description": "Enable helper related traffic bounce", "help": "Enable helper related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable helper related traffic bounce", "help": "Disable helper related traffic bounce.", "label": "Disable", "name": "disable"}]]  # Enable/disable helper related traffic bounce.
+    utm_traffic_bounce: NotRequired[Literal[{"description": "Enable UTM related traffic bounce", "help": "Enable UTM related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM related traffic bounce", "help": "Disable UTM related traffic bounce.", "label": "Disable", "name": "disable"}]]  # Enable/disable UTM related traffic bounce.
 
 
 class StandaloneCluster:
@@ -51,17 +51,17 @@ class StandaloneCluster:
         payload_dict: StandaloneClusterPayload | None = ...,
         standalone_group_id: int | None = ...,
         group_member_id: int | None = ...,
-        layer2_connection: Literal["available", "unavailable"] | None = ...,
-        session_sync_dev: str | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
+        layer2_connection: Literal[{"description": "There exist layer 2 connections among FGSP members", "help": "There exist layer 2 connections among FGSP members.", "label": "Available", "name": "available"}, {"description": "There does not exist layer 2 connection among FGSP members", "help": "There does not exist layer 2 connection among FGSP members.", "label": "Unavailable", "name": "unavailable"}] | None = ...,
+        session_sync_dev: list[dict[str, Any]] | None = ...,
+        encryption: Literal[{"description": "Enable encryption when synchronizing sessions", "help": "Enable encryption when synchronizing sessions.", "label": "Enable", "name": "enable"}, {"description": "Disable encryption when synchronizing sessions", "help": "Disable encryption when synchronizing sessions.", "label": "Disable", "name": "disable"}] | None = ...,
         psksecret: str | None = ...,
-        asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
+        asymmetric_traffic_control: Literal[{"description": "Connection per second (CPS) preferred", "help": "Connection per second (CPS) preferred.", "label": "Cps Preferred", "name": "cps-preferred"}, {"description": "Strict anti-replay check", "help": "Strict anti-replay check.", "label": "Strict Anti Replay", "name": "strict-anti-replay"}] | None = ...,
         cluster_peer: list[dict[str, Any]] | None = ...,
         monitor_interface: list[dict[str, Any]] | None = ...,
         pingsvr_monitor_interface: list[dict[str, Any]] | None = ...,
         monitor_prefix: list[dict[str, Any]] | None = ...,
-        helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
-        utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
+        helper_traffic_bounce: Literal[{"description": "Enable helper related traffic bounce", "help": "Enable helper related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable helper related traffic bounce", "help": "Disable helper related traffic bounce.", "label": "Disable", "name": "disable"}] | None = ...,
+        utm_traffic_bounce: Literal[{"description": "Enable UTM related traffic bounce", "help": "Enable UTM related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM related traffic bounce", "help": "Disable UTM related traffic bounce.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -72,17 +72,17 @@ class StandaloneCluster:
         payload_dict: StandaloneClusterPayload | None = ...,
         standalone_group_id: int | None = ...,
         group_member_id: int | None = ...,
-        layer2_connection: Literal["available", "unavailable"] | None = ...,
-        session_sync_dev: str | None = ...,
-        encryption: Literal["enable", "disable"] | None = ...,
+        layer2_connection: Literal[{"description": "There exist layer 2 connections among FGSP members", "help": "There exist layer 2 connections among FGSP members.", "label": "Available", "name": "available"}, {"description": "There does not exist layer 2 connection among FGSP members", "help": "There does not exist layer 2 connection among FGSP members.", "label": "Unavailable", "name": "unavailable"}] | None = ...,
+        session_sync_dev: list[dict[str, Any]] | None = ...,
+        encryption: Literal[{"description": "Enable encryption when synchronizing sessions", "help": "Enable encryption when synchronizing sessions.", "label": "Enable", "name": "enable"}, {"description": "Disable encryption when synchronizing sessions", "help": "Disable encryption when synchronizing sessions.", "label": "Disable", "name": "disable"}] | None = ...,
         psksecret: str | None = ...,
-        asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
+        asymmetric_traffic_control: Literal[{"description": "Connection per second (CPS) preferred", "help": "Connection per second (CPS) preferred.", "label": "Cps Preferred", "name": "cps-preferred"}, {"description": "Strict anti-replay check", "help": "Strict anti-replay check.", "label": "Strict Anti Replay", "name": "strict-anti-replay"}] | None = ...,
         cluster_peer: list[dict[str, Any]] | None = ...,
         monitor_interface: list[dict[str, Any]] | None = ...,
         pingsvr_monitor_interface: list[dict[str, Any]] | None = ...,
         monitor_prefix: list[dict[str, Any]] | None = ...,
-        helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
-        utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
+        helper_traffic_bounce: Literal[{"description": "Enable helper related traffic bounce", "help": "Enable helper related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable helper related traffic bounce", "help": "Disable helper related traffic bounce.", "label": "Disable", "name": "disable"}] | None = ...,
+        utm_traffic_bounce: Literal[{"description": "Enable UTM related traffic bounce", "help": "Enable UTM related traffic bounce.", "label": "Enable", "name": "enable"}, {"description": "Disable UTM related traffic bounce", "help": "Disable UTM related traffic bounce.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

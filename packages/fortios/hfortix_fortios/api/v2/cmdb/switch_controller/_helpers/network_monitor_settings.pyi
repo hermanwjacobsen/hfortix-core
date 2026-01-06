@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_NETWORK_MONITORING: Literal["enable", "disable"]
+VALID_BODY_NETWORK_MONITORING: Literal[{"description": "Enable network monitoring on FortiSwitch", "help": "Enable network monitoring on FortiSwitch.", "label": "Enable", "name": "enable"}, {"description": "Disable network monitoring on FortiSwitch", "help": "Disable network monitoring on FortiSwitch.", "label": "Disable", "name": "disable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

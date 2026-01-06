@@ -56,7 +56,7 @@ class Status:
         """
         Retrieve system/status configuration.
 
-        Configuration for system/status
+        Retrieve basic system status.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

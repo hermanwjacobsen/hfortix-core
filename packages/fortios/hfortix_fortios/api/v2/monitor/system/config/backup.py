@@ -56,7 +56,7 @@ class Backup:
         """
         Retrieve system/config/backup configuration.
 
-        Configuration for system/config/backup
+        Backup system config
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

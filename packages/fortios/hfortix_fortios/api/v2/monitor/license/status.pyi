@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Status:
     """
-    Configuration for license/status
+    Get current license & registration status.
     
     Path: license/status
     Category: monitor

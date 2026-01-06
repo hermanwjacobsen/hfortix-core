@@ -12,15 +12,15 @@ class ProfilePayload(TypedDict, total=False):
     """
     name: str  # Name of the DLP profile.
     comment: NotRequired[str]  # Comment.
-    feature_set: NotRequired[Literal["flow", "proxy"]]  # Flow/proxy feature set.
+    feature_set: NotRequired[Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}]]  # Flow/proxy feature set.
     replacemsg_group: NotRequired[str]  # Replacement message group used by this DLP profile.
     rule: NotRequired[list[dict[str, Any]]]  # Set up DLP rules for this profile.
-    dlp_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable DLP logging.
-    extended_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable extended logging for data loss prevention.
-    nac_quar_log: NotRequired[Literal["enable", "disable"]]  # Enable/disable NAC quarantine logging.
-    full_archive_proto: NotRequired[Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]]  # Protocols to always content archive.
-    summary_proto: NotRequired[Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]]  # Protocols to always log summary.
-    fortidata_error_action: NotRequired[Literal["log-only", "block", "ignore"]]  # Action to take if FortiData query fails.
+    dlp_log: NotRequired[Literal[{"description": "Enable DLP logging", "help": "Enable DLP logging.", "label": "Enable", "name": "enable"}, {"description": "Disable DLP logging", "help": "Disable DLP logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable DLP logging.
+    extended_log: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable extended logging for data loss prevention.
+    nac_quar_log: NotRequired[Literal[{"description": "Enable NAC quarantine logging", "help": "Enable NAC quarantine logging.", "label": "Enable", "name": "enable"}, {"description": "Disable NAC quarantine logging", "help": "Disable NAC quarantine logging.", "label": "Disable", "name": "disable"}]]  # Enable/disable NAC quarantine logging.
+    full_archive_proto: NotRequired[Literal[{"description": "SMTP", "help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"description": "POP3", "help": "POP3.", "label": "Pop3", "name": "pop3"}, {"description": "IMAP", "help": "IMAP.", "label": "Imap", "name": "imap"}, {"description": "HTTP GET", "help": "HTTP GET.", "label": "Http Get", "name": "http-get"}, {"description": "HTTP POST", "help": "HTTP POST.", "label": "Http Post", "name": "http-post"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "NNTP", "help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"description": "MAPI", "help": "MAPI.", "label": "Mapi", "name": "mapi"}, {"description": "SFTP and SCP", "help": "SFTP and SCP.", "label": "Ssh", "name": "ssh"}, {"description": "CIFS", "help": "CIFS.", "label": "Cifs", "name": "cifs"}]]  # Protocols to always content archive.
+    summary_proto: NotRequired[Literal[{"description": "SMTP", "help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"description": "POP3", "help": "POP3.", "label": "Pop3", "name": "pop3"}, {"description": "IMAP", "help": "IMAP.", "label": "Imap", "name": "imap"}, {"description": "HTTP GET", "help": "HTTP GET.", "label": "Http Get", "name": "http-get"}, {"description": "HTTP POST", "help": "HTTP POST.", "label": "Http Post", "name": "http-post"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "NNTP", "help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"description": "MAPI", "help": "MAPI.", "label": "Mapi", "name": "mapi"}, {"description": "SFTP and SCP", "help": "SFTP and SCP.", "label": "Ssh", "name": "ssh"}, {"description": "CIFS", "help": "CIFS.", "label": "Cifs", "name": "cifs"}]]  # Protocols to always log summary.
+    fortidata_error_action: NotRequired[Literal[{"description": "Log failure, but allow the file", "help": "Log failure, but allow the file.", "label": "Log Only", "name": "log-only"}, {"description": "Block the file", "help": "Block the file.", "label": "Block", "name": "block"}, {"description": "Behave as if FortiData returned no match", "help": "Behave as if FortiData returned no match.", "label": "Ignore", "name": "ignore"}]]  # Action to take if FortiData query fails.
 
 
 class Profile:
@@ -50,15 +50,15 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
+        feature_set: Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}] | None = ...,
         replacemsg_group: str | None = ...,
         rule: list[dict[str, Any]] | None = ...,
-        dlp_log: Literal["enable", "disable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        nac_quar_log: Literal["enable", "disable"] | None = ...,
-        full_archive_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | None = ...,
-        summary_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | None = ...,
-        fortidata_error_action: Literal["log-only", "block", "ignore"] | None = ...,
+        dlp_log: Literal[{"description": "Enable DLP logging", "help": "Enable DLP logging.", "label": "Enable", "name": "enable"}, {"description": "Disable DLP logging", "help": "Disable DLP logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        nac_quar_log: Literal[{"description": "Enable NAC quarantine logging", "help": "Enable NAC quarantine logging.", "label": "Enable", "name": "enable"}, {"description": "Disable NAC quarantine logging", "help": "Disable NAC quarantine logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        full_archive_proto: Literal[{"description": "SMTP", "help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"description": "POP3", "help": "POP3.", "label": "Pop3", "name": "pop3"}, {"description": "IMAP", "help": "IMAP.", "label": "Imap", "name": "imap"}, {"description": "HTTP GET", "help": "HTTP GET.", "label": "Http Get", "name": "http-get"}, {"description": "HTTP POST", "help": "HTTP POST.", "label": "Http Post", "name": "http-post"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "NNTP", "help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"description": "MAPI", "help": "MAPI.", "label": "Mapi", "name": "mapi"}, {"description": "SFTP and SCP", "help": "SFTP and SCP.", "label": "Ssh", "name": "ssh"}, {"description": "CIFS", "help": "CIFS.", "label": "Cifs", "name": "cifs"}] | None = ...,
+        summary_proto: Literal[{"description": "SMTP", "help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"description": "POP3", "help": "POP3.", "label": "Pop3", "name": "pop3"}, {"description": "IMAP", "help": "IMAP.", "label": "Imap", "name": "imap"}, {"description": "HTTP GET", "help": "HTTP GET.", "label": "Http Get", "name": "http-get"}, {"description": "HTTP POST", "help": "HTTP POST.", "label": "Http Post", "name": "http-post"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "NNTP", "help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"description": "MAPI", "help": "MAPI.", "label": "Mapi", "name": "mapi"}, {"description": "SFTP and SCP", "help": "SFTP and SCP.", "label": "Ssh", "name": "ssh"}, {"description": "CIFS", "help": "CIFS.", "label": "Cifs", "name": "cifs"}] | None = ...,
+        fortidata_error_action: Literal[{"description": "Log failure, but allow the file", "help": "Log failure, but allow the file.", "label": "Log Only", "name": "log-only"}, {"description": "Block the file", "help": "Block the file.", "label": "Block", "name": "block"}, {"description": "Behave as if FortiData returned no match", "help": "Behave as if FortiData returned no match.", "label": "Ignore", "name": "ignore"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -69,15 +69,15 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
+        feature_set: Literal[{"description": "Flow feature set", "help": "Flow feature set.", "label": "Flow", "name": "flow"}, {"description": "Proxy feature set", "help": "Proxy feature set.", "label": "Proxy", "name": "proxy"}] | None = ...,
         replacemsg_group: str | None = ...,
         rule: list[dict[str, Any]] | None = ...,
-        dlp_log: Literal["enable", "disable"] | None = ...,
-        extended_log: Literal["enable", "disable"] | None = ...,
-        nac_quar_log: Literal["enable", "disable"] | None = ...,
-        full_archive_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | None = ...,
-        summary_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"] | None = ...,
-        fortidata_error_action: Literal["log-only", "block", "ignore"] | None = ...,
+        dlp_log: Literal[{"description": "Enable DLP logging", "help": "Enable DLP logging.", "label": "Enable", "name": "enable"}, {"description": "Disable DLP logging", "help": "Disable DLP logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        extended_log: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        nac_quar_log: Literal[{"description": "Enable NAC quarantine logging", "help": "Enable NAC quarantine logging.", "label": "Enable", "name": "enable"}, {"description": "Disable NAC quarantine logging", "help": "Disable NAC quarantine logging.", "label": "Disable", "name": "disable"}] | None = ...,
+        full_archive_proto: Literal[{"description": "SMTP", "help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"description": "POP3", "help": "POP3.", "label": "Pop3", "name": "pop3"}, {"description": "IMAP", "help": "IMAP.", "label": "Imap", "name": "imap"}, {"description": "HTTP GET", "help": "HTTP GET.", "label": "Http Get", "name": "http-get"}, {"description": "HTTP POST", "help": "HTTP POST.", "label": "Http Post", "name": "http-post"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "NNTP", "help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"description": "MAPI", "help": "MAPI.", "label": "Mapi", "name": "mapi"}, {"description": "SFTP and SCP", "help": "SFTP and SCP.", "label": "Ssh", "name": "ssh"}, {"description": "CIFS", "help": "CIFS.", "label": "Cifs", "name": "cifs"}] | None = ...,
+        summary_proto: Literal[{"description": "SMTP", "help": "SMTP.", "label": "Smtp", "name": "smtp"}, {"description": "POP3", "help": "POP3.", "label": "Pop3", "name": "pop3"}, {"description": "IMAP", "help": "IMAP.", "label": "Imap", "name": "imap"}, {"description": "HTTP GET", "help": "HTTP GET.", "label": "Http Get", "name": "http-get"}, {"description": "HTTP POST", "help": "HTTP POST.", "label": "Http Post", "name": "http-post"}, {"description": "FTP", "help": "FTP.", "label": "Ftp", "name": "ftp"}, {"description": "NNTP", "help": "NNTP.", "label": "Nntp", "name": "nntp"}, {"description": "MAPI", "help": "MAPI.", "label": "Mapi", "name": "mapi"}, {"description": "SFTP and SCP", "help": "SFTP and SCP.", "label": "Ssh", "name": "ssh"}, {"description": "CIFS", "help": "CIFS.", "label": "Cifs", "name": "cifs"}] | None = ...,
+        fortidata_error_action: Literal[{"description": "Log failure, but allow the file", "help": "Log failure, but allow the file.", "label": "Log Only", "name": "log-only"}, {"description": "Block the file", "help": "Block the file.", "label": "Block", "name": "block"}, {"description": "Behave as if FortiData returned no match", "help": "Behave as if FortiData returned no match.", "label": "Ignore", "name": "ignore"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

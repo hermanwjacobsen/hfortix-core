@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/clearpass_address/delete",
     "category": "monitor",
     "api_path": "firewall/clearpass-address/delete",
-    "help": "Configuration for firewall/clearpass-address/delete",
+    "help": "Delete ClearPass address with SPT (System Posture Token) value.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

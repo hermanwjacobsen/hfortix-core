@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_STATUS: Literal["enable", "disable"]
-VALID_BODY_SCOPE: Literal["user", "user-group", "ip", "ip6"]
+VALID_BODY_STATUS: Literal[{"description": "Enable override rule", "help": "Enable override rule.", "label": "Enable", "name": "enable"}, {"description": "Disable override rule", "help": "Disable override rule.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SCOPE: Literal[{"description": "Override the specified user", "help": "Override the specified user.", "label": "User", "name": "user"}, {"description": "Override the specified user group", "help": "Override the specified user group.", "label": "User Group", "name": "user-group"}, {"description": "Override the specified IP address", "help": "Override the specified IP address.", "label": "Ip", "name": "ip"}, {"description": "Override the specified IPv6 address", "help": "Override the specified IPv6 address.", "label": "Ip6", "name": "ip6"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

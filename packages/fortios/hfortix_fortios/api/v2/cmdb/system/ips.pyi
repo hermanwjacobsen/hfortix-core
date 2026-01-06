@@ -11,7 +11,7 @@ class IpsPayload(TypedDict, total=False):
         }
     """
     signature_hold_time: NotRequired[str]  # Time to hold and monitor IPS signatures. Format <#d##h> (day
-    override_signature_hold_by_id: NotRequired[Literal["enable", "disable"]]  # Enable/disable override of hold of triggering signatures tha
+    override_signature_hold_by_id: NotRequired[Literal[{"description": "Allow the signatures specified by IDs to be triggered even if they are on hold", "help": "Allow the signatures specified by IDs to be triggered even if they are on hold.", "label": "Enable", "name": "enable"}, {"description": "Do not trigger the signatures that are on hold", "help": "Do not trigger the signatures that are on hold.", "label": "Disable", "name": "disable"}]]  # Enable/disable override of hold of triggering signatures tha
 
 
 class Ips:
@@ -39,7 +39,7 @@ class Ips:
         self,
         payload_dict: IpsPayload | None = ...,
         signature_hold_time: str | None = ...,
-        override_signature_hold_by_id: Literal["enable", "disable"] | None = ...,
+        override_signature_hold_by_id: Literal[{"description": "Allow the signatures specified by IDs to be triggered even if they are on hold", "help": "Allow the signatures specified by IDs to be triggered even if they are on hold.", "label": "Enable", "name": "enable"}, {"description": "Do not trigger the signatures that are on hold", "help": "Do not trigger the signatures that are on hold.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -49,7 +49,7 @@ class Ips:
         self,
         payload_dict: IpsPayload | None = ...,
         signature_hold_time: str | None = ...,
-        override_signature_hold_by_id: Literal["enable", "disable"] | None = ...,
+        override_signature_hold_by_id: Literal[{"description": "Allow the signatures specified by IDs to be triggered even if they are on hold", "help": "Allow the signatures specified by IDs to be triggered even if they are on hold.", "label": "Enable", "name": "enable"}, {"description": "Do not trigger the signatures that are on hold", "help": "Do not trigger the signatures that are on hold.", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

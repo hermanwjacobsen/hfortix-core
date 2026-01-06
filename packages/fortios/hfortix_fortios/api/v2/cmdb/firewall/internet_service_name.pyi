@@ -11,7 +11,7 @@ class InternetServiceNamePayload(TypedDict, total=False):
         }
     """
     name: NotRequired[str]  # Internet Service name.
-    type: NotRequired[Literal["default", "location"]]  # Internet Service name type.
+    type: NotRequired[Literal[{"description": "Automatically generated Internet Service", "help": "Automatically generated Internet Service.", "label": "Default", "name": "default"}, {"description": "Geography location based Internet Service", "help": "Geography location based Internet Service.", "label": "Location", "name": "location"}]]  # Internet Service name type.
     internet_service_id: int  # Internet Service ID.
     country_id: NotRequired[int]  # Country or Area ID.
     region_id: NotRequired[int]  # Region ID.
@@ -44,7 +44,7 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type: Literal[{"description": "Automatically generated Internet Service", "help": "Automatically generated Internet Service.", "label": "Default", "name": "default"}, {"description": "Geography location based Internet Service", "help": "Geography location based Internet Service.", "label": "Location", "name": "location"}] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,
@@ -58,7 +58,7 @@ class InternetServiceName:
         self,
         payload_dict: InternetServiceNamePayload | None = ...,
         name: str | None = ...,
-        type: Literal["default", "location"] | None = ...,
+        type: Literal[{"description": "Automatically generated Internet Service", "help": "Automatically generated Internet Service.", "label": "Default", "name": "default"}, {"description": "Geography location based Internet Service", "help": "Geography location based Internet Service.", "label": "Location", "name": "location"}] | None = ...,
         internet_service_id: int | None = ...,
         country_id: int | None = ...,
         region_id: int | None = ...,

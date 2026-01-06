@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/internet_service_fqdn",
     "category": "monitor",
     "api_path": "firewall/internet-service-fqdn",
-    "help": "Configuration for firewall/internet-service-fqdn",
+    "help": "Map of internet service FQDNs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

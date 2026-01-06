@@ -27,9 +27,9 @@ class ArrpProfilePayload(TypedDict, total=False):
     threshold_spectral_rssi: NotRequired[str]  # Threshold in dBm to reject channel in DARRP channel selectio
     threshold_tx_retries: NotRequired[int]  # Threshold in percentage for transmit retries to trigger chan
     threshold_rx_errors: NotRequired[int]  # Threshold in percentage for receive errors to trigger channe
-    include_weather_channel: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of weather channel in DARRP channel selec
-    include_dfs_channel: NotRequired[Literal["enable", "disable"]]  # Enable/disable use of DFS channel in DARRP channel selection
-    override_darrp_optimize: NotRequired[Literal["enable", "disable"]]  # Enable to override setting darrp-optimize and darrp-optimize
+    include_weather_channel: NotRequired[Literal[{"description": "Include weather channel in darrp channel selection phase 1", "help": "Include weather channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude weather channel in darrp channel selection phase 1", "help": "Exclude weather channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of weather channel in DARRP channel selec
+    include_dfs_channel: NotRequired[Literal[{"description": "Include DFS channel in darrp channel selection phase 1", "help": "Include DFS channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude DFS channel in darrp channel selection phase 1", "help": "Exclude DFS channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}]]  # Enable/disable use of DFS channel in DARRP channel selection
+    override_darrp_optimize: NotRequired[Literal[{"description": "Override setting darrp-optimize and darrp-optimize-schedules", "help": "Override setting darrp-optimize and darrp-optimize-schedules.", "label": "Enable", "name": "enable"}, {"description": "Use setting darrp-optimize and darrp-optimize-schedules", "help": "Use setting darrp-optimize and darrp-optimize-schedules.", "label": "Disable", "name": "disable"}]]  # Enable to override setting darrp-optimize and darrp-optimize
     darrp_optimize: NotRequired[int]  # Time for running Distributed Automatic Radio Resource Provis
     darrp_optimize_schedules: NotRequired[list[dict[str, Any]]]  # Firewall schedules for DARRP running time. DARRP will run pe
 
@@ -76,9 +76,9 @@ class ArrpProfile:
         threshold_spectral_rssi: str | None = ...,
         threshold_tx_retries: int | None = ...,
         threshold_rx_errors: int | None = ...,
-        include_weather_channel: Literal["enable", "disable"] | None = ...,
-        include_dfs_channel: Literal["enable", "disable"] | None = ...,
-        override_darrp_optimize: Literal["enable", "disable"] | None = ...,
+        include_weather_channel: Literal[{"description": "Include weather channel in darrp channel selection phase 1", "help": "Include weather channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude weather channel in darrp channel selection phase 1", "help": "Exclude weather channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}] | None = ...,
+        include_dfs_channel: Literal[{"description": "Include DFS channel in darrp channel selection phase 1", "help": "Include DFS channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude DFS channel in darrp channel selection phase 1", "help": "Exclude DFS channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}] | None = ...,
+        override_darrp_optimize: Literal[{"description": "Override setting darrp-optimize and darrp-optimize-schedules", "help": "Override setting darrp-optimize and darrp-optimize-schedules.", "label": "Enable", "name": "enable"}, {"description": "Use setting darrp-optimize and darrp-optimize-schedules", "help": "Use setting darrp-optimize and darrp-optimize-schedules.", "label": "Disable", "name": "disable"}] | None = ...,
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
@@ -106,9 +106,9 @@ class ArrpProfile:
         threshold_spectral_rssi: str | None = ...,
         threshold_tx_retries: int | None = ...,
         threshold_rx_errors: int | None = ...,
-        include_weather_channel: Literal["enable", "disable"] | None = ...,
-        include_dfs_channel: Literal["enable", "disable"] | None = ...,
-        override_darrp_optimize: Literal["enable", "disable"] | None = ...,
+        include_weather_channel: Literal[{"description": "Include weather channel in darrp channel selection phase 1", "help": "Include weather channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude weather channel in darrp channel selection phase 1", "help": "Exclude weather channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}] | None = ...,
+        include_dfs_channel: Literal[{"description": "Include DFS channel in darrp channel selection phase 1", "help": "Include DFS channel in darrp channel selection phase 1.", "label": "Enable", "name": "enable"}, {"description": "Exclude DFS channel in darrp channel selection phase 1", "help": "Exclude DFS channel in darrp channel selection phase 1.", "label": "Disable", "name": "disable"}] | None = ...,
+        override_darrp_optimize: Literal[{"description": "Override setting darrp-optimize and darrp-optimize-schedules", "help": "Override setting darrp-optimize and darrp-optimize-schedules.", "label": "Enable", "name": "enable"}, {"description": "Use setting darrp-optimize and darrp-optimize-schedules", "help": "Use setting darrp-optimize and darrp-optimize-schedules.", "label": "Disable", "name": "disable"}] | None = ...,
         darrp_optimize: int | None = ...,
         darrp_optimize_schedules: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,

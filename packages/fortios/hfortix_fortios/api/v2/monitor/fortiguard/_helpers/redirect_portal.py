@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "fortiguard/redirect_portal",
     "category": "monitor",
     "api_path": "fortiguard/redirect-portal",
-    "help": "Configuration for fortiguard/redirect-portal",
+    "help": "Retrieve the FortiGuard redirect portal IP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

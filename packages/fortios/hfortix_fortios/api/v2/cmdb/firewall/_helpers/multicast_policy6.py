@@ -164,25 +164,25 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this policy.
+    "disable",  # Disable this policy.
 ]
 VALID_BODY_ACTION = [
-    "accept",
-    "deny",
+    "accept",  # Accept.
+    "deny",  # Deny.
 ]
 VALID_BODY_UTM_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_LOGTRAFFIC = [
-    "all",
-    "utm",
-    "disable",
+    "all",  # Enable logging traffic accepted by this policy.
+    "utm",  # Log traffic that has a security profile applied to it.
+    "disable",  # Disable all logging for this policy.
 ]
 VALID_BODY_AUTO_ASIC_OFFLOAD = [
-    "enable",
-    "disable",
+    "enable",  # Enable offloading policy traffic for hardware acceleration.
+    "disable",  # Disable offloading policy traffic for hardware acceleration.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -313,7 +313,7 @@ def validate_firewall_multicast_policy6_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "srcintf": True,
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable this policy.', 'label': 'Enable', 'description': 'Enable this policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_multicast_policy6_post(payload)
         >>> assert is_valid == True

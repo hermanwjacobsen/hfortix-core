@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Delete:
     """
-    Configuration for system/config-revision/delete
+    Deletes one or more system configuration revisions.
     
     Path: system/config_revision/delete
     Category: monitor

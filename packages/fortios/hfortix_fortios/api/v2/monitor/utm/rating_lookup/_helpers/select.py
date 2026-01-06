@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "utm/rating_lookup/select",
     "category": "monitor",
     "api_path": "utm/rating-lookup/select",
-    "help": "Configuration for utm/rating-lookup/select",
+    "help": "Lookup FortiGuard rating for a specific URL.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

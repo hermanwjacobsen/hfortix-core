@@ -14,24 +14,24 @@ class WebPortalPayload(TypedDict, total=False):
     vip: NotRequired[str]  # Virtual IP name.
     host: NotRequired[str]  # Virtual or real host name.
     decrypted_traffic_mirror: NotRequired[str]  # Decrypted traffic mirror.
-    log_blocked_traffic: NotRequired[Literal["disable", "enable"]]  # Enable/disable logging of blocked traffic.
-    auth_portal: NotRequired[Literal["disable", "enable"]]  # Enable/disable authentication portal.
+    log_blocked_traffic: NotRequired[Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}]]  # Enable/disable logging of blocked traffic.
+    auth_portal: NotRequired[Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}]]  # Enable/disable authentication portal.
     auth_virtual_host: NotRequired[str]  # Virtual host for authentication portal.
     vip6: NotRequired[str]  # Virtual IPv6 name.
     auth_rule: NotRequired[str]  # Authentication Rule.
-    display_bookmark: NotRequired[Literal["enable", "disable"]]  # Enable to display the web portal bookmark widget.
-    focus_bookmark: NotRequired[Literal["enable", "disable"]]  # Enable to prioritize the placement of the bookmark section o
-    display_status: NotRequired[Literal["enable", "disable"]]  # Enable to display the web portal status widget.
-    display_history: NotRequired[Literal["enable", "disable"]]  # Enable to display the web portal user login history widget.
-    policy_auth_sso: NotRequired[Literal["enable", "disable"]]  # Enable policy sso authentication.
+    display_bookmark: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable to display the web portal bookmark widget.
+    focus_bookmark: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable to prioritize the placement of the bookmark section o
+    display_status: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable to display the web portal status widget.
+    display_history: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable to display the web portal user login history widget.
+    policy_auth_sso: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable policy sso authentication.
     heading: NotRequired[str]  # Web portal heading message.
-    theme: NotRequired[Literal["jade", "neutrino", "mariner", "graphite", "melongene", "jet-stream", "security-fabric", "dark-matter", "onyx", "eclipse"]]  # Web portal color scheme.
-    clipboard: NotRequired[Literal["enable", "disable"]]  # Enable to support RDP/VPC clipboard functionality.
+    theme: NotRequired[Literal[{"description": "Jade theme", "help": "Jade theme.", "label": "Jade", "name": "jade"}, {"description": "Neutrino theme", "help": "Neutrino theme.", "label": "Neutrino", "name": "neutrino"}, {"description": "Mariner theme", "help": "Mariner theme.", "label": "Mariner", "name": "mariner"}, {"description": "Graphite theme", "help": "Graphite theme.", "label": "Graphite", "name": "graphite"}, {"description": "Melongene theme", "help": "Melongene theme.", "label": "Melongene", "name": "melongene"}, {"description": "Jet Stream theme", "help": "Jet Stream theme.", "label": "Jet Stream", "name": "jet-stream"}, {"description": "Security Fabric theme", "help": "Security Fabric theme.", "label": "Security Fabric", "name": "security-fabric"}, {"description": "Dark Matter theme", "help": "Dark Matter theme.", "label": "Dark Matter", "name": "dark-matter"}, {"description": "Onyx theme", "help": "Onyx theme.", "label": "Onyx", "name": "onyx"}, {"description": "Eclipse theme", "help": "Eclipse theme.", "label": "Eclipse", "name": "eclipse"}]]  # Web portal color scheme.
+    clipboard: NotRequired[Literal[{"description": "Enable support of RDP/VNC clipboard", "help": "Enable support of RDP/VNC clipboard.", "label": "Enable", "name": "enable"}, {"description": "Disable support of RDP/VNC clipboard", "help": "Disable support of RDP/VNC clipboard.", "label": "Disable", "name": "disable"}]]  # Enable to support RDP/VPC clipboard functionality.
     default_window_width: NotRequired[int]  # Screen width (range from 0 - 65535, default = 1024).
     default_window_height: NotRequired[int]  # Screen height (range from 0 - 65535, default = 768).
     cookie_age: NotRequired[int]  # Time in minutes that client web browsers should keep a cooki
-    forticlient_download: NotRequired[Literal["enable", "disable"]]  # Enable/disable download option for FortiClient.
-    customize_forticlient_download_url: NotRequired[Literal["enable", "disable"]]  # Enable support of customized download URL for FortiClient.
+    forticlient_download: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable/disable download option for FortiClient.
+    customize_forticlient_download_url: NotRequired[Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}]]  # Enable support of customized download URL for FortiClient.
     windows_forticlient_download_url: NotRequired[str]  # Download URL for Windows FortiClient.
     macos_forticlient_download_url: NotRequired[str]  # Download URL for Mac FortiClient.
 
@@ -65,24 +65,24 @@ class WebPortal:
         vip: str | None = ...,
         host: str | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
         vip6: str | None = ...,
         auth_rule: str | None = ...,
-        display_bookmark: Literal["enable", "disable"] | None = ...,
-        focus_bookmark: Literal["enable", "disable"] | None = ...,
-        display_status: Literal["enable", "disable"] | None = ...,
-        display_history: Literal["enable", "disable"] | None = ...,
-        policy_auth_sso: Literal["enable", "disable"] | None = ...,
+        display_bookmark: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        focus_bookmark: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        display_status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        display_history: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        policy_auth_sso: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         heading: str | None = ...,
-        theme: Literal["jade", "neutrino", "mariner", "graphite", "melongene", "jet-stream", "security-fabric", "dark-matter", "onyx", "eclipse"] | None = ...,
-        clipboard: Literal["enable", "disable"] | None = ...,
+        theme: Literal[{"description": "Jade theme", "help": "Jade theme.", "label": "Jade", "name": "jade"}, {"description": "Neutrino theme", "help": "Neutrino theme.", "label": "Neutrino", "name": "neutrino"}, {"description": "Mariner theme", "help": "Mariner theme.", "label": "Mariner", "name": "mariner"}, {"description": "Graphite theme", "help": "Graphite theme.", "label": "Graphite", "name": "graphite"}, {"description": "Melongene theme", "help": "Melongene theme.", "label": "Melongene", "name": "melongene"}, {"description": "Jet Stream theme", "help": "Jet Stream theme.", "label": "Jet Stream", "name": "jet-stream"}, {"description": "Security Fabric theme", "help": "Security Fabric theme.", "label": "Security Fabric", "name": "security-fabric"}, {"description": "Dark Matter theme", "help": "Dark Matter theme.", "label": "Dark Matter", "name": "dark-matter"}, {"description": "Onyx theme", "help": "Onyx theme.", "label": "Onyx", "name": "onyx"}, {"description": "Eclipse theme", "help": "Eclipse theme.", "label": "Eclipse", "name": "eclipse"}] | None = ...,
+        clipboard: Literal[{"description": "Enable support of RDP/VNC clipboard", "help": "Enable support of RDP/VNC clipboard.", "label": "Enable", "name": "enable"}, {"description": "Disable support of RDP/VNC clipboard", "help": "Disable support of RDP/VNC clipboard.", "label": "Disable", "name": "disable"}] | None = ...,
         default_window_width: int | None = ...,
         default_window_height: int | None = ...,
         cookie_age: int | None = ...,
-        forticlient_download: Literal["enable", "disable"] | None = ...,
-        customize_forticlient_download_url: Literal["enable", "disable"] | None = ...,
+        forticlient_download: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        customize_forticlient_download_url: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         windows_forticlient_download_url: str | None = ...,
         macos_forticlient_download_url: str | None = ...,
         vdom: str | bool | None = ...,
@@ -97,24 +97,24 @@ class WebPortal:
         vip: str | None = ...,
         host: str | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
+        log_blocked_traffic: Literal[{"description": "Do not log all traffic denied by this ZTNA web-proxy", "help": "Do not log all traffic denied by this ZTNA web-proxy.", "label": "Disable", "name": "disable"}, {"description": "Log all traffic denied by this ZTNA web-proxy", "help": "Log all traffic denied by this ZTNA web-proxy.", "label": "Enable", "name": "enable"}] | None = ...,
+        auth_portal: Literal[{"description": "Disable authentication portal", "help": "Disable authentication portal.", "label": "Disable", "name": "disable"}, {"description": "Enable authentication portal", "help": "Enable authentication portal.", "label": "Enable", "name": "enable"}] | None = ...,
         auth_virtual_host: str | None = ...,
         vip6: str | None = ...,
         auth_rule: str | None = ...,
-        display_bookmark: Literal["enable", "disable"] | None = ...,
-        focus_bookmark: Literal["enable", "disable"] | None = ...,
-        display_status: Literal["enable", "disable"] | None = ...,
-        display_history: Literal["enable", "disable"] | None = ...,
-        policy_auth_sso: Literal["enable", "disable"] | None = ...,
+        display_bookmark: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        focus_bookmark: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        display_status: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        display_history: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        policy_auth_sso: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         heading: str | None = ...,
-        theme: Literal["jade", "neutrino", "mariner", "graphite", "melongene", "jet-stream", "security-fabric", "dark-matter", "onyx", "eclipse"] | None = ...,
-        clipboard: Literal["enable", "disable"] | None = ...,
+        theme: Literal[{"description": "Jade theme", "help": "Jade theme.", "label": "Jade", "name": "jade"}, {"description": "Neutrino theme", "help": "Neutrino theme.", "label": "Neutrino", "name": "neutrino"}, {"description": "Mariner theme", "help": "Mariner theme.", "label": "Mariner", "name": "mariner"}, {"description": "Graphite theme", "help": "Graphite theme.", "label": "Graphite", "name": "graphite"}, {"description": "Melongene theme", "help": "Melongene theme.", "label": "Melongene", "name": "melongene"}, {"description": "Jet Stream theme", "help": "Jet Stream theme.", "label": "Jet Stream", "name": "jet-stream"}, {"description": "Security Fabric theme", "help": "Security Fabric theme.", "label": "Security Fabric", "name": "security-fabric"}, {"description": "Dark Matter theme", "help": "Dark Matter theme.", "label": "Dark Matter", "name": "dark-matter"}, {"description": "Onyx theme", "help": "Onyx theme.", "label": "Onyx", "name": "onyx"}, {"description": "Eclipse theme", "help": "Eclipse theme.", "label": "Eclipse", "name": "eclipse"}] | None = ...,
+        clipboard: Literal[{"description": "Enable support of RDP/VNC clipboard", "help": "Enable support of RDP/VNC clipboard.", "label": "Enable", "name": "enable"}, {"description": "Disable support of RDP/VNC clipboard", "help": "Disable support of RDP/VNC clipboard.", "label": "Disable", "name": "disable"}] | None = ...,
         default_window_width: int | None = ...,
         default_window_height: int | None = ...,
         cookie_age: int | None = ...,
-        forticlient_download: Literal["enable", "disable"] | None = ...,
-        customize_forticlient_download_url: Literal["enable", "disable"] | None = ...,
+        forticlient_download: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
+        customize_forticlient_download_url: Literal[{"description": "Enable setting", "help": "Enable setting.", "label": "Enable", "name": "enable"}, {"description": "Disable setting", "help": "Disable setting.", "label": "Disable", "name": "disable"}] | None = ...,
         windows_forticlient_download_url: str | None = ...,
         macos_forticlient_download_url: str | None = ...,
         vdom: str | bool | None = ...,

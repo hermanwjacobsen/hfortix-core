@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "sniffer/delete",
     "category": "service",
     "api_path": "sniffer/delete",
-    "help": "Configuration for sniffer/delete",
+    "help": "Deletes a packet capture.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

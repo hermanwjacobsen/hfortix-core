@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Reset:
     """
-    Configuration for firewall/dnat/reset
+    Reset hit count statistics for all firewall virtual IPs/servers.
     
     Path: firewall/dnat/reset
     Category: monitor

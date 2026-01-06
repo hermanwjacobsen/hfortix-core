@@ -56,7 +56,7 @@ class HaHistory:
         """
         Retrieve system/ha_history configuration.
 
-        Configuration for system/ha-history
+        Get HA cluster historical logs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

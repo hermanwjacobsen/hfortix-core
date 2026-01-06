@@ -56,7 +56,7 @@ class DeregisterDevice:
         """
         Retrieve registration/forticare/deregister_device configuration.
 
-        Configuration for registration/forticare/deregister-device
+        Deregister the FortiGate from a FortiCare account.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

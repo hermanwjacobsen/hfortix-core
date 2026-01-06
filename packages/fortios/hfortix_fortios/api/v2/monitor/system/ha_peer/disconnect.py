@@ -56,7 +56,7 @@ class Disconnect:
         """
         Retrieve system/ha_peer/disconnect configuration.
 
-        Configuration for system/ha-peer/disconnect
+        Update configuration of peer in HA cluster.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

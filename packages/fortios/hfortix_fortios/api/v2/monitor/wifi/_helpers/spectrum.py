@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/spectrum",
     "category": "monitor",
     "api_path": "wifi/spectrum",
-    "help": "Configuration for wifi/spectrum",
+    "help": "Retrieve spectrum analysis information for a specific FortiAP.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

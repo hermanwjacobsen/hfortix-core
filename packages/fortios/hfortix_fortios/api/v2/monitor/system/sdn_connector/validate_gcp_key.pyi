@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class ValidateGcpKey:
     """
-    Configuration for system/sdn-connector/validate-gcp-key
+    Validate a string representing a private key from GCP in PEM format.
     
     Path: system/sdn_connector/validate_gcp_key
     Category: monitor

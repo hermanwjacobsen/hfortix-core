@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "virtual_wan/health_check",
     "category": "monitor",
     "api_path": "virtual-wan/health-check",
-    "help": "Configuration for virtual-wan/health-check",
+    "help": "Retrieve health-check statistics for each SD-WAN link. To be deprecated and replaced by /api/v2/monitor/virtual-wan/sla-log?latest=1&sla=<sla_name> for SLA health metrics ",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

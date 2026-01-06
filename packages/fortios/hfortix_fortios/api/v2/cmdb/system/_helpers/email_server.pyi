@@ -1,12 +1,12 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["custom"]
-VALID_BODY_AUTHENTICATE: Literal["enable", "disable"]
-VALID_BODY_VALIDATE_SERVER: Literal["enable", "disable"]
-VALID_BODY_SECURITY: Literal["none", "starttls", "smtps"]
-VALID_BODY_SSL_MIN_PROTO_VERSION: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-VALID_BODY_INTERFACE_SELECT_METHOD: Literal["auto", "sdwan", "specify"]
+VALID_BODY_TYPE: Literal[{"description": "Use custom email server", "help": "Use custom email server.", "label": "Custom", "name": "custom"}]
+VALID_BODY_AUTHENTICATE: Literal[{"description": "Enable authentication", "help": "Enable authentication.", "label": "Enable", "name": "enable"}, {"description": "Disable authentication", "help": "Disable authentication.", "label": "Disable", "name": "disable"}]
+VALID_BODY_VALIDATE_SERVER: Literal[{"description": "Enable validation of server certificate", "help": "Enable validation of server certificate.", "label": "Enable", "name": "enable"}, {"description": "Disable validation of server certificate", "help": "Disable validation of server certificate.", "label": "Disable", "name": "disable"}]
+VALID_BODY_SECURITY: Literal[{"description": "None", "help": "None.", "label": "None", "name": "none"}, {"description": "STARTTLS", "help": "STARTTLS.", "label": "Starttls", "name": "starttls"}, {"description": "SSL/TLS", "help": "SSL/TLS.", "label": "Smtps", "name": "smtps"}]
+VALID_BODY_SSL_MIN_PROTO_VERSION: Literal[{"description": "Follow system global setting", "help": "Follow system global setting.", "label": "Default", "name": "default"}, {"description": "SSLv3", "help": "SSLv3.", "label": "Sslv3", "name": "SSLv3"}, {"description": "TLSv1", "help": "TLSv1.", "label": "Tlsv1", "name": "TLSv1"}, {"description": "TLSv1", "help": "TLSv1.1.", "label": "Tlsv1 1", "name": "TLSv1-1"}, {"description": "TLSv1", "help": "TLSv1.2.", "label": "Tlsv1 2", "name": "TLSv1-2"}, {"description": "TLSv1", "help": "TLSv1.3.", "label": "Tlsv1 3", "name": "TLSv1-3"}]
+VALID_BODY_INTERFACE_SELECT_METHOD: Literal[{"description": "Set outgoing interface automatically", "help": "Set outgoing interface automatically.", "label": "Auto", "name": "auto"}, {"description": "Set outgoing interface by SD-WAN or policy routing rules", "help": "Set outgoing interface by SD-WAN or policy routing rules.", "label": "Sdwan", "name": "sdwan"}, {"description": "Set outgoing interface manually", "help": "Set outgoing interface manually.", "label": "Specify", "name": "specify"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

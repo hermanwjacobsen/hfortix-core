@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve wifi/firmware/download configuration.
 
-        Configuration for wifi/firmware/download
+        Download FortiAP firmware from FortiGuard to the FortiGate according to FortiAP image ID.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

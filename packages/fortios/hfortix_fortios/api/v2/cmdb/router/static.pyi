@@ -11,7 +11,7 @@ class StaticPayload(TypedDict, total=False):
         }
     """
     seq_num: NotRequired[int]  # Sequence number.
-    status: NotRequired[Literal["enable", "disable"]]  # Enable/disable this static route.
+    status: NotRequired[Literal[{"description": "Enable static route", "help": "Enable static route.", "label": "Enable", "name": "enable"}, {"description": "Disable static route", "help": "Disable static route.", "label": "Disable", "name": "disable"}]]  # Enable/disable this static route.
     dst: str  # Destination IP and mask for this route.
     src: NotRequired[str]  # Source prefix for this route.
     gateway: NotRequired[str]  # Gateway IP for this route.
@@ -21,17 +21,17 @@ class StaticPayload(TypedDict, total=False):
     priority: NotRequired[int]  # Administrative priority (1 - 65535).
     device: str  # Gateway out interface or tunnel.
     comment: NotRequired[str]  # Optional comments.
-    blackhole: NotRequired[Literal["enable", "disable"]]  # Enable/disable black hole.
-    dynamic_gateway: NotRequired[Literal["enable", "disable"]]  # Enable use of dynamic gateway retrieved from a DHCP or PPP s
+    blackhole: NotRequired[Literal[{"description": "Enable black hole", "help": "Enable black hole.", "label": "Enable", "name": "enable"}, {"description": "Disable black hole", "help": "Disable black hole.", "label": "Disable", "name": "disable"}]]  # Enable/disable black hole.
+    dynamic_gateway: NotRequired[Literal[{"description": "Enable dynamic gateway", "help": "Enable dynamic gateway.", "label": "Enable", "name": "enable"}, {"description": "Disable dynamic gateway", "help": "Disable dynamic gateway.", "label": "Disable", "name": "disable"}]]  # Enable use of dynamic gateway retrieved from a DHCP or PPP s
     sdwan_zone: NotRequired[list[dict[str, Any]]]  # Choose SD-WAN Zone.
     dstaddr: NotRequired[str]  # Name of firewall address or address group.
     internet_service: NotRequired[int]  # Application ID in the Internet service database.
     internet_service_custom: NotRequired[str]  # Application name in the Internet service custom database.
     internet_service_fortiguard: NotRequired[str]  # Application name in the Internet service fortiguard database
-    link_monitor_exempt: NotRequired[Literal["enable", "disable"]]  # Enable/disable withdrawal of this static route when link mon
+    link_monitor_exempt: NotRequired[Literal[{"description": "Keep this static route when link monitor or health check is down", "help": "Keep this static route when link monitor or health check is down.", "label": "Enable", "name": "enable"}, {"description": "Withdraw this static route when link monitor or health check is down", "help": "Withdraw this static route when link monitor or health check is down. (default)", "label": "Disable", "name": "disable"}]]  # Enable/disable withdrawal of this static route when link mon
     tag: NotRequired[int]  # Route tag.
     vrf: NotRequired[int]  # Virtual Routing Forwarding ID.
-    bfd: NotRequired[Literal["enable", "disable"]]  # Enable/disable Bidirectional Forwarding Detection (BFD).
+    bfd: NotRequired[Literal[{"description": "Enable Bidirectional Forwarding Detection (BFD)", "help": "Enable Bidirectional Forwarding Detection (BFD).", "label": "Enable", "name": "enable"}, {"description": "Disable Bidirectional Forwarding Detection (BFD)", "help": "Disable Bidirectional Forwarding Detection (BFD).", "label": "Disable", "name": "disable"}]]  # Enable/disable Bidirectional Forwarding Detection (BFD).
 
 
 class Static:
@@ -60,7 +60,7 @@ class Static:
         self,
         payload_dict: StaticPayload | None = ...,
         seq_num: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable static route", "help": "Enable static route.", "label": "Enable", "name": "enable"}, {"description": "Disable static route", "help": "Disable static route.", "label": "Disable", "name": "disable"}] | None = ...,
         dst: str | None = ...,
         src: str | None = ...,
         gateway: str | None = ...,
@@ -70,17 +70,17 @@ class Static:
         priority: int | None = ...,
         device: str | None = ...,
         comment: str | None = ...,
-        blackhole: Literal["enable", "disable"] | None = ...,
-        dynamic_gateway: Literal["enable", "disable"] | None = ...,
+        blackhole: Literal[{"description": "Enable black hole", "help": "Enable black hole.", "label": "Enable", "name": "enable"}, {"description": "Disable black hole", "help": "Disable black hole.", "label": "Disable", "name": "disable"}] | None = ...,
+        dynamic_gateway: Literal[{"description": "Enable dynamic gateway", "help": "Enable dynamic gateway.", "label": "Enable", "name": "enable"}, {"description": "Disable dynamic gateway", "help": "Disable dynamic gateway.", "label": "Disable", "name": "disable"}] | None = ...,
         sdwan_zone: list[dict[str, Any]] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
         internet_service_fortiguard: str | None = ...,
-        link_monitor_exempt: Literal["enable", "disable"] | None = ...,
+        link_monitor_exempt: Literal[{"description": "Keep this static route when link monitor or health check is down", "help": "Keep this static route when link monitor or health check is down.", "label": "Enable", "name": "enable"}, {"description": "Withdraw this static route when link monitor or health check is down", "help": "Withdraw this static route when link monitor or health check is down. (default)", "label": "Disable", "name": "disable"}] | None = ...,
         tag: int | None = ...,
         vrf: int | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
+        bfd: Literal[{"description": "Enable Bidirectional Forwarding Detection (BFD)", "help": "Enable Bidirectional Forwarding Detection (BFD).", "label": "Enable", "name": "enable"}, {"description": "Disable Bidirectional Forwarding Detection (BFD)", "help": "Disable Bidirectional Forwarding Detection (BFD).", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,
@@ -90,7 +90,7 @@ class Static:
         self,
         payload_dict: StaticPayload | None = ...,
         seq_num: int | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
+        status: Literal[{"description": "Enable static route", "help": "Enable static route.", "label": "Enable", "name": "enable"}, {"description": "Disable static route", "help": "Disable static route.", "label": "Disable", "name": "disable"}] | None = ...,
         dst: str | None = ...,
         src: str | None = ...,
         gateway: str | None = ...,
@@ -100,17 +100,17 @@ class Static:
         priority: int | None = ...,
         device: str | None = ...,
         comment: str | None = ...,
-        blackhole: Literal["enable", "disable"] | None = ...,
-        dynamic_gateway: Literal["enable", "disable"] | None = ...,
+        blackhole: Literal[{"description": "Enable black hole", "help": "Enable black hole.", "label": "Enable", "name": "enable"}, {"description": "Disable black hole", "help": "Disable black hole.", "label": "Disable", "name": "disable"}] | None = ...,
+        dynamic_gateway: Literal[{"description": "Enable dynamic gateway", "help": "Enable dynamic gateway.", "label": "Enable", "name": "enable"}, {"description": "Disable dynamic gateway", "help": "Disable dynamic gateway.", "label": "Disable", "name": "disable"}] | None = ...,
         sdwan_zone: list[dict[str, Any]] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
         internet_service_fortiguard: str | None = ...,
-        link_monitor_exempt: Literal["enable", "disable"] | None = ...,
+        link_monitor_exempt: Literal[{"description": "Keep this static route when link monitor or health check is down", "help": "Keep this static route when link monitor or health check is down.", "label": "Enable", "name": "enable"}, {"description": "Withdraw this static route when link monitor or health check is down", "help": "Withdraw this static route when link monitor or health check is down. (default)", "label": "Disable", "name": "disable"}] | None = ...,
         tag: int | None = ...,
         vrf: int | None = ...,
-        bfd: Literal["enable", "disable"] | None = ...,
+        bfd: Literal[{"description": "Enable Bidirectional Forwarding Detection (BFD)", "help": "Enable Bidirectional Forwarding Detection (BFD).", "label": "Enable", "name": "enable"}, {"description": "Disable Bidirectional Forwarding Detection (BFD)", "help": "Disable Bidirectional Forwarding Detection (BFD).", "label": "Disable", "name": "disable"}] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
         **kwargs: Any,

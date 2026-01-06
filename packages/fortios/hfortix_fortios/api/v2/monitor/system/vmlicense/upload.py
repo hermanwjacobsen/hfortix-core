@@ -56,7 +56,7 @@ class Upload:
         """
         Retrieve system/vmlicense/upload configuration.
 
-        Configuration for system/vmlicense/upload
+        Update VM license using uploaded file. Reboots immediately if successful.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

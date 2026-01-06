@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class HaStatistics:
     """
-    Monitor endpoint for system/ha-statistics
+    List of statistics for members of HA cluster.
     
     Path: system/ha_statistics
     Category: monitor

@@ -56,7 +56,7 @@ class Download:
         """
         Retrieve log/local_report/download configuration.
 
-        Configuration for log/local-report/download
+        Download local report
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

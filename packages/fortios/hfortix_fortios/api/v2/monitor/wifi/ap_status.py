@@ -56,7 +56,7 @@ class ApStatus:
         """
         Retrieve wifi/ap_status configuration.
 
-        Configuration for wifi/ap_status
+        Retrieve statistics for all managed FortiAPs.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

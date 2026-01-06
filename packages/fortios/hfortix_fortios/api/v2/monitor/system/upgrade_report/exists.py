@@ -56,7 +56,7 @@ class Exists:
         """
         Retrieve system/upgrade_report/exists configuration.
 
-        Configuration for system/upgrade-report/exists
+        Check if a report upgrade has been generated.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

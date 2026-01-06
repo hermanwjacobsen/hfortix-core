@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "log/historic_daily_remote_logs",
     "category": "monitor",
     "api_path": "log/historic-daily-remote-logs",
-    "help": "Configuration for log/historic-daily-remote-logs",
+    "help": "Returns the amount of logs in bytes sent daily to a remote logging service (FortiCloud or FortiAnalyzer).",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

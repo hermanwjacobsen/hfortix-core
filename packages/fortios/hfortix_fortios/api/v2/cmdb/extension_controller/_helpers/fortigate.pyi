@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_AUTHORIZED: Literal["discovered", "disable", "enable"]
+VALID_BODY_AUTHORIZED: Literal[{"description": "Controller discovered this FortiGate", "help": "Controller discovered this FortiGate.", "label": "Discovered", "name": "discovered"}, {"description": "Controller is configured to not provide service to this FortiGate", "help": "Controller is configured to not provide service to this FortiGate.", "label": "Disable", "name": "disable"}, {"description": "Controller is configured to provide service to this FortiGate", "help": "Controller is configured to provide service to this FortiGate.", "label": "Enable", "name": "enable"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

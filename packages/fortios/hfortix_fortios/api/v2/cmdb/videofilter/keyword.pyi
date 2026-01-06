@@ -13,7 +13,7 @@ class KeywordPayload(TypedDict, total=False):
     id: int  # ID.
     name: str  # Name.
     comment: NotRequired[str]  # Comment.
-    match: Literal["or", "and"]  # Keyword matching logic.
+    match: Literal[{"description": "Match any keyword", "help": "Match any keyword.", "label": "Or", "name": "or"}, {"description": "Match all keywords", "help": "Match all keywords.", "label": "And", "name": "and"}]  # Keyword matching logic.
     word: NotRequired[list[dict[str, Any]]]  # List of keywords.
 
 
@@ -45,7 +45,7 @@ class Keyword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        match: Literal["or", "and"] | None = ...,
+        match: Literal[{"description": "Match any keyword", "help": "Match any keyword.", "label": "Or", "name": "or"}, {"description": "Match all keywords", "help": "Match all keywords.", "label": "And", "name": "and"}] | None = ...,
         word: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
@@ -58,7 +58,7 @@ class Keyword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        match: Literal["or", "and"] | None = ...,
+        match: Literal[{"description": "Match any keyword", "help": "Match any keyword.", "label": "Or", "name": "or"}, {"description": "Match all keywords", "help": "Match all keywords.", "label": "And", "name": "and"}] | None = ...,
         word: list[dict[str, Any]] | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,

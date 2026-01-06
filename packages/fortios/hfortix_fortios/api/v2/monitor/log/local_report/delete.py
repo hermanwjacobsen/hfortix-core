@@ -56,7 +56,7 @@ class Delete:
         """
         Retrieve log/local_report/delete configuration.
 
-        Configuration for log/local-report/delete
+        Delete a local report.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

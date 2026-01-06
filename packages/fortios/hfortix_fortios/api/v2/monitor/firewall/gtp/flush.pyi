@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Flush:
     """
-    Configuration for firewall/gtp/flush
+    Flush GTP tunnels.
     
     Path: firewall/gtp/flush
     Category: monitor

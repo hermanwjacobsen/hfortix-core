@@ -1,8 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
-VALID_BODY_TYPE: Literal["ethernet", "ppp"]
-VALID_BODY_IP_VERSION: Literal["ipv4-unicast", "ipv6-unicast"]
+VALID_BODY_TYPE: Literal[{"description": "Internal packet includes Ethernet header", "help": "Internal packet includes Ethernet header.", "label": "Ethernet", "name": "ethernet"}, {"description": "Internal packet does not include Ethernet header", "help": "Internal packet does not include Ethernet header.", "label": "Ppp", "name": "ppp"}]
+VALID_BODY_IP_VERSION: Literal[{"description": "Use IPv4 unicast addressing over the GENEVE", "help": "Use IPv4 unicast addressing over the GENEVE.", "label": "Ipv4 Unicast", "name": "ipv4-unicast"}, {"description": "Use IPv6 unicast addressing over the GENEVE", "help": "Use IPv6 unicast addressing over the GENEVE.", "label": "Ipv6 Unicast", "name": "ipv6-unicast"}]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]

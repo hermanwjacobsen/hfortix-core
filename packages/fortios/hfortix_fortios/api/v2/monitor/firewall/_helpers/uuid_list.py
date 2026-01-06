@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/uuid_list",
     "category": "monitor",
     "api_path": "firewall/uuid-list",
-    "help": "Monitor endpoint for firewall/uuid-list",
+    "help": "Retrieve a list of all UUIDs with their object type and VDOM.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class List:
     """
-    Monitor endpoint for sniffer/list
+    Returns list of all packet captures and their status information.
     
     Path: sniffer/list
     Category: service

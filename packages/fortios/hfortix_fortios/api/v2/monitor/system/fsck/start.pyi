@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Start:
     """
-    Configuration for system/fsck/start
+    Set file system check flag so that it will be executed on next device reboot.
     
     Path: system/fsck/start
     Category: monitor

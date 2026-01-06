@@ -232,7 +232,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Protocols used to monitor the server.",
             "default": "ping",
-            "options": ["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"],
+            "options": [{"help": "PING link monitor.", "label": "Ping", "name": "ping"}, {"help": "TCP echo link monitor.", "label": "Tcp Echo", "name": "tcp-echo"}, {"help": "UDP echo link monitor.", "label": "Udp Echo", "name": "udp-echo"}, {"help": "HTTP-GET link monitor.", "label": "Http", "name": "http"}, {"help": "HTTPS-GET link monitor.", "label": "Https", "name": "https"}, {"help": "TWAMP link monitor.", "label": "Twamp", "name": "twamp"}],
         },
         "port": {
             "type": "integer",
@@ -254,48 +254,48 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_ADDR_MODE = [
-    "ipv4",
-    "ipv6",
+    "ipv4",  # IPv4 mode.
+    "ipv6",  # IPv6 mode.
 ]
 VALID_BODY_SERVER_CONFIG = [
-    "default",
-    "individual",
+    "default",  # All servers share the same attributes.
+    "individual",  # Some attributes can be specified for individual servers.
 ]
 VALID_BODY_SERVER_TYPE = [
-    "static",
-    "dynamic",
+    "static",  # Static servers.
+    "dynamic",  # Dynamic servers.
 ]
 VALID_BODY_PROTOCOL = [
-    "ping",
-    "tcp-echo",
-    "udp-echo",
-    "http",
-    "https",
-    "twamp",
+    "ping",  # PING link monitor.
+    "tcp-echo",  # TCP echo link monitor.
+    "udp-echo",  # UDP echo link monitor.
+    "http",  # HTTP-GET link monitor.
+    "https",  # HTTPS-GET link monitor.
+    "twamp",  # TWAMP link monitor.
 ]
 VALID_BODY_SECURITY_MODE = [
-    "none",
-    "authentication",
+    "none",  # Unauthenticated mode.
+    "authentication",  # Authenticated mode.
 ]
 VALID_BODY_UPDATE_CASCADE_INTERFACE = [
-    "enable",
-    "disable",
+    "enable",  # Enable update cascade interface.
+    "disable",  # Disable update cascade interface.
 ]
 VALID_BODY_UPDATE_STATIC_ROUTE = [
-    "enable",
-    "disable",
+    "enable",  # Enable updating the static route.
+    "disable",  # Disable updating the static route.
 ]
 VALID_BODY_UPDATE_POLICY_ROUTE = [
-    "enable",
-    "disable",
+    "enable",  # Enable updating the policy route.
+    "disable",  # Disable updating the policy route.
 ]
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable this link monitor.
+    "disable",  # Disable this link monitor.
 ]
 VALID_BODY_SERVICE_DETECTION = [
-    "enable",
-    "disable",
+    "enable",  # Only use monitor for service-detection.
+    "disable",  # Monitor will update routes/interfaces on link failure.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -425,7 +425,7 @@ def validate_system_link_monitor_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "server": True,
-        ...     "addr-mode": "ipv4",  # Valid enum value
+        ...     "addr-mode": "{'name': 'ipv4', 'help': 'IPv4 mode.', 'label': 'Ipv4', 'description': 'IPv4 mode'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_link_monitor_post(payload)
         >>> assert is_valid == True

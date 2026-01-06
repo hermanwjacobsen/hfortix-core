@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "wifi/rogue_ap",
     "category": "monitor",
     "api_path": "wifi/rogue_ap",
-    "help": "Monitor endpoint for wifi/rogue_ap",
+    "help": "Retrieve a list of detected rogue APs.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

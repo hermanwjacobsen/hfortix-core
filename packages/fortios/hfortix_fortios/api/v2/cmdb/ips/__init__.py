@@ -2,7 +2,7 @@
 
 from .custom import Custom
 from .decoder import Decoder
-from .global_setting import GlobalSetting
+from .global_ import Global
 from .rule import Rule
 from .rule_settings import RuleSettings
 from .sensor import Sensor
@@ -12,7 +12,7 @@ from .view_map import ViewMap
 __all__ = [
     "Custom",
     "Decoder",
-    "GlobalSetting",
+    "Global",
     "Ips",
     "Rule",
     "RuleSettings",
@@ -33,7 +33,7 @@ class Ips:
         """
         self.custom = Custom(client)
         self.decoder = Decoder(client)
-        self.global_setting = GlobalSetting(client)
+        self.global_ = Global(client)
         self.rule = Rule(client)
         self.rule_settings = RuleSettings(client)
         self.sensor = Sensor(client)

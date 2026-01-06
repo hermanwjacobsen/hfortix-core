@@ -56,7 +56,7 @@ class GetTestConnect:
         """
         Retrieve user/radius/get_test_connect configuration.
 
-        Configuration for user/radius/get-test-connect
+        Test the connectivity of the given RADIUS server and, optionally, the validity of a username & password.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

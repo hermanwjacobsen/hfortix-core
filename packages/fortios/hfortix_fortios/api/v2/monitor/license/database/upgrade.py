@@ -56,7 +56,7 @@ class Upgrade:
         """
         Retrieve license/database/upgrade configuration.
 
-        Configuration for license/database/upgrade
+        Upgrade or downgrade UTM engine or signature package (IPS/AntiVirus/Application Control/Industrial database/Security Rating/Internet Service Database) using uploaded file.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

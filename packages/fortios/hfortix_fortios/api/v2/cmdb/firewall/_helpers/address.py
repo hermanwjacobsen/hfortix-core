@@ -88,6 +88,7 @@ FIELDS_WITH_DEFAULTS = {
     "sdn-addr-type": "private",
     "node-ip-only": "disable",
     "allow-routing": "disable",
+    "passive-fqdn-learning": "enable",
     "fabric-object": "disable",
 }
 
@@ -150,6 +151,7 @@ FIELD_TYPES = {
     "list": "string",  # IP address list.
     "tagging": "string",  # Config object tagging.
     "allow-routing": "option",  # Enable/disable use of this address in routing configurations
+    "passive-fqdn-learning": "option",  # Enable/disable passive learning of FQDNs.  When enabled, the
     "fabric-object": "option",  # Security Fabric global object setting.
 }
 
@@ -198,6 +200,7 @@ FIELD_DESCRIPTIONS = {
     "list": "IP address list.",
     "tagging": "Config object tagging.",
     "allow-routing": "Enable/disable use of this address in routing configurations.",
+    "passive-fqdn-learning": "Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).",
     "fabric-object": "Security Fabric global object setting.",
 }
 
@@ -287,57 +290,61 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_TYPE = [
-    "ipmask",
-    "iprange",
-    "fqdn",
-    "geography",
-    "wildcard",
-    "dynamic",
-    "interface-subnet",
-    "mac",
-    "route-tag",
+    "ipmask",  # Standard IPv4 address with subnet mask.
+    "iprange",  # Range of IPv4 addresses between two specified addresses (inclusive).
+    "fqdn",  # Fully Qualified Domain Name address.
+    "geography",  # IP addresses from a specified country.
+    "wildcard",  # Standard IPv4 using a wildcard subnet mask.
+    "dynamic",  # Dynamic address object.
+    "interface-subnet",  # IP and subnet of interface.
+    "mac",  # Range of MAC addresses.
+    "route-tag",  # route-tag addresses.
 ]
 VALID_BODY_SUB_TYPE = [
-    "sdn",
-    "clearpass-spt",
-    "fsso",
-    "rsso",
-    "ems-tag",
-    "fortivoice-tag",
-    "fortinac-tag",
-    "swc-tag",
-    "device-identification",
-    "external-resource",
-    "obsolete",
+    "sdn",  # SDN address.
+    "clearpass-spt",  # ClearPass SPT (System Posture Token) address.
+    "fsso",  # FSSO address.
+    "rsso",  # RSSO address.
+    "ems-tag",  # FortiClient EMS tag.
+    "fortivoice-tag",  # FortiVoice tag.
+    "fortinac-tag",  # FortiNAC tag.
+    "swc-tag",  # Switch Controller NAC policy tag.
+    "device-identification",  # Device address.
+    "external-resource",  # External resource.
+    "obsolete",  # Tag from EOL product.
 ]
 VALID_BODY_CLEARPASS_SPT = [
-    "unknown",
-    "healthy",
-    "quarantine",
-    "checkup",
-    "transient",
-    "infected",
+    "unknown",  # UNKNOWN.
+    "healthy",  # HEALTHY.
+    "quarantine",  # QUARANTINE.
+    "checkup",  # CHECKUP.
+    "transient",  # TRANSIENT.
+    "infected",  # INFECTED.
 ]
 VALID_BODY_OBJ_TYPE = [
-    "ip",
-    "mac",
+    "ip",  # IP address.
+    "mac",  # MAC address
 ]
 VALID_BODY_SDN_ADDR_TYPE = [
-    "private",
-    "public",
-    "all",
+    "private",  # Collect private addresses only.
+    "public",  # Collect public addresses only.
+    "all",  # Collect both public and private addresses.
 ]
 VALID_BODY_NODE_IP_ONLY = [
-    "enable",
-    "disable",
+    "enable",  # Enable collection of node addresses only in Kubernetes.
+    "disable",  # Disable collection of node addresses only in Kubernetes.
 ]
 VALID_BODY_ALLOW_ROUTING = [
-    "enable",
-    "disable",
+    "enable",  # Enable use of this address in routing configurations.
+    "disable",  # Disable use of this address in routing configurations.
+]
+VALID_BODY_PASSIVE_FQDN_LEARNING = [
+    "disable",  # Disable passive learning of FQDNs.
+    "enable",  # Enable passive learning of FQDNs.
 ]
 VALID_BODY_FABRIC_OBJECT = [
-    "enable",
-    "disable",
+    "enable",  # Object is set as a security fabric-wide global object.
+    "disable",  # Object is local to this security fabric member.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -468,7 +475,7 @@ def validate_firewall_address_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "interface": True,
-        ...     "type": "ipmask",  # Valid enum value
+        ...     "type": "{'name': 'ipmask', 'help': 'Standard IPv4 address with subnet mask.', 'label': 'Ipmask', 'description': 'Standard IPv4 address with subnet mask'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_address_post(payload)
         >>> assert is_valid == True
@@ -561,6 +568,16 @@ def validate_firewall_address_post(
             error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_ALLOW_ROUTING)}"
             error_msg += f"\n  → Example: allow-routing='{{ VALID_BODY_ALLOW_ROUTING[0] }}'"
             return (False, error_msg)
+    if "passive-fqdn-learning" in payload:
+        value = payload["passive-fqdn-learning"]
+        if value not in VALID_BODY_PASSIVE_FQDN_LEARNING:
+            desc = FIELD_DESCRIPTIONS.get("passive-fqdn-learning", "")
+            error_msg = f"Invalid value for 'passive-fqdn-learning': '{value}'"
+            if desc:
+                error_msg += f"\n  → Description: {desc}"
+            error_msg += f"\n  → Valid options: {', '.join(repr(v) for v in VALID_BODY_PASSIVE_FQDN_LEARNING)}"
+            error_msg += f"\n  → Example: passive-fqdn-learning='{{ VALID_BODY_PASSIVE_FQDN_LEARNING[0] }}'"
+            return (False, error_msg)
     if "fabric-object" in payload:
         value = payload["fabric-object"]
         if value not in VALID_BODY_FABRIC_OBJECT:
@@ -647,6 +664,13 @@ def validate_firewall_address_put(
             return (
                 False,
                 f"Invalid value for 'allow-routing'='{value}'. Must be one of: {', '.join(VALID_BODY_ALLOW_ROUTING)}",
+            )
+    if "passive-fqdn-learning" in payload:
+        value = payload["passive-fqdn-learning"]
+        if value not in VALID_BODY_PASSIVE_FQDN_LEARNING:
+            return (
+                False,
+                f"Invalid value for 'passive-fqdn-learning'='{value}'. Must be one of: {', '.join(VALID_BODY_PASSIVE_FQDN_LEARNING)}",
             )
     if "fabric-object" in payload:
         value = payload["fabric-object"]
@@ -943,9 +967,9 @@ SCHEMA_INFO = {
     "mkey": "name",
     "mkey_type": "string",
     "help": "Configure IPv4 addresses.",
-    "total_fields": 44,
+    "total_fields": 45,
     "required_fields_count": 2,
-    "fields_with_defaults_count": 36,
+    "fields_with_defaults_count": 37,
 }
 
 

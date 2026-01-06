@@ -136,25 +136,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "inspect-all": {
             "type": "option",
             "help": "Enable/disable the inspection of all ports for the protocol.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["clientcomfort", "servercomfort", "oversize", "chunkedbypass"],
+            "options": [{"help": "Prevent client timeout.", "label": "Clientcomfort", "name": "clientcomfort"}, {"help": "Prevent server timeout.", "label": "Servercomfort", "name": "servercomfort"}, {"help": "Block oversized file.", "label": "Oversize", "name": "oversize"}, {"help": "Bypass chunked transfer encoded sites.", "label": "Chunkedbypass", "name": "chunkedbypass"}],
         },
         "comfort-interval": {
             "type": "integer",
@@ -174,61 +174,61 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable blocking of partial downloads.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable range header blocking (allow partial file downloads)", "label": "Disable", "name": "disable"}, {"help": "Enable range header blocking (treat all partial file downloads as full file download)", "label": "Enable", "name": "enable"}],
         },
         "strip-x-forwarded-for": {
             "type": "option",
             "help": "Enable/disable stripping of HTTP X-Forwarded-For header.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable changing of HTTP X-Forwarded-For header.", "label": "Disable", "name": "disable"}, {"help": "Enable replacement of X-Forwarded-For value with 1.1.1.1.", "label": "Enable", "name": "enable"}],
         },
         "post-lang": {
             "type": "option",
             "help": "ID codes for character sets to be used to convert to UTF-8 for banned words and DLP on HTTP posts (maximum of 5 character sets).",
             "default": "",
-            "options": ["jisx0201", "jisx0208", "jisx0212", "gb2312", "ksc5601-ex", "euc-jp", "sjis", "iso2022-jp", "iso2022-jp-1", "iso2022-jp-2", "euc-cn", "ces-gbk", "hz", "ces-big5", "euc-kr", "iso2022-jp-3", "iso8859-1", "tis620", "cp874", "cp1252", "cp1251"],
+            "options": [{"help": "Japanese Industrial Standard 0201.", "label": "Jisx0201", "name": "jisx0201"}, {"help": "Japanese Industrial Standard 0208.", "label": "Jisx0208", "name": "jisx0208"}, {"help": "Japanese Industrial Standard 0212.", "label": "Jisx0212", "name": "jisx0212"}, {"help": "Guojia Biaozhun 2312 (simplified Chinese).", "label": "Gb2312", "name": "gb2312"}, {"help": "Wansung Korean standard 5601.", "label": "Ksc5601 Ex", "name": "ksc5601-ex"}, {"help": "Extended Unicode Japanese.", "label": "Euc Jp", "name": "euc-jp"}, {"help": "Shift Japanese Industrial Standard.", "label": "Sjis", "name": "sjis"}, {"help": "ISO 2022 Japanese.", "label": "Iso2022 Jp", "name": "iso2022-jp"}, {"help": "ISO 2022-1 Japanese.", "label": "Iso2022 Jp 1", "name": "iso2022-jp-1"}, {"help": "ISO 2022-2 Japanese.", "label": "Iso2022 Jp 2", "name": "iso2022-jp-2"}, {"help": "Extended Unicode Chinese.", "label": "Euc Cn", "name": "euc-cn"}, {"help": "Extended GB2312 (simplified Chinese).", "label": "Ces Gbk", "name": "ces-gbk"}, {"help": "Hanzi simplified Chinese.", "label": "Hz", "name": "hz"}, {"help": "Big-5 traditional Chinese.", "label": "Ces Big5", "name": "ces-big5"}, {"help": "Extended Unicode Korean.", "label": "Euc Kr", "name": "euc-kr"}, {"help": "ISO 2022-3 Japanese.", "label": "Iso2022 Jp 3", "name": "iso2022-jp-3"}, {"help": "ISO 8859 Part 1 (Western European).", "label": "Iso8859 1", "name": "iso8859-1"}, {"help": "Thai Industrial Standard 620.", "label": "Tis620", "name": "tis620"}, {"help": "Code Page 874 (Thai).", "label": "Cp874", "name": "cp874"}, {"help": "Code Page 1252 (Western European Latin).", "label": "Cp1252", "name": "cp1252"}, {"help": "Code Page 1251 (Cyrillic).", "label": "Cp1251", "name": "cp1251"}],
         },
         "streaming-content-bypass": {
             "type": "option",
             "help": "Enable/disable bypassing of streaming content from buffering.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable bypassing of streaming content from buffering", "label": "Enable", "name": "enable"}, {"help": "Disable bypassing of streaming content from buffering", "label": "Disable", "name": "disable"}],
         },
         "switching-protocols": {
             "type": "option",
             "help": "Bypass from scanning, or block a connection that attempts to switch protocol.",
             "default": "bypass",
-            "options": ["bypass", "block"],
+            "options": [{"help": "Bypass connections when switching protocols.", "label": "Bypass", "name": "bypass"}, {"help": "Block connections when switching protocols.", "label": "Block", "name": "block"}],
         },
         "unknown-http-version": {
             "type": "option",
             "help": "How to handle HTTP sessions that do not comply with HTTP 0.9, 1.0, or 1.1.",
             "default": "reject",
-            "options": ["reject", "tunnel", "best-effort"],
+            "options": [{"help": "Reject or tear down HTTP sessions that do not use HTTP 0.9, 1.0, or 1.1.", "label": "Reject", "name": "reject"}, {"help": "Pass HTTP traffic that does not use HTTP 0.9, 1.0, or 1.1 without applying HTTP protocol optimization, byte-caching, or web caching. TCP protocol optimization is applied.", "label": "Tunnel", "name": "tunnel"}, {"help": "Assume all HTTP sessions comply with HTTP 0.9, 1.0, or 1.1. If a session uses a different HTTP version, it may not parse correctly and the connection may be lost.", "label": "Best Effort", "name": "best-effort"}],
         },
         "http-0.9": {
             "type": "option",
             "help": "Configure action to take upon receipt of HTTP 0.9 request.",
             "default": "allow",
-            "options": ["allow", "block"],
+            "options": [{"help": "Allow HTTP 0.9 traffic for web filtering only.", "label": "Allow", "name": "allow"}, {"help": "Block HTTP 0.9 traffic.", "label": "Block", "name": "block"}],
         },
         "tunnel-non-http": {
             "type": "option",
             "help": "Configure how to process non-HTTP traffic when a profile configured for HTTP traffic accepts a non-HTTP session. Can occur if an application sends non-HTTP traffic using an HTTP destination port.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Pass non-HTTP sessions through the tunnel without applying protocol optimization, byte-caching, or web caching. TCP protocol optimization is applied.", "label": "Enable", "name": "enable"}, {"help": "Drop or tear down non-HTTP sessions accepted by the profile.", "label": "Disable", "name": "disable"}],
         },
         "h2c": {
             "type": "option",
             "help": "Enable/disable h2c HTTP connection upgrade.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Allow h2c HTTP connection upgrades. h2c tunnels do not support content scan.", "label": "Enable", "name": "enable"}, {"help": "Do not allow h2c HTTP connection upgrades.", "label": "Disable", "name": "disable"}],
         },
         "unknown-content-encoding": {
             "type": "option",
             "help": "Configure the action the FortiGate unit will take on unknown content-encoding.",
             "default": "block",
-            "options": ["block", "inspect", "bypass"],
+            "options": [{"help": "Block HTTP session when unknown content-encoding is detected.", "label": "Block", "name": "block"}, {"help": "Scan HTTP traffic as plain-text when unknown content-encoding is detected.", "label": "Inspect", "name": "inspect"}, {"help": "Bypass scan when unknown content-encoding is detected.", "label": "Bypass", "name": "bypass"}],
         },
         "oversize-limit": {
             "type": "integer",
@@ -262,13 +262,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "verify-dns-for-policy-matching": {
             "type": "option",
             "help": "Enable/disable verification of DNS for policy matching.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "block-page-status-code": {
             "type": "integer",
@@ -288,13 +288,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Configure HTTP domain fronting (default = block).",
             "default": "block",
-            "options": ["allow", "monitor", "block", "strict"],
+            "options": [{"help": "Allow domain fronting.", "label": "Allow", "name": "allow"}, {"help": "Allow and log domain fronting.", "label": "Monitor", "name": "monitor"}, {"help": "Block and log domain fronting. Will not block potential matching IP and Domain.", "label": "Block", "name": "block"}, {"help": "Block and log domain fronting. Will block potential matching IP and Domain.", "label": "Strict", "name": "strict"}],
         },
         "tcp-window-type": {
             "type": "option",
             "help": "TCP window type to use for this protocol.",
             "default": "auto-tuning",
-            "options": ["auto-tuning", "system", "static", "dynamic"],
+            "options": [{"help": "Allow system to auto-tune TCP window size (default).", "label": "Auto Tuning", "name": "auto-tuning"}, {"help": "Use system default TCP window size for this protocol.", "label": "System", "name": "system"}, {"help": "Manually specify TCP window size.", "label": "Static", "name": "static"}, {"help": "Vary TCP window size based on available memory and within limits of tcp-window-minimum and tcp-window-maximum.", "label": "Dynamic", "name": "dynamic"}],
         },
         "tcp-window-minimum": {
             "type": "integer",
@@ -321,13 +321,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "SSL decryption and encryption performed by an external device.",
             "default": "no",
-            "options": ["no", "yes"],
+            "options": [{"help": "SSL decryption and encryption performed by FortiGate when deep-inspection is enabled.", "label": "No", "name": "no"}, {"help": "SSL decryption and encryption performed by an external device.", "label": "Yes", "name": "yes"}],
         },
         "address-ip-rating": {
             "type": "option",
             "help": "Enable/disable IP based URL rating.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "ftp": {
@@ -343,19 +343,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "inspect-all": {
             "type": "option",
             "help": "Enable/disable the inspection of all ports for the protocol.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["clientcomfort", "oversize", "splice", "bypass-rest-command", "bypass-mode-command"],
+            "options": [{"help": "Prevent client timeout.", "label": "Clientcomfort", "name": "clientcomfort"}, {"help": "Block oversized file.", "label": "Oversize", "name": "oversize"}, {"help": "Enable splice mode.", "label": "Splice", "name": "splice"}, {"help": "Bypass REST command.", "label": "Bypass Rest Command", "name": "bypass-rest-command"}, {"help": "Bypass MODE command.", "label": "Bypass Mode Command", "name": "bypass-mode-command"}],
         },
         "comfort-interval": {
             "type": "integer",
@@ -403,13 +403,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "tcp-window-type": {
             "type": "option",
             "help": "TCP window type to use for this protocol.",
             "default": "auto-tuning",
-            "options": ["auto-tuning", "system", "static", "dynamic"],
+            "options": [{"help": "Allow system to auto-tune TCP window size (default).", "label": "Auto Tuning", "name": "auto-tuning"}, {"help": "Use system default TCP window size for this protocol.", "label": "System", "name": "system"}, {"help": "Manually specify TCP window size.", "label": "Static", "name": "static"}, {"help": "Vary TCP window size based on available memory and within limits of tcp-window-minimum and tcp-window-maximum.", "label": "Dynamic", "name": "dynamic"}],
         },
         "tcp-window-minimum": {
             "type": "integer",
@@ -436,13 +436,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "SSL decryption and encryption performed by an external device.",
             "default": "no",
-            "options": ["no", "yes"],
+            "options": [{"help": "SSL decryption and encryption performed by FortiGate when deep-inspection is enabled.", "label": "No", "name": "no"}, {"help": "SSL decryption and encryption performed by an external device.", "label": "Yes", "name": "yes"}],
         },
         "explicit-ftp-tls": {
             "type": "option",
             "help": "Enable/disable FTP redirection for explicit FTPS.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "imap": {
@@ -458,25 +458,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "inspect-all": {
             "type": "option",
             "help": "Enable/disable the inspection of all ports for the protocol.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["fragmail", "oversize"],
+            "options": [{"help": "Pass fragmented email.", "label": "Fragmail", "name": "fragmail"}, {"help": "Block oversized email.", "label": "Oversize", "name": "oversize"}],
         },
         "oversize-limit": {
             "type": "integer",
@@ -503,13 +503,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "ssl-offloaded": {
             "type": "option",
             "help": "SSL decryption and encryption performed by an external device.",
             "default": "no",
-            "options": ["no", "yes"],
+            "options": [{"help": "SSL decryption and encryption performed by FortiGate when deep-inspection is enabled.", "label": "No", "name": "no"}, {"help": "SSL decryption and encryption performed by an external device.", "label": "Yes", "name": "yes"}],
         },
     },
     "mapi": {
@@ -525,13 +525,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["fragmail", "oversize"],
+            "options": [{"help": "Pass fragmented email.", "label": "Fragmail", "name": "fragmail"}, {"help": "Block oversized email.", "label": "Oversize", "name": "oversize"}],
         },
         "oversize-limit": {
             "type": "integer",
@@ -558,7 +558,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "pop3": {
@@ -574,25 +574,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "inspect-all": {
             "type": "option",
             "help": "Enable/disable the inspection of all ports for the protocol.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["fragmail", "oversize"],
+            "options": [{"help": "Pass fragmented email.", "label": "Fragmail", "name": "fragmail"}, {"help": "Block oversized email.", "label": "Oversize", "name": "oversize"}],
         },
         "oversize-limit": {
             "type": "integer",
@@ -619,13 +619,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "ssl-offloaded": {
             "type": "option",
             "help": "SSL decryption and encryption performed by an external device.",
             "default": "no",
-            "options": ["no", "yes"],
+            "options": [{"help": "SSL decryption and encryption performed by FortiGate when deep-inspection is enabled.", "label": "No", "name": "no"}, {"help": "SSL decryption and encryption performed by an external device.", "label": "Yes", "name": "yes"}],
         },
     },
     "smtp": {
@@ -641,25 +641,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "inspect-all": {
             "type": "option",
             "help": "Enable/disable the inspection of all ports for the protocol.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["fragmail", "oversize", "splice"],
+            "options": [{"help": "Pass fragmented email.", "label": "Fragmail", "name": "fragmail"}, {"help": "Block oversized email.", "label": "Oversize", "name": "oversize"}, {"help": "Enable splice mode.", "label": "Splice", "name": "splice"}],
         },
         "oversize-limit": {
             "type": "integer",
@@ -686,19 +686,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "server-busy": {
             "type": "option",
             "help": "Enable/disable SMTP server busy when server not available.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "ssl-offloaded": {
             "type": "option",
             "help": "SSL decryption and encryption performed by an external device.",
             "default": "no",
-            "options": ["no", "yes"],
+            "options": [{"help": "SSL decryption and encryption performed by FortiGate when deep-inspection is enabled.", "label": "No", "name": "no"}, {"help": "SSL decryption and encryption performed by an external device.", "label": "Yes", "name": "yes"}],
         },
     },
     "nntp": {
@@ -714,25 +714,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "inspect-all": {
             "type": "option",
             "help": "Enable/disable the inspection of all ports for the protocol.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "proxy-after-tcp-handshake": {
             "type": "option",
             "help": "Proxy traffic after the TCP 3-way handshake has been established (not before).",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["oversize", "splice"],
+            "options": [{"help": "Block oversized file.", "label": "Oversize", "name": "oversize"}, {"help": "Enable splice mode.", "label": "Splice", "name": "splice"}],
         },
         "oversize-limit": {
             "type": "integer",
@@ -759,7 +759,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "ssh": {
@@ -767,7 +767,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["oversize", "clientcomfort", "servercomfort"],
+            "options": [{"help": "Block oversized file.", "label": "Oversize", "name": "oversize"}, {"help": "Prevent client timeout.", "label": "Clientcomfort", "name": "clientcomfort"}, {"help": "Prevent server timeout.", "label": "Servercomfort", "name": "servercomfort"}],
         },
         "comfort-interval": {
             "type": "integer",
@@ -815,13 +815,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "tcp-window-type": {
             "type": "option",
             "help": "TCP window type to use for this protocol.",
             "default": "auto-tuning",
-            "options": ["auto-tuning", "system", "static", "dynamic"],
+            "options": [{"help": "Allow system to auto-tune TCP window size (default).", "label": "Auto Tuning", "name": "auto-tuning"}, {"help": "Use system default TCP window size for this protocol.", "label": "System", "name": "system"}, {"help": "Manually specify TCP window size.", "label": "Static", "name": "static"}, {"help": "Vary TCP window size based on available memory and within limits of tcp-window-minimum and tcp-window-maximum.", "label": "Dynamic", "name": "dynamic"}],
         },
         "tcp-window-minimum": {
             "type": "integer",
@@ -848,7 +848,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "SSL decryption and encryption performed by an external device.",
             "default": "no",
-            "options": ["no", "yes"],
+            "options": [{"help": "SSL decryption and encryption performed by FortiGate when deep-inspection is enabled.", "label": "No", "name": "no"}, {"help": "SSL decryption and encryption performed by an external device.", "label": "Yes", "name": "yes"}],
         },
     },
     "dns": {
@@ -864,7 +864,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
     },
     "cifs": {
@@ -880,13 +880,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable the active status of scanning for this protocol.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "options": {
             "type": "option",
             "help": "One or more options that can be applied to the session.",
             "default": "",
-            "options": ["oversize"],
+            "options": [{"help": "Block oversized file.", "label": "Oversize", "name": "oversize"}],
         },
         "oversize-limit": {
             "type": "integer",
@@ -913,13 +913,13 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable scanning of BZip2 compressed files.",
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "tcp-window-type": {
             "type": "option",
             "help": "TCP window type to use for this protocol.",
             "default": "auto-tuning",
-            "options": ["auto-tuning", "system", "static", "dynamic"],
+            "options": [{"help": "Allow system to auto-tune TCP window size (default).", "label": "Auto Tuning", "name": "auto-tuning"}, {"help": "Use system default TCP window size for this protocol.", "label": "System", "name": "system"}, {"help": "Manually specify TCP window size.", "label": "Static", "name": "static"}, {"help": "Vary TCP window size based on available memory and within limits of tcp-window-minimum and tcp-window-maximum.", "label": "Dynamic", "name": "dynamic"}],
         },
         "tcp-window-minimum": {
             "type": "integer",
@@ -947,7 +947,7 @@ NESTED_SCHEMAS = {
             "help": "CIFS server credential type.",
             "required": True,
             "default": "none",
-            "options": ["none", "credential-replication", "credential-keytab"],
+            "options": [{"help": "Credential derivation not set.", "label": "None", "name": "none"}, {"help": "Credential derived using Replication account on Domain Controller.", "label": "Credential Replication", "name": "credential-replication"}, {"help": "Credential derived using server keytab.", "label": "Credential Keytab", "name": "credential-keytab"}],
         },
         "domain-controller": {
             "type": "string",
@@ -959,7 +959,6 @@ NESTED_SCHEMAS = {
         "server-keytab": {
             "type": "string",
             "help": "Server keytab.",
-            "max_length": 8836,
         },
     },
     "mail-signature": {
@@ -967,7 +966,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable adding an email signature to SMTP email messages as they pass through the FortiGate.",
             "default": "disable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable mail signature.", "label": "Disable", "name": "disable"}, {"help": "Enable mail signature.", "label": "Enable", "name": "enable"}],
         },
         "signature": {
             "type": "string",
@@ -981,16 +980,16 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_OVERSIZE_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging for antivirus oversize file blocking.
+    "enable",  # Enable logging for antivirus oversize file blocking.
 ]
 VALID_BODY_SWITCHING_PROTOCOLS_LOG = [
-    "disable",
-    "enable",
+    "disable",  # Disable logging for HTTP/HTTPS switching protocols.
+    "enable",  # Enable logging for HTTP/HTTPS switching protocols.
 ]
 VALID_BODY_RPC_OVER_HTTP = [
-    "enable",
-    "disable",
+    "enable",  # Enable inspection of RPC over HTTP.
+    "disable",  # Disable inspection of RPC over HTTP.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -1120,7 +1119,7 @@ def validate_firewall_profile_protocol_options_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "oversize-log": "disable",  # Valid enum value
+        ...     "oversize-log": "{'name': 'disable', 'help': 'Disable logging for antivirus oversize file blocking.', 'label': 'Disable', 'description': 'Disable logging for antivirus oversize file blocking'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_firewall_profile_protocol_options_post(payload)
         >>> assert is_valid == True

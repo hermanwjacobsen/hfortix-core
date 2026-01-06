@@ -56,7 +56,7 @@ class Cfm:
         """
         Retrieve ethernet_oam/cfm configuration.
 
-        Configuration for ethernet-oam/cfm
+        Configuration for ethernet_oam/cfm
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
@@ -120,7 +120,7 @@ class Cfm:
         """
         Update existing ethernet_oam/cfm object.
 
-        Configuration for ethernet-oam/cfm
+        Configuration for ethernet_oam/cfm
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).

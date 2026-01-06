@@ -56,7 +56,7 @@ class Test:
         """
         Retrieve user/tacacs_plus/test configuration.
 
-        Configuration for user/tacacs-plus/test
+        Test the connectivity of the given TACACS+ server.
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.

@@ -100,7 +100,7 @@ NESTED_SCHEMAS = {
             "help": "Enable/disable status.",
             "required": True,
             "default": "enable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable status.", "label": "Enable", "name": "enable"}, {"help": "Disable status.", "label": "Disable", "name": "disable"}],
         },
         "id": {
             "type": "integer",
@@ -122,7 +122,7 @@ NESTED_SCHEMAS = {
             "help": "Reject connection or mark as spam email.",
             "required": True,
             "default": "spam",
-            "options": ["reject", "spam"],
+            "options": [{"help": "Reject the connection.", "label": "Reject", "name": "reject"}, {"help": "Mark as spam email.", "label": "Spam", "name": "spam"}],
         },
     },
 }

@@ -532,7 +532,7 @@ SCHEMA_INFO = {
     "endpoint": "firewall/shaper/reset",
     "category": "monitor",
     "api_path": "firewall/shaper/reset",
-    "help": "Configuration for firewall/shaper/reset",
+    "help": "Reset statistics for all configured traffic shapers.",
     "total_fields": 0,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,

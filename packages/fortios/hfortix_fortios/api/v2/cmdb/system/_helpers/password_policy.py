@@ -51,13 +51,13 @@ REQUIRED_FIELDS = [
 
 # Fields with defaults (optional)
 FIELDS_WITH_DEFAULTS = {
-    "status": "disable",
+    "status": "enable",
     "apply-to": "admin-password",
-    "minimum-length": 8,
-    "min-lower-case-letter": 0,
-    "min-upper-case-letter": 0,
-    "min-non-alphanumeric": 0,
-    "min-number": 0,
+    "minimum-length": 12,
+    "min-lower-case-letter": 1,
+    "min-upper-case-letter": 1,
+    "min-non-alphanumeric": 1,
+    "min-number": 1,
     "expire-status": "disable",
     "expire-day": 90,
     "reuse-password": "enable",
@@ -83,7 +83,7 @@ DEPRECATED_FIELDS = {
 FIELD_TYPES = {
     "status": "option",  # Enable/disable setting a password policy for locally defined
     "apply-to": "option",  # Apply password policy to administrator passwords or IPsec pr
-    "minimum-length": "integer",  # Minimum password length (8 - 128, default = 8).
+    "minimum-length": "integer",  # Minimum password length (12 - 128, default = 12).
     "min-lower-case-letter": "integer",  # Minimum number of lowercase characters in password (0 - 128,
     "min-upper-case-letter": "integer",  # Minimum number of uppercase characters in password (0 - 128,
     "min-non-alphanumeric": "integer",  # Minimum number of non-alphanumeric characters in password (0
@@ -99,11 +99,11 @@ FIELD_TYPES = {
 FIELD_DESCRIPTIONS = {
     "status": "Enable/disable setting a password policy for locally defined administrator passwords and IPsec VPN pre-shared keys.",
     "apply-to": "Apply password policy to administrator passwords or IPsec pre-shared keys or both. Separate entries with a space.",
-    "minimum-length": "Minimum password length (8 - 128, default = 8).",
-    "min-lower-case-letter": "Minimum number of lowercase characters in password (0 - 128, default = 0).",
-    "min-upper-case-letter": "Minimum number of uppercase characters in password (0 - 128, default = 0).",
-    "min-non-alphanumeric": "Minimum number of non-alphanumeric characters in password (0 - 128, default = 0).",
-    "min-number": "Minimum number of numeric characters in password (0 - 128, default = 0).",
+    "minimum-length": "Minimum password length (12 - 128, default = 12).",
+    "min-lower-case-letter": "Minimum number of lowercase characters in password (0 - 128, default = 1).",
+    "min-upper-case-letter": "Minimum number of uppercase characters in password (0 - 128, default = 1).",
+    "min-non-alphanumeric": "Minimum number of non-alphanumeric characters in password (0 - 128, default = 1).",
+    "min-number": "Minimum number of numeric characters in password (0 - 128, default = 1).",
     "expire-status": "Enable/disable password expiration.",
     "expire-day": "Number of days after which passwords expire (1 - 999 days, default = 90).",
     "reuse-password": "Enable/disable reuse of password.",
@@ -113,7 +113,7 @@ FIELD_DESCRIPTIONS = {
 
 # Field constraints (string lengths, integer ranges)
 FIELD_CONSTRAINTS = {
-    "minimum-length": {"type": "integer", "min": 8, "max": 128},
+    "minimum-length": {"type": "integer", "min": 12, "max": 128},
     "min-lower-case-letter": {"type": "integer", "min": 0, "max": 128},
     "min-upper-case-letter": {"type": "integer", "min": 0, "max": 128},
     "min-non-alphanumeric": {"type": "integer", "min": 0, "max": 128},
@@ -129,24 +129,24 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Enable password policy.
+    "disable",  # Disable password policy.
 ]
 VALID_BODY_APPLY_TO = [
-    "admin-password",
-    "ipsec-preshared-key",
+    "admin-password",  # Apply to administrator passwords.
+    "ipsec-preshared-key",  # Apply to IPsec pre-shared keys.
 ]
 VALID_BODY_EXPIRE_STATUS = [
-    "enable",
-    "disable",
+    "enable",  # Passwords expire after expire-day days.
+    "disable",  # Passwords do not expire.
 ]
 VALID_BODY_REUSE_PASSWORD = [
-    "enable",
-    "disable",
+    "enable",  # Administrators are allowed to reuse the same password up to a limit.
+    "disable",  # Administrators must create a new password.
 ]
 VALID_BODY_LOGIN_LOCKOUT_UPON_WEAKER_ENCRYPTION = [
-    "enable",
-    "disable",
+    "enable",  # Enable administrative user login lockout upon downgrade.
+    "disable",  # Disable administrative user login lockout upon downgrade.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -271,7 +271,7 @@ def validate_system_password_policy_post(
         
         >>> # ✅ Valid - With enum field
         >>> payload = {
-        ...     "status": "enable",  # Valid enum value
+        ...     "status": "{'name': 'enable', 'help': 'Enable password policy.', 'label': 'Enable', 'description': 'Enable password policy'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_password_policy_post(payload)
         >>> assert is_valid == True

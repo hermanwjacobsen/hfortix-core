@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class GenerateKeys:
     """
-    Configuration for wifi/ssid/generate-keys
+    Generate pre-shared keys for specific multi pre-shared key profile.
     
     Path: wifi/ssid/generate_keys
     Category: monitor

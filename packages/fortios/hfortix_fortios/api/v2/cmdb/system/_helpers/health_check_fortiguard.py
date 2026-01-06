@@ -103,15 +103,15 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_PROTOCOL = [
-    "ping",
-    "tcp-echo",
-    "udp-echo",
-    "http",
-    "https",
-    "twamp",
-    "dns",
-    "tcp-connect",
-    "ftp",
+    "ping",  # Use PING to test the link with the server.
+    "tcp-echo",  # Use TCP echo to test the link with the server.
+    "udp-echo",  # Use UDP echo to test the link with the server.
+    "http",  # Use HTTP-GET to test the link with the server.
+    "https",  # Use HTTPS-GET to test the link with the server.
+    "twamp",  # Use TWAMP to test the link with the server.
+    "dns",  # Use DNS query to test the link with the server.
+    "tcp-connect",  # Use a full TCP connection to test the link with the server.
+    "ftp",  # Use FTP to test the link with the server.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -242,7 +242,7 @@ def validate_system_health_check_fortiguard_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "protocol": "ping",  # Valid enum value
+        ...     "protocol": "{'name': 'ping', 'help': 'Use PING to test the link with the server.', 'label': 'Ping', 'description': 'Use PING to test the link with the server'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_system_health_check_fortiguard_post(payload)
         >>> assert is_valid == True

@@ -3,7 +3,7 @@ from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
 
 class Start:
     """
-    Configuration for wifi/vlan-probe/start
+    Start a VLAN probe.
     
     Path: wifi/vlan_probe/start
     Category: monitor

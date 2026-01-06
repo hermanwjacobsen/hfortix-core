@@ -188,25 +188,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Allow/deny browser-based (cookie) overrides.",
             "default": "deny",
-            "options": ["allow", "deny"],
+            "options": [{"help": "Allow browser-based (cookie) override.", "label": "Allow", "name": "allow"}, {"help": "Deny browser-based (cookie) override.", "label": "Deny", "name": "deny"}],
         },
         "ovrd-scope": {
             "type": "option",
             "help": "Override scope.",
             "default": "user",
-            "options": ["user", "user-group", "ip", "browser", "ask"],
+            "options": [{"help": "Override for the user.", "label": "User", "name": "user"}, {"help": "Override for the user\u0027s group.", "label": "User Group", "name": "user-group"}, {"help": "Override for the initiating IP.", "label": "Ip", "name": "ip"}, {"help": "Create browser-based (cookie) override.", "label": "Browser", "name": "browser"}, {"help": "Prompt for scope when initiating an override.", "label": "Ask", "name": "ask"}],
         },
         "profile-type": {
             "type": "option",
             "help": "Override profile type.",
             "default": "list",
-            "options": ["list", "radius"],
+            "options": [{"help": "Profile chosen from list.", "label": "List", "name": "list"}, {"help": "Profile determined by RADIUS server.", "label": "Radius", "name": "radius"}],
         },
         "ovrd-dur-mode": {
             "type": "option",
             "help": "Override duration mode.",
             "default": "constant",
-            "options": ["constant", "ask"],
+            "options": [{"help": "Constant mode.", "label": "Constant", "name": "constant"}, {"help": "Prompt for duration when initiating an override.", "label": "Ask", "name": "ask"}],
         },
         "ovrd-dur": {
             "type": "user",
@@ -217,12 +217,11 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Profile attribute to retrieve from the RADIUS server.",
             "default": "Login-LAT-Service",
-            "options": ["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"],
+            "options": [{"help": "Use this attribute.", "label": "User Name", "name": "User-Name"}, {"help": "Use this attribute.", "label": "Nas Ip Address", "name": "NAS-IP-Address"}, {"help": "Use this attribute.", "label": "Framed Ip Address", "name": "Framed-IP-Address"}, {"help": "Use this attribute.", "label": "Framed Ip Netmask", "name": "Framed-IP-Netmask"}, {"help": "Use this attribute.", "label": "Filter Id", "name": "Filter-Id"}, {"help": "Use this attribute.", "label": "Login Ip Host", "name": "Login-IP-Host"}, {"help": "Use this attribute.", "label": "Reply Message", "name": "Reply-Message"}, {"help": "Use this attribute.", "label": "Callback Number", "name": "Callback-Number"}, {"help": "Use this attribute.", "label": "Callback Id", "name": "Callback-Id"}, {"help": "Use this attribute.", "label": "Framed Route", "name": "Framed-Route"}, {"help": "Use this attribute.", "label": "Framed Ipx Network", "name": "Framed-IPX-Network"}, {"help": "Use this attribute.", "label": "Class", "name": "Class"}, {"help": "Use this attribute.", "label": "Called Station Id", "name": "Called-Station-Id"}, {"help": "Use this attribute.", "label": "Calling Station Id", "name": "Calling-Station-Id"}, {"help": "Use this attribute.", "label": "Nas Identifier", "name": "NAS-Identifier"}, {"help": "Use this attribute.", "label": "Proxy State", "name": "Proxy-State"}, {"help": "Use this attribute.", "label": "Login Lat Service", "name": "Login-LAT-Service"}, {"help": "Use this attribute.", "label": "Login Lat Node", "name": "Login-LAT-Node"}, {"help": "Use this attribute.", "label": "Login Lat Group", "name": "Login-LAT-Group"}, {"help": "Use this attribute.", "label": "Framed Appletalk Zone", "name": "Framed-AppleTalk-Zone"}, {"help": "Use this attribute.", "label": "Acct Session Id", "name": "Acct-Session-Id"}, {"help": "Use this attribute.", "label": "Acct Multi Session Id", "name": "Acct-Multi-Session-Id"}],
         },
         "ovrd-user-group": {
             "type": "string",
             "help": "User groups with permission to use the override.",
-            "max_length": 79,
         },
         "profile": {
             "type": "string",
@@ -262,25 +261,25 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable automatic addition of URLs detected by FortiSandbox to blocklist.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "allowlist": {
             "type": "option",
             "help": "FortiGuard allowlist settings.",
             "default": "",
-            "options": ["exempt-av", "exempt-webcontent", "exempt-activex-java-cookie", "exempt-dlp", "exempt-rangeblock", "extended-log-others"],
+            "options": [{"help": "Exempt antivirus.", "label": "Exempt Av", "name": "exempt-av"}, {"help": "Exempt web content.", "label": "Exempt Webcontent", "name": "exempt-webcontent"}, {"help": "Exempt ActiveX-JAVA-Cookie.", "label": "Exempt Activex Java Cookie", "name": "exempt-activex-java-cookie"}, {"help": "Exempt DLP.", "label": "Exempt Dlp", "name": "exempt-dlp"}, {"help": "Exempt RangeBlock.", "label": "Exempt Rangeblock", "name": "exempt-rangeblock"}, {"help": "Support extended log.", "label": "Extended Log Others", "name": "extended-log-others"}],
         },
         "safe-search": {
             "type": "option",
             "help": "Safe search type.",
             "default": "",
-            "options": ["url", "header"],
+            "options": [{"help": "Insert safe search string into URL.", "label": "Url", "name": "url"}, {"help": "Insert safe search header.", "label": "Header", "name": "header"}],
         },
         "youtube-restrict": {
             "type": "option",
             "help": "YouTube EDU filter level.",
             "default": "none",
-            "options": ["none", "strict", "moderate"],
+            "options": [{"help": "Full access for YouTube.", "label": "None", "name": "none"}, {"help": "Strict access for YouTube.", "label": "Strict", "name": "strict"}, {"help": "Moderate access for YouTube.", "label": "Moderate", "name": "moderate"}],
         },
         "vimeo-restrict": {
             "type": "string",
@@ -292,12 +291,11 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable logging all search phrases.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable setting.", "label": "Enable", "name": "enable"}, {"help": "Disable setting.", "label": "Disable", "name": "disable"}],
         },
         "keyword-match": {
             "type": "string",
             "help": "Search keywords to log when match is found.",
-            "max_length": 79,
         },
     },
     "ftgd-wf": {
@@ -305,7 +303,7 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Options for FortiGuard Web Filter.",
             "default": "ftgd-disable",
-            "options": ["error-allow", "rate-server-ip", "connect-request-bypass", "ftgd-disable"],
+            "options": [{"help": "Allow web pages with a rating error to pass through.", "label": "Error Allow", "name": "error-allow"}, {"help": "Rate the server IP in addition to the domain name.", "label": "Rate Server Ip", "name": "rate-server-ip"}, {"help": "Bypass connection which has CONNECT request.", "label": "Connect Request Bypass", "name": "connect-request-bypass"}, {"help": "Disable FortiGuard scanning.", "label": "Ftgd Disable", "name": "ftgd-disable"}],
         },
         "exempt-quota": {
             "type": "user",
@@ -340,19 +338,19 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Enable/disable rating JavaScript by URL.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable rating JavaScript by URL.", "label": "Disable", "name": "disable"}, {"help": "Enable rating JavaScript by URL.", "label": "Enable", "name": "enable"}],
         },
         "rate-css-urls": {
             "type": "option",
             "help": "Enable/disable rating CSS by URL.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable rating CSS by URL.", "label": "Disable", "name": "disable"}, {"help": "Enable rating CSS by URL.", "label": "Enable", "name": "enable"}],
         },
         "rate-crl-urls": {
             "type": "option",
             "help": "Enable/disable rating CRL by URL.",
             "default": "enable",
-            "options": ["disable", "enable"],
+            "options": [{"help": "Disable rating CRL by URL.", "label": "Disable", "name": "disable"}, {"help": "Enable rating CRL by URL.", "label": "Enable", "name": "enable"}],
         },
     },
     "antiphish": {
@@ -360,31 +358,31 @@ NESTED_SCHEMAS = {
             "type": "option",
             "help": "Toggle AntiPhishing functionality.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable AntiPhishing functionality.", "label": "Enable", "name": "enable"}, {"help": "Disable AntiPhishing functionality.", "label": "Disable", "name": "disable"}],
         },
         "default-action": {
             "type": "option",
             "help": "Action to be taken when there is no matching rule.",
             "default": "exempt",
-            "options": ["exempt", "log", "block"],
+            "options": [{"help": "Exempt requests from matching.", "label": "Exempt", "name": "exempt"}, {"help": "Log all matched requests.", "label": "Log", "name": "log"}, {"help": "Block all matched requests.", "label": "Block", "name": "block"}],
         },
         "check-uri": {
             "type": "option",
             "help": "Enable/disable checking of GET URI parameters for known credentials.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable checking of GET URI for username and password fields.", "label": "Enable", "name": "enable"}, {"help": "Disable checking of GET URI for username and password fields.", "label": "Disable", "name": "disable"}],
         },
         "check-basic-auth": {
             "type": "option",
             "help": "Enable/disable checking of HTTP Basic Auth field for known credentials.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable checking of HTTP Basic Auth field for known credentials.", "label": "Enable", "name": "enable"}, {"help": "Disable checking of HTTP Basic Auth field for known credentials.", "label": "Disable", "name": "disable"}],
         },
         "check-username-only": {
             "type": "option",
             "help": "Enable/disable username only matching of credentials. Action will be taken for valid usernames regardless of password validity.",
             "default": "disable",
-            "options": ["enable", "disable"],
+            "options": [{"help": "Enable username only credential matches.", "label": "Enable", "name": "enable"}, {"help": "Disable username only credential matches.", "label": "Disable", "name": "disable"}],
         },
         "max-body-len": {
             "type": "integer",
@@ -406,7 +404,7 @@ NESTED_SCHEMAS = {
             "help": "Authentication methods.",
             "required": True,
             "default": "domain-controller",
-            "options": ["domain-controller", "ldap"],
+            "options": [{"help": "Domain Controller to verify user credential.", "label": "Domain Controller", "name": "domain-controller"}, {"help": "LDAP to verify user credential.", "label": "Ldap", "name": "ldap"}],
         },
         "domain-controller": {
             "type": "string",
@@ -435,125 +433,125 @@ NESTED_SCHEMAS = {
 
 # Valid enum values from API documentation
 VALID_BODY_FEATURE_SET = [
-    "flow",
-    "proxy",
+    "flow",  # Flow feature set.
+    "proxy",  # Proxy feature set.
 ]
 VALID_BODY_OPTIONS = [
-    "activexfilter",
-    "cookiefilter",
-    "javafilter",
-    "block-invalid-url",
-    "jscript",
-    "js",
-    "vbs",
-    "unknown",
-    "intrinsic",
-    "wf-referer",
-    "wf-cookie",
-    "per-user-bal",
+    "activexfilter",  # ActiveX filter.
+    "cookiefilter",  # Cookie filter.
+    "javafilter",  # Java applet filter.
+    "block-invalid-url",  # Block sessions contained an invalid domain name.
+    "jscript",  # Javascript block.
+    "js",  # JS block.
+    "vbs",  # VB script block.
+    "unknown",  # Unknown script block.
+    "intrinsic",  # Intrinsic script block.
+    "wf-referer",  # Referring block.
+    "wf-cookie",  # Cookie block.
+    "per-user-bal",  # Per-user block/allow list filter
 ]
 VALID_BODY_HTTPS_REPLACEMSG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FLOW_LOG_ENCODING = [
-    "utf-8",
-    "punycode",
+    "utf-8",  # UTF-8 encoding.
+    "punycode",  # Punycode encoding.
 ]
 VALID_BODY_OVRD_PERM = [
-    "bannedword-override",
-    "urlfilter-override",
-    "fortiguard-wf-override",
-    "contenttype-check-override",
+    "bannedword-override",  # Banned word override.
+    "urlfilter-override",  # URL filter override.
+    "fortiguard-wf-override",  # FortiGuard Web Filter override.
+    "contenttype-check-override",  # Content-type header override.
 ]
 VALID_BODY_POST_ACTION = [
-    "normal",
-    "block",
+    "normal",  # Normal, POST requests are allowed.
+    "block",  # POST requests are blocked.
 ]
 VALID_BODY_WISP = [
-    "enable",
-    "disable",
+    "enable",  # Enable web proxy WISP.
+    "disable",  # Disable web proxy WISP.
 ]
 VALID_BODY_WISP_ALGORITHM = [
-    "primary-secondary",
-    "round-robin",
-    "auto-learning",
+    "primary-secondary",  # Select the first healthy server in order.
+    "round-robin",  # Select the next healthy server.
+    "auto-learning",  # Select the lightest loading healthy server.
 ]
 VALID_BODY_LOG_ALL_URL = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_CONTENT_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_ACTIVEX_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_COMMAND_BLOCK_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_COOKIE_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_APPLET_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_JSCRIPT_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_JS_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_VBS_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_UNKNOWN_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_REFERER_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FILTER_COOKIE_REMOVAL_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_URL_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_INVALID_DOMAIN_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FTGD_ERR_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_FTGD_QUOTA_USAGE = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_EXTENDED_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_EXTENDED_ALL_ACTION_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_BODY_WEB_ANTIPHISHING_LOG = [
-    "enable",
-    "disable",
+    "enable",  # Enable setting.
+    "disable",  # Disable setting.
 ]
 VALID_QUERY_ACTION = ["default", "schema"]
 
@@ -683,7 +681,7 @@ def validate_webfilter_profile_post(
         >>> # ✅ Valid - With enum field
         >>> payload = {
         ...     "name": True,
-        ...     "feature-set": "flow",  # Valid enum value
+        ...     "feature-set": "{'name': 'flow', 'help': 'Flow feature set.', 'label': 'Flow', 'description': 'Flow feature set'}",  # Valid enum value
         ... }
         >>> is_valid, error = validate_webfilter_profile_post(payload)
         >>> assert is_valid == True
