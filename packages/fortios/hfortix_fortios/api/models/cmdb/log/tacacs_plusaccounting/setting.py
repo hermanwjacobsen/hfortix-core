@@ -1,0 +1,124 @@
+"""
+Pydantic Models for CMDB - log/tacacs_plusaccounting/setting
+
+Runtime validation models for log/tacacs_plusaccounting/setting configuration.
+Generated from FortiOS schema version unknown.
+
+Example Usage:
+    >>> from hfortix_fortios.models.cmdb.log.tacacs_plusaccounting.setting import 
+    >>>
+    >>> # Create with validation
+    >>> obj = (
+    ...     name="example",
+    ... )
+    >>>
+    >>> # Validation happens automatically
+    >>> # ValidationError raised if constraints violated
+"""
+
+from __future__ import annotations
+
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
+
+# ============================================================================
+# Enum Definitions (for fields with 4+ allowed values)
+# ============================================================================
+
+
+# ============================================================================
+# Main Model
+# ============================================================================
+
+class SettingModel(BaseModel):
+    """
+    Pydantic model for log/tacacs_plusaccounting/setting configuration.
+    
+    Settings for TACACS+ accounting.
+    
+    Validation Rules:        - status: pattern=        - server: max_length=63 pattern=        - server_key: max_length=128 pattern=        - source_ip: max_length=63 pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        validate_assignment = True  # Validate on attribute assignment
+        use_enum_values = True  # Use enum values instead of names
+    
+    # ========================================================================
+    # Model Fields
+    # ========================================================================
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable TACACS+ accounting.")    
+    server: str = Field(max_length=63, default="", description="Address of TACACS+ server.")    
+    server_key: Any = Field(max_length=128, default=None, description="Key to access the TACACS+ server.")    
+    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communication to TACACS+ server.")    
+    interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
+    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
+    # ========================================================================
+    # Custom Validators
+    # ========================================================================
+    
+    @field_validator('interface')
+    @classmethod
+    def validate_interface(cls, v: Any) -> Any:
+        """
+        Validate interface field.
+        
+        Datasource: ['system.interface.name']
+        
+        Note:
+            This validator only checks basic constraints.
+            To validate that referenced object exists, query the API.
+        """
+        # Basic validation passed via Field() constraints
+        # Additional datasource validation could be added here
+        return v    
+    # ========================================================================
+    # Helper Methods
+    # ========================================================================
+    
+    def to_fortios_dict(self) -> dict[str, Any]:
+        """
+        Convert model to FortiOS API payload format.
+        
+        Returns:
+            Dict suitable for POST/PUT operations
+        """
+        # Export with exclude_none to avoid sending null values
+        return self.model_dump(exclude_none=True, by_alias=True)
+    
+    @classmethod
+    def from_fortios_response(cls, data: dict[str, Any]) -> "":
+        """
+        Create model instance from FortiOS API response.
+        
+        Args:
+            data: Response data from API
+            
+        Returns:
+            Validated model instance
+        """
+        return cls(**data)
+
+
+# ============================================================================
+# Type Aliases for Convenience
+# ============================================================================
+
+Dict = dict[str, Any]  # For backward compatibility
+
+# ============================================================================
+# Module Exports
+# ============================================================================
+
+__all__ = [
+    "SettingModel",]
+
+
+# ============================================================================
+# Generated by hfortix generator v0.6.0
+# Schema: 1.7.0
+# Generated: 2026-01-06T20:14:33.110843Z
+# ============================================================================

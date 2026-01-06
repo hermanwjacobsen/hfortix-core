@@ -1,0 +1,153 @@
+"""
+Pydantic Models for CMDB - switch_controller/qos/qos_policy
+
+Runtime validation models for switch_controller/qos/qos_policy configuration.
+Generated from FortiOS schema version unknown.
+
+Example Usage:
+    >>> from hfortix_fortios.models.cmdb.switch_controller.qos.qos_policy import 
+    >>>
+    >>> # Create with validation
+    >>> obj = (
+    ...     name=1,
+    ...     name="example",
+    ... )
+    >>>
+    >>> # Validation happens automatically
+    >>> # ValidationError raised if constraints violated
+"""
+
+from __future__ import annotations
+
+from pydantic import BaseModel, Field
+from typing import Any, Optional
+
+# ============================================================================
+# Enum Definitions (for fields with 4+ allowed values)
+# ============================================================================
+
+
+# ============================================================================
+# Main Model
+# ============================================================================
+
+class QosPolicyModel(BaseModel):
+    """
+    Pydantic model for switch_controller/qos/qos_policy configuration.
+    
+    Configure FortiSwitch QoS policy.
+    
+    Validation Rules:        - name: max_length=63 pattern=        - default_cos: min=0 max=7 pattern=        - trust_dot1p_map: max_length=63 pattern=        - trust_ip_dscp_map: max_length=63 pattern=        - queue_policy: max_length=63 pattern=    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        validate_assignment = True  # Validate on attribute assignment
+        use_enum_values = True  # Use enum values instead of names
+    
+    # ========================================================================
+    # Model Fields
+    # ========================================================================
+    
+    name: str = Field(max_length=63, default="", description="QoS policy name.")    
+    default_cos: int = Field(ge=0, le=7, default=0, description="Default cos queue for untagged packets.")    
+    trust_dot1p_map: str | None = Field(max_length=63, default="", description="QoS trust 802.1p map.")  # datasource: ['switch-controller.qos.dot1p-map.name']    
+    trust_ip_dscp_map: str | None = Field(max_length=63, default="", description="QoS trust ip dscp map.")  # datasource: ['switch-controller.qos.ip-dscp-map.name']    
+    queue_policy: str | None = Field(max_length=63, default="default", description="QoS egress queue policy.")  # datasource: ['switch-controller.qos.queue-policy.name']    
+    # ========================================================================
+    # Custom Validators
+    # ========================================================================
+    
+    @field_validator('trust_dot1p_map')
+    @classmethod
+    def validate_trust_dot1p_map(cls, v: Any) -> Any:
+        """
+        Validate trust_dot1p_map field.
+        
+        Datasource: ['switch-controller.qos.dot1p-map.name']
+        
+        Note:
+            This validator only checks basic constraints.
+            To validate that referenced object exists, query the API.
+        """
+        # Basic validation passed via Field() constraints
+        # Additional datasource validation could be added here
+        return v    
+    @field_validator('trust_ip_dscp_map')
+    @classmethod
+    def validate_trust_ip_dscp_map(cls, v: Any) -> Any:
+        """
+        Validate trust_ip_dscp_map field.
+        
+        Datasource: ['switch-controller.qos.ip-dscp-map.name']
+        
+        Note:
+            This validator only checks basic constraints.
+            To validate that referenced object exists, query the API.
+        """
+        # Basic validation passed via Field() constraints
+        # Additional datasource validation could be added here
+        return v    
+    @field_validator('queue_policy')
+    @classmethod
+    def validate_queue_policy(cls, v: Any) -> Any:
+        """
+        Validate queue_policy field.
+        
+        Datasource: ['switch-controller.qos.queue-policy.name']
+        
+        Note:
+            This validator only checks basic constraints.
+            To validate that referenced object exists, query the API.
+        """
+        # Basic validation passed via Field() constraints
+        # Additional datasource validation could be added here
+        return v    
+    # ========================================================================
+    # Helper Methods
+    # ========================================================================
+    
+    def to_fortios_dict(self) -> dict[str, Any]:
+        """
+        Convert model to FortiOS API payload format.
+        
+        Returns:
+            Dict suitable for POST/PUT operations
+        """
+        # Export with exclude_none to avoid sending null values
+        return self.model_dump(exclude_none=True, by_alias=True)
+    
+    @classmethod
+    def from_fortios_response(cls, data: dict[str, Any]) -> "":
+        """
+        Create model instance from FortiOS API response.
+        
+        Args:
+            data: Response data from API
+            
+        Returns:
+            Validated model instance
+        """
+        return cls(**data)
+
+
+# ============================================================================
+# Type Aliases for Convenience
+# ============================================================================
+
+Dict = dict[str, Any]  # For backward compatibility
+
+# ============================================================================
+# Module Exports
+# ============================================================================
+
+__all__ = [
+    "QosPolicyModel",]
+
+
+# ============================================================================
+# Generated by hfortix generator v0.6.0
+# Schema: 1.7.0
+# Generated: 2026-01-06T20:14:35.470153Z
+# ============================================================================

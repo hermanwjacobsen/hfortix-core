@@ -44,6 +44,20 @@ class IpsUrlfilterDns(MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ips_urlfilter_dns"
+    
+    # ========================================================================
+    # Capabilities (from schema metadata)
+    # ========================================================================
+    SUPPORTS_CREATE = True
+    SUPPORTS_READ = True
+    SUPPORTS_UPDATE = True
+    SUPPORTS_DELETE = True
+    SUPPORTS_MOVE = True
+    SUPPORTS_CLONE = True
+    SUPPORTS_FILTERING = True
+    SUPPORTS_PAGINATION = True
+    SUPPORTS_SEARCH = False
+    SUPPORTS_SORTING = False
 
     def __init__(self, client: "IHTTPClient"):
         """Initialize IpsUrlfilterDns endpoint."""
@@ -345,20 +359,30 @@ class IpsUrlfilterDns(MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
+        # Try to fetch the object - 404 means it doesn't exist
         try:
-            response = self.get(address=address, vdom=vdom, raw_json=True)
+            response = self.get(
+                address=address,
+                vdom=vdom,
+                raw_json=True
+            )
             
             if isinstance(response, dict):
-                # Use helper function to check success
+                # Synchronous response - check status
                 return is_success(response)
             else:
+                # Asynchronous response
                 async def _check() -> bool:
                     r = await response
                     return is_success(r)
                 return _check()
-        except Exception:
-            # Resource not found or other error - return False
-            return False
+        except Exception as e:
+            # 404 means object doesn't exist - return False
+            # Any other error should be re-raised
+            error_str = str(e)
+            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
+                return False
+            raise
 
 
     def set(
@@ -423,4 +447,135 @@ class IpsUrlfilterDns(MetadataMixin):
             # Create new resource
             return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
 
+    # ========================================================================
+    # Action: Move
+    # ========================================================================
+    
+    def move(
+        self,
+        address: str,
+        action: Literal["before", "after"],
+        reference_address: str,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Move system/ips_urlfilter_dns object to a new position.
+        
+        Reorders objects by moving one before or after another.
+        
+        Args:
+            address: Identifier of object to move
+            action: Move "before" or "after" reference object
+            reference_address: Identifier of reference object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Move policy 100 before policy 50
+            >>> fgt.api.cmdb.system_ips_urlfilter_dns.move(
+            ...     address=100,
+            ...     action="before",
+            ...     reference_address=50
+            ... )
+        """
+        return self._client.request(
+            method="PUT",
+            path=f"/api/v2/cmdb/system/ips-urlfilter-dns",
+            params={
+                "address": address,
+                "action": "move",
+                action: reference_address,
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
+
+    # ========================================================================
+    # Action: Clone
+    # ========================================================================
+    
+    def clone(
+        self,
+        address: str,
+        new_address: str,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Clone system/ips_urlfilter_dns object.
+        
+        Creates a copy of an existing object with a new identifier.
+        
+        Args:
+            address: Identifier of object to clone
+            new_address: Identifier for the cloned object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Clone an existing object
+            >>> fgt.api.cmdb.system_ips_urlfilter_dns.clone(
+            ...     address=1,
+            ...     new_address=100
+            ... )
+        """
+        return self._client.request(
+            method="POST",
+            path=f"/api/v2/cmdb/system/ips-urlfilter-dns",
+            params={
+                "address": address,
+                "new_address": new_address,
+                "action": "clone",
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
+
+    # ========================================================================
+    # Helper: Check Existence
+    # ========================================================================
+    
+    def exists(
+        self,
+        address: str,
+        vdom: str | bool | None = None,
+    ) -> bool:
+        """
+        Check if system/ips_urlfilter_dns object exists.
+        
+        Args:
+            address: Identifier to check
+            vdom: Virtual domain name
+            
+        Returns:
+            True if object exists, False otherwise
+            
+        Example:
+            >>> # Check before creating
+            >>> if not fgt.api.cmdb.system_ips_urlfilter_dns.exists(address=1):
+            ...     fgt.api.cmdb.system_ips_urlfilter_dns.post(payload_dict=data)
+        """
+        # Try to fetch the object - 404 means it doesn't exist
+        try:
+            response = self.get(
+                address=address,
+                vdom=vdom,
+                raw_json=True
+            )
+            # Check if response indicates success
+            return is_success(response)
+        except Exception as e:
+            # 404 means object doesn't exist - return False
+            # Any other error should be re-raised
+            error_str = str(e)
+            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
+                return False
+            raise
 

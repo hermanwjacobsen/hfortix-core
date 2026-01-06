@@ -32,11 +32,13 @@ from hfortix_core import (
     print_debug_info as print_debug_info,
 )
 from hfortix_fortios.client import FortiOS as FortiOS
+from hfortix_fortios.models import FortiObject as FortiObject
 
 __version__: str
 
 __all__ = [
     "FortiOS",
+    "FortiObject",
     "configure_logging",
     "DebugSession",
     "debug_timer",

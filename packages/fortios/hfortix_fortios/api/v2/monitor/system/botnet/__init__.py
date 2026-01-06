@@ -1,5 +1,6 @@
 """FortiOS CMDB - Botnet category"""
 
+from ..botnet_base import Botnet as BotnetBase
 from .stat import Stat
 
 __all__ = [
@@ -8,7 +9,7 @@ __all__ = [
 ]
 
 
-class Botnet:
+class Botnet(BotnetBase):
     """Botnet endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -17,4 +18,5 @@ class Botnet:
         Args:
             client: HTTP client instance for API communication
         """
+        super().__init__(client)  # Initialize base class with GET methods
         self.stat = Stat(client)

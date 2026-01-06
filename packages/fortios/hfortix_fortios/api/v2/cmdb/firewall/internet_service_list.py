@@ -49,6 +49,20 @@ class InternetServiceList(MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "internet_service_list"
+    
+    # ========================================================================
+    # Capabilities (from schema metadata)
+    # ========================================================================
+    SUPPORTS_CREATE = True
+    SUPPORTS_READ = True
+    SUPPORTS_UPDATE = True
+    SUPPORTS_DELETE = True
+    SUPPORTS_MOVE = True
+    SUPPORTS_CLONE = True
+    SUPPORTS_FILTERING = True
+    SUPPORTS_PAGINATION = True
+    SUPPORTS_SEARCH = False
+    SUPPORTS_SORTING = False
 
     def __init__(self, client: "IHTTPClient"):
         """Initialize InternetServiceList endpoint."""
@@ -371,42 +385,38 @@ class InternetServiceList(MetadataMixin):
         """
         # For readonly endpoints, check by fetching all items and scanning
         # This is necessary because readonly endpoints don't support direct ID queries
-        try:
-            response = self.get(vdom=vdom, raw_json=True)
+        response = self.get(vdom=vdom, raw_json=True)
+        
+        if isinstance(response, dict):
+            # Synchronous response
+            if not is_success(response):
+                return False
             
-            if isinstance(response, dict):
-                # Synchronous response
-                if not is_success(response):
+            results = response.get("results", [])
+            if not isinstance(results, list):
+                return False
+            
+            # Scan for matching identifier
+            return any(
+                item.get("id") == id
+                for item in results
+            )
+        else:
+            # Asynchronous response
+            async def _check() -> bool:
+                r = await response
+                if not is_success(r):
                     return False
                 
-                results = response.get("results", [])
+                results = r.get("results", [])
                 if not isinstance(results, list):
                     return False
                 
-                # Scan for matching identifier
                 return any(
                     item.get("id") == id
                     for item in results
                 )
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await response
-                    if not is_success(r):
-                        return False
-                    
-                    results = r.get("results", [])
-                    if not isinstance(results, list):
-                        return False
-                    
-                    return any(
-                        item.get("id") == id
-                        for item in results
-                    )
-                return _check()
-        except Exception:
-            # Error fetching list - return False
-            return False
+            return _check()
 
 
     def set(
@@ -470,5 +480,96 @@ class InternetServiceList(MetadataMixin):
         else:
             # Create new resource
             return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Action: Move
+    # ========================================================================
+    
+    def move(
+        self,
+        id: int,
+        action: Literal["before", "after"],
+        reference_id: int,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Move firewall/internet_service_list object to a new position.
+        
+        Reorders objects by moving one before or after another.
+        
+        Args:
+            id: Identifier of object to move
+            action: Move "before" or "after" reference object
+            reference_id: Identifier of reference object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Move policy 100 before policy 50
+            >>> fgt.api.cmdb.firewall_internet_service_list.move(
+            ...     id=100,
+            ...     action="before",
+            ...     reference_id=50
+            ... )
+        """
+        return self._client.request(
+            method="PUT",
+            path=f"/api/v2/cmdb/firewall/internet-service-list",
+            params={
+                "id": id,
+                "action": "move",
+                action: reference_id,
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
+
+    # ========================================================================
+    # Action: Clone
+    # ========================================================================
+    
+    def clone(
+        self,
+        id: int,
+        new_id: int,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Clone firewall/internet_service_list object.
+        
+        Creates a copy of an existing object with a new identifier.
+        
+        Args:
+            id: Identifier of object to clone
+            new_id: Identifier for the cloned object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Clone an existing object
+            >>> fgt.api.cmdb.firewall_internet_service_list.clone(
+            ...     id=1,
+            ...     new_id=100
+            ... )
+        """
+        return self._client.request(
+            method="POST",
+            path=f"/api/v2/cmdb/firewall/internet-service-list",
+            params={
+                "id": id,
+                "new_id": new_id,
+                "action": "clone",
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
 
 

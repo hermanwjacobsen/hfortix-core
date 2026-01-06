@@ -1,4 +1,5 @@
-from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union
+from typing import TypedDict, Literal, NotRequired, Any, Coroutine, Union, overload
+from hfortix_fortios.models import FortiObject
 
 # Payload TypedDict for IDE autocomplete
 class InterfacePolicyPayload(TypedDict, total=False):
@@ -45,6 +46,54 @@ class InterfacePolicy:
     Primary Key: policyid
     """
     
+    # Overloads for get() with response_mode="object"
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> list[FortiObject]: ...
+    
+    @overload
+    def get(
+        self,
+        policyid: int,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[False] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> FortiObject: ...
+    
+    @overload
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: Literal[True] = ...,
+        response_mode: Literal["object"] = ...,
+        **kwargs: Any,
+    ) -> dict[str, Any]: ...
+    
+    # Default overload for dict mode
+    @overload
     def get(
         self,
         policyid: int | None = ...,
@@ -55,8 +104,23 @@ class InterfacePolicy:
         action: str | None = ...,
         vdom: str | bool | None = ...,
         raw_json: bool = ...,
+        response_mode: Literal["dict"] | None = ...,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
+    ) -> Union[dict[str, Any], list[dict[str, Any]]]: ...
+    
+    def get(
+        self,
+        policyid: int | None = ...,
+        filter: str | None = ...,
+        range: list[int] | None = ...,
+        sort: str | None = ...,
+        format: str | None = ...,
+        action: str | None = ...,
+        vdom: str | bool | None = ...,
+        raw_json: bool = ...,
+        response_mode: str | None = ...,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def post(
         self,

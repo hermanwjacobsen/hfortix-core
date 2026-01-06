@@ -1,5 +1,6 @@
 """FortiOS CMDB - MaliciousUrls category"""
 
+from ..malicious_urls_base import MaliciousUrls as MaliciousUrlsBase
 from .stat import Stat
 
 __all__ = [
@@ -8,7 +9,7 @@ __all__ = [
 ]
 
 
-class MaliciousUrls:
+class MaliciousUrls(MaliciousUrlsBase):
     """MaliciousUrls endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -17,4 +18,5 @@ class MaliciousUrls:
         Args:
             client: HTTP client instance for API communication
         """
+        super().__init__(client)  # Initialize base class with GET methods
         self.stat = Stat(client)

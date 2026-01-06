@@ -44,6 +44,20 @@ class DeviceUpgrade(MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "device_upgrade"
+    
+    # ========================================================================
+    # Capabilities (from schema metadata)
+    # ========================================================================
+    SUPPORTS_CREATE = True
+    SUPPORTS_READ = True
+    SUPPORTS_UPDATE = True
+    SUPPORTS_DELETE = True
+    SUPPORTS_MOVE = True
+    SUPPORTS_CLONE = True
+    SUPPORTS_FILTERING = True
+    SUPPORTS_PAGINATION = True
+    SUPPORTS_SEARCH = False
+    SUPPORTS_SORTING = False
 
     def __init__(self, client: "IHTTPClient"):
         """Initialize DeviceUpgrade endpoint."""
@@ -397,20 +411,30 @@ class DeviceUpgrade(MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
+        # Try to fetch the object - 404 means it doesn't exist
         try:
-            response = self.get(serial=serial, vdom=vdom, raw_json=True)
+            response = self.get(
+                serial=serial,
+                vdom=vdom,
+                raw_json=True
+            )
             
             if isinstance(response, dict):
-                # Use helper function to check success
+                # Synchronous response - check status
                 return is_success(response)
             else:
+                # Asynchronous response
                 async def _check() -> bool:
                     r = await response
                     return is_success(r)
                 return _check()
-        except Exception:
-            # Resource not found or other error - return False
-            return False
+        except Exception as e:
+            # 404 means object doesn't exist - return False
+            # Any other error should be re-raised
+            error_str = str(e)
+            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
+                return False
+            raise
 
 
     def set(
@@ -475,4 +499,135 @@ class DeviceUpgrade(MetadataMixin):
             # Create new resource
             return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
 
+    # ========================================================================
+    # Action: Move
+    # ========================================================================
+    
+    def move(
+        self,
+        serial: str,
+        action: Literal["before", "after"],
+        reference_serial: str,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Move system/device_upgrade object to a new position.
+        
+        Reorders objects by moving one before or after another.
+        
+        Args:
+            serial: Identifier of object to move
+            action: Move "before" or "after" reference object
+            reference_serial: Identifier of reference object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Move policy 100 before policy 50
+            >>> fgt.api.cmdb.system_device_upgrade.move(
+            ...     serial=100,
+            ...     action="before",
+            ...     reference_serial=50
+            ... )
+        """
+        return self._client.request(
+            method="PUT",
+            path=f"/api/v2/cmdb/system/device-upgrade",
+            params={
+                "serial": serial,
+                "action": "move",
+                action: reference_serial,
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
+
+    # ========================================================================
+    # Action: Clone
+    # ========================================================================
+    
+    def clone(
+        self,
+        serial: str,
+        new_serial: str,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Clone system/device_upgrade object.
+        
+        Creates a copy of an existing object with a new identifier.
+        
+        Args:
+            serial: Identifier of object to clone
+            new_serial: Identifier for the cloned object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Clone an existing object
+            >>> fgt.api.cmdb.system_device_upgrade.clone(
+            ...     serial=1,
+            ...     new_serial=100
+            ... )
+        """
+        return self._client.request(
+            method="POST",
+            path=f"/api/v2/cmdb/system/device-upgrade",
+            params={
+                "serial": serial,
+                "new_serial": new_serial,
+                "action": "clone",
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
+
+    # ========================================================================
+    # Helper: Check Existence
+    # ========================================================================
+    
+    def exists(
+        self,
+        serial: str,
+        vdom: str | bool | None = None,
+    ) -> bool:
+        """
+        Check if system/device_upgrade object exists.
+        
+        Args:
+            serial: Identifier to check
+            vdom: Virtual domain name
+            
+        Returns:
+            True if object exists, False otherwise
+            
+        Example:
+            >>> # Check before creating
+            >>> if not fgt.api.cmdb.system_device_upgrade.exists(serial=1):
+            ...     fgt.api.cmdb.system_device_upgrade.post(payload_dict=data)
+        """
+        # Try to fetch the object - 404 means it doesn't exist
+        try:
+            response = self.get(
+                serial=serial,
+                vdom=vdom,
+                raw_json=True
+            )
+            # Check if response indicates success
+            return is_success(response)
+        except Exception as e:
+            # 404 means object doesn't exist - return False
+            # Any other error should be re-raised
+            error_str = str(e)
+            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
+                return False
+            raise
 

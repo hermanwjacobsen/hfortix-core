@@ -1,5 +1,6 @@
 """FortiOS CMDB - Banned category"""
 
+from ..banned_base import Banned as BannedBase
 from .add_users import AddUsers
 from .check import Check
 from .clear_all import ClearAll
@@ -14,7 +15,7 @@ __all__ = [
 ]
 
 
-class Banned:
+class Banned(BannedBase):
     """Banned endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -23,6 +24,7 @@ class Banned:
         Args:
             client: HTTP client instance for API communication
         """
+        super().__init__(client)  # Initialize base class with GET methods
         self.add_users = AddUsers(client)
         self.check = Check(client)
         self.clear_all = ClearAll(client)

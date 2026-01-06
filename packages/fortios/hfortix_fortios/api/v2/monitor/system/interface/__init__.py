@@ -1,5 +1,6 @@
 """FortiOS CMDB - Interface category"""
 
+from ..interface_base import Interface as InterfaceBase
 from .dhcp_renew import DhcpRenew
 from .dhcp_status import DhcpStatus
 from .kernel_interfaces import KernelInterfaces
@@ -24,7 +25,7 @@ __all__ = [
 ]
 
 
-class Interface:
+class Interface(InterfaceBase):
     """Interface endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -33,6 +34,7 @@ class Interface:
         Args:
             client: HTTP client instance for API communication
         """
+        super().__init__(client)  # Initialize base class with GET methods
         self.dhcp_renew = DhcpRenew(client)
         self.dhcp_status = DhcpStatus(client)
         self.kernel_interfaces = KernelInterfaces(client)

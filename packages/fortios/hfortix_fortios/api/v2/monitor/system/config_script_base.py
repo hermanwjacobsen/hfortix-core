@@ -44,6 +44,20 @@ class ConfigScript(MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "config_script"
+    
+    # ========================================================================
+    # Capabilities (from schema metadata)
+    # ========================================================================
+    SUPPORTS_CREATE = False
+    SUPPORTS_READ = True
+    SUPPORTS_UPDATE = True
+    SUPPORTS_DELETE = False
+    SUPPORTS_MOVE = False
+    SUPPORTS_CLONE = False
+    SUPPORTS_FILTERING = False
+    SUPPORTS_PAGINATION = False
+    SUPPORTS_SEARCH = False
+    SUPPORTS_SORTING = False
 
     def __init__(self, client: "IHTTPClient"):
         """Initialize ConfigScript endpoint."""
@@ -118,4 +132,47 @@ class ConfigScript(MetadataMixin):
 
 
 
+
+
+
+    # ========================================================================
+    # Helper: Check Existence
+    # ========================================================================
+    
+    def exists(
+        self,
+        name: str,
+        vdom: str | bool | None = None,
+    ) -> bool:
+        """
+        Check if system/config_script object exists.
+        
+        Args:
+            name: Name to check
+            vdom: Virtual domain name
+            
+        Returns:
+            True if object exists, False otherwise
+            
+        Example:
+            >>> # Check before creating
+            >>> if not fgt.api.monitor.system_config_script.exists(name="myobj"):
+            ...     fgt.api.monitor.system_config_script.post(payload_dict=data)
+        """
+        # Try to fetch the object - 404 means it doesn't exist
+        try:
+            response = self.get(
+                name=name,
+                vdom=vdom,
+                raw_json=True
+            )
+            # Check if response indicates success
+            return is_success(response)
+        except Exception as e:
+            # 404 means object doesn't exist - return False
+            # Any other error should be re-raised
+            error_str = str(e)
+            if '404' in error_str or 'Not Found' in error_str or 'ResourceNotFoundError' in str(type(e)):
+                return False
+            raise
 

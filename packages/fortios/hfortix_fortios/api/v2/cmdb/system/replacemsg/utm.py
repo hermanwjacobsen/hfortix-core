@@ -49,6 +49,20 @@ class Utm(MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "utm"
+    
+    # ========================================================================
+    # Capabilities (from schema metadata)
+    # ========================================================================
+    SUPPORTS_CREATE = True
+    SUPPORTS_READ = True
+    SUPPORTS_UPDATE = True
+    SUPPORTS_DELETE = True
+    SUPPORTS_MOVE = True
+    SUPPORTS_CLONE = True
+    SUPPORTS_FILTERING = True
+    SUPPORTS_PAGINATION = True
+    SUPPORTS_SEARCH = False
+    SUPPORTS_SORTING = False
 
     def __init__(self, client: "IHTTPClient"):
         """Initialize Utm endpoint."""
@@ -383,42 +397,38 @@ class Utm(MetadataMixin):
         """
         # For readonly endpoints, check by fetching all items and scanning
         # This is necessary because readonly endpoints don't support direct ID queries
-        try:
-            response = self.get(vdom=vdom, raw_json=True)
+        response = self.get(vdom=vdom, raw_json=True)
+        
+        if isinstance(response, dict):
+            # Synchronous response
+            if not is_success(response):
+                return False
             
-            if isinstance(response, dict):
-                # Synchronous response
-                if not is_success(response):
+            results = response.get("results", [])
+            if not isinstance(results, list):
+                return False
+            
+            # Scan for matching identifier
+            return any(
+                item.get("msg-type") == msg_type
+                for item in results
+            )
+        else:
+            # Asynchronous response
+            async def _check() -> bool:
+                r = await response
+                if not is_success(r):
                     return False
                 
-                results = response.get("results", [])
+                results = r.get("results", [])
                 if not isinstance(results, list):
                     return False
                 
-                # Scan for matching identifier
                 return any(
                     item.get("msg-type") == msg_type
                     for item in results
                 )
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await response
-                    if not is_success(r):
-                        return False
-                    
-                    results = r.get("results", [])
-                    if not isinstance(results, list):
-                        return False
-                    
-                    return any(
-                        item.get("msg-type") == msg_type
-                        for item in results
-                    )
-                return _check()
-        except Exception:
-            # Error fetching list - return False
-            return False
+            return _check()
 
 
     def set(
@@ -482,5 +492,96 @@ class Utm(MetadataMixin):
         else:
             # Create new resource
             return self.post(payload_dict=payload_dict, vdom=vdom, **kwargs)
+
+    # ========================================================================
+    # Action: Move
+    # ========================================================================
+    
+    def move(
+        self,
+        msg_type: str,
+        action: Literal["before", "after"],
+        reference_msg_type: str,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Move system/replacemsg/utm object to a new position.
+        
+        Reorders objects by moving one before or after another.
+        
+        Args:
+            msg_type: Identifier of object to move
+            action: Move "before" or "after" reference object
+            reference_msg_type: Identifier of reference object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Move policy 100 before policy 50
+            >>> fgt.api.cmdb.system_replacemsg_utm.move(
+            ...     msg_type=100,
+            ...     action="before",
+            ...     reference_msg_type=50
+            ... )
+        """
+        return self._client.request(
+            method="PUT",
+            path=f"/api/v2/cmdb/system.replacemsg/utm",
+            params={
+                "msg-type": msg_type,
+                "action": "move",
+                action: reference_msg_type,
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
+
+    # ========================================================================
+    # Action: Clone
+    # ========================================================================
+    
+    def clone(
+        self,
+        msg_type: str,
+        new_msg_type: str,
+        vdom: str | bool | None = None,
+        **kwargs: Any,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Clone system/replacemsg/utm object.
+        
+        Creates a copy of an existing object with a new identifier.
+        
+        Args:
+            msg_type: Identifier of object to clone
+            new_msg_type: Identifier for the cloned object
+            vdom: Virtual domain name
+            **kwargs: Additional parameters
+            
+        Returns:
+            API response dictionary
+            
+        Example:
+            >>> # Clone an existing object
+            >>> fgt.api.cmdb.system_replacemsg_utm.clone(
+            ...     msg_type=1,
+            ...     new_msg_type=100
+            ... )
+        """
+        return self._client.request(
+            method="POST",
+            path=f"/api/v2/cmdb/system.replacemsg/utm",
+            params={
+                "msg-type": msg_type,
+                "new_msg-type": new_msg_type,
+                "action": "clone",
+                "vdom": vdom,
+                **kwargs,
+            },
+        )
 
 

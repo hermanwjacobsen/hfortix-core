@@ -1,5 +1,6 @@
 """FortiOS CMDB - Client category"""
 
+from ..client_base import Client as ClientBase
 from .disassociate import Disassociate
 
 __all__ = [
@@ -8,7 +9,7 @@ __all__ = [
 ]
 
 
-class Client:
+class Client(ClientBase):
     """Client endpoints wrapper for CMDB API."""
 
     def __init__(self, client):
@@ -17,4 +18,5 @@ class Client:
         Args:
             client: HTTP client instance for API communication
         """
+        super().__init__(client)  # Initialize base class with GET methods
         self.disassociate = Disassociate(client)

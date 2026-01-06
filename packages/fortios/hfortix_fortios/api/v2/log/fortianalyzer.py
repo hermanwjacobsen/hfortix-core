@@ -53,7 +53,18 @@ class FortianalyzerAnomaly:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get anomaly logs."""
+        """
+        Get anomaly logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/anomaly/raw", **kwargs)
 
 
@@ -67,7 +78,18 @@ class FortianalyzerAppCtrl:
         self.archive_download = FortianalyzerAppCtrlArchiveDownload(client, "app-ctrl")
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get app_ctrl logs."""
+        """
+        Get app_ctrl logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/app-ctrl/raw", **kwargs)
 
 
@@ -80,7 +102,15 @@ class FortianalyzerAppCtrlArchive:
         self._type = type_value
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get archive for {self._type}."""
+        """
+        Get archive data for this log type.
+        
+        Args:
+            **kwargs: Additional query parameters
+        
+        Returns:
+            Dict containing archive data
+        """
         return self._client.get("log", "/log/fortianalyzer/app-ctrl/archive", **kwargs)
 
 
@@ -93,7 +123,15 @@ class FortianalyzerAppCtrlArchiveDownload:
         self._type = type_value
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get archive-download for {self._type}."""
+        """
+        Get archive-download data for this log type.
+        
+        Args:
+            **kwargs: Additional query parameters
+        
+        Returns:
+            Dict containing archive-download data
+        """
         return self._client.get("log", "/log/fortianalyzer/app-ctrl/archive-download", **kwargs)
 
 
@@ -105,7 +143,18 @@ class FortianalyzerCifs:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get cifs logs."""
+        """
+        Get cifs logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/cifs/raw", **kwargs)
 
 
@@ -117,7 +166,18 @@ class FortianalyzerDlp:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get dlp logs."""
+        """
+        Get dlp logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/dlp/raw", **kwargs)
 
 
@@ -129,7 +189,18 @@ class FortianalyzerDns:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get dns logs."""
+        """
+        Get dns logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/dns/raw", **kwargs)
 
 
@@ -141,7 +212,18 @@ class FortianalyzerEmailfilter:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get emailfilter logs."""
+        """
+        Get emailfilter logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/emailfilter/raw", **kwargs)
 
 
@@ -174,7 +256,19 @@ class FortianalyzerEventComplianceCheck:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get compliance-check event logs."""
+        """
+        Get compliance-check event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -187,7 +281,19 @@ class FortianalyzerEventConnector:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get connector event logs."""
+        """
+        Get connector event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -200,7 +306,19 @@ class FortianalyzerEventEndpoint:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get endpoint event logs."""
+        """
+        Get endpoint event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -213,7 +331,19 @@ class FortianalyzerEventFortiextender:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get fortiextender event logs."""
+        """
+        Get fortiextender event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -226,7 +356,19 @@ class FortianalyzerEventHa:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get ha event logs."""
+        """
+        Get ha event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -239,7 +381,19 @@ class FortianalyzerEventRouter:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get router event logs."""
+        """
+        Get router event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -252,7 +406,19 @@ class FortianalyzerEventSecurityRating:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get security-rating event logs."""
+        """
+        Get security-rating event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -265,7 +431,19 @@ class FortianalyzerEventSystem:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get system event logs."""
+        """
+        Get system event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -278,7 +456,19 @@ class FortianalyzerEventUser:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get user event logs."""
+        """
+        Get user event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -291,7 +481,19 @@ class FortianalyzerEventVpn:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get vpn event logs."""
+        """
+        Get vpn event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -304,7 +506,19 @@ class FortianalyzerEventWad:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get wad event logs."""
+        """
+        Get wad event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -317,7 +531,19 @@ class FortianalyzerEventWireless:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get wireless event logs."""
+        """
+        Get wireless event logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/event/{self._subtype}/raw", **kwargs)
 
 
@@ -329,7 +555,18 @@ class FortianalyzerFileFilter:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get file_filter logs."""
+        """
+        Get file_filter logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/file-filter/raw", **kwargs)
 
 
@@ -341,7 +578,18 @@ class FortianalyzerGtp:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get gtp logs."""
+        """
+        Get gtp logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/gtp/raw", **kwargs)
 
 
@@ -355,7 +603,18 @@ class FortianalyzerIps:
         self.archive_download = FortianalyzerIpsArchiveDownload(client, "ips")
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get ips logs."""
+        """
+        Get ips logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/ips/raw", **kwargs)
 
 
@@ -368,7 +627,15 @@ class FortianalyzerIpsArchive:
         self._type = type_value
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get archive for {self._type}."""
+        """
+        Get archive data for this log type.
+        
+        Args:
+            **kwargs: Additional query parameters
+        
+        Returns:
+            Dict containing archive data
+        """
         return self._client.get("log", "/log/fortianalyzer/ips/archive", **kwargs)
 
 
@@ -381,7 +648,15 @@ class FortianalyzerIpsArchiveDownload:
         self._type = type_value
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get archive-download for {self._type}."""
+        """
+        Get archive-download data for this log type.
+        
+        Args:
+            **kwargs: Additional query parameters
+        
+        Returns:
+            Dict containing archive-download data
+        """
         return self._client.get("log", "/log/fortianalyzer/ips/archive-download", **kwargs)
 
 
@@ -393,7 +668,18 @@ class FortianalyzerSsh:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get ssh logs."""
+        """
+        Get ssh logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/ssh/raw", **kwargs)
 
 
@@ -405,7 +691,18 @@ class FortianalyzerSsl:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get ssl logs."""
+        """
+        Get ssl logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/ssl/raw", **kwargs)
 
 
@@ -432,7 +729,19 @@ class FortianalyzerTrafficFortiview:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get fortiview traffic logs."""
+        """
+        Get fortiview traffic logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
@@ -445,7 +754,19 @@ class FortianalyzerTrafficForward:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get forward traffic logs."""
+        """
+        Get forward traffic logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
@@ -458,7 +779,19 @@ class FortianalyzerTrafficLocal:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get local traffic logs."""
+        """
+        Get local traffic logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
@@ -471,7 +804,19 @@ class FortianalyzerTrafficMulticast:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get multicast traffic logs."""
+        """
+        Get multicast traffic logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
@@ -484,7 +829,19 @@ class FortianalyzerTrafficSniffer:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get sniffer traffic logs."""
+        """
+        Get sniffer traffic logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
@@ -497,7 +854,19 @@ class FortianalyzerTrafficThreat:
         self._subtype = subtype
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get threat traffic logs."""
+        """
+        Get threat traffic logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return (default: 100)
+                session_id (int): Session ID for paginated retrieval
+                filter (str): Filter expression (e.g., "srcip==192.168.1.1")
+                serial_no (str): Retrieve logs from specific device
+        
+        Returns:
+            Dict with log records and metadata
+        """
         return self._client.get("log", f"/log/fortianalyzer/traffic/{self._subtype}/raw", **kwargs)
 
 
@@ -509,7 +878,18 @@ class FortianalyzerVirus:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get virus logs."""
+        """
+        Get virus logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/virus/raw", **kwargs)
 
 
@@ -521,7 +901,18 @@ class FortianalyzerVoip:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get voip logs."""
+        """
+        Get voip logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/voip/raw", **kwargs)
 
 
@@ -533,7 +924,18 @@ class FortianalyzerWaf:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get waf logs."""
+        """
+        Get waf logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/waf/raw", **kwargs)
 
 
@@ -545,5 +947,16 @@ class FortianalyzerWebfilter:
         self._client = client
 
     def get(self, **kwargs: Any) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """Get webfilter logs."""
+        """
+        Get webfilter logs.
+        
+        Args:
+            **kwargs: Query parameters:
+                rows (int): Number of log rows to return
+                session_id (int): Session ID for continued retrieval
+                filter (str): Filter expression(s)
+        
+        Returns:
+            Dict containing log records
+        """
         return self._client.get("log", "/log/fortianalyzer/webfilter/raw", **kwargs)

@@ -7,6 +7,227 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### ✨ Improved LOG Endpoint Generation (2026-01-06)
+
+**Enhanced log endpoints with modern patterns and proper stub file organization.**
+
+#### Changed
+
+- **Improved LOG Endpoint Generator**
+  - Enhanced docstrings with detailed parameter documentation
+  - Added modern type hints (`Union[dict, Coroutine]` for sync/async support)
+  - Better documentation for query parameters (rows, session_id, filter, serial_no)
+  - Consistent code patterns with other endpoint generators
+  - Clearer class and method documentation
+
+- **Fixed .pyi Stub File Organization**
+  - LOG endpoint stubs now correctly placed in `fortios-stubs` package only
+  - Removed `.pyi` files from main `fortios` package
+  - Updated LogEndpointGenerator to respect `stubs_dir` parameter
+  - Proper separation of runtime code and type hints
+
+- **Enhanced Documentation Quality**
+  - All `get()` methods now include comprehensive docstrings
+  - Parameter documentation with types and descriptions
+  - Return type documentation
+  - Usage examples in module docstrings
+
+#### Technical Details
+
+- Updated `LogEndpointGenerator` constructor to accept `stubs_dir` parameter
+- Modified stub generation methods to write to correct location
+- Improved cleanup process to handle both main package and stubs
+- Generated 6 log endpoint modules with 38 total endpoints
+
+### 🎨 Enhanced Type Stubs for Object Response Mode (2026-01-06)
+
+**Comprehensive IDE autocomplete support for FortiObject with overloaded type hints.**
+
+#### Added
+
+- **Type Stub for FortiObject** (`models.pyi`)
+  - Complete type hints for all FortiObject methods
+  - Overloaded `process_response()` function with accurate return types
+  - Proper TypeVar and Generic support for type safety
+  - Full docstrings for IDE tooltips
+
+- **Overloaded Method Signatures** in endpoint .pyi files
+  - 4 overloads for `get()` method based on `response_mode` parameter:
+    - `response_mode="object"` with `raw_json=False` → `list[FortiObject]`
+    - `response_mode="object"` with specific ID → `FortiObject`
+    - `response_mode="object"` with `raw_json=True` → `dict[str, Any]`
+    - `response_mode="dict"` (default) → `Union[dict, list[dict]]`
+  - IDE now provides exact return type based on parameters
+  - Perfect type inference for mypy, pylint, and IDE type checkers
+
+- **FortiObject Export** in `__init__.pyi`
+  - Added `FortiObject` to main package exports
+  - Proper import statement for IDE autocomplete
+  - Included in `__all__` list for wildcard imports
+
+- **Demo File** - `examples/fortiobject_autocomplete_demo.py`
+  - Comprehensive examples of FortiObject usage
+  - 6 different usage patterns with detailed comments
+  - Shows IDE autocomplete in action
+  - Demonstrates type checking benefits
+
+#### Changed
+
+- **Updated endpoint_class.pyi.j2 template**
+  - Added `overload` import from typing
+  - Added `FortiObject` import from hfortix_fortios.models
+  - Replaced single `get()` signature with 4 overloaded versions
+  - Enhanced type hints for better IDE support
+
+- **Regenerated endpoint stubs** with new type hints
+  - All 1,065 endpoint .pyi files now include FortiObject overloads
+  - Perfect IDE autocomplete for response_mode parameter
+  - Type checkers can now validate correct usage
+
+#### Impact
+
+**Developer Experience Improvements:**
+- ✨ **Full IDE autocomplete** for FortiObject methods
+  - Typing `addr.` shows: name, subnet, get_full(), to_dict(), keys(), values(), items(), get()
+  - No need to remember dict key names
+  - Cleaner, more Pythonic code
+
+- 🛡️ **Type Safety**
+  - IDE shows exact return type based on response_mode
+  - mypy catches incorrect response_mode usage
+  - Prevents runtime type errors
+
+- 📝 **Self-Documenting Code**
+  - Type hints show which mode returns what
+  - Tooltips show FortiObject method signatures
+  - Better code readability
+
+**Example IDE Experience:**
+```python
+# IDE knows exact return type!
+addr: FortiObject = fgt.api.cmdb.firewall.address.get(
+    name="test",
+    response_mode="object"  # ← IDE autocompletes "object" | "dict"
+)
+
+# Attribute access with full autocomplete
+addr.name      # ← IDE suggests: name, subnet, type, comment, ...
+addr.get_full  # ← IDE suggests: get_full(), get(), to_dict(), keys(), ...
+addr.to_dict() # ← IDE knows return type is dict[str, Any]
+```
+
+#### Files Modified
+
+- `packages/fortios-stubs/hfortix_fortios-stubs/models.pyi` - New file
+- `packages/fortios-stubs/hfortix_fortios-stubs/__init__.pyi` - Added FortiObject export
+- `.dev/generator/templates/endpoint_class.pyi.j2` - Added overloaded signatures
+- `examples/fortiobject_autocomplete_demo.py` - New demo file
+
+#### Documentation
+
+- Created comprehensive demo file showing all FortiObject features
+- Updated README.md with Object Response Mode section
+- Documented all FortiObject methods with examples
+- Added type checking examples
+
+### 🚀 Major Code Generation Overhaul (2026-01-06)
+
+**Complete endpoint generation system with Pydantic models, capabilities metadata, and action methods.**
+
+#### Added
+
+- **Pydantic Model Generator** - Runtime validation for all FortiOS configurations
+  - Automatic generation of Pydantic models from schema files
+  - Field validation with constraints (max_length, min/max values, patterns)
+  - Type safety with proper type hints (str, int, bool, Literal types)
+  - Helper methods: `to_fortios_dict()`, `from_fortios_response()`
+  - Generated 1,065 Pydantic models (parallel to API endpoints)
+  - Models stored in `api/models/` directory structure
+  - Total size: ~15 MB of validated model code
+
+- **Endpoint Capabilities Metadata** - Schema-driven feature detection
+  - Automatic extraction of CRUD capabilities from schema metadata
+  - Class constants for all endpoints:
+    - `SUPPORTS_CREATE`, `SUPPORTS_READ`, `SUPPORTS_UPDATE`, `SUPPORTS_DELETE`
+    - `SUPPORTS_MOVE`, `SUPPORTS_CLONE`
+    - `SUPPORTS_FILTERING`, `SUPPORTS_PAGINATION`, `SUPPORTS_SEARCH`, `SUPPORTS_SORTING`
+  - Enables runtime capability checks before API calls
+  - Example: `if endpoint.SUPPORTS_MOVE: endpoint.move(...)`
+
+- **Action Methods** - move(), clone(), exists() for all endpoints
+  - `move()` method for endpoints with position-based ordering
+    - Parameters: primary_key, action ("before"/"after"), reference_id
+    - Supports both synchronous and asynchronous operations
+  - `clone()` method for endpoints supporting object duplication
+    - Parameters: source_id, destination_id
+    - Automatic payload generation
+  - `exists()` method for all endpoints
+    - Returns True/False for object existence
+    - Handles 404 errors gracefully (returns False)
+    - Re-raises other errors (network, auth) for debugging
+    - Supports both synchronous and asynchronous operations
+
+- **Enhanced Schema Parser** - Capabilities extraction
+  - New `EndpointCapabilities` dataclass with CRUD, actions, features
+  - Automatic detection from schema `mkey_type`, `readonly` flags
+  - Move/clone support based on schema metadata
+  - Feature detection (filtering, pagination, search, sorting)
+
+#### Changed
+
+- **Code Generator Integration**
+  - Integrated ModelGenerator into main generate.py workflow
+  - Three generation points: single endpoint, category batch, full regeneration
+  - Models generated alongside endpoints, validators, stubs, tests
+  - Parallel directory structure: `api/v2/` and `api/models/`
+
+- **Template Updates** - endpoint_class.py.j2
+  - Added capabilities constants section (lines 72-86)
+  - Added move() method template (lines 350-420)
+  - Added clone() method template (lines 422-490)
+  - Fixed exists() method to handle 404 errors properly (lines 466-590, 824-876)
+  - Removed Jinja2 whitespace stripping (`{%-`) to fix syntax errors
+
+- **Test Generation** - Enhanced auto-generated tests
+  - Tests for exists() method (both existing and non-existent items)
+  - Tests for action methods (move, clone) when supported
+  - Validator import and usage tests
+  - Enum validation tests
+
+#### Fixed
+
+- **Syntax Errors** - Jinja2 template whitespace issue
+  - Problem: `{%-` was stripping all newlines, creating single-line constant definitions
+  - Impact: 1,065 endpoint files had syntax errors
+  - Fix: Removed `-` from control statements to preserve proper formatting
+  - Result: All constants now on separate lines with proper indentation
+
+- **Import Errors** - Missing cmdb/cmdb/__init__.py
+  - Problem: `AttributeError: module 'hfortix_fortios.api.v2.cmdb.cmdb' has no attribute 'CMDB'`
+  - Cause: Schema organization quirk (schema in cmdb/cmdb/ but generates to cmdb/firewall/)
+  - Fix: Created placeholder `__init__.py` with empty CMDB class
+  - Result: All imports working correctly
+
+- **exists() Method Exceptions** - 404 handling
+  - Problem: exists() raised ResourceNotFoundError instead of returning False
+  - Impact: Tests expecting False got exceptions
+  - Fix: Catch 404 errors specifically, re-raise other errors
+  - Result: exists() returns False for non-existent objects, raises for real errors
+
+#### Testing
+
+- **All 1,065 endpoints regenerated** with new features
+- **All tests passing** (firewall.address: 10/10, system.global: 8/8, firewall.policy: 10/10)
+- **561 CMDB Pydantic models** generated (4.53 MB)
+- **Full test coverage** for capabilities, action methods, validators, enums
+
+#### Documentation
+
+- Created `PHASE3_COMPLETE.md` - Integration completion summary
+- Created `TEST_FAILURES_FIXED.md` - Issue resolution documentation
+- Updated generator templates with inline documentation
+- Enhanced docstrings for all generated methods
+
 ### 🎯 Literal Types for IDE Autocomplete (2026-01-06)
 
 **Massive Developer Experience Enhancement: 15,000+ parameters now have IDE autocomplete with Literal types.**
