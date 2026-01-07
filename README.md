@@ -9,12 +9,12 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.5**
+> **⚠️ BETA STATUS - Version 0.5.6**
 >
-> - **Current Version**: 0.5.5 (In Development - January 6, 2026)
+> - **Current Version**: 0.5.6 (Released - January 7, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~45 MB (includes Pydantic models)
-> - **Implementation**: Advanced Features (95% complete) - Production ready!
+> - **Implementation**: Advanced Features (100% complete) - Production ready!
 > - **Install**: `pip install hfortix[fortios]` or `pip install hfortix-fortios`
 >
 > **📊 Implementation Status:** **All major features complete!** See details below.
@@ -32,23 +32,26 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 ✅ **Completed (100%):**
 - ✅ **Schema v1.7.0**: 1,351 endpoints with capabilities, complexity, relationships
 - ✅ **Basic API Classes**: 1,065 endpoint files with full CRUD methods
-- ✅ **Pydantic Models**: 1,065 model files with runtime validation (NEW! ✨)
-- ✅ **Capabilities Metadata**: All endpoints expose SUPPORTS_* constants (NEW! ✨)
-- ✅ **Action Methods**: move(), clone(), exists() for all endpoints (NEW! ✨)
+- ✅ **Pydantic Models**: 1,065 model files with runtime validation
+- ✅ **Capabilities Metadata**: All endpoints expose SUPPORTS_* constants
+- ✅ **Action Methods**: move(), clone(), exists() for all endpoints
 - ✅ **Type Hints**: Full type annotations with Literal types for enums
 - ✅ **Validators**: 260+ validation helper modules with field constraints
-- ✅ **Type Stubs**: Complete .pyi files with endpoint relationship docs (NEW! 🔗)
+- ✅ **Type Stubs**: Complete .pyi files with endpoint relationship docs
+- ✅ **Query Parameters**: Enhanced filter, count, start on all CMDB endpoints (NEW! ✨)
+- ✅ **Schema Introspection**: Runtime get_schema() method (NEW! ✨)
 - ✅ **Docstrings**: Comprehensive documentation with examples
 - ✅ **Tests**: 1,065+ auto-generated test files - all passing ✅
 
-**Overall Progress: 95% Complete** (Production Ready!)
+**Overall Progress: 100% Complete** (Production Ready!)
 - Schema & Infrastructure: ✅ 100%
 - Basic API Generation: ✅ 100%
 - Advanced Features (Pydantic, validation, capabilities): ✅ 100%
-- Documentation: ✅ 95%
-- Final polish & release: 🔄 5%
+- IDE Improvements (query params, schema introspection): ✅ 100%
+- Documentation: ✅ 100%
+- Release: ✅ 100%
 
-**Next Steps:** Final documentation review, version bump to 0.5.5, PyPI release
+**Latest Release:** v0.5.6 - Major IDE improvements with enhanced query parameters and schema introspection
 
 **Test Coverage:** **All 1,065 endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
@@ -63,20 +66,27 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - ✅ **Proper Stub Organization**: All .pyi files correctly placed in stubs package only
 - 📊 **Coverage**: 6 log endpoint modules with 38 total endpoints (disk, memory, fortianalyzer, forticloud, search)
 
-**�🔥 Recent Highlights (January 2026):**
+**🔥 Recent Highlights (January 2026):**
 
-- 🔗 **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (January 7, 2026)
+- � **MAJOR IDE IMPROVEMENTS**: Enhanced query parameters & schema introspection! (January 7, 2026 - v0.5.6)
+  - ⚡ **get_schema() method**: Runtime access to endpoint schema metadata
+  - 🔍 **Advanced filtering**: 18+ operators (==, !=, =@, !@, <=, >=, etc.) with type-safe lists
+  - 📊 **Pagination support**: count and start parameters for result limiting
+  - 💡 **Enhanced autocomplete**: Full IDE support with inline documentation
+  - ✅ 561/561 CMDB endpoints updated with new capabilities
+  - 📚 Comprehensive documentation with 40+ examples
+- �🔗 **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (January 7, 2026)
   - ⚡ See what resources each endpoint depends on (forward dependencies)
   - 🔍 Field-level mappings: Know which fields reference which endpoints
   - 🎯 RST cross-references: Ctrl+Click to navigate between related endpoints
   - 📚 Smart truncation: Top 10 dependencies shown, then "... and X more"
   - ✅ All 562 CMDB endpoints include relationship documentation
-- � **LITERAL TYPES FOR IDE AUTOCOMPLETE**: 15,000+ parameters with enum autocomplete! (January 6, 2026)
+- 🎨 **LITERAL TYPES FOR IDE AUTOCOMPLETE**: 15,000+ parameters with enum autocomplete! (January 6, 2026)
   - ⚡ Instant IDE suggestions for all enum fields (action, status, protocol, etc.)
   - 🛡️ Type safety: Invalid values caught at type-check time
   - 📚 Self-documenting: See all valid options in IDE tooltips
   - ✅ 100% backward compatible - no breaking changes
-- �🎉 **v0.5.4 METADATAMIXIN REFACTORING**: 53% total package size reduction (64 MB → 30 MB)!
+- 🎉 **v0.5.4 METADATAMIXIN REFACTORING**: 53% total package size reduction (64 MB → 30 MB)!
 - ♻️ **CODE DEDUPLICATION**: Eliminated ~160K lines of duplicate metadata methods
 - 📦 **OPTIMIZED PACKAGE**: Two-phase optimization (stub separation + mixin refactoring)
 - 🚀 **v0.5.0 COMPLETE REGENERATION**: All 1,219 endpoints regenerated from scratch!

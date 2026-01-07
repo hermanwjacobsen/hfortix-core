@@ -1,6 +1,8 @@
-# HFortix - Quick Reference (v0.5.0-beta)
+# HFortix - Quick Reference (v0.5.6-beta)
 
 ⚠️ **Breaking Changes in v0.5.0**: Convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead.
+
+✨ **New in v0.5.6**: Enhanced query parameters and runtime schema introspection for all CMDB endpoints!
 
 ## Installation
 
