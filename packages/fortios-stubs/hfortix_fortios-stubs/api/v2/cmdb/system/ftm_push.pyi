@@ -6,7 +6,15 @@ class FtmPushPayload(TypedDict, total=False):
     """
     Type hints for system/ftm_push payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure FortiToken Mobile push services.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.certificate.local.LocalEndpoint` (via: server-cert)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
+
+    **Usage:**
         payload: FtmPushPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -33,7 +41,10 @@ class FtmPush:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -48,7 +59,10 @@ class FtmPush:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -63,7 +77,10 @@ class FtmPush:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -79,7 +96,10 @@ class FtmPush:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -93,7 +113,10 @@ class FtmPush:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -103,6 +126,12 @@ class FtmPush:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

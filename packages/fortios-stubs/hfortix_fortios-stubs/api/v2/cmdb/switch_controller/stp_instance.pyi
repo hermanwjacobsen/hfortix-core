@@ -6,7 +6,9 @@ class StpInstancePayload(TypedDict, total=False):
     """
     Type hints for switch_controller/stp_instance payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure FortiSwitch multiple spanning tree protocol (MSTP) instances.
+    
+    **Usage:**
         payload: StpInstancePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -29,7 +31,10 @@ class StpInstance:
     def get(
         self,
         id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -44,7 +49,10 @@ class StpInstance:
     def get(
         self,
         id: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -59,7 +67,10 @@ class StpInstance:
     def get(
         self,
         id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -75,7 +86,10 @@ class StpInstance:
     def get(
         self,
         id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -89,7 +103,10 @@ class StpInstance:
     def get(
         self,
         id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -99,6 +116,12 @@ class StpInstance:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

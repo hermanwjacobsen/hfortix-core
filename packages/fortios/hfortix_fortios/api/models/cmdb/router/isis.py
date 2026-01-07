@@ -340,7 +340,517 @@ class IsisModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_auth_keychain_l1_references(self, client: Any) -> list[str]:
+        """
+        Validate auth_keychain_l1 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/key-chain        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     auth_keychain_l1="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_auth_keychain_l1_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "auth_keychain_l1", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.router.key-chain.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Auth-Keychain-L1 '{value}' not found in "
+                "router/key-chain"
+            )        
+        return errors    
+    async def validate_auth_keychain_l2_references(self, client: Any) -> list[str]:
+        """
+        Validate auth_keychain_l2 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/key-chain        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     auth_keychain_l2="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_auth_keychain_l2_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "auth_keychain_l2", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.router.key-chain.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Auth-Keychain-L2 '{value}' not found in "
+                "router/key-chain"
+            )        
+        return errors    
+    async def validate_redistribute_l1_list_references(self, client: Any) -> list[str]:
+        """
+        Validate redistribute_l1_list references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/access-list        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     redistribute_l1_list="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_redistribute_l1_list_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "redistribute_l1_list", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.router.access-list.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Redistribute-L1-List '{value}' not found in "
+                "router/access-list"
+            )        
+        return errors    
+    async def validate_redistribute_l2_list_references(self, client: Any) -> list[str]:
+        """
+        Validate redistribute_l2_list references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/access-list        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     redistribute_l2_list="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_redistribute_l2_list_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "redistribute_l2_list", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.router.access-list.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Redistribute-L2-List '{value}' not found in "
+                "router/access-list"
+            )        
+        return errors    
+    async def validate_redistribute6_l1_list_references(self, client: Any) -> list[str]:
+        """
+        Validate redistribute6_l1_list references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/access-list6        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     redistribute6_l1_list="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_redistribute6_l1_list_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "redistribute6_l1_list", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.router.access-list6.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Redistribute6-L1-List '{value}' not found in "
+                "router/access-list6"
+            )        
+        return errors    
+    async def validate_redistribute6_l2_list_references(self, client: Any) -> list[str]:
+        """
+        Validate redistribute6_l2_list references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/access-list6        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     redistribute6_l2_list="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_redistribute6_l2_list_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "redistribute6_l2_list", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.router.access-list6.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Redistribute6-L2-List '{value}' not found in "
+                "router/access-list6"
+            )        
+        return errors    
+    async def validate_isis_interface_references(self, client: Any) -> list[str]:
+        """
+        Validate isis_interface references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/key-chain        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     isis_interface=[{"auth-keychain-l2": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_isis_interface_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "isis_interface", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("auth-keychain-l2")
+            else:
+                value = getattr(item, "auth-keychain-l2", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.router.key-chain.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Isis-Interface '{value}' not found in "
+                    "router/key-chain"
+                )        
+        return errors    
+    async def validate_redistribute_references(self, client: Any) -> list[str]:
+        """
+        Validate redistribute references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/route-map        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     redistribute=[{"routemap": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_redistribute_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "redistribute", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("routemap")
+            else:
+                value = getattr(item, "routemap", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.router.route-map.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Redistribute '{value}' not found in "
+                    "router/route-map"
+                )        
+        return errors    
+    async def validate_redistribute6_references(self, client: Any) -> list[str]:
+        """
+        Validate redistribute6 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - router/route-map        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = IsisModel(
+            ...     redistribute6=[{"routemap": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_redistribute6_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "redistribute6", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("routemap")
+            else:
+                value = getattr(item, "routemap", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.router.route-map.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Redistribute6 '{value}' not found in "
+                    "router/route-map"
+                )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_auth_keychain_l1_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_auth_keychain_l2_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_redistribute_l1_list_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_redistribute_l2_list_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_redistribute6_l1_list_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_redistribute6_l2_list_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_isis_interface_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_redistribute_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_redistribute6_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -359,5 +869,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:35.004780Z
+# Generated: 2026-01-07T01:42:14.906997Z
 # ============================================================================

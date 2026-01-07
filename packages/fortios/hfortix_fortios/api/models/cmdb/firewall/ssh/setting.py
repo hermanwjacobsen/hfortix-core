@@ -208,7 +208,439 @@ class SettingModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_caname_references(self, client: Any) -> list[str]:
+        """
+        Validate caname references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-ca        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     caname="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_caname_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "caname", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-ca.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Caname '{value}' not found in "
+                "firewall/ssh/local-ca"
+            )        
+        return errors    
+    async def validate_untrusted_caname_references(self, client: Any) -> list[str]:
+        """
+        Validate untrusted_caname references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-ca        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     untrusted_caname="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_untrusted_caname_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "untrusted_caname", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-ca.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Untrusted-Caname '{value}' not found in "
+                "firewall/ssh/local-ca"
+            )        
+        return errors    
+    async def validate_hostkey_rsa2048_references(self, client: Any) -> list[str]:
+        """
+        Validate hostkey_rsa2048 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-key        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     hostkey_rsa2048="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_hostkey_rsa2048_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "hostkey_rsa2048", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Hostkey-Rsa2048 '{value}' not found in "
+                "firewall/ssh/local-key"
+            )        
+        return errors    
+    async def validate_hostkey_dsa1024_references(self, client: Any) -> list[str]:
+        """
+        Validate hostkey_dsa1024 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-key        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     hostkey_dsa1024="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_hostkey_dsa1024_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "hostkey_dsa1024", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Hostkey-Dsa1024 '{value}' not found in "
+                "firewall/ssh/local-key"
+            )        
+        return errors    
+    async def validate_hostkey_ecdsa256_references(self, client: Any) -> list[str]:
+        """
+        Validate hostkey_ecdsa256 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-key        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     hostkey_ecdsa256="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_hostkey_ecdsa256_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "hostkey_ecdsa256", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Hostkey-Ecdsa256 '{value}' not found in "
+                "firewall/ssh/local-key"
+            )        
+        return errors    
+    async def validate_hostkey_ecdsa384_references(self, client: Any) -> list[str]:
+        """
+        Validate hostkey_ecdsa384 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-key        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     hostkey_ecdsa384="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_hostkey_ecdsa384_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "hostkey_ecdsa384", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Hostkey-Ecdsa384 '{value}' not found in "
+                "firewall/ssh/local-key"
+            )        
+        return errors    
+    async def validate_hostkey_ecdsa521_references(self, client: Any) -> list[str]:
+        """
+        Validate hostkey_ecdsa521 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-key        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     hostkey_ecdsa521="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_hostkey_ecdsa521_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "hostkey_ecdsa521", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Hostkey-Ecdsa521 '{value}' not found in "
+                "firewall/ssh/local-key"
+            )        
+        return errors    
+    async def validate_hostkey_ed25519_references(self, client: Any) -> list[str]:
+        """
+        Validate hostkey_ed25519 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/ssh/local-key        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     hostkey_ed25519="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_hostkey_ed25519_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "hostkey_ed25519", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Hostkey-Ed25519 '{value}' not found in "
+                "firewall/ssh/local-key"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_caname_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_untrusted_caname_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_hostkey_rsa2048_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_hostkey_dsa1024_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_hostkey_ecdsa256_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_hostkey_ecdsa384_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_hostkey_ecdsa521_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_hostkey_ed25519_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -227,5 +659,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:35.912163Z
+# Generated: 2026-01-07T01:42:16.018990Z
 # ============================================================================

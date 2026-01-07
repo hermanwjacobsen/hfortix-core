@@ -6,7 +6,24 @@ class VapPayload(TypedDict, total=False):
     """
     Type hints for wireless_controller/vap payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure Virtual Access Points (VAPs).
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.antivirus.profile.ProfileEndpoint` (via: antivirus-profile)
+        - :class:`~.application.list.ListEndpoint` (via: application-list)
+        - :class:`~.firewall.addrgrp.AddrgrpEndpoint` (via: address-group)
+        - :class:`~.ips.sensor.SensorEndpoint` (via: ips-sensor)
+        - :class:`~.system.replacemsg-group.ReplacemsgGroupEndpoint` (via: portal-message-override-group)
+        - :class:`~.user.radius.RadiusEndpoint` (via: radius-mac-auth-server, radius-server)
+        - :class:`~.user.security-exempt-list.SecurityExemptListEndpoint` (via: security-exempt-list)
+        - :class:`~.vpn.certificate.local.LocalEndpoint` (via: auth-cert)
+        - :class:`~.webfilter.profile.ProfileEndpoint` (via: webfilter-profile)
+        - :class:`~.wireless-controller.access-control-list.AccessControlListEndpoint` (via: access-control-list)
+        - ... and 6 more dependencies
+
+    **Usage:**
         payload: VapPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -199,7 +216,10 @@ class Vap:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -214,7 +234,10 @@ class Vap:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -229,7 +252,10 @@ class Vap:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -245,7 +271,10 @@ class Vap:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -259,7 +288,10 @@ class Vap:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -269,6 +301,12 @@ class Vap:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

@@ -116,7 +116,133 @@ class PolicyModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_qos_policy_references(self, client: Any) -> list[str]:
+        """
+        Validate qos_policy references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - switch-controller/qos/qos-policy        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = PolicyModel(
+            ...     qos_policy="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_qos_policy_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.switch_controller.auto_config.policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "qos_policy", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.switch-controller.qos.qos-policy.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Qos-Policy '{value}' not found in "
+                "switch-controller/qos/qos-policy"
+            )        
+        return errors    
+    async def validate_storm_control_policy_references(self, client: Any) -> list[str]:
+        """
+        Validate storm_control_policy references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - switch-controller/storm-control-policy        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = PolicyModel(
+            ...     storm_control_policy="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_storm_control_policy_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.switch_controller.auto_config.policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "storm_control_policy", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.switch-controller.storm-control-policy.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Storm-Control-Policy '{value}' not found in "
+                "switch-controller/storm-control-policy"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_qos_policy_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_storm_control_policy_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -135,5 +261,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:33.841426Z
+# Generated: 2026-01-07T01:42:13.554227Z
 # ============================================================================

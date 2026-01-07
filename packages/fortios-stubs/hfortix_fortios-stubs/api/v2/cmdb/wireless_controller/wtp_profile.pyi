@@ -6,7 +6,21 @@ class WtpProfilePayload(TypedDict, total=False):
     """
     Type hints for wireless_controller/wtp_profile payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure WTP profiles or FortiAP profiles that define radio settings for manageable FortiAP platforms.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.user.tacacs+.TacacsPlusEndpoint` (via: admin-auth-tacacs+)
+        - :class:`~.vpn.certificate.ca.CaEndpoint` (via: apcfg-auto-cert-est-https-ca, apcfg-auto-cert-scep-https-ca)
+        - :class:`~.wireless-controller.apcfg-profile.ApcfgProfileEndpoint` (via: apcfg-profile)
+        - :class:`~.wireless-controller.ble-profile.BleProfileEndpoint` (via: ble-profile)
+        - :class:`~.wireless-controller.bonjour-profile.BonjourProfileEndpoint` (via: bonjour-profile)
+        - :class:`~.wireless-controller.lw-profile.LwProfileEndpoint` (via: lw-profile)
+        - :class:`~.wireless-controller.syslog-profile.SyslogProfileEndpoint` (via: syslog-profile)
+        - :class:`~.wireless-controller.vap.VapEndpoint` (via: apcfg-mesh-ssid)
+
+    **Usage:**
         payload: WtpProfilePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -105,7 +119,10 @@ class WtpProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -120,7 +137,10 @@ class WtpProfile:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -135,7 +155,10 @@ class WtpProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -151,7 +174,10 @@ class WtpProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -165,7 +191,10 @@ class WtpProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -175,6 +204,12 @@ class WtpProfile:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

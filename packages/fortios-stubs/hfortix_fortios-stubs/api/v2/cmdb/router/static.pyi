@@ -6,7 +6,19 @@ class StaticPayload(TypedDict, total=False):
     """
     Type hints for router/static payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure IPv4 static routing tables.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.address.AddressEndpoint` (via: dstaddr)
+        - :class:`~.firewall.addrgrp.AddrgrpEndpoint` (via: dstaddr)
+        - :class:`~.firewall.internet-service.InternetServiceEndpoint` (via: internet-service)
+        - :class:`~.firewall.internet-service-custom.InternetServiceCustomEndpoint` (via: internet-service-custom)
+        - :class:`~.firewall.internet-service-fortiguard.InternetServiceFortiguardEndpoint` (via: internet-service-fortiguard)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: device)
+
+    **Usage:**
         payload: StaticPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -49,7 +61,10 @@ class Static:
     def get(
         self,
         seq_num: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -64,7 +79,10 @@ class Static:
     def get(
         self,
         seq_num: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -79,7 +97,10 @@ class Static:
     def get(
         self,
         seq_num: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -95,7 +116,10 @@ class Static:
     def get(
         self,
         seq_num: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -109,7 +133,10 @@ class Static:
     def get(
         self,
         seq_num: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -119,6 +146,12 @@ class Static:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

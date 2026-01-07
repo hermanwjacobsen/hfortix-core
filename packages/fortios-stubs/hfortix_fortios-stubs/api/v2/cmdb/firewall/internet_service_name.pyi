@@ -6,7 +6,17 @@ class InternetServiceNamePayload(TypedDict, total=False):
     """
     Type hints for firewall/internet_service_name payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Define internet service names.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.city.CityEndpoint` (via: city-id)
+        - :class:`~.firewall.country.CountryEndpoint` (via: country-id)
+        - :class:`~.firewall.internet-service.InternetServiceEndpoint` (via: internet-service-id)
+        - :class:`~.firewall.region.RegionEndpoint` (via: region-id)
+
+    **Usage:**
         payload: InternetServiceNamePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -33,7 +43,10 @@ class InternetServiceName:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -48,7 +61,10 @@ class InternetServiceName:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -63,7 +79,10 @@ class InternetServiceName:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -79,7 +98,10 @@ class InternetServiceName:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -93,7 +115,10 @@ class InternetServiceName:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -103,6 +128,12 @@ class InternetServiceName:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

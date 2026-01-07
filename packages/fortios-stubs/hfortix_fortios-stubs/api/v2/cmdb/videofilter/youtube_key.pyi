@@ -6,7 +6,9 @@ class YoutubeKeyPayload(TypedDict, total=False):
     """
     Type hints for videofilter/youtube_key payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure YouTube API keys.
+    
+    **Usage:**
         payload: YoutubeKeyPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -29,7 +31,10 @@ class YoutubeKey:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -44,7 +49,10 @@ class YoutubeKey:
     def get(
         self,
         id: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -59,7 +67,10 @@ class YoutubeKey:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -75,7 +86,10 @@ class YoutubeKey:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -89,7 +103,10 @@ class YoutubeKey:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -99,6 +116,12 @@ class YoutubeKey:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

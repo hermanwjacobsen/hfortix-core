@@ -6,7 +6,14 @@ class VlansPayload(TypedDict, total=False):
     """
     Type hints for switch_controller/initial_config/vlans payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure initial template for auto-generated VLAN interfaces.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.switch-controller.initial-config.template.TemplateEndpoint` (via: default-vlan, nac, nac-segment, +4 more)
+
+    **Usage:**
         payload: VlansPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -34,7 +41,10 @@ class Vlans:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -49,7 +59,10 @@ class Vlans:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -64,7 +77,10 @@ class Vlans:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -80,7 +96,10 @@ class Vlans:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -94,7 +113,10 @@ class Vlans:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -104,6 +126,12 @@ class Vlans:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

@@ -6,7 +6,24 @@ class ProxyPolicyPayload(TypedDict, total=False):
     """
     Type hints for firewall/proxy_policy payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure proxy policies.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.antivirus.profile.ProfileEndpoint` (via: av-profile)
+        - :class:`~.application.list.ListEndpoint` (via: application-list)
+        - :class:`~.casb.profile.ProfileEndpoint` (via: casb-profile)
+        - :class:`~.dlp.profile.ProfileEndpoint` (via: dlp-profile)
+        - :class:`~.dnsfilter.profile.ProfileEndpoint` (via: dnsfilter-profile)
+        - :class:`~.emailfilter.profile.ProfileEndpoint` (via: emailfilter-profile)
+        - :class:`~.file-filter.profile.ProfileEndpoint` (via: file-filter-profile)
+        - :class:`~.firewall.decrypted-traffic-mirror.DecryptedTrafficMirrorEndpoint` (via: decrypted-traffic-mirror)
+        - :class:`~.firewall.profile-group.ProfileGroupEndpoint` (via: profile-group)
+        - :class:`~.firewall.profile-protocol-options.ProfileProtocolOptionsEndpoint` (via: profile-protocol-options)
+        - ... and 17 more dependencies
+
+    **Usage:**
         payload: ProxyPolicyPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -110,7 +127,10 @@ class ProxyPolicy:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -125,7 +145,10 @@ class ProxyPolicy:
     def get(
         self,
         policyid: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -140,7 +163,10 @@ class ProxyPolicy:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -156,7 +182,10 @@ class ProxyPolicy:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -170,7 +199,10 @@ class ProxyPolicy:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -180,6 +212,12 @@ class ProxyPolicy:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

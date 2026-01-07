@@ -190,7 +190,244 @@ class CsfModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_upstream_interface_references(self, client: Any) -> list[str]:
+        """
+        Validate upstream_interface references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = CsfModel(
+            ...     upstream_interface="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_upstream_interface_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "upstream_interface", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.interface.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Upstream-Interface '{value}' not found in "
+                "system/interface"
+            )        
+        return errors    
+    async def validate_certificate_references(self, client: Any) -> list[str]:
+        """
+        Validate certificate references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = CsfModel(
+            ...     certificate="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certificate_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certificate", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certificate '{value}' not found in "
+                "certificate/local"
+            )        
+        return errors    
+    async def validate_downstream_accprofile_references(self, client: Any) -> list[str]:
+        """
+        Validate downstream_accprofile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/accprofile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = CsfModel(
+            ...     downstream_accprofile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_downstream_accprofile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "downstream_accprofile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.accprofile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Downstream-Accprofile '{value}' not found in "
+                "system/accprofile"
+            )        
+        return errors    
+    async def validate_fabric_connector_references(self, client: Any) -> list[str]:
+        """
+        Validate fabric_connector references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/accprofile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = CsfModel(
+            ...     fabric_connector=[{"accprofile": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_fabric_connector_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "fabric_connector", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("accprofile")
+            else:
+                value = getattr(item, "accprofile", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.system.accprofile.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Fabric-Connector '{value}' not found in "
+                    "system/accprofile"
+                )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_upstream_interface_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certificate_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_downstream_accprofile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_fabric_connector_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -209,5 +446,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:35.298157Z
+# Generated: 2026-01-07T01:42:15.345953Z
 # ============================================================================

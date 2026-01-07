@@ -182,7 +182,310 @@ class GlobalModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_ssl_cert_references(self, client: Any) -> list[str]:
+        """
+        Validate ssl_cert references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GlobalModel(
+            ...     ssl_cert="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_ssl_cert_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "ssl_cert", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Ssl-Cert '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_ssl_ca_cert_references(self, client: Any) -> list[str]:
+        """
+        Validate ssl_ca_cert references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        - vpn/certificate/hsm-local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GlobalModel(
+            ...     ssl_ca_cert="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_ssl_ca_cert_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "ssl_ca_cert", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        elif await client.api.cmdb.vpn.certificate.hsm-local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Ssl-Ca-Cert '{value}' not found in "
+                "vpn/certificate/local or vpn/certificate/hsm-local"
+            )        
+        return errors    
+    async def validate_webproxy_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate webproxy_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - web-proxy/profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GlobalModel(
+            ...     webproxy_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_webproxy_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "webproxy_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.web-proxy.profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Webproxy-Profile '{value}' not found in "
+                "web-proxy/profile"
+            )        
+        return errors    
+    async def validate_learn_client_ip_srcaddr_references(self, client: Any) -> list[str]:
+        """
+        Validate learn_client_ip_srcaddr references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address        - firewall/addrgrp        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GlobalModel(
+            ...     learn_client_ip_srcaddr=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_learn_client_ip_srcaddr_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "learn_client_ip_srcaddr", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.address.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.addrgrp.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Learn-Client-Ip-Srcaddr '{value}' not found in "
+                    "firewall/address or firewall/addrgrp"
+                )        
+        return errors    
+    async def validate_learn_client_ip_srcaddr6_references(self, client: Any) -> list[str]:
+        """
+        Validate learn_client_ip_srcaddr6 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address6        - firewall/addrgrp6        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GlobalModel(
+            ...     learn_client_ip_srcaddr6=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_learn_client_ip_srcaddr6_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "learn_client_ip_srcaddr6", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.address6.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.addrgrp6.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Learn-Client-Ip-Srcaddr6 '{value}' not found in "
+                    "firewall/address6 or firewall/addrgrp6"
+                )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_ssl_cert_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_ssl_ca_cert_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_webproxy_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_learn_client_ip_srcaddr_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_learn_client_ip_srcaddr6_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -201,5 +504,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:33.537043Z
+# Generated: 2026-01-07T01:42:13.239711Z
 # ============================================================================

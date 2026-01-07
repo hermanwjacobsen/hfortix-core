@@ -505,7 +505,1508 @@ class ShapingPolicyModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_srcaddr_references(self, client: Any) -> list[str]:
+        """
+        Validate srcaddr references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address        - firewall/addrgrp        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     srcaddr=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_srcaddr_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "srcaddr", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.address.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.addrgrp.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Srcaddr '{value}' not found in "
+                    "firewall/address or firewall/addrgrp"
+                )        
+        return errors    
+    async def validate_dstaddr_references(self, client: Any) -> list[str]:
+        """
+        Validate dstaddr references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address        - firewall/addrgrp        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     dstaddr=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_dstaddr_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "dstaddr", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.address.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.addrgrp.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Dstaddr '{value}' not found in "
+                    "firewall/address or firewall/addrgrp"
+                )        
+        return errors    
+    async def validate_srcaddr6_references(self, client: Any) -> list[str]:
+        """
+        Validate srcaddr6 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address6        - firewall/addrgrp6        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     srcaddr6=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_srcaddr6_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "srcaddr6", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.address6.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.addrgrp6.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Srcaddr6 '{value}' not found in "
+                    "firewall/address6 or firewall/addrgrp6"
+                )        
+        return errors    
+    async def validate_dstaddr6_references(self, client: Any) -> list[str]:
+        """
+        Validate dstaddr6 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address6        - firewall/addrgrp6        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     dstaddr6=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_dstaddr6_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "dstaddr6", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.address6.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.addrgrp6.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Dstaddr6 '{value}' not found in "
+                    "firewall/address6 or firewall/addrgrp6"
+                )        
+        return errors    
+    async def validate_internet_service_name_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_name references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-name        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_name=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_name_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_name", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-name.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Name '{value}' not found in "
+                    "firewall/internet-service-name"
+                )        
+        return errors    
+    async def validate_internet_service_group_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_group=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_group", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Group '{value}' not found in "
+                    "firewall/internet-service-group"
+                )        
+        return errors    
+    async def validate_internet_service_custom_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_custom references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-custom        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_custom=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_custom_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_custom", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Custom '{value}' not found in "
+                    "firewall/internet-service-custom"
+                )        
+        return errors    
+    async def validate_internet_service_custom_group_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_custom_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-custom-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_custom_group=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_custom_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_custom_group", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Custom-Group '{value}' not found in "
+                    "firewall/internet-service-custom-group"
+                )        
+        return errors    
+    async def validate_internet_service_fortiguard_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_fortiguard references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-fortiguard        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_fortiguard=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_fortiguard_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_fortiguard", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Fortiguard '{value}' not found in "
+                    "firewall/internet-service-fortiguard"
+                )        
+        return errors    
+    async def validate_internet_service_src_name_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_src_name references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-name        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_src_name=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_src_name_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_src_name", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-name.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Src-Name '{value}' not found in "
+                    "firewall/internet-service-name"
+                )        
+        return errors    
+    async def validate_internet_service_src_group_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_src_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_src_group=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_src_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_src_group", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Src-Group '{value}' not found in "
+                    "firewall/internet-service-group"
+                )        
+        return errors    
+    async def validate_internet_service_src_custom_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_src_custom references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-custom        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_src_custom=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_src_custom_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_src_custom", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Src-Custom '{value}' not found in "
+                    "firewall/internet-service-custom"
+                )        
+        return errors    
+    async def validate_internet_service_src_custom_group_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_src_custom_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-custom-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_src_custom_group=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_src_custom_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_src_custom_group", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Src-Custom-Group '{value}' not found in "
+                    "firewall/internet-service-custom-group"
+                )        
+        return errors    
+    async def validate_internet_service_src_fortiguard_references(self, client: Any) -> list[str]:
+        """
+        Validate internet_service_src_fortiguard references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/internet-service-fortiguard        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     internet_service_src_fortiguard=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_internet_service_src_fortiguard_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "internet_service_src_fortiguard", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Internet-Service-Src-Fortiguard '{value}' not found in "
+                    "firewall/internet-service-fortiguard"
+                )        
+        return errors    
+    async def validate_service_references(self, client: Any) -> list[str]:
+        """
+        Validate service references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/service/custom        - firewall/service/group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     service=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_service_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "service", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.service.custom.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.service.group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Service '{value}' not found in "
+                    "firewall/service/custom or firewall/service/group"
+                )        
+        return errors    
+    async def validate_schedule_references(self, client: Any) -> list[str]:
+        """
+        Validate schedule references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/schedule/onetime        - firewall/schedule/recurring        - firewall/schedule/group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     schedule="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_schedule_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "schedule", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.schedule.onetime.exists(value):
+            found = True
+        elif await client.api.cmdb.firewall.schedule.recurring.exists(value):
+            found = True
+        elif await client.api.cmdb.firewall.schedule.group.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Schedule '{value}' not found in "
+                "firewall/schedule/onetime or firewall/schedule/recurring or firewall/schedule/group"
+            )        
+        return errors    
+    async def validate_users_references(self, client: Any) -> list[str]:
+        """
+        Validate users references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     users=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_users_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "users", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.user.local.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Users '{value}' not found in "
+                    "user/local"
+                )        
+        return errors    
+    async def validate_groups_references(self, client: Any) -> list[str]:
+        """
+        Validate groups references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     groups=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_groups_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "groups", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.user.group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Groups '{value}' not found in "
+                    "user/group"
+                )        
+        return errors    
+    async def validate_app_group_references(self, client: Any) -> list[str]:
+        """
+        Validate app_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - application/group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     app_group=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_app_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "app_group", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.application.group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"App-Group '{value}' not found in "
+                    "application/group"
+                )        
+        return errors    
+    async def validate_srcintf_references(self, client: Any) -> list[str]:
+        """
+        Validate srcintf references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        - system/zone        - system/sdwan/zone        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     srcintf=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_srcintf_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "srcintf", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.system.interface.exists(value):
+                found = True
+            elif await client.api.cmdb.system.zone.exists(value):
+                found = True
+            elif await client.api.cmdb.system.sdwan.zone.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Srcintf '{value}' not found in "
+                    "system/interface or system/zone or system/sdwan/zone"
+                )        
+        return errors    
+    async def validate_dstintf_references(self, client: Any) -> list[str]:
+        """
+        Validate dstintf references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        - system/zone        - system/sdwan/zone        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     dstintf=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_dstintf_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "dstintf", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.system.interface.exists(value):
+                found = True
+            elif await client.api.cmdb.system.zone.exists(value):
+                found = True
+            elif await client.api.cmdb.system.sdwan.zone.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Dstintf '{value}' not found in "
+                    "system/interface or system/zone or system/sdwan/zone"
+                )        
+        return errors    
+    async def validate_traffic_shaper_references(self, client: Any) -> list[str]:
+        """
+        Validate traffic_shaper references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/shaper/traffic-shaper        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     traffic_shaper="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_traffic_shaper_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "traffic_shaper", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.shaper.traffic-shaper.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Traffic-Shaper '{value}' not found in "
+                "firewall/shaper/traffic-shaper"
+            )        
+        return errors    
+    async def validate_traffic_shaper_reverse_references(self, client: Any) -> list[str]:
+        """
+        Validate traffic_shaper_reverse references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/shaper/traffic-shaper        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     traffic_shaper_reverse="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_traffic_shaper_reverse_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "traffic_shaper_reverse", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.shaper.traffic-shaper.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Traffic-Shaper-Reverse '{value}' not found in "
+                "firewall/shaper/traffic-shaper"
+            )        
+        return errors    
+    async def validate_per_ip_shaper_references(self, client: Any) -> list[str]:
+        """
+        Validate per_ip_shaper references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/shaper/per-ip-shaper        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     per_ip_shaper="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_per_ip_shaper_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "per_ip_shaper", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.shaper.per-ip-shaper.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Per-Ip-Shaper '{value}' not found in "
+                "firewall/shaper/per-ip-shaper"
+            )        
+        return errors    
+    async def validate_class_id_references(self, client: Any) -> list[str]:
+        """
+        Validate class_id references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/traffic-class        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ShapingPolicyModel(
+            ...     class_id="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_class_id_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.shaping_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "class_id", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.traffic-class.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Class-Id '{value}' not found in "
+                "firewall/traffic-class"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_srcaddr_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_dstaddr_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_srcaddr6_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_dstaddr6_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_name_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_custom_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_custom_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_fortiguard_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_src_name_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_src_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_src_custom_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_src_custom_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_internet_service_src_fortiguard_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_service_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_schedule_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_users_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_groups_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_app_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_srcintf_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_dstintf_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_traffic_shaper_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_traffic_shaper_reverse_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_per_ip_shaper_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_class_id_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -524,5 +2025,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:33.304778Z
+# Generated: 2026-01-07T01:42:12.983307Z
 # ============================================================================

@@ -315,7 +315,643 @@ class SettingModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_ocsp_default_server_references(self, client: Any) -> list[str]:
+        """
+        Validate ocsp_default_server references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/ocsp-server        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     ocsp_default_server="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_ocsp_default_server_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "ocsp_default_server", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.ocsp-server.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Ocsp-Default-Server '{value}' not found in "
+                "vpn/certificate/ocsp-server"
+            )        
+        return errors    
+    async def validate_interface_references(self, client: Any) -> list[str]:
+        """
+        Validate interface references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     interface="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_interface_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "interface", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.interface.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Interface '{value}' not found in "
+                "system/interface"
+            )        
+        return errors    
+    async def validate_certname_rsa1024_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_rsa1024 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_rsa1024="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_rsa1024_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_rsa1024", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Rsa1024 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_rsa2048_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_rsa2048 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_rsa2048="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_rsa2048_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_rsa2048", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Rsa2048 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_rsa4096_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_rsa4096 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_rsa4096="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_rsa4096_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_rsa4096", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Rsa4096 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_dsa1024_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_dsa1024 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_dsa1024="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_dsa1024_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_dsa1024", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Dsa1024 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_dsa2048_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_dsa2048 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_dsa2048="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_dsa2048_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_dsa2048", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Dsa2048 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_ecdsa256_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_ecdsa256 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_ecdsa256="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_ecdsa256_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_ecdsa256", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Ecdsa256 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_ecdsa384_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_ecdsa384 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_ecdsa384="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_ecdsa384_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_ecdsa384", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Ecdsa384 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_ecdsa521_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_ecdsa521 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_ecdsa521="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_ecdsa521_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_ecdsa521", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Ecdsa521 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_ed25519_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_ed25519 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_ed25519="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_ed25519_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_ed25519", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Ed25519 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_certname_ed448_references(self, client: Any) -> list[str]:
+        """
+        Validate certname_ed448 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = SettingModel(
+            ...     certname_ed448="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_certname_ed448_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "certname_ed448", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Certname-Ed448 '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_ocsp_default_server_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_interface_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_rsa1024_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_rsa2048_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_rsa4096_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_dsa1024_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_dsa2048_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_ecdsa256_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_ecdsa384_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_ecdsa521_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_ed25519_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_certname_ed448_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -334,5 +970,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:35.226998Z
+# Generated: 2026-01-07T01:42:15.276603Z
 # ============================================================================

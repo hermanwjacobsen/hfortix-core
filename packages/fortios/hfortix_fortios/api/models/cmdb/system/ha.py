@@ -312,7 +312,424 @@ class HaModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_auto_virtual_mac_interface_references(self, client: Any) -> list[str]:
+        """
+        Validate auto_virtual_mac_interface references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = HaModel(
+            ...     auto_virtual_mac_interface=[{"interface-name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_auto_virtual_mac_interface_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "auto_virtual_mac_interface", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("interface-name")
+            else:
+                value = getattr(item, "interface-name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.system.interface.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Auto-Virtual-Mac-Interface '{value}' not found in "
+                    "system/interface"
+                )        
+        return errors    
+    async def validate_backup_hbdev_references(self, client: Any) -> list[str]:
+        """
+        Validate backup_hbdev references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = HaModel(
+            ...     backup_hbdev=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_backup_hbdev_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "backup_hbdev", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.system.interface.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Backup-Hbdev '{value}' not found in "
+                    "system/interface"
+                )        
+        return errors    
+    async def validate_session_sync_dev_references(self, client: Any) -> list[str]:
+        """
+        Validate session_sync_dev references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = HaModel(
+            ...     session_sync_dev="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_session_sync_dev_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "session_sync_dev", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.interface.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Session-Sync-Dev '{value}' not found in "
+                "system/interface"
+            )        
+        return errors    
+    async def validate_ha_mgmt_interfaces_references(self, client: Any) -> list[str]:
+        """
+        Validate ha_mgmt_interfaces references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = HaModel(
+            ...     ha_mgmt_interfaces=[{"interface": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_ha_mgmt_interfaces_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "ha_mgmt_interfaces", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("interface")
+            else:
+                value = getattr(item, "interface", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.system.interface.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Ha-Mgmt-Interfaces '{value}' not found in "
+                    "system/interface"
+                )        
+        return errors    
+    async def validate_monitor_references(self, client: Any) -> list[str]:
+        """
+        Validate monitor references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = HaModel(
+            ...     monitor="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_monitor_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "monitor", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.interface.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Monitor '{value}' not found in "
+                "system/interface"
+            )        
+        return errors    
+    async def validate_pingserver_monitor_interface_references(self, client: Any) -> list[str]:
+        """
+        Validate pingserver_monitor_interface references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = HaModel(
+            ...     pingserver_monitor_interface="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_pingserver_monitor_interface_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "pingserver_monitor_interface", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.interface.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Pingserver-Monitor-Interface '{value}' not found in "
+                "system/interface"
+            )        
+        return errors    
+    async def validate_vcluster_references(self, client: Any) -> list[str]:
+        """
+        Validate vcluster references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = HaModel(
+            ...     vcluster=[{"pingserver-monitor-interface": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_vcluster_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "vcluster", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("pingserver-monitor-interface")
+            else:
+                value = getattr(item, "pingserver-monitor-interface", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.system.interface.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Vcluster '{value}' not found in "
+                    "system/interface"
+                )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_auto_virtual_mac_interface_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_backup_hbdev_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_session_sync_dev_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_ha_mgmt_interfaces_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_monitor_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_pingserver_monitor_interface_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_vcluster_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -331,5 +748,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:35.337397Z
+# Generated: 2026-01-07T01:42:15.388736Z
 # ============================================================================

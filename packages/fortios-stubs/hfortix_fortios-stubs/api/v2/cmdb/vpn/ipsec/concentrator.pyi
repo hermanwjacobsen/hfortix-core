@@ -6,7 +6,9 @@ class ConcentratorPayload(TypedDict, total=False):
     """
     Type hints for vpn/ipsec/concentrator payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Concentrator configuration.
+    
+    **Usage:**
         payload: ConcentratorPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -31,7 +33,10 @@ class Concentrator:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -46,7 +51,10 @@ class Concentrator:
     def get(
         self,
         id: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -61,7 +69,10 @@ class Concentrator:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -77,7 +88,10 @@ class Concentrator:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -91,7 +105,10 @@ class Concentrator:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -101,6 +118,12 @@ class Concentrator:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

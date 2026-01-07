@@ -6,7 +6,18 @@ class GlobalPayload(TypedDict, total=False):
     """
     Type hints for system/global_ payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure global attributes.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.certificate.ca.CaEndpoint` (via: wifi-ca-certificate)
+        - :class:`~.certificate.local.LocalEndpoint` (via: admin-server-cert, auth-cert, scim-server-cert, +1 more)
+        - :class:`~.system.accprofile.AccprofileEndpoint` (via: admin-forticloud-sso-default-profile)
+        - :class:`~.system.timezone.TimezoneEndpoint` (via: timezone)
+        - :class:`~.system.vdom.VdomEndpoint` (via: management-vdom)
+
+    **Usage:**
         payload: GlobalPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -278,7 +289,10 @@ class Global:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -293,7 +307,10 @@ class Global:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -308,7 +325,10 @@ class Global:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -324,7 +344,10 @@ class Global:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -338,7 +361,10 @@ class Global:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -348,6 +374,12 @@ class Global:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

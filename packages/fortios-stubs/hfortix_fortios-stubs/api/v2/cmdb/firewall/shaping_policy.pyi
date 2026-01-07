@@ -6,7 +6,19 @@ class ShapingPolicyPayload(TypedDict, total=False):
     """
     Type hints for firewall/shaping_policy payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure shaping policies.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.schedule.group.GroupEndpoint` (via: schedule)
+        - :class:`~.firewall.schedule.onetime.OnetimeEndpoint` (via: schedule)
+        - :class:`~.firewall.schedule.recurring.RecurringEndpoint` (via: schedule)
+        - :class:`~.firewall.shaper.per-ip-shaper.PerIpShaperEndpoint` (via: per-ip-shaper)
+        - :class:`~.firewall.shaper.traffic-shaper.TrafficShaperEndpoint` (via: traffic-shaper, traffic-shaper-reverse)
+        - :class:`~.firewall.traffic-class.TrafficClassEndpoint` (via: class-id)
+
+    **Usage:**
         payload: ShapingPolicyPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -73,7 +85,10 @@ class ShapingPolicy:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -88,7 +103,10 @@ class ShapingPolicy:
     def get(
         self,
         id: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -103,7 +121,10 @@ class ShapingPolicy:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -119,7 +140,10 @@ class ShapingPolicy:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -133,7 +157,10 @@ class ShapingPolicy:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -143,6 +170,12 @@ class ShapingPolicy:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

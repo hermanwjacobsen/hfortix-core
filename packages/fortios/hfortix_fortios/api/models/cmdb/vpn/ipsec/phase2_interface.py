@@ -241,7 +241,294 @@ class Phase2InterfaceModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_phase1name_references(self, client: Any) -> list[str]:
+        """
+        Validate phase1name references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/ipsec/phase1-interface        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = Phase2InterfaceModel(
+            ...     phase1name="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_phase1name_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "phase1name", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.ipsec.phase1-interface.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Phase1Name '{value}' not found in "
+                "vpn/ipsec/phase1-interface"
+            )        
+        return errors    
+    async def validate_src_name_references(self, client: Any) -> list[str]:
+        """
+        Validate src_name references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address        - firewall/addrgrp        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = Phase2InterfaceModel(
+            ...     src_name="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_src_name_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "src_name", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.address.exists(value):
+            found = True
+        elif await client.api.cmdb.firewall.addrgrp.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Src-Name '{value}' not found in "
+                "firewall/address or firewall/addrgrp"
+            )        
+        return errors    
+    async def validate_src_name6_references(self, client: Any) -> list[str]:
+        """
+        Validate src_name6 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address6        - firewall/addrgrp6        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = Phase2InterfaceModel(
+            ...     src_name6="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_src_name6_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "src_name6", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.address6.exists(value):
+            found = True
+        elif await client.api.cmdb.firewall.addrgrp6.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Src-Name6 '{value}' not found in "
+                "firewall/address6 or firewall/addrgrp6"
+            )        
+        return errors    
+    async def validate_dst_name_references(self, client: Any) -> list[str]:
+        """
+        Validate dst_name references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address        - firewall/addrgrp        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = Phase2InterfaceModel(
+            ...     dst_name="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_dst_name_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "dst_name", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.address.exists(value):
+            found = True
+        elif await client.api.cmdb.firewall.addrgrp.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Dst-Name '{value}' not found in "
+                "firewall/address or firewall/addrgrp"
+            )        
+        return errors    
+    async def validate_dst_name6_references(self, client: Any) -> list[str]:
+        """
+        Validate dst_name6 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address6        - firewall/addrgrp6        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = Phase2InterfaceModel(
+            ...     dst_name6="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_dst_name6_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.vpn.ipsec.phase2_interface.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "dst_name6", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.address6.exists(value):
+            found = True
+        elif await client.api.cmdb.firewall.addrgrp6.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Dst-Name6 '{value}' not found in "
+                "firewall/address6 or firewall/addrgrp6"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_phase1name_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_src_name_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_src_name6_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_dst_name_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_dst_name6_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -260,5 +547,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:33.295044Z
+# Generated: 2026-01-07T01:42:12.973538Z
 # ============================================================================

@@ -222,7 +222,304 @@ class AccessProxyModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_vip_references(self, client: Any) -> list[str]:
+        """
+        Validate vip references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/vip        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = AccessProxyModel(
+            ...     vip="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_vip_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "vip", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.vip.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Vip '{value}' not found in "
+                "firewall/vip"
+            )        
+        return errors    
+    async def validate_auth_virtual_host_references(self, client: Any) -> list[str]:
+        """
+        Validate auth_virtual_host references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/access-proxy-virtual-host        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = AccessProxyModel(
+            ...     auth_virtual_host="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_auth_virtual_host_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "auth_virtual_host", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.access-proxy-virtual-host.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Auth-Virtual-Host '{value}' not found in "
+                "firewall/access-proxy-virtual-host"
+            )        
+        return errors    
+    async def validate_decrypted_traffic_mirror_references(self, client: Any) -> list[str]:
+        """
+        Validate decrypted_traffic_mirror references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/decrypted-traffic-mirror        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = AccessProxyModel(
+            ...     decrypted_traffic_mirror="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_decrypted_traffic_mirror_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "decrypted_traffic_mirror", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.decrypted-traffic-mirror.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Decrypted-Traffic-Mirror '{value}' not found in "
+                "firewall/decrypted-traffic-mirror"
+            )        
+        return errors    
+    async def validate_api_gateway_references(self, client: Any) -> list[str]:
+        """
+        Validate api_gateway references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/ssl/web/portal        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = AccessProxyModel(
+            ...     api_gateway=[{"ssl-vpn-web-portal": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_api_gateway_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "api_gateway", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("ssl-vpn-web-portal")
+            else:
+                value = getattr(item, "ssl-vpn-web-portal", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.vpn.ssl.web.portal.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Api-Gateway '{value}' not found in "
+                    "vpn/ssl/web/portal"
+                )        
+        return errors    
+    async def validate_api_gateway6_references(self, client: Any) -> list[str]:
+        """
+        Validate api_gateway6 references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/ssl/web/portal        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = AccessProxyModel(
+            ...     api_gateway6=[{"ssl-vpn-web-portal": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_api_gateway6_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.firewall.access_proxy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "api_gateway6", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("ssl-vpn-web-portal")
+            else:
+                value = getattr(item, "ssl-vpn-web-portal", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.vpn.ssl.web.portal.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Api-Gateway6 '{value}' not found in "
+                    "vpn/ssl/web/portal"
+                )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_vip_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_auth_virtual_host_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_decrypted_traffic_mirror_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_api_gateway_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_api_gateway6_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -241,5 +538,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:34.157438Z
+# Generated: 2026-01-07T01:42:14.019393Z
 # ============================================================================

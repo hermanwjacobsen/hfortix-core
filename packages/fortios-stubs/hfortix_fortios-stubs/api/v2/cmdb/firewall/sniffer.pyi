@@ -6,7 +6,21 @@ class SnifferPayload(TypedDict, total=False):
     """
     Type hints for firewall/sniffer payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure sniffer.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.antivirus.profile.ProfileEndpoint` (via: av-profile)
+        - :class:`~.application.list.ListEndpoint` (via: application-list)
+        - :class:`~.dlp.profile.ProfileEndpoint` (via: dlp-profile)
+        - :class:`~.emailfilter.profile.ProfileEndpoint` (via: emailfilter-profile)
+        - :class:`~.file-filter.profile.ProfileEndpoint` (via: file-filter-profile)
+        - :class:`~.ips.sensor.SensorEndpoint` (via: ips-sensor)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
+        - :class:`~.webfilter.profile.ProfileEndpoint` (via: webfilter-profile)
+
+    **Usage:**
         payload: SnifferPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -57,7 +71,10 @@ class Sniffer:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -72,7 +89,10 @@ class Sniffer:
     def get(
         self,
         id: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -87,7 +107,10 @@ class Sniffer:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -103,7 +126,10 @@ class Sniffer:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -117,7 +143,10 @@ class Sniffer:
     def get(
         self,
         id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -127,6 +156,12 @@ class Sniffer:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

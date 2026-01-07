@@ -6,7 +6,24 @@ class HsProfilePayload(TypedDict, total=False):
     """
     Type hints for wireless_controller/hotspot20/hs_profile payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure hotspot profile.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.wireless-controller.hotspot20.anqp-3gpp-cellular.Anqp3GppCellularEndpoint` (via: 3gpp-plmn)
+        - :class:`~.wireless-controller.hotspot20.anqp-ip-address-type.AnqpIpAddressTypeEndpoint` (via: ip-addr-type)
+        - :class:`~.wireless-controller.hotspot20.anqp-nai-realm.AnqpNaiRealmEndpoint` (via: nai-realm)
+        - :class:`~.wireless-controller.hotspot20.anqp-network-auth-type.AnqpNetworkAuthTypeEndpoint` (via: network-auth)
+        - :class:`~.wireless-controller.hotspot20.anqp-roaming-consortium.AnqpRoamingConsortiumEndpoint` (via: roaming-consortium)
+        - :class:`~.wireless-controller.hotspot20.anqp-venue-name.AnqpVenueNameEndpoint` (via: venue-name)
+        - :class:`~.wireless-controller.hotspot20.anqp-venue-url.AnqpVenueUrlEndpoint` (via: venue-url)
+        - :class:`~.wireless-controller.hotspot20.h2qp-advice-of-charge.H2QpAdviceOfChargeEndpoint` (via: advice-of-charge)
+        - :class:`~.wireless-controller.hotspot20.h2qp-conn-capability.H2QpConnCapabilityEndpoint` (via: conn-cap)
+        - :class:`~.wireless-controller.hotspot20.h2qp-operator-name.H2QpOperatorNameEndpoint` (via: oper-friendly-name)
+        - ... and 5 more dependencies
+
+    **Usage:**
         payload: HsProfilePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -70,7 +87,10 @@ class HsProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -85,7 +105,10 @@ class HsProfile:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -100,7 +123,10 @@ class HsProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -116,7 +142,10 @@ class HsProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -130,7 +159,10 @@ class HsProfile:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -140,6 +172,12 @@ class HsProfile:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

@@ -6,7 +6,17 @@ class WtpPayload(TypedDict, total=False):
     """
     Type hints for wireless_controller/wtp payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure Wireless Termination Points (WTPs), that is, FortiAPs or APs to be managed by FortiGate.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.wireless-controller.apcfg-profile.ApcfgProfileEndpoint` (via: apcfg-profile)
+        - :class:`~.wireless-controller.bonjour-profile.BonjourProfileEndpoint` (via: bonjour-profile)
+        - :class:`~.wireless-controller.region.RegionEndpoint` (via: region)
+        - :class:`~.wireless-controller.wtp-profile.WtpProfileEndpoint` (via: wtp-profile)
+
+    **Usage:**
         payload: WtpPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -74,7 +84,10 @@ class Wtp:
     def get(
         self,
         wtp_id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -89,7 +102,10 @@ class Wtp:
     def get(
         self,
         wtp_id: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -104,7 +120,10 @@ class Wtp:
     def get(
         self,
         wtp_id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -120,7 +139,10 @@ class Wtp:
     def get(
         self,
         wtp_id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -134,7 +156,10 @@ class Wtp:
     def get(
         self,
         wtp_id: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -144,6 +169,12 @@ class Wtp:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

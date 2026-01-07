@@ -6,7 +6,24 @@ class Phase1InterfacePayload(TypedDict, total=False):
     """
     Type hints for vpn/ipsec/phase1_interface payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure VPN remote gateway.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.address.AddressEndpoint` (via: ipv4-name, ipv4-split-exclude, ipv4-split-include)
+        - :class:`~.firewall.address6.Address6Endpoint` (via: ipv6-name, ipv6-split-exclude, ipv6-split-include)
+        - :class:`~.firewall.addrgrp.AddrgrpEndpoint` (via: ipv4-name, ipv4-split-exclude, ipv4-split-include)
+        - :class:`~.firewall.addrgrp6.Addrgrp6Endpoint` (via: ipv6-name, ipv6-split-exclude, ipv6-split-include)
+        - :class:`~.firewall.service.custom.CustomEndpoint` (via: split-include-service)
+        - :class:`~.firewall.service.group.GroupEndpoint` (via: split-include-service)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
+        - :class:`~.system.sdwan.health-check.HealthCheckEndpoint` (via: fec-health-check)
+        - :class:`~.user.group.GroupEndpoint` (via: authusrgrp, usrgrp)
+        - :class:`~.user.peer.PeerEndpoint` (via: peer)
+        - ... and 4 more dependencies
+
+    **Usage:**
         payload: Phase1InterfacePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -226,7 +243,10 @@ class Phase1Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -241,7 +261,10 @@ class Phase1Interface:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -256,7 +279,10 @@ class Phase1Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -272,7 +298,10 @@ class Phase1Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -286,7 +315,10 @@ class Phase1Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -296,6 +328,12 @@ class Phase1Interface:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

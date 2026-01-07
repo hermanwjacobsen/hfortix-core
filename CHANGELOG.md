@@ -7,6 +7,246 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### � Enhanced Query Parameters & Schema Introspection (2026-01-07)
+
+**Improved developer experience with explicit query parameters and runtime schema introspection.**
+
+#### Added
+
+- **Runtime Schema Introspection** (`get_schema()` method)
+  - Added `get_schema()` method to all 561 CMDB endpoints (100% coverage)
+  - Queries live firewall for current endpoint schema definition
+  - Returns field information, types, enums, validation rules, and defaults
+  - Supports both "schema" (FortiOS native) and "json-schema" (standard) formats
+  - Enables dynamic form generation, runtime validation, and API exploration
+  - Example: `schema = fgt.api.cmdb.firewall.policy.get_schema()`
+  - Only added to endpoints with `schema_introspection` capability
+
+- **Explicit Query Parameters** (filter, count, start)
+  - Added `filter: list[str] | None` parameter for filtering results
+    - Supports operators: `==`, `!=`, `=@` (contains), `!@`, `<=`, `<`, `>=`, `>`
+    - Multiple filters use AND logic: `["status==enable", "action==accept"]`
+    - Example: `filter=["name==test*", "type==ipmask"]`
+  - Added `count: int | None` parameter for pagination (max results)
+  - Added `start: int | None` parameter for pagination (offset)
+  - Preserved `payload_dict` for advanced options (datasource, with_meta, scope, etc.)
+  - Enhanced documentation with operator details and usage examples
+  - Full type hints in all `.pyi` stub files
+
+- **Improved Documentation**
+  - Comprehensive docstrings for all query parameters
+  - Filter operator reference table in docstrings
+  - Pagination examples with start/count
+  - See Also section references `get_schema()` when available
+  - payload_dict documentation lists common advanced options
+
+#### Changed
+
+- **Endpoint Template** (`endpoint_class.py.j2`)
+  - Updated `get()` method signature with filter, count, start parameters
+  - Added parameter validation and assignment logic
+  - Enhanced docstring with detailed usage examples
+  - Added conditional `get_schema()` method when capability present
+  - Backward compatible - existing code continues to work
+
+- **Stub Template** (`endpoint_class.pyi.j2`)
+  - Updated all `get()` overloads with new parameter type hints
+  - Changed filter from `str | None` to `list[str] | None` (correct type)
+  - Added `count: int | None` and `start: int | None` type hints
+  - Added `get_schema()` method stub with return type hints
+  - Improved IDE autocomplete and type checking
+
+- **Schema Parser** (`schema_parser.py`)
+  - Added `query_params` field to `EndpointSchema` dataclass
+  - Parses `query_params` from schema JSON (both v1.7.0 and legacy formats)
+  - Extracts GET/PUT/POST/DELETE query parameter definitions
+  - Makes parameter metadata available to generators
+
+#### Technical Details
+
+- **Files Modified**: 3 template files, 1 schema parser
+- **Files Generated**: 561 Python files (.py), 561 stub files (.pyi)
+- **Coverage**: 100% of CMDB endpoints
+- **Backward Compatibility**: ✅ Full (existing code unchanged)
+- **Type Safety**: ✅ Complete type hints in stubs
+
+#### Usage Examples
+
+```python
+from hfortix_fortios import FortiOS
+fgt = FortiOS(host="192.168.1.99", token="your-token")
+
+# Filter results
+policies = fgt.api.cmdb.firewall.policy.get(
+    filter=["status==enable", "action==accept"]
+)
+
+# Pagination
+first_100 = fgt.api.cmdb.firewall.policy.get(start=0, count=100)
+
+# Combined filtering + pagination
+results = fgt.api.cmdb.firewall.address.get(
+    filter=["type==ipmask"],
+    start=0,
+    count=50
+)
+
+# Get runtime schema
+schema = fgt.api.cmdb.firewall.policy.get_schema()
+print(schema["results"])  # Field definitions, types, enums
+
+# Advanced options (still supported)
+detailed = fgt.api.cmdb.firewall.policy.get(
+    filter=["srcintf==port1"],
+    payload_dict={"with_meta": True, "datasource": True}
+)
+```
+
+### �🔗 Endpoint Relationship Documentation in Stubs (2026-01-07)
+
+**Enhanced IDE experience with comprehensive endpoint relationship documentation in `.pyi` stub files.**
+
+#### Added
+
+- **Relationship Documentation in Stub Files**
+  - Auto-generated "Related Resources" section in TypedDict docstrings
+  - Forward dependencies: Shows what resources each endpoint references
+  - Field-level mappings: Documents which fields reference which endpoints (e.g., "via: av-profile")
+  - RST cross-references: Sphinx-style `:class:` links for IDE navigation (Ctrl+Click to jump)
+  - Smart truncation: Shows top 10 dependencies, then "... and X more dependencies"
+  - Example: `firewall.policy` shows dependencies on antivirus profiles, address objects, schedules, etc.
+
+- **Reverse Dependency Analyzer**
+  - New `RelationshipAnalyzer` class to compute "Referenced By" relationships
+  - Scans all CMDB schemas to build reverse dependency map
+  - Identifies which endpoints reference each endpoint
+  - Tracks field-level usage across the entire API
+  - Processes 561 schemas in ~2 seconds
+  - Found 173 endpoints with reverse dependencies
+
+- **IDE Navigation Benefits**
+  - Hover tooltips show relationship information
+  - Ctrl+Click navigates between related endpoint stubs
+  - Autocomplete shows dependency context
+  - Understand workflow order (create dependencies first)
+  - Avoid breaking changes by seeing reverse dependencies
+
+#### Changed
+
+- **Stub Generator Enhanced** (`pyi_generator.py`)
+  - Added `_format_endpoint_link()` to convert paths to RST cross-references
+  - Added `_format_relationship_section()` to format complete relationship docs
+  - Updated `generate_endpoint_stub()` to include relationship section in docstrings
+  - Relationships pre-computed and passed as template context
+
+- **Schema Parser Updated** (`schema_parser.py`)
+  - Added `relationships` field to `EndpointSchema` dataclass
+  - Parses relationship metadata from schema JSON v1.7.0+
+  - Includes `datasource_fields`, `related_endpoints` data
+
+- **Generator Integration** (`generate.py`)
+  - Integrated `RelationshipAnalyzer` into bulk CMDB generation
+  - Runs analyzer once per category, passes results to each endpoint
+  - Single-endpoint mode shows forward deps only (no reverse deps)
+
+- **Template Updates** (`endpoint_class.pyi.j2`)
+  - New relationship section in TypedDict docstrings
+  - RST-formatted cross-references for Sphinx/IDE compatibility
+  - Clean, readable format with field mappings
+
+#### Technical Details
+
+- **Coverage**: All 562 CMDB endpoints regenerated with relationship docs
+- **Performance**: Analyzer overhead ~2s for full CMDB scan, negligible per-endpoint
+- **Format**: RST cross-references compatible with Sphinx, VSCode, PyCharm, Pylance
+- **Most Referenced Endpoint**: `system.interface` (110 references across API)
+
+### 🎯 Pydantic Models with Datasource Validation (2026-01-07)
+
+**Complete implementation of nested Pydantic models and async datasource validation for all CMDB endpoints.**
+
+#### Added
+
+- **Nested Pydantic Models for Child Tables**
+  - Generated `BaseModel` classes for all child table fields
+  - Type-safe field definitions with constraints (min/max, max_length, patterns)
+  - Enum classes for fields with 4+ allowed values
+  - Literal types for fields with 2-3 allowed values
+  - Field validation with Pydantic `Field()` constraints
+  - Default values and optional fields support
+  - Datasource metadata embedded in field comments
+  - Example: `PolicySrcintf(BaseModel)` for firewall policy source interfaces
+
+- **Async Datasource Validation Methods**
+  - Auto-generated validation methods for all datasource fields
+  - Validates references exist in FortiGate BEFORE API calls
+  - Supports both child table fields (list) and scalar fields (string)
+  - Checks multiple datasource endpoints per field
+  - Returns descriptive error messages with field names
+  - `validate_all_references()` convenience method per model
+  - Example: `await policy.validate_srcintf_references(client)`
+
+#### Changed
+
+- **Model Generator Enhanced**
+  - Added `_extract_datasource_fields()` to parse datasource metadata from schemas
+  - Added `_generate_validation_methods()` to create validation method metadata
+  - Added `_generate_exists_checks()` filter for proper Python code indentation
+  - Extended Pydantic model template with datasource validation section
+  - Models now include async validation methods when datasources are present
+
+- **Template Updates** (`pydantic_model.py.j2`)
+  - New "Datasource Validation Methods" section
+  - Async validation methods with proper docstrings and examples
+  - Uses `client.api.cmdb.{endpoint}.exists()` for validation
+  - Supports both child table iteration and scalar field validation
+  - Clean error message formatting with field names and datasource paths
+
+#### Statistics
+
+- **281** CMDB endpoints with validation methods
+- **1,089** individual validation methods generated
+- Covers all datasource fields in cmdb, monitor, and service categories
+- Log category excluded (no datasource metadata in schemas)
+
+#### Technical Details
+
+- Datasource metadata extracted from schema `fields[].datasource` property
+- Validation methods are fully async and integrate with FortiOS client
+- Template uses `{% raw %}` blocks for f-string interpolation
+- Python-generated indentation via filter for clean output
+- Optional validation - only called when needed
+
+#### Example Usage
+
+```python
+from hfortix_fortios import FortiOS
+from hfortix_fortios.api.models.cmdb.firewall.policy import PolicyModel, PolicySrcintf
+
+# Create policy with Pydantic validation
+policy = PolicyModel(
+    name="test-policy",
+    srcintf=[PolicySrcintf(name="port1")],
+    dstintf=[PolicySrcintf(name="port2")],
+    action="accept"
+)
+
+# Validate datasource references exist
+async with FortiOS(host="192.168.1.1", token="xxx") as fgt:
+    # Validate all references at once
+    errors = await policy.validate_all_references(fgt._client)
+    
+    if errors:
+        print("Validation errors:")
+        for error in errors:
+            print(f"  - {error}")
+    else:
+        # All references exist - safe to post
+        result = await fgt.api.cmdb.firewall.policy.post(
+            policy.to_fortios_dict()
+        )
+```
+
 ### ✨ Improved LOG Endpoint Generation (2026-01-06)
 
 **Enhanced log endpoints with modern patterns and proper stub file organization.**

@@ -6,7 +6,16 @@ class FctemsOverridePayload(TypedDict, total=False):
     """
     Type hints for endpoint_control/fctems_override payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure FortiClient Enterprise Management Server (EMS) entries.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.certificate.ca.CaEndpoint` (via: verifying-ca)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
+        - :class:`~.vpn.certificate.ca.CaEndpoint` (via: verifying-ca)
+
+    **Usage:**
         payload: FctemsOverridePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -51,7 +60,10 @@ class FctemsOverride:
     def get(
         self,
         ems_id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -66,7 +78,10 @@ class FctemsOverride:
     def get(
         self,
         ems_id: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -81,7 +96,10 @@ class FctemsOverride:
     def get(
         self,
         ems_id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -97,7 +115,10 @@ class FctemsOverride:
     def get(
         self,
         ems_id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -111,7 +132,10 @@ class FctemsOverride:
     def get(
         self,
         ems_id: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -121,6 +145,12 @@ class FctemsOverride:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

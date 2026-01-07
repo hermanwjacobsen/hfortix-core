@@ -212,7 +212,305 @@ class ProfileModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_replacemsg_group_references(self, client: Any) -> list[str]:
+        """
+        Validate replacemsg_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/replacemsg-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     replacemsg_group="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_replacemsg_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.icap.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "replacemsg_group", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.replacemsg-group.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Replacemsg-Group '{value}' not found in "
+                "system/replacemsg-group"
+            )        
+        return errors    
+    async def validate_request_server_references(self, client: Any) -> list[str]:
+        """
+        Validate request_server references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - icap/server        - icap/server-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     request_server="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_request_server_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.icap.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "request_server", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.icap.server.exists(value):
+            found = True
+        elif await client.api.cmdb.icap.server-group.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Request-Server '{value}' not found in "
+                "icap/server or icap/server-group"
+            )        
+        return errors    
+    async def validate_response_server_references(self, client: Any) -> list[str]:
+        """
+        Validate response_server references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - icap/server        - icap/server-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     response_server="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_response_server_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.icap.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "response_server", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.icap.server.exists(value):
+            found = True
+        elif await client.api.cmdb.icap.server-group.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Response-Server '{value}' not found in "
+                "icap/server or icap/server-group"
+            )        
+        return errors    
+    async def validate_file_transfer_server_references(self, client: Any) -> list[str]:
+        """
+        Validate file_transfer_server references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - icap/server        - icap/server-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     file_transfer_server="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_file_transfer_server_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.icap.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "file_transfer_server", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.icap.server.exists(value):
+            found = True
+        elif await client.api.cmdb.icap.server-group.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"File-Transfer-Server '{value}' not found in "
+                "icap/server or icap/server-group"
+            )        
+        return errors    
+    async def validate_respmod_forward_rules_references(self, client: Any) -> list[str]:
+        """
+        Validate respmod_forward_rules references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/address        - firewall/addrgrp        - firewall/proxy-address        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     respmod_forward_rules=[{"host": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_respmod_forward_rules_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.icap.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "respmod_forward_rules", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("host")
+            else:
+                value = getattr(item, "host", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.address.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.addrgrp.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.proxy-address.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Respmod-Forward-Rules '{value}' not found in "
+                    "firewall/address or firewall/addrgrp or firewall/proxy-address"
+                )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_replacemsg_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_request_server_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_response_server_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_file_transfer_server_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_respmod_forward_rules_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -231,5 +529,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:33.953599Z
+# Generated: 2026-01-07T01:42:13.675821Z
 # ============================================================================

@@ -6,7 +6,14 @@ class DeviceUpgradePayload(TypedDict, total=False):
     """
     Type hints for system/device_upgrade payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Independent upgrades for managed devices.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.system.vdom.VdomEndpoint` (via: vdom)
+
+    **Usage:**
         payload: DeviceUpgradePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -43,7 +50,10 @@ class DeviceUpgrade:
     def get(
         self,
         serial: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -58,7 +68,10 @@ class DeviceUpgrade:
     def get(
         self,
         serial: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -73,7 +86,10 @@ class DeviceUpgrade:
     def get(
         self,
         serial: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -89,7 +105,10 @@ class DeviceUpgrade:
     def get(
         self,
         serial: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -103,7 +122,10 @@ class DeviceUpgrade:
     def get(
         self,
         serial: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -113,6 +135,12 @@ class DeviceUpgrade:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

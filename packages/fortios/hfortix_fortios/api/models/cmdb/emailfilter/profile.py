@@ -317,7 +317,337 @@ class ProfileModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_replacemsg_group_references(self, client: Any) -> list[str]:
+        """
+        Validate replacemsg_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/replacemsg-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     replacemsg_group="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_replacemsg_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "replacemsg_group", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.replacemsg-group.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Replacemsg-Group '{value}' not found in "
+                "system/replacemsg-group"
+            )        
+        return errors    
+    async def validate_spam_bword_table_references(self, client: Any) -> list[str]:
+        """
+        Validate spam_bword_table references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - emailfilter/bword        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     spam_bword_table="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_spam_bword_table_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "spam_bword_table", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.emailfilter.bword.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Spam-Bword-Table '{value}' not found in "
+                "emailfilter/bword"
+            )        
+        return errors    
+    async def validate_spam_bal_table_references(self, client: Any) -> list[str]:
+        """
+        Validate spam_bal_table references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - emailfilter/block-allow-list        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     spam_bal_table="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_spam_bal_table_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "spam_bal_table", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.emailfilter.block-allow-list.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Spam-Bal-Table '{value}' not found in "
+                "emailfilter/block-allow-list"
+            )        
+        return errors    
+    async def validate_spam_mheader_table_references(self, client: Any) -> list[str]:
+        """
+        Validate spam_mheader_table references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - emailfilter/mheader        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     spam_mheader_table="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_spam_mheader_table_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "spam_mheader_table", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.emailfilter.mheader.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Spam-Mheader-Table '{value}' not found in "
+                "emailfilter/mheader"
+            )        
+        return errors    
+    async def validate_spam_rbl_table_references(self, client: Any) -> list[str]:
+        """
+        Validate spam_rbl_table references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - emailfilter/dnsbl        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     spam_rbl_table="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_spam_rbl_table_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "spam_rbl_table", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.emailfilter.dnsbl.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Spam-Rbl-Table '{value}' not found in "
+                "emailfilter/dnsbl"
+            )        
+        return errors    
+    async def validate_spam_iptrust_table_references(self, client: Any) -> list[str]:
+        """
+        Validate spam_iptrust_table references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - emailfilter/iptrust        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = ProfileModel(
+            ...     spam_iptrust_table="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_spam_iptrust_table_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "spam_iptrust_table", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.emailfilter.iptrust.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Spam-Iptrust-Table '{value}' not found in "
+                "emailfilter/iptrust"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_replacemsg_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_spam_bword_table_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_spam_bal_table_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_spam_mheader_table_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_spam_rbl_table_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_spam_iptrust_table_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -336,5 +666,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:34.285074Z
+# Generated: 2026-01-07T01:42:14.151653Z
 # ============================================================================

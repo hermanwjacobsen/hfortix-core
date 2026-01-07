@@ -66,6 +66,9 @@ class Import(MetadataMixin):
     def get(
         self,
         name: str | None = None,
+        filter: list[str] | None = None,
+        count: int | None = None,
+        start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -78,10 +81,24 @@ class Import(MetadataMixin):
 
         Args:
             name: Name identifier to retrieve specific object. If None, returns all objects.
-            payload_dict: Additional query parameters (filters, format, etc.)
+            filter: List of filter expressions to limit results.
+                Each filter uses format: "field==value" or "field!=value"
+                Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
+                Multiple filters use AND logic. For OR, use comma in single string.
+                Example: ["name==test", "status==enable"] or ["name==test,name==prod"]
+            count: Maximum number of entries to return (pagination).
+            start: Starting entry index for pagination (0-based).
+            payload_dict: Additional query parameters for advanced options:
+                - datasource (bool): Include datasource information
+                - with_meta (bool): Include metadata about each object
+                - with_contents_hash (bool): Include checksum of object contents
+                - format (list[str]): Property names to include (e.g., ["policyid", "srcintf"])
+                - scope (str): Query scope - "global", "vdom", or "both"
+                - action (str): Special actions - "schema", "default"
+                See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
-            **kwargs: Additional query parameters (action, format, etc.)
+            **kwargs: Additional query parameters passed directly to API.
 
         Returns:
             Configuration data as dict. Returns Coroutine if using async client.
@@ -103,11 +120,16 @@ class Import(MetadataMixin):
             
             >>> # Get with filter
             >>> result = fgt.api.monitor.vpn_certificate_remote_import_.get(
-            ...     payload_dict={"filter": ["name==test"]}
+            ...     filter=["name==test", "status==enable"]
             ... )
             
-            >>> # Get schema information
-            >>> schema = fgt.api.monitor.vpn_certificate_remote_import_.get(action="schema")
+            >>> # Get with pagination
+            >>> result = fgt.api.monitor.vpn_certificate_remote_import_.get(
+            ...     start=0, count=100
+            ... )
+            
+            >>> # Get schema information  
+            >>> schema = fgt.api.monitor.vpn_certificate_remote_import_.get_schema()
 
         See Also:
             - post(): Create new vpn_certificate/remote/import_ object
@@ -116,6 +138,14 @@ class Import(MetadataMixin):
             - exists(): Check if object exists
         """
         params = payload_dict.copy() if payload_dict else {}
+        
+        # Add explicit query parameters
+        if filter is not None:
+            params["filter"] = filter
+        if count is not None:
+            params["count"] = count
+        if start is not None:
+            params["start"] = start
         
         if name:
             endpoint = f"/vpn-certificate/remote/import/{name}"

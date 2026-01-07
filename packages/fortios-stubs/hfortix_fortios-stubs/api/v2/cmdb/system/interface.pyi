@@ -6,7 +6,23 @@ class InterfacePayload(TypedDict, total=False):
     """
     Type hints for system/interface payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure interfaces.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.certificate.ca.CaEndpoint` (via: eap-ca-cert)
+        - :class:`~.certificate.local.LocalEndpoint` (via: eap-user-cert)
+        - :class:`~.firewall.shaping-profile.ShapingProfileEndpoint` (via: egress-shaping-profile, ingress-shaping-profile)
+        - :class:`~.switch-controller.fortilink-settings.FortilinkSettingsEndpoint` (via: switch-controller-dynamic, switch-controller-nac)
+        - :class:`~.switch-controller.traffic-policy.TrafficPolicyEndpoint` (via: switch-controller-traffic-policy)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: dhcp-relay-interface, interface)
+        - :class:`~.system.lldp.network-policy.NetworkPolicyEndpoint` (via: lldp-network-policy)
+        - :class:`~.system.vdom.VdomEndpoint` (via: vdom)
+        - :class:`~.user.saml.SamlEndpoint` (via: ike-saml-server)
+        - :class:`~.vpn.certificate.local.LocalEndpoint` (via: auth-cert)
+
+    **Usage:**
         payload: InterfacePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -249,7 +265,10 @@ class Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -264,7 +283,10 @@ class Interface:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -279,7 +301,10 @@ class Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -295,7 +320,10 @@ class Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -309,7 +337,10 @@ class Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -319,6 +350,12 @@ class Interface:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

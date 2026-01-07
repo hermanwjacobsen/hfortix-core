@@ -6,7 +6,16 @@ class LocalInPolicy6Payload(TypedDict, total=False):
     """
     Type hints for firewall/local_in_policy6 payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure user defined IPv6 local-in policies.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.schedule.group.GroupEndpoint` (via: schedule)
+        - :class:`~.firewall.schedule.onetime.OnetimeEndpoint` (via: schedule)
+        - :class:`~.firewall.schedule.recurring.RecurringEndpoint` (via: schedule)
+
+    **Usage:**
         payload: LocalInPolicy6Payload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -49,7 +58,10 @@ class LocalInPolicy6:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -64,7 +76,10 @@ class LocalInPolicy6:
     def get(
         self,
         policyid: int,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -79,7 +94,10 @@ class LocalInPolicy6:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -95,7 +113,10 @@ class LocalInPolicy6:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -109,7 +130,10 @@ class LocalInPolicy6:
     def get(
         self,
         policyid: int | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -119,6 +143,12 @@ class LocalInPolicy6:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

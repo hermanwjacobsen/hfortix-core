@@ -6,7 +6,21 @@ class LocalPayload(TypedDict, total=False):
     """
     Type hints for user/local payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure local users.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.system.sms-server.SmsServerEndpoint` (via: sms-custom-server)
+        - :class:`~.user.fortitoken.FortitokenEndpoint` (via: fortitoken)
+        - :class:`~.user.ldap.LdapEndpoint` (via: ldap-server)
+        - :class:`~.user.password-policy.PasswordPolicyEndpoint` (via: passwd-policy)
+        - :class:`~.user.radius.RadiusEndpoint` (via: radius-server)
+        - :class:`~.user.saml.SamlEndpoint` (via: saml-server)
+        - :class:`~.user.tacacs+.TacacsPlusEndpoint` (via: tacacs+-server)
+        - :class:`~.vpn.qkd.QkdEndpoint` (via: qkd-profile)
+
+    **Usage:**
         payload: LocalPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -54,7 +68,10 @@ class Local:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -69,7 +86,10 @@ class Local:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -84,7 +104,10 @@ class Local:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -100,7 +123,10 @@ class Local:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -114,7 +140,10 @@ class Local:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -124,6 +153,12 @@ class Local:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

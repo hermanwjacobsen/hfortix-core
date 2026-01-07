@@ -6,7 +6,17 @@ class OverrideSettingPayload(TypedDict, total=False):
     """
     Type hints for log/fortianalyzer2/override_setting payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Override FortiAnalyzer settings.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.certificate.ca.CaEndpoint` (via: server-cert-ca)
+        - :class:`~.certificate.local.LocalEndpoint` (via: certificate)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
+        - :class:`~.vpn.certificate.ca.CaEndpoint` (via: server-cert-ca)
+
+    **Usage:**
         payload: OverrideSettingPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -55,7 +65,10 @@ class OverrideSetting:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -70,7 +83,10 @@ class OverrideSetting:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -85,7 +101,10 @@ class OverrideSetting:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -101,7 +120,10 @@ class OverrideSetting:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -115,7 +137,10 @@ class OverrideSetting:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -125,6 +150,12 @@ class OverrideSetting:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

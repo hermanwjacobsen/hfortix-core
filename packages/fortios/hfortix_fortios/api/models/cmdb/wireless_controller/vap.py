@@ -671,7 +671,1253 @@ class VapModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_radius_mac_auth_server_references(self, client: Any) -> list[str]:
+        """
+        Validate radius_mac_auth_server references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/radius        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     radius_mac_auth_server="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_radius_mac_auth_server_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "radius_mac_auth_server", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.user.radius.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Radius-Mac-Auth-Server '{value}' not found in "
+                "user/radius"
+            )        
+        return errors    
+    async def validate_radius_mac_auth_usergroups_references(self, client: Any) -> list[str]:
+        """
+        Validate radius_mac_auth_usergroups references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     radius_mac_auth_usergroups=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_radius_mac_auth_usergroups_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "radius_mac_auth_usergroups", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.user.group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Radius-Mac-Auth-Usergroups '{value}' not found in "
+                    "user/group"
+                )        
+        return errors    
+    async def validate_radius_server_references(self, client: Any) -> list[str]:
+        """
+        Validate radius_server references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/radius        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     radius_server="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_radius_server_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "radius_server", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.user.radius.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Radius-Server '{value}' not found in "
+                "user/radius"
+            )        
+        return errors    
+    async def validate_usergroup_references(self, client: Any) -> list[str]:
+        """
+        Validate usergroup references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     usergroup=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_usergroup_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "usergroup", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.user.group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Usergroup '{value}' not found in "
+                    "user/group"
+                )        
+        return errors    
+    async def validate_portal_message_override_group_references(self, client: Any) -> list[str]:
+        """
+        Validate portal_message_override_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/replacemsg-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     portal_message_override_group="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_portal_message_override_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "portal_message_override_group", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.replacemsg-group.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Portal-Message-Override-Group '{value}' not found in "
+                "system/replacemsg-group"
+            )        
+        return errors    
+    async def validate_selected_usergroups_references(self, client: Any) -> list[str]:
+        """
+        Validate selected_usergroups references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     selected_usergroups=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_selected_usergroups_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "selected_usergroups", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.user.group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Selected-Usergroups '{value}' not found in "
+                    "user/group"
+                )        
+        return errors    
+    async def validate_security_exempt_list_references(self, client: Any) -> list[str]:
+        """
+        Validate security_exempt_list references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/security-exempt-list        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     security_exempt_list="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_security_exempt_list_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "security_exempt_list", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.user.security-exempt-list.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Security-Exempt-List '{value}' not found in "
+                "user/security-exempt-list"
+            )        
+        return errors    
+    async def validate_auth_cert_references(self, client: Any) -> list[str]:
+        """
+        Validate auth_cert references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - vpn/certificate/local        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     auth_cert="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_auth_cert_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "auth_cert", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.vpn.certificate.local.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Auth-Cert '{value}' not found in "
+                "vpn/certificate/local"
+            )        
+        return errors    
+    async def validate_schedule_references(self, client: Any) -> list[str]:
+        """
+        Validate schedule references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/schedule/group        - firewall/schedule/recurring        - firewall/schedule/onetime        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     schedule=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_schedule_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "schedule", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.firewall.schedule.group.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.schedule.recurring.exists(value):
+                found = True
+            elif await client.api.cmdb.firewall.schedule.onetime.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Schedule '{value}' not found in "
+                    "firewall/schedule/group or firewall/schedule/recurring or firewall/schedule/onetime"
+                )        
+        return errors    
+    async def validate_mpsk_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate mpsk_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/mpsk-profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     mpsk_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_mpsk_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "mpsk_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.mpsk-profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Mpsk-Profile '{value}' not found in "
+                "wireless-controller/mpsk-profile"
+            )        
+        return errors    
+    async def validate_nac_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate nac_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/nac-profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     nac_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_nac_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "nac_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.nac-profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Nac-Profile '{value}' not found in "
+                "wireless-controller/nac-profile"
+            )        
+        return errors    
+    async def validate_vlan_pool_references(self, client: Any) -> list[str]:
+        """
+        Validate vlan_pool references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/wtp-group        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     vlan_pool=[{"wtp-group": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_vlan_pool_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "vlan_pool", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("wtp-group")
+            else:
+                value = getattr(item, "wtp-group", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.wireless-controller.wtp-group.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Vlan-Pool '{value}' not found in "
+                    "wireless-controller/wtp-group"
+                )        
+        return errors    
+    async def validate_qos_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate qos_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/qos-profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     qos_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_qos_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "qos_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.qos-profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Qos-Profile '{value}' not found in "
+                "wireless-controller/qos-profile"
+            )        
+        return errors    
+    async def validate_hotspot20_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate hotspot20_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/hotspot20/hs-profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     hotspot20_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_hotspot20_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "hotspot20_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.hotspot20.hs-profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Hotspot20-Profile '{value}' not found in "
+                "wireless-controller/hotspot20/hs-profile"
+            )        
+        return errors    
+    async def validate_access_control_list_references(self, client: Any) -> list[str]:
+        """
+        Validate access_control_list references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/access-control-list        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     access_control_list="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_access_control_list_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "access_control_list", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.access-control-list.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Access-Control-List '{value}' not found in "
+                "wireless-controller/access-control-list"
+            )        
+        return errors    
+    async def validate_primary_wag_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate primary_wag_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/wag-profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     primary_wag_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_primary_wag_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "primary_wag_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.wag-profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Primary-Wag-Profile '{value}' not found in "
+                "wireless-controller/wag-profile"
+            )        
+        return errors    
+    async def validate_secondary_wag_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate secondary_wag_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/wag-profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     secondary_wag_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_secondary_wag_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "secondary_wag_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.wag-profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Secondary-Wag-Profile '{value}' not found in "
+                "wireless-controller/wag-profile"
+            )        
+        return errors    
+    async def validate_utm_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate utm_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - wireless-controller/utm-profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     utm_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_utm_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "utm_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.wireless-controller.utm-profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Utm-Profile '{value}' not found in "
+                "wireless-controller/utm-profile"
+            )        
+        return errors    
+    async def validate_ips_sensor_references(self, client: Any) -> list[str]:
+        """
+        Validate ips_sensor references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - ips/sensor        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     ips_sensor="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_ips_sensor_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "ips_sensor", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.ips.sensor.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Ips-Sensor '{value}' not found in "
+                "ips/sensor"
+            )        
+        return errors    
+    async def validate_application_list_references(self, client: Any) -> list[str]:
+        """
+        Validate application_list references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - application/list        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     application_list="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_application_list_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "application_list", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.application.list.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Application-List '{value}' not found in "
+                "application/list"
+            )        
+        return errors    
+    async def validate_antivirus_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate antivirus_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - antivirus/profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     antivirus_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_antivirus_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "antivirus_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.antivirus.profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Antivirus-Profile '{value}' not found in "
+                "antivirus/profile"
+            )        
+        return errors    
+    async def validate_webfilter_profile_references(self, client: Any) -> list[str]:
+        """
+        Validate webfilter_profile references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - webfilter/profile        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     webfilter_profile="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_webfilter_profile_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "webfilter_profile", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.webfilter.profile.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Webfilter-Profile '{value}' not found in "
+                "webfilter/profile"
+            )        
+        return errors    
+    async def validate_address_group_references(self, client: Any) -> list[str]:
+        """
+        Validate address_group references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - firewall/addrgrp        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = VapModel(
+            ...     address_group="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_address_group_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.wireless_controller.vap.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "address_group", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.firewall.addrgrp.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Address-Group '{value}' not found in "
+                "firewall/addrgrp"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_radius_mac_auth_server_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_radius_mac_auth_usergroups_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_radius_server_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_usergroup_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_portal_message_override_group_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_selected_usergroups_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_security_exempt_list_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_auth_cert_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_schedule_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_mpsk_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_nac_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_vlan_pool_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_qos_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_hotspot20_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_access_control_list_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_primary_wag_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_secondary_wag_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_utm_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_ips_sensor_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_application_list_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_antivirus_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_webfilter_profile_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_address_group_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -690,5 +1936,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:33.116330Z
+# Generated: 2026-01-07T01:42:12.792365Z
 # ============================================================================

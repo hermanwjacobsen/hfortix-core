@@ -6,7 +6,19 @@ class SchemePayload(TypedDict, total=False):
     """
     Type hints for authentication/scheme payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure Authentication Schemes.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.ssh.local-ca.LocalCaEndpoint` (via: ssh-ca)
+        - :class:`~.user.domain-controller.DomainControllerEndpoint` (via: domain-controller)
+        - :class:`~.user.external-identity-provider.ExternalIdentityProviderEndpoint` (via: external-idp)
+        - :class:`~.user.fsso.FssoEndpoint` (via: fsso-agent-for-ntlm)
+        - :class:`~.user.krb-keytab.KrbKeytabEndpoint` (via: kerberos-keytab)
+        - :class:`~.user.saml.SamlEndpoint` (via: saml-server)
+
+    **Usage:**
         payload: SchemePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -45,7 +57,10 @@ class Scheme:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -60,7 +75,10 @@ class Scheme:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -75,7 +93,10 @@ class Scheme:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -91,7 +112,10 @@ class Scheme:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -105,7 +129,10 @@ class Scheme:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -115,6 +142,12 @@ class Scheme:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

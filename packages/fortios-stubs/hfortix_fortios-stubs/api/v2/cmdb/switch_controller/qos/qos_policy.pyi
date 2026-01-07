@@ -6,7 +6,16 @@ class QosPolicyPayload(TypedDict, total=False):
     """
     Type hints for switch_controller/qos/qos_policy payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure FortiSwitch QoS policy.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.switch-controller.qos.dot1p-map.Dot1PMapEndpoint` (via: trust-dot1p-map)
+        - :class:`~.switch-controller.qos.ip-dscp-map.IpDscpMapEndpoint` (via: trust-ip-dscp-map)
+        - :class:`~.switch-controller.qos.queue-policy.QueuePolicyEndpoint` (via: queue-policy)
+
+    **Usage:**
         payload: QosPolicyPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -32,7 +41,10 @@ class QosPolicy:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -47,7 +59,10 @@ class QosPolicy:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -62,7 +77,10 @@ class QosPolicy:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -78,7 +96,10 @@ class QosPolicy:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -92,7 +113,10 @@ class QosPolicy:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -102,6 +126,12 @@ class QosPolicy:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

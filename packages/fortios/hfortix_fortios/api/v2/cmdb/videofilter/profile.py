@@ -66,6 +66,9 @@ class Profile(MetadataMixin):
     def get(
         self,
         name: str | None = None,
+        filter: list[str] | None = None,
+        count: int | None = None,
+        start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
         raw_json: bool = False,
@@ -79,10 +82,24 @@ class Profile(MetadataMixin):
         Args:
             name: String identifier to retrieve specific object.
                 If None, returns all objects.
-            payload_dict: Additional query parameters (filters, format, etc.)
+            filter: List of filter expressions to limit results.
+                Each filter uses format: "field==value" or "field!=value"
+                Operators: ==, !=, =@ (contains), !@ (not contains), <=, <, >=, >
+                Multiple filters use AND logic. For OR, use comma in single string.
+                Example: ["name==test", "status==enable"] or ["name==test,name==prod"]
+            count: Maximum number of entries to return (pagination).
+            start: Starting entry index for pagination (0-based).
+            payload_dict: Additional query parameters for advanced options:
+                - datasource (bool): Include datasource information
+                - with_meta (bool): Include metadata about each object
+                - with_contents_hash (bool): Include checksum of object contents
+                - format (list[str]): Property names to include (e.g., ["policyid", "srcintf"])
+                - scope (str): Query scope - "global", "vdom", or "both"
+                - action (str): Special actions - "schema", "default"
+                See FortiOS REST API documentation for complete list.
             vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             raw_json: If True, return raw API response without processing.
-            **kwargs: Additional query parameters (action, format, etc.)
+            **kwargs: Additional query parameters passed directly to API.
 
         Returns:
             Configuration data as dict. Returns Coroutine if using async client.
@@ -108,19 +125,33 @@ class Profile(MetadataMixin):
             
             >>> # Get with filter
             >>> result = fgt.api.cmdb.videofilter_profile.get(
-            ...     payload_dict={"filter": ["name==test"]}
+            ...     filter=["name==test", "status==enable"]
             ... )
             
-            >>> # Get schema information
-            >>> schema = fgt.api.cmdb.videofilter_profile.get(action="schema")
+            >>> # Get with pagination
+            >>> result = fgt.api.cmdb.videofilter_profile.get(
+            ...     start=0, count=100
+            ... )
+            
+            >>> # Get schema information  
+            >>> schema = fgt.api.cmdb.videofilter_profile.get_schema()
 
         See Also:
             - post(): Create new videofilter/profile object
             - put(): Update existing videofilter/profile object
             - delete(): Remove videofilter/profile object
             - exists(): Check if object exists
+            - get_schema(): Get endpoint schema/metadata
         """
         params = payload_dict.copy() if payload_dict else {}
+        
+        # Add explicit query parameters
+        if filter is not None:
+            params["filter"] = filter
+        if count is not None:
+            params["count"] = count
+        if start is not None:
+            params["start"] = start
         
         if name:
             endpoint = "/videofilter/profile/" + str(name)
@@ -131,6 +162,43 @@ class Profile(MetadataMixin):
         return self._client.get(
             "cmdb", endpoint, params=params, vdom=vdom, raw_json=raw_json
         )
+
+    def get_schema(
+        self,
+        vdom: str | None = None,
+        format: str = "schema",
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+        """
+        Get schema/metadata for this endpoint.
+        
+        Returns the FortiOS schema definition including available fields,
+        their types, required vs optional properties, enum values, nested
+        structures, and default values.
+        
+        This queries the live firewall for its current schema, which may
+        vary between FortiOS versions.
+        
+        Args:
+            vdom: Virtual domain. None uses default VDOM.
+            format: Schema format - "schema" (FortiOS native) or "json-schema" (JSON Schema standard).
+                Defaults to "schema".
+                
+        Returns:
+            Schema definition as dict. Returns Coroutine if using async client.
+            
+        Example:
+            >>> # Get FortiOS native schema
+            >>> schema = fgt.api.cmdb.videofilter_profile.get_schema()
+            >>> print(schema['results'])
+            
+            >>> # Get JSON Schema format (if supported)
+            >>> json_schema = fgt.api.cmdb.videofilter_profile.get_schema(format="json-schema")
+        
+        Note:
+            Not all endpoints support all schema formats. The "schema" format
+            is most widely supported.
+        """
+        return self.get(action=format, vdom=vdom)
 
 
     def put(

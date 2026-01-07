@@ -37,7 +37,7 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - ✅ **Action Methods**: move(), clone(), exists() for all endpoints (NEW! ✨)
 - ✅ **Type Hints**: Full type annotations with Literal types for enums
 - ✅ **Validators**: 260+ validation helper modules with field constraints
-- ✅ **Type Stubs**: Complete .pyi files for perfect IDE autocomplete
+- ✅ **Type Stubs**: Complete .pyi files with endpoint relationship docs (NEW! 🔗)
 - ✅ **Docstrings**: Comprehensive documentation with examples
 - ✅ **Tests**: 1,065+ auto-generated test files - all passing ✅
 
@@ -65,6 +65,12 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 **�🔥 Recent Highlights (January 2026):**
 
+- 🔗 **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (January 7, 2026)
+  - ⚡ See what resources each endpoint depends on (forward dependencies)
+  - 🔍 Field-level mappings: Know which fields reference which endpoints
+  - 🎯 RST cross-references: Ctrl+Click to navigate between related endpoints
+  - 📚 Smart truncation: Top 10 dependencies shown, then "... and X more"
+  - ✅ All 562 CMDB endpoints include relationship documentation
 - � **LITERAL TYPES FOR IDE AUTOCOMPLETE**: 15,000+ parameters with enum autocomplete! (January 6, 2026)
   - ⚡ Instant IDE suggestions for all enum fields (action, status, protocol, etc.)
   - 🛡️ Type safety: Invalid values caught at type-check time

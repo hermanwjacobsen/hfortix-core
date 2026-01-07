@@ -130,7 +130,184 @@ class QosPolicyModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_trust_dot1p_map_references(self, client: Any) -> list[str]:
+        """
+        Validate trust_dot1p_map references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - switch-controller/qos/dot1p-map        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = QosPolicyModel(
+            ...     trust_dot1p_map="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_trust_dot1p_map_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.switch_controller.qos.qos_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "trust_dot1p_map", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.switch-controller.qos.dot1p-map.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Trust-Dot1P-Map '{value}' not found in "
+                "switch-controller/qos/dot1p-map"
+            )        
+        return errors    
+    async def validate_trust_ip_dscp_map_references(self, client: Any) -> list[str]:
+        """
+        Validate trust_ip_dscp_map references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - switch-controller/qos/ip-dscp-map        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = QosPolicyModel(
+            ...     trust_ip_dscp_map="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_trust_ip_dscp_map_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.switch_controller.qos.qos_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "trust_ip_dscp_map", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.switch-controller.qos.ip-dscp-map.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Trust-Ip-Dscp-Map '{value}' not found in "
+                "switch-controller/qos/ip-dscp-map"
+            )        
+        return errors    
+    async def validate_queue_policy_references(self, client: Any) -> list[str]:
+        """
+        Validate queue_policy references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - switch-controller/qos/queue-policy        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = QosPolicyModel(
+            ...     queue_policy="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_queue_policy_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.switch_controller.qos.qos_policy.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "queue_policy", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.switch-controller.qos.queue-policy.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Queue-Policy '{value}' not found in "
+                "switch-controller/qos/queue-policy"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_trust_dot1p_map_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_trust_ip_dscp_map_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_queue_policy_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -149,5 +326,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:35.493509Z
+# Generated: 2026-01-07T01:42:15.555606Z
 # ============================================================================

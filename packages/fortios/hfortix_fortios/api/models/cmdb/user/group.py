@@ -177,7 +177,228 @@ class GroupModel(BaseModel):
             Validated model instance
         """
         return cls(**data)
-
+    # ========================================================================
+    # Datasource Validation Methods
+    # ========================================================================    
+    async def validate_member_references(self, client: Any) -> list[str]:
+        """
+        Validate member references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/peer        - user/local        - user/radius        - user/tacacs+        - user/ldap        - user/saml        - user/external-identity-provider        - user/adgrp        - user/pop3        - user/certificate        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GroupModel(
+            ...     member=[{"name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_member_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "member", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("name")
+            else:
+                value = getattr(item, "name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.user.peer.exists(value):
+                found = True
+            elif await client.api.cmdb.user.local.exists(value):
+                found = True
+            elif await client.api.cmdb.user.radius.exists(value):
+                found = True
+            elif await client.api.cmdb.user.tacacs+.exists(value):
+                found = True
+            elif await client.api.cmdb.user.ldap.exists(value):
+                found = True
+            elif await client.api.cmdb.user.saml.exists(value):
+                found = True
+            elif await client.api.cmdb.user.external-identity-provider.exists(value):
+                found = True
+            elif await client.api.cmdb.user.adgrp.exists(value):
+                found = True
+            elif await client.api.cmdb.user.pop3.exists(value):
+                found = True
+            elif await client.api.cmdb.user.certificate.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Member '{value}' not found in "
+                    "user/peer or user/local or user/radius or user/tacacs+ or user/ldap or user/saml or user/external-identity-provider or user/adgrp or user/pop3 or user/certificate"
+                )        
+        return errors    
+    async def validate_match_references(self, client: Any) -> list[str]:
+        """
+        Validate match references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - user/radius        - user/ldap        - user/tacacs+        - user/saml        - user/external-identity-provider        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GroupModel(
+            ...     match=[{"server-name": "invalid-name"}],
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_match_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate child table items
+        values = getattr(self, "match", [])
+        if not values:
+            return errors
+        
+        for item in values:
+            if isinstance(item, dict):
+                value = item.get("server-name")
+            else:
+                value = getattr(item, "server-name", None)
+            
+            if not value:
+                continue
+            
+            # Check all datasource endpoints
+            found = False
+            if await client.api.cmdb.user.radius.exists(value):
+                found = True
+            elif await client.api.cmdb.user.ldap.exists(value):
+                found = True
+            elif await client.api.cmdb.user.tacacs+.exists(value):
+                found = True
+            elif await client.api.cmdb.user.saml.exists(value):
+                found = True
+            elif await client.api.cmdb.user.external-identity-provider.exists(value):
+                found = True
+            
+            if not found:
+                errors.append(
+                    f"Match '{value}' not found in "
+                    "user/radius or user/ldap or user/tacacs+ or user/saml or user/external-identity-provider"
+                )        
+        return errors    
+    async def validate_sms_custom_server_references(self, client: Any) -> list[str]:
+        """
+        Validate sms_custom_server references exist in FortiGate.
+        
+        This method checks if referenced objects exist by calling exists() on
+        the appropriate API endpoints. This is an OPTIONAL validation step that
+        can be called before posting to the API to catch reference errors early.
+        
+        Datasource endpoints checked:
+        - system/sms-server        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of validation error messages (empty if all valid)
+            
+        Example:
+            >>> from hfortix_fortios import FortiOS
+            >>> 
+            >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
+            >>> policy = GroupModel(
+            ...     sms_custom_server="invalid-name",
+            ... )
+            >>> 
+            >>> # Validate before posting
+            >>> errors = await policy.validate_sms_custom_server_references(fgt._client)
+            >>> if errors:
+            ...     print("Validation failed:", errors)
+            ... else:
+            ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
+        """
+        errors = []
+        
+        # Validate scalar field
+        value = getattr(self, "sms_custom_server", None)
+        if not value:
+            return errors
+        
+        # Check all datasource endpoints
+        found = False
+        if await client.api.cmdb.system.sms-server.exists(value):
+            found = True
+        
+        if not found:
+            errors.append(
+                f"Sms-Custom-Server '{value}' not found in "
+                "system/sms-server"
+            )        
+        return errors    
+    async def validate_all_references(self, client: Any) -> list[str]:
+        """
+        Validate ALL datasource references in this model.
+        
+        Convenience method that runs all validate_*_references() methods
+        and aggregates the results.
+        
+        Args:
+            client: FortiOS client instance (from fgt._client)
+            
+        Returns:
+            List of all validation errors found
+            
+        Example:
+            >>> errors = await policy.validate_all_references(fgt._client)
+            >>> if errors:
+            ...     for error in errors:
+            ...         print(f"  - {error}")
+        """
+        all_errors = []
+        
+        errors = await self.validate_member_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_match_references(client)
+        all_errors.extend(errors)        
+        errors = await self.validate_sms_custom_server_references(client)
+        all_errors.extend(errors)        
+        return all_errors
 
 # ============================================================================
 # Type Aliases for Convenience
@@ -196,5 +417,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-06T20:48:35.351605Z
+# Generated: 2026-01-07T01:42:15.402845Z
 # ============================================================================

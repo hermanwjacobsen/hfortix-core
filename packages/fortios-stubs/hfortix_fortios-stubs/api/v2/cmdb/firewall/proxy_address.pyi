@@ -6,7 +6,18 @@ class ProxyAddressPayload(TypedDict, total=False):
     """
     Type hints for firewall/proxy_address payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure web proxy address.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.address.AddressEndpoint` (via: host)
+        - :class:`~.firewall.addrgrp.AddrgrpEndpoint` (via: host)
+        - :class:`~.firewall.proxy-address.ProxyAddressEndpoint` (via: host)
+        - :class:`~.firewall.vip.VipEndpoint` (via: host)
+        - :class:`~.firewall.vipgrp.VipgrpEndpoint` (via: host)
+
+    **Usage:**
         payload: ProxyAddressPayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -48,7 +59,10 @@ class ProxyAddress:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -63,7 +77,10 @@ class ProxyAddress:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -78,7 +95,10 @@ class ProxyAddress:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -94,7 +114,10 @@ class ProxyAddress:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -108,7 +131,10 @@ class ProxyAddress:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -118,6 +144,12 @@ class ProxyAddress:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,

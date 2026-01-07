@@ -6,7 +6,18 @@ class Phase2InterfacePayload(TypedDict, total=False):
     """
     Type hints for vpn/ipsec/phase2_interface payload fields.
     
-    Use this for IDE autocomplete when building payload dicts:
+    Configure VPN autokey tunnel.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.firewall.address.AddressEndpoint` (via: dst-name, src-name)
+        - :class:`~.firewall.address6.Address6Endpoint` (via: dst-name6, src-name6)
+        - :class:`~.firewall.addrgrp.AddrgrpEndpoint` (via: dst-name, src-name)
+        - :class:`~.firewall.addrgrp6.Addrgrp6Endpoint` (via: dst-name6, src-name6)
+        - :class:`~.vpn.ipsec.phase1-interface.Phase1InterfaceEndpoint` (via: phase1name)
+
+    **Usage:**
         payload: Phase2InterfacePayload = {
             "field": "value",  # <- autocomplete shows all fields
         }
@@ -79,7 +90,10 @@ class Phase2Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -94,7 +108,10 @@ class Phase2Interface:
     def get(
         self,
         name: str,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -109,7 +126,10 @@ class Phase2Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -125,7 +145,10 @@ class Phase2Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -139,7 +162,10 @@ class Phase2Interface:
     def get(
         self,
         name: str | None = ...,
-        filter: str | None = ...,
+        filter: list[str] | None = ...,
+        count: int | None = ...,
+        start: int | None = ...,
+        payload_dict: dict[str, Any] | None = ...,
         range: list[int] | None = ...,
         sort: str | None = ...,
         format: str | None = ...,
@@ -149,6 +175,12 @@ class Phase2Interface:
         response_mode: str | None = ...,
         **kwargs: Any,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
+    
+    def get_schema(
+        self,
+        vdom: str | None = ...,
+        format: str = ...,
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]: ...
     
     def post(
         self,
